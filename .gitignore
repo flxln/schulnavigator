@@ -1,3 +1,6 @@
-.env
-/audio_mitschnitte
-/transkripte
+/config/
+/config/.env
+
+# Auftraggeber: Transkripte und Audio-Mitschnitte niemals versionieren
+/auftraggeber/audio_mitschnitte/
+/auftraggeber/transkripte/
