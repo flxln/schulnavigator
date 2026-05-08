@@ -1,0 +1,6 @@
+[submodule "protokolle"]
+	path = protokolle
+	url = https://github.com/flxln/schulnavigator-protokolle.git
+[submodule "auftraggeber"]
+	path = auftraggeber
+	url = https://github.com/flxln/schulnavigator-auftraggeber.git
