@@ -1,17 +1,18 @@
-# Schulnavigator — System-Prompt
+---
+tags:
+  - prompt
+  - stub
+kanonisch: wissen-ki-und-mehr/06_Ideen/Projekt_Prompts/schulnavigator/system-prompt.md
+---
 
-*Wird vor dem agentischen Entwicklungsstart befüllt.*
+# system prompt (Stub)
 
-## Projektkontext für den Agenten
+**Kanonische Version im Vault** — diese Datei nicht bearbeiten.
 
-```
-Du entwickelst den Schulnavigator — eine Web-App für Schulen.
-Besucher eines Tags der offenen Tür scannen QR-Codes an Zimmern und
-sehen dort Multimedia-Inhalte (Texte, Bilder, Videos).
+| | |
+|---|---|
+| **Vault** | `/Users/felixlein/Projekte/wissen-ki-und-mehr/06_Ideen/Projekt_Prompts/schulnavigator/system-prompt.md` |
+| **Relativ** | `wissen-ki-und-mehr/06_Ideen/Projekt_Prompts/schulnavigator/system-prompt.md` |
+| **Obsidian** | [[06_Ideen/Projekt_Prompts/schulnavigator/system-prompt|system-prompt]] |
 
-Tech-Stack: [hier eintragen nach Architektur-Entscheidung]
-
-Halte dich an folgende Konventionen:
-- TypeScript strict
-- [weitere Konventionen ergänzen]
-```
+Öffne und pflege den Prompt nur im Vault. Dieser Stub verweist aus dem Projekt-Repo.

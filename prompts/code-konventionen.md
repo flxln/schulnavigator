@@ -1,18 +1,18 @@
-# Schulnavigator — Code-Konventionen für den Agenten
+---
+tags:
+  - prompt
+  - stub
+kanonisch: wissen-ki-und-mehr/06_Ideen/Projekt_Prompts/schulnavigator/code-konventionen.md
+---
 
-*Was der Agent beim Entwickeln beachten soll.*
+# code konventionen (Stub)
 
-## Allgemein
+**Kanonische Version im Vault** — diese Datei nicht bearbeiten.
 
-- TypeScript strict, keine `any`
-- Komponentennamen: PascalCase
-- Dateien: kebab-case
-- Keine unnötigen Kommentare (nur nicht-offensichtliche Logik kommentieren)
+| | |
+|---|---|
+| **Vault** | `/Users/felixlein/Projekte/wissen-ki-und-mehr/06_Ideen/Projekt_Prompts/schulnavigator/code-konventionen.md` |
+| **Relativ** | `wissen-ki-und-mehr/06_Ideen/Projekt_Prompts/schulnavigator/code-konventionen.md` |
+| **Obsidian** | [[06_Ideen/Projekt_Prompts/schulnavigator/code-konventionen|code-konventionen]] |
 
-## Struktur
-
-- [ ] noch zu definieren
-
-## Verbotenes
-
-- [ ] noch zu definieren
+Öffne und pflege den Prompt nur im Vault. Dieser Stub verweist aus dem Projekt-Repo.
