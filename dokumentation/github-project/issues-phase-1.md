@@ -158,6 +158,7 @@ Zwei Ausgabe-Typen ([ADR-005](../adr/005-zugangskontrolle-token.md)):
 - HTTPS (Pflicht für Kamera/Scanner in Phase 2)
 - Health-Check erreichbar
 - Deploy-Link für Sten/Tina: **`https://schulnavigator.mpz.schule`**
+- **Nachverfolgung:** Umsetzungsplan [`.cursor/plans/issue_16_coolify_deploy_39add57f.plan.md`](../../.cursor/plans/issue_16_coolify_deploy_39add57f.plan.md) (*Umsetzung*, *Folge-Issues*). Zugehörige **Chat-Request-ID** (Cursor): `51250690-23d9-4dfa-a554-4238883c9491`. Auswirkungen auf Phase 2: [`issues-phase-2.md`](issues-phase-2.md) (Einleitung), konkret **#23** / **#55**.
 
 ---
 
