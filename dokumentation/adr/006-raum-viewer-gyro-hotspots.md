@@ -9,6 +9,8 @@ Stationsseiten zeigen ein Raumfoto und verknüpfte Medien (Audio, Video, Foto, T
 
 Vorliegendes Material: normale Querformat-Raumfotos (~4:3, ~1800–1975 px), keine 360°-Panoramen. Zuordnung Foto ↔ Station: [`auftraggeber/material/stationen/zuordnung-stationen-bilder.md`](../../auftraggeber/material/stationen/zuordnung-stationen-bilder.md).
 
+Jede Station im MVP-JSON trägt ein **`puzzleSegmentId`** (z. B. `seg-01` … `seg-11`): dieselbe ID verknüpft die Raumseite (`data-puzzle-segment` auf `/raum/[slug]`) mit einem Segment der schematischen Schulhaus-Karte auf der Startseite `/` (Issue #14, Layout in `app/lib/schoolhouse-layout.ts`). Die Gyro-/Hotspot-Logik auf der Stationsseite ist davon unabhängig; die ID dient der Navigation und späteren Puzzle-Freischaltung ([ADR-005](./005-zugangskontrolle-token.md), Phase 2 #21).
+
 ## Entscheidung
 
 Für das **MVP (bis 26.06.)** gilt auf allen Stationsseiten mit Raumbild:
@@ -39,7 +41,7 @@ Für das **MVP (bis 26.06.)** gilt auf allen Stationsseiten mit Raumbild:
 
 ## Konsequenzen
 
-- **Phase 1:** JSON-Schema um `hotspots` und `medium.id` erweitern (#12); Stationsseite bindet Platzhalter-`RaumViewer` (#13)
+- **Phase 1:** JSON-Schema um `hotspots` und `medium.id` erweitern (#12); Stationsseite bindet Platzhalter-`RaumViewer` (#13); `puzzleSegmentId` **Pflicht** pro Station und Zuordnung zum Schulhaus-Hub auf `/` (#14)
 - **Phase 2:** Komponente `RaumViewer` — Gyro-Pan, Hotspot-Overlay, Medien-Panel; iOS-Orientierung nach Nutzer-Geste; HTTPS (#55)
 - **Phase 3:** Pro Station mindestens 1–2 Hotspots pflegen; Koordinaten in JSON; Raumfotos nach Zuordnungstabelle einpflegen (#27)
 - **Test:** Reales iPhone (Safari) im Abschlusstest (#38)
@@ -72,7 +74,7 @@ interface Station {
   bild?: string       // fehlt → keine Gyro-Ansicht
   medien: Medium[]
   hotspots?: Hotspot[]
-  puzzleSegmentId?: string
+  puzzleSegmentId: string // Pflicht im MVP-JSON: Zuordnung zum Schulhaus-Hub (Issue #14); Werte siehe `lib/schoolhouse-layout.ts`
 }
 ```
 

@@ -75,6 +75,7 @@ npm run validate:stations   # nur Asset-Pfade prüfen
 npm run test                  # Vitest (Merge Schulhaus ↔ JSON)
 npm run lint                  # ESLint
 npm run format:check          # Prettier (nur Prüfung)
+npm run generate:qr -- --dry-run   # QR-URLs prüfen (Issue #15, schreibt keine PNGs)
 ```
 
 ---

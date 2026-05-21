@@ -64,6 +64,7 @@ Spezifikation: [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
 **Assignee:** Felix
 
 - `localStorage` Key z. B. `visitedSlugs: string[]` — getrennt vom **Access-Token** ([ADR-005](../adr/005-zugangskontrolle-token.md))
+- **Voraussetzung Phase 1 (#14):** Schulhaus-Hub mit festen Segment-IDs (`puzzleSegmentId` in JSON, Layout in `lib/schoolhouse-layout.ts`) — hier Freischaltung und Fortschritt anbinden
 - Markierung bei **Raum-QR-Scan** (In-App-Scanner oder gültiger Besuch von `/raum/[slug]`)
 - **Modus `fest`:** freigeschaltetes Puzzle-Segment auf Startseite; Segment klickbar → `/raum/[slug]`; gesperrte Segmente: Hinweis „QR an der Tür scannen“
 - **Modus `heft`:** Stempel optional; alle Stationen von Start aus klickbar
@@ -94,8 +95,8 @@ Spezifikation: [ADR-005](../adr/005-zugangskontrolle-token.md)
 - [ ] `/eintritt?t=…` — Token validieren, `localStorage`: `{ token, mode: 'fest'|'heft', expires }`
 - [ ] Middleware: ohne gültigen Token → Hinweisseite
 - [ ] Startseite: `heft` = voller Hub; `fest` = Puzzle-Hub (#21)
-- [ ] `/scan` — In-App-QR-Scanner (`html5-qrcode` o. ä.); parst `/raum/*` und lehnt Fremd-URLs ab
-- [ ] Token-Script: `fest-2026`, `heft-2026-27` + QR-PNGs (#15)
+- [ ] `/scan` — In-App-QR-Scanner (`html5-qrcode` o. ä.); parst `/raum/*` und lehnt Fremd-URLs ab (**ersetzt** die Phase-1-Platzhalterseite aus Issue #14)
+- [ ] Token-Logik serverseitig: dieselben Token-Strings wie in Phase 1 (`app/scripts/qr-config.mjs`); Ablaufdatum / Validierung — bei Domain- oder Token-Wechsel QR-PNGs mit `npm run generate:qr` neu erzeugen (**#15 erledigt**)
 - [ ] `robots.txt` / `noindex` auf geschützten Seiten
 
 **Demo 10.06.:** primär **`fest`**-UX (Puzzle + Scanner) zeigen; `heft` kurz erklären.

@@ -1,6 +1,6 @@
 # Projektplan — Schulnavigator
 
-Stand: 2026-05-21 (Phase-1-Update) | Schulfest (Hard Deadline): 2026-06-26
+Stand: 2026-05-21 (Phase-1-Update, #15 QR-Generator ergänzt) | Schulfest (Hard Deadline): 2026-06-26
 
 ---
 
@@ -52,9 +52,9 @@ Phase 5 │ Post-Fest / Admin-Interface    │ ab Juli
 - [x] Dockerfile (Multi-stage Build, Port via ENV, `/api/health`) — #10
 - [x] Routing: `/raum/[slug]` — statische Seite pro Raum — #11
 - [x] Datenmodell definieren (JSON: slug, titel, beschreibung, bild, medien[], hotspots[]) — [ADR-006](./adr/006-raum-viewer-gyro-hotspots.md) — #12
-- [ ] Platzhalter-Seite: `RaumViewer`-Stub (Gyro/Hotspots Phase 2), Titel, Beschreibung, Media-Slots
-- [ ] Startseite: Schulhaus-SVG mit 11 Segmenten (Puzzle-Layout; Freischaltung Phase 2)
-- [ ] QR-Code-Script: 11× Raum (`/raum/[slug]`) + Entry (`/eintritt?t=…`)
+- [x] Platzhalter-Seite: `RaumViewer`-Stub (Gyro/Hotspots Phase 2), Titel, Beschreibung, Media-Slots — #13
+- [x] Startseite: Schulhaus-SVG mit 11 Segmenten (Puzzle-Layout; Freischaltung Phase 2) — #14
+- [x] QR-Code-Script: 11× Raum (`/raum/[slug]`) + Entry (`/eintritt?t=…`) — #15
 - [ ] Deployment-Test auf MPZ-Server (Coolify)
 
 ### Nicht in Phase 1
@@ -64,7 +64,7 @@ Phase 5 │ Post-Fest / Admin-Interface    │ ab Juli
 ### Deliverable
 
 - Deploy-Link, den Sten/Tina im Browser aufrufen können — ausstehend (#16 Coolify)
-- **11** Stationsrouten unter `/raum/[slug]` mit Text aus Material (Basis-Layout; RaumViewer #13)
+- **11** Stationsrouten unter `/raum/[slug]` mit Text aus Material (Basis-Layout; RaumViewer #13); **Startseite** `/` mit Schulhaus-Hub (#14)
 - Termin am 10.06. vorbereiten: Demo der leeren Shell
 
 ---

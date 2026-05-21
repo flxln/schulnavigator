@@ -146,6 +146,7 @@ Milestone: **Phase 3** | Fällig: 24.06.2026
 **Labels:** `org`  
 **Assignee:** Felix / MPZ
 
+- PNGs und `manifest.json` vorab mit `npm run generate:qr` im Ordner `app/` erzeugen (Issue **#15**); Druckablauf: [`anleitungen/qr-codes-drucken.md`](../../anleitungen/qr-codes-drucken.md)
 - **11 Raum-QRs** → `https://[domain]/raum/[slug]` (**ohne** Token) — [ADR-005](../adr/005-zugangskontrolle-token.md)
 - **1 Entry-QR Schulfest** → `/eintritt?t=fest-2026` (Modus `fest`)
 - Optional: **1 Entry-QR Heft** für Tests / Schulstartheft-Vorbereitung

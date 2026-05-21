@@ -27,6 +27,7 @@ MVP (bis 26.06.):     Next.js  ←  JSON + Medien im Repo
 Langfristig:          Next.js  ←  Directus (self-hosted, Coolify)
 
 Zugang:  /eintritt?t=…  →  localStorage (mode: fest | heft)
+Phase 1: / und /scan (Platzhalter) ohne Token — Schulhaus-Hub mit Dev-Stub (Issue #14)
 Fest:    Entry (Kamera) → Puzzle-Hub + In-App-Scanner für Räume
 Heft:    Entry im Heft → Hub mit allen Stationen
 

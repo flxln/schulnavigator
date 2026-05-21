@@ -1,6 +1,6 @@
 # Schulnavigator — Architektur
 
-_Stand: 2026-05-21 (Dockerfile im Repo) — siehe [entscheidungen.md](./entscheidungen.md)_
+_Stand: 2026-05-21 (Issue #14: Startseite `/`, `/scan`-Platzhalter) — siehe [entscheidungen.md](./entscheidungen.md)_
 
 ## Tech-Stack
 
@@ -11,7 +11,7 @@ _Stand: 2026-05-21 (Dockerfile im Repo) — siehe [entscheidungen.md](./entschei
 | Hosting             | MPZ-Hetzner via Coolify                           | gleich                           | [001](./adr/001-hosting-coolify.md)           |
 | Containerisierung   | Docker                                            | gleich                           | [001](./adr/001-hosting-coolify.md)           |
 | Custom-Admin        | —                                                 | **verworfen** (Directus)         | [003](./adr/003-content-mvp-json-directus.md) |
-| QR-Code-Generierung | Script (npm `qrcode`)                             | gleich                           | —                                             |
+| QR-Code-Generierung | Script `npm run generate:qr`, `lib/qr-urls.ts` (URLs) | gleich                           | —                                             |
 | Video-Hosting       | MPZ-Server (Upload)                               | YouTube-Embed nach Rechtsklärung | [004](./adr/004-video-hosting-mpz.md)         |
 | Zugangskontrolle    | Entry-Token, `localStorage`, Modi `fest`/`heft`   | gleich                           | [005](./adr/005-zugangskontrolle-token.md)    |
 | Navigation          | In-App-Scanner (`/scan`) + Raum-QRs               | gleich                           | [005](./adr/005-zugangskontrolle-token.md)    |

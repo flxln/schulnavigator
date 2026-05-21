@@ -9,7 +9,7 @@ Besucher scannen QR-Codes, die an Türen und Räumen angebracht sind, und sehen 
 ## Funktionen
 
 - **Stationsseiten** — Jede Station hat eine eigene Seite mit Raumbild, Beschreibung und Medien (Audio, Video, Foto, Text)
-- **Startseite mit Schulhaus-Übersicht** — Schematische Darstellung aller Stationen auf einen Blick
+- **Startseite mit Schulhaus-Übersicht** — Schematische SVG-Karte mit 11 Stationen (`puzzleSegmentId` ↔ Slug), Fortschritt-Platzhalter, Link zu `/scan` (Scanner in Phase 2); im Dev-Modus Umschalter „alle offen / alle gesperrt“ (Stub für Schulfest, ADR-005)
 - **Stempel-System** — Besuchte Stationen werden markiert, Abschluss-Animation bei vollständigem Rundgang
 - **Zugangskontrolle** — Entry-QR (Eingang/Heft); Modi _fest_ (Scan-Rundgang) und _heft_ (Stations-Hub); In-App-Scanner für Raum-QRs ([ADR-005](dokumentation/adr/005-zugangskontrolle-token.md))
 - **Mehrsprachigkeit** — UI-Texte in Deutsch und Englisch (Content bleibt in der Originalsprache)
@@ -21,6 +21,7 @@ Besucher scannen QR-Codes, die an Türen und Räumen angebracht sind, und sehen 
 | -------------- | ----------------------------------------------------- |
 | Frontend       | Next.js (App Router), TypeScript strict, Tailwind CSS |
 | Hosting        | Docker (Multi-stage Build), Coolify                   |
+| QR-Export      | `npm run generate:qr` (PNG + `manifest.json`, Issue #15) — [Anleitung](anleitungen/qr-codes-drucken.md) |
 | Content (MVP)  | JSON im Repo                                          |
 | Content (Ziel) | Directus (self-hosted)                                |
 | Sprache        | Deutsch / Englisch                                    |
@@ -30,7 +31,7 @@ Besucher scannen QR-Codes, die an Türen und Räumen angebracht sind, und sehen 
 ```
 schulnavigator/
 ├── app/                        # Next.js (npm-Projektroot, Issue #9)
-│   ├── app/                    # App Router (Routen: page.tsx, layout.tsx, …)
+│   ├── app/                    # App Router (`/`, `/scan`, `/raum/[slug]/`, `api/health`)
 │   ├── components/             # React-Komponenten
 │   ├── data/                   # stations.json (Phase 1, #12)
 │   ├── lib/                    # Hilfsfunktionen, Typen

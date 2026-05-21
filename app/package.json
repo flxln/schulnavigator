@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "generate:qr": "tsx scripts/generate-qr-codes.ts",
     "validate:stations": "node scripts/validate-station-assets.mjs",
     "build": "npm run validate:stations && next build",
     "start": "next start",
@@ -21,13 +22,16 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/qrcode": "^1.5.6",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.8.3",
+    "qrcode": "^1.5.4",
     "tailwindcss": "^4",
+    "tsx": "^4.22.3",
     "typescript": "^5",
     "vitest": "^3.2.4"
   }

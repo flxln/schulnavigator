@@ -47,13 +47,13 @@ Milestone: **Phase 1** | Fällig: 28.05.2026
 - Dynamische Route `app/app/raum/[slug]/page.tsx` (npm-Root `app/`) — [ADR-002](../adr/002-frontend-nextjs.md)
 - Slug aus JSON-Datenmodell (#12)
 - 404 für unbekannte Slugs
-- `/` → Startseite (Zugangskontrolle/Middleware in Phase 2, #23)
+- `/` → Startseite (Schulhaus-Hub in #14; Zugangskontrolle/Middleware in Phase 2, #23)
 
 ---
 
 ## #12 — JSON-Datenmodell für Stationen definieren
 
-**GitHub:** geschlossen (2026-05-21) — `data/stations.json`, `lib/types.ts`, `lib/stations.ts`, 11 Platzhalter
+**GitHub:** geschlossen (2026-05-21) — `data/stations.json`, `lib/types.ts`, `lib/stations.ts`, 11 Platzhalter; **`puzzleSegmentId` seit Issue #14 Pflicht** (Schulhaus-Hub)
 
 **Labels:** `tech`  
 **Assignee:** Felix
@@ -68,7 +68,7 @@ interface Station {
   bild?: string; // Pfad in /public/stations/ — fehlt → statische Ansicht
   medien: Medium[];
   hotspots?: Hotspot[];
-  puzzleSegmentId?: string; // Zuordnung Puzzle-Hub (fest), optional
+  puzzleSegmentId: string; // Zuordnung Schulhaus-Hub / Puzzle (11 Segmente), Pflicht im MVP-JSON — Issue #14
 }
 
 interface Hotspot {
@@ -112,6 +112,8 @@ interface Medium {
 
 ## #14 — Startseite: Schulhaus-Grundlayout
 
+**GitHub:** geschlossen (2026-05-21) — Schulhaus-SVG (`viewBox` 400×600), `lib/schoolhouse-*`, `components/schoolhouse/`, Dev-Stub + `sessionStorage`, `/scan`-Platzhalter, Vitest (Merge/Validierung), `puzzleSegmentId` Pflicht
+
 **Labels:** `tech`  
 **Assignee:** Felix
 
@@ -128,17 +130,19 @@ _Nicht in Phase 1:_ voller klickbarer Hub für `fest` (widerspricht Schulfest-Ko
 
 ## #15 — QR-Code-Generator-Script
 
+**GitHub:** geschlossen (2026-05-21) — `npm run generate:qr`, `lib/qr-urls.ts`, `scripts/generate-qr-codes.ts`, `scripts/qr-config.mjs`, `scripts/load-env-local.mjs`; Ausgabe `public/qr/*.png` (gitignored) + `manifest.json`; `--dry-run`, `--size` / `QR_PRINT_WIDTH_PX`
+
 **Labels:** `tech`  
 **Assignee:** Felix
 
 Zwei Ausgabe-Typen ([ADR-005](../adr/005-zugangskontrolle-token.md)):
 
 1. **Entry-QR** (1× Fest + 1× Heft): `https://[domain]/eintritt?t=<token>`
-2. **Raum-QR** (11×): `https://[domain]/raum/[slug]` — **ohne** Token im URL
+2. **Raum-QR** (N× aus `data/stations.json`, aktuell 11): `https://[domain]/raum/[slug]` — **ohne** Token im URL
 
-- npm `qrcode` oder Script in `scripts/`
-- Ausgabe z. B. `public/qr/entry-fest.png`, `public/qr/raum-musik.png`
-- Druckfertig: min. 300 dpi, schwarzweiß
+- Dev-Dependencies: `qrcode`, `tsx`; Druck: SW, Error Correction H, Default-Breite 512 px (anpassbar)
+- Anleitungen: [`anleitungen/qr-codes-drucken.md`](../../anleitungen/qr-codes-drucken.md), [`app/public/qr/README.md`](../../app/public/qr/README.md)
+- Route `/eintritt` und Token-Prüfung bleiben **Phase 2** (#23); Entry-QR-URLs sind bereits final codiert
 
 ---
 

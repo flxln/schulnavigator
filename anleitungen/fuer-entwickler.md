@@ -45,7 +45,9 @@ Alle Befehle im Verzeichnis `app/` ausführen.
 | `npm run lint`         | ESLint                           |
 | `npm run format`       | Prettier (Dateien überschreiben) |
 | `npm run format:check` | Prettier nur prüfen              |
+| `npm run test`         | Vitest (u. a. Merge Schulhaus ↔ `stations.json`, Issue #14)   |
 | `npm run validate:stations` | Prüft `bild`- und `quelle`-Pfade unter `public/` (wird von `build` mitaufgerufen) |
+| `npm run generate:qr`  | QR-PNGs + `manifest.json` unter `public/qr/` (Issue #15); liest `.env` / `.env.local` wie dokumentiert in `scripts/load-env-local.mjs` |
 
 ---
 
@@ -53,12 +55,12 @@ Alle Befehle im Verzeichnis `app/` ausführen.
 
 | Pfad               | Inhalt                                                        |
 | ------------------ | ------------------------------------------------------------- |
-| `app/app/`         | Next.js App Router (`page.tsx`, `raum/[slug]/`, `api/health`) |
-| `components/`      | React-Komponenten (`PascalCase.tsx`)                          |
-| `lib/`             | Hilfsfunktionen, Typen, Daten-Loader                          |
+| `app/app/`         | Next.js App Router (`page.tsx`, `scan/page.tsx`, `raum/[slug]/`, `api/health`) |
+| `components/`      | React-Komponenten (`PascalCase.tsx`); u. a. `schoolhouse/` (Startseite #14)   |
+| `lib/`             | Hilfsfunktionen, Typen, Daten-Loader; u. a. `schoolhouse-layout.ts`, `schoolhouse-segments.ts` (#14), `qr-urls.ts` (#15, später #23) |
 | `data/`            | `stations.json` (Phase 1, Issue #12)                          |
 | `public/stations/` | Raumbilder (`{slug}.jpg`)                                     |
-| `public/qr/`       | generierte QR-Codes (Phase 1, Issue #15)                      |
+| `public/qr/`       | generierte QR-PNGs + `manifest.json` (Issue #15; PNGs gitignored) |
 
 Dateinamen für Nicht-Komponenten: `kebab-case` (siehe [`CLAUDE.md`](../CLAUDE.md)).
 

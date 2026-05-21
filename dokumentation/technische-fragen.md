@@ -15,8 +15,8 @@ Sie werden **nicht** in Auftraggebergesprächen thematisiert.
 ## URL-Schema & QR-Codes
 
 - ✅ **URL-Struktur pro Raum:** `/raum/[slug]` (sprechend) — umgesetzt in `app/app/raum/[slug]/`; siehe [ADR-002](./adr/002-frontend-nextjs.md)
-- QR-Codes: **statisch** (vorab als PNG generiert und ausgedruckt) oder **dynamisch** (CMS erzeugt sie live)?
-- Redirect-Schicht sinnvoll? (z. B. `qr.schulnavigator.de/42` → echte URL), damit URLs später geändert werden können, ohne QR-Codes neu zu drucken
+- ✅ **QR-Codes MVP:** **statisch** — vorab als PNG generiert (`npm run generate:qr` in `app/`, Issue #15); Anleitung [qr-codes-drucken.md](../anleitungen/qr-codes-drucken.md). Dynamische Erzeugung durch CMS ist **nicht** MVP.
+- **Post-MVP / Skalierung:** Redirect-Schicht (z. B. `qr.…/42` → Ziel-URL), damit gedruckte Codes bei URL-Wechsel ohne Neudruck umschwenkbar sind — aktuell nicht umgesetzt
 
 ## Content-Modell & CMS
 
@@ -60,7 +60,7 @@ Sie werden **nicht** in Auftraggebergesprächen thematisiert.
 - ✅ **Frontend:** Next.js (App Router) + Tailwind CSS — [ADR-002](./adr/002-frontend-nextjs.md)
 - ✅ **Content MVP:** JSON im Repo; **Ziel:** Directus — [ADR-003](./adr/003-content-mvp-json-directus.md)
 - ✅ **Hosting:** MPZ-Hetzner, Coolify, Docker — [ADR-001](./adr/001-hosting-coolify.md)
-- **QR-Code-Bibliothek:** `qrcode` (npm)
+- ✅ **QR-Code-Bibliothek:** `qrcode` (npm), Aufruf über `npm run generate:qr` — Issue #15
 - **Sprachen:** TypeScript strict, React 19
 
 ## Erweiterbarkeit

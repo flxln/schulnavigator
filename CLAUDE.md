@@ -12,7 +12,7 @@ Eine Web-App für Schulen. Besucher eines Tags der offenen Tür scannen QR-Codes
 
 ## Projektphasen
 
-Das Projekt liegt unter `2_in-arbeit/schulnavigator/`. **Phase 0** (Architektur-ADRs) ist abgeschlossen; **Phase 1** (Foundation) ist mit **#9–#12** begonnen — siehe [`dokumentation/projektplan.md`](./dokumentation/projektplan.md).
+Das Projekt liegt unter `2_in-arbeit/schulnavigator/`. **Phase 0** (Architektur-ADRs) ist abgeschlossen; **Phase 1** (Foundation) umfasst **#9–#15** (Next.js, Docker, `/raum/[slug]`, `stations.json`, Raum-Shell, **Startseite Schulhaus-Hub**, Vitest, **QR-Generator**) — siehe [`dokumentation/projektplan.md`](./dokumentation/projektplan.md). Offen in Phase 1: u. a. **#16** (Deploy-Test), **#17** (Raumfotos, extern).
 
 ---
 
@@ -45,15 +45,16 @@ schulnavigator/
 ├── anleitungen/
 │   ├── fuer-lehrkraefte.md            # Directus / Content-Pflege für Lehrkräfte
 │   ├── qr-codes-drucken.md            # QR-Codes exportieren & drucken
-│   └── fuer-entwickler.md             # Setup, Deploy, Wartung
+│   ├── fuer-entwickler.md             # Setup, Deploy, Wartung
 │   └── lokal-testen-und-anschauen.md  # Dev-Server, Testrouten, Build-Check
 │
 └── app/                               # Next.js (npm-Projektroot)
-    ├── app/                           # App Router (Routen)
-    ├── components/
+    ├── app/                           # App Router: `/`, `/scan`, `/raum/[slug]`, `api/health`
+    ├── components/                    # u. a. `raum-viewer/`, `schoolhouse/` (#14)
     ├── data/
-    ├── lib/
+    ├── lib/                           # u. a. `stations.ts`, `validate-stations.ts`, `schoolhouse-*.ts` (#14)
     ├── public/
+    ├── vitest.config.ts               # Unit-Tests (`npm run test`)
     ├── package.json
     ├── Dockerfile                     # Multi-Stage, Standalone (#10)
     └── .dockerignore
