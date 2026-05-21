@@ -60,7 +60,8 @@ Umsetzung: [`app/Dockerfile`](./app/Dockerfile) (Multi-Stage, Next.js `standalon
 - Port über Umgebungsvariable `PORT`
 - Health-Check-Endpunkt: `GET /api/health` → `200 OK`
 
-Lokaler Build und Lauf: [`anleitungen/fuer-entwickler.md`](./anleitungen/fuer-entwickler.md).
+Lokaler Build und Lauf: [`anleitungen/fuer-entwickler.md`](./anleitungen/fuer-entwickler.md).  
+Stand lokal im Browser prüfen: [`anleitungen/lokal-testen-und-anschauen.md`](./anleitungen/lokal-testen-und-anschauen.md).
 
 ## Projektplan
 

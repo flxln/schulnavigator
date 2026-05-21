@@ -46,6 +46,7 @@ schulnavigator/
 │   ├── fuer-lehrkraefte.md            # Directus / Content-Pflege für Lehrkräfte
 │   ├── qr-codes-drucken.md            # QR-Codes exportieren & drucken
 │   └── fuer-entwickler.md             # Setup, Deploy, Wartung
+│   └── lokal-testen-und-anschauen.md  # Dev-Server, Testrouten, Build-Check
 │
 └── app/                               # Next.js (npm-Projektroot)
     ├── app/                           # App Router (Routen)

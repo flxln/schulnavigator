@@ -21,6 +21,8 @@ npm run dev
 
 Die App läuft unter [http://localhost:3000](http://localhost:3000).
 
+**Lokal testen und Screens durchklicken:** [lokal-testen-und-anschauen.md](./lokal-testen-und-anschauen.md) (Demo-Routen, Build wie Produktion, Checkliste).
+
 ---
 
 ## Umgebungsvariablen
@@ -43,6 +45,7 @@ Alle Befehle im Verzeichnis `app/` ausführen.
 | `npm run lint`         | ESLint                           |
 | `npm run format`       | Prettier (Dateien überschreiben) |
 | `npm run format:check` | Prettier nur prüfen              |
+| `npm run validate:stations` | Prüft `bild`- und `quelle`-Pfade unter `public/` (wird von `build` mitaufgerufen) |
 
 ---
 
