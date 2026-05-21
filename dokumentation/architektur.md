@@ -1,6 +1,6 @@
 # Schulnavigator — Architektur
 
-_Stand: 2026-05-21 (Issue #16: Deploy-Runbook, `/eintritt`-Platzhalter, `robots`/`noindex`) — siehe [entscheidungen.md](./entscheidungen.md)_
+_Stand: 2026-05-21 (Issue #16 abgeschlossen: Live-Deploy `schulnavigator.mpz.schule`, Runbook, `robots`/`noindex`, `/eintritt`-Platzhalter, Docker-Build `npm ci --include=dev`) — siehe [entscheidungen.md](./entscheidungen.md)_
 
 ## Tech-Stack
 

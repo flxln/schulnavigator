@@ -148,16 +148,16 @@ Zwei Ausgabe-Typen ([ADR-005](../adr/005-zugangskontrolle-token.md)):
 
 ## #16 — Deployment auf MPZ-Server testen
 
-**GitHub:** nach erfolgreichem Live-Deploy im Tracker schließen — **Repo (2026-05-21):** Go-Live-Härtung (`app/app/robots.ts`, `metadata.robots` + `noindex` in `layout.tsx`, Platzhalter `app/app/eintritt/page.tsx`); Coolify-Runbook und Rollback in [`anleitungen/fuer-entwickler.md`](../../anleitungen/fuer-entwickler.md); Ziel-URL `https://schulnavigator.mpz.schule`; QR-Generierung mit dieser Domain möglich (`NEXT_PUBLIC_BASE_URL=… npm run generate:qr`).
+**GitHub:** geschlossen (2026-05-21) — Live unter **`https://schulnavigator.mpz.schule`** (Coolify, HTTPS, `/api/health`). **Repo:** Go-Live-Härtung (`app/app/robots.ts`, `metadata.robots` + `noindex` in `layout.tsx`, Platzhalter `app/app/eintritt/page.tsx`); Coolify-Runbook, Submodule-Hinweis, Smoke-`curl`, Rollback in [`anleitungen/fuer-entwickler.md`](../../anleitungen/fuer-entwickler.md). **Dockerfile:** `RUN npm ci --include=dev` in der `deps`-Stage — Coolify setzt beim Build oft `NODE_ENV=production`; ohne `--include=dev` fehlen Build-Tools wie **`@tailwindcss/postcss`** (`next build` / Turbopack). QR mit Produktions-Domain: `NEXT_PUBLIC_BASE_URL=… npm run generate:qr` (siehe Runbook).
 
 **Labels:** `tech`  
 **Assignee:** Felix
 
 - Docker-Image auf Coolify/Hetzner — [ADR-001](../adr/001-hosting-coolify.md)
-- Domain/Subdomain: **`schulnavigator.mpz.schule`** (über Wildcard `*.mpz.schule` → Coolify-VPS `217.154.120.240`; in Coolify als App-Domain eintragen)
+- Domain/Subdomain: **`schulnavigator.mpz.schule`** (Wildcard `*.mpz.schule` → Coolify-VPS `217.154.120.240`; in Coolify als App-Domain eintragen)
 - HTTPS (Pflicht für Kamera/Scanner in Phase 2)
 - Health-Check erreichbar
-- Deploy-Link für Sten/Tina — **nach** DNS + Coolify-Deploy: `https://schulnavigator.mpz.schule`
+- Deploy-Link für Sten/Tina: **`https://schulnavigator.mpz.schule`**
 
 ---
 

@@ -1,6 +1,6 @@
 # Schulnavigator — Projektstand
 
-**Stand:** 2026-05-21 (Aktualisierung Phase 1 #9–#16)  
+**Stand:** 2026-05-21 (Phase 1 #9–#16; **GitHub #16 geschlossen**, Live `schulnavigator.mpz.schule`)  
 **Projekt:** Schulnavigator (39. Grundschule Dresden)  
 **Auftraggeber:** Sten, Tina (Schule) · **Umsetzung:** MPZ (Felix, Julia, Thomas)  
 **Hard Deadline:** Schulfest am **26.06.2026**
@@ -9,7 +9,7 @@
 
 ## Kurzfassung
 
-Konzept und Planung sind weit fortgeschritten; **Next.js-App in `app/` läuft** (lokal und per Docker-Image). **Phase 0** ist abgeschlossen; **Phase 1** umfasst **#9–#16** (Scaffold, Docker, Routing, `stations.json`, Stations-Shell, **Startseite Schulhaus-Hub**, Vitest, **QR-Generator**, **Deploy-Runbook + Go-Live-Härtung**). Offen in Phase 1: **#17** (Raumfotos, extern) und der **Live-Schalt** in Coolify (`schulnavigator.mpz.schule`; DNS: Wildcard **`*.mpz.schule`** → VPS — Schritte in [`anleitungen/fuer-entwickler.md`](../../anleitungen/fuer-entwickler.md)). Bis zum Schulfest bleiben **~5 Wochen**. Von der Schule liegen **Raumfotos, Stationstexte und Maskottchen-Material** vor; Zuordnung Foto ↔ Station: [`zuordnung-stationen-bilder.md`](../../auftraggeber/material/stationen/zuordnung-stationen-bilder.md).
+Konzept und Planung sind weit fortgeschritten; **Next.js-App in `app/` läuft** (lokal, per Docker-Image und **live** unter `https://schulnavigator.mpz.schule` nach Coolify-Deploy). **Phase 0** ist abgeschlossen; **Phase 1** umfasst **#9–#16** (Scaffold, Docker, Routing, `stations.json`, Stations-Shell, **Startseite Schulhaus-Hub**, Vitest, **QR-Generator**, **Deploy + Go-Live-Härtung**, Issue **#16** geschlossen). Offen in Phase 1: **#17** (Raumfotos, extern). Betrieb/DNS: Wildcard **`*.mpz.schule`** → VPS — Details in [`anleitungen/fuer-entwickler.md`](../../anleitungen/fuer-entwickler.md). Bis zum Schulfest bleiben **~5 Wochen**. Von der Schule liegen **Raumfotos, Stationstexte und Maskottchen-Material** vor; Zuordnung Foto ↔ Station: [`zuordnung-stationen-bilder.md`](../../auftraggeber/material/stationen/zuordnung-stationen-bilder.md).
 
 ---
 
@@ -25,7 +25,7 @@ Konzept und Planung sind weit fortgeschritten; **Next.js-App in `app/` läuft** 
 | Zugangskontrolle            | ✅ Entschieden       | [ADR-005](../adr/005-zugangskontrolle-token.md) — Token, Modi fest/heft, In-App-Scanner                 |
 | Raum-Viewer                 | ✅ Entschieden       | [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md) — Gyro Standard, Hotspots, Tap-Fallback              |
 | AVV / DSGVO                 | 🟡 Entwurf versendet | AVV-Entwurf an Schule (21.05., Thomas); **Unterschrift** bis Schulfest → Phase 4 (#43)                  |
-| Anwendungscode              | 🟡 In Arbeit         | Next.js in `app/`, Docker, `/`, `/eintritt` (Platzhalter), `/scan`, `/raum/[slug]`, `stations.json`, Schulhaus-Hub (#14), Raum-Shell (#13), Vitest, QR (#15), `robots`/`noindex` (#16); **Live-Deploy** Coolify/DNS siehe [`anleitungen/fuer-entwickler.md`](../../anleitungen/fuer-entwickler.md) |
+| Anwendungscode              | 🟢 Foundation Phase 1 | Next.js in `app/`, Docker, Live **Coolify** `schulnavigator.mpz.schule` (#16), `/`, `/eintritt` (Platzhalter), `/scan`, `/raum/[slug]`, `stations.json`, Schulhaus-Hub (#14), Raum-Shell (#13), Vitest, QR (#15), `robots`/`noindex`; Ops: [`anleitungen/fuer-entwickler.md`](../../anleitungen/fuer-entwickler.md) |
 | Content von der Schule      | 🟡 Teilweise         | 11 Stationen + Texte/Fotos; **Content-Lieferplan** (Medientyp/Klasse) bis 12.06. offen                  |
 | Maskottchen-Rechte          | ✅ Freigabe          | PDF in `verlagsinfo/`; **Verlagsnennung** im Impressum → Phase 2/4                                      |
 
@@ -36,7 +36,7 @@ Konzept und Planung sind weit fortgeschritten; **Next.js-App in `app/` läuft** 
 | Phase             | Zieltermin | Inhalt                                                 | Ist-Zustand                                                          |
 | ----------------- | ---------- | ------------------------------------------------------ | -------------------------------------------------------------------- |
 | **0** Architektur | bis 14.05. | ADRs, Stationen, AVV                                   | **Abgeschlossen** — ADR 001–006; 11 Stationen; AVV-Entwurf versendet |
-| **1** Foundation  | bis 28.05. | Next.js, Docker, Routing, leere Stationen, Startseite, QR, Deploy-Test | **Teilweise** — #9–#16 im Repo erledigt (Runbook + Härtung); #17 extern; Live-URL nach Infrastruktur |
+| **1** Foundation  | bis 28.05. | Next.js, Docker, Routing, leere Stationen, Startseite, QR, Deploy-Test | **Technisch erledigt (#9–#16)** — inkl. Live-URL; **#17** (Raumfotos) extern / Content |
 | **2** UI-Shell    | bis 12.06. | Player, Stempel, Token, i18n-Struktur                  | Ausstehend                                                           |
 | **3** Content     | 12.–24.06. | Kinder-Content einpflegen, QR drucken                  | Ausstehend                                                           |
 | **4** Live        | 26.06.     | Schulfest                                              | Hard Deadline                                                        |
@@ -128,7 +128,7 @@ Token in **`localStorage`** (tabübergreifend). Raum-QRs = Navigation, kein Frei
 ### Technisch (MPZ)
 
 - [x] **Next.js / Docker / Routing / JSON / Shell / Startseite / QR-Generator** (#9–#15): siehe `app/`, `anleitungen/lokal-testen-und-anschauen.md`, `anleitungen/qr-codes-drucken.md`
-- [ ] Erstes **Live-**Deployment auf MPZ/Coolify (DNS + Coolify-UI; Runbook #16 in [`anleitungen/fuer-entwickler.md`](../../anleitungen/fuer-entwickler.md))
+- [x] **Live-Deployment** MPZ/Coolify — `https://schulnavigator.mpz.schule` (Issue #16 geschlossen; Runbook [`anleitungen/fuer-entwickler.md`](../../anleitungen/fuer-entwickler.md))
 - [ ] Bilder nach `public/stations/` (#17 / Material); fehlendes Foto `schulsozialarbeit` nachliefern
 
 ### Bewusst nicht jetzt
@@ -167,7 +167,7 @@ Kamera-AR/WebXR, 360°-Panorama, Lego-Trigger, **Directus** (erst nach Schulfest
 | Risiko                                  | Einstufung | Gegenmaßnahme                                                                                      |
 | --------------------------------------- | ---------- | -------------------------------------------------------------------------------------------------- |
 | 11 Stationen bis 26.06. produktionsreif | Mittel     | JSON-Schema + parallele Kinder-Medien planen                                                       |
-| Phase 1 verzögert                       | Mittel     | #9–#16 im Repo erledigt; Live-Deploy und #17 priorisieren                                                              |
+| Phase 1 verzögert                       | Gering     | #16 live; Fokus **#17** (Raumfotos) und Content-Lieferplan bis 10.06.                                                     |
 | Content kommt nicht rechtzeitig         | Hoch       | Commitment am 10.06., Projekttag 24./25.06.                                                        |
 | WLAN-Ausfall am Schulfest               | Mittel     | Mobilfunk primär; Tablet-Fallback                                                                  |
 | Verlagsnennung unvollständig            | Niedrig    | Text aus `verlagsinfo/freigabe-bilder-bildrechte.pdf` ins Impressum                                |

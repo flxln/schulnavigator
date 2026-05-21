@@ -184,6 +184,8 @@ curl -sS https://schulnavigator.mpz.schule/robots.txt
 
 **Troubleshooting:** Antwort **`503`** / Text **`no available server`** → Proxy (Traefik) ist erreichbar, aber **kein laufender App-Container** hinter der Domain (Coolify-Application noch nicht deployed, Build fehlgeschlagen oder Container crashed) — in Coolify **Logs** und **Deployments** prüfen. **`curl: (60) SSL certificate problem`** → Zertifikatskette oder lokales Trust-Store; zur Abgrenzung im **Browser** öffnen oder Let's-Encrypt-Erneuerung in Coolify prüfen.
 
+**Build schlägt fehl:** `Cannot find module '@tailwindcss/postcss'` (Next/Turbopack bei `globals.css`) — Coolify setzt beim Image-Build oft **`NODE_ENV=production`**. Dann installiert ein nacktes **`npm ci`** keine `devDependencies`, obwohl `next build` PostCSS/Tailwind-Plugins daraus braucht. Im Repo ist die **`deps`-Stage** im [`app/Dockerfile`](../app/Dockerfile) auf **`RUN npm ci --include=dev`** gestellt; nach Pull erneut deployen. Im Log zur Kontrolle: **hunderte** installierte Pakete in der deps-Stage, nicht nur ~20.
+
 **Optional:** kostenloses Monitoring (z. B. UptimeRobot) auf `https://…/api/health`.
 
 ### Rollback

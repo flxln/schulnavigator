@@ -15,7 +15,7 @@ Der Fortschrittsbalken in GitHub ergibt sich automatisch aus den geschlossenen I
 ## Phase 1 — Foundation
 
 **Fällig:** 28.05.2026
-**Beschreibung:** Lauffähiges Grundgerüst ohne echten Content. Alle Stationsseiten erreichbar, Deploy auf MPZ-Server dokumentiert und vorbereitet. **Stand Repo:** **#9–#16** erledigt (Code, Docker, QR, Runbook, Go-Live-Härtung); **#17** (Raumfotos) extern; **Live-URL** nach DNS + Coolify durch MPZ.
+**Beschreibung:** Lauffähiges Grundgerüst ohne echten Content. Alle Stationsseiten erreichbar, Deploy auf MPZ-Server umgesetzt. **Ist (21.05.):** Issues **#9–#16** erledigt (Code, Docker, QR, Runbook, Go-Live-Härtung, Live-URL `https://schulnavigator.mpz.schule`); **#17** (Raumfotos) extern.
 
 ---
 
