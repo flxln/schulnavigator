@@ -3,7 +3,13 @@ export const GYRO_DEADZONE_DEG = 5
 export const GYRO_SENSITIVITY = 0.45
 export const PAN_SMOOTHING = 0.15
 export const HOTSPOT_DEBOUNCE_MS = 280
-export const MIN_PAN_DISPLAY_RATIO = 1.8
+/** Sichtbare Viewer-Höhe (höhenbasierte Bildskalierung, Gyro-Pan). */
+export const ROOM_VIEWER_HEIGHT_CSS = 'min(50vh,360px)'
+export const ROOM_VIEWER_MAX_HEIGHT_PX = 360
+/** Warnung in Dev, wenn Anzeige-Breite / Viewport-Breite darunter liegt (kaum Gyro-Wirkung). */
+export const MIN_PAN_DISPLAY_RATIO = 2
+/** Empfohlenes Seitenverhältnis Breite:Höhe der Quelldatei (Panorama, z. B. 2500×1000). */
+export const RECOMMENDED_SOURCE_ASPECT_MIN = 2.5
 
 export function clamp(n: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, n))

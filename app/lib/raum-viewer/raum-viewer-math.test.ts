@@ -3,6 +3,8 @@ import { hitTestHotspot } from '@/lib/raum-viewer/hit-test-hotspot'
 import { normalizedViewportCenter } from '@/lib/raum-viewer/viewport-center'
 import { gammaToTargetPan, lerpPan } from '@/lib/raum-viewer/pan-from-gamma'
 import {
+  MIN_PAN_DISPLAY_RATIO,
+  RECOMMENDED_SOURCE_ASPECT_MIN,
   clampPan,
   imageDisplayWidth,
   maxPanPx,
@@ -23,6 +25,22 @@ describe('imageDisplayWidth / maxPanPx', () => {
     const dw = imageDisplayWidth(1800, 1200, 280)
     expect(dw).toBe(420)
     expect(maxPanPx(dw, 360)).toBe(60)
+  })
+
+  it('Panorama (2.5:1) erfüllt MIN_PAN_DISPLAY_RATIO auf typischem Phone-Viewport', () => {
+    const containerW = 390
+    const containerH = 360
+    const dw = imageDisplayWidth(2500, 1000, containerH)
+    expect(dw / containerW).toBeGreaterThanOrEqual(MIN_PAN_DISPLAY_RATIO)
+    expect(2500 / 1000).toBeGreaterThanOrEqual(RECOMMENDED_SOURCE_ASPECT_MIN)
+    expect(maxPanPx(dw, containerW)).toBeGreaterThan(0)
+  })
+
+  it('4:3 unterschreitet MIN_PAN_DISPLAY_RATIO auf typischem Phone-Viewport', () => {
+    const containerW = 390
+    const containerH = 360
+    const dw = imageDisplayWidth(1920, 1440, containerH)
+    expect(dw / containerW).toBeLessThan(MIN_PAN_DISPLAY_RATIO)
   })
 })
 

@@ -1,6 +1,6 @@
 # Schulnavigator — Projektstand
 
-**Stand:** 2026-05-21 (Phase 1 #9–#16; **GitHub #16 geschlossen**, Live `schulnavigator.mpz.schule`)  
+**Stand:** 2026-05-21 (Phase 1 #9–#16; **#16** und **#55** auf GitHub geschlossen; Live `schulnavigator.mpz.schule`)  
 **Projekt:** Schulnavigator (39. Grundschule Dresden)  
 **Auftraggeber:** Sten, Tina (Schule) · **Umsetzung:** MPZ (Felix, Julia, Thomas)  
 **Hard Deadline:** Schulfest am **26.06.2026**
@@ -23,9 +23,9 @@ Konzept und Planung sind weit fortgeschritten; **Next.js-App in `app/` läuft** 
 | Architektur Frontend/CMS    | ✅ Entschieden       | [ADR-002](../adr/002-frontend-nextjs.md), [ADR-003](../adr/003-content-mvp-json-directus.md)            |
 | Video-Hosting               | ✅ Entschieden       | [ADR-004](../adr/004-video-hosting-mpz.md) — MPZ; YouTube nach Rechtsklärung                            |
 | Zugangskontrolle            | ✅ Entschieden       | [ADR-005](../adr/005-zugangskontrolle-token.md) — Token, Modi fest/heft, In-App-Scanner                 |
-| Raum-Viewer                 | ✅ Entschieden       | [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md) — Gyro Standard, Hotspots, Tap-Fallback              |
+| Raum-Viewer                 | ✅ Umgesetzt (#55)   | [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md) — Gyro, Hotspots, Panel; Demo `/raum/musik`          |
 | AVV / DSGVO                 | 🟡 Entwurf versendet | AVV-Entwurf an Schule (21.05., Thomas); **Unterschrift** bis Schulfest → Phase 4 (#43)                  |
-| Anwendungscode              | 🟢 Foundation Phase 1 | Next.js in `app/`, Docker, Live **Coolify** `schulnavigator.mpz.schule` (#16), `/`, `/eintritt` (Platzhalter), `/scan`, `/raum/[slug]`, `stations.json`, Schulhaus-Hub (#14), Raum-Shell (#13), Vitest, QR (#15), `robots`/`noindex`; Ops: [`anleitungen/fuer-entwickler.md`](../../anleitungen/fuer-entwickler.md) |
+| Anwendungscode              | 🟢 Phase 1 + #55     | Wie Phase 1; zusätzlich **Raum-Viewer** (Gyro/Hotspots), **GS39-Theme**, `validate:tokens`; Ops: [`anleitungen/fuer-entwickler.md`](../../anleitungen/fuer-entwickler.md) |
 | Content von der Schule      | 🟡 Teilweise         | 11 Stationen + Texte/Fotos; **Content-Lieferplan** (Medientyp/Klasse) bis 12.06. offen                  |
 | Maskottchen-Rechte          | ✅ Freigabe          | PDF in `verlagsinfo/`; **Verlagsnennung** im Impressum → Phase 2/4                                      |
 
@@ -37,7 +37,7 @@ Konzept und Planung sind weit fortgeschritten; **Next.js-App in `app/` läuft** 
 | ----------------- | ---------- | ------------------------------------------------------ | -------------------------------------------------------------------- |
 | **0** Architektur | bis 14.05. | ADRs, Stationen, AVV                                   | **Abgeschlossen** — ADR 001–006; 11 Stationen; AVV-Entwurf versendet |
 | **1** Foundation  | bis 28.05. | Next.js, Docker, Routing, leere Stationen, Startseite, QR, Deploy-Test | **Technisch erledigt (#9–#16)** — inkl. Live-URL; **#17** (Raumfotos) extern / Content |
-| **2** UI-Shell    | bis 12.06. | Player, Stempel, Token, i18n-Struktur                  | Ausstehend                                                           |
+| **2** UI-Shell    | bis 12.06. | Player, Stempel, Token, i18n-Struktur                  | **#55 erledigt** (Raum-Viewer + Theme); Rest ausstehend               |
 | **3** Content     | 12.–24.06. | Kinder-Content einpflegen, QR drucken                  | Ausstehend                                                           |
 | **4** Live        | 26.06.     | Schulfest                                              | Hard Deadline                                                        |
 | **5** Post-Fest   | ab Juli    | Directus, Migration, Erweiterungen                     | Geplant                                                              |
@@ -129,6 +129,7 @@ Token in **`localStorage`** (tabübergreifend). Raum-QRs = Navigation, kein Frei
 
 - [x] **Next.js / Docker / Routing / JSON / Shell / Startseite / QR-Generator** (#9–#15): siehe `app/`, `anleitungen/lokal-testen-und-anschauen.md`, `anleitungen/qr-codes-drucken.md`
 - [x] **Live-Deployment** MPZ/Coolify — `https://schulnavigator.mpz.schule` (Issue #16 geschlossen; Runbook [`anleitungen/fuer-entwickler.md`](../../anleitungen/fuer-entwickler.md))
+- [x] **Raum-Viewer + GS39-Theme** (Issue #55 geschlossen; Demo `/raum/musik`, Doku in `architektur.md` / `fuer-entwickler.md`)
 - [ ] Bilder nach `public/stations/` (#17 / Material); fehlendes Foto `schulsozialarbeit` nachliefern
 
 ### Bewusst nicht jetzt
@@ -139,7 +140,7 @@ Kamera-AR/WebXR, 360°-Panorama, Lego-Trigger, **Directus** (erst nach Schulfest
 
 ## Aufgaben — bis 10.06.2026 (Meeting)
 
-- [ ] Demo der App-Shell (Stationen mit Demo-Daten, **Startseite Schulhaus**)
+- [ ] Demo der App-Shell (Stationen mit Demo-Daten, **Startseite Schulhaus**, **Raum-Viewer** `/raum/musik`)
 - [ ] Content-Lieferplan von Schule einfordern: Raum → Medientyp → Klasse → Verantwortlich
 - [ ] WLAN/Mobilfunk: Testplan für Turnhalle und Außenbereich vereinbaren
 

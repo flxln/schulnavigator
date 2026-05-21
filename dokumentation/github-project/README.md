@@ -21,8 +21,8 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 ## Checkliste nach größeren Planänderungen
 
 - [ ] Alle sechs Milestone-Beschreibungen mit [milestones.md](milestones.md) verglichen und bei Abweichung auf GitHub gepatcht.
-- [ ] Offene Issue-Titel und Bodies zu „11 Stationen“, Directus (#46/#47) und Raum-Viewer (#55) geprüft.
-- [ ] Issue **#55** (Raum-Viewer Gyro + Hotspots) existiert in Phase 2, falls noch relevant.
+- [x] Offene Issue-Titel und Bodies zu „11 Stationen“, Directus (#46/#47) und Raum-Viewer (#55) geprüft — #55 in [issues-phase-2.md](issues-phase-2.md) abgehakt, Code umgesetzt.
+- [x] Issue **#55** (Raum-Viewer Gyro + Hotspots) — existiert, umgesetzt und auf GitHub geschlossen.
 - [ ] Suche im Repo-Issue-Tracker nach veralteten Formulierungen (z. B. „8 Stationen“, „Admin-Interface entwickeln“ ohne Directus-Kontext).
 
-Letzter dokumentierter Abgleich: **2026-05-21** (Milestones, #1, #17, #21, #46, #47, neues #55).
+Letzter dokumentierter Abgleich: **2026-05-21** (Milestones, #1, #17, #21, #46, #47, **#55 geschlossen**).

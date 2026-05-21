@@ -101,7 +101,7 @@ interface Medium {
 **Labels:** `tech`  
 **Assignee:** Felix
 
-- `RaumViewer`-Platzhalter (volle Logik Phase 2 #55): Layout für Gyro + Hotspots — [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
+- Stations-Shell (#13); **volle Raum-Viewer-Logik** in Phase 2 **#55** (umgesetzt) — [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
 - Raumbild (Placeholder bis #17 / Material; Zuordnung: `zuordnung-stationen-bilder.md`)
 - Titel + Beschreibung
 - Media-Slots (Struktur für Audio/Video/Foto — Player Phase 2)
@@ -168,5 +168,7 @@ Zwei Ausgabe-Typen ([ADR-005](../adr/005-zugangskontrolle-token.md)):
 **Assignee:** Sten / Tina
 
 - **11 Räume** fotografieren (Material Tina als Referenz; ggf. bereits Bilder in `material/stationen/`)
-- Querformat, min. 1920 px Breite, JPG
-- Bis 28.05. für Phase 2; sonst Platzhalter aus Material/HTML-Export
+- **Panorama für Gyro-Viewer** ([ADR-006](../adr/006-raum-viewer-gyro-hotspots.md), umgesetzt in #55): überbreites Querformat, **Seitenverhältnis ≥ 2,5 : 1** (z. B. 2500×1000 px), **min. 2400 px** Breite — normales 4:3 reicht für Gyro auf dem Handy **nicht**
+- Aufnahme-Tipp: Handy quer, langsam durch den Raum schwenken / mehrere Bilder zu einem Panorama stitchen — Hotspots später auf genau diesem Bild
+- Format JPG oder WebP; Details: [`zuordnung-stationen-bilder.md`](../../auftraggeber/material/stationen/zuordnung-stationen-bilder.md), [`anleitungen/fuer-entwickler.md`](../../anleitungen/fuer-entwickler.md)
+- Bis 28.05. für Phase 2; vorliegende 4:3-JPEGs nur als Platzhalter, nicht als finales Gyro-Material

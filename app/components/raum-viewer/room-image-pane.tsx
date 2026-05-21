@@ -7,6 +7,9 @@ import {
   HOTSPOT_DEBOUNCE_MS,
   MIN_PAN_DISPLAY_RATIO,
   PAN_SMOOTHING,
+  RECOMMENDED_SOURCE_ASPECT_MIN,
+  ROOM_VIEWER_HEIGHT_CSS,
+  ROOM_VIEWER_MAX_HEIGHT_PX,
   imageDisplayWidth,
   maxPanPx,
 } from '@/lib/raum-viewer/constants'
@@ -15,8 +18,6 @@ import { hitTestHotspot } from '@/lib/raum-viewer/hit-test-hotspot'
 import { normalizedViewportCenter } from '@/lib/raum-viewer/viewport-center'
 import { HotspotOverlay } from '@/components/raum-viewer/hotspot-overlay'
 import { useDeviceOrientation } from '@/components/raum-viewer/use-device-orientation'
-
-const VIEWER_H = 'min(42vh,280px)'
 
 export type RoomImagePaneProps = {
   src: string
@@ -41,7 +42,7 @@ export function RoomImagePane({
   const [naturalW, setNaturalW] = useState(0)
   const [naturalH, setNaturalH] = useState(0)
   const [containerW, setContainerW] = useState(0)
-  const [containerH, setContainerH] = useState(280)
+  const [containerH, setContainerH] = useState(ROOM_VIEWER_MAX_HEIGHT_PX)
   const [panPx, setPanPx] = useState(0)
   const containerRef = useRef<HTMLDivElement>(null)
   const dragging = useRef(false)
@@ -87,11 +88,13 @@ export function RoomImagePane({
       containerW > 0 &&
       displayW / containerW < MIN_PAN_DISPLAY_RATIO
     ) {
+      const aspect =
+        naturalH > 0 ? (naturalW / naturalH).toFixed(2) : '?'
       console.warn(
-        `[RaumViewer] Bild wirkt schmal für Gyro (Anzeige ${Math.round(displayW)}px / Viewport ${Math.round(containerW)}px < ${MIN_PAN_DISPLAY_RATIO}×).`,
+        `[RaumViewer] Wenig Gyro-Pan: Anzeige ${Math.round(displayW)}px / Viewport ${Math.round(containerW)}px (Ziel ≥${MIN_PAN_DISPLAY_RATIO}×, empfohlen Quellbild ≥${RECOMMENDED_SOURCE_ASPECT_MIN}:1, ist ${aspect}:1).`,
       )
     }
-  }, [displayW, containerW])
+  }, [displayW, containerW, naturalW, naturalH])
 
   useEffect(() => {
     let running = true
@@ -193,7 +196,7 @@ export function RoomImagePane({
     return (
       <div
         className="flex w-full items-center justify-center rounded-[var(--r-md)] bg-brand-sky-50 px-4 text-center text-sm font-medium text-fg-1"
-        style={{ height: VIEWER_H }}
+        style={{ height: ROOM_VIEWER_HEIGHT_CSS }}
       >
         Raumbild konnte nicht geladen werden.
       </div>
@@ -205,7 +208,7 @@ export function RoomImagePane({
       <div
         ref={containerRef}
         className="relative w-full overflow-hidden rounded-[var(--r-md)] bg-bg-dark"
-        style={{ height: VIEWER_H }}
+        style={{ height: ROOM_VIEWER_HEIGHT_CSS }}
       >
         {naturalW > 0 && displayW > 0 ? (
           <div

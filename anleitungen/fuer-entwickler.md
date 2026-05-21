@@ -67,6 +67,41 @@ Dateinamen für Nicht-Komponenten: `kebab-case` (siehe [`CLAUDE.md`](../CLAUDE.m
 
 ---
 
+## Design-Tokens (GS39, Issue #55)
+
+| Pfad | Rolle |
+| ---- | ----- |
+| `auftraggeber/material/UI-Vorschläge/colors_and_type.css` | Source of Truth (Auftraggeber, außerhalb Docker-Kontext) |
+| `app/app/gs39-tokens.css` | App-Kopie der `:root`-Variablen |
+| `app/lib/school-theme.ts` | `SCHOOL_ID = 'gs39'` (MVP eine Schule; später pro Mandant) |
+| `app/scripts/reference/colors_and_type.css` | Referenzkopie für `validate:tokens` im Docker-Build |
+
+Nach Änderungen an der Auftraggeber-CSS: `gs39-tokens.css` synchron halten und die Referenzkopie unter `scripts/reference/` aktualisieren. Komponenten nutzen semantische Tailwind-Klassen (`bg-accent`, `text-fg-1`, …), nicht direkte `--brand-*` in TSX. **Dark Mode** ist deaktiviert.
+
+---
+
+## Raumbilder für den Gyro-Viewer (#17 / #27)
+
+Für Stationen mit `bild` in `stations.json` ([ADR-006](../dokumentation/adr/006-raum-viewer-gyro-hotspots.md), Issue **#55**):
+
+Der Viewer skaliert **höhenbasiert** (`ROOM_VIEWER_HEIGHT_CSS` = `min(50vh, 360px)`). Gyro verschiebt nur, was **links/rechts außerhalb** des sichtbaren Fensters liegt — ein normales 4:3-Foto, das in die Breite passt, ergibt **keinen** Schwenk-Effekt.
+
+| Anforderung | Empfehlung |
+| ----------- | ---------- |
+| Aufnahme | **Panorama**: deutlich breiter als hoch (nicht nur „ein Raumfoto“) |
+| Seitenverhältnis | **≥ 2,5 : 1** (Breite : Höhe), Konstante `RECOMMENDED_SOURCE_ASPECT_MIN` |
+| Pixel | **≥ 2400 px** Breite in der Quelldatei |
+| Technische Warnung | Dev-Konsole, wenn `Anzeige-Breite / Viewport < 2` (`MIN_PAN_DISPLAY_RATIO`) |
+| Datei | `public/stations/{slug}.jpg` (oder WebP, Pfad in JSON) |
+| Größe | WebP oder optimiertes JPG, Ziel max. ~500 KB (Phase 3 #27) |
+| Ohne Foto | `bild` weglassen → statische Ansicht + Medienliste (z. B. `schulsozialarbeit` bis Panorama da ist) |
+
+**Beispiel Smartphone** (~390 px Viewport-Breite, 360 px Viewer-Höhe): sinnvoller Pan ab ca. **2,2 : 1** Quellbild; **2,5 : 1** ist komfortabel (z. B. 2500×1000 px).
+
+Zuordnung Foto ↔ Station: [`auftraggeber/material/stationen/zuordnung-stationen-bilder.md`](../auftraggeber/material/stationen/zuordnung-stationen-bilder.md). Demo mit Hotspots: `/raum/musik` — Gyro auf dem iPhone nur unter **HTTPS** testen (siehe [lokal-testen-und-anschauen.md](./lokal-testen-und-anschauen.md)).
+
+---
+
 ## Docker (lokal, Issue #10)
 
 Build-Kontext ist das Verzeichnis `app/` (enthält `Dockerfile` und `.dockerignore`).

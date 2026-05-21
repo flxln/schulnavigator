@@ -29,7 +29,7 @@ Milestone: **Phase 3** | Fällig: 24.06.2026
 
 - Fotos Sten/Tina (#17) oder aus `material/stationen/` — alle **11** Stationen
 - Zuordnung nach [`zuordnung-stationen-bilder.md`](../../auftraggeber/material/stationen/zuordnung-stationen-bilder.md) → `public/stations/{slug}.jpg`
-- WebP/optimiertes JPG, max. ~500 KB; Querformat für Gyro-Viewer ([ADR-006](../adr/006-raum-viewer-gyro-hotspots.md))
+- WebP/optimiertes JPG, max. ~500 KB; **Panorama** für Gyro-Viewer: **≥ 2,5 : 1**, min. 2400 px Breite ([ADR-006](../adr/006-raum-viewer-gyro-hotspots.md), Briefing [`zuordnung-stationen-bilder.md`](../../auftraggeber/material/stationen/zuordnung-stationen-bilder.md))
 - `schulsozialarbeit`: bis HD-Foto fehlt → ohne Gyro (statisch)
 
 ---

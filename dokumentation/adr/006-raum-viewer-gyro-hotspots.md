@@ -44,6 +44,7 @@ Für das **MVP (bis 26.06.)** gilt auf allen Stationsseiten mit Raumbild:
 - **Phase 1:** JSON-Schema um `hotspots` und `medium.id` erweitern (#12); Stationsseite bindet Platzhalter-`RaumViewer` (#13); `puzzleSegmentId` **Pflicht** pro Station und Zuordnung zum Schulhaus-Hub auf `/` (#14)
 - **Phase 2:** Komponente `RaumViewer` — Gyro-Pan, Hotspot-Overlay, Medien-Panel; iOS-Orientierung nach Nutzer-Geste; HTTPS (#55)
 - **Phase 3:** Pro Station mindestens 1–2 Hotspots pflegen; Koordinaten in JSON; Raumfotos nach Zuordnungstabelle einpflegen (#27)
+- **Content (#17, nach #55):** Gyro-Pan braucht **überbreite Panorama-Dateien** (empfohlen ≥ 2,5 : 1, min. 2400 px Breite) — die vorliegenden 4:3-Materialfotos reichen dafür nicht; Briefing [`zuordnung-stationen-bilder.md`](../../auftraggeber/material/stationen/zuordnung-stationen-bilder.md)
 - **Test:** Reales iPhone (Safari) im Abschlusstest (#38)
 - **Directus (später):** Collection-Felder für Hotspots analog JSON-Schema
 

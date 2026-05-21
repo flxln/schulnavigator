@@ -66,7 +66,7 @@ npm run start
 
 `npm run build` ruft zuvor **`npm run validate:tokens`** (Abgleich `app/gs39-tokens.css` ↔ `auftraggeber/.../colors_and_type.css`) und **`npm run validate:stations`** auf: Es muss jede in `stations.json` referenzierte Datei unter `public/` existieren (Raumbilder, Demo-Medien). Fehlt etwas, bricht der Build mit einer klaren Meldung ab.
 
-**Raum-Viewer (Issue #55):** Unter `/raum/musik` Gyro testen — auf dem **iPhone nur unter HTTPS** (z. B. Live-Domain oder Tunnel); im Desktop-Dev oft kein `deviceorientation`. Unter iOS: Button „Orientierung aktivieren“. Ohne Gyro: Hotspots **tippen** oder im Bild **wischen** (horizontaler Pan).
+**Raum-Viewer (Issue #55):** Viewer `min(50vh, 360px)` hoch; Gyro wirkt nur bei **breiten Panorama-Bildern** (≥ 2,5 : 1 empfohlen), nicht bei normalem 4:3 — siehe [`fuer-entwickler.md`](./fuer-entwickler.md). Unter `/raum/musik` testen — auf dem **iPhone nur unter HTTPS**; im Desktop-Dev oft kein `deviceorientation`. Unter iOS: Button „Orientierung aktivieren“. Ohne Gyro: Hotspots **tippen** oder **wischen**.
 
 **Design-Tokens:** Farben und Typo folgen [`auftraggeber/material/UI-Vorschläge/colors_and_type.css`](../auftraggeber/material/UI-Vorschläge/colors_and_type.css) (Kopie in `app/app/gs39-tokens.css`). **Dark Mode** der App ist bewusst deaktiviert (Papier-Look).
 

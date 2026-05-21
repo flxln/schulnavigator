@@ -1,3 +1,5 @@
+import { ROOM_VIEWER_HEIGHT_CSS } from '@/lib/raum-viewer/constants'
+
 type StaticRoomFallbackProps = {
   titel: string
 }
@@ -5,7 +7,8 @@ type StaticRoomFallbackProps = {
 export function StaticRoomFallback({ titel }: StaticRoomFallbackProps) {
   return (
     <div
-      className="flex h-[min(42vh,280px)] w-full flex-col items-center justify-center gap-2 rounded-[var(--r-md)] bg-gradient-to-br from-brand-sky-50 to-brand-green-300/40 px-4 text-center"
+      className="flex w-full flex-col items-center justify-center gap-2 rounded-[var(--r-md)] bg-gradient-to-br from-brand-sky-50 to-brand-green-300/40 px-4 text-center"
+      style={{ height: ROOM_VIEWER_HEIGHT_CSS }}
       role="img"
       aria-label={`Platzhalter: noch kein Raumfoto für ${titel}`}
     >

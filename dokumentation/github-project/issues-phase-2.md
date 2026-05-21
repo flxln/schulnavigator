@@ -12,7 +12,7 @@ Milestone: **Phase 2** | Fällig: 12.06.2026
 
 ## #55 — Raum-Viewer (Gyro + Hotspots)
 
-**GitHub:** https://github.com/flxln/schulnavigator/issues/55
+**GitHub:** https://github.com/flxln/schulnavigator/issues/55 — **geschlossen** (2026-05-21)
 
 **Labels:** `tech`  
 **Assignee:** Felix

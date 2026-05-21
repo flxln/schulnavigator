@@ -12,7 +12,7 @@ Eine Web-App für Schulen. Besucher eines Tags der offenen Tür scannen QR-Codes
 
 ## Projektphasen
 
-Das Projekt liegt unter `2_in-arbeit/schulnavigator/`. **Phase 0** (Architektur-ADRs) ist abgeschlossen; **Phase 1** (Foundation) umfasst **#9–#16** (Next.js, Docker, `/raum/[slug]`, `stations.json`, Raum-Shell, **Startseite Schulhaus-Hub**, Vitest, **QR-Generator**, **Deploy-Runbook + Go-Live-Härtung**) — siehe [`dokumentation/projektplan.md`](./dokumentation/projektplan.md). Offen in Phase 1: u. a. **#17** (Raumfotos, extern). **Live:** `https://schulnavigator.mpz.schule` (Coolify) — Betrieb und Troubleshooting in [`anleitungen/fuer-entwickler.md`](./anleitungen/fuer-entwickler.md).
+Das Projekt liegt unter `2_in-arbeit/schulnavigator/`. **Phase 0** (Architektur-ADRs) ist abgeschlossen; **Phase 1** (Foundation) umfasst **#9–#16** (Next.js, Docker, `/raum/[slug]`, `stations.json`, Raum-Shell, **Startseite Schulhaus-Hub**, Vitest, **QR-Generator**, **Deploy-Runbook + Go-Live-Härtung**) — siehe [`dokumentation/projektplan.md`](./dokumentation/projektplan.md). **Phase 2:** Raum-Viewer Gyro + Hotspots + GS39-Theme (**#55**, umgesetzt). Offen in Phase 1: u. a. **#17** (Raumfotos, extern). **Live:** `https://schulnavigator.mpz.schule` (Coolify) — Betrieb und Troubleshooting in [`anleitungen/fuer-entwickler.md`](./anleitungen/fuer-entwickler.md).
 
 ---
 
@@ -49,10 +49,11 @@ schulnavigator/
 │   └── lokal-testen-und-anschauen.md  # Dev-Server, Testrouten, Build-Check
 │
 └── app/                               # Next.js (npm-Projektroot)
-    ├── app/                           # App Router: `/`, `/scan`, `/raum/[slug]`, `api/health`
-    ├── components/                    # u. a. `raum-viewer/`, `schoolhouse/` (#14)
+    ├── app/                           # App Router: `/`, `/scan`, `/raum/[slug]`, `api/health`; `gs39-tokens.css`
+    ├── components/                    # u. a. `raum-viewer/`, `raum-station-client.tsx`, `schoolhouse/` (#14)
     ├── data/
-    ├── lib/                           # u. a. `stations.ts`, `validate-stations.ts`, `schoolhouse-*.ts` (#14)
+    ├── lib/                           # u. a. `stations.ts`, `school-theme.ts`, `raum-viewer/`, `schoolhouse-*.ts` (#14)
+    ├── scripts/                       # u. a. `validate-tokens.mjs`, `reference/colors_and_type.css` (Docker)
     ├── public/
     ├── vitest.config.ts               # Unit-Tests (`npm run test`)
     ├── package.json
@@ -74,6 +75,17 @@ schulnavigator/
 | [006](./dokumentation/adr/006-raum-viewer-gyro-hotspots.md) | Raum-Viewer: Gyro (Standard), Hotspots, Tap-Fallback   | entschieden |
 
 Vollständiger ADR-Index: [`dokumentation/entscheidungen.md`](./dokumentation/entscheidungen.md)
+
+---
+
+## UI & Design-Tokens (GS39)
+
+- Auftraggeber-Quelle: `auftraggeber/material/UI-Vorschläge/colors_and_type.css`
+- App: `app/app/gs39-tokens.css` + semantische Tailwind-Klassen in `globals.css` (kein Dark Mode)
+- Vor Build: `npm run validate:tokens` (auch in `npm run build`)
+- Nach Änderung an der Auftraggeber-CSS: `gs39-tokens.css` anpassen und Referenzkopie `app/scripts/reference/colors_and_type.css` für Docker mitpflegen
+
+Details: [`dokumentation/architektur.md`](./dokumentation/architektur.md) (Abschnitte UI & Raum-Viewer), [`anleitungen/lokal-testen-und-anschauen.md`](./anleitungen/lokal-testen-und-anschauen.md).
 
 ---
 
