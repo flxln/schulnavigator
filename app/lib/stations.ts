@@ -1,9 +1,9 @@
-import type { Station, StationsFile } from '@/lib/types'
+import type { Medium, Station } from '@/lib/types'
 import raw from '@/data/stations.json'
+import { validateStationsFile } from '@/lib/validate-stations'
 
 function loadStations(): Station[] {
-  const data = raw as StationsFile
-  return data.stations
+  return validateStationsFile(raw as unknown)
 }
 
 const stations = loadStations()
@@ -20,4 +20,11 @@ export function getStationBySlug(slug: string): Station | undefined {
 
 export function getAllSlugs(): { slug: string }[] {
   return stations.map((s) => ({ slug: s.slug }))
+}
+
+export function getMediumById(
+  station: Station,
+  mediumId: string,
+): Medium | undefined {
+  return station.medien.find((m) => m.id === mediumId)
 }

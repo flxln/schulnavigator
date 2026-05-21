@@ -77,14 +77,61 @@
       "titel": "Musikzimmer",
       "beschreibung": "Willkommen im Musikzimmer! Hier singen wir, trommeln wir und spielen Instrumente. Manchmal klingt es wunderschön und manchmal klingt es … naja … kreativ. Aber Spaß macht es immer!",
       "bild": "/stations/musik.jpg",
-      "medien": [],
+      "medien": [
+        {
+          "id": "demo-audio",
+          "typ": "audio",
+          "quelle": "/demo/ton.wav",
+          "untertitel": "Platzhalter-Audio (Phase 2: Player)"
+        },
+        {
+          "id": "demo-video",
+          "typ": "video",
+          "videoSource": "upload",
+          "quelle": "/demo/video-plakat.jpg",
+          "untertitel": "Video folgt — Platzhalterbild"
+        },
+        {
+          "id": "demo-foto",
+          "typ": "foto",
+          "quelle": "/demo/foto.jpg"
+        },
+        {
+          "id": "demo-text",
+          "typ": "text",
+          "quelle": "/demo/musik-info.txt"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "hs-video",
+          "label": "Video-Bereich",
+          "x": 0.32,
+          "y": 0.42,
+          "radius": 0.06,
+          "mediumId": "demo-video"
+        },
+        {
+          "id": "hs-audio",
+          "label": "Audio-Bereich",
+          "x": 0.7,
+          "y": 0.5,
+          "mediumId": "demo-audio"
+        }
+      ],
       "puzzleSegmentId": "seg-10"
     },
     {
       "slug": "schulsozialarbeit",
       "titel": "Schulsozialarbeiterzimmer",
       "beschreibung": "Hallo! Hier arbeitet unser Schulsozialarbeiter. Zu ihm können wir kommen, wenn wir Sorgen haben, Streit klären wollen oder einfach jemanden brauchen, der zuhört. Er hat immer ein offenes Ohr und manchmal auch Gummibärchen.",
-      "medien": [],
+      "medien": [
+        {
+          "id": "ssa-info",
+          "typ": "text",
+          "quelle": "/demo/ssa-hinweis.txt"
+        }
+      ],
       "puzzleSegmentId": "seg-11"
     }
   ]

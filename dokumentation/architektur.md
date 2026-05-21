@@ -23,7 +23,9 @@ _Stand: 2026-05-21 (Dockerfile im Repo) — siehe [entscheidungen.md](./entschei
 /raum/[slug]
 ```
 
-Sprechende Slugs (z. B. `/raum/musikzimmer`) — siehe [ADR-002](./adr/002-frontend-nextjs.md).
+Sprechende Slugs (z. B. `/raum/musik`) — siehe [ADR-002](./adr/002-frontend-nextjs.md).
+
+**Stabilität:** Die Pfade `/raum/[slug]` sind an **gedruckte Raum-QRs** gekoppelt (Issue #15). Slugs in `stations.json` und Dateinamen unter `public/stations/` nur mit bewusster Migration ändern.
 
 ## Datenmodell (Entwurf)
 

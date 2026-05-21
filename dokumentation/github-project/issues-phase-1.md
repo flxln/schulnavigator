@@ -96,6 +96,8 @@ interface Medium {
 
 ## #13 — Platzhalter-Stationsseite
 
+**GitHub:** geschlossen (2026-05-21) — RaumViewer-Stub, Validierung, `validate:stations`, Demo `musik` + `schulsozialarbeit`, Metadata, Error Boundary
+
 **Labels:** `tech`  
 **Assignee:** Felix
 

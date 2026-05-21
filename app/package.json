@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "validate:stations": "node scripts/validate-station-assets.mjs",
+    "build": "npm run validate:stations && next build",
     "start": "next start",
     "lint": "eslint .",
     "format": "prettier --write .",
