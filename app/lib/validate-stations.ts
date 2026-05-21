@@ -1,4 +1,8 @@
 import type { Hotspot, Medium, Station, MediumTyp } from '@/lib/types'
+import {
+  EXPECTED_SEGMENT_IDS,
+  EXPECTED_SEGMENT_ID_SET,
+} from '@/lib/schoolhouse-layout'
 
 const MEDIUM_TYPEN: readonly MediumTyp[] = ['audio', 'video', 'foto', 'text']
 
@@ -135,12 +139,14 @@ function validateStation(raw: unknown, index: number): Station {
       )
     }
   }
-  if (raw.puzzleSegmentId !== undefined) {
-    assert(
-      typeof raw.puzzleSegmentId === 'string' && raw.puzzleSegmentId.length > 0,
-      `${prefix}: puzzleSegmentId muss nicht-leerer string sein`,
-    )
-  }
+  assert(
+    typeof raw.puzzleSegmentId === 'string' && raw.puzzleSegmentId.length > 0,
+    `${prefix}: puzzleSegmentId fehlt oder ist leer`,
+  )
+  assert(
+    EXPECTED_SEGMENT_ID_SET.has(raw.puzzleSegmentId),
+    `${prefix}: puzzleSegmentId "${raw.puzzleSegmentId}" ist kein gültiges Schulhaus-Segment`,
+  )
   return {
     slug: raw.slug,
     titel: raw.titel,
@@ -148,7 +154,7 @@ function validateStation(raw: unknown, index: number): Station {
     bild: raw.bild as string | undefined,
     medien,
     hotspots,
-    puzzleSegmentId: raw.puzzleSegmentId as string | undefined,
+    puzzleSegmentId: raw.puzzleSegmentId,
   }
 }
 
@@ -163,5 +169,25 @@ export function validateStationsFile(raw: unknown): Station[] {
     slugs.add(st.slug)
     return st
   })
+  assert(
+    stations.length === EXPECTED_SEGMENT_IDS.length,
+    `stations: erwartet ${EXPECTED_SEGMENT_IDS.length} Einträge, erhalten ${stations.length}`,
+  )
+  const puzzleIds = new Set<string>()
+  for (const st of stations) {
+    assert(
+      !puzzleIds.has(st.puzzleSegmentId),
+      `doppeltes puzzleSegmentId "${st.puzzleSegmentId}"`,
+    )
+    puzzleIds.add(st.puzzleSegmentId)
+  }
+  const expected = new Set(EXPECTED_SEGMENT_IDS)
+  assert(
+    puzzleIds.size === expected.size,
+    'stations: Anzahl puzzleSegmentId stimmt nicht mit Schulhaus-Layout überein',
+  )
+  for (const id of expected) {
+    assert(puzzleIds.has(id), `stations: fehlendes puzzleSegmentId "${id}"`)
+  }
   return stations
 }

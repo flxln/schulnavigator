@@ -28,7 +28,8 @@ npm run dev
 
 | Seite | Zweck |
 | ----- | ----- |
-| [http://localhost:3000/](http://localhost:3000/) | Startseite (Phase 1 noch minimal) |
+| [http://localhost:3000/](http://localhost:3000/) | Startseite: **Schulhaus-Hub** (11 Segmente), Fortschritt 0/11, Link zu `/scan`; im Dev-Modus Umschalter „alle offen / alle gesperrt“ (Stub für Schulfest) |
+| [http://localhost:3000/scan](http://localhost:3000/scan) | Platzhalter für den In-App-QR-Scanner (Phase 2, Issue #23) |
 | [http://localhost:3000/raum/musik](http://localhost:3000/raum/musik) | Demo: Raumbild, **2 Hotspots**, **4 Medien-Slots** (alle Typen) |
 | [http://localhost:3000/raum/schulsozialarbeit](http://localhost:3000/raum/schulsozialarbeit) | **Ohne** Raumbild: statischer Platzhalter + Text-Medium |
 | [http://localhost:3000/raum/klassenzimmer](http://localhost:3000/raum/klassenzimmer) | Raumbild + **leere** Medienliste (Empty-State) |
@@ -44,7 +45,7 @@ npm run dev
 2. **Geräte-Symbol** aktivieren (responsive Modus).
 3. Viewport z. B. **375 × 667** wählen und `/raum/musik` erneut laden.
 
-So prüfst du, ob nichts horizontal scrollt und Stubs (Viewer, Medien) im Hochformat sinnvoll wirken.
+So prüfst du, ob nichts horizontal scrollt und Startseite (Schulhaus) sowie Stubs (Viewer, Medien) im Hochformat sinnvoll wirken.
 
 ---
 
@@ -71,6 +72,7 @@ Im Ordner `app/`:
 
 ```bash
 npm run validate:stations   # nur Asset-Pfade prüfen
+npm run test                  # Vitest (Merge Schulhaus ↔ JSON)
 npm run lint                  # ESLint
 npm run format:check          # Prettier (nur Prüfung)
 ```
@@ -99,6 +101,7 @@ Identisches Laufzeit-Image wie in Produktion — Schritt-für-Schritt: Abschnitt
 
 1. `npm run build` im Ordner `app/` erfolgreich
 2. `npm run lint` ohne Fehler
-3. Manuell `/raum/musik` und eine zweite Station im Browser geöffnet
+3. `npm run test` ohne Fehler
+4. Manuell `/`, `/raum/musik` und eine zweite Station im Browser geöffnet
 
 Bei Fragen zum Datenmodell oder zu Stationen: [`data/stations.json`](../app/data/stations.json) und [`auftraggeber/material/stationen/zuordnung-stationen-bilder.md`](../auftraggeber/material/stationen/zuordnung-stationen-bilder.md).

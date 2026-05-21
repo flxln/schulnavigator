@@ -42,15 +42,10 @@ export default async function RaumPage({ params }: PageProps) {
     notFound()
   }
 
-  const puzzleAttr =
-    station.puzzleSegmentId !== undefined
-      ? { 'data-puzzle-segment': station.puzzleSegmentId }
-      : {}
-
   return (
     <main
       className="mx-auto flex min-h-full max-w-lg flex-col gap-6 px-4 py-8"
-      {...puzzleAttr}
+      data-puzzle-segment={station.puzzleSegmentId}
     >
       <StationBackLink />
       <section

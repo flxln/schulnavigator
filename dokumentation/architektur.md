@@ -20,10 +20,15 @@ _Stand: 2026-05-21 (Dockerfile im Repo) — siehe [entscheidungen.md](./entschei
 ## URL-Schema
 
 ```
+/
+/scan
 /raum/[slug]
 ```
 
-Sprechende Slugs (z. B. `/raum/musik`) — siehe [ADR-002](./adr/002-frontend-nextjs.md).
+- **`/`** — Startseite mit schematischem Schulhaus-Hub (Stationen; Phase 2: Puzzle-Modus nach Token).
+- **`/scan`** — Platzhalter bis Phase 2; später In-App-QR-Scanner — [ADR-005](./adr/005-zugangskontrolle-token.md).
+
+Sprechende Raum-Slugs (z. B. `/raum/musik`) — siehe [ADR-002](./adr/002-frontend-nextjs.md).
 
 **Stabilität:** Die Pfade `/raum/[slug]` sind an **gedruckte Raum-QRs** gekoppelt (Issue #15). Slugs in `stations.json` und Dateinamen unter `public/stations/` nur mit bewusster Migration ändern.
 
@@ -56,7 +61,7 @@ interface Station {
   bild?: string; // /public/stations/… — fehlt → statische Ansicht
   medien: Medium[];
   hotspots?: Hotspot[];
-  puzzleSegmentId?: string;
+  puzzleSegmentId: string; // Zuordnung Schulhaus-Hub (11 Segmente), Pflicht im MVP-JSON
 }
 ```
 

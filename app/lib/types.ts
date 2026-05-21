@@ -26,7 +26,7 @@ export interface Station {
   bild?: string
   medien: Medium[]
   hotspots?: Hotspot[]
-  puzzleSegmentId?: string
+  puzzleSegmentId: string
 }
 
 export interface StationsFile {
