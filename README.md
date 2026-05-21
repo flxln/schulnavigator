@@ -11,27 +11,33 @@ Besucher scannen QR-Codes, die an Türen und Räumen angebracht sind, und sehen 
 - **Stationsseiten** — Jede Station hat eine eigene Seite mit Raumbild, Beschreibung und Medien (Audio, Video, Foto, Text)
 - **Startseite mit Schulhaus-Übersicht** — Schematische Darstellung aller Stationen auf einen Blick
 - **Stempel-System** — Besuchte Stationen werden markiert, Abschluss-Animation bei vollständigem Rundgang
-- **Zugangskontrolle** — Entry-QR (Eingang/Heft); Modi *fest* (Scan-Rundgang) und *heft* (Stations-Hub); In-App-Scanner für Raum-QRs ([ADR-005](dokumentation/adr/005-zugangskontrolle-token.md))
+- **Zugangskontrolle** — Entry-QR (Eingang/Heft); Modi _fest_ (Scan-Rundgang) und _heft_ (Stations-Hub); In-App-Scanner für Raum-QRs ([ADR-005](dokumentation/adr/005-zugangskontrolle-token.md))
 - **Mehrsprachigkeit** — UI-Texte in Deutsch und Englisch (Content bleibt in der Originalsprache)
 - **Content-Pflege (Directus)** — Stationen und Medien durch Lehrkräfte (Phase 5, nach Schulfest)
 
 ## Tech-Stack
 
-| Bereich | Technologie |
-|---|---|
-| Frontend | Next.js (App Router), TypeScript strict, Tailwind CSS |
-| Hosting | Docker (Multi-stage Build), Coolify |
-| Content (MVP) | JSON im Repo |
-| Content (Ziel) | Directus (self-hosted) |
-| Sprache | Deutsch / Englisch |
+| Bereich        | Technologie                                           |
+| -------------- | ----------------------------------------------------- |
+| Frontend       | Next.js (App Router), TypeScript strict, Tailwind CSS |
+| Hosting        | Docker (Multi-stage Build), Coolify                   |
+| Content (MVP)  | JSON im Repo                                          |
+| Content (Ziel) | Directus (self-hosted)                                |
+| Sprache        | Deutsch / Englisch                                    |
 
 ## Projektstruktur
 
 ```
 schulnavigator/
-├── app/                        # Next.js-Anwendung
-│   ├── src/
-│   └── public/
+├── app/                        # Next.js (npm-Projektroot, Issue #9)
+│   ├── app/                    # App Router (Routen: page.tsx, layout.tsx, …)
+│   ├── components/             # React-Komponenten
+│   ├── data/                   # stations.json (Phase 1, #12)
+│   ├── lib/                    # Hilfsfunktionen, Typen
+│   ├── public/                 # Statische Assets (stations/, qr/)
+│   ├── package.json
+│   ├── Dockerfile              # folgt in Phase 1 (#10)
+│   └── …
 ├── auftraggeber/               # Gesprächsgrundlagen und Antworten
 ├── anleitungen/                # Für Lehrkräfte, Entwickler, QR-Druck
 ├── dokumentation/

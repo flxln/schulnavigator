@@ -12,9 +12,7 @@ Eine Web-App für Schulen. Besucher eines Tags der offenen Tür scannen QR-Codes
 
 ## Projektphasen
 
-Das Projekt befindet sich aktuell in der **Konzeptphase** (`1_ideen/`). Vor Entwicklungsstart müssen das Auftraggebергespräch geführt und die offenen technischen Entscheidungen getroffen sein.
-
-Sobald die Entwicklung beginnt, zieht das Projekt nach `2_in-arbeit/schulnavigator/`.
+Das Projekt liegt unter `2_in-arbeit/schulnavigator/`. **Phase 0** (Architektur-ADRs) ist abgeschlossen; **Phase 1** (Next.js-Grundgerüst) läuft — siehe [`dokumentation/projektplan.md`](./dokumentation/projektplan.md).
 
 ---
 
@@ -49,23 +47,28 @@ schulnavigator/
 │   ├── qr-codes-drucken.md            # QR-Codes exportieren & drucken
 │   └── fuer-entwickler.md             # Setup, Deploy, Wartung
 │
-└── app/                               # Der eigentliche Anwendungscode
-    ├── src/
+└── app/                               # Next.js (npm-Projektroot)
+    ├── app/                           # App Router (Routen)
+    ├── components/
+    ├── data/
+    ├── lib/
     ├── public/
-    └── Dockerfile
+    ├── package.json
+    └── Dockerfile                   # folgt in Phase 1 (#10)
 ```
 
 ---
 
 ## Bekannte Architekturentscheidungen
 
-| ADR | Entscheidung | Status |
-|---|---|---|
-| [001](./dokumentation/adr/001-hosting-coolify.md) | Hosting: MPZ-Hetzner-Server via Coolify, Docker | entschieden |
-| [002](./dokumentation/adr/002-frontend-nextjs.md) | Frontend: Next.js (App Router), Tailwind | entschieden |
-| [003](./dokumentation/adr/003-content-mvp-json-directus.md) | Content: JSON (MVP), Directus; kein Custom-Admin | entschieden |
-| [004](./dokumentation/adr/004-video-hosting-mpz.md) | Video: MPZ-Server; YouTube optional nach Rechtsklärung | entschieden |
-| [005](./dokumentation/adr/005-zugangskontrolle-token.md) | Zugang: Entry-Token, fest/heft, In-App-Scanner | entschieden |
+| ADR                                                         | Entscheidung                                           | Status      |
+| ----------------------------------------------------------- | ------------------------------------------------------ | ----------- |
+| [001](./dokumentation/adr/001-hosting-coolify.md)           | Hosting: MPZ-Hetzner-Server via Coolify, Docker        | entschieden |
+| [002](./dokumentation/adr/002-frontend-nextjs.md)           | Frontend: Next.js (App Router), Tailwind               | entschieden |
+| [003](./dokumentation/adr/003-content-mvp-json-directus.md) | Content: JSON (MVP), Directus; kein Custom-Admin       | entschieden |
+| [004](./dokumentation/adr/004-video-hosting-mpz.md)         | Video: MPZ-Server; YouTube optional nach Rechtsklärung | entschieden |
+| [005](./dokumentation/adr/005-zugangskontrolle-token.md)    | Zugang: Entry-Token, fest/heft, In-App-Scanner         | entschieden |
+| [006](./dokumentation/adr/006-raum-viewer-gyro-hotspots.md) | Raum-Viewer: Gyro (Standard), Hotspots, Tap-Fallback   | entschieden |
 
 Vollständiger ADR-Index: [`dokumentation/entscheidungen.md`](./dokumentation/entscheidungen.md)
 
@@ -106,6 +109,7 @@ Neue Architekturentscheidungen werden so dokumentiert:
 Detaillierte Code-Konventionen: [`prompts/code-konventionen.md`](./prompts/code-konventionen.md)
 
 Kurzfassung (vorläufig):
+
 - TypeScript strict, kein `any`
 - Dateinamen: `kebab-case`
 - Komponenten: `PascalCase`
@@ -115,9 +119,9 @@ Kurzfassung (vorläufig):
 
 ## Wichtige Dokumente für den Einstieg
 
-| Zweck | Datei |
-|---|---|
-| Was muss mit Auftraggebern geklärt werden? | `auftraggeber/auftraggeber-gespraech.md` |
-| Was ist technisch noch offen? | `dokumentation/technische-fragen.md` |
-| Welche Entscheidungen wurden bereits getroffen? | `dokumentation/entscheidungen.md` |
-| Wie wird deployed? | `dokumentation/adr/001-hosting-coolify.md` |
+| Zweck                                           | Datei                                      |
+| ----------------------------------------------- | ------------------------------------------ |
+| Was muss mit Auftraggebern geklärt werden?      | `auftraggeber/auftraggeber-gespraech.md`   |
+| Was ist technisch noch offen?                   | `dokumentation/technische-fragen.md`       |
+| Welche Entscheidungen wurden bereits getroffen? | `dokumentation/entscheidungen.md`          |
+| Wie wird deployed?                              | `dokumentation/adr/001-hosting-coolify.md` |
