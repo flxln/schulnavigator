@@ -104,13 +104,12 @@ Enthält: Hosting-Details, Speicherort der Daten (Deutschland), Verantwortlichke
 
 ---
 
-## #55 — ADR: Raum-Viewer (Gyro, Hotspots)
+## ADR-006 — Raum-Viewer (Gyro, Hotspots)
 
-**GitHub:** geschlossen (2026-05-21) — [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
+**Architekturentscheidung** (kein separates GitHub-Issue in Phase 0): [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md), Index [entscheidungen.md](../entscheidungen.md).
 
-**Labels:** `tech`
-**Assignee:** Felix
+**Inhaltlich:** `tech` — **Assignee (Umsetzung):** Felix
 
 - MVP: normales Querformat-Foto, **Gyro-Viewer Standard**, Hotspots, Tap-Fallback
 - Nicht MVP: 360°-Panorama, Kamera-AR/WebXR
-- Umsetzung: Phase 1 Schema (#12), Phase 2 Komponente (#55 in Phase 2), Phase 3 Hotspot-Koordinaten
+- Umsetzung: Phase 1 Schema (#12), Phase 2 Komponente (GitHub **#55**), Phase 3 Hotspot-Koordinaten

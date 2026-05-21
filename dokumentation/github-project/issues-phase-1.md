@@ -2,7 +2,7 @@
 
 Milestone: **Phase 1** | Fällig: 28.05.2026
 
-**Voraussetzung:** Phase-0-ADRs (#1–#5, #55) geschlossen — siehe [entscheidungen.md](../entscheidungen.md).
+**Voraussetzung:** Phase-0-Issues **#1–#8** geschlossen; **ADR-006** entschieden — siehe [entscheidungen.md](../entscheidungen.md).
 
 **Architektur-Referenz:** [ADR-001](../adr/001-hosting-coolify.md) · [ADR-002](../adr/002-frontend-nextjs.md) · [ADR-003](../adr/003-content-mvp-json-directus.md) · [ADR-005](../adr/005-zugangskontrolle-token.md) · [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
 

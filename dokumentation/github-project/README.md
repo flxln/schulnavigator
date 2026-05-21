@@ -1,0 +1,28 @@
+# GitHub-Projekt (Schulnavigator)
+
+Dieser Ordner ist die **führende Spezifikation** für Milestones und Issues in [flxln/schulnavigator](https://github.com/flxln/schulnavigator). GitHub spiegelt den Stand nach manuellem Abgleich wider.
+
+## Dateien
+
+| Datei | Inhalt |
+|-------|--------|
+| [milestones.md](milestones.md) | Beschreibungstexte und Fälligkeiten der Phasen-Milestones (1:1 für GitHub nutzbar) |
+| [issues-phase-0.md](issues-phase-0.md) … [issues-phase-5.md](issues-phase-5.md) | Issues pro Phase inkl. Labels, Assignees, Akzeptanzkriterien |
+| [labels.md](labels.md) | Label-Konventionen |
+
+Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) und [entscheidungen.md](../entscheidungen.md).
+
+## Sync-Regel
+
+1. Änderungen **zuerst** in den Markdown-Dateien hier festhalten.
+2. Anschließend GitHub anpassen (`gh issue edit`, `gh issue create`, Milestone per `gh api …/milestones/{n}`).
+3. Bei neuen Issues die Zeile **GitHub:** in der zugehörigen Phase-Datei mit der Issue-URL ergänzen.
+
+## Checkliste nach größeren Planänderungen
+
+- [ ] Alle sechs Milestone-Beschreibungen mit [milestones.md](milestones.md) verglichen und bei Abweichung auf GitHub gepatcht.
+- [ ] Offene Issue-Titel und Bodies zu „11 Stationen“, Directus (#46/#47) und Raum-Viewer (#55) geprüft.
+- [ ] Issue **#55** (Raum-Viewer Gyro + Hotspots) existiert in Phase 2, falls noch relevant.
+- [ ] Suche im Repo-Issue-Tracker nach veralteten Formulierungen (z. B. „8 Stationen“, „Admin-Interface entwickeln“ ohne Directus-Kontext).
+
+Letzter dokumentierter Abgleich: **2026-05-21** (Milestones, #1, #17, #21, #46, #47, neues #55).
