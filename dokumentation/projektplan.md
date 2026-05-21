@@ -25,17 +25,17 @@ Phase 5 │ Post-Fest / Admin-Interface    │ ab Juli
 
 | Frage | Empfehlung | Begründung |
 |---|---|---|
-| Frontend-Framework | Next.js (App Router) | Bereits im CLAUDE.md empfohlen, SSR + statische Routen |
-| Routing | `/raum/[slug]` | Lesbare URLs, einfache QR-Code-Generierung |
-| Video-Hosting | Eigener Upload auf MPZ-Server | Datenschutz (kein YouTube), Daten bleiben in DE |
-| Content-Management | JSON-Dateien im Repo (Phase 1), später CMS | Einfachster Start, kein Extra-System nötig |
-| Zugangskontrolle | Entry-QR-Code mit zeitlich begrenztem Token in URL | Kein Login für Gäste, aber nicht öffentlich indexierbar |
-| Stationen MVP | **Maximal 8 Stationen** zum 26.6. | Realistisch produzierbar, lieber 8 fertige als 15 halbfertige |
-| Wartung nach 26.6. | MPZ pflegt ein, Schule liefert Materialien | Entscheid nötig: bestimmt ob Admin-UI Pflicht ist |
+| Frontend-Framework | Next.js (App Router) | ✅ ADR-002 |
+| Routing | `/raum/[slug]` | ✅ ADR-002 |
+| Video-Hosting | Upload MPZ-Server; YouTube später nach Rechtsklärung | ✅ ADR-004 |
+| Content-Management | **MVP:** JSON im Repo · **Ziel:** Directus | ✅ ADR-003; kein Custom-Admin |
+| Zugangskontrolle | Entry-Token, Modi fest/heft, In-App-Scanner | ✅ ADR-005 |
+| Stationen | **11 Stationen** (von Schule geliefert) | Verbindliche Grundlage seit Material-Lieferung |
+| Wartung nach 26.6. | Schule pflegt via Directus; MPZ Betrieb | ✅ ADR-003 |
 
 ### Deliverable
 - ADR-Dokumente für alle Entscheidungen
-- Sten/Tina schriftlich bestätigen: **8 Stationen, welche genau?**
+- Stationen-Liste: **11 Stationen** (Material Tina) — in JSON/Slugs abbilden
 - AVV-Entwurf an Schule schicken
 
 ---
@@ -60,7 +60,7 @@ Phase 5 │ Post-Fest / Admin-Interface    │ ab Juli
 
 ### Deliverable
 - Deploy-Link, den Sten/Tina im Browser aufrufen können
-- Leere Stationsseiten für alle 8 vereinbarten Räume
+- Leere Stationsseiten für alle **11** Räume
 - Termin am 10.06. vorbereiten: Demo der leeren Shell
 
 ---
@@ -73,19 +73,21 @@ Phase 5 │ Post-Fest / Admin-Interface    │ ab Juli
 
 **Medien**
 - [ ] Audio-Player-Komponente (native HTML5, kein externes Plugin)
-- [ ] Video-Player-Komponente (direkter Upload, kein YouTube)
+- [ ] Video-Player-Komponente (MPZ-Upload; YouTube-Feld im Schema, MVP nicht nutzen)
 - [ ] Bild-Galerie-Komponente (für Fotosets)
 - [ ] Medientyp-Routing: Station zeigt je nach Inhalt automatisch den richtigen Player
 
 **Gamification (Minimal)**
 - [ ] Stempel-System via `localStorage`: Station besucht = Häkchen gesetzt
-- [ ] Startseite zeigt Fortschritt (z.B. 3/8 Stationen besucht)
-- [ ] Abschluss-Animation wenn alle 8 erledigt (einfaches Konfetti, keine externe Library)
+- [ ] Startseite zeigt Fortschritt (z.B. 3/11 Stationen besucht)
+- [ ] Abschluss-Animation wenn alle 11 erledigt (einfaches Konfetti, keine externe Library)
 
-**Zugangskontrolle**
-- [ ] Entry-QR-Code generiert Token mit Ablaufdatum (z.B. gültig 1 Schuljahr)
-- [ ] App prüft Token beim ersten Aufruf, speichert in `sessionStorage`
-- [ ] Ohne gültigen Token: Hinweisseite statt Inhalt
+**Zugangskontrolle** ([ADR-005](./adr/005-zugangskontrolle-token.md))
+- [ ] `/eintritt` — Token prüfen, `localStorage` (Token + `mode: fest|heft` + Ablauf)
+- [ ] Middleware: ohne Token → Hinweisseite
+- [ ] Startseite: Hub nur bei `mode: heft`; bei `fest` nur Willkommen + Scan-CTA + Stempel-Fortschritt
+- [ ] `/scan` — In-App-QR-Scanner für Raum-QRs (nach Entry)
+- [ ] Token-Script: mindestens `fest-2026`, `heft-2026-27` mit Ablaufdatum
 
 **Mehrsprachigkeit (Struktur)**
 - [ ] Menü-Texte in i18n-Datei auslagern (DE + EN-Platzhalter)
@@ -124,7 +126,8 @@ Die Schule liefert bis **12.06.** einen Plan: welche Klasse macht welchen Raum i
 
 ### Projekttage in der Schule (ca. 24./25.06.)
 - Felix/Julia vor Ort
-- Kinder nehmen Content auf (Mikrofon vorhanden)
+- Einverständniserklärungen: Klärung/Einholung durch die Schule **am Projekttag** (nicht Voraussetzung davor)
+- Kinder nehmen Content auf (Mikrofon vorhanden) — **nur mit Einwilligung**; Umfang: was an dem Tag entsteht, reicht für den 26.06.
 - Content wird direkt eingepflegt
 - Letzter Live-Test aller Stationen
 
@@ -151,10 +154,11 @@ Die Schule liefert bis **12.06.** einen Plan: welche Klasse macht welchen Raum i
 ### Kurzfristig (Juli–August)
 - [ ] Auswertung: Was hat funktioniert, was nicht? (Sten/Tina befragen)
 - [ ] Bekannte Bugs und UX-Probleme dokumentieren
-- [ ] Entscheidung: Admin-Interface ja/nein — und wer es benutzt
+- [ ] Directus-Anforderungen aus MVP-Erfahrung festhalten (Collections, Rollen)
 
 ### Mittelfristig (Herbst 2026)
-- [ ] Admin-Interface für Lehrkräfte (Content einpflegen ohne Entwickler)
+- [ ] **Directus** deployen (Coolify), JSON-Content migrieren
+- [ ] Lehrkräfte-Onboarding (Directus-Admin, keine Custom-UI)
 - [ ] Englisch-Menü aktivieren
 - [ ] Weitere Stationen nachrüsten (Phase-2-Features der Wunschliste)
 
@@ -180,7 +184,7 @@ Die Schule liefert bis **12.06.** einen Plan: welche Klasse macht welchen Raum i
 ## Nächste konkrete Schritte (diese Woche)
 
 1. **Scope schriftlich fixieren:** Tina/Sten bestätigen die 8 Stationen namentlich
-2. **ADRs schreiben:** Routing, Video-Hosting, CMS, Auth (je ein ADR-Dokument)
+2. **ADRs:** 001–005 dokumentiert; bei Änderungen neue ADR-Nummer
 3. **AVV-Entwurf:** Thomas/MPZ schickt Entwurf an Schule
 4. **Mascottchen-Rechte:** Tina kontaktiert Verlag (Heike)
 5. **Projektsetup:** Next.js-Repo anlegen, Dockerfile, erstes Deployment auf MPZ-Server testen

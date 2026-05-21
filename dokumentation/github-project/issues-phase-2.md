@@ -73,11 +73,13 @@ Milestone: **Phase 2** | Fällig: 12.06.2026
 **Labels:** `tech`
 **Assignee:** Felix
 
-- Entry-QR-Code (am Schuleingang) enthält Token als URL-Parameter: `?token=abc123`
-- App prüft Token beim ersten Aufruf und speichert ihn in `sessionStorage`
-- Ohne gültigen Token: Hinweisseite ("Bitte den QR-Code am Eingang scannen")
-- Token hat Ablaufdatum (z.B. 1 Schuljahr) — danach Hinweis zum neuen QR-Code
-- Token-Generierung: einfaches Script, das neue Token produziert
+Spezifikation: [ADR-005](../adr/005-zugangskontrolle-token.md)
+
+- [ ] `/eintritt?t=…` — Token + `mode` (`fest`|`heft`) + Ablauf in `localStorage`
+- [ ] Middleware / Hinweisseite ohne Token
+- [ ] Startseite: Hub nur `heft`; `fest` → Scan-CTA + Stempel, keine Raum-Links
+- [ ] `/scan` — In-App-QR-Scanner (`html5-qrcode` o. ä.)
+- [ ] Token-Script: `fest-2026`, `heft-2026-27` (+ QR-PNG für Eingang und Heft)
 
 ---
 

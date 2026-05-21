@@ -6,6 +6,8 @@ Milestone: **Phase 0** | Fällig: 14.05.2026
 
 ## #1 — Stationen-Scope schriftlich fixieren
 
+**GitHub:** geschlossen (2026-05-21) — 11 Stationen aus Material Tina, verbindlich laut Projektstand
+
 **Labels:** `org` `blocker` `extern`
 **Assignee:** Sten / Tina
 
@@ -20,64 +22,69 @@ Ohne diese Liste können Routing und Datenmodell nicht final gebaut werden.
 
 ## #2 — ADR: Routing-Schema
 
+**GitHub:** geschlossen (2026-05-21) — [ADR-002](../adr/002-frontend-nextjs.md): `/raum/[slug]`
+
 **Labels:** `tech` `blocker`
 **Assignee:** Felix
-
-Entscheidung dokumentieren: `/raum/[slug]` vs. `/raum/[id]`.
-Empfehlung: `slug` (lesbar, QR-Code-freundlich, stabil bei Umbenennungen wenn slug bewusst gewählt).
-ADR nach Vorlage `dokumentation/adr/000-template.md` erstellen.
 
 ---
 
 ## #3 — ADR: Video-Hosting
 
+**GitHub:** geschlossen (2026-05-21)
+
 **Labels:** `tech` `blocker`
 **Assignee:** Felix
 
-Entscheidung dokumentieren: eigener Upload auf MPZ-Server vs. YouTube-Embed.
-Empfehlung: eigener Upload (Datenschutz, Daten bleiben in DE, kein Drittanbieter-Tracking).
-Implikation: Server braucht ausreichend Speicher, Upload-Limit pro Datei festlegen.
+**Status: entschieden** — [ADR-004](../adr/004-video-hosting-mpz.md)
+
+- Vorerst: Upload auf MPZ-Server (Datenschutz, DE)
+- YouTube-Embed: Option nach rechtlicher Klärung (DSB/Schule); MVP nicht aktivieren
+- Implikation: Speicher/Upload-Limit; Player-Schema `upload` | `youtube` vorbereiten
 
 ---
 
 ## #4 — ADR: Content-Management
 
+**GitHub:** geschlossen (2026-05-21)
+
 **Labels:** `tech`
 **Assignee:** Felix
 
-Entscheidung dokumentieren: JSON-Dateien im Repo (Phase 1) vs. CMS (Phase 5).
-Empfehlung: JSON für 26.6., CMS-Entscheidung nach Auswertung.
-Implikation: Admin-Interface ist für 26.6. nicht nötig — Felix pflegt direkt ein.
+**Status: entschieden** — siehe [ADR-003](../adr/003-content-mvp-json-directus.md)
+
+- MVP bis 26.6.: JSON im Repo, Pflege durch Felix/MPZ
+- Langfristig: Directus (self-hosted, Coolify)
+- Custom-Admin verworfen
 
 ---
 
 ## #5 — ADR: Zugangskontrolle
 
+**GitHub:** geschlossen (2026-05-21) — [ADR-005](../adr/005-zugangskontrolle-token.md)
+
 **Labels:** `tech`
 **Assignee:** Felix
 
-Entscheidung dokumentieren: Entry-QR-Code setzt zeitlich begrenzten Token in URL/sessionStorage.
-Kein Login, keine Accounts. Token läuft nach Ablauf des Schuljahres ab.
-Implikation: QR-Codes müssen bei Tokenwechsel neu gedruckt werden (jährlich).
+- Entry `/eintritt?t=…`, Speicherung in **`localStorage`**
+- Modi: **`fest`** (kein Hub, In-App-Scanner) / **`heft`** (Hub, alle Stationen)
+- Entry einmalig System-Kamera; Raum-QRs danach In-App-Scanner
+- Zwei Token (Fest + Schuljahr); Entry-QR bei Rotation neu drucken
 
 ---
 
 ## #6 — ADR: Wartung nach Schulfest
 
+**GitHub:** geschlossen (2026-05-21) — [ADR-003](../adr/003-content-mvp-json-directus.md): Schule pflegt via Directus, MPZ Betrieb
+
 **Labels:** `org` `blocker`
 **Assignee:** Thomas / Felix
-
-Wer ist nach dem 26.6.2026 verantwortlich für das System?
-
-- Option A: MPZ wartet, Schule liefert Materialien → Admin-Interface ist Phase-5-Feature
-- Option B: Schule pflegt selbst → Admin-Interface ist Pflicht vor 26.6.
-
-**Diese Entscheidung bestimmt den Entwicklungsaufwand mehr als alle anderen.**
-Muss am Meeting 10.06. final geklärt sein, idealerweise schon vorher.
 
 ---
 
 ## #7 — AVV-Entwurf an Schule schicken
+
+**GitHub:** geschlossen (2026-05-21) — Entwurf versendet; Unterschrift bis Schulfest → [#43](./issues-phase-4.md)
 
 **Labels:** `org`
 **Assignee:** Thomas
@@ -90,9 +97,7 @@ Enthält: Hosting-Details, Speicherort der Daten (Deutschland), Verantwortlichke
 
 ## #8 — Maskottchen-Rechte klären (Giraffe / Maus)
 
+**GitHub:** geschlossen (2026-05-21) — Freigabe: `auftraggeber/material/verlagsinfo/freigabe-bilder-bildrechte.pdf`; Nennung im Impressum offen
+
 **Labels:** `org` `extern`
 **Assignee:** Tina
-
-Tina kontaktiert die Chefin des Schulplaner-Verlags (deren Enkelin besucht die Schule).
-Ziel: Nutzungserlaubnis für Giraffe und Maus als App-Maskottchen, idealerweise Original-Bilddateien.
-Falls Rechte nicht geklärt: eigene neutrale Illustrationen als Fallback einplanen.

@@ -20,10 +20,10 @@ Sie werden **nicht** in Auftraggebергesprächen thematisiert.
 
 ## Content-Modell & CMS
 
-- Welcher CMS-Ansatz?
-  - **Option A:** Headless CMS (Directus, Payload CMS) — mächtig, aber Setup-Aufwand
-  - **Option B:** Markdown/JSON-Dateien im Repo — einfach, aber kein GUI für Lehrkräfte
-  - **Option C:** Einfaches Custom-Admin-Interface (vibecoded) — bester Kompromiss für a-technische Nutzer
+- ✅ **Entschieden** ([ADR-003](./adr/003-content-mvp-json-directus.md)):
+  - **MVP bis 26.06.:** JSON-Dateien (+ Medien) im Repo, Pflege durch MPZ
+  - **Langfristig:** Directus (self-hosted auf Coolify), Pflege durch Lehrkräfte
+  - **Verworfen:** Custom-Admin-Interface, Payload/Strapi als Primärwahl
 - Datenmodell pro Raum (Minimalvorschlag):
   ```
   {
@@ -38,21 +38,28 @@ Sie werden **nicht** in Auftraggebергesprächen thematisiert.
 
 ## Video & Medien
 
-- Video-Hosting: **YouTube-Embed** (einfachste Option) oder eigene Uploads?
-- Maximale Bildgröße / Kompression automatisch beim Upload?
-- Werden Videos lokal im Schulnetz abgespielt oder kommen sie von extern?
+- ✅ **Video-Hosting vorerst:** Upload auf MPZ-Server — [ADR-004](./adr/004-video-hosting-mpz.md)
+- 🟡 **YouTube-Embed:** Option für später, wenn Schule/DSB rechtlich freigibt; Player/Datenmodell vorbereiten
+- Offen: Maximale Dateigröße / Kompression beim Upload
+- Offen: Object Storage vs. `public/`-Ordner im Container
 
-## Authentifizierung & Admin
+## Authentifizierung & Zugang (Besucher)
 
-- Admin-Bereich: Passwortschutz ausreichend oder echte Nutzerverwaltung nötig?
+- ✅ **Entry-Token** über `/eintritt?t=…`, Speicherung in **`localStorage`**, keine Accounts — [ADR-005](./adr/005-zugangskontrolle-token.md)
+- ✅ **Modi:** `fest` (kein Stations-Hub, In-App-Scanner) vs. `heft` (Hub mit allen Stationen)
+- ✅ Entry einmalig per **System-Kamera**; Raum-QRs danach primär **In-App-Scanner**
+- Raum-QRs = Navigation, kein separates Freischalten pro Raum
+
+## Admin (Lehrkräfte, langfristig Directus)
+
 - Mehrere Lehrkräfte gleichzeitig als Editoren oder nur eine verantwortliche Person?
-- Rollen: nur Superadmin, oder auch Raum-spezifische Editoren?
+- Rollen: nur Superadmin, oder auch raum-spezifische Editoren?
 
-## Tech-Stack (Vorschlag zur Entscheidung)
+## Tech-Stack
 
-- **Frontend:** Next.js (App Router) + Tailwind CSS
-- **Backend/CMS:** Payload CMS oder einfaches JSON-API
-- **Hosting:** Vercel
+- ✅ **Frontend:** Next.js (App Router) + Tailwind CSS — [ADR-002](./adr/002-frontend-nextjs.md)
+- ✅ **Content MVP:** JSON im Repo; **Ziel:** Directus — [ADR-003](./adr/003-content-mvp-json-directus.md)
+- ✅ **Hosting:** MPZ-Hetzner, Coolify, Docker — [ADR-001](./adr/001-hosting-coolify.md)
 - **QR-Code-Bibliothek:** `qrcode` (npm)
 - **Sprachen:** TypeScript strict, React 19
 

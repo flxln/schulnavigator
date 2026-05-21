@@ -34,34 +34,34 @@ Besonders: mobile Darstellung, Ladezeiten, QR-Code-Scan-Verhalten.
 
 ---
 
-## #46 — Entscheidung: Admin-Interface
+## #46 — Entscheidung: Content-Pflege langfristig
 
-**Labels:** `org` `blocker`
+**GitHub:** geschlossen (2026-05-21)
+
+**Labels:** `org`
 **Assignee:** Thomas / Felix
 
-Kernfrage: Wer pflegt Content langfristig ein?
+**Status: entschieden (2026-05-21)** — [ADR-003](../adr/003-content-mvp-json-directus.md)
 
-- Option A: Schule pflegt selbst → Admin-Interface entwickeln (Issues #47)
-- Option B: MPZ pflegt auf Anfrage → kein Admin-Interface nötig, Prozess dokumentieren
-
-Diese Entscheidung wurde im Gespräch am 07.05. aufgeschoben. Muss jetzt getroffen werden.
+- Schule pflegt selbst über **Directus** (Headless CMS)
+- MPZ betreibt Hosting und Mandanten
+- Eigenes Custom-Admin **verworfen**
 
 ---
 
-## #47 — Admin-Interface entwickeln
+## #47 — Directus einführen und Content migrieren
 
 **Labels:** `tech`
 **Assignee:** Felix
 
-*(Nur wenn Issue #46 mit Option A entschieden wurde)*
+Directus auf Coolify deployen; Collections aus JSON-Schema; Migration der 39. Grundschule.
 
-Lehrkräfte können ohne Entwickler:
+Lehrkräfte können ohne Entwickler (über Directus-UI):
 - Stationsbeschreibungen bearbeiten
 - Medien hochladen und zuordnen
-- Neue Stationen anlegen
+- Neue Stationen anlegen (Rollen abhängig)
 
-Technologie-Entscheidung: eigenes CMS (z.B. Payload CMS) oder einfaches Form-Interface.
-Datenschutz: Login nur für Lehrkräfte, keine Schülerdaten im Admin.
+Datenschutz: Login nur für Lehrkräfte, keine Schülerdaten im CMS.
 
 ---
 

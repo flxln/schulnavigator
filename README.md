@@ -4,16 +4,16 @@ Eine Web-App für Schulen, die Besuchern eines Tags der offenen Tür an QR-Code-
 
 ## Idee
 
-Besucher scannen QR-Codes, die an Türen und Räumen angebracht sind, und sehen dort von Schülerinnen und Schülern erstellte Inhalte: kurze Audioaufnahmen, Videos, Fotos oder Texte. Eine optionale Gamification-Ebene (Stempel-System) macht den Rundgang interaktiv. Lehrkräfte pflegen Inhalte über eine Admin-Oberfläche ein — ohne technisches Vorwissen.
+Besucher scannen QR-Codes, die an Türen und Räumen angebracht sind, und sehen dort von Schülerinnen und Schülern erstellte Inhalte: kurze Audioaufnahmen, Videos, Fotos oder Texte. Eine optionale Gamification-Ebene (Stempel-System) macht den Rundgang interaktiv. Langfristig pflegen Lehrkräfte Inhalte über **Directus** (Headless CMS) — ohne technisches Vorwissen.
 
 ## Funktionen
 
 - **Stationsseiten** — Jede Station hat eine eigene Seite mit Raumbild, Beschreibung und Medien (Audio, Video, Foto, Text)
 - **Startseite mit Schulhaus-Übersicht** — Schematische Darstellung aller Stationen auf einen Blick
 - **Stempel-System** — Besuchte Stationen werden markiert, Abschluss-Animation bei vollständigem Rundgang
-- **Zugangskontrolle** — Ein Entry-QR-Code am Eingang setzt ein zeitlich begrenztes Token; Inhalte sind nicht öffentlich indexierbar
+- **Zugangskontrolle** — Entry-QR (Eingang/Heft); Modi *fest* (Scan-Rundgang) und *heft* (Stations-Hub); In-App-Scanner für Raum-QRs ([ADR-005](dokumentation/adr/005-zugangskontrolle-token.md))
 - **Mehrsprachigkeit** — UI-Texte in Deutsch und Englisch (Content bleibt in der Originalsprache)
-- **Admin-Oberfläche** — Inhalte einpflegen, Stationen verwalten (Phase 5)
+- **Content-Pflege (Directus)** — Stationen und Medien durch Lehrkräfte (Phase 5, nach Schulfest)
 
 ## Tech-Stack
 
@@ -21,7 +21,8 @@ Besucher scannen QR-Codes, die an Türen und Räumen angebracht sind, und sehen 
 |---|---|
 | Frontend | Next.js (App Router), TypeScript strict, Tailwind CSS |
 | Hosting | Docker (Multi-stage Build), Coolify |
-| Content | JSON-Dateien im Repo → später CMS |
+| Content (MVP) | JSON im Repo |
+| Content (Ziel) | Directus (self-hosted) |
 | Sprache | Deutsch / Englisch |
 
 ## Projektstruktur

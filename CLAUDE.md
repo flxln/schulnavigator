@@ -6,7 +6,7 @@ Dieses Dokument beschreibt Projektstruktur, Arbeitsweise und Konventionen für C
 
 ## Was ist der Schulnavigator?
 
-Eine Web-App für Schulen. Besucher eines Tags der offenen Tür scannen QR-Codes an Zimmern und sehen dort Multimedia-Inhalte (Texte, Bilder, Videos). Eine Admin-Oberfläche ermöglicht Lehrkräften das Einpflegen von Inhalten ohne technisches Vorwissen.
+Eine Web-App für Schulen. Besucher eines Tags der offenen Tür scannen QR-Codes an Zimmern und sehen dort Multimedia-Inhalte (Texte, Bilder, Videos). **MVP:** Content als JSON im Repo (MPZ pflegt). **Langfrist:** Lehrkräfte pflegen über **Directus** — kein Custom-Admin (ADR-003).
 
 ---
 
@@ -45,7 +45,7 @@ schulnavigator/
 │   └── content-generierung.md        # Prompts zur KI-gestützten Inhaltserstellung
 │
 ├── anleitungen/
-│   ├── fuer-lehrkraefte.md            # Admin-Oberfläche bedienen
+│   ├── fuer-lehrkraefte.md            # Directus / Content-Pflege für Lehrkräfte
 │   ├── qr-codes-drucken.md            # QR-Codes exportieren & drucken
 │   └── fuer-entwickler.md             # Setup, Deploy, Wartung
 │
@@ -62,6 +62,10 @@ schulnavigator/
 | ADR | Entscheidung | Status |
 |---|---|---|
 | [001](./dokumentation/adr/001-hosting-coolify.md) | Hosting: MPZ-Hetzner-Server via Coolify, Docker | entschieden |
+| [002](./dokumentation/adr/002-frontend-nextjs.md) | Frontend: Next.js (App Router), Tailwind | entschieden |
+| [003](./dokumentation/adr/003-content-mvp-json-directus.md) | Content: JSON (MVP), Directus; kein Custom-Admin | entschieden |
+| [004](./dokumentation/adr/004-video-hosting-mpz.md) | Video: MPZ-Server; YouTube optional nach Rechtsklärung | entschieden |
+| [005](./dokumentation/adr/005-zugangskontrolle-token.md) | Zugang: Entry-Token, fest/heft, In-App-Scanner | entschieden |
 
 Vollständiger ADR-Index: [`dokumentation/entscheidungen.md`](./dokumentation/entscheidungen.md)
 
@@ -71,11 +75,8 @@ Vollständiger ADR-Index: [`dokumentation/entscheidungen.md`](./dokumentation/en
 
 Alle noch offenen technischen Fragen stehen in [`dokumentation/technische-fragen.md`](./dokumentation/technische-fragen.md). Die wichtigsten:
 
-- Frontend-Framework (Next.js empfohlen)
-- CMS / Admin-Interface
-- Video-Hosting (YouTube-Embed vs. eigene Uploads)
-- URL-Schema (`/raum/[id]` oder sprechende Namen)
-- Authentifizierung für Admin-Bereich
+- YouTube-Freigabe (Recht/DSB) — vor Nutzung von Embed, siehe ADR-004
+- Directus-Rollen und Mandantenfähigkeit (bei Skalierung auf weitere Schulen)
 
 ---
 
