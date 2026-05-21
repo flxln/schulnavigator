@@ -1,18 +1,33 @@
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const appRoot = join(__dirname, '..')
 const appTokensPath = join(appRoot, 'app', 'gs39-tokens.css')
-const sourceTokensPath = join(
-  appRoot,
-  '..',
-  'auftraggeber',
-  'material',
-  'UI-Vorschläge',
-  'colors_and_type.css',
-)
+
+const SOURCE_CANDIDATES = [
+  join(
+    appRoot,
+    '..',
+    'auftraggeber',
+    'material',
+    'UI-Vorschläge',
+    'colors_and_type.css',
+  ),
+  join(appRoot, 'scripts', 'reference', 'colors_and_type.css'),
+]
+
+function resolveSourceTokensPath() {
+  for (const path of SOURCE_CANDIDATES) {
+    if (existsSync(path)) return path
+  }
+  throw new Error(
+    `Keine Quell-CSS gefunden. Erwartet eine von:\n${SOURCE_CANDIDATES.map((p) => `  ${p}`).join('\n')}`,
+  )
+}
+
+const sourceTokensPath = resolveSourceTokensPath()
 
 const SKIP_COMPARE = new Set(['font-ui'])
 

@@ -46,7 +46,7 @@ Alle Befehle im Verzeichnis `app/` ausführen.
 | `npm run format`       | Prettier (Dateien überschreiben) |
 | `npm run format:check` | Prettier nur prüfen              |
 | `npm run test`         | Vitest (u. a. Merge Schulhaus ↔ `stations.json`, Issue #14)   |
-| `npm run validate:tokens` | Prüft `app/gs39-tokens.css` gegen `auftraggeber/material/UI-Vorschläge/colors_and_type.css` (wird von `build` mitaufgerufen) |
+| `npm run validate:tokens` | Prüft `app/gs39-tokens.css` gegen `auftraggeber/.../colors_and_type.css` (lokal) bzw. `app/scripts/reference/colors_and_type.css` (Docker, nur `app/` als Kontext) — wird von `build` mitaufgerufen |
 | `npm run validate:stations` | Prüft `bild`- und `quelle`-Pfade unter `public/` (wird von `build` mitaufgerufen) |
 | `npm run generate:qr`  | QR-PNGs + `manifest.json` unter `public/qr/` (Issue #15); liest `.env` / `.env.local` wie dokumentiert in `scripts/load-env-local.mjs` |
 
@@ -186,6 +186,8 @@ curl -sS https://schulnavigator.mpz.schule/robots.txt
 **Troubleshooting:** Antwort **`503`** / Text **`no available server`** → Proxy (Traefik) ist erreichbar, aber **kein laufender App-Container** hinter der Domain (Coolify-Application noch nicht deployed, Build fehlgeschlagen oder Container crashed) — in Coolify **Logs** und **Deployments** prüfen. **`curl: (60) SSL certificate problem`** → Zertifikatskette oder lokales Trust-Store; zur Abgrenzung im **Browser** öffnen oder Let's-Encrypt-Erneuerung in Coolify prüfen.
 
 **Build schlägt fehl:** `Cannot find module '@tailwindcss/postcss'` (Next/Turbopack bei `globals.css`) — Coolify setzt beim Image-Build oft **`NODE_ENV=production`**. Dann installiert ein nacktes **`npm ci`** keine `devDependencies`, obwohl `next build` PostCSS/Tailwind-Plugins daraus braucht. Im Repo ist die **`deps`-Stage** im [`app/Dockerfile`](../app/Dockerfile) auf **`RUN npm ci --include=dev`** gestellt; nach Pull erneut deployen. Im Log zur Kontrolle: **hunderte** installierte Pakete in der deps-Stage, nicht nur ~20.
+
+**Build schlägt fehl:** `validate:tokens: ENOENT … /auftraggeber/.../colors_and_type.css` — der Docker-Kontext ist nur [`app/`](../app/); `validate:tokens` nutzt dort [`app/scripts/reference/colors_and_type.css`](../app/scripts/reference/colors_and_type.css). Nach Änderungen an der Auftraggeber-Quelle die Referenzkopie mitpflegen und `gs39-tokens.css` synchron halten.
 
 **Optional:** kostenloses Monitoring (z. B. UptimeRobot) auf `https://…/api/health`.
 
