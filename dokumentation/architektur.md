@@ -1,6 +1,6 @@
 # Schulnavigator — Architektur
 
-_Stand: 2026-05-21 (Issue #14: Startseite `/`, `/scan`-Platzhalter) — siehe [entscheidungen.md](./entscheidungen.md)_
+_Stand: 2026-05-21 (Issue #16: Deploy-Runbook, `/eintritt`-Platzhalter, `robots`/`noindex`) — siehe [entscheidungen.md](./entscheidungen.md)_
 
 ## Tech-Stack
 
@@ -21,11 +21,13 @@ _Stand: 2026-05-21 (Issue #14: Startseite `/`, `/scan`-Platzhalter) — siehe [e
 
 ```
 /
+/eintritt
 /scan
 /raum/[slug]
 ```
 
 - **`/`** — Startseite mit schematischem Schulhaus-Hub (Stationen; Phase 2: Puzzle-Modus nach Token).
+- **`/eintritt`** — Platzhalter bis Phase 2 (#23); gleiche URL-Form wie auf den Entry-QRs (Issue #15).
 - **`/scan`** — Platzhalter bis Phase 2; später In-App-QR-Scanner — [ADR-005](./adr/005-zugangskontrolle-token.md).
 
 Sprechende Raum-Slugs (z. B. `/raum/musik`) — siehe [ADR-002](./adr/002-frontend-nextjs.md).
@@ -67,8 +69,11 @@ interface Station {
 
 ## Deployment
 
-- **Produktion:** MPZ-Hetzner-Server, gemanagt über Coolify, deployed als Docker-Container
-- **Image:** [`app/Dockerfile`](../../app/Dockerfile) — Multi-Stage, `output: 'standalone'`, Health `GET /api/health`
+- **Produktion:** MPZ-Hetzner-Server, gemanagt über Coolify, deployed als Docker-Container ([`anleitungen/fuer-entwickler.md`](../anleitungen/fuer-entwickler.md) — Abschnitt „Coolify“).
+- **Öffentliche URL:** `https://schulnavigator.mpz.schule` — erreichbar über MPZ-Wildcard-DNS **`*.mpz.schule`** → Coolify-VPS `217.154.120.240` (kein eigener A-Record nur für `schulnavigator` nötig).
+- **Image:** [`app/Dockerfile`](../../app/Dockerfile) — Multi-Stage, `output: 'standalone'`, Health `GET /api/health`, Container-Port **`PORT=3000`** (Coolify „Ports Exposes“ = `3000`).
+- **Suchmaschinen:** `robots.txt` mit `Disallow: /` und `noindex` im Root-Layout (Issue #16); Verfeinerung in #23 möglich.
+- **Coolify-Service:** nach Anlage UUID/Container-Name hier ergänzen (Betrieb).
 - **Staging:** noch offen — ggf. separates Coolify-Projekt auf demselben Server
 
 ### Voraussetzungen fürs Dockerfile

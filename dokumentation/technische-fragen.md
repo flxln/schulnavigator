@@ -8,7 +8,7 @@ Sie werden **nicht** in Auftraggebergesprächen thematisiert.
 ## Hosting & Infrastruktur
 
 - ✅ **Hosting:** MPZ-Hetzner-Server mit Coolify, Docker-Container
-- Braucht die Schule eine eigene Domain oder reicht eine Subdomain?
+- ✅ **Öffentliche Schul-App-URL (Subdomain MPZ):** `schulnavigator.mpz.schule` — abgedeckt durch **Wildcard-DNS** `*.mpz.schule` → Coolify-VPS (`217.154.120.240`). Coolify-Application + HTTPS siehe [`anleitungen/fuer-entwickler.md`](../anleitungen/fuer-entwickler.md). Eine **eigene Schul-Domain** ist für den MVP nicht vorgesehen.
 - Muss das System auch **offline** funktionieren, falls das Schulnetz kein Internet hat?
   - Falls ja: Service Worker + PWA-Caching notwendig
 

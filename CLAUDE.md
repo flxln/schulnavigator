@@ -12,7 +12,7 @@ Eine Web-App für Schulen. Besucher eines Tags der offenen Tür scannen QR-Codes
 
 ## Projektphasen
 
-Das Projekt liegt unter `2_in-arbeit/schulnavigator/`. **Phase 0** (Architektur-ADRs) ist abgeschlossen; **Phase 1** (Foundation) umfasst **#9–#15** (Next.js, Docker, `/raum/[slug]`, `stations.json`, Raum-Shell, **Startseite Schulhaus-Hub**, Vitest, **QR-Generator**) — siehe [`dokumentation/projektplan.md`](./dokumentation/projektplan.md). Offen in Phase 1: u. a. **#16** (Deploy-Test), **#17** (Raumfotos, extern).
+Das Projekt liegt unter `2_in-arbeit/schulnavigator/`. **Phase 0** (Architektur-ADRs) ist abgeschlossen; **Phase 1** (Foundation) umfasst **#9–#16** (Next.js, Docker, `/raum/[slug]`, `stations.json`, Raum-Shell, **Startseite Schulhaus-Hub**, Vitest, **QR-Generator**, **Deploy-Runbook + Go-Live-Härtung**) — siehe [`dokumentation/projektplan.md`](./dokumentation/projektplan.md). Offen in Phase 1: u. a. **#17** (Raumfotos, extern); **Live-Deploy** Coolify/DNS nach Infrastruktur-Schritten in [`anleitungen/fuer-entwickler.md`](./anleitungen/fuer-entwickler.md).
 
 ---
 

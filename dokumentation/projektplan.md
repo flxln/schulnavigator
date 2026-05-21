@@ -1,6 +1,6 @@
 # Projektplan — Schulnavigator
 
-Stand: 2026-05-21 (Phase-1-Update, #15 QR-Generator ergänzt) | Schulfest (Hard Deadline): 2026-06-26
+Stand: 2026-05-21 (Phase-1-Update, #16 Deploy-Runbook + Go-Live-Härtung) | Schulfest (Hard Deadline): 2026-06-26
 
 ---
 
@@ -55,7 +55,7 @@ Phase 5 │ Post-Fest / Admin-Interface    │ ab Juli
 - [x] Platzhalter-Seite: `RaumViewer`-Stub (Gyro/Hotspots Phase 2), Titel, Beschreibung, Media-Slots — #13
 - [x] Startseite: Schulhaus-SVG mit 11 Segmenten (Puzzle-Layout; Freischaltung Phase 2) — #14
 - [x] QR-Code-Script: 11× Raum (`/raum/[slug]`) + Entry (`/eintritt?t=…`) — #15
-- [ ] Deployment-Test auf MPZ-Server (Coolify)
+- [x] Deployment auf MPZ-Server (Coolify) — **Repo:** Runbook [`anleitungen/fuer-entwickler.md`](../anleitungen/fuer-entwickler.md), Go-Live-Härtung (`robots`, `noindex`, `/eintritt`-Platzhalter), Ziel-URL `https://schulnavigator.mpz.schule`; **Live:** Wildcard-DNS `*.mpz.schule` → VPS; Coolify-Application (siehe Runbook)
 
 ### Nicht in Phase 1
 
@@ -63,7 +63,7 @@ Phase 5 │ Post-Fest / Admin-Interface    │ ab Juli
 
 ### Deliverable
 
-- Deploy-Link, den Sten/Tina im Browser aufrufen können — ausstehend (#16 Coolify)
+- Deploy-Link für Sten/Tina: **`https://schulnavigator.mpz.schule`** — nach DNS + Coolify-Deploy erreichbar (Schritte in [`anleitungen/fuer-entwickler.md`](../anleitungen/fuer-entwickler.md))
 - **11** Stationsrouten unter `/raum/[slug]` mit Text aus Material (Basis-Layout; RaumViewer #13); **Startseite** `/` mit Schulhaus-Hub (#14)
 - Termin am 10.06. vorbereiten: Demo der leeren Shell
 
@@ -212,5 +212,5 @@ Die Schule liefert bis **12.06.** einen Plan: welche Klasse macht welchen Raum i
 2. ~~**ADRs 001–006**~~ — Phase 0 erledigt; bei Änderungen neue ADR-Nummer
 3. ~~**AVV-Entwurf** an Schule~~ — versendet 21.05.; Unterschrift bis 26.06. (Phase 4)
 4. ~~**Maskottchen-Rechte**~~ — Freigabe liegt vor; Impressum in Phase 2/4
-5. ~~**Projektsetup (Phase 1):** Next.js in `app/`, Dockerfile, `/api/health`~~ — #9–#12 erledigt; **Deploy:** MPZ/Coolify (#16)
+5. ~~**Projektsetup (Phase 1):** Next.js in `app/`, Dockerfile, `/api/health`~~ — #9–#12 erledigt; ~~**Deploy:** MPZ/Coolify (#16)~~ — Runbook + Härtung im Repo; Live-URL nach Infrastruktur
 6. **Content-Lieferplan** bei Meeting 10.06. einfordern (Medientyp + Klasse pro Station)

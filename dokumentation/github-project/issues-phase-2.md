@@ -97,7 +97,7 @@ Spezifikation: [ADR-005](../adr/005-zugangskontrolle-token.md)
 - [ ] Startseite: `heft` = voller Hub; `fest` = Puzzle-Hub (#21)
 - [ ] `/scan` — In-App-QR-Scanner (`html5-qrcode` o. ä.); parst `/raum/*` und lehnt Fremd-URLs ab (**ersetzt** die Phase-1-Platzhalterseite aus Issue #14)
 - [ ] Token-Logik serverseitig: dieselben Token-Strings wie in Phase 1 (`app/scripts/qr-config.mjs`); Ablaufdatum / Validierung — bei Domain- oder Token-Wechsel QR-PNGs mit `npm run generate:qr` neu erzeugen (**#15 erledigt**)
-- [ ] `robots.txt` / `noindex` auf geschützten Seiten
+- [ ] `robots.txt` / `noindex` — Basis site-wide bereits in Phase 1 (#16); in #23 optional verfeinern (z. B. nach Middleware nur geschützte Bereiche)
 
 **Demo 10.06.:** primär **`fest`**-UX (Puzzle + Scanner) zeigen; `heft` kurz erklären.
 

@@ -31,7 +31,7 @@ Für den Druckprozess siehe [anleitungen/qr-codes-drucken.md](../../../anleitung
 
 ## Entry-URLs vor Phase 2
 
-Die Routen `/eintritt` und die Token-Prüfung folgen in Issue #23. Entry-QRs können bis dahin eine 404 liefern — die **URL-Form** ist bereits festgelegt ([ADR-005](../../../dokumentation/adr/005-zugangskontrolle-token.md)).
+Die Route `/eintritt` zeigt bis Issue #23 eine **Platzhalterseite** (kein 404); Token-Prüfung, Middleware und `localStorage` folgen in #23. Die **URL-Form** der Entry-QRs ist bereits festgelegt ([ADR-005](../../../dokumentation/adr/005-zugangskontrolle-token.md)).
 
 ## Manuelle Checkliste (nach `generate:qr`)
 

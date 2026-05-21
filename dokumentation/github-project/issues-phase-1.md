@@ -142,20 +142,22 @@ Zwei Ausgabe-Typen ([ADR-005](../adr/005-zugangskontrolle-token.md)):
 
 - Dev-Dependencies: `qrcode`, `tsx`; Druck: SW, Error Correction H, Default-Breite 512 px (anpassbar)
 - Anleitungen: [`anleitungen/qr-codes-drucken.md`](../../anleitungen/qr-codes-drucken.md), [`app/public/qr/README.md`](../../app/public/qr/README.md)
-- Route `/eintritt` und Token-Prüfung bleiben **Phase 2** (#23); Entry-QR-URLs sind bereits final codiert
+- Route `/eintritt` und Token-Prüfung bleiben **Phase 2** (#23); Entry-QR-URLs sind bereits final codiert; seit #16: Platzhalter unter `/eintritt` (kein 404)
 
 ---
 
 ## #16 — Deployment auf MPZ-Server testen
 
+**GitHub:** nach erfolgreichem Live-Deploy im Tracker schließen — **Repo (2026-05-21):** Go-Live-Härtung (`app/app/robots.ts`, `metadata.robots` + `noindex` in `layout.tsx`, Platzhalter `app/app/eintritt/page.tsx`); Coolify-Runbook und Rollback in [`anleitungen/fuer-entwickler.md`](../../anleitungen/fuer-entwickler.md); Ziel-URL `https://schulnavigator.mpz.schule`; QR-Generierung mit dieser Domain möglich (`NEXT_PUBLIC_BASE_URL=… npm run generate:qr`).
+
 **Labels:** `tech`  
 **Assignee:** Felix
 
 - Docker-Image auf Coolify/Hetzner — [ADR-001](../adr/001-hosting-coolify.md)
-- Domain/Subdomain (z. B. `schulnavigator.mpz-dresden.de`)
+- Domain/Subdomain: **`schulnavigator.mpz.schule`** (über Wildcard `*.mpz.schule` → Coolify-VPS `217.154.120.240`; in Coolify als App-Domain eintragen)
 - HTTPS (Pflicht für Kamera/Scanner in Phase 2)
 - Health-Check erreichbar
-- Deploy-Link für Sten/Tina
+- Deploy-Link für Sten/Tina — **nach** DNS + Coolify-Deploy: `https://schulnavigator.mpz.schule`
 
 ---
 

@@ -15,6 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Schulnavigator',
   description: 'Web-App für den Tag der offenen Tür (39. Grundschule Dresden).',
+  robots: { index: false, follow: false },
 }
 
 export default function RootLayout({

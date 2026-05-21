@@ -5,7 +5,10 @@ FROM node:22-alpine AS base
 FROM base AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci
+# Coolify (und andere CI-Umgebungen) setzen häufig NODE_ENV=production beim Build.
+# Dann installiert `npm ci` keine devDependencies — `next build` braucht sie aber
+# (z. B. @tailwindcss/postcss für globals.css).
+RUN npm ci --include=dev
 
 FROM base AS builder
 WORKDIR /app

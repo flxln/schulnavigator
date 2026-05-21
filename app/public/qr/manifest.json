@@ -1,6 +1,86 @@
 {
-  "generatedAt": "pending",
-  "baseUrl": "",
-  "entries": [],
-  "rooms": []
+  "generatedAt": "2026-05-21T20:59:46.267Z",
+  "baseUrl": "https://schulnavigator.mpz.schule",
+  "entries": [
+    {
+      "file": "entry-fest.png",
+      "url": "https://schulnavigator.mpz.schule/eintritt?t=fest-2026",
+      "token": "fest-2026",
+      "mode": "fest"
+    },
+    {
+      "file": "entry-heft.png",
+      "url": "https://schulnavigator.mpz.schule/eintritt?t=heft-2026-27",
+      "token": "heft-2026-27",
+      "mode": "heft"
+    }
+  ],
+  "rooms": [
+    {
+      "file": "raum-klassenzimmer.png",
+      "url": "https://schulnavigator.mpz.schule/raum/klassenzimmer",
+      "slug": "klassenzimmer",
+      "titel": "Klassenzimmer"
+    },
+    {
+      "file": "raum-daz.png",
+      "url": "https://schulnavigator.mpz.schule/raum/daz",
+      "slug": "daz",
+      "titel": "DaZ-Zimmer"
+    },
+    {
+      "file": "raum-pc-raum.png",
+      "url": "https://schulnavigator.mpz.schule/raum/pc-raum",
+      "slug": "pc-raum",
+      "titel": "PC-Raum"
+    },
+    {
+      "file": "raum-werken.png",
+      "url": "https://schulnavigator.mpz.schule/raum/werken",
+      "slug": "werken",
+      "titel": "Werkenzimmer"
+    },
+    {
+      "file": "raum-turnhalle.png",
+      "url": "https://schulnavigator.mpz.schule/raum/turnhalle",
+      "slug": "turnhalle",
+      "titel": "Turnhalle"
+    },
+    {
+      "file": "raum-speiseraum.png",
+      "url": "https://schulnavigator.mpz.schule/raum/speiseraum",
+      "slug": "speiseraum",
+      "titel": "Speiseraum"
+    },
+    {
+      "file": "raum-kunst.png",
+      "url": "https://schulnavigator.mpz.schule/raum/kunst",
+      "slug": "kunst",
+      "titel": "Kunstzimmer"
+    },
+    {
+      "file": "raum-lesewelt.png",
+      "url": "https://schulnavigator.mpz.schule/raum/lesewelt",
+      "slug": "lesewelt",
+      "titel": "Lesewelt"
+    },
+    {
+      "file": "raum-hort.png",
+      "url": "https://schulnavigator.mpz.schule/raum/hort",
+      "slug": "hort",
+      "titel": "Hortzimmer"
+    },
+    {
+      "file": "raum-musik.png",
+      "url": "https://schulnavigator.mpz.schule/raum/musik",
+      "slug": "musik",
+      "titel": "Musikzimmer"
+    },
+    {
+      "file": "raum-schulsozialarbeit.png",
+      "url": "https://schulnavigator.mpz.schule/raum/schulsozialarbeit",
+      "slug": "schulsozialarbeit",
+      "titel": "Schulsozialarbeiterzimmer"
+    }
+  ]
 }

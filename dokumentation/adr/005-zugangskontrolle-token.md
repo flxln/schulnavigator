@@ -70,9 +70,10 @@ Neue Token pro Schulfest bzw. pro Schuljahres-Heft; Entry-QR am Eingang austausc
 ## Konsequenzen
 
 - **Phase 1 (Issue #14):** Startseite `/` mit schematischem Schulhaus (11 SVG-Segmente, Zuordnung `puzzleSegmentId` → Slug); Fortschritt-Platzhalter `0/11`; Link zu `/scan` (Platzhalterseite bis Phase 2); Freischalt-Logik nur als **Dev-Stub** (alle offen / alle gesperrt), ohne Token — echte Modi `fest`/`heft` folgen in Phase 2 (#21, #23)
-- **Phase 1 (Issue #15):** Statische QR-Codes: `npm run generate:qr` (`tsx scripts/generate-qr-codes.ts`) → `public/qr/*.png` + `manifest.json`; URL-Bau in `lib/qr-urls.ts`; Token-Strings und Dateinamen in `scripts/qr-config.mjs`; `.env` / `.env.local` via `scripts/load-env-local.mjs`. Die Route `/eintritt` und die serverseitige Token-Prüfung folgen in Phase 2 (#23) — bis dahin können Entry-QRs beim Scan eine 404 zeigen, die **URL-Form** bleibt stabil.
-- Phase 2: `/eintritt`, Middleware, `localStorage`-Hilfen, `/scan` mit Scanner, Startseite: Puzzle-Hub (`fest`) vs. voller Hub (`heft`)
+- **Phase 1 (Issue #15):** Statische QR-Codes: `npm run generate:qr` (`tsx scripts/generate-qr-codes.ts`) → `public/qr/*.png` + `manifest.json`; URL-Bau in `lib/qr-urls.ts`; Token-Strings und Dateinamen in `scripts/qr-config.mjs`; `.env` / `.env.local` via `scripts/load-env-local.mjs`. Die **URL-Form** der Entry-QRs bleibt stabil.
+- **Phase 1 (Issue #16):** Route `/eintritt` mit **Platzhalterseite** (HTTP 200, kein Next-404); `robots.txt` (`Disallow: /`) und `noindex` im Root-Layout bis zur abschließenden Feinabstimmung in #23. Serverseitige Token-Prüfung, Middleware und `localStorage` folgen in Phase 2 (#23).
+- Phase 2: Middleware, `localStorage`-Hilfen, `/scan` mit Scanner, Startseite: Puzzle-Hub (`fest`) vs. voller Hub (`heft`); bestehende Route `/eintritt` (#16) um Token-Logik erweitern
 - **Phase 2 (#23):** Token-Validierung und Ablaufdatum (mindestens `fest-2026`, `heft-2026-27` wie in `qr-config.mjs`); bei geänderter Domain oder Token die PNGs mit `npm run generate:qr` neu erzeugen
 - Zwei Entry-QR-Drucke: Eingang Schulfest + Heft (gleiche App, unterschiedliche URLs)
-- `robots.txt` / `noindex` für geschützte Bereiche ergänzen
+- `robots.txt` / `noindex`: Basis site-wide in #16; in #23 bei Bedarf für geschützte Bereiche verfeinern (ADR-Ziel: App nicht öffentlich indexierbar)
 - DSGVO: Zugang über Einladungslink-Charakter dokumentieren; kein Anspruch auf starke Authentifizierung
