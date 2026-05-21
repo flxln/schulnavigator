@@ -36,7 +36,7 @@ schulnavigator/
 │   ├── lib/                    # Hilfsfunktionen, Typen
 │   ├── public/                 # Statische Assets (stations/, qr/)
 │   ├── package.json
-│   ├── Dockerfile              # folgt in Phase 1 (#10)
+│   ├── Dockerfile              # Multi-Stage, Standalone (#10)
 │   └── …
 ├── auftraggeber/               # Gesprächsgrundlagen und Antworten
 ├── anleitungen/                # Für Lehrkräfte, Entwickler, QR-Druck
@@ -54,11 +54,13 @@ schulnavigator/
 
 ## Deployment
 
-Die App erfordert ein `Dockerfile` mit:
+Umsetzung: [`app/Dockerfile`](./app/Dockerfile) (Multi-Stage, Next.js `standalone`). Voraussetzungen:
 
 - Multi-stage Build (Build + schlankes Runtime-Image)
 - Port über Umgebungsvariable `PORT`
 - Health-Check-Endpunkt: `GET /api/health` → `200 OK`
+
+Lokaler Build und Lauf: [`anleitungen/fuer-entwickler.md`](./anleitungen/fuer-entwickler.md).
 
 ## Projektplan
 

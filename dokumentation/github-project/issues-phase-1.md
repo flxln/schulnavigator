@@ -12,6 +12,8 @@ Milestone: **Phase 1** | Fällig: 28.05.2026
 
 ## #9 — Next.js-Projekt aufsetzen
 
+**GitHub:** geschlossen (2026-05-21) — Next.js 16 in `app/`, Prettier, Struktur ohne `src/`
+
 **Labels:** `tech`  
 **Assignee:** Felix
 
@@ -24,6 +26,8 @@ Milestone: **Phase 1** | Fällig: 28.05.2026
 
 ## #10 — Dockerfile erstellen
 
+**GitHub:** geschlossen (2026-05-21) — Multi-Stage, `output: 'standalone'`, `HEALTHCHECK` → `/api/health`
+
 **Labels:** `tech`  
 **Assignee:** Felix
 
@@ -35,10 +39,12 @@ Milestone: **Phase 1** | Fällig: 28.05.2026
 
 ## #11 — Routing: /raum/[slug]
 
+**GitHub:** geschlossen (2026-05-21) — `app/app/raum/[slug]/page.tsx`, SSG, `dynamicParams: false` → 404
+
 **Labels:** `tech`  
 **Assignee:** Felix
 
-- Dynamische Route `app/raum/[slug]/page.tsx` — [ADR-002](../adr/002-frontend-nextjs.md)
+- Dynamische Route `app/app/raum/[slug]/page.tsx` (npm-Root `app/`) — [ADR-002](../adr/002-frontend-nextjs.md)
 - Slug aus JSON-Datenmodell (#12)
 - 404 für unbekannte Slugs
 - `/` → Startseite (Zugangskontrolle/Middleware in Phase 2, #23)
@@ -47,6 +53,8 @@ Milestone: **Phase 1** | Fällig: 28.05.2026
 
 ## #12 — JSON-Datenmodell für Stationen definieren
 
+**GitHub:** geschlossen (2026-05-21) — `data/stations.json`, `lib/types.ts`, `lib/stations.ts`, 11 Platzhalter
+
 **Labels:** `tech`  
 **Assignee:** Felix
 
@@ -54,30 +62,30 @@ Schema pro Station ([ADR-003](../adr/003-content-mvp-json-directus.md), [ADR-006
 
 ```ts
 interface Station {
-  slug: string
-  titel: string
-  beschreibung: string
-  bild?: string             // Pfad in /public/stations/ — fehlt → statische Ansicht
-  medien: Medium[]
-  hotspots?: Hotspot[]
-  puzzleSegmentId?: string  // Zuordnung Puzzle-Hub (fest), optional
+  slug: string;
+  titel: string;
+  beschreibung: string;
+  bild?: string; // Pfad in /public/stations/ — fehlt → statische Ansicht
+  medien: Medium[];
+  hotspots?: Hotspot[];
+  puzzleSegmentId?: string; // Zuordnung Puzzle-Hub (fest), optional
 }
 
 interface Hotspot {
-  id: string
-  label?: string
-  x: number                 // 0–1
-  y: number
-  radius?: number
-  mediumId: string
+  id: string;
+  label?: string;
+  x: number; // 0–1
+  y: number;
+  radius?: number;
+  mediumId: string;
 }
 
 interface Medium {
-  id: string
-  typ: 'audio' | 'video' | 'foto' | 'text'
-  quelle: string
-  videoSource?: 'upload' | 'youtube'  // MVP: nur upload — ADR-004
-  untertitel?: string
+  id: string;
+  typ: "audio" | "video" | "foto" | "text";
+  quelle: string;
+  videoSource?: "upload" | "youtube"; // MVP: nur upload — ADR-004
+  untertitel?: string;
 }
 ```
 
@@ -112,7 +120,7 @@ Schematische Schulhaus-Grafik (SVG) mit **11 Segmenten** — [ADR-005](../adr/00
 - Fortschrittsanzeige (Platzhalter „0/11“)
 - Prominenter Link/Button zu `/scan` (Scanner UI Phase 2)
 
-*Nicht in Phase 1:* voller klickbarer Hub für `fest` (widerspricht Schulfest-Konzept).
+_Nicht in Phase 1:_ voller klickbarer Hub für `fest` (widerspricht Schulfest-Konzept).
 
 ---
 

@@ -1,7 +1,7 @@
 # Schulnavigator — Technische Klärungsfragen
 
 Diese Fragen kläre ich als Entwickler intern oder entscheide eigenständig.
-Sie werden **nicht** in Auftraggebергesprächen thematisiert.
+Sie werden **nicht** in Auftraggebergesprächen thematisiert.
 
 ---
 
@@ -14,7 +14,7 @@ Sie werden **nicht** in Auftraggebергesprächen thematisiert.
 
 ## URL-Schema & QR-Codes
 
-- URL-Struktur pro Raum: `/raum/[id]` (numerisch) oder sprechend z. B. `/raum/chemie`?
+- ✅ **URL-Struktur pro Raum:** `/raum/[slug]` (sprechend) — umgesetzt in `app/app/raum/[slug]/`; siehe [ADR-002](./adr/002-frontend-nextjs.md)
 - QR-Codes: **statisch** (vorab als PNG generiert und ausgedruckt) oder **dynamisch** (CMS erzeugt sie live)?
 - Redirect-Schicht sinnvoll? (z. B. `qr.schulnavigator.de/42` → echte URL), damit URLs später geändert werden können, ohne QR-Codes neu zu drucken
 

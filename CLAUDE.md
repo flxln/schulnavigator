@@ -12,7 +12,7 @@ Eine Web-App für Schulen. Besucher eines Tags der offenen Tür scannen QR-Codes
 
 ## Projektphasen
 
-Das Projekt liegt unter `2_in-arbeit/schulnavigator/`. **Phase 0** (Architektur-ADRs) ist abgeschlossen; **Phase 1** (Next.js-Grundgerüst) läuft — siehe [`dokumentation/projektplan.md`](./dokumentation/projektplan.md).
+Das Projekt liegt unter `2_in-arbeit/schulnavigator/`. **Phase 0** (Architektur-ADRs) ist abgeschlossen; **Phase 1** (Foundation) ist mit **#9–#12** begonnen — siehe [`dokumentation/projektplan.md`](./dokumentation/projektplan.md).
 
 ---
 
@@ -54,7 +54,8 @@ schulnavigator/
     ├── lib/
     ├── public/
     ├── package.json
-    └── Dockerfile                   # folgt in Phase 1 (#10)
+    ├── Dockerfile                     # Multi-Stage, Standalone (#10)
+    └── .dockerignore
 ```
 
 ---
