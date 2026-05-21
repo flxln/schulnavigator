@@ -19,13 +19,13 @@ Milestone: **Phase 2** | Fällig: 12.06.2026
 
 Spezifikation: [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
 
-- [ ] **Gyro-Viewer (Standard):** Querformat-Foto höhenbasiert, horizontaler Pan per `deviceorientation` (gedämpft, begrenzt)
-- [ ] **Hotspots:** Overlay-Marker aus JSON; Aktivierung wenn Viewport-Mitte im Radius **oder** Tap
-- [ ] **Tap-Fallback:** Marker immer tappbar; Hinweis wenn Orientierung fehlt/abgelehnt; optional Wischen
-- [ ] **iOS:** Orientierung nach Nutzer-Geste; HTTPS (bereits #16)
-- [ ] Medien-Panel: öffnet Player (#18–#20) je nach `medium.typ`
-- [ ] Ohne `bild`: statisches Layout + Medienliste unterhalb
-- [ ] Demo-Station mit 1–2 Test-Hotspots für Meeting 10.06. (#25)
+- [x] **Gyro-Viewer (Standard):** Querformat-Foto höhenbasiert, horizontaler Pan per `deviceorientation` (gedämpft, begrenzt)
+- [x] **Hotspots:** Overlay-Marker aus JSON; Aktivierung wenn Viewport-Mitte im Radius **oder** Tap
+- [x] **Tap-Fallback:** Marker immer tappbar; Hinweis wenn Orientierung fehlt/abgelehnt; optional Wischen
+- [x] **iOS:** Orientierung nach Nutzer-Geste; HTTPS (bereits #16)
+- [x] Medien-Panel: öffnet Wiedergabe je nach `medium.typ` (HTML5-Basis; UI-Polish in #18–#20)
+- [x] Ohne `bild`: statisches Layout + Medienliste unterhalb
+- [x] Demo-Station mit 1–2 Test-Hotspots für Meeting 10.06. (#25)
 
 ---
 

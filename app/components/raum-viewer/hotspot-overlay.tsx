@@ -12,6 +12,7 @@ const TYP_LABEL: Record<Medium['typ'], string> = {
 export type HotspotOverlayProps = {
   hotspots: Hotspot[]
   medien: Medium[]
+  activeHotspotId?: string | null
   onHotspotTap?: (hotspot: Hotspot) => void
 }
 
@@ -28,32 +29,39 @@ function hotspotAriaLabel(hs: Hotspot, medien: Medium[]): string {
 export function HotspotOverlay({
   hotspots,
   medien,
+  activeHotspotId = null,
   onHotspotTap,
 }: HotspotOverlayProps) {
   if (hotspots.length === 0) {
     return null
   }
 
+  const baseMarker =
+    'pointer-events-auto absolute h-4 w-4 rounded-full border-2 border-fg-on-dark shadow-gs39-sm ring-2 ring-bg-dark/25'
+
   return (
     <ul className="pointer-events-none absolute inset-0 m-0 list-none p-0">
       {hotspots.map((hs) => {
         const label = hotspotAriaLabel(hs, medien)
         const interactive = typeof onHotspotTap === 'function'
+        const isActive = activeHotspotId === hs.id
         const style = {
           left: `${hs.x * 100}%`,
           top: `${hs.y * 100}%`,
           transform: 'translate(-50%, -50%)',
         } as const
-        const className =
-          'pointer-events-auto absolute h-4 w-4 rounded-full border-2 border-white bg-amber-500 shadow-md ring-2 ring-zinc-900/30'
+        const colorClass = isActive
+          ? 'bg-accent ring-4 ring-accent/40'
+          : 'bg-brand-sun'
 
         if (interactive) {
           return (
             <li key={hs.id} style={style}>
               <button
                 type="button"
-                className={className}
+                className={`${baseMarker} ${colorClass}`}
                 aria-label={label}
+                aria-current={isActive ? 'true' : undefined}
                 onClick={() => onHotspotTap(hs)}
               />
             </li>
@@ -66,7 +74,7 @@ export function HotspotOverlay({
               role="img"
               aria-label={label}
               tabIndex={-1}
-              className={className}
+              className={`${baseMarker} ${colorClass}`}
             />
           </li>
         )

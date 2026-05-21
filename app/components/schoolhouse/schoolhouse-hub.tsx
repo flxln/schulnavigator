@@ -76,7 +76,7 @@ export function SchoolhouseHub({ segments }: SchoolhouseHubProps) {
               <Link
                 key={s.slug}
                 href={`/raum/${s.slug}`}
-                className="absolute z-10 block rounded-lg ring-2 ring-transparent focus-visible:ring-emerald-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                className="absolute z-10 block rounded-[var(--r-md)] ring-2 ring-transparent focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg-2"
                 style={{
                   left: pct(s.x, 400),
                   top: pct(s.y, 600),
@@ -92,7 +92,7 @@ export function SchoolhouseHub({ segments }: SchoolhouseHubProps) {
       </div>
       {allLocked ? (
         <p
-          className="rounded-lg bg-zinc-100 px-3 py-2 text-center text-sm text-zinc-800"
+          className="rounded-[var(--r-md)] bg-bg-3 px-3 py-2 text-center text-sm text-fg-1"
           role="status"
         >
           Stationen sind gesperrt. Bitte scanne den QR-Code an der Raumtür

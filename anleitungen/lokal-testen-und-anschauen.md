@@ -32,7 +32,7 @@ npm run dev
 | [http://localhost:3000/eintritt?t=fest-2026](http://localhost:3000/eintritt?t=fest-2026) | **Platzhalter** für Entry-Link (Phase 2 #23: Token); im Dev-Modus optional Anzeige des Parameters `t` |
 | [http://localhost:3000/robots.txt](http://localhost:3000/robots.txt) | `Disallow: /` (Issue #16) |
 | [http://localhost:3000/scan](http://localhost:3000/scan) | Platzhalter für den In-App-QR-Scanner (Phase 2, Issue #23) |
-| [http://localhost:3000/raum/musik](http://localhost:3000/raum/musik) | Demo: Raumbild, **2 Hotspots**, **4 Medien-Slots** (alle Typen) |
+| [http://localhost:3000/raum/musik](http://localhost:3000/raum/musik) | Demo: Raumbild, **Gyro-Pan** (oder Wischen), **2 Hotspots** (Mitte oder Tap), **Medien-Panel**, **4 Medien-Slots** |
 | [http://localhost:3000/raum/schulsozialarbeit](http://localhost:3000/raum/schulsozialarbeit) | **Ohne** Raumbild: statischer Platzhalter + Text-Medium |
 | [http://localhost:3000/raum/klassenzimmer](http://localhost:3000/raum/klassenzimmer) | Raumbild + **leere** Medienliste (Empty-State) |
 | [http://localhost:3000/raum/gibts-nicht](http://localhost:3000/raum/gibts-nicht) | **404** (nur im Dev-Server; unbekannte Slugs sind zur Build-Zeit fest) |
@@ -64,7 +64,11 @@ npm run start
 - App unter [http://localhost:3000](http://localhost:3000) (Port siehe Terminal-Ausgabe).
 - Zum Beenden: im Terminal `Ctrl+C`.
 
-`npm run build` ruft zuvor **`npm run validate:stations`** auf: Es muss jede in `stations.json` referenzierte Datei unter `public/` existieren (Raumbilder, Demo-Medien). Fehlt etwas, bricht der Build mit einer klaren Meldung ab.
+`npm run build` ruft zuvor **`npm run validate:tokens`** (Abgleich `app/gs39-tokens.css` ↔ `auftraggeber/.../colors_and_type.css`) und **`npm run validate:stations`** auf: Es muss jede in `stations.json` referenzierte Datei unter `public/` existieren (Raumbilder, Demo-Medien). Fehlt etwas, bricht der Build mit einer klaren Meldung ab.
+
+**Raum-Viewer (Issue #55):** Unter `/raum/musik` Gyro testen — auf dem **iPhone nur unter HTTPS** (z. B. Live-Domain oder Tunnel); im Desktop-Dev oft kein `deviceorientation`. Unter iOS: Button „Orientierung aktivieren“. Ohne Gyro: Hotspots **tippen** oder im Bild **wischen** (horizontaler Pan).
+
+**Design-Tokens:** Farben und Typo folgen [`auftraggeber/material/UI-Vorschläge/colors_and_type.css`](../auftraggeber/material/UI-Vorschläge/colors_and_type.css) (Kopie in `app/app/gs39-tokens.css`). **Dark Mode** der App ist bewusst deaktiviert (Papier-Look).
 
 ---
 
@@ -73,6 +77,7 @@ npm run start
 Im Ordner `app/`:
 
 ```bash
+npm run validate:tokens   # Design-Tokens vs. Auftraggeber-CSS
 npm run validate:stations   # nur Asset-Pfade prüfen
 npm run test                  # Vitest (Merge Schulhaus ↔ JSON)
 npm run lint                  # ESLint

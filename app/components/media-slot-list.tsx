@@ -10,10 +10,10 @@ export function MediaSlotList({ medien, onMediaSelect }: MediaSlotListProps) {
   if (medien.length === 0) {
     return (
       <section id="medien" aria-labelledby="medien-heading" className="mt-2">
-        <h2 id="medien-heading" className="text-lg font-semibold text-zinc-900">
+        <h2 id="medien-heading" className="text-lg font-semibold text-fg-1">
           Medien
         </h2>
-        <p className="mt-2 text-sm text-zinc-600">
+        <p className="mt-2 text-sm text-fg-2">
           Hier kommen später Audio, Video und Fotos der Kinder.
         </p>
       </section>
@@ -22,7 +22,7 @@ export function MediaSlotList({ medien, onMediaSelect }: MediaSlotListProps) {
 
   return (
     <section id="medien" aria-labelledby="medien-heading" className="mt-2">
-      <h2 id="medien-heading" className="text-lg font-semibold text-zinc-900">
+      <h2 id="medien-heading" className="text-lg font-semibold text-fg-1">
         Medien
       </h2>
       <ul className="mt-4 flex flex-col gap-3">

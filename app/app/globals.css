@@ -1,28 +1,56 @@
 @import 'tailwindcss';
+@import './gs39-tokens.css';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+ * Dark Mode: bewusst nicht unterstützt — GS39 ist paper-first (warmes Papier, Navy-Tinte).
+ * prefers-color-scheme wird nicht ausgewertet.
+ */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --font-sans: var(--font-ui);
+  --font-mono: var(--font-mono);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-bg-1: var(--bg-1);
+  --color-bg-2: var(--bg-2);
+  --color-bg-3: var(--bg-3);
+  --color-bg-dark: var(--bg-dark);
+
+  --color-fg-1: var(--fg-1);
+  --color-fg-2: var(--fg-2);
+  --color-fg-3: var(--fg-3);
+  --color-fg-on-dark: var(--fg-on-dark);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--brand-green-700);
+  --color-accent-alt: var(--accent-alt);
+  --color-warn: var(--warn);
+  --color-error: var(--error);
+
+  --color-brand-sun: var(--brand-sun);
+  --color-brand-sky-50: var(--brand-sky-50);
+  --color-brand-navy-300: var(--brand-navy-300);
+  --color-brand-green-300: var(--brand-green-300);
+
+  --color-border-1: var(--border-1);
+  --color-border-2: var(--border-2);
+
+  --shadow-gs39-sm: var(--shadow-sm);
+  --shadow-gs39-md: var(--shadow-md);
+  --shadow-gs39-lg: var(--shadow-lg);
+
+  --radius-gs39-sm: var(--r-sm);
+  --radius-gs39-md: var(--r-md);
+  --radius-gs39-lg: var(--r-lg);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg-1);
+  color: var(--fg-1);
+  font-family: var(--font-ui);
+  font-size: var(--t-body);
+  line-height: var(--lh-normal);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 .sr-only {

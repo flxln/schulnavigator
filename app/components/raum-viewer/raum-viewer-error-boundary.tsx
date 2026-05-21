@@ -21,15 +21,15 @@ export class RaumViewerErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div
-          className="flex min-h-[min(42vh,280px)] flex-col items-center justify-center gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-8 text-center"
+          className="flex min-h-[min(42vh,280px)] flex-col items-center justify-center gap-3 rounded-[var(--r-md)] border border-border-2 bg-brand-sky-50 px-4 py-8 text-center"
           role="alert"
         >
-          <p className="text-sm font-medium text-zinc-900">
+          <p className="text-sm font-medium text-fg-1">
             Die Raumansicht konnte nicht geladen werden.
           </p>
           <Link
             href="/"
-            className="text-sm text-zinc-700 underline underline-offset-2 hover:text-zinc-900"
+            className="text-sm text-accent-alt underline underline-offset-2 hover:text-fg-1"
           >
             Zur Startseite
           </Link>

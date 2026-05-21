@@ -5,12 +5,12 @@ type StaticRoomFallbackProps = {
 export function StaticRoomFallback({ titel }: StaticRoomFallbackProps) {
   return (
     <div
-      className="flex h-[min(42vh,280px)] w-full flex-col items-center justify-center gap-2 rounded-lg bg-gradient-to-br from-zinc-300 to-zinc-500 px-4 text-center"
+      className="flex h-[min(42vh,280px)] w-full flex-col items-center justify-center gap-2 rounded-[var(--r-md)] bg-gradient-to-br from-brand-sky-50 to-brand-green-300/40 px-4 text-center"
       role="img"
       aria-label={`Platzhalter: noch kein Raumfoto für ${titel}`}
     >
-      <p className="text-sm font-semibold text-zinc-900">Raumfoto folgt</p>
-      <p className="max-w-xs text-xs text-zinc-800">
+      <p className="text-sm font-semibold text-fg-1">Raumfoto folgt</p>
+      <p className="max-w-xs text-xs text-fg-2">
         Sobald ein Foto vorliegt, erscheint hier die Raumansicht mit Hotspots.
       </p>
     </div>

@@ -77,9 +77,9 @@ Phase 5 │ Post-Fest / Admin-Interface    │ ab Juli
 
 **Raum-Viewer** ([ADR-006](./adr/006-raum-viewer-gyro-hotspots.md))
 
-- [ ] `RaumViewer`: Gyro-Pan (Standard), Hotspot-Overlay, Medien-Panel bei Treffer/Tap
-- [ ] Tap-Fallback + optional Wischen; iOS-Orientierung nach Nutzer-Geste
-- [ ] Ohne `bild`: statische Ansicht + Medienliste
+- [x] `RaumViewer`: Gyro-Pan (Standard), Hotspot-Overlay, Medien-Panel bei Treffer/Tap — GitHub **#55** (inkl. GS39-Theme, `validate:tokens`)
+- [x] Tap-Fallback + optional Wischen; iOS-Orientierung nach Nutzer-Geste
+- [x] Ohne `bild`: statische Ansicht + Medienliste
 
 **Medien**
 

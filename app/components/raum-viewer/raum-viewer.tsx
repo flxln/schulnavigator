@@ -8,7 +8,9 @@ export type RaumViewerProps = {
   alt: string
   hotspots?: Hotspot[]
   medien: Medium[]
+  activeHotspotId?: string | null
   onHotspotTap?: (hotspot: Hotspot) => void
+  onHotspotCenterHit?: (hotspot: Hotspot | null) => void
 }
 
 export function RaumViewer({
@@ -16,7 +18,9 @@ export function RaumViewer({
   alt,
   hotspots,
   medien,
+  activeHotspotId,
   onHotspotTap,
+  onHotspotCenterHit,
 }: RaumViewerProps) {
   return (
     <div className="flex flex-col gap-2">
@@ -25,11 +29,15 @@ export function RaumViewer({
         alt={alt}
         hotspots={hotspots}
         medien={medien}
+        activeHotspotId={activeHotspotId}
         onHotspotTap={onHotspotTap}
+        onHotspotCenterHit={onHotspotCenterHit}
       />
-      <p className="text-center text-xs text-zinc-500">
-        Raum erkunden — Bewegung folgt in Phase 2 (Gyro-Viewer).
-      </p>
+      {!hotspots?.length ? (
+        <p className="text-center text-xs text-fg-3">
+          Sobald Hotspots in den Daten stehen, erscheinen Marker im Raumfoto.
+        </p>
+      ) : null}
     </div>
   )
 }

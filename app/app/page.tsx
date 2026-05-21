@@ -16,8 +16,8 @@ export default function Home() {
   return (
     <main className="mx-auto flex min-h-full max-w-lg flex-col gap-6 overflow-x-hidden px-4 py-8 pb-[max(1rem,env(safe-area-inset-bottom))]">
       <header className="flex flex-col gap-2 text-center">
-        <h1 className="text-2xl font-semibold text-zinc-900">Schulnavigator</h1>
-        <p className="text-sm leading-relaxed text-zinc-600">
+        <h1 className="text-2xl font-semibold text-fg-1">Schulnavigator</h1>
+        <p className="text-sm leading-relaxed text-fg-2">
           Wähle eine Station im Schulhaus oder scanne den QR-Code an der Tür.
         </p>
       </header>

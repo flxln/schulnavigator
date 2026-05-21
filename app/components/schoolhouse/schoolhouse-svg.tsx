@@ -13,7 +13,7 @@ export function SchoolhouseSvg({
   return (
     <svg
       viewBox={SCHOOLHOUSE_VIEWBOX}
-      className="h-full w-full text-zinc-900"
+      className="h-full w-full text-fg-1"
       role="group"
       aria-labelledby="hub-schoolhouse-title"
     >
@@ -23,7 +23,7 @@ export function SchoolhouseSvg({
         width={ENTRANCE_CELL.width}
         height={ENTRANCE_CELL.height}
         rx={10}
-        className="fill-zinc-100 stroke-zinc-300"
+        className="fill-bg-3 stroke-border-2"
         strokeWidth={1}
         pointerEvents="none"
       />
@@ -32,7 +32,7 @@ export function SchoolhouseSvg({
         y={ENTRANCE_CELL.y + ENTRANCE_CELL.height / 2}
         textAnchor="middle"
         dominantBaseline="middle"
-        className="fill-zinc-500"
+        className="fill-fg-3"
         style={{ fontSize: 11 }}
         pointerEvents="none"
       >
@@ -53,8 +53,8 @@ export function SchoolhouseSvg({
               pointerEvents="none"
               className={
                 unlocked
-                  ? 'fill-emerald-100 stroke-emerald-700'
-                  : 'fill-zinc-200 stroke-zinc-400 opacity-60'
+                  ? 'fill-brand-green-300/35 stroke-accent'
+                  : 'fill-bg-3 stroke-border-2 opacity-60'
               }
             />
             <text
@@ -62,7 +62,7 @@ export function SchoolhouseSvg({
               y={s.y + s.height / 2}
               textAnchor="middle"
               dominantBaseline="middle"
-              className={unlocked ? 'fill-zinc-900' : 'fill-zinc-600'}
+              className={unlocked ? 'fill-fg-1' : 'fill-fg-2'}
               style={{ fontSize: 10 }}
               pointerEvents="none"
               {...(label.length > 12

@@ -19,14 +19,14 @@ export function MediaSlot({ medium, onMediaSelect }: MediaSlotProps) {
 
   const body = (
     <>
-      <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+      <p className="text-xs font-semibold uppercase tracking-wide text-fg-3">
         {label}
       </p>
       {medium.untertitel ? (
-        <p className="mt-1 text-sm text-zinc-700">{medium.untertitel}</p>
+        <p className="mt-1 text-sm text-fg-2">{medium.untertitel}</p>
       ) : null}
       {medium.typ === 'foto' ? (
-        <div className="relative mt-3 aspect-video w-full max-h-48 overflow-hidden rounded-md bg-zinc-100">
+        <div className="relative mt-3 aspect-video w-full max-h-48 overflow-hidden rounded-[var(--r-sm)] bg-bg-3">
           <Image
             src={medium.quelle}
             alt={medium.untertitel ?? 'Stationsfoto'}
@@ -37,29 +37,32 @@ export function MediaSlot({ medium, onMediaSelect }: MediaSlotProps) {
         </div>
       ) : null}
       {medium.typ === 'text' ? (
-        <p className="mt-2 text-sm text-zinc-600">
+        <p className="mt-2 text-sm text-fg-2">
           <a
             href={medium.quelle}
-            className="font-medium text-zinc-900 underline-offset-2 hover:underline"
+            className="font-medium text-accent-alt underline-offset-2 hover:underline"
             target="_blank"
             rel="noreferrer"
           >
             Textdatei öffnen
           </a>
-          <span className="text-zinc-500"> ({medium.quelle})</span>
+          <span className="text-fg-3"> ({medium.quelle})</span>
         </p>
       ) : null}
       {(medium.typ === 'audio' || medium.typ === 'video') && (
-        <p className="mt-2 text-sm text-zinc-600">
+        <p className="mt-2 text-sm text-fg-2">
           Player und Wiedergabe folgen in Phase 2.
         </p>
       )}
     </>
   )
 
+  const cardClass =
+    'rounded-[var(--r-md)] border border-border-1 bg-bg-2 p-4 shadow-gs39-sm transition-[box-shadow,transform] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-gs39-md'
+
   if (interactive) {
     return (
-      <article className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
+      <article className={cardClass}>
         <button
           type="button"
           className="w-full text-left"
@@ -71,9 +74,5 @@ export function MediaSlot({ medium, onMediaSelect }: MediaSlotProps) {
     )
   }
 
-  return (
-    <article className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
-      {body}
-    </article>
-  )
+  return <article className={cardClass}>{body}</article>
 }

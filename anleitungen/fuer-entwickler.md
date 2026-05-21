@@ -46,6 +46,7 @@ Alle Befehle im Verzeichnis `app/` ausführen.
 | `npm run format`       | Prettier (Dateien überschreiben) |
 | `npm run format:check` | Prettier nur prüfen              |
 | `npm run test`         | Vitest (u. a. Merge Schulhaus ↔ `stations.json`, Issue #14)   |
+| `npm run validate:tokens` | Prüft `app/gs39-tokens.css` gegen `auftraggeber/material/UI-Vorschläge/colors_and_type.css` (wird von `build` mitaufgerufen) |
 | `npm run validate:stations` | Prüft `bild`- und `quelle`-Pfade unter `public/` (wird von `build` mitaufgerufen) |
 | `npm run generate:qr`  | QR-PNGs + `manifest.json` unter `public/qr/` (Issue #15); liest `.env` / `.env.local` wie dokumentiert in `scripts/load-env-local.mjs` |
 

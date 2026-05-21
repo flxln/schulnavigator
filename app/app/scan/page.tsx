@@ -13,16 +13,14 @@ export default function ScanPlaceholderPage() {
       <nav aria-label="Navigation">
         <Link
           href="/"
-          className="inline-flex min-h-11 min-w-11 items-center text-sm font-medium text-zinc-600 underline-offset-4 hover:text-zinc-900 hover:underline"
+          className="inline-flex min-h-11 min-w-11 items-center text-sm font-medium text-accent-alt underline-offset-4 hover:text-fg-1 hover:underline"
         >
           Zur Startseite
         </Link>
       </nav>
       <header>
-        <h1 className="text-2xl font-semibold text-zinc-900">
-          QR-Code scannen
-        </h1>
-        <p className="mt-4 text-zinc-700 leading-relaxed">
+        <h1 className="text-2xl font-semibold text-fg-1">QR-Code scannen</h1>
+        <p className="mt-4 text-fg-2 leading-relaxed">
           Der In-App-Scanner für Raum-QR-Codes kommt in Phase 2 (Issue #23). Bis
           dahin kannst du Raum-QR-Codes mit der Kamera-App deines Geräts
           scannen, wenn du die App bereits über den Eintritts-Link geöffnet
