@@ -19,7 +19,7 @@ Der Fortschrittsbalken in GitHub ergibt sich automatisch aus den geschlossenen I
 
 ## Phase 2 — Content-Struktur + UI
 **Fällig:** 12.06.2026
-**Beschreibung:** Fertige App-Shell mit allen UI-Komponenten. Gleichzeitig muss die Schule den Content-Lieferplan abgeben — das ist der härteste Abhängigkeitspunkt.
+**Beschreibung:** Fertige App-Shell mit allen UI-Komponenten inkl. Raum-Viewer (Gyro, Hotspots, Tap-Fallback, ADR-006). Gleichzeitig muss die Schule den Content-Lieferplan abgeben — das ist der härteste Abhängigkeitspunkt.
 
 ---
 
@@ -31,10 +31,10 @@ Der Fortschrittsbalken in GitHub ergibt sich automatisch aus den geschlossenen I
 
 ## Phase 4 — Live am Schulfest
 **Fällig:** 26.06.2026
-**Beschreibung:** Hard Deadline. 8 Stationen live, stabil, Tablet-Fallback bereit.
+**Beschreibung:** Hard Deadline. 11 Stationen live (`fest`: Puzzle-Hub + Scanner), Entry-QR am Eingang, Tablet-Fallback.
 
 ---
 
 ## Phase 5 — Post-Fest
 **Fällig:** 31.10.2026
-**Beschreibung:** Admin-Interface, Mehrsprachigkeit, Vorbereitung für andere Schulen. Kein harter Termin — Prioritäten nach Auswertung festlegen.
+**Beschreibung:** Directus, Mehrsprachigkeit, Mandanten-Vorbereitung. Kein harter Termin — Prioritäten nach Auswertung.

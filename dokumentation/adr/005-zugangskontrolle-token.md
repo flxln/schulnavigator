@@ -23,10 +23,10 @@ Technisch: Web-App (Next.js), kein App Store (ADR-002), Hosting MPZ (ADR-001).
 
 | Profil | Token-Beispiel | Gültigkeit | Startseite nach Entry |
 |--------|----------------|------------|------------------------|
-| **`fest`** | Schulfest / Tag der offenen Tür | kurz (z. B. Festzeitraum) | **Kein Hub:** keine klickbare Liste aller Räume; Willkommen + Fortschritt (Stempel) + „Station scannen“ |
-| **`heft`** | Schulstartheft / Dauerbetrieb | lang (z. B. 1 Schuljahr) | **Hub:** alle Stationen auf der Startseite anklickbar |
+| **`fest`** | Schulfest / Tag der offenen Tür | kurz (z. B. Festzeitraum) | **Puzzle-Hub:** schematisches Schulhaus mit 11 Segmenten; Segmente werden nach Scan **progressive disclosure** (aufgedeckt); nur freigeschaltete Stationen klickbar |
+| **`heft`** | Schulstartheft / Dauerbetrieb | lang (z. B. 1 Schuljahr) | **Voller Hub:** alle 11 Stationen von Anfang an auf der Startseite anklickbar |
 
-Raum-QRs (`/raum/[slug]`) sind in **beiden** Modi **Navigation**, keine separaten Zugangsrechte pro Raum. Wer den Entry hat, könnte eine Raum-URL theoretisch manuell aufrufen — am Fest wird das über **UX** (kein Hub) nicht angeboten.
+Raum-QRs (`/raum/[slug]`) sind in **beiden** Modi **Navigation**, keine separaten Zugangsrechte pro Raum. Wer den Entry hat, könnte eine Raum-URL theoretisch manuell aufrufen — am Fest lenkt der **Puzzle-Hub** (gesperrte Segmente) die Nutzung, ohne alle Räume sofort anzubieten.
 
 ### 3. Navigation nach Entry
 
@@ -52,7 +52,7 @@ Neue Token pro Schulfest bzw. pro Schuljahres-Heft; Entry-QR am Eingang austausc
 ## Begründung
 
 - Entspricht „Passwort ist der QR am Eingang“ (Sten), ohne Tippen
-- **`fest` ohne Hub** erhält den Rundgang-Charakter am offenen Tag
+- **Puzzle-Hub bei `fest`** verbindet Museum-Übersicht (Thomas) mit QR-first-Rundgang: Teile decken sich nach Scan auf
 - **`heft` mit Hub** unterstützt Eltern ohne Besuch jedes Raums
 - **`localStorage`** vermeidet leere Sessions bei Kamera-Scan in neuem Tab
 - In-App-Scanner reduziert Reibung zwischen 11 Stationen
@@ -61,7 +61,7 @@ Neue Token pro Schulfest bzw. pro Schuljahres-Heft; Entry-QR am Eingang austausc
 ## Verworfene Alternativen
 
 - **Nur `sessionStorage`:** Raum-QR per Kamera öffnet oft neuen Tab ohne Token
-- **Hub in beiden Modi:** widerspricht Schulfest-Nutzerführung (sofort alle Räume klickbar)
+- **Voller Hub bei `fest`:** widerspricht Schulfest-Nutzerführung (sofort alle Räume klickbar)
 - **Token pro Raum im Heft:** unnötiger Druck- und Support-Aufwand
 - **HTTP-Basic / Passwort:** im Gespräch verworfen
 - **Echtes Login / Accounts:** zu schwer für MVP und Zielgruppe
@@ -69,7 +69,7 @@ Neue Token pro Schulfest bzw. pro Schuljahres-Heft; Entry-QR am Eingang austausc
 
 ## Konsequenzen
 
-- Phase 2: `/eintritt`, Middleware, `localStorage`-Hilfen, `/scan`, startseite mit `mode`-Abzweigung
+- Phase 2: `/eintritt`, Middleware, `localStorage`-Hilfen, `/scan`, Startseite: Puzzle-Hub (`fest`) vs. voller Hub (`heft`)
 - Token-Generierungs-Script (Issue #23): mindestens `fest-2026`, `heft-2026-27` mit Ablaufdatum
 - Zwei Entry-QR-Drucke: Eingang Schulfest + Heft (gleiche App, unterschiedliche URLs)
 - `robots.txt` / `noindex` für geschützte Bereiche ergänzen

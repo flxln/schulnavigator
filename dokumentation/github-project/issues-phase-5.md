@@ -30,7 +30,7 @@ Ergebnis: priorisierte Liste für Phase-5-Features.
 **Assignee:** Felix
 
 Alle während Projekttag und Schulfest beobachteten Probleme als Issues anlegen.
-Besonders: mobile Darstellung, Ladezeiten, QR-Code-Scan-Verhalten.
+Besonders: mobile Darstellung, Ladezeiten, In-App-Scanner, Puzzle-Hub, Token/`heft`-Modus.
 
 ---
 
@@ -82,9 +82,8 @@ Tinas Motivation: englischsprachige Eltern (TU Dresden, internationale Familien)
 **Labels:** `content` `org`
 **Assignee:** Felix / Schule
 
-Stationen, die für 26.6. nicht geschafft wurden, nachträglich ergänzen.
-Konkrete Liste ergibt sich aus Issue #44 (Auswertung).
-Mögliche Kandidaten aus dem Gespräch: restliche Klassenzimmer, Außenbereich, Hortraum.
+Stationen mit schwachem Content oder technischen Problemen überarbeiten; ggf. **12.+ Station** (z. B. Außenbereich, Robotik-Werkraum) — Liste aus #44.
+Aktuell **11 Stationen** im MVP; Erweiterung über JSON (bis Directus #47 live).
 
 ---
 
@@ -96,7 +95,8 @@ Mögliche Kandidaten aus dem Gespräch: restliche Klassenzimmer, Außenbereich, 
 Im Gespräch am 07.05. wurden mehrere Features diskutiert, die explizit auf "nach 26.6." verschoben wurden.
 Nach der Auswertung entscheiden, welche davon umgesetzt werden:
 
-- [ ] AR-Elemente (Augmented Reality via WebXR/iframe)
+- [ ] Echtes AR (Kamera/WebXR/iframe) — **nicht** MVP-Gyro-Viewer ([ADR-006](../adr/006-raum-viewer-gyro-hotspots.md))
+- [ ] 360°-Panorama-Viewer
 - [ ] Interaktive Trigger (Lego-Motor, Tafel-Steuerung per App)
 - [ ] Mal-App im Kunstzimmer
 - [ ] Mini-Spiel "Schulranzen packen"
@@ -114,7 +114,7 @@ Jedes Feature bekommt einen eigenen Issue wenn es beschlossen wird.
 
 Thomas-Vision: Das MPZ stellt die Lösung anderen Schulen bereit.
 Voraussetzungen:
-- Schul-spezifische Konfiguration (Name, Logo, Maskottchen, Stationen) ausgelagert
+- Schul-spezifische Konfiguration (Name, Logo, Maskottchen, Stationen, Token-Profile `fest`/`heft`) ausgelagert
 - Deployment-Prozess für neue Schulen dokumentiert
 - Onboarding-Anleitung für Lehrkräfte erstellt
 

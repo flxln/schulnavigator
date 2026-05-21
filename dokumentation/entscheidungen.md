@@ -11,6 +11,7 @@ Jede wichtige Entscheidung wird als eigenständiger ADR (Architecture Decision R
 | [003](./adr/003-content-mvp-json-directus.md) | Content: JSON (MVP), Directus langfristig; kein Custom-Admin | entschieden | 2026-05-21 |
 | [004](./adr/004-video-hosting-mpz.md) | Video: MPZ-Server; YouTube optional nach Rechtsklärung | entschieden | 2026-05-21 |
 | [005](./adr/005-zugangskontrolle-token.md) | Zugang: Entry-Token, Modi fest/heft, In-App-Scanner | entschieden | 2026-05-21 |
+| [006](./adr/006-raum-viewer-gyro-hotspots.md) | Raum-Viewer: Gyro (Standard), Hotspots, Tap-Fallback | entschieden | 2026-05-21 |
 
 ## Konventionen
 
@@ -26,8 +27,10 @@ MVP (bis 26.06.):     Next.js  ←  JSON + Medien im Repo
 Langfristig:          Next.js  ←  Directus (self-hosted, Coolify)
 
 Zugang:  /eintritt?t=…  →  localStorage (mode: fest | heft)
-Fest:    Scan am Eingang (Kamera) → In-App-Scanner für Räume, kein Hub
-Heft:    Scan im Heft → Hub mit allen Stationen
+Fest:    Entry (Kamera) → Puzzle-Hub + In-App-Scanner für Räume
+Heft:    Entry im Heft → Hub mit allen Stationen
+
+Station: /raum/[slug] → Gyro-Viewer + Hotspots (Tap-Fallback); normales Querformat-Foto
 ```
 
-Offen: YouTube-Freigabe (Recht, siehe ADR-004); Mandanten-Modell für weitere Schulen.
+Offen: YouTube-Freigabe (Recht, siehe ADR-004); Mandanten-Modell für weitere Schulen. Echtes Kamera-AR: Post-Fest (nicht ADR-006).

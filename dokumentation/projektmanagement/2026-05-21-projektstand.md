@@ -9,7 +9,7 @@
 
 ## Kurzfassung
 
-Konzept und Planung sind weit fortgeschritten; **die Entwicklung hat noch nicht begonnen** (`app/` existiert nicht). **Phase-0-ADRs (001–005) sind entschieden** — Umsetzung in `app/` steht aus. Bis zum Schulfest bleiben **~5 Wochen**. Neu eingetroffen: **Raumfotos, Stationstexte und Maskottchen-Material** von der Schule — Scope (8 vs. 11 Stationen) muss noch schriftlich geklärt werden.
+Konzept und Planung sind weit fortgeschritten; **die Entwicklung hat noch nicht begonnen** (`app/` existiert nicht). **Phase 0 ist abgeschlossen** (ADRs 001–006, 11 Stationen, AVV-Entwurf versendet). Nächster Fokus: **Phase 1** (Next.js, Deploy). Bis zum Schulfest bleiben **~5 Wochen**. Von der Schule liegen **Raumfotos, Stationstexte und Maskottchen-Material** vor; Zuordnung Foto ↔ Station dokumentiert in [`zuordnung-stationen-bilder.md`](../../auftraggeber/material/stationen/zuordnung-stationen-bilder.md).
 
 ---
 
@@ -23,10 +23,11 @@ Konzept und Planung sind weit fortgeschritten; **die Entwicklung hat noch nicht 
 | Architektur Frontend/CMS | ✅ Entschieden | [ADR-002](../adr/002-frontend-nextjs.md), [ADR-003](../adr/003-content-mvp-json-directus.md) |
 | Video-Hosting | ✅ Entschieden | [ADR-004](../adr/004-video-hosting-mpz.md) — MPZ; YouTube nach Rechtsklärung |
 | Zugangskontrolle | ✅ Entschieden | [ADR-005](../adr/005-zugangskontrolle-token.md) — Token, Modi fest/heft, In-App-Scanner |
-| AVV / DSGVO | 🟡 Entwurf | `dokumentation/dsgvo.md` — AVV-Entwurf an Schule ausstehend |
+| Raum-Viewer | ✅ Entschieden | [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md) — Gyro Standard, Hotspots, Tap-Fallback |
+| AVV / DSGVO | 🟡 Entwurf versendet | AVV-Entwurf an Schule (21.05., Thomas); **Unterschrift** bis Schulfest → Phase 4 (#43) |
 | Anwendungscode | ❌ Nicht gestartet | Kein Next.js-Projekt, kein Deployment |
-| Content von der Schule | 🟡 Teilweise | Bilder + Texte + Maskottchen; Zuordnung und MVP-Scope offen |
-| Maskottchen-Rechte | ✅ Freigabe | PDF in `verlagsinfo/`; Nennung im Impressum umsetzen |
+| Content von der Schule | 🟡 Teilweise | 11 Stationen + Texte/Fotos; **Content-Lieferplan** (Medientyp/Klasse) bis 12.06. offen |
+| Maskottchen-Rechte | ✅ Freigabe | PDF in `verlagsinfo/`; **Verlagsnennung** im Impressum → Phase 2/4 |
 
 ---
 
@@ -34,7 +35,7 @@ Konzept und Planung sind weit fortgeschritten; **die Entwicklung hat noch nicht 
 
 | Phase | Zieltermin | Inhalt | Ist-Zustand |
 |---|---|---|---|
-| **0** Architektur | bis 14.05. | ADRs, Stationen, AVV | **Weitgehend** — ADR 001–005; Umsetzung offen |
+| **0** Architektur | bis 14.05. | ADRs, Stationen, AVV | **Abgeschlossen** — ADR 001–006; 11 Stationen; AVV-Entwurf versendet |
 | **1** Foundation | bis 28.05. | Next.js, Docker, Routing, leere Stationen, Deploy-Test | **Nicht begonnen** |
 | **2** UI-Shell | bis 12.06. | Player, Stempel, Token, i18n-Struktur | Ausstehend |
 | **3** Content | 12.–24.06. | Kinder-Content einpflegen, QR drucken | Ausstehend |
@@ -82,17 +83,11 @@ Konzept und Planung sind weit fortgeschritten; **die Entwicklung hat noch nicht 
 
 ---
 
-## Scope-Abweichung (kritisch)
+## Stationen-Scope (entschieden)
 
-Im Gespräch vom 07.05. war für den **26.06. ein MVP mit 7–8 Stationen** vereinbart, u. a.:
+Im Gespräch vom 07.05. war zunächst ein MVP mit **7–8 Stationen** diskutiert. Tina hat Material mit **11 Stationen** geliefert (`Virtueller Schulrundgang.html`); das ist die **verbindliche Grundlage** für Routing, JSON und QR-Codes (Slugs: [`zuordnung-stationen-bilder.md`](../../auftraggeber/material/stationen/zuordnung-stationen-bilder.md)).
 
-- Musikzimmer, Werkraum/Robotik, Klassenzimmer (interaktive Tafel), PC-Raum  
-- Sporthalle, Kunstzimmer + Lesewelt, Speiseraum  
-- Optional: Hort  
-
-Das gelieferte Material beschreibt **11 Stationen** (inkl. DaZ, Hort, Schulsozialarbeit als eigene Station).
-
-**→ Stand: Die 11 Stationen wurden von Tina geliefert und bilden nun die verbindliche Grundlage für die Umsetzung.**
+**Noch offen (Phase 2, nicht Phase 0):** Content-Lieferplan — pro Station Medientyp und verantwortliche Klasse (Meeting 10.06.).
 
 ---
 
@@ -107,14 +102,14 @@ Das gelieferte Material beschreibt **11 Stationen** (inkl. DaZ, Hort, Schulsozia
 
 **Verworfen:** eigenes Custom-Admin-Interface → Directus übernimmt Redaktion, Medien und Rollen.
 
-ADRs: [001](../adr/001-hosting-coolify.md) · [002](../adr/002-frontend-nextjs.md) · [003](../adr/003-content-mvp-json-directus.md) · [004](../adr/004-video-hosting-mpz.md) · [005](../adr/005-zugangskontrolle-token.md)
+ADRs: [001](../adr/001-hosting-coolify.md) · [002](../adr/002-frontend-nextjs.md) · [003](../adr/003-content-mvp-json-directus.md) · [004](../adr/004-video-hosting-mpz.md) · [005](../adr/005-zugangskontrolle-token.md) · [006](../adr/006-raum-viewer-gyro-hotspots.md)
 
 ### Zugang (ADR-005, Kurz)
 
 | Modus | Entry | Startseite | Räume erreichen |
 |---|---|---|---|
-| **`fest`** (26.06.) | QR Eingang, System-Kamera, einmalig | Kein Hub; Scan-CTA + Stempel | In-App-Scanner an der Tür |
-| **`heft`** (Schuljahr) | QR im Heft, einmalig | Hub mit allen 11 Stationen | Klick oder Scan |
+| **`fest`** (26.06.) | QR Eingang, System-Kamera, einmalig | **Puzzle-Hub** (Segmente nach Scan) + Scan-CTA | In-App-Scanner an der Tür |
+| **`heft`** (Schuljahr) | QR im Heft, einmalig | Voller Hub (alle 11 klickbar) | Klick oder Scan |
 
 Token in **`localStorage`** (tabübergreifend). Raum-QRs = Navigation, kein Freischalten pro Raum.
 
@@ -126,18 +121,19 @@ Token in **`localStorage`** (tabübergreifend). Raum-QRs = Navigation, kein Frei
 
 ### Blockierend (mit Schule / MPZ)
 
-- [x] **Maskottchen:** Verlagsnennung im UI/Impressum umsetzen (Freigabe liegt vor)  
-- [x] **AVV:** Entwurf von Thomas an Schule senden  
+- [x] **Maskottchen:** Verlagsfreigabe liegt vor (PDF)  
+- [x] **AVV:** Entwurf von Thomas an Schule gesendet (21.05.)  
+- [ ] **Maskottchen:** Verlagsnennung im UI/Impressum (Phase 2/4)  
 
 ### Technisch (MPZ)
 
 - [ ] Next.js-Projekt in `app/` scaffolden (Dockerfile, `/api/health`)  
 - [ ] Erstes Deployment auf MPZ/Coolify testen  
-- [ ] Content-Mapping: HTML-Texte → JSON; Fotos den **11** Stationen zuordnen  
+- [ ] Content-Mapping: HTML-Texte → JSON; Fotos den **11** Stationen zuordnen ([`zuordnung-stationen-bilder.md`](../../auftraggeber/material/stationen/zuordnung-stationen-bilder.md))  
 
 ### Bewusst nicht jetzt
 
-AR, Lego-Trigger, **Directus** (erst nach Schulfest), aktive Mehrsprachigkeit — siehe Phase 5 im Projektplan.
+Kamera-AR/WebXR, 360°-Panorama, Lego-Trigger, **Directus** (erst nach Schulfest), aktive Mehrsprachigkeit — siehe Phase 5. **Im MVP:** Gyro-Viewer ([ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)).
 
 ---
 
@@ -171,7 +167,7 @@ AR, Lego-Trigger, **Directus** (erst nach Schulfest), aktive Mehrsprachigkeit �
 | Risiko | Einstufung | Gegenmaßnahme |
 |---|---|---|
 | 11 Stationen bis 26.06. produktionsreif | Mittel | JSON-Schema + parallele Kinder-Medien planen |
-| Phase 0/1 verzögert | Hoch | ADRs + Scaffold parallel starten |
+| Phase 1 verzögert | Hoch | Phase 0 abgeschlossen; Scaffold + Deploy sofort starten |
 | Content kommt nicht rechtzeitig | Hoch | Commitment am 10.06., Projekttag 24./25.06. |
 | WLAN-Ausfall am Schulfest | Mittel | Mobilfunk primär; Tablet-Fallback |
 | Verlagsnennung unvollständig | Niedrig | Text aus `verlagsinfo/freigabe-bilder-bildrechte.pdf` ins Impressum |

@@ -1,6 +1,6 @@
 # Projektplan — Schulnavigator
 
-Stand: 2026-05-08 | Schulfest (Hard Deadline): 2026-06-26
+Stand: 2026-05-21 | Schulfest (Hard Deadline): 2026-06-26
 
 ---
 
@@ -17,9 +17,9 @@ Phase 5 │ Post-Fest / Admin-Interface    │ ab Juli
 
 ---
 
-## Phase 0 — Architektur-Entscheidungen (bis 14.05.)
+## Phase 0 — Architektur-Entscheidungen (bis 14.05.) ✅
 
-**Ziel:** Alle offenen Grundsatzfragen schriftlich entscheiden, bevor Code entsteht.
+**Ziel:** Alle offenen Grundsatzfragen schriftlich entscheiden, bevor Code entsteht. **Status (21.05.): abgeschlossen.**
 
 ### Muss-Entscheidungen
 
@@ -30,13 +30,14 @@ Phase 5 │ Post-Fest / Admin-Interface    │ ab Juli
 | Video-Hosting | Upload MPZ-Server; YouTube später nach Rechtsklärung | ✅ ADR-004 |
 | Content-Management | **MVP:** JSON im Repo · **Ziel:** Directus | ✅ ADR-003; kein Custom-Admin |
 | Zugangskontrolle | Entry-Token, Modi fest/heft, In-App-Scanner | ✅ ADR-005 |
+| Raum-Viewer | Gyro (Standard), Hotspots, Tap-Fallback; normales Foto | ✅ ADR-006 |
 | Stationen | **11 Stationen** (von Schule geliefert) | Verbindliche Grundlage seit Material-Lieferung |
 | Wartung nach 26.6. | Schule pflegt via Directus; MPZ Betrieb | ✅ ADR-003 |
 
 ### Deliverable
-- ADR-Dokumente für alle Entscheidungen
-- Stationen-Liste: **11 Stationen** (Material Tina) — in JSON/Slugs abbilden
-- AVV-Entwurf an Schule schicken
+- ✅ ADR-Dokumente 001–006
+- ✅ Stationen-Liste: **11 Stationen** + Slugs in [`zuordnung-stationen-bilder.md`](../auftraggeber/material/stationen/zuordnung-stationen-bilder.md) (JSON-Datei → Phase 1)
+- ✅ AVV-Entwurf an Schule versendet (21.05.; Unterschrift → Phase 4)
 
 ---
 
@@ -49,14 +50,14 @@ Phase 5 │ Post-Fest / Admin-Interface    │ ab Juli
 - [ ] Next.js-Projekt anlegen (TypeScript strict, Tailwind)
 - [ ] Dockerfile (Multi-stage Build, Port via ENV, `/api/health`)
 - [ ] Routing: `/raum/[slug]` — statische Seite pro Raum
-- [ ] Datenmodell definieren (JSON-Schema pro Station: slug, titel, beschreibung, bild, medien[])
-- [ ] Platzhalter-Seite: Raumbild + Titel + Textblock + Media-Slot (leer)
-- [ ] Startseite: schematisches Schulhaus-Bild, anklickbare Punkte je Station
-- [ ] QR-Code-Generator (Script, der pro Station einen QR-Code als PNG erzeugt)
+- [ ] Datenmodell definieren (JSON: slug, titel, beschreibung, bild, medien[], hotspots[]) — [ADR-006](./adr/006-raum-viewer-gyro-hotspots.md)
+- [ ] Platzhalter-Seite: `RaumViewer`-Stub (Gyro/Hotspots Phase 2), Titel, Beschreibung, Media-Slots
+- [ ] Startseite: Schulhaus-SVG mit 11 Segmenten (Puzzle-Layout; Freischaltung Phase 2)
+- [ ] QR-Code-Script: 11× Raum (`/raum/[slug]`) + Entry (`/eintritt?t=…`)
 - [ ] Deployment-Test auf MPZ-Server (Coolify)
 
 ### Nicht in Phase 1
-- Gamification, AR, interaktive Features, Admin-UI, Mehrsprachigkeit
+- Gamification (Phase 2), vollständiger RaumViewer (Phase 2), Kamera-AR/360°, Admin-UI, Mehrsprachigkeit
 
 ### Deliverable
 - Deploy-Link, den Sten/Tina im Browser aufrufen können
@@ -70,6 +71,11 @@ Phase 5 │ Post-Fest / Admin-Interface    │ ab Juli
 **Ziel:** App sieht aus wie das Endprodukt, Content-Slots sind befüllbar.
 
 ### Aufgaben
+
+**Raum-Viewer** ([ADR-006](./adr/006-raum-viewer-gyro-hotspots.md))
+- [ ] `RaumViewer`: Gyro-Pan (Standard), Hotspot-Overlay, Medien-Panel bei Treffer/Tap
+- [ ] Tap-Fallback + optional Wischen; iOS-Orientierung nach Nutzer-Geste
+- [ ] Ohne `bild`: statische Ansicht + Medienliste
 
 **Medien**
 - [ ] Audio-Player-Komponente (native HTML5, kein externes Plugin)
@@ -85,7 +91,7 @@ Phase 5 │ Post-Fest / Admin-Interface    │ ab Juli
 **Zugangskontrolle** ([ADR-005](./adr/005-zugangskontrolle-token.md))
 - [ ] `/eintritt` — Token prüfen, `localStorage` (Token + `mode: fest|heft` + Ablauf)
 - [ ] Middleware: ohne Token → Hinweisseite
-- [ ] Startseite: Hub nur bei `mode: heft`; bei `fest` nur Willkommen + Scan-CTA + Stempel-Fortschritt
+- [ ] Startseite: `heft` = voller Hub; `fest` = Puzzle-Hub (Segmente nach Scan freischalten) + Scan-CTA
 - [ ] `/scan` — In-App-QR-Scanner für Raum-QRs (nach Entry)
 - [ ] Token-Script: mindestens `fest-2026`, `heft-2026-27` mit Ablaufdatum
 
@@ -114,14 +120,15 @@ Die Schule liefert bis **12.06.** einen Plan: welche Klasse macht welchen Raum i
 ### Aufgaben
 
 **Schule (Sten/Tina)**
-- [ ] Raumfotos für alle 8 Stationen (Sten macht das bei Sonnenschein)
+- [ ] Raumfotos für alle **11** Stationen (Sten/Tina; Material als Fallback)
 - [ ] Zwei Wochen vor Schulfest: Kinder produzieren Content in Klassen
 - [ ] Content gesammelt und an Felix übergeben (spätestens 22.06.)
 
 **Felix/Julia (MPZ)**
 - [ ] Content-Dateien in Projektstruktur einpflegen (JSON + Mediendateien)
+- [ ] Hotspot-Koordinaten pro Station (min. 1–2 zum Start; siehe [Zuordnungstabelle](../../auftraggeber/material/stationen/zuordnung-stationen-bilder.md))
 - [ ] Qualitätskontrolle: max. 60 Sekunden, verständlich, brauchbare Tonqualität
-- [ ] QR-Codes drucken und laminieren (für alle 8 Stationen)
+- [ ] QR-Codes drucken: 11× Raum + Entry Schulfest
 - [ ] WLAN-Test vor Ort: alle Stationspunkte mit echtem Gerät prüfen
 
 ### Projekttage in der Schule (ca. 24./25.06.)
@@ -135,10 +142,10 @@ Die Schule liefert bis **12.06.** einen Plan: welche Klasse macht welchen Raum i
 
 ## Phase 4 — Live am Schulfest (26.06.)
 
-**Ziel:** 8 Stationen, stabil, ohne Überraschungen.
+**Ziel:** 11 Stationen, stabil, ohne Überraschungen.
 
 ### Checkliste
-- [ ] Alle 8 QR-Codes gedruckt und an Räumen befestigt
+- [ ] Alle **11** Raum-QRs an Türen; Entry-QR am Eingang
 - [ ] Entry-QR-Code für Schulstartheft / Eingang vorbereitet
 - [ ] Mobilfunk-Abdeckung als primärer Zugangspfad (kein WLAN-Verlass)
 - [ ] Tablet-Fallback: 1–2 Tablets mit geladenen Inhalten, betreut durch Schüler
@@ -165,7 +172,7 @@ Die Schule liefert bis **12.06.** einen Plan: welche Klasse macht welchen Raum i
 ### Langfristig (2027+)
 - [ ] Mandantenfähigkeit: andere Schulen können eigene Instanz aufsetzen
 - [ ] Onboarding-Dokumentation für neue Schulen
-- [ ] AR / interaktive Features als opt-in Erweiterung
+- [ ] Echtes AR (WebXR/Kamera), 360°-Panorama, Lego-/Tafel-Trigger als opt-in Erweiterung (MVP hat Gyro-Viewer, siehe ADR-006)
 
 ---
 
@@ -175,16 +182,17 @@ Die Schule liefert bis **12.06.** einen Plan: welche Klasse macht welchen Raum i
 |---|---|---|
 | Content kommt nicht bis 12.06. | Hoch | Festes Commitment der Schule am 10.06. einholen |
 | WLAN-Ausfall am Schulfest | Mittel | Tablet-Fallback + Mobilfunk als primärer Weg |
-| Scope Creep (AR, Lego-Trigger etc.) | Hoch | Phase-2-Liste schriftlich, explizit als "nicht 26.6." kommunizieren |
+| Scope Creep (Kamera-AR, Lego-Trigger etc.) | Mittel | ADR-006: Gyro-Viewer im MVP; echtes AR explizit Post-Fest (#50) |
 | Content-Qualität zu schlecht | Mittel | Felix/Julia am Projekttag vor Ort zur Qualitätssicherung |
-| Maskottchen-Rechte (Giraffe/Maus) | Niedrig | Tina klärt mit Verlag bis 14.05. |
+| Maskottchen-Rechte (Giraffe/Maus) | Niedrig | Freigabe liegt vor; Verlagsnennung im Impressum (Phase 2/4) |
 
 ---
 
 ## Nächste konkrete Schritte (diese Woche)
 
-1. **Scope schriftlich fixieren:** Tina/Sten bestätigen die 8 Stationen namentlich
-2. **ADRs:** 001–005 dokumentiert; bei Änderungen neue ADR-Nummer
-3. **AVV-Entwurf:** Thomas/MPZ schickt Entwurf an Schule
-4. **Mascottchen-Rechte:** Tina kontaktiert Verlag (Heike)
-5. **Projektsetup:** Next.js-Repo anlegen, Dockerfile, erstes Deployment auf MPZ-Server testen
+1. ~~**Scope:** 11 Stationen verbindlich (Material Tina, Slugs in `zuordnung-stationen-bilder.md`)~~ — Phase 0 erledigt
+2. ~~**ADRs 001–006**~~ — Phase 0 erledigt; bei Änderungen neue ADR-Nummer
+3. ~~**AVV-Entwurf** an Schule~~ — versendet 21.05.; Unterschrift bis 26.06. (Phase 4)
+4. ~~**Maskottchen-Rechte**~~ — Freigabe liegt vor; Impressum in Phase 2/4
+5. **Projektsetup (Phase 1):** Next.js in `app/`, Dockerfile, `/api/health`, erstes Deployment auf MPZ/Coolify testen
+6. **Content-Lieferplan** bei Meeting 10.06. einfordern (Medientyp + Klasse pro Station)

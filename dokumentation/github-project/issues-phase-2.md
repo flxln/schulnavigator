@@ -2,124 +2,139 @@
 
 Milestone: **Phase 2** | Fällig: 12.06.2026
 
-**Voraussetzung:** Phase 1 abgeschlossen. App ist deployed und erreichbar.
+**Voraussetzung:** Phase 1 abgeschlossen. App deployed und erreichbar (HTTPS).
+
+**Architektur:** [ADR-004](../adr/004-video-hosting-mpz.md) · [ADR-005](../adr/005-zugangskontrolle-token.md) · [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
+
+---
+
+## #55 — Raum-Viewer (Gyro + Hotspots)
+
+**Labels:** `tech`  
+**Assignee:** Felix
+
+Spezifikation: [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
+
+- [ ] **Gyro-Viewer (Standard):** Querformat-Foto höhenbasiert, horizontaler Pan per `deviceorientation` (gedämpft, begrenzt)
+- [ ] **Hotspots:** Overlay-Marker aus JSON; Aktivierung wenn Viewport-Mitte im Radius **oder** Tap
+- [ ] **Tap-Fallback:** Marker immer tappbar; Hinweis wenn Orientierung fehlt/abgelehnt; optional Wischen
+- [ ] **iOS:** Orientierung nach Nutzer-Geste; HTTPS (bereits #16)
+- [ ] Medien-Panel: öffnet Player (#18–#20) je nach `medium.typ`
+- [ ] Ohne `bild`: statisches Layout + Medienliste unterhalb
+- [ ] Demo-Station mit 1–2 Test-Hotspots für Meeting 10.06. (#25)
 
 ---
 
 ## #18 — Audio-Player-Komponente
 
-**Labels:** `tech`
+**Labels:** `tech`  
 **Assignee:** Felix
 
-- Nativer HTML5-Audioplayer (kein externes Plugin)
-- Styling passend zum App-Design
-- Play/Pause, Fortschrittsbalken, Lautstärke
-- Fallback-Text wenn Browser Audio nicht unterstützt
-- Wird in Stationsseite eingebunden wenn Medientyp `audio`
+- HTML5-Audio, App-Design, Play/Pause, Fortschritt
+- Einbindung bei `medien.typ === 'audio'`
 
 ---
 
 ## #19 — Video-Player-Komponente
 
-**Labels:** `tech`
+**Labels:** `tech`  
 **Assignee:** Felix
 
-- Nativer HTML5-Videoplayer (direkter Upload, kein YouTube)
-- Autoplay: nein (Datenschutz, Nutzererlebnis)
-- Controls sichtbar, Vollbild möglich
-- Max. Dateigröße pro Video festlegen (Empfehlung: 50 MB bei max. 60s)
-- Wird in Stationsseite eingebunden wenn Medientyp `video`
+- HTML5-Video, Quelle: **MPZ-Upload** (`/public` oder Storage-URL) — [ADR-004](../adr/004-video-hosting-mpz.md)
+- Kein Autoplay; Controls + Vollbild
+- Max. ~50 MB / 60 s; Schema-Feld `videoSource: 'upload'` (youtube vorbereitet, MVP inaktiv)
+- Einbindung bei `medien.typ === 'video'`
 
 ---
 
 ## #20 — Bild-Galerie-Komponente
 
-**Labels:** `tech`
+**Labels:** `tech`  
 **Assignee:** Felix
 
-- Einfache Galerie für Fotosets (swipeable auf Mobile)
-- Lightbox-Ansicht optional
-- Wird in Stationsseite eingebunden wenn Medientyp `foto`
+- Galerie für Fotosets (Mobile: swipe)
+- Optional Lightbox
+- Einbindung bei `medien.typ === 'foto'`
 
 ---
 
-## #21 — Stempel-System (Gamification)
+## #21 — Stempel-System + Puzzle-Freischaltung
 
-**Labels:** `tech`
+**Labels:** `tech`  
 **Assignee:** Felix
 
-- Pro Station: wird in `localStorage` als "besucht" markiert, sobald der QR-Code gescannt wurde
-- Kein Backend nötig — rein clientseitig
-- Startseite zeigt Fortschritt: z.B. "3 von 8 Räumen entdeckt"
-- Stationsseite zeigt Häkchen wenn bereits besucht
-- Hinweis: localStorage wird beim Browser-Cache-Löschen zurückgesetzt — das ist akzeptabel
+- `localStorage` Key z. B. `visitedSlugs: string[]` — getrennt vom **Access-Token** ([ADR-005](../adr/005-zugangskontrolle-token.md))
+- Markierung bei **Raum-QR-Scan** (In-App-Scanner oder gültiger Besuch von `/raum/[slug]`)
+- **Modus `fest`:** freigeschaltetes Puzzle-Segment auf Startseite; Segment klickbar → `/raum/[slug]`; gesperrte Segmente: Hinweis „QR an der Tür scannen“
+- **Modus `heft`:** Stempel optional; alle Stationen von Start aus klickbar
+- Fortschritt: „7 von 11 Stationen“
+- Häkchen auf Stationsseite wenn besucht
+- Cache-Löschen setzt Stempel zurück — akzeptabel
 
 ---
 
 ## #22 — Abschluss-Animation
 
-**Labels:** `tech`
+**Labels:** `tech`  
 **Assignee:** Felix
 
-- Wenn alle 8 Stationen besucht: Konfetti-Animation oder ähnliches
-- Keine externe Library — CSS-Animation oder Canvas reicht
-- Tina-Idee: "ein Petty fliegt raus" — einfache Variante umsetzen
-- Wird auf der Startseite ausgelöst
+- Bei **11/11** besuchten Stationen (Stempel): Konfetti o. ä. (CSS/Canvas, keine externe Library)
+- Auf Startseite auslösen
+- Tina-Idee: einfache „Belohnung“-Animation
 
 ---
 
 ## #23 — Zugangskontrolle: Token-System
 
-**Labels:** `tech`
+**Labels:** `tech`  
 **Assignee:** Felix
 
 Spezifikation: [ADR-005](../adr/005-zugangskontrolle-token.md)
 
-- [ ] `/eintritt?t=…` — Token + `mode` (`fest`|`heft`) + Ablauf in `localStorage`
-- [ ] Middleware / Hinweisseite ohne Token
-- [ ] Startseite: Hub nur `heft`; `fest` → Scan-CTA + Stempel, keine Raum-Links
-- [ ] `/scan` — In-App-QR-Scanner (`html5-qrcode` o. ä.)
-- [ ] Token-Script: `fest-2026`, `heft-2026-27` (+ QR-PNG für Eingang und Heft)
+- [ ] `/eintritt?t=…` — Token validieren, `localStorage`: `{ token, mode: 'fest'|'heft', expires }`
+- [ ] Middleware: ohne gültigen Token → Hinweisseite
+- [ ] Startseite: `heft` = voller Hub; `fest` = Puzzle-Hub (#21)
+- [ ] `/scan` — In-App-QR-Scanner (`html5-qrcode` o. ä.); parst `/raum/*` und lehnt Fremd-URLs ab
+- [ ] Token-Script: `fest-2026`, `heft-2026-27` + QR-PNGs (#15)
+- [ ] `robots.txt` / `noindex` auf geschützten Seiten
+
+**Demo 10.06.:** primär **`fest`**-UX (Puzzle + Scanner) zeigen; `heft` kurz erklären.
 
 ---
 
 ## #24 — i18n-Struktur für Menütexte
 
-**Labels:** `tech`
+**Labels:** `tech`  
 **Assignee:** Felix
 
-- Alle UI-Texte (Navigation, Buttons, Systemmeldungen) in separate Sprachdatei auslagern
-- `de.json` vollständig befüllt
-- `en.json` mit gleicher Struktur, Werte als Platzhalter (können später befüllt werden)
-- Sprachumschalter in der UI noch nicht aktiv — Struktur ist aber vorbereitet
-- Content (Raumbeschreibungen, Audio) bleibt deutsch — nur Menütexte mehrsprachig
+- UI-Texte in `de.json` / `en.json` (Platzhalter EN)
+- Umschalter noch inaktiv
+- Content (Räume, Medien) bleibt DE
 
 ---
 
 ## #25 — Meeting 10.06.: Demo + Content-Lieferplan einfordern
 
-**Labels:** `org` `blocker`
+**Labels:** `org` `blocker`  
 **Assignee:** Felix / Thomas
 
-Meeting am 10.06.2026 im MPZ (Sten kommt ab 14:00 Uhr).
-
 Agenda:
-1. Demo der fertigen App-Shell (alle UI-Komponenten, keine Platzhalter)
-2. Content-Lieferplan der Schule einfordern: Raum → Medientyp → verantwortliche Klasse
-3. WLAN-Situation klären (Turnhalle, Außenbereich)
-4. AVV-Status prüfen
-5. Projekttag-Termin (24./25.06.) final abstimmen
 
-**Ohne Content-Lieferplan kann Phase 3 nicht starten.**
+1. Demo App-Shell: Puzzle-Hub (`fest`), Scanner, eine Beispiel-Station mit Gyro-Viewer + Hotspots + Medien
+2. Content-Lieferplan: 11 Räume → Medientyp → Klasse → Verantwortlich
+3. WLAN/Mobilfunk (Turnhalle, Außenbereich)
+4. AVV-Status (#43)
+5. Projekttag 24./25.06.
+
+**Ohne Content-Lieferplan keine Phase 3.**
 
 ---
 
 ## #26 — WLAN-Test vor Ort vereinbaren
 
-**Labels:** `org`
+**Labels:** `org`  
 **Assignee:** Felix / Sten
 
-Termin in der Schule vereinbaren um WLAN-Abdeckung an allen 8 Stationspunkten zu prüfen.
-Besonders kritisch: Turnhalle, Außenbereich zwischen A-Haus und N-Haus.
-Ergebnis dokumentieren: welche Stationen brauchen Mobilfunk-Fallback?
-Empfehlung: Mobilfunk als primärer Weg, WLAN als Bonus — nicht als Voraussetzung.
+- Abdeckung an **allen 11** Stationspunkten prüfen
+- Kritisch: Turnhalle, Außenbereich A–N-Haus
+- Mobilfunk = primär; WLAN = Bonus ([ADR-004](../adr/004-video-hosting-mpz.md): Videos vom MPZ-Server)

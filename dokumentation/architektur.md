@@ -1,6 +1,6 @@
 # Schulnavigator — Architektur
 
-*Stand: 2026-05-21 — siehe [entscheidungen.md](./entscheidungen.md)*
+*Stand: 2026-05-21 (ADR-006 ergänzt) — siehe [entscheidungen.md](./entscheidungen.md)*
 
 ## Tech-Stack
 
@@ -15,6 +15,7 @@
 | Video-Hosting | MPZ-Server (Upload) | YouTube-Embed nach Rechtsklärung | [004](./adr/004-video-hosting-mpz.md) |
 | Zugangskontrolle | Entry-Token, `localStorage`, Modi `fest`/`heft` | gleich | [005](./adr/005-zugangskontrolle-token.md) |
 | Navigation | In-App-Scanner (`/scan`) + Raum-QRs | gleich | [005](./adr/005-zugangskontrolle-token.md) |
+| Raum-Viewer | Gyro-Pan, Hotspots, Tap-Fallback; normales Foto | gleich | [006](./adr/006-raum-viewer-gyro-hotspots.md) |
 
 ## URL-Schema
 
@@ -26,15 +27,35 @@ Sprechende Slugs (z. B. `/raum/musikzimmer`) — siehe [ADR-002](./adr/002-front
 
 ## Datenmodell (Entwurf)
 
+Siehe [ADR-006](./adr/006-raum-viewer-gyro-hotspots.md) und Issue #12.
+
 ```typescript
-type Raum = {
+interface Hotspot {
   id: string;
-  name: string;
+  label?: string;
+  x: number;           // 0–1
+  y: number;
+  radius?: number;
+  mediumId: string;
+}
+
+interface Medium {
+  id: string;
+  typ: 'audio' | 'video' | 'foto' | 'text';
+  quelle: string;
+  videoSource?: 'upload' | 'youtube';
+  untertitel?: string;
+}
+
+interface Station {
+  slug: string;
+  titel: string;
   beschreibung: string;
-  bilder: string[];   // URLs
-  videos: string[];   // Embed-URLs
-  zustaendig: string;
-};
+  bild?: string;       // /public/stations/… — fehlt → statische Ansicht
+  medien: Medium[];
+  hotspots?: Hotspot[];
+  puzzleSegmentId?: string;
+}
 ```
 
 ## Deployment

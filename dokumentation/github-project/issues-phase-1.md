@@ -2,131 +2,154 @@
 
 Milestone: **Phase 1** | Fällig: 28.05.2026
 
-**Voraussetzung:** Issues #1, #2, #3, #4, #5 aus Phase 0 müssen geschlossen sein.
+**Voraussetzung:** Phase-0-ADRs (#1–#5, #55) geschlossen — siehe [entscheidungen.md](../entscheidungen.md).
+
+**Architektur-Referenz:** [ADR-001](../adr/001-hosting-coolify.md) · [ADR-002](../adr/002-frontend-nextjs.md) · [ADR-003](../adr/003-content-mvp-json-directus.md) · [ADR-005](../adr/005-zugangskontrolle-token.md) · [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
+
+**Stationen:** **11** (Material Tina) — Slugs z. B. `klassenzimmer`, `daz`, `pc-raum`, `werken`, `turnhalle`, `speiseraum`, `kunst`, `lesewelt`, `hort`, `musik`, `schulsozialarbeit`
 
 ---
 
 ## #9 — Next.js-Projekt aufsetzen
 
-**Labels:** `tech`
+**Labels:** `tech`  
 **Assignee:** Felix
 
-- Next.js (App Router), TypeScript strict, Tailwind CSS
+- Next.js (App Router), TypeScript strict, Tailwind CSS — [ADR-002](../adr/002-frontend-nextjs.md)
 - ESLint + Prettier konfigurieren
-- Verzeichnisstruktur anlegen: `app/`, `components/`, `data/`, `public/`
+- Verzeichnisstruktur: `app/`, `components/`, `data/`, `public/`, `lib/`
 - Initiales Commit ins GitHub-Repo
 
 ---
 
 ## #10 — Dockerfile erstellen
 
-**Labels:** `tech`
+**Labels:** `tech`  
 **Assignee:** Felix
 
-- Multi-stage Build: Build-Stage + schlankes Runtime-Image
+- Multi-stage Build: Build-Stage + schlankes Runtime-Image — [ADR-001](../adr/001-hosting-coolify.md)
 - Port via Umgebungsvariable `PORT`
-- Health-Check-Endpunkt: `GET /api/health` → `200 OK`
-- Anforderung aus CLAUDE.md, Pflicht für Coolify-Deploy
+- Health-Check: `GET /api/health` → `200 OK`
 
 ---
 
 ## #11 — Routing: /raum/[slug]
 
-**Labels:** `tech`
+**Labels:** `tech`  
 **Assignee:** Felix
 
-- Dynamische Route `app/raum/[slug]/page.tsx`
-- Slug kommt aus JSON-Datenmodell (siehe #12)
-- 404-Seite für unbekannte Slugs
-- Weiterleitung von `/` auf Startseite
+- Dynamische Route `app/raum/[slug]/page.tsx` — [ADR-002](../adr/002-frontend-nextjs.md)
+- Slug aus JSON-Datenmodell (#12)
+- 404 für unbekannte Slugs
+- `/` → Startseite (Zugangskontrolle/Middleware in Phase 2, #23)
 
 ---
 
 ## #12 — JSON-Datenmodell für Stationen definieren
 
-**Labels:** `tech`
+**Labels:** `tech`  
 **Assignee:** Felix
 
-Schema pro Station (TypeScript-Interface + JSON-Beispieldatei):
+Schema pro Station ([ADR-003](../adr/003-content-mvp-json-directus.md), [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md) — später Directus-Collection):
 
 ```ts
 interface Station {
   slug: string
   titel: string
   beschreibung: string
-  bild: string          // Pfad in /public
+  bild?: string             // Pfad in /public/stations/ — fehlt → statische Ansicht
   medien: Medium[]
+  hotspots?: Hotspot[]
+  puzzleSegmentId?: string  // Zuordnung Puzzle-Hub (fest), optional
+}
+
+interface Hotspot {
+  id: string
+  label?: string
+  x: number                 // 0–1
+  y: number
+  radius?: number
+  mediumId: string
 }
 
 interface Medium {
+  id: string
   typ: 'audio' | 'video' | 'foto' | 'text'
-  quelle: string        // Pfad oder Text
+  quelle: string
+  videoSource?: 'upload' | 'youtube'  // MVP: nur upload — ADR-004
   untertitel?: string
 }
 ```
 
-Platzhalter-Einträge für alle 8 Stationen anlegen (Inhalte kommen in Phase 3).
+- **11 Platzhalter-Einträge** (Texte aus `auftraggeber/material/stationen/` wo vorhanden)
+- Inhalte/Medien vollständig in Phase 3
 
 ---
 
 ## #13 — Platzhalter-Stationsseite
 
-**Labels:** `tech`
+**Labels:** `tech`  
 **Assignee:** Felix
 
-Stationsseite zeigt:
-- Raumbild (Placeholder-Grafik bis echte Fotos vorliegen)
-- Titel + Beschreibungstext
-- Media-Slot (leer, aber Komponenten-Struktur steht)
-- Zurück-Button zur Startseite
-
-Responsive (Mobile First — Eltern halten Handy im Hochformat).
+- `RaumViewer`-Platzhalter (volle Logik Phase 2 #55): Layout für Gyro + Hotspots — [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
+- Raumbild (Placeholder bis #17 / Material; Zuordnung: `zuordnung-stationen-bilder.md`)
+- Titel + Beschreibung
+- Media-Slots (Struktur für Audio/Video/Foto — Player Phase 2)
+- Zurück zur Startseite
+- Mobile First (Hochformat)
 
 ---
 
-## #14 — Startseite: schematisches Schulhaus
+## #14 — Startseite: Schulhaus-Grundlayout
 
-**Labels:** `tech`
+**Labels:** `tech`  
 **Assignee:** Felix
 
-- Schematische Schulhaus-Grafik (SVG oder Bild) mit anklickbaren Punkten je Station
-- Klick → navigiert zur Stationsseite
-- Fortschrittsanzeige (Platzhalter, Logik kommt in Phase 2)
-- Thomas-Idee: "wie im Museum, man sieht alle 8 Punkte auf einen Blick"
+Schematische Schulhaus-Grafik (SVG) mit **11 Segmenten** — [ADR-005](../adr/005-zugangskontrolle-token.md):
+
+- **Phase 1:** Layout + Segment-Zuordnung zu Slugs; Freischalt-Logik **Stub** (alles sichtbar oder alles gesperrt — Toggle für Dev)
+- **Phase 2 (#21, #23):** Modus `fest` = **Puzzle-Hub** (progressive disclosure nach Scan); Modus `heft` = alle Segmente klickbar
+- Fortschrittsanzeige (Platzhalter „0/11“)
+- Prominenter Link/Button zu `/scan` (Scanner UI Phase 2)
+
+*Nicht in Phase 1:* voller klickbarer Hub für `fest` (widerspricht Schulfest-Konzept).
 
 ---
 
 ## #15 — QR-Code-Generator-Script
 
-**Labels:** `tech`
+**Labels:** `tech`  
 **Assignee:** Felix
 
-- Node-Script (oder npm-Befehl), das pro Station einen QR-Code als PNG generiert
-- QR-Code zeigt auf: `https://[domain]/raum/[slug]?token=[token]`
-- Ausgabe in `/public/qr/` oder separatem Ordner
-- Druckfertig: min. 300dpi, schwarzweiß
+Zwei Ausgabe-Typen ([ADR-005](../adr/005-zugangskontrolle-token.md)):
+
+1. **Entry-QR** (1× Fest + 1× Heft): `https://[domain]/eintritt?t=<token>`
+2. **Raum-QR** (11×): `https://[domain]/raum/[slug]` — **ohne** Token im URL
+
+- npm `qrcode` oder Script in `scripts/`
+- Ausgabe z. B. `public/qr/entry-fest.png`, `public/qr/raum-musik.png`
+- Druckfertig: min. 300 dpi, schwarzweiß
 
 ---
 
 ## #16 — Deployment auf MPZ-Server testen
 
-**Labels:** `tech`
+**Labels:** `tech`  
 **Assignee:** Felix
 
-- Docker-Image bauen und auf Coolify/Hetzner deployen
-- Domain/Subdomain festlegen (z.B. `schulnavigator.mpz-dresden.de`)
-- HTTPS prüfen
+- Docker-Image auf Coolify/Hetzner — [ADR-001](../adr/001-hosting-coolify.md)
+- Domain/Subdomain (z. B. `schulnavigator.mpz-dresden.de`)
+- HTTPS (Pflicht für Kamera/Scanner in Phase 2)
 - Health-Check erreichbar
-- Ergebnis: Deploy-Link, den Sten/Tina im Browser öffnen können
+- Deploy-Link für Sten/Tina
 
 ---
 
-## #17 — Raumfotos für alle 8 Stationen liefern
+## #17 — Raumfotos für alle 11 Stationen liefern
 
-**Labels:** `content` `extern`
-**Assignee:** Sten
+**Labels:** `content` `extern`  
+**Assignee:** Sten / Tina
 
-Sten fotografiert alle 8 vereinbarten Räume (bei Sonnenschein, wurde im Gespräch zugesagt).
-Format: Querformat, min. 1920px Breite, JPG.
-Lieferdatum: bis 28.05. damit Phase 2 mit echten Bildern starten kann.
-Bei Verzögerung: Platzhalter-Grafiken werden verwendet.
+- **11 Räume** fotografieren (Material Tina als Referenz; ggf. bereits Bilder in `material/stationen/`)
+- Querformat, min. 1920 px Breite, JPG
+- Bis 28.05. für Phase 2; sonst Platzhalter aus Material/HTML-Export

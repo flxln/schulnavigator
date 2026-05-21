@@ -2,58 +2,58 @@
 
 Milestone: **Phase 4** | Fällig: 26.06.2026
 
-**Voraussetzung:** Alle Issues aus Phase 3 geschlossen. Abschlusstest bestanden.
+**Voraussetzung:** Phase 3 abgeschlossen, Abschlusstest (#38) bestanden.
+
+**Live-Modus:** Entry-Token **`fest`** — Puzzle-Hub, In-App-Scanner — [ADR-005](../adr/005-zugangskontrolle-token.md)
 
 ---
 
 ## #39 — QR-Codes an Räumen befestigen
 
-**Labels:** `org`
+**Labels:** `org`  
 **Assignee:** Sten / Tina
 
-QR-Codes an den 8 Stationen aufhängen/kleben.
-Am Tag vor dem Schulfest erledigen (25.06.).
-Sichtbarkeit prüfen: gut lesbar, auf Augenhöhe für Erwachsene.
+- **11 Raum-QRs** an Türen (25.06. oder früher)
+- Nur Raum-URL, kein Entry-Token auf dem Sticker
+- Lesbar, Augenhöhe Erwachsene
 
 ---
 
 ## #40 — Entry-QR-Code am Schuleingang platzieren
 
-**Labels:** `org`
+**Labels:** `org`  
 **Assignee:** Sten / Tina
 
-Der Entry-QR-Code (setzt das Zugangs-Token) muss am Eingang gut sichtbar sein.
-Optionen: Willkommensschild, Eingangsbereich, Schulstartheft (als gedruckter Link).
-Auch: QR-Code in Einladungs-E-Mail an neue Eltern einbetten möglich (Thomas-Idee).
+- **Entry-QR** (`fest-2026`) am Eingang gut sichtbar — einmalig System-Kamera, dann In-App-Rundgang
+- Kurzer Hinweistext: „Danach Stationen in der App scannen“
+- Schulstartheft-Entry (`heft`) separat — nicht am Schulfest-Tag zwingend
 
 ---
 
 ## #41 — Tablet-Fallback vorbereiten
 
-**Labels:** `org`
+**Labels:** `org`  
 **Assignee:** Sten / Tina
 
-1–2 Schul-Tablets mit geladenem Browser und vorgeöffneter App.
-Werden von einem Schüler betreut (Tinas Idee: vertrauenswürdiger Schüler mit Tablet).
-Fallback für Gäste ohne Smartphone oder ohne Mobilfunk-Empfang.
+- 1–2 Tablets: Browser, **Entry-URL einmal öffnen**, dann App/Scanner nutzen
+- Betreuung durch vertrauenswürdigen Schüler
+- Fallback ohne eigenes Smartphone / schwacher Mobilfunk
 
 ---
 
 ## #42 — Ansprechperson am Schulfest
 
-**Labels:** `org`
+**Labels:** `org`  
 **Assignee:** Felix / Julia
 
-Mindestens eine Person vom MPZ ist am 26.06. für technische Probleme erreichbar.
-Muss nicht zwingend vor Ort sein — Telefon/Chat reicht.
-Sten/Tina wissen, wen sie anrufen können.
+- MPZ erreichbar (Telefon/Chat); Sten/Tina haben Ansprechpartner
 
 ---
 
 ## #43 — AVV unterschrieben vorliegend prüfen
 
-**Labels:** `org`
+**Labels:** `org`  
 **Assignee:** Thomas
 
-Vor dem Schulfest sicherstellen, dass der Auftragsverarbeitungsvertrag (AVV) von beiden Seiten unterschrieben ist.
-Ohne AVV darf die App mit Schüler-Content nicht öffentlich zugänglich sein.
+- AVV unterschrieben vor Live-Betrieb mit Schüler-Content
+- Entwurf (#7) reicht für Entwicklung nicht für öffentlichen Schüler-Content ohne Unterschrift

@@ -11,12 +11,11 @@ Milestone: **Phase 0** | Fällig: 14.05.2026
 **Labels:** `org` `blocker` `extern`
 **Assignee:** Sten / Tina
 
-Tina/Sten nennen schriftlich die 8 Stationen für den 26.6., jeweils mit:
-- Raumname
-- Gewünschter Medientyp (Audio / Video / Foto / Text)
-- Verantwortliche Klasse
+Ursprünglich: schriftliche Liste mit Raumname, Medientyp, verantwortliche Klasse.
 
-Ohne diese Liste können Routing und Datenmodell nicht final gebaut werden.
+**Erledigt für Phase 0:** 11 Stationen aus Material Tina (`Virtueller Schulrundgang.html`) + Slugs in [`zuordnung-stationen-bilder.md`](../../auftraggeber/material/stationen/zuordnung-stationen-bilder.md) — Routing und Datenmodell können gebaut werden.
+
+**Ausgelagert (Phase 2):** Medientyp + Klasse pro Station → Content-Lieferplan (#25, Meeting 10.06.).
 
 ---
 
@@ -69,6 +68,7 @@ Ohne diese Liste können Routing und Datenmodell nicht final gebaut werden.
 - Entry `/eintritt?t=…`, Speicherung in **`localStorage`**
 - Modi: **`fest`** (kein Hub, In-App-Scanner) / **`heft`** (Hub, alle Stationen)
 - Entry einmalig System-Kamera; Raum-QRs danach In-App-Scanner
+- `fest`: Puzzle-Hub (progressive disclosure); `heft`: voller Hub
 - Zwei Token (Fest + Schuljahr); Entry-QR bei Rotation neu drucken
 
 ---
@@ -101,3 +101,16 @@ Enthält: Hosting-Details, Speicherort der Daten (Deutschland), Verantwortlichke
 
 **Labels:** `org` `extern`
 **Assignee:** Tina
+
+---
+
+## #55 — ADR: Raum-Viewer (Gyro, Hotspots)
+
+**GitHub:** geschlossen (2026-05-21) — [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
+
+**Labels:** `tech`
+**Assignee:** Felix
+
+- MVP: normales Querformat-Foto, **Gyro-Viewer Standard**, Hotspots, Tap-Fallback
+- Nicht MVP: 360°-Panorama, Kamera-AR/WebXR
+- Umsetzung: Phase 1 Schema (#12), Phase 2 Komponente (#55 in Phase 2), Phase 3 Hotspot-Koordinaten
