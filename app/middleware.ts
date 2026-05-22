@@ -76,6 +76,7 @@ export const ACCESS_PROTECTED_MATCHER = [
   '/eintritt',
 ] as const
 
+// Next.js erfordert statisch parsebare matcher-Literale (kein Spread aus Konstante).
 export const config = {
-  matcher: [...ACCESS_PROTECTED_MATCHER],
+  matcher: ['/', '/raum/:path*', '/scan', '/eintritt'],
 }
