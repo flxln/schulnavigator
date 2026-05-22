@@ -104,7 +104,7 @@ Zuordnung Foto ↔ Station: [`auftraggeber/material/stationen/zuordnung-statione
 
 ## Docker (lokal, Issue #10)
 
-Build-Kontext ist das Verzeichnis `app/` (enthält `Dockerfile` und `.dockerignore`).
+Build-Kontext ist das Verzeichnis `app/` (enthält `Dockerfile` und `.dockerignore`). Die Submodule **`auftraggeber/`** und **`protokolle/`** sind **nicht** Teil des Images — Agenten- und Architekturregeln: [`dokumentation/build-kontext-submodule-regeln.md`](../dokumentation/build-kontext-submodule-regeln.md).
 
 ```bash
 cd app

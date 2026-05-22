@@ -22,20 +22,15 @@ Das Projekt liegt unter `2_in-arbeit/schulnavigator/`. **Phase 0** (Architektur-
 schulnavigator/
 ├── CLAUDE.md                          ← diese Datei
 │
-├── auftraggeber/
-│   ├── auftraggeber-gespraech.md      # Fragenliste fürs Gespräch mit Schule
-│   └── antworten.md                   # Ausgefüllt nach dem Gespräch
-│
 ├── dokumentation/
 │   ├── technische-fragen.md           # Offene techn. Fragen (intern)
 │   ├── architektur.md                 # Tech-Stack, URL-Schema, Datenmodell
 │   ├── dsgvo.md                       # Datenschutzkonzept
 │   ├── entscheidungen.md              # ADR-Index (Übersichtstabelle + Konventionen)
+│   ├── build-kontext-submodule-regeln.md  # Docker nur app/; Submodule nicht einbinden (Agenten)
 │   └── adr/
 │       ├── 000-template.md            # Vorlage für neue ADRs
 │       └── 001-hosting-coolify.md     # Entschiedene ADRs, fortlaufend nummeriert
-│
-├── protokolle/                        # Gesprächsprotokolle (YYYY-MM-DD-thema.md)
 │
 ├── prompts/
 │   ├── system-prompt.md               # Haupt-System-Prompt für Coding-Agenten
@@ -48,7 +43,10 @@ schulnavigator/
 │   ├── fuer-entwickler.md             # Setup, Deploy, Wartung
 │   └── lokal-testen-und-anschauen.md  # Dev-Server, Testrouten, Build-Check
 │
-└── app/                               # Next.js (npm-Projektroot)
+├── auftraggeber/                      # Submodule — Material/Doku, nicht im Docker-Image
+├── protokolle/                        # Submodule — Protokolle, nicht in Build/Runtime
+│
+└── app/                               # Next.js (npm-Projektroot) = Docker-Build-Kontext
     ├── app/                           # App Router: `/`, `/scan`, `/raum/[slug]`, `api/health`; `gs39-tokens.css`
     ├── components/                    # u. a. `raum-viewer/`, `raum-station-client.tsx`, `schoolhouse/` (#14)
     ├── data/
@@ -75,6 +73,18 @@ schulnavigator/
 | [006](./dokumentation/adr/006-raum-viewer-gyro-hotspots.md) | Raum-Viewer: Gyro (Standard), Hotspots, Tap-Fallback   | entschieden |
 
 Vollständiger ADR-Index: [`dokumentation/entscheidungen.md`](./dokumentation/entscheidungen.md)
+
+---
+
+## Laufzeit & Docker — Submodule (Pflicht für Agenten)
+
+Die Ordner **`auftraggeber/`** und **`protokolle/`** sind **Git-Submodule** (eigene Repos). Sie gehören **nicht** in Docker-Build oder Laufzeit der App.
+
+- **Build-Kontext und Image:** nur [`app/`](./app/) (`COPY . .` im Dockerfile).
+- **Verboten für Agenten:** Build-Skripte, Imports oder Deploy-Schritte, die `../auftraggeber` oder `../protokolle` zur Laufzeit voraussetzen — ohne kopierte Ressource unter `app/`.
+- **Stattdessen:** benötigte Dateien nach `app/public/`, `app/data/`, `app/scripts/reference/` usw. **kopieren** und versionieren.
+
+Vollständige Regeln, Ursache des Coolify-Fehlers (Mai 2026) und Checkliste: [`dokumentation/build-kontext-submodule-regeln.md`](./dokumentation/build-kontext-submodule-regeln.md).
 
 ---
 
@@ -140,3 +150,4 @@ Kurzfassung (vorläufig):
 | Was ist technisch noch offen?                   | `dokumentation/technische-fragen.md`       |
 | Welche Entscheidungen wurden bereits getroffen? | `dokumentation/entscheidungen.md`          |
 | Wie wird deployed?                              | `dokumentation/adr/001-hosting-coolify.md` |
+| Docker nur `app/`, Submodule nicht einbinden?   | `dokumentation/build-kontext-submodule-regeln.md` |

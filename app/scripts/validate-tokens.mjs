@@ -1,3 +1,7 @@
+/**
+ * Vergleicht gs39-tokens.css mit der Auftraggeber-Quelle.
+ * Docker-Build-Kontext ist nur app/ — siehe dokumentation/build-kontext-submodule-regeln.md
+ */
 import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'

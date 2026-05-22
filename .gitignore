@@ -3,5 +3,6 @@
 
 # Auftraggeber und Protokolle werden als private Submodule verwaltet
 
-# Cursor: lokale Pläne und IDE-Artefakte nicht versionieren
-.cursor/
+# Cursor: lokale Pläne und IDE-Artefakte nicht versionieren (.cursor/rules/ versioniert)
+.cursor/*
+!.cursor/rules/

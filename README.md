@@ -39,17 +39,18 @@ schulnavigator/
 │   ├── package.json
 │   ├── Dockerfile              # Multi-Stage, Standalone (#10)
 │   └── …
-├── auftraggeber/               # Gesprächsgrundlagen und Antworten
+├── auftraggeber/               # Submodule — Material/Doku (nicht im Docker-Image)
+├── protokolle/                 # Submodule — Gesprächsprotokolle (nicht in Build/Runtime)
 ├── anleitungen/                # Für Lehrkräfte, Entwickler, QR-Druck
 ├── dokumentation/
 │   ├── adr/                    # Architecture Decision Records
 │   ├── github-project/         # Issues, Milestones, Labels (Quelldaten)
+│   ├── build-kontext-submodule-regeln.md  # Docker nur app/; KI-Agenten-Regeln
 │   ├── architektur.md
 │   ├── dsgvo.md
 │   ├── entscheidungen.md
 │   └── projektplan.md
 ├── prompts/                    # System-Prompts für Coding-Agenten
-├── protokolle/                 # Gesprächsprotokolle und Analysen
 └── CLAUDE.md                   # Projektkonventionen für KI-Agenten
 ```
 

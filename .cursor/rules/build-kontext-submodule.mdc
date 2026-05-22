@@ -1,0 +1,38 @@
+---
+description: Docker-Build nur app/; Submodule auftraggeber und protokolle nicht in Build oder Runtime einbinden
+alwaysApply: true
+---
+
+# Build- und Laufzeitkontext (Schulnavigator)
+
+Vollständig: `dokumentation/build-kontext-submodule-regeln.md`
+
+## Kurzregel
+
+- **Docker-Build-Kontext und Laufzeit-Image:** nur `app/` (`COPY . .` im Dockerfile, Coolify Base Directory `/app`).
+- **Git-Submodule** `auftraggeber/` und `protokolle/` (eine Ebene über `app/`): Doku/Material — **nicht** ins Image, **nicht** zur Laufzeit importieren.
+
+## Verboten
+
+- Build-Skripte, `import` oder Deploy-Schritte mit `../auftraggeber` oder `../protokolle` **ohne** Fallback/Kopie unter `app/`.
+- Dockerfile: kein `COPY ../auftraggeber`, Build-Kontext nicht auf Repo-Root erweitern.
+- `protokolle/` nie in Build oder Runtime.
+
+## Stattdessen
+
+| Bedarf | Ziel unter `app/` |
+|--------|-------------------|
+| Design-Tokens (Build-Check) | `scripts/reference/colors_and_type.css` + `app/gs39-tokens.css` |
+| Stationen | `data/stations.json` |
+| Medien | `public/` |
+
+Nach Übernahme aus dem Submodule: Kopie in `app/` versionieren und README am Zielordner pflegen.
+
+## Vor Deploy prüfen
+
+```bash
+cd app && npm run build
+# optional: docker build -t schulnavigator-app .
+```
+
+Beispiel-Fehler bei Verstoß: `ENOENT … /auftraggeber/.../colors_and_type.css` im Coolify-Log.
