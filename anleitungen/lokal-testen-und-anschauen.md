@@ -64,9 +64,19 @@ npm run start
 - App unter [http://localhost:3000](http://localhost:3000) (Port siehe Terminal-Ausgabe).
 - Zum Beenden: im Terminal `Ctrl+C`.
 
-`npm run build` ruft zuvor **`npm run validate:tokens`** (Abgleich `app/gs39-tokens.css` ↔ `auftraggeber/.../colors_and_type.css`) und **`npm run validate:stations`** auf: Es muss jede in `stations.json` referenzierte Datei unter `public/` existieren (Raumbilder, Demo-Medien). Fehlt etwas, bricht der Build mit einer klaren Meldung ab.
+`npm run build` ruft zuvor **`npm run validate:tokens`** (Abgleich `app/gs39-tokens.css` ↔ `auftraggeber/.../colors_and_type.css`) und **`npm run validate:stations`** auf: Es muss jede in `stations.json` referenzierte Datei unter `public/` existieren (Raumbilder, Demo-Medien). Fehlt etwas, bricht der Build mit einer klaren Meldung ab. Zusätzlich gibt `validate:stations` bei riskantem Hotspot-**y** (nach Auto-Zoom unsichtbar) eine **Warnung** aus (Heuristik).
 
-**Raum-Viewer (Issue #55):** Viewer `min(50vh, 360px)` hoch; Gyro wirkt nur bei **breiten Panorama-Bildern** (≥ 2,5 : 1 empfohlen), nicht bei normalem 4:3 — siehe [`fuer-entwickler.md`](./fuer-entwickler.md). Unter `/raum/musik` testen — auf dem **iPhone nur unter HTTPS**; im Desktop-Dev oft kein `deviceorientation`. Unter iOS: Button „Orientierung aktivieren“. Ohne Gyro: Hotspots **tippen** oder **wischen**.
+**Raum-Viewer (Issue #55 / #56, Mobil-Härtung):** `export const viewport` in [`app/app/layout.tsx`](../app/app/layout.tsx) — korrektes **device-width** auf dem Handy (kein „Mini-Desktop-Zoom“). Viewer `min(50vh, 360px)`; **Auto-Zoom** skaliert schmale Bilder so, dass horizontal mindestens `MIN_PAN_DISPLAY_RATIO` (2) erreicht wird — dabei kann **oben/unten beschnitten** werden; Hotspot-**y** im mittleren Drittel halten. **Wischen** bleibt nach Loslassen stabil (Neutral-Kalibrierung). Button **„Ansicht zentrieren“** setzt Pan + Gyro-Null neu. Debug: URL `?debug=1` zeigt ein HUD im Viewer. Unter `/raum/musik` testen — **iPhone nur unter HTTPS**; **iPad Safari** (Portrait/Landscape drehen); **Android Chrome**; Desktop oft ohne Sensoren. iOS: „Orientierung aktivieren“; nach einmaliger Erlaubnis wird die Session in `sessionStorage` gemerkt (Watchdog bei fehlenden Events).
+
+**Manuelle Test-Matrix (Schulfest-relevant):**
+
+| Umgebung | Prüfen |
+| -------- | ------ |
+| iPhone Safari (HTTPS) | Gyro, Wischen, kein Pull-to-Refresh über dem Bild, Hotspots |
+| iPad Safari | Drehen Portrait/Landscape, kein Bild-Sprung |
+| Android Chrome (Phone) | Gyro unter HTTPS |
+| Desktop Chrome | keine Crashes, ggf. Banner „Orientierung nicht verfügbar“ |
+| Samsung Internet / Firefox Mobile | best-effort |
 
 **Design-Tokens:** Farben und Typo folgen [`auftraggeber/material/UI-Vorschläge/colors_and_type.css`](../auftraggeber/material/UI-Vorschläge/colors_and_type.css) (Kopie in `app/app/gs39-tokens.css`). **Dark Mode** der App ist bewusst deaktiviert (Papier-Look).
 

@@ -29,6 +29,23 @@ Spezifikation: [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
 
 ---
 
+## #56 — Raum-Viewer Mobil-Härtung (Folge zu #55)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/56 — **geschlossen** (Umsetzung im Repo)
+
+**Labels:** `tech`  
+**Assignee:** Felix
+
+- [x] Viewport-Meta (`device-width`) — kein „gezoomter“ Mobile-Layout-Bug
+- [x] `touch-action: none` + CSS-Containment auf dem Viewer; kein Pull-to-Refresh-Konflikt beim Wischen
+- [x] Auto-Zoom bis `MIN_PAN_DISPLAY_RATIO` (2); Hotspot-y Build-/Runtime-Warnungen
+- [x] Gyro: Neutral ~500 ms; Re-Kalibrierung nach Wischen; Resize/Orientation-Reset; Sensitivity 0,8 / Deadzone 3°; Gamma-Sanity
+- [x] iOS: `sessionStorage` + 2s-Watchdog bei Cache ohne Sensordaten
+- [x] Button „Ansicht zentrieren“; `?debug=1` für Diagnose-HUD
+- [x] Doku (u. a. `lokal-testen-und-anschauen.md`, `fuer-entwickler.md`, `architektur.md`, ADR-006, Projektplan, GitHub-Projekt-README) + Testmatrix
+
+---
+
 ## #18 — Audio-Player-Komponente
 
 **Labels:** `tech`  

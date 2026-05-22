@@ -1,6 +1,6 @@
 # Projektplan — Schulnavigator
 
-Stand: 2026-05-21 (Phase 1: #16 Deploy live `schulnavigator.mpz.schule`, Issue geschlossen) | Schulfest (Hard Deadline): 2026-06-26
+Stand: 2026-05-22 (Phase 1: #16 Deploy live; Phase 2: #55/#56 Raum-Viewer inkl. Mobil-Härtung) | Schulfest (Hard Deadline): 2026-06-26
 
 ---
 
@@ -79,6 +79,7 @@ Phase 5 │ Post-Fest / Admin-Interface    │ ab Juli
 
 - [x] `RaumViewer`: Gyro-Pan (Standard), Hotspot-Overlay, Medien-Panel bei Treffer/Tap — GitHub **#55** (inkl. GS39-Theme, `validate:tokens`)
 - [x] Tap-Fallback + optional Wischen; iOS-Orientierung nach Nutzer-Geste
+- [x] Mobil-Härtung: `viewport` im Root-Layout, Auto-Zoom für schmalere Fotos, Gyro-Neutral nach Wischen/Resize, `touch-action`/Containment, Build-Warnung bei riskantem Hotspot-**y** — GitHub **#56**
 - [x] Ohne `bild`: statische Ansicht + Medienliste
 
 **Medien**

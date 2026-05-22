@@ -1,6 +1,6 @@
 # Schulnavigator — Architektur
 
-_Stand: 2026-05-21 (Issue #16: Live-Deploy; **#55:** Raum-Viewer Gyro + Hotspots, GS39-Theme) — siehe [entscheidungen.md](./entscheidungen.md)_
+_Stand: 2026-05-22 (Issue #16: Live-Deploy; **#55:** Raum-Viewer Gyro + Hotspots, GS39-Theme; **#56:** Mobil-Härtung, Viewport, Auto-Zoom) — siehe [entscheidungen.md](./entscheidungen.md)_
 
 ## Tech-Stack
 
@@ -32,13 +32,15 @@ Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/
 
 | Verhalten | Details |
 | --------- | ------- |
-| Gyro-Pan | Querformat-Foto höhenbasiert (`translateX`), `deviceorientation` gedämpft; iOS nach Nutzer-Geste |
-| Hotspots | JSON-Koordinaten 0–1; Aktivierung bei Viewport-Mitte im Radius oder Tap |
-| Fallback | Wischen (horizontal), Tap auf Marker; Banner bei fehlender/abgelehnter Orientierung |
+| Gyro-Pan | Höhenbasiert, horizontal `translateX`; Auto-Zoom bis `MIN_PAN_DISPLAY_RATIO` (2); `deviceorientation` gedämpft; iOS nach Nutzer-Geste; Gamma-Sanity (Sprung-/Winkel-Filter) |
+| Neutral | ~500 ms Mittelwert nach Aktivierung; nach **Wischen** Re-Kalibrierung (`neutralGammaForPan`); bei **Resize/Orientierung** Neu-Kalibrierung |
+| Hotspots | JSON 0–1; bei vertikalem Beschnitt können extreme **y** unsichtbar sein — Build-Warnung in `validate:stations`, Runtime-`console.warn` |
+| UI | `touch-action: none` + CSS-Containment auf dem Viewer; Button **Ansicht zentrieren**; `?debug=1` für HUD |
+| Fallback | Wischen, Tap; Banner wenn Orientierung fehlt; `sessionStorage`-Merker iOS + 2s-Watchdog bei fehlenden Events |
 | Ohne `bild` | Statisches Layout + Medienliste ([ADR-006](./adr/006-raum-viewer-gyro-hotspots.md)) |
 | Demo | `/raum/musik` (2 Hotspots) — Gyro auf iPhone nur unter **HTTPS** testen |
 
-**Raumbilder (#17 / Content):** Überbreites **Panorama** (empfohlen **≥ 2,5 : 1** Breite:Höhe, min. 2400 px Breite). Viewer-Höhe `min(50vh, 360px)`; Gyro-Pan nur wenn `Anzeige-Breite / Viewport-Breite ≥ 2` (`MIN_PAN_DISPLAY_RATIO`). Normales 4:3/16:9 → kaum Pan, Dev-Warnung in der Konsole. Konstanten: `lib/raum-viewer/constants.ts`. Briefing: [`zuordnung-stationen-bilder.md`](../auftraggeber/material/stationen/zuordnung-stationen-bilder.md).
+**Raumbilder (#17 / Content):** **Panorama** (≥ **2,5 : 1**, min. 2400 px Breite) bleibt ideal. Die App **zoomt** schmalere Bilder automatisch so, dass horizontal mindestens **`MIN_PAN_DISPLAY_RATIO` (2)** erreicht wird (`roomPanZoom`) — dabei entsteht **vertikaler Beschnitt**; Hotspot-**y** im mittleren Drittel platzieren. Konstanten: `lib/raum-viewer/constants.ts`, Geometrie: `room-pan-zoom.ts`, `clip-zone.ts`. Briefing: [`zuordnung-stationen-bilder.md`](../auftraggeber/material/stationen/zuordnung-stationen-bilder.md). **Viewport:** [`app/app/layout.tsx`](../app/app/layout.tsx) exportiert `viewport` (`device-width`, `initialScale: 1`).
 
 ## URL-Schema
 

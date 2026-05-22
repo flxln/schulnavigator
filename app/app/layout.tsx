@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Nunito } from 'next/font/google'
 import './globals.css'
 
@@ -12,6 +12,12 @@ export const metadata: Metadata = {
   title: 'Schulnavigator',
   description: 'Web-App für den Tag der offenen Tür (39. Grundschule Dresden).',
   robots: { index: false, follow: false },
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
 }
 
 export default function RootLayout({

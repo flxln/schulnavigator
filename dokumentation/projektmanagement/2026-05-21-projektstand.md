@@ -1,6 +1,6 @@
 # Schulnavigator — Projektstand
 
-**Stand:** 2026-05-21 (Phase 1 #9–#16; **#16** und **#55** auf GitHub geschlossen; Live `schulnavigator.mpz.schule`)  
+**Stand:** 2026-05-22 (Phase 1 #9–#16; **#16** und **#55** auf GitHub geschlossen; **#56** Mobil-Härtung im Code; Live `schulnavigator.mpz.schule`)  
 **Projekt:** Schulnavigator (39. Grundschule Dresden)  
 **Auftraggeber:** Sten, Tina (Schule) · **Umsetzung:** MPZ (Felix, Julia, Thomas)  
 **Hard Deadline:** Schulfest am **26.06.2026**
@@ -23,9 +23,9 @@ Konzept und Planung sind weit fortgeschritten; **Next.js-App in `app/` läuft** 
 | Architektur Frontend/CMS    | ✅ Entschieden       | [ADR-002](../adr/002-frontend-nextjs.md), [ADR-003](../adr/003-content-mvp-json-directus.md)            |
 | Video-Hosting               | ✅ Entschieden       | [ADR-004](../adr/004-video-hosting-mpz.md) — MPZ; YouTube nach Rechtsklärung                            |
 | Zugangskontrolle            | ✅ Entschieden       | [ADR-005](../adr/005-zugangskontrolle-token.md) — Token, Modi fest/heft, In-App-Scanner                 |
-| Raum-Viewer                 | ✅ Umgesetzt (#55)   | [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md) — Gyro, Hotspots, Panel; Demo `/raum/musik`          |
+| Raum-Viewer                 | ✅ Umgesetzt (#55/#56) | [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md) — Gyro, Hotspots, Panel, Mobil-Härtung (Viewport, Auto-Zoom); Demo `/raum/musik` |
 | AVV / DSGVO                 | 🟡 Entwurf versendet | AVV-Entwurf an Schule (21.05., Thomas); **Unterschrift** bis Schulfest → Phase 4 (#43)                  |
-| Anwendungscode              | 🟢 Phase 1 + #55     | Wie Phase 1; zusätzlich **Raum-Viewer** (Gyro/Hotspots), **GS39-Theme**, `validate:tokens`; Ops: [`anleitungen/fuer-entwickler.md`](../../anleitungen/fuer-entwickler.md) |
+| Anwendungscode              | 🟢 Phase 1 + #55/#56 | Wie Phase 1; zusätzlich **Raum-Viewer** (Gyro/Hotspots, Mobil-Härtung), **GS39-Theme**, `validate:tokens`; Ops: [`anleitungen/fuer-entwickler.md`](../../anleitungen/fuer-entwickler.md) |
 | Content von der Schule      | 🟡 Teilweise         | 11 Stationen + Texte/Fotos; **Content-Lieferplan** (Medientyp/Klasse) bis 12.06. offen                  |
 | Maskottchen-Rechte          | ✅ Freigabe          | PDF in `verlagsinfo/`; **Verlagsnennung** im Impressum → Phase 2/4                                      |
 
@@ -37,7 +37,7 @@ Konzept und Planung sind weit fortgeschritten; **Next.js-App in `app/` läuft** 
 | ----------------- | ---------- | ------------------------------------------------------ | -------------------------------------------------------------------- |
 | **0** Architektur | bis 14.05. | ADRs, Stationen, AVV                                   | **Abgeschlossen** — ADR 001–006; 11 Stationen; AVV-Entwurf versendet |
 | **1** Foundation  | bis 28.05. | Next.js, Docker, Routing, leere Stationen, Startseite, QR, Deploy-Test | **Technisch erledigt (#9–#16)** — inkl. Live-URL; **#17** (Raumfotos) extern / Content |
-| **2** UI-Shell    | bis 12.06. | Player, Stempel, Token, i18n-Struktur                  | **#55 erledigt** (Raum-Viewer + Theme); Rest ausstehend               |
+| **2** UI-Shell    | bis 12.06. | Player, Stempel, Token, i18n-Struktur                  | **#55/#56 erledigt** (Raum-Viewer + Theme + Mobil-Härtung); Rest ausstehend |
 | **3** Content     | 12.–24.06. | Kinder-Content einpflegen, QR drucken                  | Ausstehend                                                           |
 | **4** Live        | 26.06.     | Schulfest                                              | Hard Deadline                                                        |
 | **5** Post-Fest   | ab Juli    | Directus, Migration, Erweiterungen                     | Geplant                                                              |

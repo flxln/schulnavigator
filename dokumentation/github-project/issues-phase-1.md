@@ -168,7 +168,7 @@ Zwei Ausgabe-Typen ([ADR-005](../adr/005-zugangskontrolle-token.md)):
 **Assignee:** Sten / Tina
 
 - **11 Räume** fotografieren (Material Tina als Referenz; ggf. bereits Bilder in `material/stationen/`)
-- **Panorama für Gyro-Viewer** ([ADR-006](../adr/006-raum-viewer-gyro-hotspots.md), umgesetzt in #55): überbreites Querformat, **Seitenverhältnis ≥ 2,5 : 1** (z. B. 2500×1000 px), **min. 2400 px** Breite — normales 4:3 reicht für Gyro auf dem Handy **nicht**
+- **Panorama für Gyro-Viewer** ([ADR-006](../adr/006-raum-viewer-gyro-hotspots.md), umgesetzt in #55/#56): **Empfehlung** überbreites Querformat, **Seitenverhältnis ≥ 2,5 : 1** (z. B. 2500×1000 px), **min. 2400 px** Breite — weniger vertikaler Beschnitt als bei 4:3. **Hinweis:** Die App zoomt schmalere Bilder automatisch, damit am Handy horizontal genug Pan entsteht; Hotspots in **y** nicht zu nah an den Rändern platzieren (Briefing).
 - Aufnahme-Tipp: Handy quer, langsam durch den Raum schwenken / mehrere Bilder zu einem Panorama stitchen — Hotspots später auf genau diesem Bild
 - Format JPG oder WebP; Details: [`zuordnung-stationen-bilder.md`](../../auftraggeber/material/stationen/zuordnung-stationen-bilder.md), [`anleitungen/fuer-entwickler.md`](../../anleitungen/fuer-entwickler.md)
-- Bis 28.05. für Phase 2; vorliegende 4:3-JPEGs nur als Platzhalter, nicht als finales Gyro-Material
+- Bis 28.05. für Phase 2; **Zielqualität** bleibt Panorama — vorliegende 4:3-JPEGs sind in der App nutzbar (#56 Auto-Zoom), aber mit stärkerem Beschnitt

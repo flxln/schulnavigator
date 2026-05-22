@@ -1,6 +1,8 @@
 export const DEFAULT_HOTSPOT_RADIUS = 0.08
-export const GYRO_DEADZONE_DEG = 5
-export const GYRO_SENSITIVITY = 0.45
+/** Mit Nutzer auf iPhone Safari kalibriert; bei Beschwerden in 0,1-Schritten anpassen. */
+export const GYRO_DEADZONE_DEG = 3
+/** Mit Nutzer auf iPhone Safari kalibriert; bei Beschwerden in 0,1-Schritten anpassen. */
+export const GYRO_SENSITIVITY = 0.8
 export const PAN_SMOOTHING = 0.15
 export const HOTSPOT_DEBOUNCE_MS = 280
 /** Sichtbare Viewer-Höhe (höhenbasierte Bildskalierung, Gyro-Pan). */

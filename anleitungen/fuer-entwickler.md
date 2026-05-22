@@ -47,7 +47,7 @@ Alle Befehle im Verzeichnis `app/` ausführen.
 | `npm run format:check` | Prettier nur prüfen              |
 | `npm run test`         | Vitest (u. a. Merge Schulhaus ↔ `stations.json`, Issue #14)   |
 | `npm run validate:tokens` | Prüft `app/gs39-tokens.css` gegen `auftraggeber/.../colors_and_type.css` (lokal) bzw. `app/scripts/reference/colors_and_type.css` (Docker, nur `app/` als Kontext) — wird von `build` mitaufgerufen |
-| `npm run validate:stations` | Prüft `bild`- und `quelle`-Pfade unter `public/` (wird von `build` mitaufgerufen) |
+| `npm run validate:stations` | Prüft `bild`- und `quelle`-Pfade unter `public/`; warnt bei extremem Hotspot-**y** (Heuristik, sichtbarer Ausschnitt nach Auto-Zoom) — wird von `build` mitaufgerufen |
 | `npm run generate:qr`  | QR-PNGs + `manifest.json` unter `public/qr/` (Issue #15); liest `.env` / `.env.local` wie dokumentiert in `scripts/load-env-local.mjs` |
 
 ---
@@ -84,14 +84,14 @@ Nach Änderungen an der Auftraggeber-CSS: `gs39-tokens.css` synchron halten und 
 
 Für Stationen mit `bild` in `stations.json` ([ADR-006](../dokumentation/adr/006-raum-viewer-gyro-hotspots.md), Issue **#55**):
 
-Der Viewer skaliert **höhenbasiert** (`ROOM_VIEWER_HEIGHT_CSS` = `min(50vh, 360px)`). Gyro verschiebt nur, was **links/rechts außerhalb** des sichtbaren Fensters liegt — ein normales 4:3-Foto, das in die Breite passt, ergibt **keinen** Schwenk-Effekt.
+Der Viewer skaliert **höhenbasiert** (`ROOM_VIEWER_HEIGHT_CSS` = `min(50vh, 360px)`). **Auto-Zoom** (`roomPanZoom` in `lib/raum-viewer/room-pan-zoom.ts`): Ist das Quellbild zu „hoch“ im Verhältnis zur Viewport-Breite, wird es so weit vergrößert, dass horizontal mindestens **`MIN_PAN_DISPLAY_RATIO` (2)** erreicht wird — Gyro hat dann Spielraum; **oben/unten** kann beschnitten werden (`visibleYNormalRange` in `clip-zone.ts`). Der äußere Rahmen hat **`touch-action: none`** und **`contain: layout paint style`**, damit Wischen nicht mit Pull-to-Refresh oder Browser-Gesten kollidiert.
 
 | Anforderung | Empfehlung |
 | ----------- | ---------- |
-| Aufnahme | **Panorama**: deutlich breiter als hoch (nicht nur „ein Raumfoto“) |
-| Seitenverhältnis | **≥ 2,5 : 1** (Breite : Höhe), Konstante `RECOMMENDED_SOURCE_ASPECT_MIN` |
+| Aufnahme | **Panorama** bevorzugt (≥ **2,5 : 1**), Konstante `RECOMMENDED_SOURCE_ASPECT_MIN` |
+| 4:3 / 16:9 | In der App **nutzbar** (Auto-Zoom), Hotspot-**y** im **mittleren Drittel** — sonst Warnung in Konsole / `validate:stations` (Heuristik) |
 | Pixel | **≥ 2400 px** Breite in der Quelldatei |
-| Technische Warnung | Dev-Konsole, wenn `Anzeige-Breite / Viewport < 2` (`MIN_PAN_DISPLAY_RATIO`) |
+| Gyro-Konstanten | `GYRO_SENSITIVITY` / `GYRO_DEADZONE_DEG` in `lib/raum-viewer/constants.ts` — mit Nutzer kalibriert, in 0,1-Schritten anpassbar |
 | Datei | `public/stations/{slug}.jpg` (oder WebP, Pfad in JSON) |
 | Größe | WebP oder optimiertes JPG, Ziel max. ~500 KB (Phase 3 #27) |
 | Ohne Foto | `bild` weglassen → statische Ansicht + Medienliste (z. B. `schulsozialarbeit` bis Panorama da ist) |

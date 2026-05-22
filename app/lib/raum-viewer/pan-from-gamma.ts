@@ -22,6 +22,26 @@ export function gammaToTargetPan(
   return clampPan(raw, maxPanPx)
 }
 
+/**
+ * Kalibriert `neutralDeg` so, dass `gammaToTargetPan(gamma, maxPan, neutralDeg) ≈ panPx`
+ * (linearer Bereich, Saturationen approximiert).
+ */
+export function neutralGammaForPan(
+  gammaDeg: number,
+  panPx: number,
+  maxPanPx: number,
+): number {
+  if (maxPanPx <= 0) return gammaDeg
+  const p = clampPan(panPx, maxPanPx)
+  if (p === 0) {
+    return gammaDeg
+  }
+  const eff = (-p / maxPanPx) * (45 / GYRO_SENSITIVITY)
+  const delta =
+    eff > 0 ? eff + GYRO_DEADZONE_DEG : eff < 0 ? eff - GYRO_DEADZONE_DEG : 0
+  return gammaDeg - delta
+}
+
 export function lerpPan(
   current: number,
   target: number,

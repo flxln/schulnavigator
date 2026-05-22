@@ -8,6 +8,11 @@ export type OrientationAuthState =
   | 'denied'
   | 'active'
 
+const STORAGE_KEY = 'schulnav.gyro.granted'
+const WATCHDOG_MS = 2000
+const GAMMA_MAX_ABS = 90
+const GAMMA_MAX_JUMP = 30
+
 function isIosOrientationPermissionModel(): boolean {
   return (
     typeof DeviceOrientationEvent !== 'undefined' &&
@@ -24,6 +29,37 @@ export function useDeviceOrientation(enabled: boolean) {
   const [gamma, setGamma] = useState<number | null>(null)
   const raf = useRef<number | null>(null)
   const latestGamma = useRef<number | null>(null)
+  const lastGoodGamma = useRef<number | null>(null)
+  const pendingIosWatchdogRef = useRef(false)
+  const watchdogTimerRef = useRef<number | null>(null)
+
+  const clearWatchdog = useCallback(() => {
+    if (watchdogTimerRef.current !== null) {
+      window.clearTimeout(watchdogTimerRef.current)
+      watchdogTimerRef.current = null
+    }
+  }, [])
+
+  const armIosCacheWatchdog = useCallback(() => {
+    clearWatchdog()
+    if (!pendingIosWatchdogRef.current) {
+      return
+    }
+    watchdogTimerRef.current = window.setTimeout(() => {
+      watchdogTimerRef.current = null
+      pendingIosWatchdogRef.current = false
+      try {
+        sessionStorage.removeItem(STORAGE_KEY)
+      } catch {
+        /* ignore */
+      }
+      setState(
+        isIosOrientationPermissionModel() ? 'needs-gesture' : 'unsupported',
+      )
+      setGamma(null)
+      lastGoodGamma.current = null
+    }, WATCHDOG_MS)
+  }, [clearWatchdog])
 
   const flush = useCallback(() => {
     raf.current = null
@@ -42,34 +78,72 @@ export function useDeviceOrientation(enabled: boolean) {
         return
       }
       if (isIosOrientationPermissionModel()) {
+        try {
+          if (sessionStorage.getItem(STORAGE_KEY) === '1') {
+            pendingIosWatchdogRef.current = true
+            setState('active')
+            return
+          }
+        } catch {
+          /* ignore */
+        }
+        pendingIosWatchdogRef.current = false
         setState('needs-gesture')
         return
       }
+      pendingIosWatchdogRef.current = false
       setState('active')
     })
   }, [enabled])
 
   useEffect(() => {
     if (state !== 'active') {
+      clearWatchdog()
       return
     }
+
+    armIosCacheWatchdog()
+
+    const onVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        armIosCacheWatchdog()
+      }
+    }
+
     const onOrient = (e: DeviceOrientationEvent) => {
-      if (typeof e.gamma !== 'number' || Number.isNaN(e.gamma)) {
+      const g = e.gamma
+      if (typeof g !== 'number' || Number.isNaN(g)) {
         return
       }
-      latestGamma.current = e.gamma
+      if (Math.abs(g) > GAMMA_MAX_ABS) {
+        return
+      }
+      const prev = lastGoodGamma.current
+      if (prev !== null && Math.abs(g - prev) > GAMMA_MAX_JUMP) {
+        return
+      }
+      lastGoodGamma.current = g
+      latestGamma.current = g
+      if (pendingIosWatchdogRef.current) {
+        pendingIosWatchdogRef.current = false
+        clearWatchdog()
+      }
       if (raf.current === null) {
         raf.current = window.requestAnimationFrame(flush)
       }
     }
+
     window.addEventListener('deviceorientation', onOrient)
+    document.addEventListener('visibilitychange', onVisibility)
     return () => {
       window.removeEventListener('deviceorientation', onOrient)
+      document.removeEventListener('visibilitychange', onVisibility)
+      clearWatchdog()
       if (raf.current !== null) {
         cancelAnimationFrame(raf.current)
       }
     }
-  }, [state, flush])
+  }, [state, flush, armIosCacheWatchdog, clearWatchdog])
 
   const requestAccess = useCallback(async () => {
     if (!window.DeviceOrientationEvent) {
@@ -85,6 +159,13 @@ export function useDeviceOrientation(enabled: boolean) {
       try {
         const r = await req.call(DeviceOrientationEvent)
         if (r === 'granted') {
+          try {
+            sessionStorage.setItem(STORAGE_KEY, '1')
+          } catch {
+            /* ignore */
+          }
+          pendingIosWatchdogRef.current = false
+          clearWatchdog()
           setState('active')
         } else {
           setState('denied')
@@ -94,8 +175,10 @@ export function useDeviceOrientation(enabled: boolean) {
       }
       return
     }
+    pendingIosWatchdogRef.current = false
+    clearWatchdog()
     setState('active')
-  }, [])
+  }, [clearWatchdog])
 
   return { state, gamma, requestAccess }
 }

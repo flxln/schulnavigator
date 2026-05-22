@@ -1,7 +1,13 @@
 import { describe, expect, it } from 'vitest'
+import { visibleYNormalRange } from '@/lib/raum-viewer/clip-zone'
 import { hitTestHotspot } from '@/lib/raum-viewer/hit-test-hotspot'
+import {
+  gammaToTargetPan,
+  lerpPan,
+  neutralGammaForPan,
+} from '@/lib/raum-viewer/pan-from-gamma'
+import { roomPanZoom } from '@/lib/raum-viewer/room-pan-zoom'
 import { normalizedViewportCenter } from '@/lib/raum-viewer/viewport-center'
-import { gammaToTargetPan, lerpPan } from '@/lib/raum-viewer/pan-from-gamma'
 import {
   MIN_PAN_DISPLAY_RATIO,
   RECOMMENDED_SOURCE_ASPECT_MIN,
@@ -30,17 +36,50 @@ describe('imageDisplayWidth / maxPanPx', () => {
   it('Panorama (2.5:1) erfüllt MIN_PAN_DISPLAY_RATIO auf typischem Phone-Viewport', () => {
     const containerW = 390
     const containerH = 360
-    const dw = imageDisplayWidth(2500, 1000, containerH)
-    expect(dw / containerW).toBeGreaterThanOrEqual(MIN_PAN_DISPLAY_RATIO)
+    const { effectiveDisplayW } = roomPanZoom(
+      2500,
+      1000,
+      containerW,
+      containerH,
+      MIN_PAN_DISPLAY_RATIO,
+    )
+    expect(effectiveDisplayW / containerW).toBeGreaterThanOrEqual(
+      MIN_PAN_DISPLAY_RATIO,
+    )
     expect(2500 / 1000).toBeGreaterThanOrEqual(RECOMMENDED_SOURCE_ASPECT_MIN)
-    expect(maxPanPx(dw, containerW)).toBeGreaterThan(0)
+    expect(maxPanPx(effectiveDisplayW, containerW)).toBeGreaterThan(0)
   })
 
-  it('4:3 unterschreitet MIN_PAN_DISPLAY_RATIO auf typischem Phone-Viewport', () => {
+  it('4:3 erreicht MIN_PAN_DISPLAY_RATIO nach Auto-Zoom', () => {
     const containerW = 390
     const containerH = 360
-    const dw = imageDisplayWidth(1920, 1440, containerH)
-    expect(dw / containerW).toBeLessThan(MIN_PAN_DISPLAY_RATIO)
+    const { zoom, effectiveDisplayW } = roomPanZoom(
+      1920,
+      1440,
+      containerW,
+      containerH,
+      MIN_PAN_DISPLAY_RATIO,
+    )
+    expect(zoom).toBeGreaterThan(1)
+    expect(effectiveDisplayW / containerW).toBeGreaterThanOrEqual(
+      MIN_PAN_DISPLAY_RATIO - 0.001,
+    )
+  })
+})
+
+describe('visibleYNormalRange', () => {
+  it('liefert volle Höhe ohne Zoom', () => {
+    const r = visibleYNormalRange(2.6, 390, 360, MIN_PAN_DISPLAY_RATIO)
+    expect(r.yMin).toBe(0)
+    expect(r.yMax).toBe(1)
+  })
+
+  it('liefert eingeschränkten Y-Bereich bei 4:3 und Auto-Zoom', () => {
+    const aspect = 1920 / 1440
+    const r = visibleYNormalRange(aspect, 390, 360, MIN_PAN_DISPLAY_RATIO)
+    expect(r.yMin).toBeGreaterThan(0)
+    expect(r.yMax).toBeLessThan(1)
+    expect(r.yMax - r.yMin).toBeLessThan(1)
   })
 })
 
@@ -76,6 +115,17 @@ describe('gammaToTargetPan', () => {
     const p = gammaToTargetPan(20, 200, 0)
     expect(p).toBeLessThan(0)
     expect(p).toBeGreaterThanOrEqual(-200)
+  })
+})
+
+describe('neutralGammaForPan', () => {
+  it('rundet Pan nach Re-Kalibrierung annähernd zurück', () => {
+    const maxPan = 200
+    const gammaDeg = 12
+    const pan = gammaToTargetPan(gammaDeg, maxPan, 0)
+    const ref = neutralGammaForPan(gammaDeg, pan, maxPan)
+    const pan2 = gammaToTargetPan(gammaDeg, maxPan, ref)
+    expect(pan2).toBeCloseTo(pan, 0)
   })
 })
 
