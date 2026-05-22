@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { Hotspot, Medium } from '@/lib/types'
 import {
   clampPan,
+  HOTSPOT_CENTER_DWELL_MS,
   HOTSPOT_DEBOUNCE_MS,
   MIN_PAN_DISPLAY_RATIO,
   PAN_SMOOTHING,
@@ -79,6 +80,8 @@ export function RoomImagePane({
   const panPxRef = useRef(0)
   const prevContainer = useRef({ w: 0, h: 0 })
   const centerDebounce = useRef<number | null>(null)
+  const centerDwell = useRef<number | null>(null)
+  const pendingCenterHit = useRef<Hotspot | null>(null)
 
   const {
     state: orientState,
@@ -229,10 +232,7 @@ export function RoomImagePane({
             neutralGamma.current = gamma
           }
           const target = gammaToTargetPan(gamma, maxPan, neutralGamma.current)
-          setPanPx((p) => {
-            const n = lerpPan(p, target, PAN_SMOOTHING)
-            return Math.abs(n - p) < 0.02 ? p : n
-          })
+          setPanPx((p) => lerpPan(p, target, PAN_SMOOTHING))
         }
       }
       raf = window.requestAnimationFrame(tick)
@@ -254,15 +254,35 @@ export function RoomImagePane({
       return
     }
     const hit = hitTestHotspot({ x: centerNorm.x, y: centerNorm.y }, hotspots)
+    pendingCenterHit.current = hit
+
     if (centerDebounce.current) {
       clearTimeout(centerDebounce.current)
     }
     centerDebounce.current = window.setTimeout(() => {
-      onHotspotCenterHit(hit)
+      centerDebounce.current = null
+      if (centerDwell.current) {
+        clearTimeout(centerDwell.current)
+        centerDwell.current = null
+      }
+      if (!hit) {
+        onHotspotCenterHit(null)
+        return
+      }
+      centerDwell.current = window.setTimeout(() => {
+        centerDwell.current = null
+        if (pendingCenterHit.current?.id === hit.id) {
+          onHotspotCenterHit(hit)
+        }
+      }, HOTSPOT_CENTER_DWELL_MS)
     }, HOTSPOT_DEBOUNCE_MS)
+
     return () => {
       if (centerDebounce.current) {
         clearTimeout(centerDebounce.current)
+      }
+      if (centerDwell.current) {
+        clearTimeout(centerDwell.current)
       }
     }
   }, [centerNorm, hotspots, onHotspotCenterHit])

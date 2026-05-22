@@ -11,7 +11,9 @@ export type OrientationAuthState =
 const STORAGE_KEY = 'schulnav.gyro.granted'
 const WATCHDOG_MS = 2000
 const GAMMA_MAX_ABS = 90
-const GAMMA_MAX_JUMP = 30
+/** Glättung roher Sensorwerte; höher = direkter, niedriger = ruhiger. */
+const GAMMA_EMA_ALPHA = 0.38
+const GAMMA_GLITCH_JUMP_DEG = 50
 
 function isIosOrientationPermissionModel(): boolean {
   return (
@@ -119,11 +121,13 @@ export function useDeviceOrientation(enabled: boolean) {
         return
       }
       const prev = lastGoodGamma.current
-      if (prev !== null && Math.abs(g - prev) > GAMMA_MAX_JUMP) {
+      if (prev !== null && Math.abs(g - prev) > GAMMA_GLITCH_JUMP_DEG) {
         return
       }
-      lastGoodGamma.current = g
-      latestGamma.current = g
+      const smoothed =
+        prev === null ? g : prev + GAMMA_EMA_ALPHA * (g - prev)
+      lastGoodGamma.current = smoothed
+      latestGamma.current = smoothed
       if (pendingIosWatchdogRef.current) {
         pendingIosWatchdogRef.current = false
         clearWatchdog()

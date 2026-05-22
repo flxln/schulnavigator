@@ -1,9 +1,11 @@
 export const DEFAULT_HOTSPOT_RADIUS = 0.08
 /** Mit Nutzer auf iPhone Safari kalibriert; bei Beschwerden in 0,1-Schritten anpassen. */
-export const GYRO_DEADZONE_DEG = 3
+export const GYRO_DEADZONE_DEG = 2
 /** Mit Nutzer auf iPhone Safari kalibriert; bei Beschwerden in 0,1-Schritten anpassen. */
-export const GYRO_SENSITIVITY = 0.8
-export const PAN_SMOOTHING = 0.15
+export const GYRO_SENSITIVITY = 1
+export const PAN_SMOOTHING = 0.22
+/** Viewport-Mitte im Hotspot: nur Marker hervorheben, nicht Medien öffnen. */
+export const HOTSPOT_CENTER_DWELL_MS = 450
 export const HOTSPOT_DEBOUNCE_MS = 280
 /** Sichtbare Viewer-Höhe (höhenbasierte Bildskalierung, Gyro-Pan). */
 export const ROOM_VIEWER_HEIGHT_CSS = 'min(50vh,360px)'

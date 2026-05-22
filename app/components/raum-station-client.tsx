@@ -41,19 +41,9 @@ export function RaumStationClient({ station }: RaumStationClientProps) {
     [station.medien, openMedium],
   )
 
-  const onHotspotCenterHit = useCallback(
-    (hs: Hotspot | null) => {
-      setActiveHotspotId(hs?.id ?? null)
-      if (!hs) {
-        return
-      }
-      const m = station.medien.find((x) => x.id === hs.mediumId)
-      if (m) {
-        openMedium(m)
-      }
-    },
-    [station.medien, openMedium],
-  )
+  const onHotspotCenterHit = useCallback((hs: Hotspot | null) => {
+    setActiveHotspotId(hs?.id ?? null)
+  }, [])
 
   return (
     <>
