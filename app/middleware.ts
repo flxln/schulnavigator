@@ -8,8 +8,24 @@ import {
 
 const IS_PROD = process.env.NODE_ENV === 'production'
 
+function isPublicAssetPath(pathname: string): boolean {
+  return (
+    pathname.startsWith('/_next/') ||
+    pathname.startsWith('/stations/') ||
+    pathname.startsWith('/demo/') ||
+    pathname.startsWith('/qr/') ||
+    pathname === '/favicon.ico' ||
+    pathname === '/robots.txt' ||
+    pathname === '/api/health'
+  )
+}
+
 export function middleware(req: NextRequest) {
   const url = req.nextUrl
+  if (isPublicAssetPath(url.pathname)) {
+    return NextResponse.next()
+  }
+
   const t = url.searchParams.get('t')
 
   if (url.pathname === '/eintritt' && t === null) {
@@ -52,6 +68,14 @@ function redirectToHint(url: URL, reason?: 'invalid' | 'expired') {
   return NextResponse.redirect(hint)
 }
 
+/** Nur App-Routen — öffentliche Assets unter /stations, /demo, /qr usw. bleiben außerhalb der Middleware. */
+export const ACCESS_PROTECTED_MATCHER = [
+  '/',
+  '/raum/:path*',
+  '/scan',
+  '/eintritt',
+] as const
+
 export const config = {
-  matcher: ['/((?!api/health|_next/static|_next/image|favicon.ico|robots.txt).*)'],
+  matcher: [...ACCESS_PROTECTED_MATCHER],
 }

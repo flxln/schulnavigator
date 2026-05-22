@@ -5,6 +5,16 @@ import { middleware } from './middleware'
 
 const BASE = 'http://localhost:3000'
 
+/** Entspricht ACCESS_PROTECTED_MATCHER in middleware.ts */
+function middlewareRunsFor(pathname: string): boolean {
+  return (
+    pathname === '/' ||
+    pathname === '/scan' ||
+    pathname === '/eintritt' ||
+    pathname.startsWith('/raum/')
+  )
+}
+
 function req(path: string, cookie?: string): NextRequest {
   const headers = cookie
     ? { cookie: `${ACCESS_COOKIE}=${cookie}` }
@@ -60,5 +70,17 @@ describe('middleware', () => {
     const res = middleware(req('/', 'fest-2026'))
     expect(res.status).toBe(307)
     expect(res.headers.get('location')).toBe(`${BASE}/eintritt?reason=expired`)
+  })
+
+  it('lässt öffentliche Medien ohne Zugangs-Cookie durch', () => {
+    expect(middlewareRunsFor('/stations/klassenzimmer.jpg')).toBe(false)
+    expect(middlewareRunsFor('/demo/foto.jpg')).toBe(false)
+    expect(middlewareRunsFor('/qr/raum-pc-raum.png')).toBe(false)
+    expect(middlewareRunsFor('/')).toBe(true)
+    expect(middlewareRunsFor('/raum/pc-raum')).toBe(true)
+
+    const res = middleware(req('/stations/klassenzimmer.jpg'))
+    expect(res.status).toBe(200)
+    expect(res.headers.get('location')).toBeNull()
   })
 })
