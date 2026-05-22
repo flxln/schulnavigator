@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Eintritt — Schulnavigator',
@@ -8,33 +7,36 @@ export const metadata: Metadata = {
 }
 
 type PageProps = {
-  searchParams: Promise<{ t?: string }>
+  searchParams: Promise<{ reason?: string }>
+}
+
+function hintMessage(reason: string | undefined): string {
+  if (reason === 'invalid') {
+    return 'Dieser Zugangslink ist ungültig — bitte den aktuellen QR-Code am Eingang scannen.'
+  }
+  if (reason === 'expired') {
+    return 'Dein Zugang ist abgelaufen — bitte den aktuellen QR-Code am Eingang oder im Schulstartheft scannen.'
+  }
+  return 'Bitte scanne den QR-Code am Eingang oder im Schulstartheft, um die App zu öffnen.'
 }
 
 export default async function EintrittPage({ searchParams }: PageProps) {
-  const { t } = await searchParams
+  const { reason } = await searchParams
+  const message = hintMessage(reason)
 
   return (
     <main className="mx-auto flex min-h-full max-w-lg flex-col gap-6 px-4 py-8 pb-[max(1rem,env(safe-area-inset-bottom))]">
-      <nav aria-label="Navigation">
-        <Link
-          href="/"
-          className="inline-flex min-h-11 min-w-11 items-center text-sm font-medium text-accent-alt underline-offset-4 hover:text-fg-1 hover:underline"
-        >
-          Zur Startseite
-        </Link>
-      </nav>
       <header>
-        <h1 className="text-2xl font-semibold text-fg-1">Eintritt</h1>
-        <p className="mt-4 text-fg-2 leading-relaxed">
-          Der Zugang über diesen Link wird zum Schulfest freigeschaltet. Bis
-          dahin kannst du die Stationen testen, indem du die Startseite öffnest
-          und eine Station auswählst — oder du scannst einen Raum-QR mit der
-          Kamera-App deines Geräts.
+        <h1 className="text-2xl font-semibold text-fg-1" tabIndex={-1}>
+          Eintritt
+        </h1>
+        <p
+          className="mt-4 text-fg-2 leading-relaxed"
+          role="status"
+          aria-live="polite"
+        >
+          {message}
         </p>
-        {process.env.NODE_ENV === 'development' && t ? (
-          <p className="mt-4 text-xs text-fg-3">Entwicklung: Parameter t={t}</p>
-        ) : null}
       </header>
     </main>
   )

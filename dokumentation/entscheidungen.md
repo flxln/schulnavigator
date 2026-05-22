@@ -12,6 +12,7 @@ Jede wichtige Entscheidung wird als eigenständiger ADR (Architecture Decision R
 | [004](./adr/004-video-hosting-mpz.md) | Video: MPZ-Server; YouTube optional nach Rechtsklärung | entschieden | 2026-05-21 |
 | [005](./adr/005-zugangskontrolle-token.md) | Zugang: Entry-Token, Modi fest/heft, In-App-Scanner | entschieden | 2026-05-21 |
 | [006](./adr/006-raum-viewer-gyro-hotspots.md) | Raum-Viewer: Gyro (Standard), Hotspots, Tap-Fallback; Portrait `alpha`/Armschwenk, Mobil-Härtung (#56) in [architektur.md](./architektur.md) | entschieden | 2026-05-22 |
+| [007](./adr/007-zugangskontrolle-cookie.md) | Zugang: HttpOnly-Cookie + Middleware (ergänzt ADR-005 Speicher/Durchsetzung) | entschieden | 2026-05-22 |
 
 ## Konventionen
 
@@ -26,8 +27,7 @@ Jede wichtige Entscheidung wird als eigenständiger ADR (Architecture Decision R
 MVP (bis 26.06.):     Next.js  ←  JSON + Medien im Repo
 Langfristig:          Next.js  ←  Directus (self-hosted, Coolify)
 
-Zugang:  /eintritt?t=…  →  localStorage (mode: fest | heft)
-Phase 1: / und /scan (Platzhalter) ohne Token — Schulhaus-Hub mit Dev-Stub (Issue #14)
+Zugang:  /eintritt?t=…  →  Cookie sn_access (mode: fest | heft, ADR-007, #23)
 Fest:    Entry (Kamera) → Puzzle-Hub + In-App-Scanner für Räume
 Heft:    Entry im Heft → Hub mit allen Stationen
 

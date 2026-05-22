@@ -1,58 +1,35 @@
 'use client'
 
 import Link from 'next/link'
-import { startTransition, useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
+import type { EntryMode } from '@/lib/access-tokens'
+import { getUnlockedSegmentIdsForMode } from '@/lib/hub-mode'
 import type { SchoolhouseSegment } from '@/lib/schoolhouse-segments'
-import type { HubUnlockMode } from '@/lib/hub-unlock-stub'
-import { getUnlockedSegmentIds } from '@/lib/hub-unlock-stub'
-import { HubDevUnlockToggle } from '@/components/schoolhouse/hub-dev-unlock-toggle'
 import { ScanCta } from '@/components/schoolhouse/scan-cta'
 import { SchoolhouseSrNav } from '@/components/schoolhouse/schoolhouse-sr-nav'
 import { SchoolhouseSvg } from '@/components/schoolhouse/schoolhouse-svg'
 
-const SESSION_KEY = 'hub-dev-unlock-mode'
-
 type SchoolhouseHubProps = {
   segments: readonly SchoolhouseSegment[]
+  mode: EntryMode
 }
 
 function pct(value: number, total: number): string {
   return `${(value / total) * 100}%`
 }
 
-export function SchoolhouseHub({ segments }: SchoolhouseHubProps) {
+export function SchoolhouseHub({ segments, mode }: SchoolhouseHubProps) {
   const allIds = useMemo(
     () => segments.map((s) => s.puzzleSegmentId),
     [segments],
   )
 
-  const [unlockMode, setUnlockMode] = useState<HubUnlockMode>('all-unlocked')
-
-  useEffect(() => {
-    if (process.env.NODE_ENV !== 'development') {
-      return
-    }
-    const stored = sessionStorage.getItem(SESSION_KEY)
-    if (stored === 'all-locked' || stored === 'all-unlocked') {
-      startTransition(() => {
-        setUnlockMode(stored)
-      })
-    }
-  }, [])
-
   const unlockedSegmentIds = useMemo(
-    () => getUnlockedSegmentIds(unlockMode, allIds),
-    [unlockMode, allIds],
+    () => getUnlockedSegmentIdsForMode(mode, allIds),
+    [mode, allIds],
   )
 
-  const handleUnlockChange = (mode: HubUnlockMode) => {
-    setUnlockMode(mode)
-    if (process.env.NODE_ENV === 'development') {
-      sessionStorage.setItem(SESSION_KEY, mode)
-    }
-  }
-
-  const allLocked = unlockMode === 'all-locked'
+  const allLocked = mode === 'fest' && unlockedSegmentIds.size === 0
 
   return (
     <div className="flex flex-col gap-6">
@@ -60,7 +37,7 @@ export function SchoolhouseHub({ segments }: SchoolhouseHubProps) {
         segments={segments}
         unlockedSegmentIds={unlockedSegmentIds}
       />
-      <div className="relative w-full aspect-[2/3] min-h-[50vh] max-h-[85vh]">
+      <div className="relative aspect-[2/3] min-h-[50vh] max-h-[85vh] w-full">
         <div className="absolute inset-0">
           <SchoolhouseSvg
             segments={segments}
@@ -95,12 +72,10 @@ export function SchoolhouseHub({ segments }: SchoolhouseHubProps) {
           className="rounded-[var(--r-md)] bg-bg-3 px-3 py-2 text-center text-sm text-fg-1"
           role="status"
         >
-          Stationen sind gesperrt. Bitte scanne den QR-Code an der Raumtür
-          (Vorschau Schulfest-Modus).
+          Stationen sind gesperrt. Bitte scanne den QR-Code an der Raumtür.
         </p>
       ) : null}
       <ScanCta />
-      <HubDevUnlockToggle mode={unlockMode} onChange={handleUnlockChange} />
     </div>
   )
 }

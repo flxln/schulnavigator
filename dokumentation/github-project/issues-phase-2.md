@@ -109,17 +109,19 @@ Spezifikation: [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
 
 ## #23 — Zugangskontrolle: Token-System
 
+**GitHub:** https://github.com/flxln/schulnavigator/issues/23 — **umgesetzt** (2026-05-22)
+
 **Labels:** `tech`  
 **Assignee:** Felix
 
-Spezifikation: [ADR-005](../adr/005-zugangskontrolle-token.md)
+Spezifikation: [ADR-005](../adr/005-zugangskontrolle-token.md), Speicher/Durchsetzung: [ADR-007](../adr/007-zugangskontrolle-cookie.md) (Cookie statt `localStorage`)
 
-- [ ] `/eintritt?t=…` — Token validieren, `localStorage`: `{ token, mode: 'fest'|'heft', expires }`
-- [ ] Middleware: ohne gültigen Token → Hinweisseite
-- [ ] Startseite: `heft` = voller Hub; `fest` = Puzzle-Hub (#21)
-- [ ] `/scan` — In-App-QR-Scanner (`html5-qrcode` o. ä.); parst `/raum/*` und lehnt Fremd-URLs ab (**ersetzt** die Phase-1-Platzhalterseite aus Issue #14)
-- [ ] Token-Logik serverseitig: dieselben Token-Strings wie in Phase 1 (`app/scripts/qr-config.mjs`); Ablaufdatum / Validierung — bei Domain- oder Token-Wechsel QR-PNGs mit `npm run generate:qr` neu erzeugen (**#15 erledigt**)
-- [ ] `robots.txt` / `noindex` — Basis site-wide bereits in Phase 1 (#16); in #23 optional verfeinern (z. B. nach Middleware nur geschützte Bereiche)
+- [x] `/eintritt?t=…` — Token validieren, HttpOnly-Cookie `sn_access` (Middleware)
+- [x] Middleware: ohne gültigen Zugang → Hinweisseite (`/eintritt`, `reason=invalid|expired`)
+- [x] Startseite: `heft` = voller Hub; `fest` = Puzzle-Hub gesperrt (progressive Aufdeckung → #21)
+- [x] `/scan` — In-App-QR-Scanner (`html5-qrcode`, dynamischer Import); `parseRoomScan` + Slug-Whitelist
+- [x] Token-Logik: `lib/access-tokens.ts` sync mit `qr-config.mjs` (Vitest)
+- [x] `robots.txt` / `noindex` — unverändert site-wide (#16); keine weitere Verfeinerung nötig
 
 **Demo 10.06.:** primär **`fest`**-UX (Puzzle + Scanner) zeigen; `heft` kurz erklären.
 

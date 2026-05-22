@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
+import { cookies } from 'next/headers'
 import { HubProgress } from '@/components/schoolhouse/hub-progress'
 import { SchoolhouseHub } from '@/components/schoolhouse/schoolhouse-hub'
+import { ACCESS_COOKIE, validateToken } from '@/lib/access-tokens'
 import { buildSchoolhouseSegments } from '@/lib/schoolhouse-segments'
 import { getAllStations } from '@/lib/stations'
 
@@ -10,7 +12,12 @@ export const metadata: Metadata = {
     'Schematischer Rundgang durch die Stationen der 39. Grundschule Dresden — Tag der offenen Tür.',
 }
 
-export default function Home() {
+export default async function Home() {
+  const cookieStore = await cookies()
+  const token = cookieStore.get(ACCESS_COOKIE)?.value
+  const access = validateToken(token)
+  const mode = access?.mode ?? 'heft'
+
   const segments = buildSchoolhouseSegments(getAllStations())
 
   return (
@@ -25,7 +32,7 @@ export default function Home() {
       <h2 id="hub-schoolhouse-title" className="sr-only">
         Stationen im Schulhaus
       </h2>
-      <SchoolhouseHub segments={segments} />
+      <SchoolhouseHub segments={segments} mode={mode} />
     </main>
   )
 }

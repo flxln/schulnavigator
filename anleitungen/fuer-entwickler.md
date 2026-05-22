@@ -58,7 +58,8 @@ Alle Befehle im Verzeichnis `app/` ausführen.
 | ------------------ | ------------------------------------------------------------- |
 | `app/app/`         | Next.js App Router (`page.tsx`, `eintritt/`, `scan/`, `raum/[slug]/`, `api/health`, `robots.ts`) |
 | `components/`      | React-Komponenten (`PascalCase.tsx`); u. a. `schoolhouse/` (Startseite #14)   |
-| `lib/`             | Hilfsfunktionen, Typen, Daten-Loader; u. a. `schoolhouse-layout.ts`, `schoolhouse-segments.ts` (#14), `qr-urls.ts` (#15, später #23) |
+| `lib/`             | Hilfsfunktionen, Typen, Daten-Loader; u. a. `access-tokens.ts`, `scan-url.ts` (#23), `schoolhouse-segments.ts` (#14), `qr-urls.ts` (#15) |
+| `middleware.ts`    | Zugangskontrolle: Cookie `sn_access`, Entry `?t=`, Redirect `/eintritt` (#23, ADR-007) |
 | `data/`            | `stations.json` (Phase 1, Issue #12)                          |
 | `public/stations/` | Raumbilder (`{slug}.jpg`)                                     |
 | `public/qr/`       | generierte QR-PNGs + `manifest.json` (Issue #15; PNGs gitignored) |
@@ -135,7 +136,32 @@ PORT=3007 HOSTNAME=127.0.0.1 node server.js
 
 Produktion: Multi-Stage-Image wie in [`app/Dockerfile`](../app/Dockerfile), Health-Check `GET /api/health`. Ziel-Hosting: **MPZ-Hetzner / Coolify** ([ADR-001](../dokumentation/adr/001-hosting-coolify.md)). Geplante öffentliche URL: **`https://schulnavigator.mpz.schule`**.
 
-Die App setzt **`robots.txt`** (`Disallow: /`) und **`noindex`** im Root-Layout (Phase 1, Issue #16), damit die Subdomain nicht in Suchmaschinen indexiert wird; Feinabstimmung mit Middleware in Phase 2 (#23).
+Die App setzt **`robots.txt`** (`Disallow: /`) und **`noindex`** im Root-Layout (Phase 1, Issue #16), damit die Subdomain nicht in Suchmaschinen indexiert wird.
+
+---
+
+## Zugangskontrolle (Issue #23, ADR-005/007)
+
+- **Token-Quelle:** [`app/lib/access-tokens.ts`](../app/lib/access-tokens.ts) — muss mit [`app/scripts/qr-config.mjs`](../app/scripts/qr-config.mjs) synchron bleiben (Vitest-Sync-Guard in `access-tokens.test.ts`).
+- **Cookie:** `sn_access` (HttpOnly, `Secure` nur in Production, `SameSite=Lax`). Inhalt = Token-String; Ablauf/Modus werden bei jedem Request gegen die Token-Liste validiert.
+- **Middleware:** [`app/middleware.ts`](../app/middleware.ts) — gültiges `?t=` → Cookie + Redirect `/`; ohne Cookie → `/eintritt` (`?reason=expired` wenn Token bekannt, aber abgelaufen).
+- **Scanner:** `html5-qrcode` (dynamischer Import in `components/scan/qr-scanner.tsx`); URL-Parsing in `lib/scan-url.ts`.
+
+### Token pflegen / rotieren
+
+1. `expiresAt` und ggf. neue Token-Strings in **`access-tokens.ts`** und **`qr-config.mjs`** eintragen (gleiche Strings).
+2. `npm run test` (Sync-Guard) und `npm run build`.
+3. `npm run generate:qr` mit korrekter `NEXT_PUBLIC_BASE_URL` → neue Entry-PNGs.
+4. Deploy; alte Entry-QRs werden ungültig.
+
+### Lokal testen (Zugang)
+
+1. `npm run dev` — einmal Entry scannen: `http://localhost:3000/eintritt?t=fest-2026` (Cookie persistiert; `Secure` ist in Dev aus).
+2. Ohne Cookie: `/` → Redirect `/eintritt`.
+3. Cross-Tab: nach Entry neuen Tab mit `/raum/musik` öffnen — sollte erreichbar sein.
+4. Modus-Wechsel: `/eintritt?t=heft-2026-27` überschreibt Cookie → voller Hub.
+
+**Cookie zurücksetzen:** DevTools → Application → Cookies löschen, oder privates Fenster.
 
 ---
 
@@ -209,15 +235,18 @@ curl -sSI http://schulnavigator.mpz.schule/ | head -5
 # Erwartung: Redirect auf https://…
 
 curl -sSI https://schulnavigator.mpz.schule/
+# Erwartung ohne Cookie: 307/308 → /eintritt
+
 curl -sSI https://schulnavigator.mpz.schule/raum/musik
 curl -sSI https://schulnavigator.mpz.schule/scan
 curl -sSI 'https://schulnavigator.mpz.schule/eintritt?t=fest-2026'
+# Erwartung: Set-Cookie sn_access=… + Redirect /
 
 curl -sS https://schulnavigator.mpz.schule/robots.txt
 # Erwartung: Disallow: /
 ```
 
-**Browser:** `/`, zwei Stationen unter `/raum/…`, `/eintritt` (Platzhalter), `/scan`.
+**Browser:** Entry `?t=fest-2026` → Puzzle-Hub gesperrt + `/scan`; `?t=heft-2026-27` → voller Hub; `/eintritt` ohne Cookie = Hinweis.
 
 **Troubleshooting:** Antwort **`503`** / Text **`no available server`** → Proxy (Traefik) ist erreichbar, aber **kein laufender App-Container** hinter der Domain (Coolify-Application noch nicht deployed, Build fehlgeschlagen oder Container crashed) — in Coolify **Logs** und **Deployments** prüfen. **`curl: (60) SSL certificate problem`** → Zertifikatskette oder lokales Trust-Store; zur Abgrenzung im **Browser** öffnen oder Let's-Encrypt-Erneuerung in Coolify prüfen.
 

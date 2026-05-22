@@ -24,6 +24,7 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Offene Issue-Titel und Bodies zu „11 Stationen“, Directus (#46/#47) und Raum-Viewer (#55/#56) geprüft — #55/#56 in [issues-phase-2.md](issues-phase-2.md) abgehakt, Code umgesetzt.
 - [x] Issue **#55** (Raum-Viewer Gyro + Hotspots) — existiert, umgesetzt und auf GitHub geschlossen.
 - [x] Issue **#56** (Raum-Viewer Mobil-Härtung) — dokumentiert, Code umgesetzt (GitHub-Status bei Bedarf mit Issue-Body abgleichen).
+- [x] Issue **#23** (Zugangskontrolle Cookie/Middleware/Scanner) — umgesetzt, ADR-007
 - [ ] Suche im Repo-Issue-Tracker nach veralteten Formulierungen (z. B. „8 Stationen“, „Admin-Interface entwickeln“ ohne Directus-Kontext).
 
-Letzter dokumentierter Abgleich: **2026-05-22** (Milestones, #1, #17, #21, #46, #47, **#55**/**#56** Raum-Viewer).
+Letzter dokumentierter Abgleich: **2026-05-22** (Milestones, #1, #17, #23, #46, #47, **#55**/**#56** Raum-Viewer).

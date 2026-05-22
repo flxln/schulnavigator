@@ -1,7 +1,7 @@
 # ADR-005 — Zugangskontrolle: Entry-Token, Nutzungsmodi, In-App-Scanner
 
 **Datum:** 2026-05-21  
-**Status:** entschieden
+**Status:** entschieden (Speicher/Durchsetzung ergänzt durch [ADR-007](./007-zugangskontrolle-cookie.md))
 
 ## Kontext
 
@@ -16,7 +16,7 @@ Technisch: Web-App (Next.js), kein App Store (ADR-002), Hosting MPZ (ADR-001).
 - **Route:** `/eintritt?t=<token>` (oder äquivalent `?token=`)
 - **QR am Eingang / im Schulstartheft** enthält die vollständige URL → Nutzer scannt **einmalig mit der System-Kamera**
 - Server/Config prüft Token + **Ablaufdatum**
-- Gültiger Token wird in **`localStorage`** gespeichert (nicht nur `sessionStorage`), damit ein **neuer Tab** durch späteren Kamera-Scan auf Raum-QRs den Zugang behält
+- Gültiger Token wird gespeichert, damit ein **neuer Tab** durch späteren Kamera-Scan auf Raum-QRs den Zugang behält — **Umsetzung:** HttpOnly-Cookie `sn_access` ([ADR-007](./007-zugangskontrolle-cookie.md)); ursprünglich hier `localStorage` genannt
 - **Keine** Nutzerkonten, **kein** Passwort
 
 ### 2. Zwei Nutzungsprofile (an Token gekoppelt)
@@ -36,7 +36,7 @@ Raum-QRs (`/raum/[slug]`) sind in **beiden** Modi **Navigation**, keine separate
 
 ### 4. Geschützte Routen
 
-Middleware (oder äquivalent): ohne gültigen Token in `localStorage` → Hinweisseite („QR am Eingang / im Heft scannen“).
+Middleware: ohne gültigen Zugang (Cookie `sn_access`, validiert gegen Token-Liste) → Hinweisseite („QR am Eingang / im Heft scannen“). Siehe [ADR-007](./007-zugangskontrolle-cookie.md).
 
 Ausnahmen: `/eintritt`, statische Hinweis-/Fehlerseiten, `/api/health`, Impressum/Datenschutz.
 

@@ -96,13 +96,13 @@ Phase 5 │ Post-Fest / Admin-Interface    │ ab Juli
 - [ ] Startseite zeigt Fortschritt (z.B. 3/11 Stationen besucht)
 - [ ] Abschluss-Animation wenn alle 11 erledigt (einfaches Konfetti, keine externe Library)
 
-**Zugangskontrolle** ([ADR-005](./adr/005-zugangskontrolle-token.md))
+**Zugangskontrolle** ([ADR-005](./adr/005-zugangskontrolle-token.md), [ADR-007](./adr/007-zugangskontrolle-cookie.md)) — GitHub **#23**
 
-- [ ] `/eintritt` — Token prüfen, `localStorage` (Token + `mode: fest|heft` + Ablauf)
-- [ ] Middleware: ohne Token → Hinweisseite
-- [ ] Startseite: `heft` = voller Hub; `fest` = Puzzle-Hub (Segmente nach Scan freischalten) + Scan-CTA
-- [ ] `/scan` — In-App-QR-Scanner für Raum-QRs (nach Entry)
-- [ ] Token-Script: mindestens `fest-2026`, `heft-2026-27` mit Ablaufdatum
+- [x] `/eintritt` — Token prüfen, HttpOnly-Cookie `sn_access` + Middleware
+- [x] Middleware: ohne gültigen Zugang → Hinweisseite
+- [x] Startseite: `heft` = voller Hub; `fest` = Puzzle-Hub gesperrt (progressive Freischaltung → #21) + Scan-CTA
+- [x] `/scan` — In-App-QR-Scanner für Raum-QRs (nach Entry)
+- [x] Token: `fest-2026`, `heft-2026-27` in `lib/access-tokens.ts` (sync `qr-config.mjs`)
 
 **Mehrsprachigkeit (Struktur)**
 
