@@ -1,6 +1,6 @@
 # Schulnavigator — Architektur
 
-_Stand: 2026-05-22 (Issue #16: Live-Deploy; **#55:** Raum-Viewer Gyro + Hotspots, GS39-Theme; **#56:** Mobil-Härtung, Viewport, Auto-Zoom) — siehe [entscheidungen.md](./entscheidungen.md)_
+_Stand: 2026-05-22 (Issue #16: Live-Deploy; **#55/#56:** Raum-Viewer; Gyro Portrait `alpha`/Armschwenk, GS39-Theme, Mobil-Härtung) — siehe [entscheidungen.md](./entscheidungen.md)_
 
 ## Tech-Stack
 
@@ -32,8 +32,8 @@ Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/
 
 | Verhalten | Details |
 | --------- | ------- |
-| Gyro-Pan | Höhenbasiert, horizontal `translateX`; Auto-Zoom bis `MIN_PAN_DISPLAY_RATIO` (2); `deviceorientation` gedämpft; iOS nach Nutzer-Geste; Gamma-Sanity (Sprung-/Winkel-Filter) |
-| Neutral | ~500 ms Mittelwert nach Aktivierung; nach **Wischen** Re-Kalibrierung (`neutralGammaForPan`); bei **Resize/Orientierung** Neu-Kalibrierung |
+| Gyro-Pan | Höhenbasiert, horizontal `translateX`; Auto-Zoom bis `MIN_PAN_DISPLAY_RATIO` (2); **Portrait:** `deviceorientation.alpha` (Armschwenk, zweiseitig, Neutral in Bildmitte); **Landscape:** `gamma` (Kippen, einseitig); zirkuläre EMA für alpha; iOS nach Nutzer-Geste |
+| Neutral | ~500 ms Mittelwert (alpha: kreisförmig); nach **Wischen** Re-Kalibrierung (`neutralAngleForPan`); bei **Resize** und **orientationchange** Neu-Kalibrierung; ohne Kompass kann alpha langsam driften → **Ansicht zentrieren** |
 | Hotspots | JSON 0–1; bei vertikalem Beschnitt können extreme **y** unsichtbar sein — Build-Warnung in `validate:stations`, Runtime-`console.warn` |
 | UI | `touch-action: none` + CSS-Containment auf dem Viewer; Button **Ansicht zentrieren**; `?debug=1` für HUD |
 | Fallback | Wischen, Tap; Banner wenn Orientierung fehlt; `sessionStorage`-Merker iOS + 2s-Watchdog bei fehlenden Events |

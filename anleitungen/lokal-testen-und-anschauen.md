@@ -32,7 +32,7 @@ npm run dev
 | [http://localhost:3000/eintritt?t=fest-2026](http://localhost:3000/eintritt?t=fest-2026) | **Platzhalter** für Entry-Link (Phase 2 #23: Token); im Dev-Modus optional Anzeige des Parameters `t` |
 | [http://localhost:3000/robots.txt](http://localhost:3000/robots.txt) | `Disallow: /` (Issue #16) |
 | [http://localhost:3000/scan](http://localhost:3000/scan) | Platzhalter für den In-App-QR-Scanner (Phase 2, Issue #23) |
-| [http://localhost:3000/raum/musik](http://localhost:3000/raum/musik) | Demo: Raumbild, **Gyro-Pan** (oder Wischen), **2 Hotspots** (Mitte oder Tap), **Medien-Panel**, **4 Medien-Slots** |
+| [http://localhost:3000/raum/musik](http://localhost:3000/raum/musik) | Demo: Raumbild, **Gyro-Armschwenk** Portrait (oder Wischen), **2 Hotspots** (Highlight per Mitte, Medien per Tap), **4 Medien-Slots** |
 | [http://localhost:3000/raum/schulsozialarbeit](http://localhost:3000/raum/schulsozialarbeit) | **Ohne** Raumbild: statischer Platzhalter + Text-Medium |
 | [http://localhost:3000/raum/klassenzimmer](http://localhost:3000/raum/klassenzimmer) | Raumbild + **leere** Medienliste (Empty-State) |
 | [http://localhost:3000/raum/gibts-nicht](http://localhost:3000/raum/gibts-nicht) | **404** (nur im Dev-Server; unbekannte Slugs sind zur Build-Zeit fest) |
@@ -66,14 +66,14 @@ npm run start
 
 `npm run build` ruft zuvor **`npm run validate:tokens`** (Abgleich `app/gs39-tokens.css` ↔ `auftraggeber/.../colors_and_type.css`) und **`npm run validate:stations`** auf: Es muss jede in `stations.json` referenzierte Datei unter `public/` existieren (Raumbilder, Demo-Medien). Fehlt etwas, bricht der Build mit einer klaren Meldung ab. Zusätzlich gibt `validate:stations` bei riskantem Hotspot-**y** (nach Auto-Zoom unsichtbar) eine **Warnung** aus (Heuristik).
 
-**Raum-Viewer (Issue #55 / #56, Mobil-Härtung):** `export const viewport` in [`app/app/layout.tsx`](../app/app/layout.tsx) — korrektes **device-width** auf dem Handy (kein „Mini-Desktop-Zoom“). Viewer `min(50vh, 360px)`; **Auto-Zoom** skaliert schmale Bilder so, dass horizontal mindestens `MIN_PAN_DISPLAY_RATIO` (2) erreicht wird — dabei kann **oben/unten beschnitten** werden; Hotspot-**y** im mittleren Drittel halten. **Wischen** bleibt nach Loslassen stabil (Neutral-Kalibrierung). Button **„Ansicht zentrieren“** setzt Pan + Gyro-Null neu. Debug: URL `?debug=1` zeigt ein HUD im Viewer. Unter `/raum/musik` testen — **iPhone nur unter HTTPS**; **iPad Safari** (Portrait/Landscape drehen); **Android Chrome**; Desktop oft ohne Sensoren. iOS: „Orientierung aktivieren“; nach einmaliger Erlaubnis wird die Session in `sessionStorage` gemerkt (Watchdog bei fehlenden Events).
+**Raum-Viewer (Issue #55 / #56, Mobil-Härtung):** `export const viewport` in [`app/app/layout.tsx`](../app/app/layout.tsx) — korrektes **device-width** auf dem Handy (kein „Mini-Desktop-Zoom“). Viewer `min(50vh, 360px)`; **Auto-Zoom** skaliert schmale Bilder so, dass horizontal mindestens `MIN_PAN_DISPLAY_RATIO` (2) erreicht wird — dabei kann **oben/unten beschnitten** werden; Hotspot-**y** im mittleren Drittel halten. **Gyro (Portrait):** Handy vor die Brust, **links und rechts drehen** (nicht kippen) — ca. ±45° vom Neutral zu beiden Raumrändern; bei Drift **„Ansicht zentrieren“**. **Landscape (iPad):** Kippen (`gamma`) wie bisher. **Wischen** bleibt nach Loslassen stabil. Debug: `?debug=1` — HUD mit `axis`, `α`, `γ`, `∠`, `pan`. Unter `/raum/musik` — **iPhone nur unter HTTPS**; Portrait/Landscape-Wechsel prüfen (Neutral-Reset); Norddurchquerung (0°/360°) ohne Pan-Sprung.
 
 **Manuelle Test-Matrix (Schulfest-relevant):**
 
 | Umgebung | Prüfen |
 | -------- | ------ |
-| iPhone Safari (HTTPS) | Gyro, Wischen, kein Pull-to-Refresh über dem Bild, Hotspots |
-| iPad Safari | Drehen Portrait/Landscape, kein Bild-Sprung |
+| iPhone Safari (HTTPS) | Armschwenk (α) links+rechts, Drift-Check, Hotspots nur per Tipp, Wischen, kein Pull-to-Refresh |
+| iPad Safari | Portrait↔Landscape: Achswechsel α/γ, Neutral-Reset, kein Bild-Sprung |
 | Android Chrome (Phone) | Gyro unter HTTPS |
 | Desktop Chrome | keine Crashes, ggf. Banner „Orientierung nicht verfügbar“ |
 | Samsung Internet / Firefox Mobile | best-effort |

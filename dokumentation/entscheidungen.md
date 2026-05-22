@@ -11,7 +11,7 @@ Jede wichtige Entscheidung wird als eigenständiger ADR (Architecture Decision R
 | [003](./adr/003-content-mvp-json-directus.md) | Content: JSON (MVP), Directus langfristig; kein Custom-Admin | entschieden | 2026-05-21 |
 | [004](./adr/004-video-hosting-mpz.md) | Video: MPZ-Server; YouTube optional nach Rechtsklärung | entschieden | 2026-05-21 |
 | [005](./adr/005-zugangskontrolle-token.md) | Zugang: Entry-Token, Modi fest/heft, In-App-Scanner | entschieden | 2026-05-21 |
-| [006](./adr/006-raum-viewer-gyro-hotspots.md) | Raum-Viewer: Gyro (Standard), Hotspots, Tap-Fallback; Umsetzungsdetails Mobil-Härtung (#56) in [architektur.md](./architektur.md) | entschieden | 2026-05-22 |
+| [006](./adr/006-raum-viewer-gyro-hotspots.md) | Raum-Viewer: Gyro (Standard), Hotspots, Tap-Fallback; Portrait `alpha`/Armschwenk, Mobil-Härtung (#56) in [architektur.md](./architektur.md) | entschieden | 2026-05-22 |
 
 ## Konventionen
 

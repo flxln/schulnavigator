@@ -18,7 +18,7 @@ Für das **MVP (bis 26.06.)** gilt auf allen Stationsseiten mit Raumbild:
 | Aspekt | Festlegung |
 |---|---|
 | **Bildtyp** | Normales Querformat-Foto (kein 360°-Panorama) |
-| **Darstellung** | **Gyro-Viewer (Standard):** überbreites Bild, sichtbarer Ausschnitt folgt der Geräteneigung |
+| **Darstellung** | **Gyro-Viewer (Standard):** überbreites Bild; Portrait: Ausschnitt folgt **Armschwenk** (`alpha`); Landscape: Kippen (`gamma`) |
 | **Medien öffnen** | **Hotspots** im Bild (Position in Prozent, Verknüpfung mit `medien[]`) |
 | **Fallback** | **Tap** auf Hotspot-Marker; optional Wischen; Hinweis wenn Orientierung nicht verfügbar |
 | **Ausnahme** | Station ohne brauchbares Raumbild: statische Darstellung + Medienliste (z. B. bis HD-Foto nachgeliefert wird) |
@@ -45,6 +45,7 @@ Für das **MVP (bis 26.06.)** gilt auf allen Stationsseiten mit Raumbild:
 - **Phase 2:** Komponente `RaumViewer` — Gyro-Pan, Hotspot-Overlay, Medien-Panel; iOS-Orientierung nach Nutzer-Geste; HTTPS (#55)
 - **Phase 3:** Pro Station mindestens 1–2 Hotspots pflegen; Koordinaten in JSON; Raumfotos nach Zuordnungstabelle einpflegen (#27)
 - **Content (#17, nach #55/#56):** Gyro-Pan braucht horizontal Bewegungsspielraum. **Empfehlung:** überbreite Panorama-Dateien (≥ 2,5 : 1, min. 2400 px Breite) — geringerer vertikaler Beschnitt als bei klassischen 4:3-Fotos. **Schmalere Quellen** (z. B. 4:3) skaliert die App per **Auto-Zoom**, bis ein Mindest-Pan-Verhältnis erreicht ist; dabei kann **oben/unten** beschnitten werden — Hotspot-**y** im mittleren Drittel halten; Briefing [`zuordnung-stationen-bilder.md`](../../auftraggeber/material/stationen/zuordnung-stationen-bilder.md)
+- **Umsetzung Pan-Achse:** Portrait nutzt `deviceorientation.alpha` (Armschwenk, zentrierter Neutral, ±`GYRO_FULL_RANGE_DEG` je Rand); Landscape nutzt `gamma` (Kippen). Kein Kompass im MVP — langsamer Drift möglich, Korrektur über „Ansicht zentrieren“.
 - **Test:** Reales iPhone (Safari) im Abschlusstest (#38)
 - **Directus (später):** Collection-Felder für Hotspots analog JSON-Schema
 

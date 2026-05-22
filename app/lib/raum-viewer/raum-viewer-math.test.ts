@@ -2,13 +2,19 @@ import { describe, expect, it } from 'vitest'
 import { visibleYNormalRange } from '@/lib/raum-viewer/clip-zone'
 import { hitTestHotspot } from '@/lib/raum-viewer/hit-test-hotspot'
 import {
-  gammaToTargetPan,
+  angleDeltaDeg,
+  circularEmaDeg,
+  circularMeanDeg,
   lerpPan,
-  neutralGammaForPan,
-} from '@/lib/raum-viewer/pan-from-gamma'
+  neutralAngleForPan,
+  orientationToTargetPan,
+  resolvePanAxis,
+} from '@/lib/raum-viewer/pan-from-orientation'
 import { roomPanZoom } from '@/lib/raum-viewer/room-pan-zoom'
 import { normalizedViewportCenter } from '@/lib/raum-viewer/viewport-center'
 import {
+  GYRO_DEADZONE_DEG,
+  GYRO_FULL_RANGE_DEG,
   MIN_PAN_DISPLAY_RATIO,
   RECOMMENDED_SOURCE_ASPECT_MIN,
   clampPan,
@@ -106,26 +112,99 @@ describe('hitTestHotspot', () => {
   })
 })
 
-describe('gammaToTargetPan', () => {
-  it('liefert 0 ohne Pan-Spielraum', () => {
-    expect(gammaToTargetPan(30, 0, 0)).toBe(0)
-  })
-
-  it('bewegt Pan mit Gamma-Delta', () => {
-    const p = gammaToTargetPan(20, 200, 0)
-    expect(p).toBeLessThan(0)
-    expect(p).toBeGreaterThanOrEqual(-200)
+describe('angleDeltaDeg', () => {
+  it('wrappt über 360/0', () => {
+    expect(angleDeltaDeg(10, 350)).toBe(20)
+    expect(angleDeltaDeg(350, 10)).toBe(-20)
   })
 })
 
-describe('neutralGammaForPan', () => {
-  it('rundet Pan nach Re-Kalibrierung annähernd zurück', () => {
+describe('circularMeanDeg', () => {
+  it('mittelt über 0/360', () => {
+    const m = circularMeanDeg([359, 1, 3])
+    expect(m).toBeCloseTo(1, 0)
+  })
+})
+
+describe('circularEmaDeg', () => {
+  it('springt nicht wild über 360/0', () => {
+    const s = circularEmaDeg(359, 1, 0.38)
+    expect(angleDeltaDeg(s, 0)).toBeLessThan(10)
+  })
+})
+
+describe('orientationToTargetPan', () => {
+  it('liefert 0 ohne Pan-Spielraum', () => {
+    expect(orientationToTargetPan(30, 0, 0, 'oneSided', false)).toBe(0)
+  })
+
+  it('oneSided: bewegt Pan mit Winkel-Delta', () => {
+    const p = orientationToTargetPan(20, 200, 0, 'oneSided', false)
+    expect(p).toBeLessThan(0)
+    expect(p).toBeGreaterThanOrEqual(-200)
+  })
+
+  it('centered: Neutral in der Mitte', () => {
     const maxPan = 200
-    const gammaDeg = 12
-    const pan = gammaToTargetPan(gammaDeg, maxPan, 0)
-    const ref = neutralGammaForPan(gammaDeg, pan, maxPan)
-    const pan2 = gammaToTargetPan(gammaDeg, maxPan, ref)
+    const p = orientationToTargetPan(0, maxPan, 0, 'centered', true)
+    expect(p).toBeCloseTo(-maxPan / 2, 1)
+  })
+
+  it('centered: +FULL_RANGE → rechter Rand (pan 0)', () => {
+    const maxPan = 200
+    const p = orientationToTargetPan(
+      GYRO_FULL_RANGE_DEG + GYRO_DEADZONE_DEG,
+      maxPan,
+      0,
+      'centered',
+      true,
+    )
+    expect(p).toBeCloseTo(0, 1)
+  })
+
+  it('centered: −FULL_RANGE → linker Rand', () => {
+    const maxPan = 200
+    const p = orientationToTargetPan(
+      -(GYRO_FULL_RANGE_DEG + GYRO_DEADZONE_DEG),
+      maxPan,
+      0,
+      'centered',
+      true,
+    )
+    expect(p).toBeCloseTo(-maxPan, 1)
+  })
+})
+
+describe('neutralAngleForPan', () => {
+  it('oneSided: Round-Trip', () => {
+    const maxPan = 200
+    const angleDeg = 12
+    const pan = orientationToTargetPan(angleDeg, maxPan, 0, 'oneSided', false)
+    const ref = neutralAngleForPan(angleDeg, pan, maxPan, 'oneSided', false)
+    const pan2 = orientationToTargetPan(angleDeg, maxPan, ref, 'oneSided', false)
     expect(pan2).toBeCloseTo(pan, 0)
+  })
+
+  it('centered: Round-Trip inkl. Mitte', () => {
+    const maxPan = 200
+    const angleDeg = 90
+    const pan = -maxPan / 2
+    const ref = neutralAngleForPan(angleDeg, pan, maxPan, 'centered', true)
+    const pan2 = orientationToTargetPan(
+      angleDeg,
+      maxPan,
+      ref,
+      'centered',
+      true,
+    )
+    expect(pan2).toBeCloseTo(pan, 0)
+  })
+})
+
+describe('resolvePanAxis', () => {
+  it('liefert einen gültigen Achsenwert', () => {
+    const axis = resolvePanAxis()
+    expect(axis === 'alpha' || axis === 'gamma').toBe(true)
   })
 })
 

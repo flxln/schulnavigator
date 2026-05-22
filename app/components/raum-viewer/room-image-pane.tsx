@@ -16,10 +16,14 @@ import {
 } from '@/lib/raum-viewer/constants'
 import { visibleYNormalRange } from '@/lib/raum-viewer/clip-zone'
 import {
-  gammaToTargetPan,
+  centeredPanPx,
+  circularMeanDeg,
   lerpPan,
-  neutralGammaForPan,
-} from '@/lib/raum-viewer/pan-from-gamma'
+  neutralAngleForPan,
+  normalizeDeg,
+  orientationToTargetPan,
+  panMappingForAxis,
+} from '@/lib/raum-viewer/pan-from-orientation'
 import { roomPanZoom } from '@/lib/raum-viewer/room-pan-zoom'
 import { hitTestHotspot } from '@/lib/raum-viewer/hit-test-hotspot'
 import { normalizedViewportCenter } from '@/lib/raum-viewer/viewport-center'
@@ -38,6 +42,7 @@ export type RoomImagePaneProps = {
 
 const NEUTRAL_CALIB_MS = 500
 const RESIZE_RESET_PX = 5
+const GAMMA_SAMPLE_MAX_ABS = 90
 
 export function RoomImagePane({
   src,
@@ -74,7 +79,7 @@ export function RoomImagePane({
   const containerRef = useRef<HTMLDivElement>(null)
   const dragging = useRef(false)
   const dragStart = useRef({ x: 0, pan: 0 })
-  const neutralGamma = useRef<number | null>(null)
+  const neutralAngle = useRef<number | null>(null)
   const neutralCalibrated = useRef(false)
   const neutralSamples = useRef<number[]>([])
   const panPxRef = useRef(0)
@@ -82,12 +87,25 @@ export function RoomImagePane({
   const centerDebounce = useRef<number | null>(null)
   const centerDwell = useRef<number | null>(null)
   const pendingCenterHit = useRef<Hotspot | null>(null)
+  const panAxisRef = useRef<'alpha' | 'gamma'>('alpha')
 
   const {
     state: orientState,
+    alpha,
     gamma,
+    panAngle,
+    panAxis,
+    axisEpoch,
     requestAccess,
   } = useDeviceOrientation(true)
+
+  const panMode = panMappingForAxis(panAxis)
+  const useCircularDelta = panAxis === 'alpha'
+  const angle = panAngle ?? gamma
+
+  useEffect(() => {
+    panAxisRef.current = panAxis
+  }, [panAxis])
 
   const { zoom, effectiveDisplayW, effectiveDisplayH } = useMemo(
     () =>
@@ -131,7 +149,7 @@ export function RoomImagePane({
         (Math.abs(cr.width - pw) > RESIZE_RESET_PX ||
           Math.abs(cr.height - ph) > RESIZE_RESET_PX)
       ) {
-        neutralGamma.current = null
+        neutralAngle.current = null
         neutralCalibrated.current = false
         neutralSamples.current = []
         setNeutralEpoch((e) => e + 1)
@@ -146,35 +164,43 @@ export function RoomImagePane({
 
   useEffect(() => {
     if (orientState !== 'active') {
-      neutralGamma.current = null
+      neutralAngle.current = null
       neutralCalibrated.current = false
       neutralSamples.current = []
       return
     }
     neutralCalibrated.current = false
-    neutralGamma.current = null
+    neutralAngle.current = null
     neutralSamples.current = []
+    const axis = panAxisRef.current
     const timer = window.setTimeout(() => {
       const arr = neutralSamples.current
       if (arr.length > 0) {
-        neutralGamma.current = arr.reduce((acc, v) => acc + v, 0) / arr.length
+        neutralAngle.current =
+          axis === 'alpha' ? circularMeanDeg(arr) : arr.reduce((a, v) => a + v, 0) / arr.length
       } else {
-        neutralGamma.current = 0
+        neutralAngle.current = 0
       }
       neutralCalibrated.current = true
+      if (axis === 'alpha' && maxPan > 0) {
+        setPanPx(centeredPanPx(maxPan))
+      }
     }, NEUTRAL_CALIB_MS)
     return () => window.clearTimeout(timer)
-  }, [orientState, neutralEpoch])
+  }, [orientState, neutralEpoch, axisEpoch, maxPan])
 
   useEffect(() => {
-    if (orientState !== 'active' || gamma === null || Math.abs(gamma) > 90) {
+    if (orientState !== 'active' || angle === null) {
+      return
+    }
+    if (panAxis === 'gamma' && Math.abs(angle) > GAMMA_SAMPLE_MAX_ABS) {
       return
     }
     if (neutralCalibrated.current) {
       return
     }
-    neutralSamples.current.push(gamma)
-  }, [orientState, gamma])
+    neutralSamples.current.push(angle)
+  }, [orientState, angle, panAxis])
 
   useEffect(() => {
     if (
@@ -224,14 +250,25 @@ export function RoomImagePane({
       if (
         !dragging.current &&
         orientState === 'active' &&
-        gamma !== null &&
+        angle !== null &&
         neutralCalibrated.current
       ) {
+        if (panAxis === 'gamma' && Math.abs(angle) > GAMMA_SAMPLE_MAX_ABS) {
+          raf = window.requestAnimationFrame(tick)
+          return
+        }
         if (maxPan > 0) {
-          if (neutralGamma.current === null) {
-            neutralGamma.current = gamma
+          if (neutralAngle.current === null) {
+            neutralAngle.current =
+              panAxis === 'alpha' ? normalizeDeg(angle) : angle
           }
-          const target = gammaToTargetPan(gamma, maxPan, neutralGamma.current)
+          const target = orientationToTargetPan(
+            angle,
+            maxPan,
+            neutralAngle.current,
+            panMode,
+            useCircularDelta,
+          )
           setPanPx((p) => lerpPan(p, target, PAN_SMOOTHING))
         }
       }
@@ -242,7 +279,7 @@ export function RoomImagePane({
       running = false
       cancelAnimationFrame(raf)
     }
-  }, [orientState, gamma, maxPan])
+  }, [orientState, angle, maxPan, panAxis, panMode, useCircularDelta])
 
   const centerNorm = useMemo(
     () => normalizedViewportCenter(panPx, containerW, effectiveDisplayW),
@@ -291,16 +328,20 @@ export function RoomImagePane({
     if (!debugViewer) {
       return
     }
+    const axisLabel = panAxis === 'alpha' ? 'α' : 'γ'
     const id = window.setInterval(() => {
       setDebugHud(
-        `${orientState} | γ:${gamma?.toFixed(1) ?? '—'} | n:${neutralGamma.current?.toFixed(1) ?? '—'} | pan:${panPxRef.current.toFixed(0)}/${maxPan.toFixed(0)} | dw:${effectiveDisplayW.toFixed(0)}/${containerW} | z:${zoom.toFixed(2)}`,
+        `${orientState} | axis:${axisLabel} | α:${alpha?.toFixed(1) ?? '—'} | γ:${gamma?.toFixed(1) ?? '—'} | ∠:${angle?.toFixed(1) ?? '—'} | n:${neutralAngle.current?.toFixed(1) ?? '—'} | pan:${panPxRef.current.toFixed(0)}/${maxPan.toFixed(0)} | dw:${effectiveDisplayW.toFixed(0)}/${containerW} | z:${zoom.toFixed(2)}`,
       )
     }, 100)
     return () => window.clearInterval(id)
   }, [
     debugViewer,
     orientState,
+    panAxis,
+    alpha,
     gamma,
+    angle,
     maxPan,
     effectiveDisplayW,
     containerW,
@@ -336,25 +377,32 @@ export function RoomImagePane({
       } catch {
         /* ignore */
       }
-      if (gamma !== null && maxPan > 0) {
-        neutralGamma.current = neutralGammaForPan(
-          gamma,
+      if (angle !== null && maxPan > 0) {
+        neutralAngle.current = neutralAngleForPan(
+          angle,
           panPxRef.current,
           maxPan,
+          panMode,
+          useCircularDelta,
         )
         neutralCalibrated.current = true
       }
     },
-    [gamma, maxPan],
+    [angle, maxPan, panMode, useCircularDelta],
   )
 
   const recenterView = useCallback(() => {
-    setPanPx(0)
-    if (gamma !== null) {
-      neutralGamma.current = gamma
+    if (maxPan > 0) {
+      setPanPx(panAxis === 'alpha' ? centeredPanPx(maxPan) : 0)
+    } else {
+      setPanPx(0)
+    }
+    if (angle !== null) {
+      neutralAngle.current =
+        panAxis === 'alpha' ? normalizeDeg(angle) : angle
       neutralCalibrated.current = true
     }
-  }, [gamma])
+  }, [angle, maxPan, panAxis])
 
   const orientationBanner = () => {
     if (orientState === 'active' || orientState === 'needs-gesture') {
@@ -464,6 +512,9 @@ export function RoomImagePane({
         </div>
       ) : orientState === 'active' ? (
         <div className="flex flex-col items-center gap-2">
+          <p className="text-center text-xs text-fg-2">
+            Handy vor die Brust halten und nach links oder rechts drehen.
+          </p>
           <button
             type="button"
             aria-label="Raumansicht zurücksetzen"

@@ -178,7 +178,7 @@ Milestone: **Phase 3** | Fällig: 24.06.2026
 - [ ] In-App-Scan pro Raum → Stempel + Segment frei
 - [ ] Gesperrtes Puzzle-Segment nicht klickbar
 - [ ] Medien (inkl. Video vom MPZ-Server) laden unter Mobilfunk
-- [ ] Gyro-Viewer + Hotspot (Tap + Neigen) auf iPhone Safari getestet
+- [ ] Gyro-Viewer + Hotspot (Portrait: Armschwenk/drehen; Tap für Medien) auf iPhone Safari getestet
 - [ ] 11/11 → Abschluss-Animation
 - [ ] Raum-QR per Kamera in neuem Tab (localStorage-Token)
 

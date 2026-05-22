@@ -1,6 +1,11 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
+import {
+  circularEmaDeg,
+  resolvePanAxis,
+  type PanAxis,
+} from '@/lib/raum-viewer/pan-from-orientation'
 
 export type OrientationAuthState =
   | 'unsupported'
@@ -11,9 +16,8 @@ export type OrientationAuthState =
 const STORAGE_KEY = 'schulnav.gyro.granted'
 const WATCHDOG_MS = 2000
 const GAMMA_MAX_ABS = 90
-/** Glättung roher Sensorwerte; höher = direkter, niedriger = ruhiger. */
-const GAMMA_EMA_ALPHA = 0.38
-const GAMMA_GLITCH_JUMP_DEG = 50
+const ORIENTATION_EMA_ALPHA = 0.38
+const GLITCH_JUMP_DEG = 50
 
 function isIosOrientationPermissionModel(): boolean {
   return (
@@ -26,12 +30,31 @@ function isIosOrientationPermissionModel(): boolean {
   )
 }
 
+function circularGlitchDelta(next: number, prev: number): number {
+  let delta = next - prev
+  while (delta > 180) {
+    delta -= 360
+  }
+  while (delta < -180) {
+    delta += 360
+  }
+  return Math.abs(delta)
+}
+
 export function useDeviceOrientation(enabled: boolean) {
   const [state, setState] = useState<OrientationAuthState>('unsupported')
+  const [alpha, setAlpha] = useState<number | null>(null)
   const [gamma, setGamma] = useState<number | null>(null)
+  const [panAngle, setPanAngle] = useState<number | null>(null)
+  const [panAxis, setPanAxis] = useState<PanAxis>('alpha')
+  const [axisEpoch, setAxisEpoch] = useState(0)
+
   const raf = useRef<number | null>(null)
+  const latestAlpha = useRef<number | null>(null)
   const latestGamma = useRef<number | null>(null)
+  const lastGoodAlpha = useRef<number | null>(null)
   const lastGoodGamma = useRef<number | null>(null)
+  const panAxisRef = useRef<PanAxis>('alpha')
   const pendingIosWatchdogRef = useRef(false)
   const watchdogTimerRef = useRef<number | null>(null)
 
@@ -58,15 +81,32 @@ export function useDeviceOrientation(enabled: boolean) {
       setState(
         isIosOrientationPermissionModel() ? 'needs-gesture' : 'unsupported',
       )
+      setAlpha(null)
       setGamma(null)
+      setPanAngle(null)
+      lastGoodAlpha.current = null
       lastGoodGamma.current = null
     }, WATCHDOG_MS)
   }, [clearWatchdog])
 
+  const syncPanAxis = useCallback(() => {
+    const next = resolvePanAxis()
+    if (next !== panAxisRef.current) {
+      panAxisRef.current = next
+      setPanAxis(next)
+      setAxisEpoch((e) => e + 1)
+    }
+  }, [])
+
   const flush = useCallback(() => {
     raf.current = null
-    if (latestGamma.current !== null) {
+    const axis = panAxisRef.current
+    if (axis === 'alpha' && latestAlpha.current !== null) {
+      setAlpha(latestAlpha.current)
+      setPanAngle(latestAlpha.current)
+    } else if (latestGamma.current !== null) {
       setGamma(latestGamma.current)
+      setPanAngle(latestGamma.current)
     }
   }, [])
 
@@ -74,6 +114,7 @@ export function useDeviceOrientation(enabled: boolean) {
     if (!enabled || typeof window === 'undefined') {
       return
     }
+    syncPanAxis()
     queueMicrotask(() => {
       if (!window.DeviceOrientationEvent) {
         setState('unsupported')
@@ -96,7 +137,7 @@ export function useDeviceOrientation(enabled: boolean) {
       pendingIosWatchdogRef.current = false
       setState('active')
     })
-  }, [enabled])
+  }, [enabled, syncPanAxis])
 
   useEffect(() => {
     if (state !== 'active') {
@@ -105,6 +146,7 @@ export function useDeviceOrientation(enabled: boolean) {
     }
 
     armIosCacheWatchdog()
+    syncPanAxis()
 
     const onVisibility = () => {
       if (document.visibilityState === 'visible') {
@@ -112,42 +154,65 @@ export function useDeviceOrientation(enabled: boolean) {
       }
     }
 
+    const onOrientationChange = () => {
+      syncPanAxis()
+    }
+
     const onOrient = (e: DeviceOrientationEvent) => {
+      const a = e.alpha
+      if (typeof a === 'number' && !Number.isNaN(a)) {
+        const prevA = lastGoodAlpha.current
+        if (
+          prevA === null ||
+          circularGlitchDelta(a, prevA) <= GLITCH_JUMP_DEG
+        ) {
+          const smoothed = circularEmaDeg(prevA, a, ORIENTATION_EMA_ALPHA)
+          lastGoodAlpha.current = smoothed
+          latestAlpha.current = smoothed
+        }
+      }
+
       const g = e.gamma
-      if (typeof g !== 'number' || Number.isNaN(g)) {
-        return
+      if (typeof g === 'number' && !Number.isNaN(g) && Math.abs(g) <= GAMMA_MAX_ABS) {
+        const prevG = lastGoodGamma.current
+        if (prevG === null || Math.abs(g - prevG) <= GLITCH_JUMP_DEG) {
+          const smoothed =
+            prevG === null ? g : prevG + ORIENTATION_EMA_ALPHA * (g - prevG)
+          lastGoodGamma.current = smoothed
+          latestGamma.current = smoothed
+        }
       }
-      if (Math.abs(g) > GAMMA_MAX_ABS) {
-        return
-      }
-      const prev = lastGoodGamma.current
-      if (prev !== null && Math.abs(g - prev) > GAMMA_GLITCH_JUMP_DEG) {
-        return
-      }
-      const smoothed =
-        prev === null ? g : prev + GAMMA_EMA_ALPHA * (g - prev)
-      lastGoodGamma.current = smoothed
-      latestGamma.current = smoothed
+
       if (pendingIosWatchdogRef.current) {
-        pendingIosWatchdogRef.current = false
-        clearWatchdog()
+        const axis = panAxisRef.current
+        const gotEvent =
+          axis === 'alpha'
+            ? latestAlpha.current !== null
+            : latestGamma.current !== null
+        if (gotEvent) {
+          pendingIosWatchdogRef.current = false
+          clearWatchdog()
+        }
       }
+
       if (raf.current === null) {
         raf.current = window.requestAnimationFrame(flush)
       }
     }
 
     window.addEventListener('deviceorientation', onOrient)
+    window.addEventListener('orientationchange', onOrientationChange)
     document.addEventListener('visibilitychange', onVisibility)
     return () => {
       window.removeEventListener('deviceorientation', onOrient)
+      window.removeEventListener('orientationchange', onOrientationChange)
       document.removeEventListener('visibilitychange', onVisibility)
       clearWatchdog()
       if (raf.current !== null) {
         cancelAnimationFrame(raf.current)
       }
     }
-  }, [state, flush, armIosCacheWatchdog, clearWatchdog])
+  }, [state, flush, armIosCacheWatchdog, clearWatchdog, syncPanAxis])
 
   const requestAccess = useCallback(async () => {
     if (!window.DeviceOrientationEvent) {
@@ -170,6 +235,7 @@ export function useDeviceOrientation(enabled: boolean) {
           }
           pendingIosWatchdogRef.current = false
           clearWatchdog()
+          syncPanAxis()
           setState('active')
         } else {
           setState('denied')
@@ -181,8 +247,17 @@ export function useDeviceOrientation(enabled: boolean) {
     }
     pendingIosWatchdogRef.current = false
     clearWatchdog()
+    syncPanAxis()
     setState('active')
-  }, [clearWatchdog])
+  }, [clearWatchdog, syncPanAxis])
 
-  return { state, gamma, requestAccess }
+  return {
+    state,
+    alpha,
+    gamma,
+    panAngle,
+    panAxis,
+    axisEpoch,
+    requestAccess,
+  }
 }

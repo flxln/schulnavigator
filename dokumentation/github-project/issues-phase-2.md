@@ -19,7 +19,7 @@ Milestone: **Phase 2** | Fällig: 12.06.2026
 
 Spezifikation: [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
 
-- [x] **Gyro-Viewer (Standard):** Querformat-Foto höhenbasiert, horizontaler Pan per `deviceorientation` (gedämpft, begrenzt)
+- [x] **Gyro-Viewer (Standard):** Querformat-Foto höhenbasiert; Portrait: Pan per `deviceorientation.alpha` (Armschwenk, zentrierter Neutral); Landscape: `gamma` (Kippen)
 - [x] **Hotspots:** Overlay-Marker aus JSON; Aktivierung wenn Viewport-Mitte im Radius **oder** Tap
 - [x] **Tap-Fallback:** Marker immer tappbar; Hinweis wenn Orientierung fehlt/abgelehnt; optional Wischen
 - [x] **iOS:** Orientierung nach Nutzer-Geste; HTTPS (bereits #16)
@@ -39,7 +39,8 @@ Spezifikation: [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
 - [x] Viewport-Meta (`device-width`) — kein „gezoomter“ Mobile-Layout-Bug
 - [x] `touch-action: none` + CSS-Containment auf dem Viewer; kein Pull-to-Refresh-Konflikt beim Wischen
 - [x] Auto-Zoom bis `MIN_PAN_DISPLAY_RATIO` (2); Hotspot-y Build-/Runtime-Warnungen
-- [x] Gyro: Neutral ~500 ms; Re-Kalibrierung nach Wischen; Resize/Orientation-Reset; Sensitivity 0,8 / Deadzone 3°; Gamma-Sanity
+- [x] Gyro: Neutral ~500 ms (alpha: kreisförmig); Re-Kalibrierung nach Wischen; Resize + `orientationchange`-Reset; `GYRO_FULL_RANGE_DEG` / Sensitivity / Deadzone; zirkuläre EMA für alpha; Gamma-Sanity nur für `gamma`
+- [x] **Pan-Achse alpha (Portrait):** Armschwenk statt Kippen; zweiseitig ±45°; Hotspots nur per Tipp; Mathematik in `pan-from-orientation.ts`
 - [x] iOS: `sessionStorage` + 2s-Watchdog bei Cache ohne Sensordaten
 - [x] Button „Ansicht zentrieren“; `?debug=1` für Diagnose-HUD
 - [x] Doku (u. a. `lokal-testen-und-anschauen.md`, `fuer-entwickler.md`, `architektur.md`, ADR-006, Projektplan, GitHub-Projekt-README) + Testmatrix

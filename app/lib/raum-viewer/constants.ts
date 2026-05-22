@@ -3,6 +3,13 @@ export const DEFAULT_HOTSPOT_RADIUS = 0.08
 export const GYRO_DEADZONE_DEG = 2
 /** Mit Nutzer auf iPhone Safari kalibriert; bei Beschwerden in 0,1-Schritten anpassen. */
 export const GYRO_SENSITIVITY = 1
+/** ± dieser Winkel vom Neutral = je ein Bildrand (zweiseitig, Portrait/alpha). */
+export const GYRO_FULL_RANGE_DEG = 45
+/**
+ * Portrait/alpha: Drehen nach rechts → Pan Richtung 0 (rechter Rand).
+ * Am iPhone verifizieren; bei invertiertem Pan Vorzeichen flippen.
+ */
+export const GYRO_ALPHA_PAN_SIGN = 1
 export const PAN_SMOOTHING = 0.22
 /** Viewport-Mitte im Hotspot: nur Marker hervorheben, nicht Medien öffnen. */
 export const HOTSPOT_CENTER_DWELL_MS = 450

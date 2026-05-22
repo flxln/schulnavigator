@@ -91,7 +91,8 @@ Der Viewer skaliert **höhenbasiert** (`ROOM_VIEWER_HEIGHT_CSS` = `min(50vh, 360
 | Aufnahme | **Panorama** bevorzugt (≥ **2,5 : 1**), Konstante `RECOMMENDED_SOURCE_ASPECT_MIN` |
 | 4:3 / 16:9 | In der App **nutzbar** (Auto-Zoom), Hotspot-**y** im **mittleren Drittel** — sonst Warnung in Konsole / `validate:stations` (Heuristik) |
 | Pixel | **≥ 2400 px** Breite in der Quelldatei |
-| Gyro-Konstanten | `GYRO_SENSITIVITY` / `GYRO_DEADZONE_DEG` in `lib/raum-viewer/constants.ts` — mit Nutzer kalibriert, in 0,1-Schritten anpassbar |
+| Gyro-Konstanten | `lib/raum-viewer/constants.ts`: `GYRO_FULL_RANGE_DEG` (±45° je Rand), `GYRO_SENSITIVITY`, `GYRO_DEADZONE_DEG`, `GYRO_ALPHA_PAN_SIGN` (Vorzeichen am iPhone prüfen) |
+| Pan-Achse | **Portrait:** `deviceorientation.alpha` (Armschwenk, zentrierter Neutral, `pan-from-orientation.ts`); **Landscape:** `gamma` (einseitig); Achswechsel → Neutral-Reset |
 | Datei | `public/stations/{slug}.jpg` (oder WebP, Pfad in JSON) |
 | Größe | WebP oder optimiertes JPG, Ziel max. ~500 KB (Phase 3 #27) |
 | Ohne Foto | `bild` weglassen → statische Ansicht + Medienliste (z. B. `schulsozialarbeit` bis Panorama da ist) |
