@@ -6,7 +6,7 @@ Milestone: **Phase 2** | Fällig: 12.06.2026
 
 **Übernahmen aus Issue #16 (Phase 1):** Live unter HTTPS (`schulnavigator.mpz.schule`); website-weite Basis gegen Indexierung (`robots` / `noindex`); Route `/eintritt` mit **Platzhalter** (HTTP 200). **#23** baut darauf auf: Token, Middleware und Scanner sind der verbleibende Kern; SEO-Basis und Eintritt-404-Vermeidung sind **keine** Grünfeld-Aufgaben mehr. Detaillierte Abgrenzung: [`.cursor/plans/issue_16_coolify_deploy_39add57f.plan.md`](../../.cursor/plans/issue_16_coolify_deploy_39add57f.plan.md) (Abschnitt *Folge-Issues*). *Hinweis:* Zugehörige Cursor-**Chat-Request-ID** `51250690-23d9-4dfa-a554-4238883c9491` dient nur der Zuordnung zur Chat-Sitzung, nicht der technischen Referenz.
 
-**Architektur:** [ADR-004](../adr/004-video-hosting-mpz.md) · [ADR-005](../adr/005-zugangskontrolle-token.md) · [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
+**Architektur:** [ADR-004](../adr/004-video-hosting-mpz.md) · [ADR-005](../adr/005-zugangskontrolle-token.md) · [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md) · [ADR-008](../adr/008-eintritt-in-app-scanner.md) (#57)
 
 ---
 
@@ -124,6 +124,41 @@ Spezifikation: [ADR-005](../adr/005-zugangskontrolle-token.md), Speicher/Durchse
 - [x] `robots.txt` / `noindex` — unverändert site-wide (#16); keine weitere Verfeinerung nötig
 
 **Demo 10.06.:** primär **`fest`**-UX (Puzzle + Scanner) zeigen; `heft` kurz erklären.
+
+---
+
+## #57 — Eintritt: In-App-Scanner auf `/eintritt` (Folge zu #23)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/57
+
+**Labels:** `tech`  
+**Assignee:** Felix  
+**Milestone:** Phase 2
+
+Spezifikation: [ADR-008](../adr/008-eintritt-in-app-scanner.md) · baut auf [ADR-005](../adr/005-zugangskontrolle-token.md), [ADR-007](../adr/007-zugangskontrolle-cookie.md), Issue **#23** auf
+
+**Problem:** Nutzer ohne Cookie sehen `/eintritt` als Hinweistext; `/scan` ist geschützt. Entry-QR erfordert heute die System-Kamera.
+
+**Ziel:** Auf `/eintritt` integrierte Kamera zum Scannen des **Eintritts-QR** (URL `/eintritt?t=…`), danach unverändert Middleware → Cookie → `/`.
+
+### Akzeptanzkriterien
+
+- [ ] `parseEntryScan(raw, origin, tokens)` — same-origin, Pfad `/eintritt`, `t` in Token-Liste; Vitest (gültig, Fremd-Origin, Raum-URL, unbekannter Token)
+- [ ] Client-Komponente auf `/eintritt` (Wiederverwendung/Extraktion aus `QrScanner` oder `mode: 'entry'|'room'`)
+- [ ] Treffer → `router.push('/eintritt?t=' + token)` (Middleware setzt Cookie)
+- [ ] Fehlermeldungen: kein Entry-QR / ungültiger Token (freundlich, `aria-live`)
+- [ ] `/scan` unverändert: nur Raum-QRs, nur mit Cookie
+- [ ] Doku: `fuer-lehrkraefte.md`, `lokal-testen-und-anschauen.md`, ggf. `architektur.md` Abschnitt Zugang
+
+### Nicht im Scope
+
+- Entry-Scan auf `/scan` oder Middleware-Ausnahme für `/scan` ohne Cookie
+- Token manuell eingeben
+- Neue Token-Strings (bleiben `qr-config.mjs` / `access-tokens.ts`)
+
+### Abhängigkeiten
+
+- **#23** (geschlossen) — Middleware, Cookie, `html5-qrcode` auf `/scan`
 
 ---
 

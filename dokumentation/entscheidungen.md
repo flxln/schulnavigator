@@ -13,6 +13,7 @@ Jede wichtige Entscheidung wird als eigenständiger ADR (Architecture Decision R
 | [005](./adr/005-zugangskontrolle-token.md) | Zugang: Entry-Token, Modi fest/heft, In-App-Scanner | entschieden | 2026-05-21 |
 | [006](./adr/006-raum-viewer-gyro-hotspots.md) | Raum-Viewer: Gyro (Standard), Hotspots, Tap-Fallback; Portrait `alpha`/Armschwenk, Mobil-Härtung (#56) in [architektur.md](./architektur.md) | entschieden | 2026-05-22 |
 | [007](./adr/007-zugangskontrolle-cookie.md) | Zugang: HttpOnly-Cookie + Middleware (ergänzt ADR-005 Speicher/Durchsetzung) | entschieden | 2026-05-22 |
+| [008](./adr/008-eintritt-in-app-scanner.md) | Eintritt: In-App-Scanner auf `/eintritt` (ergänzt ADR-005 Entry-UX) | entschieden | 2026-05-22 |
 
 ## Konventionen
 
