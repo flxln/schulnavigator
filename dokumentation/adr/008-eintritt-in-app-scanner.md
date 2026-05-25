@@ -12,11 +12,22 @@ Nutzer ohne gültiges Cookie landen auf `/eintritt` (Hinweisseite). `/scan` ist 
 ## Entscheidung
 
 - Auf **`/eintritt`** (Hinweisseite, ohne gültiges Cookie) wird ein **In-App-QR-Scanner** angeboten — gleiche Technik wie `/scan` (`html5-qrcode`, dynamischer Import, Kamera nach Nutzer-Geste).
-- Der Scanner akzeptiert nur **Entry-URLs**: same-origin, Pfad `/eintritt`, Query `t` mit einem Token aus `access-tokens.ts` / `qr-config.mjs`.
-- Bei Treffer: Navigation zu `/eintritt?t=<token>` → bestehende **Middleware** (#23) setzt Cookie und leitet auf `/` um.
+- Der Scanner akzeptiert nur **Entry-URLs** im Sinne von Struktur: same-origin, Pfad `/eintritt`, Query-Parameter `t` nicht leer.
+- Bei Treffer: `window.location.replace` zu `/eintritt?t=<token>` → bestehende **Middleware** (#23) setzt Cookie und leitet auf `/` um.
 - **`/scan`** bleibt unverändert: nur Raum-QRs, nur mit gültigem Cookie erreichbar. Kein Entry-Scan auf `/scan`.
 
-Parsing als reine Funktion + Vitest (z. B. `parseEntryScan` in `lib/scan-url.ts` oder `lib/entry-scan-url.ts`), Token-Liste als Server-Prop (kein Client-Import von Secrets).
+Parsing als reine Funktion + Vitest (`parseEntryScan` in `lib/scan-url.ts`).
+
+### Client vs. Middleware (Nachtrag #57)
+
+Die ursprüngliche Formulierung „Token aus `access-tokens.ts`" bezieht sich auf die **Middleware**, nicht auf eine Client-Whitelist.
+
+| Schicht | Prüfung |
+|---------|---------|
+| **Client** (`parseEntryScan`) | same-origin, Pfad `/eintritt`, `t` nicht leer — **keine** Membership gegen `ACCESS_TOKENS` |
+| **Middleware** (`validateToken`) | Token bekannt und nicht abgelaufen → Cookie; sonst `?reason=invalid\|expired` |
+
+**Begründung:** `/eintritt` ist ohne Zugang erreichbar. Eine Token-Liste als React-Prop würde gültige Token-Strings ins JS-Bundle der Seite legen und das Gate umgehbar machen. Unbekannte `t`-Werte navigieren zuerst; die Middleware lehnt sie ab.
 
 ## Begründung
 

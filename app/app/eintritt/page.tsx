@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import { headers } from 'next/headers'
+import { QrScanner } from '@/components/scan/qr-scanner'
 
 export const metadata: Metadata = {
   title: 'Eintritt — Schulnavigator',
@@ -24,6 +26,11 @@ export default async function EintrittPage({ searchParams }: PageProps) {
   const { reason } = await searchParams
   const message = hintMessage(reason)
 
+  const headersList = await headers()
+  const host = headersList.get('x-forwarded-host') ?? headersList.get('host')
+  const proto = headersList.get('x-forwarded-proto') ?? 'http'
+  const origin = host ? `${proto}://${host}` : 'http://localhost:3000'
+
   return (
     <main className="mx-auto flex min-h-full max-w-lg flex-col gap-6 px-4 py-8 pb-[max(1rem,env(safe-area-inset-bottom))]">
       <header>
@@ -38,6 +45,15 @@ export default async function EintrittPage({ searchParams }: PageProps) {
           {message}
         </p>
       </header>
+      <section aria-labelledby="eintritt-scan-heading">
+        <h2 id="eintritt-scan-heading" className="sr-only">
+          Eintritts-QR scannen
+        </h2>
+        <p className="mb-4 text-sm text-fg-2">
+          Oder scanne den Code direkt hier in der App:
+        </p>
+        <QrScanner mode="entry" origin={origin} />
+      </section>
     </main>
   )
 }

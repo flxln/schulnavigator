@@ -145,7 +145,7 @@ Die App setzt **`robots.txt`** (`Disallow: /`) und **`noindex`** im Root-Layout 
 - **Token-Quelle:** [`app/lib/access-tokens.ts`](../app/lib/access-tokens.ts) — muss mit [`app/scripts/qr-config.mjs`](../app/scripts/qr-config.mjs) synchron bleiben (Vitest-Sync-Guard in `access-tokens.test.ts`).
 - **Cookie:** `sn_access` (HttpOnly, `Secure` nur in Production, `SameSite=Lax`). Inhalt = Token-String; Ablauf/Modus werden bei jedem Request gegen die Token-Liste validiert.
 - **Middleware:** [`app/middleware.ts`](../app/middleware.ts) — gültiges `?t=` → Cookie + Redirect `/`; ohne Cookie → `/eintritt` (`?reason=expired` wenn Token bekannt, aber abgelaufen).
-- **Scanner:** `html5-qrcode` (dynamischer Import in `components/scan/qr-scanner.tsx`); URL-Parsing in `lib/scan-url.ts`.
+- **Scanner:** `html5-qrcode` in `components/scan/qr-scanner.tsx` (`mode: entry` auf `/eintritt`, `mode: room` auf `/scan`); `parseEntryScan` / `parseRoomScan` in `lib/scan-url.ts` — Entry ohne Token-Whitelist im Client (#57, ADR-008).
 
 ### Token pflegen / rotieren
 

@@ -13,7 +13,7 @@ Die App ist nicht öffentlich im Internet auffindbar. Besucher brauchen einen **
 | **Schulfest** (`fest`) | QR am **Eingang** am Tag der offenen Tür | Startseite zeigt das Schulhaus-Puzzle: Stationen werden nach und nach freigeschaltet, wenn Raum-QRs an den Türen gescannt werden. |
 | **Schulstartheft** (`heft`) | QR im **Heft** für Eltern | Alle 11 Stationen sind von Anfang an auf der Startseite wählbar. |
 
-**Raum-QRs** an den Türen führen immer zu `/raum/…` — sie ersetzen nicht den Eintritts-QR. Nach dem ersten Scan des Eintritts-QRs kann die **Scanner-Funktion** in der App (`/scan`) genutzt werden, statt ständig zur Handy-Kamera zu wechseln.
+**Raum-QRs** an den Türen führen immer zu `/raum/…` — sie ersetzen nicht den Eintritts-QR. Den Eintritts-QR kann man auch **direkt auf der Hinweisseite** (`/eintritt`) in der App scannen, wenn noch kein Zugang besteht. Nach dem Eintritt nutzt die **Scanner-Funktion** (`/scan`) die Raum-QRs an den Türen — ohne ständigen Wechsel zur Handy-Kamera.
 
 *Inhaltspflege (Directus) folgt später — siehe Abschnitte unten.*
 

@@ -14,7 +14,7 @@ _Stand: 2026-05-22 (Issue #16: Live-Deploy; **#55/#56:** Raum-Viewer; Gyro Portr
 | QR-Code-Generierung | Script `npm run generate:qr`, `lib/qr-urls.ts` (URLs) | gleich                           | —                                             |
 | Video-Hosting       | MPZ-Server (Upload)                               | YouTube-Embed nach Rechtsklärung | [004](./adr/004-video-hosting-mpz.md)         |
 | Zugangskontrolle    | Entry-Token, Cookie `sn_access` + Middleware, Modi `fest`/`heft` | gleich                           | [005](./adr/005-zugangskontrolle-token.md), [007](./adr/007-zugangskontrolle-cookie.md) |
-| Navigation          | In-App-Scanner (`/scan`) + Raum-QRs               | gleich                           | [005](./adr/005-zugangskontrolle-token.md)    |
+| Navigation          | In-App-Scanner Entry (`/eintritt`) + Räume (`/scan`) | gleich                           | [005](./adr/005-zugangskontrolle-token.md), [008](./adr/008-eintritt-in-app-scanner.md) |
 | Raum-Viewer         | Gyro-Pan, Hotspots, Tap-Fallback; normales Foto   | gleich                           | [006](./adr/006-raum-viewer-gyro-hotspots.md) |
 | UI / Schul-Theme    | GS39-Design-Tokens (`gs39-tokens.css`), Nunito      | pro Schule eigenes Token-Sheet   | Auftraggeber-CSS, [ADR-003](./adr/003-content-mvp-json-directus.md) |
 
@@ -52,10 +52,10 @@ Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/
 ```
 
 - **`/`** — Startseite mit Schulhaus-Hub; Modus aus Cookie: `heft` = alle Stationen, `fest` = Puzzle-Hub gesperrt (progressive Freischaltung → Issue #21).
-- **`/eintritt`** — Entry-QR (`?t=…`) setzt Cookie und leitet auf `/` um; ohne gültigen Zugang Hinweis-/Fehlerseite (`?reason=invalid|expired`).
-- **`/scan`** — In-App-QR-Scanner (`html5-qrcode`, dynamischer Import); nur same-origin `/raum/<slug>` — [ADR-005](./adr/005-zugangskontrolle-token.md), [ADR-007](./adr/007-zugangskontrolle-cookie.md).
+- **`/eintritt`** — Entry-QR (`?t=…`) setzt Cookie und leitet auf `/` um; ohne gültigen Zugang Hinweis-/Fehlerseite mit **integriertem Entry-Scanner** (#57, [ADR-008](./adr/008-eintritt-in-app-scanner.md)): `parseEntryScan` prüft nur Struktur (Origin, Pfad, `t` nicht leer); Gültigkeit nur Middleware.
+- **`/scan`** — In-App-QR-Scanner für Raum-QRs (nur mit Cookie); `parseRoomScan` + Slug-Whitelist — [ADR-005](./adr/005-zugangskontrolle-token.md), [ADR-007](./adr/007-zugangskontrolle-cookie.md).
 
-**Zugang (Issue #23):** Token-Liste [`app/lib/access-tokens.ts`](../app/lib/access-tokens.ts) (sync mit [`app/scripts/qr-config.mjs`](../app/scripts/qr-config.mjs)); Middleware [`app/middleware.ts`](../app/middleware.ts) setzt/prüft Cookie `sn_access`. Ausnahmen: `/api/health`, `/_next/*`, `favicon.ico`, `robots.txt`, `/eintritt` ohne `?t=`. **Modus-Wechsel:** neuer gültiger `?t=`-Scan überschreibt das Cookie. **Rotation:** Token in Code ändern → deployen → `npm run generate:qr`.
+**Zugang (Issue #23, Entry-Scanner #57):** Token-Liste [`app/lib/access-tokens.ts`](../app/lib/access-tokens.ts) (sync mit [`app/scripts/qr-config.mjs`](../app/scripts/qr-config.mjs)); Middleware [`app/middleware.ts`](../app/middleware.ts) setzt/prüft Cookie `sn_access`. Entry-Treffer im Scanner: `location.replace` zu `/eintritt?t=…` (kein Token im Client-Bundle). Ausnahmen: `/api/health`, `/_next/*`, `favicon.ico`, `robots.txt`, `/eintritt` ohne `?t=`.
 
 Sprechende Raum-Slugs (z. B. `/raum/musik`) — siehe [ADR-002](./adr/002-frontend-nextjs.md).
 

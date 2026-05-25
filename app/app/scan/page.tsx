@@ -34,7 +34,7 @@ export default async function ScanPage() {
           für Stationen dieser Schule akzeptiert.
         </p>
       </header>
-      <QrScanner slugs={slugs} origin={origin} />
+      <QrScanner mode="room" slugs={slugs} origin={origin} />
     </main>
   )
 }

@@ -2,22 +2,29 @@
 
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
-import { parseRoomScan } from '@/lib/scan-url'
+import { parseEntryScan, parseRoomScan } from '@/lib/scan-url'
 
-type QrScannerProps = {
-  slugs: readonly string[]
-  origin: string
-}
+type QrScannerProps =
+  | { mode: 'room'; origin: string; slugs: readonly string[] }
+  | { mode: 'entry'; origin: string }
 
-type ScannerState = 'idle' | 'starting' | 'scanning' | 'error'
+type ScannerState = 'idle' | 'starting' | 'scanning' | 'error' | 'pending'
 
-export function QrScanner({ slugs, origin }: QrScannerProps) {
+const ENTRY_WRONG_QR =
+  'Das ist ein Raum-Code. Bitte den Eintritts-QR am Eingang oder im Heft scannen. Raum-QRs funktionieren nach dem Eintritt.'
+const ROOM_SCAN_ENTRY_QR =
+  'Das ist der Eintritts-QR — bitte einen Raum-QR an der Tür scannen.'
+const ROOM_SCAN_WRONG_QR = 'Bitte einen Raum-QR an der Tür scannen.'
+
+export function QrScanner(props: QrScannerProps) {
   const router = useRouter()
   const regionId = useId().replace(/:/g, '')
   const containerRef = useRef<HTMLDivElement>(null)
   const scannerRef = useRef<{ stop: () => Promise<void> } | null>(null)
   const [state, setState] = useState<ScannerState>('idle')
   const [statusMessage, setStatusMessage] = useState<string | null>(null)
+
+  const isEntry = props.mode === 'entry'
 
   const stopScanner = useCallback(async () => {
     const instance = scannerRef.current
@@ -39,17 +46,32 @@ export function QrScanner({ slugs, origin }: QrScannerProps) {
 
   const onScanSuccess = useCallback(
     (decoded: string) => {
-      const slug = parseRoomScan(decoded, origin, slugs)
+      if (props.mode === 'entry') {
+        const token = parseEntryScan(decoded, props.origin)
+        if (!token) {
+          setStatusMessage(ENTRY_WRONG_QR)
+          return
+        }
+        void stopScanner()
+        setStatusMessage('Zugang wird geprüft …')
+        setState('pending')
+        window.location.replace(
+          `/eintritt?t=${encodeURIComponent(token)}`,
+        )
+        return
+      }
+
+      const slug = parseRoomScan(decoded, props.origin, props.slugs)
       if (slug) {
         void stopScanner()
         router.push(`/raum/${slug}`)
         return
       }
-      setStatusMessage(
-        'Dieser Code gehört nicht zum Schulnavigator. Bitte einen Raum-QR an der Tür scannen.',
-      )
+
+      const entryToken = parseEntryScan(decoded, props.origin)
+      setStatusMessage(entryToken ? ROOM_SCAN_ENTRY_QR : ROOM_SCAN_WRONG_QR)
     },
-    [origin, router, slugs, stopScanner],
+    [props, router, stopScanner],
   )
 
   const startScanner = useCallback(async () => {
@@ -74,27 +96,42 @@ export function QrScanner({ slugs, origin }: QrScannerProps) {
     } catch {
       setState('error')
       setStatusMessage(
-        'Kamera konnte nicht gestartet werden. Erlaube den Kamerazugriff oder scanne den Raum-QR mit der Kamera-App deines Geräts.',
+        isEntry
+          ? 'Kamera konnte nicht gestartet werden. Erlaube den Kamerazugriff oder scanne den Eintritts-QR mit der Kamera-App deines Geräts.'
+          : 'Kamera konnte nicht gestartet werden. Erlaube den Kamerazugriff oder scanne den Raum-QR mit der Kamera-App deines Geräts.',
       )
       scannerRef.current = null
     }
-  }, [onScanSuccess, regionId, stopScanner])
+  }, [isEntry, onScanSuccess, regionId, stopScanner])
+
+  const startLabel = isEntry ? 'Eintritts-QR scannen' : 'Kamera starten'
+  const tipLine = isEntry
+    ? 'Tipp: Du kannst den Eintritts-QR auch mit der System-Kamera scannen — die App öffnet sich dann automatisch.'
+    : 'Tipp: Du kannst Raum-QR-Codes auch mit der System-Kamera scannen — der Zugang bleibt im Browser erhalten.'
+
+  const showCameraRegion = state !== 'pending'
 
   return (
     <div className="flex flex-col gap-4">
-      <div
-        ref={containerRef}
-        id={regionId}
-        className="min-h-[240px] w-full overflow-hidden rounded-[var(--r-md)] bg-bg-dark"
-        aria-hidden={state === 'idle'}
-      />
-      {state === 'idle' || state === 'error' ? (
+      {showCameraRegion ? (
+        <div
+          ref={containerRef}
+          id={regionId}
+          className="min-h-[240px] w-full overflow-hidden rounded-[var(--r-md)] bg-bg-dark"
+          aria-hidden={state === 'idle'}
+        />
+      ) : null}
+      {state === 'pending' ? (
+        <p className="text-sm text-fg-2" role="status" aria-live="polite">
+          Zugang wird geprüft …
+        </p>
+      ) : state === 'idle' || state === 'error' ? (
         <button
           type="button"
           onClick={() => void startScanner()}
           className="min-h-11 rounded-[var(--r-md)] bg-accent px-4 py-2 text-sm font-semibold text-fg-on-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
-          Kamera starten
+          {startLabel}
         </button>
       ) : state === 'starting' ? (
         <p className="text-sm text-fg-2" role="status" aria-live="polite">
@@ -109,7 +146,7 @@ export function QrScanner({ slugs, origin }: QrScannerProps) {
           Scanner beenden
         </button>
       )}
-      {statusMessage ? (
+      {statusMessage && state !== 'pending' ? (
         <p
           className="rounded-[var(--r-md)] bg-bg-3 px-3 py-2 text-sm text-fg-1"
           role="status"
@@ -118,10 +155,9 @@ export function QrScanner({ slugs, origin }: QrScannerProps) {
           {statusMessage}
         </p>
       ) : null}
-      <p className="text-xs text-fg-3">
-        Tipp: Du kannst Raum-QR-Codes auch mit der System-Kamera scannen — der
-        Zugang bleibt im Browser erhalten.
-      </p>
+      {state !== 'pending' ? (
+        <p className="text-xs text-fg-3">{tipLine}</p>
+      ) : null}
     </div>
   )
 }

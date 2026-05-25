@@ -129,26 +129,26 @@ Spezifikation: [ADR-005](../adr/005-zugangskontrolle-token.md), Speicher/Durchse
 
 ## #57 — Eintritt: In-App-Scanner auf `/eintritt` (Folge zu #23)
 
-**GitHub:** https://github.com/flxln/schulnavigator/issues/57
+**GitHub:** https://github.com/flxln/schulnavigator/issues/57 — **umgesetzt** (2026-05-22)
 
 **Labels:** `tech`  
 **Assignee:** Felix  
 **Milestone:** Phase 2
 
-Spezifikation: [ADR-008](../adr/008-eintritt-in-app-scanner.md) · baut auf [ADR-005](../adr/005-zugangskontrolle-token.md), [ADR-007](../adr/007-zugangskontrolle-cookie.md), Issue **#23** auf
+Spezifikation: [ADR-008](../adr/008-eintritt-in-app-scanner.md) (inkl. Nachtrag Client vs. Middleware) · baut auf #23 auf
 
-**Problem:** Nutzer ohne Cookie sehen `/eintritt` als Hinweistext; `/scan` ist geschützt. Entry-QR erfordert heute die System-Kamera.
+**Problem:** Nutzer ohne Cookie sehen `/eintritt` als Hinweistext; `/scan` ist geschützt. Entry-QR erforderte die System-Kamera.
 
-**Ziel:** Auf `/eintritt` integrierte Kamera zum Scannen des **Eintritts-QR** (URL `/eintritt?t=…`), danach unverändert Middleware → Cookie → `/`.
+**Ziel:** Auf `/eintritt` integrierte Kamera zum Scannen des **Eintritts-QR** (URL `/eintritt?t=…`), danach Middleware → Cookie → `/`.
 
 ### Akzeptanzkriterien
 
-- [ ] `parseEntryScan(raw, origin, tokens)` — same-origin, Pfad `/eintritt`, `t` in Token-Liste; Vitest (gültig, Fremd-Origin, Raum-URL, unbekannter Token)
-- [ ] Client-Komponente auf `/eintritt` (Wiederverwendung/Extraktion aus `QrScanner` oder `mode: 'entry'|'room'`)
-- [ ] Treffer → `router.push('/eintritt?t=' + token)` (Middleware setzt Cookie)
-- [ ] Fehlermeldungen: kein Entry-QR / ungültiger Token (freundlich, `aria-live`)
-- [ ] `/scan` unverändert: nur Raum-QRs, nur mit Cookie
-- [ ] Doku: `fuer-lehrkraefte.md`, `lokal-testen-und-anschauen.md`, ggf. `architektur.md` Abschnitt Zugang
+- [x] `parseEntryScan(raw, origin)` — Struktur only (kein Token im Client); Vitest inkl. Fragment/Extra-Query
+- [x] `QrScanner` `mode: 'entry'|'room'`; `/eintritt` nur `origin`, keine Token-Prop
+- [x] Treffer → `location.replace('/eintritt?t=…')` (Middleware setzt Cookie; kein Back-Button-Loop)
+- [x] Differenzierte Fehlermeldungen Entry vs. Raum; Ladezustand „Zugang wird geprüft …"; `aria-live`
+- [x] `/scan` unverändert: `mode="room"`, nur Raum-QRs
+- [x] Doku: `fuer-lehrkraefte.md`, `lokal-testen-und-anschauen.md`, `architektur.md`
 
 ### Nicht im Scope
 
