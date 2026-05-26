@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
-  circularEmaDeg,
+  angleDeltaDeg,
   resolvePanAxis,
   type PanAxis,
 } from '@/lib/raum-viewer/pan-from-orientation'
@@ -30,17 +30,6 @@ function isIosOrientationPermissionModel(): boolean {
   )
 }
 
-function circularGlitchDelta(next: number, prev: number): number {
-  let delta = next - prev
-  while (delta > 180) {
-    delta -= 360
-  }
-  while (delta < -180) {
-    delta += 360
-  }
-  return Math.abs(delta)
-}
-
 export function useDeviceOrientation(enabled: boolean) {
   const [state, setState] = useState<OrientationAuthState>('unsupported')
   const [alpha, setAlpha] = useState<number | null>(null)
@@ -52,7 +41,8 @@ export function useDeviceOrientation(enabled: boolean) {
   const raf = useRef<number | null>(null)
   const latestAlpha = useRef<number | null>(null)
   const latestGamma = useRef<number | null>(null)
-  const lastGoodAlpha = useRef<number | null>(null)
+  const prevRawAlpha = useRef<number | null>(null)
+  const unwrappedAlpha = useRef<number | null>(null)
   const lastGoodGamma = useRef<number | null>(null)
   const panAxisRef = useRef<PanAxis>('alpha')
   const pendingIosWatchdogRef = useRef(false)
@@ -84,7 +74,9 @@ export function useDeviceOrientation(enabled: boolean) {
       setAlpha(null)
       setGamma(null)
       setPanAngle(null)
-      lastGoodAlpha.current = null
+      prevRawAlpha.current = null
+      unwrappedAlpha.current = null
+      latestAlpha.current = null
       lastGoodGamma.current = null
     }, WATCHDOG_MS)
   }, [clearWatchdog])
@@ -161,14 +153,23 @@ export function useDeviceOrientation(enabled: boolean) {
     const onOrient = (e: DeviceOrientationEvent) => {
       const a = e.alpha
       if (typeof a === 'number' && !Number.isNaN(a)) {
-        const prevA = lastGoodAlpha.current
-        if (
-          prevA === null ||
-          circularGlitchDelta(a, prevA) <= GLITCH_JUMP_DEG
-        ) {
-          const smoothed = circularEmaDeg(prevA, a, ORIENTATION_EMA_ALPHA)
-          lastGoodAlpha.current = smoothed
-          latestAlpha.current = smoothed
+        const prevRaw = prevRawAlpha.current
+        if (prevRaw === null) {
+          prevRawAlpha.current = a
+          unwrappedAlpha.current = a
+          latestAlpha.current = a
+        } else {
+          const d = angleDeltaDeg(a, prevRaw)
+          if (Math.abs(d) <= GLITCH_JUMP_DEG) {
+            prevRawAlpha.current = a
+            // Kontinuierlicher (entfalteter) Heading: kleine, eindeutige
+            // Frame-Deltas aufsummieren — kein 0/360-Sprung mehr.
+            const unwrapped = (unwrappedAlpha.current ?? a) + d
+            unwrappedAlpha.current = unwrapped
+            const prevSmoothed = latestAlpha.current ?? unwrapped
+            latestAlpha.current =
+              prevSmoothed + ORIENTATION_EMA_ALPHA * (unwrapped - prevSmoothed)
+          }
         }
       }
 

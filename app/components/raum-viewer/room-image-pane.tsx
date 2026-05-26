@@ -17,10 +17,8 @@ import {
 import { visibleYNormalRange } from '@/lib/raum-viewer/clip-zone'
 import {
   centeredPanPx,
-  circularMeanDeg,
   lerpPan,
   neutralAngleForPan,
-  normalizeDeg,
   orientationToTargetPan,
   panMappingForAxis,
 } from '@/lib/raum-viewer/pan-from-orientation'
@@ -100,7 +98,9 @@ export function RoomImagePane({
   } = useDeviceOrientation(true)
 
   const panMode = panMappingForAxis(panAxis)
-  const useCircularDelta = panAxis === 'alpha'
+  // alpha ist jetzt ein kontinuierlicher (entfalteter) Heading → einfache
+  // Differenz statt 0/360-Faltung; gamma war schon linear.
+  const useCircularDelta = false
   const angle = panAngle ?? gamma
 
   useEffect(() => {
@@ -176,8 +176,7 @@ export function RoomImagePane({
     const timer = window.setTimeout(() => {
       const arr = neutralSamples.current
       if (arr.length > 0) {
-        neutralAngle.current =
-          axis === 'alpha' ? circularMeanDeg(arr) : arr.reduce((a, v) => a + v, 0) / arr.length
+        neutralAngle.current = arr.reduce((a, v) => a + v, 0) / arr.length
       } else {
         neutralAngle.current = 0
       }
@@ -259,8 +258,7 @@ export function RoomImagePane({
         }
         if (maxPan > 0) {
           if (neutralAngle.current === null) {
-            neutralAngle.current =
-              panAxis === 'alpha' ? normalizeDeg(angle) : angle
+            neutralAngle.current = angle
           }
           const target = orientationToTargetPan(
             angle,
@@ -398,8 +396,7 @@ export function RoomImagePane({
       setPanPx(0)
     }
     if (angle !== null) {
-      neutralAngle.current =
-        panAxis === 'alpha' ? normalizeDeg(angle) : angle
+      neutralAngle.current = angle
       neutralCalibrated.current = true
     }
   }, [angle, maxPan, panAxis])

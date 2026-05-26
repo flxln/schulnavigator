@@ -4,7 +4,7 @@ export const GYRO_DEADZONE_DEG = 2
 /** Mit Nutzer auf iPhone Safari kalibriert; bei Beschwerden in 0,1-Schritten anpassen. */
 export const GYRO_SENSITIVITY = 1
 /** ± dieser Winkel vom Neutral = je ein Bildrand (zweiseitig, Portrait/alpha). */
-export const GYRO_FULL_RANGE_DEG = 45
+export const GYRO_FULL_RANGE_DEG = 60
 /**
  * Portrait/alpha: Drehen nach rechts → Pan Richtung 0 (rechter Rand).
  * Am iPhone verifizieren; bei invertiertem Pan Vorzeichen flippen.

@@ -175,6 +175,40 @@ describe('orientationToTargetPan', () => {
   })
 })
 
+describe('kontinuierlicher Heading (kein 180°-Sprung)', () => {
+  it('entfaltetes Heading: Frame-Deltas summieren sich über 0/360 stetig', () => {
+    const raw = [350, 355, 0, 5, 10]
+    let unwrapped = raw[0]
+    for (let i = 1; i < raw.length; i++) {
+      unwrapped += angleDeltaDeg(raw[i], raw[i - 1])
+    }
+    expect(unwrapped).toBeCloseTo(370, 5)
+  })
+
+  it('centered, linearer Delta: Weiterdrehen über 180° bleibt am selben Rand (kein Kippen)', () => {
+    const maxPan = 200
+    const neutral = 0
+    const edge = GYRO_FULL_RANGE_DEG + GYRO_DEADZONE_DEG
+    // Kontinuierlicher Sweep nach rechts, über die Vollausschlag-Grenze hinaus.
+    const right = orientationToTargetPan(edge, maxPan, neutral, 'centered', false)
+    const right170 = orientationToTargetPan(170, maxPan, neutral, 'centered', false)
+    const right190 = orientationToTargetPan(190, maxPan, neutral, 'centered', false)
+    expect(right).toBeCloseTo(0, 1)
+    expect(right170).toBeCloseTo(0, 1)
+    // Mit gefaltetem Delta würde 190° hier auf den linken Rand springen.
+    expect(right190).toBeCloseTo(0, 1)
+
+    const left190 = orientationToTargetPan(-190, maxPan, neutral, 'centered', false)
+    expect(left190).toBeCloseTo(-maxPan, 1)
+  })
+
+  it('gefaltetes Delta (alt) kippt bei 190° tatsächlich auf den Gegenrand', () => {
+    const maxPan = 200
+    const folded = orientationToTargetPan(190, maxPan, 0, 'centered', true)
+    expect(folded).toBeCloseTo(-maxPan, 1)
+  })
+})
+
 describe('neutralAngleForPan', () => {
   it('oneSided: Round-Trip', () => {
     const maxPan = 200
