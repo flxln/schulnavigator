@@ -29,8 +29,8 @@ npm run dev
 | Seite | Zweck |
 | ----- | ----- |
 | [http://localhost:3000/](http://localhost:3000/) | Startseite — **ohne** vorherigen Entry: Redirect zu `/eintritt` |
-| [http://localhost:3000/eintritt?t=fest-2026](http://localhost:3000/eintritt?t=fest-2026) | Entry Schulfest: Cookie + Redirect `/` → Puzzle-Hub **gesperrt** |
-| [http://localhost:3000/eintritt?t=heft-2026-27](http://localhost:3000/eintritt?t=heft-2026-27) | Entry Heft: voller Hub (alle Stationen klickbar) |
+| [http://localhost:3000/eintritt?t=fest-2026](http://localhost:3000/eintritt?t=fest-2026) | Entry Schulfest: Cookie + Redirect `/` → Puzzle-Hub **gesperrt** (0/11), Segmente nach Raumbesuch frei (#21) |
+| [http://localhost:3000/eintritt?t=heft-2026-27](http://localhost:3000/eintritt?t=heft-2026-27) | Entry Heft: voller Hub (alle Stationen klickbar), Fortschritt zählt trotzdem (#21) |
 | [http://localhost:3000/eintritt](http://localhost:3000/eintritt) | Hinweisseite + **In-App-Scanner** für Eintritts-QR (#57); Kamera nur auf `localhost`/HTTPS |
 | [http://localhost:3000/robots.txt](http://localhost:3000/robots.txt) | `Disallow: /` (Issue #16) |
 | [http://localhost:3000/scan](http://localhost:3000/scan) | In-App-QR-Scanner (nach Entry; Kamera-Zugriff nötig) |
@@ -69,6 +69,17 @@ npm run start
 `npm run build` ruft zuvor **`npm run validate:tokens`** (Abgleich `app/gs39-tokens.css` ↔ `auftraggeber/.../colors_and_type.css`) und **`npm run validate:stations`** auf: Es muss jede in `stations.json` referenzierte Datei unter `public/` existieren (Raumbilder, Demo-Medien). Fehlt etwas, bricht der Build mit einer klaren Meldung ab. Zusätzlich gibt `validate:stations` bei riskantem Hotspot-**y** (nach Auto-Zoom unsichtbar) eine **Warnung** aus (Heuristik).
 
 **Raum-Viewer (Issue #55 / #56, Mobil-Härtung):** `export const viewport` in [`app/app/layout.tsx`](../app/app/layout.tsx) — korrektes **device-width** auf dem Handy (kein „Mini-Desktop-Zoom“). Viewer `min(50vh, 360px)`; **Auto-Zoom** skaliert schmale Bilder so, dass horizontal mindestens `MIN_PAN_DISPLAY_RATIO` (2) erreicht wird — dabei kann **oben/unten beschnitten** werden; Hotspot-**y** im mittleren Drittel halten. **Gyro (Portrait):** Handy vor die Brust, **links und rechts drehen** (nicht kippen) — ca. ±45° vom Neutral zu beiden Raumrändern; bei Drift **„Ansicht zentrieren“**. **Landscape (iPad):** Kippen (`gamma`) wie bisher. **Wischen** bleibt nach Loslassen stabil. Debug: `?debug=1` — HUD mit `axis`, `α`, `γ`, `∠`, `pan`. Unter `/raum/musik` — **iPhone nur unter HTTPS**; Portrait/Landscape-Wechsel prüfen (Neutral-Reset); Norddurchquerung (0°/360°) ohne Pan-Sprung.
+
+**Stempel & Puzzle-Freischaltung (Issue #21):**
+
+1. `/eintritt?t=fest-2026` → Hub gesperrt, „0 von 11“
+2. `/scan` → Raum-QR scannen → Segment auf Hub frei, „1 von 11“
+3. **Browser-Zurück** zum Hub (kein Reload) → Fortschritt und Freischaltung bleiben
+4. `/eintritt?t=heft-2026-27` → alle Segmente klickbar, Fortschritt bleibt
+5. Local Storage `sn_visited_slugs` löschen → Fortschritt 0
+6. Mit Cookie direkt `/raum/musik` → nach Reload `/` ist Segment `seg-10` frei (`fest`)
+7. `fest` mit bereits besuchten Stationen: Hub neu laden → kurzer Lade-Platzhalter, kein „alles gesperrt“-Flash
+8. Zwei Tabs (`/` + `/scan`): im zweiten Tab scannen → erster Tab aktualisiert bei Fokus
 
 **Manuelle Test-Matrix (Schulfest-relevant):**
 

@@ -1,9 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { useMemo } from 'react'
-import type { EntryMode } from '@/lib/access-tokens'
-import { getUnlockedSegmentIdsForMode } from '@/lib/hub-mode'
 import type { SchoolhouseSegment } from '@/lib/schoolhouse-segments'
 import { ScanCta } from '@/components/schoolhouse/scan-cta'
 import { SchoolhouseSrNav } from '@/components/schoolhouse/schoolhouse-sr-nav'
@@ -11,25 +8,19 @@ import { SchoolhouseSvg } from '@/components/schoolhouse/schoolhouse-svg'
 
 type SchoolhouseHubProps = {
   segments: readonly SchoolhouseSegment[]
-  mode: EntryMode
+  unlockedSegmentIds: ReadonlySet<string>
 }
 
 function pct(value: number, total: number): string {
   return `${(value / total) * 100}%`
 }
 
-export function SchoolhouseHub({ segments, mode }: SchoolhouseHubProps) {
-  const allIds = useMemo(
-    () => segments.map((s) => s.puzzleSegmentId),
-    [segments],
-  )
-
-  const unlockedSegmentIds = useMemo(
-    () => getUnlockedSegmentIdsForMode(mode, allIds),
-    [mode, allIds],
-  )
-
-  const allLocked = mode === 'fest' && unlockedSegmentIds.size === 0
+export function SchoolhouseHub({
+  segments,
+  unlockedSegmentIds,
+}: SchoolhouseHubProps) {
+  const allLocked =
+    segments.length > 0 && unlockedSegmentIds.size === 0
 
   return (
     <div className="flex flex-col gap-6">

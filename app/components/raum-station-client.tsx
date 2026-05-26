@@ -11,12 +11,17 @@ import {
 } from '@/components/raum-viewer'
 import { StationBackLink } from '@/components/station-back-link'
 import { StationMediaPanel } from '@/components/station-media-panel'
+import { StationVisitedBadge } from '@/components/station-visited-badge'
 
 type RaumStationClientProps = {
   station: Station
+  validSlugs: readonly string[]
 }
 
-export function RaumStationClient({ station }: RaumStationClientProps) {
+export function RaumStationClient({
+  station,
+  validSlugs,
+}: RaumStationClientProps) {
   const [panelOpen, setPanelOpen] = useState(false)
   const [selectedMedium, setSelectedMedium] = useState<Medium | null>(null)
   const [activeHotspotId, setActiveHotspotId] = useState<string | null>(null)
@@ -78,9 +83,12 @@ export function RaumStationClient({ station }: RaumStationClientProps) {
         </p>
       </section>
       <header>
-        <h1 id="station-titel" className="text-2xl font-semibold text-fg-1">
-          {station.titel}
-        </h1>
+        <div className="flex flex-wrap items-center gap-2">
+          <h1 id="station-titel" className="text-2xl font-semibold text-fg-1">
+            {station.titel}
+          </h1>
+          <StationVisitedBadge slug={station.slug} validSlugs={validSlugs} />
+        </div>
         <p className="mt-4 whitespace-pre-wrap text-fg-2 leading-relaxed">
           {station.beschreibung}
         </p>

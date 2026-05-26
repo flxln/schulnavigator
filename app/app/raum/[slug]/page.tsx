@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { RaumStationClient } from '@/components/raum-station-client'
-import { getAllSlugs, getStationBySlug } from '@/lib/stations'
+import { StationVisitRecorder } from '@/components/station-visit-recorder'
+import { getAllSlugs, getAllStations, getStationBySlug } from '@/lib/stations'
 
 type PageProps = {
   params: Promise<{ slug: string }>
@@ -35,12 +36,15 @@ export default async function RaumPage({ params }: PageProps) {
     notFound()
   }
 
+  const validSlugs = getAllStations().map((s) => s.slug)
+
   return (
     <main
       className="mx-auto flex min-h-full max-w-lg flex-col gap-6 px-4 py-8"
       data-puzzle-segment={station.puzzleSegmentId}
     >
-      <RaumStationClient station={station} />
+      <StationVisitRecorder slug={slug} validSlugs={validSlugs} />
+      <RaumStationClient station={station} validSlugs={validSlugs} />
     </main>
   )
 }

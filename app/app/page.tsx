@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { cookies } from 'next/headers'
-import { HubProgress } from '@/components/schoolhouse/hub-progress'
-import { SchoolhouseHub } from '@/components/schoolhouse/schoolhouse-hub'
+import { HubWithProgress } from '@/components/schoolhouse/hub-with-progress'
 import { ACCESS_COOKIE, validateToken } from '@/lib/access-tokens'
 import { buildSchoolhouseSegments } from '@/lib/schoolhouse-segments'
 import { getAllStations } from '@/lib/stations'
@@ -18,7 +17,9 @@ export default async function Home() {
   const access = validateToken(token)
   const mode = access?.mode ?? 'heft'
 
-  const segments = buildSchoolhouseSegments(getAllStations())
+  const stations = getAllStations()
+  const segments = buildSchoolhouseSegments(stations)
+  const validSlugs = stations.map((s) => s.slug)
 
   return (
     <main className="mx-auto flex min-h-full max-w-lg flex-col gap-6 overflow-x-hidden px-4 py-8 pb-[max(1rem,env(safe-area-inset-bottom))]">
@@ -28,11 +29,14 @@ export default async function Home() {
           Wähle eine Station im Schulhaus oder scanne den QR-Code an der Tür.
         </p>
       </header>
-      <HubProgress visited={0} total={11} />
       <h2 id="hub-schoolhouse-title" className="sr-only">
         Stationen im Schulhaus
       </h2>
-      <SchoolhouseHub segments={segments} mode={mode} />
+      <HubWithProgress
+        mode={mode}
+        segments={segments}
+        validSlugs={validSlugs}
+      />
     </main>
   )
 }

@@ -82,17 +82,18 @@ Spezifikation: [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
 
 ## #21 — Stempel-System + Puzzle-Freischaltung
 
+**GitHub:** https://github.com/flxln/schulnavigator/issues/21 — **umgesetzt** (2026-05-26)
+
 **Labels:** `tech`  
 **Assignee:** Felix
 
-- `localStorage` Key z. B. `visitedSlugs: string[]` — getrennt vom **Access-Token** ([ADR-005](../adr/005-zugangskontrolle-token.md))
-- **Voraussetzung Phase 1 (#14):** Schulhaus-Hub mit festen Segment-IDs (`puzzleSegmentId` in JSON, Layout in `lib/schoolhouse-layout.ts`) — hier Freischaltung und Fortschritt anbinden
-- Markierung bei **Raum-QR-Scan** (In-App-Scanner oder gültiger Besuch von `/raum/[slug]`)
-- **Modus `fest`:** freigeschaltetes Puzzle-Segment auf Startseite; Segment klickbar → `/raum/[slug]`; gesperrte Segmente: Hinweis „QR an der Tür scannen“
-- **Modus `heft`:** Stempel optional; alle Stationen von Start aus klickbar
-- Fortschritt: „7 von 11 Stationen“
-- Häkchen auf Stationsseite wenn besucht
-- Cache-Löschen setzt Stempel zurück — akzeptabel
+- [x] `localStorage` Key `sn_visited_slugs` (JSON-Array Slugs) — getrennt vom **Access-Token** ([ADR-005](../adr/005-zugangskontrolle-token.md)); Logik in `lib/visited-stations.ts`, Hook `hooks/use-visited-stations.ts`
+- [x] Besuch markieren auf `/raum/[slug]` via `components/station-visit-recorder.tsx` (Scanner-Navigation und System-Kamera-Deeplink)
+- [x] **Modus `fest`:** freigeschaltete Puzzle-Segmente nach Besuch; Hub-Platzhalter bis Hydration (kein „alles gesperrt“-Flash)
+- [x] **Modus `heft`:** alle Stationen klickbar; Fortschritt trotzdem sichtbar
+- [x] Fortschritt „n von 11“ (`HubWithProgress`, `total = segments.length`)
+- [x] Badge „Besucht“ auf Stationsseite (`station-visited-badge.tsx`)
+- [x] Cache-Löschen setzt Stempel zurück — akzeptabel
 
 ---
 

@@ -163,6 +163,14 @@ Die App setzt **`robots.txt`** (`Disallow: /`) und **`noindex`** im Root-Layout 
 
 **Cookie zurücksetzen:** DevTools → Application → Cookies löschen, oder privates Fenster.
 
+### Besuchs-Stempel (Issue #21)
+
+- **Speicher:** `localStorage` Key `sn_visited_slugs` — JSON-Array gültiger Slugs; **nicht** mit Cookie `sn_access` verwechseln.
+- **Logik:** [`app/lib/visited-stations.ts`](../app/lib/visited-stations.ts), Freischaltung [`app/lib/hub-mode.ts`](../app/lib/hub-mode.ts) (`fest` = nur besuchte Segmente, `heft` = alle).
+- **Markierung:** [`app/components/station-visit-recorder.tsx`](../app/components/station-visit-recorder.tsx) auf jeder `/raum/[slug]`-Seite (einmal pro Mount); Scanner schreibt nicht selbst.
+- **Hub:** [`app/components/schoolhouse/hub-with-progress.tsx`](../app/components/schoolhouse/hub-with-progress.tsx) — ein Hook, Re-Read bei `storage`, `sn:visited`, `pageshow`, `visibilitychange`.
+- **Zurücksetzen:** DevTools → Application → Local Storage → `sn_visited_slugs` löschen.
+
 ---
 
 ## Coolify — Schulnavigator (Issue #16)
