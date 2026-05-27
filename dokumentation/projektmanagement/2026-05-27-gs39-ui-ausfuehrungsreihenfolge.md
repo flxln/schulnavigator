@@ -74,13 +74,13 @@ Nur Doku, kein App-Code.
 
 | Schritt | Plan | Abschnitt | Was |
 |---------|------|-----------|-----|
-| 24 | Plan 1 | Phase 3.3 | `scan/page.tsx` + `qr-scanner.tsx`: Chrome, Rahmen, Copy — keine Funktionsänderung |
-| 25 | Plan 1 | Phase 3.4 | `raum-station-client.tsx`: Layout aus `StationScreen` um bestehenden `RaumViewer` — Gyro unverändert |
-| 26 | Plan 1 | Phase 3.6 — L6 | `SparkleBurst` bei 11/11 mit `sn_sparkle_done`-Guard in `localStorage` |
-| 27 | Plan 1 | Phase 4 | `stations.json` optional um `schoolhouse`-Feld ergänzen (oder nur in Map belassen) |
-| 28 | Plan 1 | Phase 4 — Doku | `architektur.md`: Hub isometrisch; `lokal-testen-und-anschauen.md`: `/stationen` ergänzen |
-| 29 | Plan 2 | Schritt 5 — QA | Checkliste: Build, Tests, `curl /stationen` ohne Cookie → 302, Touch iOS ≥ 44px, Tastatur-Navigation, SVG-Fonts auf Gerät, SparkleBurst-Guard, `highlightSlug`-Flow |
-| 30 | Plan 2 | Schritt 5 — Abnahme | Slug↔Fenster-Tabelle + `ground-mid`-Zuordnung mit Auftraggeber durchgehen |
+| 24 | Plan 1 | Phase 3.3 | `scan/page.tsx` + `qr-scanner.tsx`: Chrome, Rahmen, Copy — keine Funktionsänderung — **erledigt 2026-05-27** (`scan-screen.tsx`, `chrome`-Prop) |
+| 25 | Plan 1 | Phase 3.4 | `raum-station-client.tsx`: Layout aus `StationScreen` um bestehenden `RaumViewer` — Gyro unverändert — **erledigt 2026-05-27** (`layout="hero"`) |
+| 26 | Plan 1 | Phase 3.6 — L6 | `SparkleBurst` bei 11/11 mit `sn_sparkle_done`-Guard in `localStorage` — **erledigt 2026-05-27** (`lib/sparkle-done.ts`) |
+| 27 | Plan 1 | Phase 4 | `stations.json` optional um `schoolhouse`-Feld ergänzen (oder nur in Map belassen) — **entfallen** (nur `schoolhouse-isometric-map.ts`) |
+| 28 | Plan 1 | Phase 4 — Doku | `architektur.md`: Hub isometrisch; `lokal-testen-und-anschauen.md`: `/stationen` ergänzen — **erledigt 2026-05-27** |
+| 29 | Plan 2 | Schritt 5 — QA | Checkliste: Build, Tests, `curl /stationen` ohne Cookie → 302, Touch iOS ≥ 44px, Tastatur-Navigation, SVG-Fonts auf Gerät, SparkleBurst-Guard, `highlightSlug`-Flow — **Checkliste in** `lokal-testen-und-anschauen.md` |
+| 30 | Plan 2 | Schritt 5 — Abnahme | Slug↔Fenster-Tabelle + `ground-mid`-Zuordnung mit Auftraggeber durchgehen — **offen** (L13) |
 
 ---
 
@@ -92,7 +92,7 @@ Nur Doku, kein App-Code.
 | PR2 | Assets, Fonts, `sn-theme`, Primitives | 1–2 | L9, L11 |
 | PR3 | Isometrischer Hub (atomar) | 2–3 | L2, L3, L4, L7, L8, L10 |
 | PR4 | Home, Eintritt, `/stationen` | 1–2 | — (L1, L5 erledigt) |
-| PR5 | Raum, Scan, Sparkle, Doku | 1,5–2 | L6 |
+| PR5 | Raum, Scan, Sparkle, Doku | 1,5–2 | L13 (Abnahme); L6 erledigt |
 | **Σ** | | **6–9** | |
 
 Demo-Termin 10.06.: PR1–PR4 müssen vorher merged sein. PR3 ist der kritischste — frühzeitig beginnen.

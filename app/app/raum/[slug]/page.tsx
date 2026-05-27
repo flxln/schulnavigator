@@ -1,8 +1,13 @@
 import type { Metadata } from 'next'
+import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { RaumStationClient } from '@/components/raum-station-client'
 import { StationVisitRecorder } from '@/components/station-visit-recorder'
-import { getIsometricMapping } from '@/lib/schoolhouse-isometric-map'
+import { ACCESS_COOKIE, validateToken } from '@/lib/access-tokens'
+import {
+  buildIsometricHubStations,
+  getIsometricMapping,
+} from '@/lib/schoolhouse-isometric-map'
 import { getAllSlugs, getAllStations, getStationBySlug } from '@/lib/stations'
 
 type PageProps = {
@@ -37,16 +42,34 @@ export default async function RaumPage({ params }: PageProps) {
     notFound()
   }
 
-  const validSlugs = getAllStations().map((s) => s.slug)
+  const cookieStore = await cookies()
+  const token = cookieStore.get(ACCESS_COOKIE)?.value
+  const access = validateToken(token)
+  const mode = access?.mode ?? 'heft'
+
+  const stations = getAllStations()
+  const validSlugs = stations.map((s) => s.slug)
+  const hubStations = buildIsometricHubStations(stations)
+  const hubStation = hubStations.find((s) => s.slug === slug)
+  if (!hubStation) {
+    notFound()
+  }
+
   const { room } = getIsometricMapping(slug)
 
   return (
     <main
-      className="mx-auto flex min-h-full max-w-lg flex-col gap-6 px-4 py-8"
+      className="mx-auto min-h-[100dvh] max-w-lg overflow-x-hidden"
       data-schoolhouse-room={room}
     >
       <StationVisitRecorder slug={slug} validSlugs={validSlugs} />
-      <RaumStationClient station={station} validSlugs={validSlugs} />
+      <RaumStationClient
+        station={station}
+        validSlugs={validSlugs}
+        hubStation={hubStation}
+        hubStations={hubStations}
+        mode={mode}
+      />
     </main>
   )
 }
