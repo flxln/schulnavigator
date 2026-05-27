@@ -14,6 +14,7 @@ function isPublicAssetPath(pathname: string): boolean {
     pathname.startsWith('/stations/') ||
     pathname.startsWith('/demo/') ||
     pathname.startsWith('/qr/') ||
+    pathname.startsWith('/brand/') ||
     pathname === '/favicon.ico' ||
     pathname === '/robots.txt' ||
     pathname === '/api/health'
@@ -74,9 +75,10 @@ export const ACCESS_PROTECTED_MATCHER = [
   '/raum/:path*',
   '/scan',
   '/eintritt',
+  '/stationen',
 ] as const
 
 // Next.js erfordert statisch parsebare matcher-Literale (kein Spread aus Konstante).
 export const config = {
-  matcher: ['/', '/raum/:path*', '/scan', '/eintritt'],
+  matcher: ['/', '/raum/:path*', '/scan', '/eintritt', '/stationen'],
 }

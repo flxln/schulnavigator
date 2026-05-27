@@ -52,7 +52,7 @@ export function RaumStationClient({
 
   return (
     <>
-      <StationBackLink />
+      <StationBackLink stationSlug={station.slug} />
       <section
         role="region"
         aria-labelledby="station-titel"

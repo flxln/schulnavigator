@@ -62,11 +62,11 @@ Nur Doku, kein App-Code.
 
 | Schritt | Plan | Abschnitt | Was |
 |---------|------|-----------|-----|
-| 19 | Plan 1 | Phase 3.1 | `home-screen.tsx`: Brand-Strip, Hero, `IsometricSchoolhouse`, `Gs39Progress`, Scan-CTA, Ribbon |
-| 20 | Plan 1 | Phase 3.2 | `eintritt/page.tsx`: Brush-Headline, Karte, Fehlerkarten — keine Demo-Buttons |
-| 21 | Plan 1 | Phase 3.5 | `app/stationen/page.tsx` neu: Station-Cards mit Lock/Visited |
-| 22 | Plan 1 | Phase 3.5 — L1 | `middleware.ts:82`: `'/stationen'` zum `config.matcher` hinzufügen |
-| 23 | Plan 1 | Phase 3.4 — L5 | `highlightSlug`-Mechanismus: „Zurück"-Button mit `router.push('/?highlight='+slug)`; `page.tsx` liest `searchParams.highlight`; danach `router.replace('/')` |
+| 19 | Plan 1 | Phase 3.1 | `home-screen.tsx`: Brand-Strip, Hero, `IsometricSchoolhouse`, `Gs39Progress`, Scan-CTA, Ribbon — **erledigt 2026-05-27** |
+| 20 | Plan 1 | Phase 3.2 | `eintritt/page.tsx`: Brush-Headline, Karte, Fehlerkarten — keine Demo-Buttons — **erledigt 2026-05-27** (`eintritt-screen.tsx`) |
+| 21 | Plan 1 | Phase 3.5 | `app/stationen/page.tsx` neu: Station-Cards mit Lock/Visited — **erledigt 2026-05-27** (`stationen-screen.tsx`) |
+| 22 | Plan 1 | Phase 3.5 — L1 | `middleware.ts:82`: `'/stationen'` zum `config.matcher` hinzufügen — **erledigt 2026-05-27** |
+| 23 | Plan 1 | Phase 3.4 — L5 | `highlightSlug`-Mechanismus: „Zurück"-Button mit `/?highlight=`; `page.tsx` liest `searchParams.highlight`; danach `router.replace('/')` — **erledigt 2026-05-27** (`highlight-slug-sync.tsx`, `station-back-link.tsx`) |
 
 ---
 
@@ -91,7 +91,7 @@ Nur Doku, kein App-Code.
 | PR1 | Governance: ADR-009, Doku, Issues | 0,5 | L13 (ground-mid vorab klären) |
 | PR2 | Assets, Fonts, `sn-theme`, Primitives | 1–2 | L9, L11 |
 | PR3 | Isometrischer Hub (atomar) | 2–3 | L2, L3, L4, L7, L8, L10 |
-| PR4 | Home, Eintritt, `/stationen` | 1–2 | L1, L5 |
+| PR4 | Home, Eintritt, `/stationen` | 1–2 | — (L1, L5 erledigt) |
 | PR5 | Raum, Scan, Sparkle, Doku | 1,5–2 | L6 |
 | **Σ** | | **6–9** | |
 

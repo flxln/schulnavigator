@@ -11,6 +11,7 @@ function middlewareRunsFor(pathname: string): boolean {
     pathname === '/' ||
     pathname === '/scan' ||
     pathname === '/eintritt' ||
+    pathname === '/stationen' ||
     pathname.startsWith('/raum/')
   )
 }
@@ -29,6 +30,12 @@ describe('middleware', () => {
 
   it('leitet ohne Cookie von / nach /eintritt um', () => {
     const res = middleware(req('/'))
+    expect(res.status).toBe(307)
+    expect(res.headers.get('location')).toBe(`${BASE}/eintritt`)
+  })
+
+  it('leitet ohne Cookie von /stationen nach /eintritt um', () => {
+    const res = middleware(req('/stationen'))
     expect(res.status).toBe(307)
     expect(res.headers.get('location')).toBe(`${BASE}/eintritt`)
   })
