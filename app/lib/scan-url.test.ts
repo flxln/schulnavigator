@@ -21,6 +21,13 @@ describe('parseRoomScan', () => {
     ).toBeNull()
   })
 
+  it('akzeptiert gedruckte Produktions-Origin als trusted origin', () => {
+    const devOrigin = 'https://192.168.0.136:3000'
+    expect(
+      parseRoomScan(`${ORIGIN}/raum/musik`, devOrigin, SLUGS, [ORIGIN]),
+    ).toBe('musik')
+  })
+
   it('lehnt unbekannten Slug ab', () => {
     expect(parseRoomScan(`${ORIGIN}/raum/xyz`, ORIGIN, SLUGS)).toBeNull()
   })
@@ -67,6 +74,13 @@ describe('parseEntryScan', () => {
     expect(
       parseEntryScan('https://evil.example/eintritt?t=fest-2026', ORIGIN),
     ).toBeNull()
+  })
+
+  it('akzeptiert gedruckte Produktions-Origin als trusted origin', () => {
+    const devOrigin = 'https://192.168.0.136:3000'
+    expect(
+      parseEntryScan(`${ORIGIN}/eintritt?t=fest-2026`, devOrigin, [ORIGIN]),
+    ).toBe('fest-2026')
   })
 
   it('lehnt Raum-URL ab', () => {

@@ -1,4 +1,14 @@
-import type { Hotspot, Medium, Station, MediumTyp } from '@/lib/types'
+import type {
+  Dialog,
+  DialogFigure,
+  DialogGruppe,
+  DialogRolle,
+  DialogSegment,
+  Hotspot,
+  Medium,
+  Station,
+  MediumTyp,
+} from '@/lib/types'
 import {
   buildIsometricHubStations,
   ISOMETRIC_SLUG_MAP,
@@ -7,6 +17,9 @@ import {
 const EXPECTED_STATION_COUNT = Object.keys(ISOMETRIC_SLUG_MAP).length
 
 const MEDIUM_TYPEN: readonly MediumTyp[] = ['audio', 'video', 'foto', 'text']
+
+const DIALOG_FIGUREN: readonly DialogFigure[] = ['frieda', 'otto']
+const DIALOG_ROLLEN: readonly DialogRolle[] = ['frieda', 'otto', 'beide']
 
 const SLUG_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/
 
@@ -85,6 +98,119 @@ function validateHotspot(h: unknown, ctx: string): Hotspot {
   return h as unknown as Hotspot
 }
 
+function isDialogFigure(v: unknown): v is DialogFigure {
+  return typeof v === 'string' && (DIALOG_FIGUREN as readonly string[]).includes(v)
+}
+
+function isDialogRolle(v: unknown): v is DialogRolle {
+  return typeof v === 'string' && (DIALOG_ROLLEN as readonly string[]).includes(v)
+}
+
+function validateDialogSegment(
+  raw: unknown,
+  ctx: string,
+  gruppenIds: Set<string>,
+): DialogSegment {
+  assert(isRecord(raw), `${ctx}: Segment ist kein Objekt`)
+  assert(
+    typeof raw.id === 'string' && raw.id.length > 0,
+    `${ctx}: segment.id fehlt`,
+  )
+  assert(isDialogRolle(raw.rolle), `${ctx}: segment.rolle ungültig`)
+  assert(
+    typeof raw.quelle === 'string' && raw.quelle.startsWith('/'),
+    `${ctx}: segment.quelle muss mit / beginnen`,
+  )
+  assert(typeof raw.text === 'string', `${ctx}: segment.text fehlt`)
+  if (raw.gruppe !== undefined) {
+    assert(typeof raw.gruppe === 'string', `${ctx}: gruppe muss string sein`)
+    assert(
+      gruppenIds.has(raw.gruppe),
+      `${ctx}: gruppe "${raw.gruppe}" unbekannt`,
+    )
+  }
+  return {
+    id: raw.id,
+    rolle: raw.rolle,
+    quelle: raw.quelle,
+    text: raw.text,
+    gruppe: raw.gruppe as string | undefined,
+  }
+}
+
+function validateDialog(raw: unknown, prefix: string): Dialog {
+  assert(isRecord(raw), `${prefix}: dialog ist kein Objekt`)
+  assert(Array.isArray(raw.figuren), `${prefix}: dialog.figuren muss Array sein`)
+  assert(raw.figuren.length > 0, `${prefix}: dialog.figuren ist leer`)
+  const figuren: DialogFigure[] = []
+  for (let i = 0; i < raw.figuren.length; i++) {
+    const f = raw.figuren[i]
+    assert(
+      isDialogFigure(f),
+      `${prefix}: figuren[${i}] muss frieda oder otto sein (nicht beide)`,
+    )
+    assert(
+      !figuren.includes(f),
+      `${prefix}: doppelte figur "${f}"`,
+    )
+    figuren.push(f)
+  }
+  const gruppen: DialogGruppe[] = []
+  const gruppenIds = new Set<string>()
+  if (raw.gruppen !== undefined) {
+    assert(Array.isArray(raw.gruppen), `${prefix}: gruppen muss Array sein`)
+    for (let i = 0; i < raw.gruppen.length; i++) {
+      const g = raw.gruppen[i]
+      const gctx = `${prefix}.gruppen[${i}]`
+      assert(isRecord(g), `${gctx}: Gruppe ist kein Objekt`)
+      assert(
+        typeof g.id === 'string' && g.id.length > 0,
+        `${gctx}: id fehlt`,
+      )
+      assert(
+        !gruppenIds.has(g.id),
+        `${prefix}: doppelte gruppen.id "${g.id}"`,
+      )
+      assert(typeof g.text === 'string', `${gctx}: text fehlt`)
+      gruppenIds.add(g.id)
+      gruppen.push({ id: g.id, text: g.text })
+    }
+  }
+  assert(Array.isArray(raw.segmente), `${prefix}: segmente muss Array sein`)
+  assert(raw.segmente.length > 0, `${prefix}: segmente ist leer`)
+  const segmentIds = new Set<string>()
+  const segmente: DialogSegment[] = []
+  for (let i = 0; i < raw.segmente.length; i++) {
+    const seg = validateDialogSegment(
+      raw.segmente[i],
+      `${prefix}.segmente[${i}]`,
+      gruppenIds,
+    )
+    assert(
+      !segmentIds.has(seg.id),
+      `${prefix}: doppelte segment.id "${seg.id}"`,
+    )
+    segmentIds.add(seg.id)
+    if (seg.rolle === 'beide') {
+      assert(
+        figuren.includes('frieda') && figuren.includes('otto'),
+        `${prefix}: segment "${seg.id}" rolle beide erfordert frieda und otto in figuren`,
+      )
+    } else {
+      assert(
+        figuren.includes(seg.rolle),
+        `${prefix}: segment "${seg.id}" rolle "${seg.rolle}" fehlt in figuren`,
+      )
+    }
+    segmente.push(seg)
+  }
+  return {
+    figuren,
+    segmente,
+    gruppen: gruppen.length > 0 ? gruppen : undefined,
+  }
+}
+
 function validateStation(raw: unknown, index: number): Station {
   const prefix = `stations[${index}]`
   assert(isRecord(raw), `${prefix}: Station ist kein Objekt`)
@@ -145,6 +271,10 @@ function validateStation(raw: unknown, index: number): Station {
       )
     }
   }
+  let dialog: Dialog | undefined
+  if (raw.dialog !== undefined) {
+    dialog = validateDialog(raw.dialog, prefix)
+  }
   return {
     slug: raw.slug,
     titel: raw.titel,
@@ -152,6 +282,7 @@ function validateStation(raw: unknown, index: number): Station {
     bild: raw.bild as string | undefined,
     medien,
     hotspots,
+    dialog,
   }
 }
 

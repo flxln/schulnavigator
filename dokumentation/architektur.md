@@ -53,7 +53,7 @@ Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/
 | UI | `touch-action: none` + CSS-Containment auf dem Viewer; Button **Ansicht zentrieren**; `?debug=1` für HUD |
 | Fallback | Wischen, Tap; Banner wenn Orientierung fehlt; `sessionStorage`-Merker iOS + 2s-Watchdog bei fehlenden Events |
 | Ohne `bild` | Statisches Layout + Medienliste ([ADR-006](./adr/006-raum-viewer-gyro-hotspots.md)) |
-| Demo | `/raum/musik` (2 Hotspots) — Gyro auf iPhone nur unter **HTTPS** testen |
+| Demo | `/raum/musik` (Hotspots, 4 Medientypen); `/raum/daz`, `/raum/pc-raum` (Otto/Frieda-Dialog, [ADR-010](./adr/010-dialog-cutscene-gated-audio.md)) — Gyro/Dialog auf iPhone nur unter **HTTPS**; Eintritt zuerst `/eintritt?t=fest-2026` |
 
 **Raumbilder (#17 / Content):** **Panorama** (≥ **2,5 : 1**, min. 2400 px Breite) bleibt ideal. Die App **zoomt** schmalere Bilder automatisch so, dass horizontal mindestens **`MIN_PAN_DISPLAY_RATIO` (2)** erreicht wird (`roomPanZoom`) — dabei entsteht **vertikaler Beschnitt**; Hotspot-**y** im mittleren Drittel platzieren. Konstanten: `lib/raum-viewer/constants.ts`, Geometrie: `room-pan-zoom.ts`, `clip-zone.ts`. Briefing: [`zuordnung-stationen-bilder.md`](../auftraggeber/material/stationen/zuordnung-stationen-bilder.md). **Viewport:** [`app/app/layout.tsx`](../app/app/layout.tsx) exportiert `viewport` (`device-width`, `initialScale: 1`).
 
@@ -65,6 +65,7 @@ Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/
 /scan
 /stationen
 /raum/[slug]
+/api/dialog/[slug]/[clip]
 ```
 
 - **`/`** — Startseite mit **isometrischem** Schulhaus-Hub ([ADR-009](./adr/009-hub-isometrisch.md)); Modus aus Cookie: `heft` = alle Stationen, `fest` = nur besuchte Slots klickbar (#21).
@@ -72,6 +73,7 @@ Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/
 - **`/eintritt`** — Entry-QR (`?t=…`) setzt Cookie und leitet auf `/` um; ohne gültigen Zugang Hinweis-/Fehlerseite mit **integriertem Entry-Scanner** (#57, [ADR-008](./adr/008-eintritt-in-app-scanner.md)): `parseEntryScan` prüft nur Struktur (Origin, Pfad, `t` nicht leer); Gültigkeit nur Middleware.
 - **`/scan`** — In-App-QR-Scanner für Raum-QRs (nur mit Cookie); dunkles Scan-Chrome mit gelbem Rahmen; `parseRoomScan` + Slug-Whitelist — [ADR-005](./adr/005-zugangskontrolle-token.md), [ADR-007](./adr/007-zugangskontrolle-cookie.md).
 - **Fortschritt 11/11:** `SparkleBurst` auf der Startseite einmalig (`sn_sparkle_done` in `localStorage`, L6).
+- **`/api/dialog/[slug]/[clip]`** — Dialog-Audio aus `content/dialog-audio/`; **403** ohne Cookie; **206** Range ([ADR-010](./adr/010-dialog-cutscene-gated-audio.md), #69).
 
 **Zugang (Issue #23, Entry-Scanner #57):** Token-Liste [`app/lib/access-tokens.ts`](../app/lib/access-tokens.ts) (sync mit [`app/scripts/qr-config.mjs`](../app/scripts/qr-config.mjs)); Middleware [`app/middleware.ts`](../app/middleware.ts) setzt/prüft Cookie `sn_access`. Entry-Treffer im Scanner: `location.replace` zu `/eintritt?t=…` (kein Token im Client-Bundle). Ausnahmen: `/api/health`, `/_next/*`, `favicon.ico`, `robots.txt`, `/eintritt` ohne `?t=`.
 
