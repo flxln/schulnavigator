@@ -1,7 +1,8 @@
 /*
  * GS39 Design Tokens — 39. Grundschule Dresden (Jubiläum 2026)
- * source: auftraggeber/material/UI-Vorschläge/colors_and_type.css (:root Zeilen 9–128)
- * synced: 2026-05-21 — npm run validate:tokens
+ * source: auftraggeber/material/UI-Vorschläge/colors_and_type.css (:root)
+ *         auftraggeber/Virtueller Schulrundgang/assets/colors_and_type.css (gleicher :root)
+ * synced: 2026-05-27 — npm run validate:tokens (Phase 0 GS39 UI)
  * Abweichung zur Quelle: nur --font-ui (next/font Variable --font-nunito-ui)
  */
 
@@ -55,8 +56,9 @@
   --error: var(--brand-red);
 
   /* ---------- TYPE — FAMILIES ---------- */
-  --font-display: 'Caveat Brush', 'Permanent Marker', system-ui, sans-serif;
-  --font-script: 'Caveat', 'Bradley Hand', cursive;
+  --font-display: var(--font-caveat-brush), 'Caveat Brush', 'Permanent Marker',
+    system-ui, sans-serif;
+  --font-script: var(--font-caveat), 'Caveat', 'Bradley Hand', cursive;
   --font-ui:
     var(--font-nunito-ui), 'Nunito', system-ui, -apple-system, 'Segoe UI',
     sans-serif;
