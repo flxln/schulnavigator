@@ -5,72 +5,63 @@
       "titel": "Klassenzimmer",
       "beschreibung": "Hallo und willkommen in unserem Klassenzimmer! Hier lernen wir jeden Tag spannende Sachen und manchmal sogar freiwillig. Unsere Stifte machen gern Urlaub unter den Tischen, aber wir finden sie meistens wieder. Viel Spaß beim Rundgang!",
       "bild": "/stations/klassenzimmer.jpg",
-      "medien": [],
-      "puzzleSegmentId": "seg-01"
+      "medien": []
     },
     {
       "slug": "daz",
       "titel": "DaZ-Zimmer",
       "beschreibung": "Hi! Im DaZ-Zimmer lernen Kinder aus vielen Ländern Deutsch. Wir üben Wörter, Sätze und manchmal auch, wie man \"Schmetterling\" ohne Knoten in der Zunge sagt. Schön, dass Sie vorbeischauen!",
       "bild": "/stations/daz.jpg",
-      "medien": [],
-      "puzzleSegmentId": "seg-02"
+      "medien": []
     },
     {
       "slug": "pc-raum",
       "titel": "PC-Raum",
       "beschreibung": "Willkommen im PC-Raum! Hier tippen wir, klicken wir und lernen, wie Computer funktionieren. Und keine Sorge: wir wissen, welcher Knopf der Aus-Knopf ist – meistens jedenfalls.",
       "bild": "/stations/pc-raum.jpg",
-      "medien": [],
-      "puzzleSegmentId": "seg-03"
+      "medien": []
     },
     {
       "slug": "werken",
       "titel": "Werkenzimmer",
       "beschreibung": "Hallo! Im Werkenzimmer wird gesägt, gehämmert und gebaut. Manchmal sieht es hier aus wie in einer Erfinderwerkstatt und manchmal wie nach einem kleinen Wirbelsturm. Aber am Ende entsteht immer etwas Cooles!",
       "bild": "/stations/werken.jpg",
-      "medien": [],
-      "puzzleSegmentId": "seg-04"
+      "medien": []
     },
     {
       "slug": "turnhalle",
       "titel": "Turnhalle",
       "beschreibung": "Willkommen in der Turnhalle! Hier rennen wir, springen wir und spielen Spiele, bei denen niemand weiß, wer eigentlich gewonnen hat, aber alle hatten Spaß. Viel Bewegung beim Zuhören!",
       "bild": "/stations/turnhalle.jpg",
-      "medien": [],
-      "puzzleSegmentId": "seg-05"
+      "medien": []
     },
     {
       "slug": "speiseraum",
       "titel": "Speiseraum",
       "beschreibung": "Hallo! Das ist unser Speiseraum. Hier essen wir zusammen, lachen viel und manchmal diskutieren wir, ob Brokkoli wirklich Gemüse ist. Wir finden: ja, aber lecker ist er trotzdem!",
       "bild": "/stations/speiseraum.jpg",
-      "medien": [],
-      "puzzleSegmentId": "seg-06"
+      "medien": []
     },
     {
       "slug": "kunst",
       "titel": "Kunstzimmer",
       "beschreibung": "Willkommen im Kunstzimmer! Hier malen wir, basteln wir und kleben manchmal aus Versehen unsere Finger zusammen. Aber keine Sorge – die Kunstwerke sind trotzdem wunderschön.",
       "bild": "/stations/kunst.jpg",
-      "medien": [],
-      "puzzleSegmentId": "seg-07"
+      "medien": []
     },
     {
       "slug": "lesewelt",
       "titel": "Lesewelt",
       "beschreibung": "Psst … willkommen in der Lesewelt! Hier tauchen wir in Geschichten ein, reisen in andere Länder und treffen Drachen, Piraten und sprechende Tiere. Lesen ist wie Kino im Kopf, nur ohne Popcorn.",
       "bild": "/stations/lesewelt.jpg",
-      "medien": [],
-      "puzzleSegmentId": "seg-08"
+      "medien": []
     },
     {
       "slug": "hort",
       "titel": "Hortzimmer",
       "beschreibung": "Hallo! Im Hortzimmer spielen wir, basteln wir und machen Hausaufgaben – manchmal sogar freiwillig. Hier ist es immer gemütlich und es gibt fast immer jemanden zum Quatschen.",
       "bild": "/stations/hort.jpg",
-      "medien": [],
-      "puzzleSegmentId": "seg-09"
+      "medien": []
     },
     {
       "slug": "musik",
@@ -118,8 +109,7 @@
           "y": 0.5,
           "mediumId": "demo-audio"
         }
-      ],
-      "puzzleSegmentId": "seg-10"
+      ]
     },
     {
       "slug": "schulsozialarbeit",
@@ -131,8 +121,7 @@
           "typ": "text",
           "quelle": "/demo/ssa-hinweis.txt"
         }
-      ],
-      "puzzleSegmentId": "seg-11"
+      ]
     }
   ]
 }

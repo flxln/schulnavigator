@@ -5,19 +5,20 @@ import type { EntryMode } from '@/lib/access-tokens'
 import { HubProgress } from '@/components/schoolhouse/hub-progress'
 import { SchoolhouseHub } from '@/components/schoolhouse/schoolhouse-hub'
 import { useVisitedStations } from '@/hooks/use-visited-stations'
-import { getUnlockedSegmentIdsForMode } from '@/lib/hub-mode'
-import type { SchoolhouseSegment } from '@/lib/schoolhouse-segments'
+import { getUnlockedSlugsForMode } from '@/lib/hub-mode'
+import type { IsometricHubStation } from '@/lib/schoolhouse-isometric-map'
 
 type HubWithProgressProps = {
   mode: EntryMode
-  segments: readonly SchoolhouseSegment[]
+  hubStations: readonly IsometricHubStation[]
   validSlugs: readonly string[]
+  highlightSlug?: string
 }
 
 function HubLoadingPlaceholder() {
   return (
     <div
-      className="relative aspect-[2/3] min-h-[50vh] max-h-[85vh] w-full rounded-[var(--r-md)] bg-bg-3"
+      className="relative aspect-[800/520] min-h-[40vh] w-full rounded-[var(--r-md)] bg-bg-3"
       aria-busy="true"
       aria-label="Fortschritt wird geladen"
     />
@@ -26,28 +27,38 @@ function HubLoadingPlaceholder() {
 
 export function HubWithProgress({
   mode,
-  segments,
+  hubStations,
   validSlugs,
+  highlightSlug,
 }: HubWithProgressProps) {
   const { visitedSlugs, visitedCount, isHydrated } =
     useVisitedStations(validSlugs)
 
-  const unlockedSegmentIds = useMemo(
-    () => getUnlockedSegmentIdsForMode(mode, segments, visitedSlugs),
-    [mode, segments, visitedSlugs],
+  const stationSlugs = useMemo(
+    () => hubStations.map((s) => s.slug),
+    [hubStations],
+  )
+
+  const unlockedSlugs = useMemo(
+    () => getUnlockedSlugsForMode(mode, stationSlugs, visitedSlugs),
+    [mode, stationSlugs, visitedSlugs],
   )
 
   const showPlaceholder = !isHydrated && mode === 'fest'
 
   return (
     <>
-      <HubProgress visited={visitedCount} total={segments.length} />
+      <HubProgress visited={visitedCount} total={hubStations.length} />
       {showPlaceholder ? (
         <HubLoadingPlaceholder />
       ) : (
         <SchoolhouseHub
-          segments={segments}
-          unlockedSegmentIds={unlockedSegmentIds}
+          hubStations={hubStations}
+          unlockedSlugs={unlockedSlugs}
+          visitedSlugs={visitedSlugs}
+          mode={mode}
+          isHydrated={isHydrated}
+          highlightSlug={highlightSlug}
         />
       )}
     </>
