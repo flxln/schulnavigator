@@ -5,8 +5,13 @@ import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { parseEntryScan, parseRoomScan } from '@/lib/scan-url'
 
 type QrScannerProps =
-  | { mode: 'room'; origin: string; slugs: readonly string[] }
-  | { mode: 'entry'; origin: string }
+  | {
+      mode: 'room'
+      origin: string
+      slugs: readonly string[]
+      chrome?: boolean
+    }
+  | { mode: 'entry'; origin: string; chrome?: boolean }
 
 type ScannerState = 'idle' | 'starting' | 'scanning' | 'error' | 'pending'
 
@@ -15,6 +20,19 @@ const ENTRY_WRONG_QR =
 const ROOM_SCAN_ENTRY_QR =
   'Das ist der Eintritts-QR — bitte einen Raum-QR an der Tür scannen.'
 const ROOM_SCAN_WRONG_QR = 'Bitte einen Raum-QR an der Tür scannen.'
+
+function ScanFrameOverlay({ active }: { active: boolean }) {
+  if (!active) return null
+  return (
+    <>
+      <span className="sn-scan-corner sn-scan-corner--tl" aria-hidden />
+      <span className="sn-scan-corner sn-scan-corner--tr" aria-hidden />
+      <span className="sn-scan-corner sn-scan-corner--bl" aria-hidden />
+      <span className="sn-scan-corner sn-scan-corner--br" aria-hidden />
+      <span className="sn-scan-line" aria-hidden />
+    </>
+  )
+}
 
 export function QrScanner(props: QrScannerProps) {
   const router = useRouter()
@@ -25,6 +43,7 @@ export function QrScanner(props: QrScannerProps) {
   const [statusMessage, setStatusMessage] = useState<string | null>(null)
 
   const isEntry = props.mode === 'entry'
+  const chrome = props.chrome === true
 
   const stopScanner = useCallback(async () => {
     const instance = scannerRef.current
@@ -110,52 +129,89 @@ export function QrScanner(props: QrScannerProps) {
     : 'Tipp: Du kannst Raum-QR-Codes auch mit der System-Kamera scannen — der Zugang bleibt im Browser erhalten.'
 
   const showCameraRegion = state !== 'pending'
+  const showFrame = chrome && showCameraRegion
+
+  const primaryBtnClass = chrome
+    ? 'sn-btn sn-btn--scan-dark sn-btn--block'
+    : 'min-h-11 rounded-[var(--r-md)] bg-accent px-4 py-2 text-sm font-semibold text-fg-on-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
+
+  const secondaryBtnClass = chrome
+    ? 'sn-btn sn-btn--outline sn-btn--block !border-white/40 !text-white hover:!bg-white/10'
+    : 'min-h-11 rounded-[var(--r-md)] border border-border-1 bg-bg-2 px-4 py-2 text-sm font-medium text-fg-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
+
+  const statusClass = chrome
+    ? 'rounded-[var(--r-md)] bg-white/10 px-3 py-2 text-center text-sm text-white'
+    : 'rounded-[var(--r-md)] bg-bg-3 px-3 py-2 text-sm text-fg-1'
+
+  const cameraNode = showCameraRegion ? (
+    <div
+      ref={containerRef}
+      id={regionId}
+      className={
+        chrome
+          ? 'sn-scan-camera'
+          : 'min-h-[240px] w-full overflow-hidden rounded-[var(--r-md)] bg-bg-dark'
+      }
+      aria-hidden={state === 'idle'}
+    />
+  ) : null
 
   return (
-    <div className="flex flex-col gap-4">
-      {showCameraRegion ? (
-        <div
-          ref={containerRef}
-          id={regionId}
-          className="min-h-[240px] w-full overflow-hidden rounded-[var(--r-md)] bg-bg-dark"
-          aria-hidden={state === 'idle'}
-        />
-      ) : null}
+    <div
+      className={
+        chrome ? 'sn-scan-chrome flex flex-col items-center gap-4' : 'flex flex-col gap-4'
+      }
+    >
+      {showFrame ? (
+        <div className="sn-scan-frame">
+          {cameraNode}
+          <ScanFrameOverlay active={state === 'scanning'} />
+        </div>
+      ) : (
+        cameraNode
+      )}
+
       {state === 'pending' ? (
-        <p className="text-sm text-fg-2" role="status" aria-live="polite">
+        <p
+          className={chrome ? 'text-sm text-white/80' : 'text-sm text-fg-2'}
+          role="status"
+          aria-live="polite"
+        >
           Zugang wird geprüft …
         </p>
       ) : state === 'idle' || state === 'error' ? (
         <button
           type="button"
           onClick={() => void startScanner()}
-          className="min-h-11 rounded-[var(--r-md)] bg-accent px-4 py-2 text-sm font-semibold text-fg-on-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className={primaryBtnClass}
         >
           {startLabel}
         </button>
       ) : state === 'starting' ? (
-        <p className="text-sm text-fg-2" role="status" aria-live="polite">
+        <p
+          className={chrome ? 'text-sm text-white/80' : 'text-sm text-fg-2'}
+          role="status"
+          aria-live="polite"
+        >
           Kamera wird gestartet …
         </p>
       ) : (
         <button
           type="button"
           onClick={() => void stopScanner().then(() => setState('idle'))}
-          className="min-h-11 rounded-[var(--r-md)] border border-border-1 bg-bg-2 px-4 py-2 text-sm font-medium text-fg-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className={secondaryBtnClass}
         >
           Scanner beenden
         </button>
       )}
+
       {statusMessage && state !== 'pending' ? (
-        <p
-          className="rounded-[var(--r-md)] bg-bg-3 px-3 py-2 text-sm text-fg-1"
-          role="status"
-          aria-live="polite"
-        >
+        <p className={statusClass} role="status" aria-live="polite">
           {statusMessage}
         </p>
       ) : null}
-      {state !== 'pending' ? (
+
+      {!chrome && state !== 'pending' ? (
         <p className="text-xs text-fg-3">{tipLine}</p>
       ) : null}
     </div>

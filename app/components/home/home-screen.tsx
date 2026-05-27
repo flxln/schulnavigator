@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { List, QrCode } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { HighlightSlugSync } from '@/components/home/highlight-slug-sync'
@@ -12,7 +12,9 @@ import {
   Gs39Card,
   Gs39Chip,
   Gs39Progress,
+  SparkleBurst,
 } from '@/components/ui'
+import { isSparkleDone, markSparkleDone } from '@/lib/sparkle-done'
 import type { EntryMode } from '@/lib/access-tokens'
 import { useVisitedStations } from '@/hooks/use-visited-stations'
 import { getUnlockedSlugsForMode, isHubFullyLocked } from '@/lib/hub-mode'
@@ -43,6 +45,15 @@ export function HomeScreen({
   const router = useRouter()
   const { visitedSlugs, visitedCount, isHydrated } =
     useVisitedStations(validSlugs)
+  const [sparkleSuppressed, setSparkleSuppressed] = useState(() =>
+    typeof window !== 'undefined' ? isSparkleDone() : true,
+  )
+
+  const showSparkle =
+    isHydrated &&
+    !sparkleSuppressed &&
+    hubStations.length > 0 &&
+    visitedCount === hubStations.length
 
   const stationSlugs = useMemo(
     () => hubStations.map((s) => s.slug),
@@ -125,7 +136,17 @@ export function HomeScreen({
         </div>
       </div>
 
-      <Gs39Card className="p-4">
+      <Gs39Card className="relative p-4">
+        {showSparkle ? (
+          <SparkleBurst
+            x="72%"
+            y="28%"
+            onDone={() => {
+              markSparkleDone()
+              setSparkleSuppressed(true)
+            }}
+          />
+        ) : null}
         <Gs39Progress visited={visitedCount} total={hubStations.length} />
         <p className="mt-2 text-sm text-fg-3">
           {visitedCount === 0

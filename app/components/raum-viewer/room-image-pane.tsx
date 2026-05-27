@@ -27,6 +27,7 @@ import { hitTestHotspot } from '@/lib/raum-viewer/hit-test-hotspot'
 import { normalizedViewportCenter } from '@/lib/raum-viewer/viewport-center'
 import { HotspotOverlay } from '@/components/raum-viewer/hotspot-overlay'
 import { useDeviceOrientation } from '@/components/raum-viewer/use-device-orientation'
+import type { RaumViewerLayout } from '@/components/raum-viewer/raum-viewer'
 
 export type RoomImagePaneProps = {
   src: string
@@ -36,6 +37,7 @@ export type RoomImagePaneProps = {
   activeHotspotId?: string | null
   onHotspotTap?: (hotspot: Hotspot) => void
   onHotspotCenterHit?: (hotspot: Hotspot | null) => void
+  layout?: RaumViewerLayout
 }
 
 const NEUTRAL_CALIB_MS = 500
@@ -50,7 +52,9 @@ export function RoomImagePane({
   activeHotspotId = null,
   onHotspotTap,
   onHotspotCenterHit,
+  layout = 'default',
 }: RoomImagePaneProps) {
+  const isHero = layout === 'hero'
   const [debugViewer, setDebugViewer] = useState(false)
 
   useEffect(() => {
@@ -416,24 +420,60 @@ export function RoomImagePane({
     )
   }
 
+  const viewerHeightStyle = isHero
+    ? { height: '100%' as const }
+    : { height: ROOM_VIEWER_HEIGHT_CSS }
+
   if (broken) {
     return (
       <div
-        className="flex w-full items-center justify-center rounded-[var(--r-md)] bg-brand-sky-50 px-4 text-center text-sm font-medium text-fg-1"
-        style={{ height: ROOM_VIEWER_HEIGHT_CSS }}
+        className={`flex w-full items-center justify-center bg-brand-sky-50 px-4 text-center text-sm font-medium text-fg-1 ${isHero ? 'h-full' : 'rounded-[var(--r-md)]'}`}
+        style={viewerHeightStyle}
       >
         Raumbild konnte nicht geladen werden.
       </div>
     )
   }
 
+  const orientationControls =
+    orientState === 'needs-gesture' ? (
+      <div className="flex flex-col items-center gap-2">
+        <p className="text-center text-xs text-fg-2">
+          Für die Raum-Bewegung bitte Orientierung erlauben (einmalig).
+        </p>
+        <button
+          type="button"
+          className="rounded-[var(--r-md)] bg-accent px-4 py-2 text-sm font-semibold text-fg-on-dark shadow-gs39-sm hover:bg-accent-hover"
+          onClick={() => void requestAccess()}
+        >
+          Orientierung aktivieren
+        </button>
+      </div>
+    ) : orientState === 'active' ? (
+      <div className="flex flex-col items-center gap-2">
+        <p className="text-center text-xs text-fg-2">
+          Handy vor die Brust halten und nach links oder rechts drehen.
+        </p>
+        <button
+          type="button"
+          aria-label="Raumansicht zurücksetzen"
+          className="min-h-11 min-w-11 rounded-[var(--r-md)] border border-border-2 bg-brand-sky-50 px-4 py-2 text-sm font-semibold text-fg-1 shadow-gs39-sm hover:bg-brand-sky-50/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+          onClick={recenterView}
+        >
+          Ansicht zentrieren
+        </button>
+      </div>
+    ) : (
+      orientationBanner()
+    )
+
   return (
-    <div className="flex flex-col gap-2">
+    <div className={isHero ? 'h-full' : 'flex flex-col gap-2'}>
       <div
         ref={containerRef}
-        className="relative w-full overflow-hidden rounded-[var(--r-md)] bg-bg-dark"
+        className={`relative w-full overflow-hidden bg-bg-dark ${isHero ? 'h-full' : 'rounded-[var(--r-md)]'}`}
         style={{
-          height: ROOM_VIEWER_HEIGHT_CSS,
+          ...viewerHeightStyle,
           touchAction: 'none',
           contain: 'layout paint style',
         }}
@@ -494,36 +534,7 @@ export function RoomImagePane({
           />
         )}
       </div>
-      {orientState === 'needs-gesture' ? (
-        <div className="flex flex-col items-center gap-2">
-          <p className="text-center text-xs text-fg-2">
-            Für die Raum-Bewegung bitte Orientierung erlauben (einmalig).
-          </p>
-          <button
-            type="button"
-            className="rounded-[var(--r-md)] bg-accent px-4 py-2 text-sm font-semibold text-fg-on-dark shadow-gs39-sm hover:bg-accent-hover"
-            onClick={() => void requestAccess()}
-          >
-            Orientierung aktivieren
-          </button>
-        </div>
-      ) : orientState === 'active' ? (
-        <div className="flex flex-col items-center gap-2">
-          <p className="text-center text-xs text-fg-2">
-            Handy vor die Brust halten und nach links oder rechts drehen.
-          </p>
-          <button
-            type="button"
-            aria-label="Raumansicht zurücksetzen"
-            className="min-h-11 min-w-11 rounded-[var(--r-md)] border border-border-2 bg-brand-sky-50 px-4 py-2 text-sm font-semibold text-fg-1 shadow-gs39-sm hover:bg-brand-sky-50/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-            onClick={recenterView}
-          >
-            Ansicht zentrieren
-          </button>
-        </div>
-      ) : (
-        orientationBanner()
-      )}
+      {!isHero ? orientationControls : null}
     </div>
   )
 }

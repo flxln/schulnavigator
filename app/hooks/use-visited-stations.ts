@@ -20,7 +20,9 @@ export function useVisitedStations(validSlugs: readonly string[]) {
   }, [validSlugSet])
 
   useEffect(() => {
-    syncFromStorage()
+    queueMicrotask(() => {
+      syncFromStorage()
+    })
   }, [syncFromStorage])
 
   useEffect(() => {

@@ -3,6 +3,8 @@
 import type { Hotspot, Medium } from '@/lib/types'
 import { RoomImagePane } from '@/components/raum-viewer/room-image-pane'
 
+export type RaumViewerLayout = 'default' | 'hero'
+
 export type RaumViewerProps = {
   bild: string
   alt: string
@@ -11,6 +13,7 @@ export type RaumViewerProps = {
   activeHotspotId?: string | null
   onHotspotTap?: (hotspot: Hotspot) => void
   onHotspotCenterHit?: (hotspot: Hotspot | null) => void
+  layout?: RaumViewerLayout
 }
 
 export function RaumViewer({
@@ -21,9 +24,12 @@ export function RaumViewer({
   activeHotspotId,
   onHotspotTap,
   onHotspotCenterHit,
+  layout = 'default',
 }: RaumViewerProps) {
+  const isHero = layout === 'hero'
+
   return (
-    <div className="flex flex-col gap-2">
+    <div className={isHero ? 'h-full' : 'flex flex-col gap-2'}>
       <RoomImagePane
         src={bild}
         alt={alt}
@@ -32,8 +38,9 @@ export function RaumViewer({
         activeHotspotId={activeHotspotId}
         onHotspotTap={onHotspotTap}
         onHotspotCenterHit={onHotspotCenterHit}
+        layout={layout}
       />
-      {!hotspots?.length ? (
+      {!isHero && !hotspots?.length ? (
         <p className="text-center text-xs text-fg-3">
           Sobald Hotspots in den Daten stehen, erscheinen Marker im Raumfoto.
         </p>

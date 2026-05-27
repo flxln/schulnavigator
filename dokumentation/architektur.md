@@ -1,6 +1,6 @@
 # Schulnavigator — Architektur
 
-_Stand: 2026-05-27 (**ADR-009:** isometrischer Hub geplant; **#55/#56:** Raum-Viewer; GS39-Theme; Live #16) — siehe [entscheidungen.md](./entscheidungen.md)_
+_Stand: 2026-05-27 (**ADR-009:** isometrischer Hub umgesetzt; **Epic #58:** GS39-UI-Screens; **#55/#56:** Raum-Viewer; Live #16) — siehe [entscheidungen.md](./entscheidungen.md)_
 
 ## Tech-Stack
 
@@ -28,9 +28,9 @@ _Stand: 2026-05-27 (**ADR-009:** isometrischer Hub geplant; **#55/#56:** Raum-Vi
 - **Schul-ID (MVP):** [`app/lib/school-theme.ts`](../app/lib/school-theme.ts) — `SCHOOL_ID = 'gs39'`; Komponenten nutzen semantische Klassen, keine direkten `--brand-*` in TSX. Mehrere Schulen später: anderes Token-Sheet pro Mandant (ADR-003).
 - **Dark Mode:** bewusst deaktiviert (Papier-Look).
 - **Build-Check:** `npm run validate:tokens` vergleicht App-Tokens mit der Referenz (`colors_and_type.css` lokal bzw. [`app/scripts/reference/colors_and_type.css`](../app/scripts/reference/colors_and_type.css) im Docker-Build). Wird von `npm run build` mitaufgerufen.
-- **Display/Script-Fonts (geplant #58):** Caveat Brush, Caveat via `next/font` — ergänzt Nunito.
+- **Display/Script-Fonts (#58):** Caveat Brush, Caveat via `next/font` — ergänzt Nunito; App-Klassen in [`sn-theme.css`](../app/app/sn-theme.css).
 
-## Startseite-Hub (ADR-009, geplant)
+## Startseite-Hub (ADR-009, umgesetzt)
 
 | Aspekt | Details |
 |--------|---------|
@@ -43,7 +43,7 @@ _Stand: 2026-05-27 (**ADR-009:** isometrischer Hub geplant; **#55/#56:** Raum-Vi
 
 ## Raum-Viewer (Implementierung, Issue #55)
 
-Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/) und Mathematik in [`app/lib/raum-viewer/`](../app/lib/raum-viewer/). Stationen-Seite: [`RaumStationClient`](../app/components/raum-station-client.tsx) auf `/raum/[slug]`.
+Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/) und Mathematik in [`app/lib/raum-viewer/`](../app/lib/raum-viewer/). Stationen-Seite: [`RaumStationClient`](../app/components/raum-station-client.tsx) auf `/raum/[slug]` — Hero-Layout mit Gyro-`RaumViewer` (`layout="hero"`), Stations-Chrome aus Design (#58).
 
 | Verhalten | Details |
 | --------- | ------- |
@@ -70,7 +70,8 @@ Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/
 - **`/`** — Startseite mit **isometrischem** Schulhaus-Hub ([ADR-009](./adr/009-hub-isometrisch.md)); Modus aus Cookie: `heft` = alle Stationen, `fest` = nur besuchte Slots klickbar (#21).
 - **`/stationen`** — Stationsliste (Lock im Modus `fest`) — Epic #58.
 - **`/eintritt`** — Entry-QR (`?t=…`) setzt Cookie und leitet auf `/` um; ohne gültigen Zugang Hinweis-/Fehlerseite mit **integriertem Entry-Scanner** (#57, [ADR-008](./adr/008-eintritt-in-app-scanner.md)): `parseEntryScan` prüft nur Struktur (Origin, Pfad, `t` nicht leer); Gültigkeit nur Middleware.
-- **`/scan`** — In-App-QR-Scanner für Raum-QRs (nur mit Cookie); `parseRoomScan` + Slug-Whitelist — [ADR-005](./adr/005-zugangskontrolle-token.md), [ADR-007](./adr/007-zugangskontrolle-cookie.md).
+- **`/scan`** — In-App-QR-Scanner für Raum-QRs (nur mit Cookie); dunkles Scan-Chrome mit gelbem Rahmen; `parseRoomScan` + Slug-Whitelist — [ADR-005](./adr/005-zugangskontrolle-token.md), [ADR-007](./adr/007-zugangskontrolle-cookie.md).
+- **Fortschritt 11/11:** `SparkleBurst` auf der Startseite einmalig (`sn_sparkle_done` in `localStorage`, L6).
 
 **Zugang (Issue #23, Entry-Scanner #57):** Token-Liste [`app/lib/access-tokens.ts`](../app/lib/access-tokens.ts) (sync mit [`app/scripts/qr-config.mjs`](../app/scripts/qr-config.mjs)); Middleware [`app/middleware.ts`](../app/middleware.ts) setzt/prüft Cookie `sn_access`. Entry-Treffer im Scanner: `location.replace` zu `/eintritt?t=…` (kein Token im Client-Bundle). Ausnahmen: `/api/health`, `/_next/*`, `favicon.ico`, `robots.txt`, `/eintritt` ohne `?t=`.
 

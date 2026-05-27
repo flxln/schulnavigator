@@ -29,11 +29,12 @@ npm run dev
 | Seite | Zweck |
 | ----- | ----- |
 | [http://localhost:3000/](http://localhost:3000/) | Startseite — **ohne** vorherigen Entry: Redirect zu `/eintritt` |
-| [http://localhost:3000/eintritt?t=fest-2026](http://localhost:3000/eintritt?t=fest-2026) | Entry Schulfest: Cookie + Redirect `/` → Puzzle-Hub **gesperrt** (0/11), Segmente nach Raumbesuch frei (#21) |
+| [http://localhost:3000/eintritt?t=fest-2026](http://localhost:3000/eintritt?t=fest-2026) | Entry Schulfest: Cookie + Redirect `/` → isometrischer Hub **gesperrt** (0/11), Fenster nach Raumbesuch frei (#21) |
 | [http://localhost:3000/eintritt?t=heft-2026-27](http://localhost:3000/eintritt?t=heft-2026-27) | Entry Heft: voller Hub (alle Stationen klickbar), Fortschritt zählt trotzdem (#21) |
+| [http://localhost:3000/stationen](http://localhost:3000/stationen) | Alle 11 Stationen als Liste (Lock im Modus `fest`) — Epic #58 |
 | [http://localhost:3000/eintritt](http://localhost:3000/eintritt) | Hinweisseite + **In-App-Scanner** für Eintritts-QR (#57); Kamera nur auf `localhost`/HTTPS |
 | [http://localhost:3000/robots.txt](http://localhost:3000/robots.txt) | `Disallow: /` (Issue #16) |
-| [http://localhost:3000/scan](http://localhost:3000/scan) | In-App-QR-Scanner (nach Entry; Kamera-Zugriff nötig) |
+| [http://localhost:3000/scan](http://localhost:3000/scan) | In-App-QR-Scanner mit dunklem Chrome und gelbem Scan-Rahmen (nach Entry; Kamera-Zugriff nötig) |
 | [http://localhost:3000/raum/musik](http://localhost:3000/raum/musik) | Demo: Raumbild, **Gyro-Armschwenk** Portrait (oder Wischen), **2 Hotspots** (Highlight per Mitte, Medien per Tap), **4 Medien-Slots** |
 | [http://localhost:3000/raum/schulsozialarbeit](http://localhost:3000/raum/schulsozialarbeit) | **Ohne** Raumbild: statischer Platzhalter + Text-Medium |
 | [http://localhost:3000/raum/klassenzimmer](http://localhost:3000/raum/klassenzimmer) | Raumbild + **leere** Medienliste (Empty-State) |
@@ -70,16 +71,18 @@ npm run start
 
 **Raum-Viewer (Issue #55 / #56, Mobil-Härtung):** `export const viewport` in [`app/app/layout.tsx`](../app/app/layout.tsx) — korrektes **device-width** auf dem Handy (kein „Mini-Desktop-Zoom“). Viewer `min(50vh, 360px)`; **Auto-Zoom** skaliert schmale Bilder so, dass horizontal mindestens `MIN_PAN_DISPLAY_RATIO` (2) erreicht wird — dabei kann **oben/unten beschnitten** werden; Hotspot-**y** im mittleren Drittel halten. **Gyro (Portrait):** Handy vor die Brust, **links und rechts drehen** (nicht kippen) — ca. ±60° vom Neutral zu beiden Raumrändern (`GYRO_FULL_RANGE_DEG`, Feintuning: [raum-viewer-gyro-feintuning.md](./raum-viewer-gyro-feintuning.md)); bei Drift **„Ansicht zentrieren“**. **Landscape (iPad):** Kippen (`gamma`) wie bisher. **Wischen** bleibt nach Loslassen stabil. Debug: `?debug=1` — HUD mit `axis`, `α`, `γ`, `∠`, `pan`. Unter `/raum/musik` — **iPhone nur unter HTTPS**; Portrait/Landscape-Wechsel prüfen (Neutral-Reset); Norddurchquerung (0°/360°) ohne Pan-Sprung.
 
-**Stempel & Puzzle-Freischaltung (Issue #21):**
+**Stempel & Hub-Freischaltung (Issue #21 / ADR-009):**
 
 1. `/eintritt?t=fest-2026` → Hub gesperrt, „0 von 11“
-2. `/scan` → Raum-QR scannen → Segment auf Hub frei, „1 von 11“
-3. **Browser-Zurück** zum Hub (kein Reload) → Fortschritt und Freischaltung bleiben
-4. `/eintritt?t=heft-2026-27` → alle Segmente klickbar, Fortschritt bleibt
+2. `/scan` → Raum-QR scannen → Fenster auf Hub frei, „1 von 11“
+3. **Browser-Zurück** vom Raum → `/?highlight=slug` → Fenster-Pop, URL bereinigt nach ~1,2 s
+4. `/eintritt?t=heft-2026-27` → alle Fenster klickbar, Fortschritt bleibt
 5. Local Storage `sn_visited_slugs` löschen → Fortschritt 0
-6. Mit Cookie direkt `/raum/musik` → nach Reload `/` ist Segment `seg-10` frei (`fest`)
+6. Mit Cookie direkt `/raum/musik` → nach Reload `/` ist Fenster frei (`fest`)
 7. `fest` mit bereits besuchten Stationen: Hub neu laden → kurzer Lade-Platzhalter, kein „alles gesperrt“-Flash
 8. Zwei Tabs (`/` + `/scan`): im zweiten Tab scannen → erster Tab aktualisiert bei Fokus
+9. Alle 11 Stationen besucht → `SparkleBurst` auf `/` **einmalig**; `localStorage` `sn_sparkle_done` verhindert Wiederholung
+10. `curl -sI http://localhost:3000/stationen` ohne Cookie → `307` nach `/eintritt`
 
 **Manuelle Test-Matrix (Schulfest-relevant):**
 
