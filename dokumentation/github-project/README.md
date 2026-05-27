@@ -31,4 +31,6 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issue **#22** (Abschluss-Animation) — geschlossen (über #63 / `SparkleBurst`)
 - [ ] Suche im Repo-Issue-Tracker nach veralteten Formulierungen (z. B. „8 Stationen“, „Admin-Interface entwickeln“ ohne Directus-Kontext).
 
-Letzter dokumentierter Abgleich: **2026-05-27** (#58/#59–#63/#22 geschlossen; zuvor #21, #23, #55/#56).
+- [x] Issue **#69** (Otto-Frieda-Dialog `daz`/`pc-raum`, ADR-010, gated Audio) — geschlossen (2026-05-28)
+
+Letzter dokumentierter Abgleich: **2026-05-28** (#69 Dialog-Demo; zuvor 2026-05-27 #58/#59–#63/#22).

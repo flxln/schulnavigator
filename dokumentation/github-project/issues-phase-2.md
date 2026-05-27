@@ -6,7 +6,7 @@ Milestone: **Phase 2** | Fällig: 12.06.2026
 
 **Übernahmen aus Issue #16 (Phase 1):** Live unter HTTPS (`schulnavigator.mpz.schule`); website-weite Basis gegen Indexierung (`robots` / `noindex`); Route `/eintritt` mit **Platzhalter** (HTTP 200). **#23** baut darauf auf: Token, Middleware und Scanner sind der verbleibende Kern; SEO-Basis und Eintritt-404-Vermeidung sind **keine** Grünfeld-Aufgaben mehr. Detaillierte Abgrenzung: [`.cursor/plans/issue_16_coolify_deploy_39add57f.plan.md`](../../.cursor/plans/issue_16_coolify_deploy_39add57f.plan.md) (Abschnitt *Folge-Issues*). *Hinweis:* Zugehörige Cursor-**Chat-Request-ID** `51250690-23d9-4dfa-a554-4238883c9491` dient nur der Zuordnung zur Chat-Sitzung, nicht der technischen Referenz.
 
-**Architektur:** [ADR-004](../adr/004-video-hosting-mpz.md) · [ADR-005](../adr/005-zugangskontrolle-token.md) · [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md) · [ADR-008](../adr/008-eintritt-in-app-scanner.md) (#57) · [ADR-009](../adr/009-hub-isometrisch.md) (#58)
+**Architektur:** [ADR-004](../adr/004-video-hosting-mpz.md) · [ADR-005](../adr/005-zugangskontrolle-token.md) · [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md) · [ADR-008](../adr/008-eintritt-in-app-scanner.md) (#57) · [ADR-009](../adr/009-hub-isometrisch.md) (#58) · [ADR-010](../adr/010-dialog-cutscene-gated-audio.md) (#69)
 
 **Ausführungsreihenfolge:** [`projektmanagement/2026-05-27-gs39-ui-ausfuehrungsreihenfolge.md`](../projektmanagement/2026-05-27-gs39-ui-ausfuehrungsreihenfolge.md)
 
@@ -229,6 +229,37 @@ Agenda:
 5. Projekttag 24./25.06.
 
 **Ohne Content-Lieferplan keine Phase 3.**
+
+---
+
+## #69 — Demo/Content: Otto-Frieda-Audio für `daz` aus Rohaufnahme
+
+**Labels:** `content` `tech`  
+**Assignee:** Felix  
+**GitHub:** https://github.com/flxln/schulnavigator/issues/69 — **geschlossen** (2026-05-28)
+
+*(Geplant als #64; nächste freie Nummer auf GitHub war #69.)*
+
+**Abhängigkeit:** [flxln/hilfreiche-tools#3](https://github.com/flxln/hilfreiche-tools/issues/3) (`station-audio-transkript`)
+
+**Umsetzung:** [ADR-010](../adr/010-dialog-cutscene-gated-audio.md) — Dialog-Cutscene statt zwei lose Audio-Medien im Panel; Clips unter `app/content/dialog-audio/{slug}/`, Auslieferung `GET /api/dialog/[slug]/[clip]` (Cookie, Range). Stationen **`daz`** und **`pc-raum`** mit je 9 Segmenten; Maskottchen PNGs in `public/brand/mascots/`. Demo-Ablauf: [`anleitungen/demo-meeting-2026-06-10.md`](../../anleitungen/demo-meeting-2026-06-10.md).
+
+### Ziel (ursprünglich)
+
+Aus Roh-m4a per `station-audio-transkript` Text + Zeitstempel prüfen, Clips in die App, `stations.json` für `daz` befüllen.
+
+### Akzeptanzkriterien
+
+- [x] JSON-Artefakt unter `auftraggeber/material/stationen/transkripte/` (`011-DaZ-Zimmer/`, `010-PC-Raum/`)
+- [x] Audio-Clips deploybar (`content/dialog-audio/`, Dockerfile `COPY content/`)
+- [x] `daz` + `pc-raum` in `stations.json` mit `dialog`-Block (Segmente, Gruppen bei DaZ)
+- [x] `npm run validate:stations` + Dialog-Playback lokal (HTTPS, Eintritt `?t=fest-2026`)
+- [x] DSGVO: gated Route (403 ohne Cookie); Demo in Meeting-Doku gekennzeichnet
+
+### Nicht im Scope (unverändert)
+
+- Automatischer Import der JSON zur Laufzeit
+- Lip-Sync / Panorama-Overlay (Cutscene bewusst für Demo 10.06.)
 
 ---
 

@@ -14,6 +14,7 @@ export type RaumViewerProps = {
   onHotspotTap?: (hotspot: Hotspot) => void
   onHotspotCenterHit?: (hotspot: Hotspot | null) => void
   layout?: RaumViewerLayout
+  orientationEnabled?: boolean
 }
 
 export function RaumViewer({
@@ -25,6 +26,7 @@ export function RaumViewer({
   onHotspotTap,
   onHotspotCenterHit,
   layout = 'default',
+  orientationEnabled = true,
 }: RaumViewerProps) {
   const isHero = layout === 'hero'
 
@@ -39,6 +41,7 @@ export function RaumViewer({
         onHotspotTap={onHotspotTap}
         onHotspotCenterHit={onHotspotCenterHit}
         layout={layout}
+        orientationEnabled={orientationEnabled}
       />
       {!isHero && !hotspots?.length ? (
         <p className="text-center text-xs text-fg-3">

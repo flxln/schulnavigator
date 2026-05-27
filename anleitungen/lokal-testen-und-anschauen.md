@@ -36,7 +36,9 @@ npm run dev
 | [http://localhost:3000/robots.txt](http://localhost:3000/robots.txt) | `Disallow: /` (Issue #16) |
 | [http://localhost:3000/scan](http://localhost:3000/scan) | In-App-QR-Scanner mit dunklem Chrome und gelbem Scan-Rahmen (nach Entry; Kamera-Zugriff nötig) |
 | [http://localhost:3000/raum/musik](http://localhost:3000/raum/musik) | Demo: Raumbild, **Gyro-Armschwenk** Portrait (oder Wischen), **2 Hotspots** (Highlight per Mitte, Medien per Tap), **4 Medien-Slots** |
-| [http://localhost:3000/raum/schulsozialarbeit](http://localhost:3000/raum/schulsozialarbeit) | **Ohne** Raumbild: statischer Platzhalter + Text-Medium |
+| [http://localhost:3000/raum/daz](http://localhost:3000/raum/daz) | **Otto/Frieda-Dialog** (Cutscene, gated Audio) — [ADR-010](../dokumentation/adr/010-dialog-cutscene-gated-audio.md) |
+| [http://localhost:3000/raum/pc-raum](http://localhost:3000/raum/pc-raum) | Zweiter Dialog (PC-Regeln) |
+| [http://localhost:3000/raum/schulsozialarbeit](http://localhost:3000/raum/schulsozialarbeit) | Raumbild (Platzhalter) + Text-Medium |
 | [http://localhost:3000/raum/klassenzimmer](http://localhost:3000/raum/klassenzimmer) | Raumbild + **leere** Medienliste (Empty-State) |
 | [http://localhost:3000/raum/gibts-nicht](http://localhost:3000/raum/gibts-nicht) | **404** (nur im Dev-Server; unbekannte Slugs sind zur Build-Zeit fest) |
 
@@ -128,6 +130,12 @@ Erwartung: HTTP **200** und eine kurze OK-Antwort (für Monitoring/Coolify relev
 ## 6. Docker (optional)
 
 Identisches Laufzeit-Image wie in Produktion — Schritt-für-Schritt: Abschnitt **Docker** in [`fuer-entwickler.md`](./fuer-entwickler.md).
+
+---
+
+## Demo-Termin 10.06.
+
+Schritt-für-Schritt für das MPZ-Meeting mit Sten/Tina: [`demo-meeting-2026-06-10.md`](./demo-meeting-2026-06-10.md).
 
 ---
 

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { headers } from 'next/headers'
 import { ScanScreen } from '@/components/scan/scan-screen'
 import { getAllStations } from '@/lib/stations'
+import { getTrustedScanOrigins } from '@/lib/scan-trusted-origins'
 
 export const metadata: Metadata = {
   title: 'QR-Scanner — Schulnavigator',
@@ -13,12 +14,13 @@ export default async function ScanPage() {
   const host = headersList.get('x-forwarded-host') ?? headersList.get('host')
   const proto = headersList.get('x-forwarded-proto') ?? 'http'
   const origin = host ? `${proto}://${host}` : 'http://localhost:3000'
+  const trustedOrigins = getTrustedScanOrigins()
 
   const slugs = getAllStations().map((s) => s.slug)
 
   return (
     <main className="mx-auto min-h-[100dvh] max-w-lg overflow-x-hidden">
-      <ScanScreen slugs={slugs} origin={origin} />
+      <ScanScreen slugs={slugs} origin={origin} trustedOrigins={trustedOrigins} />
     </main>
   )
 }
