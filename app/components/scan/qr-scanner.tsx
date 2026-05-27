@@ -8,10 +8,16 @@ type QrScannerProps =
   | {
       mode: 'room'
       origin: string
+      trustedOrigins?: readonly string[]
       slugs: readonly string[]
       chrome?: boolean
     }
-  | { mode: 'entry'; origin: string; chrome?: boolean }
+  | {
+      mode: 'entry'
+      origin: string
+      trustedOrigins?: readonly string[]
+      chrome?: boolean
+    }
 
 type ScannerState = 'idle' | 'starting' | 'scanning' | 'error' | 'pending'
 
@@ -20,6 +26,8 @@ const ENTRY_WRONG_QR =
 const ROOM_SCAN_ENTRY_QR =
   'Das ist der Eintritts-QR — bitte einen Raum-QR an der Tür scannen.'
 const ROOM_SCAN_WRONG_QR = 'Bitte einen Raum-QR an der Tür scannen.'
+const INSECURE_CONTEXT_MESSAGE =
+  'Kamera auf dem Handy braucht HTTPS. Starte den Dev-Server mit npm run dev und öffne https://<DEINE-LAN-IP>:3000 (Zertifikatswarnung bestätigen). Alternativ: QR mit der System-Kamera scannen.'
 
 function ScanFrameOverlay({ active }: { active: boolean }) {
   if (!active) return null
@@ -44,6 +52,7 @@ export function QrScanner(props: QrScannerProps) {
 
   const isEntry = props.mode === 'entry'
   const chrome = props.chrome === true
+  const trustedOrigins = props.trustedOrigins ?? []
 
   const stopScanner = useCallback(async () => {
     const instance = scannerRef.current
@@ -66,7 +75,7 @@ export function QrScanner(props: QrScannerProps) {
   const onScanSuccess = useCallback(
     (decoded: string) => {
       if (props.mode === 'entry') {
-        const token = parseEntryScan(decoded, props.origin)
+        const token = parseEntryScan(decoded, props.origin, trustedOrigins)
         if (!token) {
           setStatusMessage(ENTRY_WRONG_QR)
           return
@@ -80,23 +89,29 @@ export function QrScanner(props: QrScannerProps) {
         return
       }
 
-      const slug = parseRoomScan(decoded, props.origin, props.slugs)
+      const slug = parseRoomScan(decoded, props.origin, props.slugs, trustedOrigins)
       if (slug) {
         void stopScanner()
         router.push(`/raum/${slug}`)
         return
       }
 
-      const entryToken = parseEntryScan(decoded, props.origin)
+      const entryToken = parseEntryScan(decoded, props.origin, trustedOrigins)
       setStatusMessage(entryToken ? ROOM_SCAN_ENTRY_QR : ROOM_SCAN_WRONG_QR)
     },
-    [props, router, stopScanner],
+    [props, router, stopScanner, trustedOrigins],
   )
 
   const startScanner = useCallback(async () => {
     setStatusMessage(null)
     setState('starting')
     await stopScanner()
+
+    if (typeof window !== 'undefined' && !window.isSecureContext) {
+      setState('error')
+      setStatusMessage(INSECURE_CONTEXT_MESSAGE)
+      return
+    }
 
     try {
       const { Html5Qrcode } = await import('html5-qrcode')

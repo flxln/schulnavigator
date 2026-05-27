@@ -15,6 +15,7 @@ Jede wichtige Entscheidung wird als eigenständiger ADR (Architecture Decision R
 | [007](./adr/007-zugangskontrolle-cookie.md) | Zugang: HttpOnly-Cookie + Middleware (ergänzt ADR-005 Speicher/Durchsetzung) | entschieden | 2026-05-22 |
 | [008](./adr/008-eintritt-in-app-scanner.md) | Eintritt: In-App-Scanner auf `/eintritt` (ergänzt ADR-005 Entry-UX) | entschieden | 2026-05-22 |
 | [009](./adr/009-hub-isometrisch.md) | Startseite: isometrischer Schulhaus-Hub + GS39 UI (ersetzt Puzzle-Hub #14) | entschieden | 2026-05-27 |
+| [010](./adr/010-dialog-cutscene-gated-audio.md) | Dialog: Cutscene-Overlay, gated Audio (`/api/dialog/…`), Playlist ein `<audio>` | entschieden | 2026-05-27 |
 
 ## Konventionen
 

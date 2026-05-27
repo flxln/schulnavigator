@@ -8,6 +8,7 @@ Statische Marken-Dateien für den Schulnavigator. Werden **versioniert und commi
 |--------|--------|
 | `logos/` | **Committed** — stabil, klein (SVG) |
 | `motifs/` | **Committed**, sobald PNGs vom Auftraggeber vorliegen; bis dahin nur README + CSS-Fallback in `sn-theme.css` |
+| `mascots/` | **Committed** — Frieda/Otto (Alpha-PNG) für Dialog-Cutscene |
 
 Nicht in `.gitignore` aufnehmen.
 
@@ -23,6 +24,7 @@ Design-System-Doku: `auftraggeber/material/UI-Vorschläge/UI-vorschlag-website.m
 
 - Logos: `/brand/logos/jubilaeum-lockup.svg`, `/brand/logos/badge.svg` (Next.js `public/`-Pfad)
 - Motive: `/brand/motifs/…` (wenn vorhanden)
+- Maskottchen: `/brand/mascots/frieda.png`, `/brand/mascots/otto.png`
 - Farben/Typo: CSS-Variablen in `app/gs39-tokens.css`, nicht direkte Hex-Werte in TSX
 
 ## Pflege

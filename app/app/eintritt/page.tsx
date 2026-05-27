@@ -5,6 +5,7 @@ import {
   EintrittScreen,
   eintrittVariantFromReason,
 } from '@/components/eintritt/eintritt-screen'
+import { getTrustedScanOrigins } from '@/lib/scan-trusted-origins'
 
 export const metadata: Metadata = {
   title: 'Eintritt — Schulnavigator',
@@ -25,6 +26,7 @@ export default async function EintrittPage({ searchParams }: PageProps) {
   const host = headersList.get('x-forwarded-host') ?? headersList.get('host')
   const proto = headersList.get('x-forwarded-proto') ?? 'http'
   const origin = host ? `${proto}://${host}` : 'http://localhost:3000'
+  const trustedOrigins = getTrustedScanOrigins()
 
   return (
     <main className="mx-auto flex min-h-full max-w-lg flex-col gap-6 overflow-x-hidden px-4 py-8 pb-[max(1rem,env(safe-area-inset-bottom))]">
@@ -37,7 +39,7 @@ export default async function EintrittPage({ searchParams }: PageProps) {
           <h2 id="eintritt-scan-heading" className="sr-only">
             Eintritts-QR scannen
           </h2>
-          <QrScanner mode="entry" origin={origin} />
+          <QrScanner mode="entry" origin={origin} trustedOrigins={trustedOrigins} />
         </section>
       ) : null}
     </main>

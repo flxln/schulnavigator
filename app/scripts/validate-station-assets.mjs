@@ -28,16 +28,24 @@ function visibleYNormalRangeWorstCase(naturalAspect) {
   }
 }
 
-function resolvePublicPath(urlPath) {
+const DIALOG_API_RE = /^\/api\/dialog\/([a-z0-9]+(-[a-z0-9]+)*)\/(\d{2}-[a-z]+\.wav)$/
+
+function resolveAssetPath(urlPath) {
   if (typeof urlPath !== 'string' || !urlPath.startsWith('/')) {
     return null
+  }
+  const dialogMatch = urlPath.match(DIALOG_API_RE)
+  if (dialogMatch) {
+    const slug = dialogMatch[1]
+    const clip = dialogMatch[3]
+    return join(appRoot, 'content', 'dialog-audio', slug, clip)
   }
   const rel = urlPath.replace(/^\//, '')
   return join(publicDir, rel)
 }
 
 function checkPath(label, urlPath) {
-  const fsPath = resolvePublicPath(urlPath)
+  const fsPath = resolveAssetPath(urlPath)
   if (!fsPath) {
     console.error(`${label}: ungültiger Pfad "${urlPath}"`)
     process.exitCode = 1
@@ -78,6 +86,17 @@ for (const st of stations) {
       checkPath(`Station ${slug} (medium ${m.id ?? '?'})`, m.quelle)
     }
   }
+  const dialogSegs = st.dialog?.segmente
+  if (Array.isArray(dialogSegs)) {
+    for (const seg of dialogSegs) {
+      if (seg?.quelle && typeof seg.quelle === 'string' && seg.quelle.startsWith('/')) {
+        checkPath(
+          `Station ${slug} (dialog ${seg.id ?? '?'})`,
+          seg.quelle,
+        )
+      }
+    }
+  }
   const hotspots = Array.isArray(st.hotspots) ? st.hotspots : []
   if (typeof st.bild === 'string' && hotspots.length > 0) {
     const { yMin, yMax } = visibleYNormalRangeWorstCase(1)
@@ -101,5 +120,5 @@ if (process.exitCode === 1) {
 }
 
 console.log(
-  'validate:stations OK — alle referenzierten Dateien unter public/ vorhanden.',
+  'validate:stations OK — alle referenzierten Dateien (public/ und content/) vorhanden.',
 )
