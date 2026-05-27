@@ -6,7 +6,41 @@ Milestone: **Phase 2** | Fällig: 12.06.2026
 
 **Übernahmen aus Issue #16 (Phase 1):** Live unter HTTPS (`schulnavigator.mpz.schule`); website-weite Basis gegen Indexierung (`robots` / `noindex`); Route `/eintritt` mit **Platzhalter** (HTTP 200). **#23** baut darauf auf: Token, Middleware und Scanner sind der verbleibende Kern; SEO-Basis und Eintritt-404-Vermeidung sind **keine** Grünfeld-Aufgaben mehr. Detaillierte Abgrenzung: [`.cursor/plans/issue_16_coolify_deploy_39add57f.plan.md`](../../.cursor/plans/issue_16_coolify_deploy_39add57f.plan.md) (Abschnitt *Folge-Issues*). *Hinweis:* Zugehörige Cursor-**Chat-Request-ID** `51250690-23d9-4dfa-a554-4238883c9491` dient nur der Zuordnung zur Chat-Sitzung, nicht der technischen Referenz.
 
-**Architektur:** [ADR-004](../adr/004-video-hosting-mpz.md) · [ADR-005](../adr/005-zugangskontrolle-token.md) · [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md) · [ADR-008](../adr/008-eintritt-in-app-scanner.md) (#57)
+**Architektur:** [ADR-004](../adr/004-video-hosting-mpz.md) · [ADR-005](../adr/005-zugangskontrolle-token.md) · [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md) · [ADR-008](../adr/008-eintritt-in-app-scanner.md) (#57) · [ADR-009](../adr/009-hub-isometrisch.md) (#58)
+
+**Ausführungsreihenfolge:** [`projektmanagement/2026-05-27-gs39-ui-ausfuehrungsreihenfolge.md`](../projektmanagement/2026-05-27-gs39-ui-ausfuehrungsreihenfolge.md)
+
+---
+
+## #58 — GS39 UI: Design-Konzept „Virtueller Schulrundgang“ (Epic)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/58 — **offen** (2026-05-27)
+
+**Labels:** `tech` `design`  
+**Assignee:** Felix  
+**Milestone:** Phase 2
+
+Spezifikation: [ADR-009](../adr/009-hub-isometrisch.md) · Quelle: [`auftraggeber/Virtueller Schulrundgang/`](../../auftraggeber/Virtueller%20Schulrundgang/)
+
+**Ziel:** App-Shell mit Jubiläums-Look (isometrischer Hub, GS39-Chrome, fünf Screens). Gyro-Viewer (#55), Zugang (#23), Stempel (#21) bleiben funktional unverändert.
+
+### Checkliste (Teil-Issues / PRs)
+
+- [x] **ADR-009 + Doku** (`entscheidungen`, `projektplan`, `architektur`, diese Datei) — im Repo, kein separates GitHub-Issue
+- [ ] **#59** — Fonts, `sn-theme.css`, `components/ui/` Primitives, `public/brand/` — https://github.com/flxln/schulnavigator/issues/59
+- [ ] **#60** — `schoolhouse-isometric-map.ts` + `IsometricSchoolhouse`; Puzzle-Hub entfernen (#14 Darstellung ersetzt) — https://github.com/flxln/schulnavigator/issues/60
+- [ ] **#61** — Home + Eintritt nach `screens.jsx` — https://github.com/flxln/schulnavigator/issues/61
+- [ ] **#62** — Raum-Chrome, `/stationen`, Scan-Chrome; Player-Styling mit #18–#20 — https://github.com/flxln/schulnavigator/issues/62
+- [ ] **#63** — Abschluss-Sparkle bei 11/11 (#22) — https://github.com/flxln/schulnavigator/issues/63
+
+### Abhängigkeiten / Verknüpfung
+
+- Ersetzt Hub-Darstellung aus **#14** (Puzzle-SVG), nicht die Freischalt-Logik aus **#21**
+- **#18–#20** bleiben eigene Issues (Player-Logik); Styling in #58e
+
+### Offen (Schule)
+
+- Welcher Slug belegt den SVG-Slot **`ground-mid`** (Eingangstür)?
 
 ---
 
@@ -80,16 +114,18 @@ Spezifikation: [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
 
 ---
 
-## #21 — Stempel-System + Puzzle-Freischaltung
+## #21 — Stempel-System + Hub-Freischaltung
 
 **GitHub:** https://github.com/flxln/schulnavigator/issues/21 — **umgesetzt** (2026-05-26)
 
 **Labels:** `tech`  
 **Assignee:** Felix
 
+_Hinweis: Hub-Darstellung Puzzle → isometrisch siehe **#58** / [ADR-009](../adr/009-hub-isometrisch.md); Freischalt-Logik (`visitedSlugs`) bleibt._
+
 - [x] `localStorage` Key `sn_visited_slugs` (JSON-Array Slugs) — getrennt vom **Access-Token** ([ADR-005](../adr/005-zugangskontrolle-token.md)); Logik in `lib/visited-stations.ts`, Hook `hooks/use-visited-stations.ts`
 - [x] Besuch markieren auf `/raum/[slug]` via `components/station-visit-recorder.tsx` (Scanner-Navigation und System-Kamera-Deeplink)
-- [x] **Modus `fest`:** freigeschaltete Puzzle-Segmente nach Besuch; Hub-Platzhalter bis Hydration (kein „alles gesperrt“-Flash)
+- [x] **Modus `fest`:** freigeschaltete Hub-Slots nach Besuch (aktuell Puzzle-Segmente; #58 → isometrische Fenster); Hub-Platzhalter bis Hydration (kein „alles gesperrt“-Flash)
 - [x] **Modus `heft`:** alle Stationen klickbar; Fortschritt trotzdem sichtbar
 - [x] Fortschritt „n von 11“ (`HubWithProgress`, `total = segments.length`)
 - [x] Badge „Besucht“ auf Stationsseite (`station-visited-badge.tsx`)
@@ -119,12 +155,12 @@ Spezifikation: [ADR-005](../adr/005-zugangskontrolle-token.md), Speicher/Durchse
 
 - [x] `/eintritt?t=…` — Token validieren, HttpOnly-Cookie `sn_access` (Middleware)
 - [x] Middleware: ohne gültigen Zugang → Hinweisseite (`/eintritt`, `reason=invalid|expired`)
-- [x] Startseite: `heft` = voller Hub; `fest` = Puzzle-Hub gesperrt (progressive Aufdeckung → #21)
+- [x] Startseite: `heft` = voller Hub; `fest` = progressive Freischaltung (#21); Hub-UI → #58 / ADR-009
 - [x] `/scan` — In-App-QR-Scanner (`html5-qrcode`, dynamischer Import); `parseRoomScan` + Slug-Whitelist
 - [x] Token-Logik: `lib/access-tokens.ts` sync mit `qr-config.mjs` (Vitest)
 - [x] `robots.txt` / `noindex` — unverändert site-wide (#16); keine weitere Verfeinerung nötig
 
-**Demo 10.06.:** primär **`fest`**-UX (Puzzle + Scanner) zeigen; `heft` kurz erklären.
+**Demo 10.06.:** primär **`fest`**-UX (Hub + Scanner) zeigen; `heft` kurz erklären. Zielbild nach #58: isometrischer Hub.
 
 ---
 
@@ -181,7 +217,7 @@ Spezifikation: [ADR-008](../adr/008-eintritt-in-app-scanner.md) (inkl. Nachtrag 
 
 Agenda:
 
-1. Demo App-Shell: Puzzle-Hub (`fest`), Scanner, eine Beispiel-Station mit Gyro-Viewer + Hotspots + Medien
+1. Demo App-Shell: Hub (`fest`, nach #58 isometrisch), Scanner, eine Beispiel-Station mit Gyro-Viewer + Hotspots + Medien
 2. Content-Lieferplan: 11 Räume → Medientyp → Klasse → Verantwortlich
 3. WLAN/Mobilfunk (Turnhalle, Außenbereich)
 4. AVV-Status (#43)
