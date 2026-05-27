@@ -14,7 +14,7 @@ Milestone: **Phase 2** | Fällig: 12.06.2026
 
 ## #58 — GS39 UI: Design-Konzept „Virtueller Schulrundgang“ (Epic)
 
-**GitHub:** https://github.com/flxln/schulnavigator/issues/58 — **offen** (2026-05-27)
+**GitHub:** https://github.com/flxln/schulnavigator/issues/58 — **geschlossen** (2026-05-27)
 
 **Labels:** `tech` `design`  
 **Assignee:** Felix  
@@ -24,23 +24,26 @@ Spezifikation: [ADR-009](../adr/009-hub-isometrisch.md) · Quelle: [`auftraggebe
 
 **Ziel:** App-Shell mit Jubiläums-Look (isometrischer Hub, GS39-Chrome, fünf Screens). Gyro-Viewer (#55), Zugang (#23), Stempel (#21) bleiben funktional unverändert.
 
+**Umsetzung:** PR #64–#68 (merged 2026-05-27). Ausführungsreihenfolge: [`projektmanagement/2026-05-27-gs39-ui-ausfuehrungsreihenfolge.md`](../projektmanagement/2026-05-27-gs39-ui-ausfuehrungsreihenfolge.md).
+
 ### Checkliste (Teil-Issues / PRs)
 
-- [x] **ADR-009 + Doku** (`entscheidungen`, `projektplan`, `architektur`, diese Datei) — im Repo, kein separates GitHub-Issue
-- [ ] **#59** — Fonts, `sn-theme.css`, `components/ui/` Primitives, `public/brand/` — https://github.com/flxln/schulnavigator/issues/59
-- [ ] **#60** — `schoolhouse-isometric-map.ts` + `IsometricSchoolhouse`; Puzzle-Hub entfernen (#14 Darstellung ersetzt) — https://github.com/flxln/schulnavigator/issues/60
-- [ ] **#61** — Home + Eintritt nach `screens.jsx` — https://github.com/flxln/schulnavigator/issues/61
-- [ ] **#62** — Raum-Chrome, `/stationen`, Scan-Chrome; Player-Styling mit #18–#20 — https://github.com/flxln/schulnavigator/issues/62
-- [ ] **#63** — Abschluss-Sparkle bei 11/11 (#22) — https://github.com/flxln/schulnavigator/issues/63
+- [x] **ADR-009 + Doku** (`entscheidungen`, `projektplan`, `architektur`, diese Datei) — PR #64
+- [x] **#59** — Fonts, `sn-theme.css`, `components/ui/` Primitives, `public/brand/` — PR #65 — https://github.com/flxln/schulnavigator/issues/59
+- [x] **#60** — `schoolhouse-isometric-map.ts` + `IsometricSchoolhouse`; Puzzle-Hub entfernt — PR #66 — https://github.com/flxln/schulnavigator/issues/60
+- [x] **#61** — Home + Eintritt nach `screens.jsx` — PR #67 — https://github.com/flxln/schulnavigator/issues/61
+- [x] **#62** — Raum-Chrome, `/stationen`, Scan-Chrome — PR #68 — https://github.com/flxln/schulnavigator/issues/62
+- [x] **#63** — Abschluss-Sparkle bei 11/11 (#22) — PR #68 — https://github.com/flxln/schulnavigator/issues/63
 
 ### Abhängigkeiten / Verknüpfung
 
 - Ersetzt Hub-Darstellung aus **#14** (Puzzle-SVG), nicht die Freischalt-Logik aus **#21**
-- **#18–#20** bleiben eigene Issues (Player-Logik); Styling in #58e
+- **#18–#20** bleiben eigene Issues (Player-Logik); Medien-Panel nutzt bereits GS39-Tokens
 
-### Offen (Schule)
+### Nach Epic (nicht blockierend)
 
-- Welcher Slug belegt den SVG-Slot **`ground-mid`** (Eingangstür)?
+- **`ground-mid` (Eingangstür):** vorläufig `klassenzimmer` — finale Zuordnung mit Schule offen ([Schriftverkehr](../../auftraggeber/schriftverkehr/2026-05-27-klaerung-eingangstuer-slot.md))
+- Manuelle Geräte-QA: Checkliste in [`anleitungen/lokal-testen-und-anschauen.md`](../../anleitungen/lokal-testen-und-anschauen.md)
 
 ---
 
@@ -116,7 +119,7 @@ Spezifikation: [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
 
 ## #21 — Stempel-System + Hub-Freischaltung
 
-**GitHub:** https://github.com/flxln/schulnavigator/issues/21 — **umgesetzt** (2026-05-26)
+**GitHub:** https://github.com/flxln/schulnavigator/issues/21 — **geschlossen** (2026-05-27)
 
 **Labels:** `tech`  
 **Assignee:** Felix
@@ -135,12 +138,14 @@ _Hinweis: Hub-Darstellung Puzzle → isometrisch siehe **#58** / [ADR-009](../ad
 
 ## #22 — Abschluss-Animation
 
+**GitHub:** https://github.com/flxln/schulnavigator/issues/22 — **geschlossen** (2026-05-27, umgesetzt über #63 / PR #68)
+
 **Labels:** `tech`  
 **Assignee:** Felix
 
-- Bei **11/11** besuchten Stationen (Stempel): Konfetti o. ä. (CSS/Canvas, keine externe Library)
-- Auf Startseite auslösen
-- Tina-Idee: einfache „Belohnung“-Animation
+- [x] Bei **11/11** besuchten Stationen: `SparkleBurst` auf Startseite (`home-screen.tsx`)
+- [x] Einmaliger Guard `sn_sparkle_done` in `localStorage` (`lib/sparkle-done.ts`)
+- [x] Keine externe Library; `prefers-reduced-motion` in `sn-theme.css`
 
 ---
 
