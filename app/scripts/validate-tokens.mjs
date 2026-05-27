@@ -19,6 +19,14 @@ const SOURCE_CANDIDATES = [
     'UI-Vorschläge',
     'colors_and_type.css',
   ),
+  join(
+    appRoot,
+    '..',
+    'auftraggeber',
+    'Virtueller Schulrundgang',
+    'assets',
+    'colors_and_type.css',
+  ),
   join(appRoot, 'scripts', 'reference', 'colors_and_type.css'),
 ]
 
@@ -33,7 +41,8 @@ function resolveSourceTokensPath() {
 
 const sourceTokensPath = resolveSourceTokensPath()
 
-const SKIP_COMPARE = new Set(['font-ui'])
+/** next/font-Variablen in layout.tsx — bewusste Abweichung zur statischen Quelle */
+const SKIP_COMPARE = new Set(['font-ui', 'font-display', 'font-script'])
 
 function extractRootVars(css) {
   const start = css.indexOf(':root')
