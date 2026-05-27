@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import './gs39-tokens.css';
+@import './sn-theme.css';
 
 /*
  * Dark Mode: bewusst nicht unterstützt — GS39 ist paper-first (warmes Papier, Navy-Tinte).

@@ -33,13 +33,13 @@ Nur Doku, kein App-Code.
 
 | Schritt | Plan | Abschnitt | Was |
 |---------|------|-----------|-----|
-| 6 | Plan 1 | Phase 0, Punkt 2 | Logos nach `app/public/brand/logos/`; L11: Git-Policy in `brand/README.md` festlegen (committed) |
-| 7 | Plan 1 | Phase 0, Punkt 1 | `app/design-reference/README.md` als Verweis auf Submodul-Ordner |
-| 8 | Plan 1 | Phase 0, Punkt 3 | Tokens abgleichen → `npm run validate:tokens` grün |
-| 9 | Plan 2 | Schritt 2 — Fonts | `layout.tsx`: Caveat_Brush + Caveat via `next/font/google` |
-| 10 | Plan 2 | Schritt 2 — Styles | `sn-theme.css` neu; relevante Klassen aus `app-styles.css` portieren; in `globals.css` importieren |
-| 11 | Plan 1 | Phase 1 — Primitives | `components/ui/`: `Gs39Button`, `Gs39Chip`, `Gs39Card`, `TopBar`, `Gs39Progress`, `FestiveDecor`, `SparkleBurst`, `Toast` |
-| 12 | Plan 1 | Phase 1 — L9 | Accent-Farben als Hex-Literale vorab berechnen (kein `color-mix()` im SVG) |
+| 6 | Plan 1 | Phase 0, Punkt 2 | Logos nach `app/public/brand/logos/`; L11: Git-Policy in `brand/README.md` festlegen (committed) — **erledigt 2026-05-27** |
+| 7 | Plan 1 | Phase 0, Punkt 1 | `app/design-reference/README.md` als Verweis auf Submodul-Ordner — **erledigt 2026-05-27** |
+| 8 | Plan 1 | Phase 0, Punkt 3 | Tokens abgleichen → `npm run validate:tokens` grün — **erledigt 2026-05-27** |
+| 9 | Plan 2 | Schritt 2 — Fonts | `layout.tsx`: Caveat_Brush + Caveat via `next/font/google` — **erledigt 2026-05-27** |
+| 10 | Plan 2 | Schritt 2 — Styles | `sn-theme.css` neu; relevante Klassen aus `app-styles.css` portieren; in `globals.css` importieren — **erledigt 2026-05-27** |
+| 11 | Plan 1 | Phase 1 — Primitives | `components/ui/`: `Gs39Button`, `Gs39Chip`, `Gs39Card`, `TopBar`, `Gs39Progress`, `FestiveDecor`, `SparkleBurst`, `Toast` — **erledigt 2026-05-27** |
+| 12 | Plan 1 | Phase 1 — L9 | Accent-Farben als Hex-Literale vorab berechnen (kein `color-mix()` im SVG) — **erledigt 2026-05-27** (`lib/gs39-brand-colors.ts`) |
 
 ---
 
