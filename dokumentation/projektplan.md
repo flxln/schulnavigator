@@ -1,6 +1,6 @@
 # Projektplan — Schulnavigator
 
-Stand: 2026-05-22 (Phase 1: #16 Deploy live; Phase 2: #55/#56 Raum-Viewer inkl. Mobil-Härtung) | Schulfest (Hard Deadline): 2026-06-26
+Stand: 2026-05-27 (Phase 2: #55/#56/#21/#23; **ADR-009** GS39 UI / isometrischer Hub in Umsetzung) | Schulfest (Hard Deadline): 2026-06-26
 
 ---
 
@@ -92,15 +92,23 @@ Phase 5 │ Post-Fest / Admin-Interface    │ ab Juli
 
 **Gamification (Minimal)**
 
-- [ ] Stempel-System via `localStorage`: Station besucht = Häkchen gesetzt
-- [ ] Startseite zeigt Fortschritt (z.B. 3/11 Stationen besucht)
-- [ ] Abschluss-Animation wenn alle 11 erledigt (einfaches Konfetti, keine externe Library)
+- [x] Stempel-System via `localStorage`: Station besucht = Häkchen gesetzt — **#21**
+- [x] Startseite zeigt Fortschritt (z.B. 3/11 Stationen besucht) — **#21** (UI-Polish → #58)
+- [ ] Abschluss-Animation wenn alle 11 erledigt (Sparkle/Konfetti) — **#22** / **#58**
+
+**GS39 UI — Design „Virtueller Schulrundgang“** ([ADR-009](./adr/009-hub-isometrisch.md), Epic **#58**)
+
+- [x] ADR-009 + Doku-Sync (Hub isometrisch statt Puzzle)
+- [ ] Isometrisches Schulhaus-Hub + `schoolhouse-isometric-map.ts` (ersetzt #14 Puzzle)
+- [ ] GS39-Chrome: Fonts (Caveat), `sn-theme`, UI-Primitives, Brand-Assets unter `app/public/brand/`
+- [ ] Screens: Home, Eintritt, `/stationen`, Raum-/Scan-Chrome um bestehenden Viewer
+- [ ] Mit Schule: Zuordnung SVG-Slot `ground-mid` (Eingangstür) → Station-Slug
 
 **Zugangskontrolle** ([ADR-005](./adr/005-zugangskontrolle-token.md), [ADR-007](./adr/007-zugangskontrolle-cookie.md)) — GitHub **#23**
 
 - [x] `/eintritt` — Token prüfen, HttpOnly-Cookie `sn_access` + Middleware
 - [x] Middleware: ohne gültigen Zugang → Hinweisseite
-- [x] Startseite: `heft` = voller Hub; `fest` = Puzzle-Hub gesperrt (progressive Freischaltung → #21) + Scan-CTA
+- [x] Startseite: `heft` = voller Hub; `fest` = progressive Freischaltung (#21) + Scan-CTA — Hub-Darstellung → **ADR-009** (isometrisch)
 - [x] `/scan` — In-App-QR-Scanner für Raum-QRs (nach Entry)
 - [x] Token: `fest-2026`, `heft-2026-27` in `lib/access-tokens.ts` (sync `qr-config.mjs`)
 

@@ -1,0 +1,98 @@
+# GS39 UI — Ausführungsreihenfolge
+
+Präzise Abfolge für die Umsetzung des Design-Konzepts „Virtueller Schulrundgang" in 5 PRs.
+Jeder Schritt referenziert den zugehörigen Plan und Abschnitt.
+
+- **Plan 1** = `.cursor/plans/gs39_ui_aus_design-konzept_936de8e3.plan.md` (technische Details)
+- **Plan 2** = `.cursor/plans/gs39_ui_phase_2_integration_7859e3c8.plan.md` (Governance + PR-Struktur)
+
+---
+
+## Vor dem ersten Commit — kein PR
+
+| Schritt | Plan | Abschnitt | Was |
+|---------|------|-----------|-----|
+| 1 | Plan 2 | Schritt 0 — ADR-009 | `dokumentation/adr/009-hub-isometrisch.md` anlegen aus Template — **erledigt 2026-05-27** |
+| 2 | Plan 2 | Schritt 0 — Doku-Sync | `entscheidungen.md`, `projektplan.md`, `architektur.md`, `issues-phase-2.md` aktualisieren — **erledigt 2026-05-27** |
+| 3 | Plan 2 | Schritt 0 — GitHub | Epic #58 + Teil-Issues #59–#63 anlegen (Milestone Phase 2) — **erledigt 2026-05-27** |
+| 4 | *(extern)* | — | L13: `ground-mid`-Slot mit Sten/Tina klären — welche Station, Sonder-Interaktion? |
+
+---
+
+## PR1 — Governance
+
+Nur Doku, kein App-Code.
+
+| Schritt | Plan | Abschnitt | Was |
+|---------|------|-----------|-----|
+| 5 | Plan 2 | Schritt 0 | ADR-009 + alle Doku-Dateien committen |
+
+---
+
+## PR2 — Assets & Design-System
+
+| Schritt | Plan | Abschnitt | Was |
+|---------|------|-----------|-----|
+| 6 | Plan 1 | Phase 0, Punkt 2 | Logos nach `app/public/brand/logos/`; L11: Git-Policy in `brand/README.md` festlegen (committed) |
+| 7 | Plan 1 | Phase 0, Punkt 1 | `app/design-reference/README.md` als Verweis auf Submodul-Ordner |
+| 8 | Plan 1 | Phase 0, Punkt 3 | Tokens abgleichen → `npm run validate:tokens` grün |
+| 9 | Plan 2 | Schritt 2 — Fonts | `layout.tsx`: Caveat_Brush + Caveat via `next/font/google` |
+| 10 | Plan 2 | Schritt 2 — Styles | `sn-theme.css` neu; relevante Klassen aus `app-styles.css` portieren; in `globals.css` importieren |
+| 11 | Plan 1 | Phase 1 — Primitives | `components/ui/`: `Gs39Button`, `Gs39Chip`, `Gs39Card`, `TopBar`, `Gs39Progress`, `FestiveDecor`, `SparkleBurst`, `Toast` |
+| 12 | Plan 1 | Phase 1 — L9 | Accent-Farben als Hex-Literale vorab berechnen (kein `color-mix()` im SVG) |
+
+---
+
+## PR3 — Isometrischer Hub
+
+> **Achtung: atomar — nicht partial deployen.** `buildSchoolhouseSegments` wirft hart; ein halbfertiger Zustand bricht den Build sofort.
+
+| Schritt | Plan | Abschnitt | Was |
+|---------|------|-----------|-----|
+| 13 | Plan 2 | Schritt 3, Punkt 1 | `schoolhouse-isometric-map.ts`: 11 Slugs → room + nr + accent (Hex); Vitest-Tests |
+| 14 | Plan 2 | Schritt 3, Punkt 2 | `isometric-schoolhouse.tsx` portieren; L3: transparente Hit-Area-Overlays ≥ 44×44 viewBox-px; L2: `tabIndex`, `role="button"`, `onKeyDown` pro Fenster; L7: `isHydrated`-Guard wie in `hub-with-progress.tsx`; L10: `fontFamily="var(--font-display)"` + Render-Test auf Gerät |
+| 15 | Plan 1 | Phase 2 — L8 | `hub-mode.ts` API komplett neu definieren (kein Ersetzen — alle Typen, Exports, 4 Tests neu schreiben) |
+| 16 | Plan 1 | Phase 2, Punkt 3 — L4 | `schoolhouse-segments.ts` + `schoolhouse-layout.ts` + `schoolhouse-svg.tsx` + Puzzle-Overlays in `schoolhouse-hub.tsx` entfernen; `puzzleSegmentId` aus `stations.json` und allen TS-Typen entfernen |
+| 17 | Plan 2 | Schritt 3, Punkt 4 | `schoolhouse-sr-nav.tsx` auf neue Slugs/Rooms anpassen (bleibt als versteckte `<Link>`-Liste für Screen-Reader) |
+| 18 | Plan 2 | Schritt 3 | `npm run test` → alle Tests grün; `npm run build` |
+
+---
+
+## PR4 — Home + Eintritt + `/stationen`
+
+| Schritt | Plan | Abschnitt | Was |
+|---------|------|-----------|-----|
+| 19 | Plan 1 | Phase 3.1 | `home-screen.tsx`: Brand-Strip, Hero, `IsometricSchoolhouse`, `Gs39Progress`, Scan-CTA, Ribbon |
+| 20 | Plan 1 | Phase 3.2 | `eintritt/page.tsx`: Brush-Headline, Karte, Fehlerkarten — keine Demo-Buttons |
+| 21 | Plan 1 | Phase 3.5 | `app/stationen/page.tsx` neu: Station-Cards mit Lock/Visited |
+| 22 | Plan 1 | Phase 3.5 — L1 | `middleware.ts:82`: `'/stationen'` zum `config.matcher` hinzufügen |
+| 23 | Plan 1 | Phase 3.4 — L5 | `highlightSlug`-Mechanismus: „Zurück"-Button mit `router.push('/?highlight='+slug)`; `page.tsx` liest `searchParams.highlight`; danach `router.replace('/')` |
+
+---
+
+## PR5 — Raum + Scan + Abschluss + Doku
+
+| Schritt | Plan | Abschnitt | Was |
+|---------|------|-----------|-----|
+| 24 | Plan 1 | Phase 3.3 | `scan/page.tsx` + `qr-scanner.tsx`: Chrome, Rahmen, Copy — keine Funktionsänderung |
+| 25 | Plan 1 | Phase 3.4 | `raum-station-client.tsx`: Layout aus `StationScreen` um bestehenden `RaumViewer` — Gyro unverändert |
+| 26 | Plan 1 | Phase 3.6 — L6 | `SparkleBurst` bei 11/11 mit `sn_sparkle_done`-Guard in `localStorage` |
+| 27 | Plan 1 | Phase 4 | `stations.json` optional um `schoolhouse`-Feld ergänzen (oder nur in Map belassen) |
+| 28 | Plan 1 | Phase 4 — Doku | `architektur.md`: Hub isometrisch; `lokal-testen-und-anschauen.md`: `/stationen` ergänzen |
+| 29 | Plan 2 | Schritt 5 — QA | Checkliste: Build, Tests, `curl /stationen` ohne Cookie → 302, Touch iOS ≥ 44px, Tastatur-Navigation, SVG-Fonts auf Gerät, SparkleBurst-Guard, `highlightSlug`-Flow |
+| 30 | Plan 2 | Schritt 5 — Abnahme | Slug↔Fenster-Tabelle + `ground-mid`-Zuordnung mit Auftraggeber durchgehen |
+
+---
+
+## Übersicht
+
+| PR | Inhalt | Tage (ca.) | Kritische Lücken |
+|----|--------|------------|-----------------|
+| PR1 | Governance: ADR-009, Doku, Issues | 0,5 | L13 (ground-mid vorab klären) |
+| PR2 | Assets, Fonts, `sn-theme`, Primitives | 1–2 | L9, L11 |
+| PR3 | Isometrischer Hub (atomar) | 2–3 | L2, L3, L4, L7, L8, L10 |
+| PR4 | Home, Eintritt, `/stationen` | 1–2 | L1, L5 |
+| PR5 | Raum, Scan, Sparkle, Doku | 1,5–2 | L6 |
+| **Σ** | | **6–9** | |
+
+Demo-Termin 10.06.: PR1–PR4 müssen vorher merged sein. PR3 ist der kritischste — frühzeitig beginnen.

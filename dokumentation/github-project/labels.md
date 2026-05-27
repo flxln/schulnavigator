@@ -9,6 +9,7 @@ Labels kategorisieren Issues nach Typ und Verantwortlichkeit.
 | Label | Farbe (Hex) | Bedeutung |
 |---|---|---|
 | `tech` | `#0075ca` | Entwicklungsaufgabe (Code, Deploy, Infrastruktur) |
+| `design` | `#1f6abb` | UI und Gestaltung, Design-System, GS39-Chrome (Epic #58) |
 | `content` | `#e4e669` | Content-Erstellung oder -Integration |
 | `org` | `#d876e3` | Organisatorisches (Meetings, Verträge, Absprachen) |
 
