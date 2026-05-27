@@ -2,14 +2,20 @@ import { describe, expect, it } from 'vitest'
 import raw from '@/data/stations.json'
 import { validateStationsFile } from '@/lib/validate-stations'
 
-describe('validateStationsFile puzzleSegmentId', () => {
-  it('wirft bei doppeltem puzzleSegmentId', () => {
+describe('validateStationsFile isometrischer Hub', () => {
+  it('akzeptiert gültige stations.json', () => {
+    const stations = validateStationsFile(raw)
+    expect(stations).toHaveLength(11)
+    expect(stations.some((s) => s.slug === 'musik')).toBe(true)
+  })
+
+  it('wirft bei unbekanntem slug ohne Hub-Zuordnung', () => {
     const broken = structuredClone(raw) as {
-      stations: { puzzleSegmentId: string }[]
+      stations: { slug: string }[]
     }
-    broken.stations[1]!.puzzleSegmentId = broken.stations[0]!.puzzleSegmentId
+    broken.stations[0]!.slug = 'unbekannter-raum'
     expect(() => validateStationsFile(broken as unknown)).toThrow(
-      'doppeltes puzzleSegmentId',
+      'keine isometrische Hub-Zuordnung',
     )
   })
 })

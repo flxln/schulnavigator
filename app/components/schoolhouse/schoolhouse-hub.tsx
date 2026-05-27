@@ -1,62 +1,76 @@
 'use client'
 
-import Link from 'next/link'
-import type { SchoolhouseSegment } from '@/lib/schoolhouse-segments'
+import { useCallback, useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { IsometricSchoolhouse } from '@/components/schoolhouse/isometric-schoolhouse'
 import { ScanCta } from '@/components/schoolhouse/scan-cta'
 import { SchoolhouseSrNav } from '@/components/schoolhouse/schoolhouse-sr-nav'
-import { SchoolhouseSvg } from '@/components/schoolhouse/schoolhouse-svg'
+import { Gs39Toast, Gs39ToastLayer } from '@/components/ui/gs39-toast'
+import type { EntryMode } from '@/lib/access-tokens'
+import { isHubFullyLocked } from '@/lib/hub-mode'
+import type { IsometricHubStation } from '@/lib/schoolhouse-isometric-map'
 
 type SchoolhouseHubProps = {
-  segments: readonly SchoolhouseSegment[]
-  unlockedSegmentIds: ReadonlySet<string>
-}
-
-function pct(value: number, total: number): string {
-  return `${(value / total) * 100}%`
+  hubStations: readonly IsometricHubStation[]
+  unlockedSlugs: ReadonlySet<string>
+  visitedSlugs: ReadonlySet<string>
+  mode: EntryMode
+  isHydrated: boolean
+  highlightSlug?: string
 }
 
 export function SchoolhouseHub({
-  segments,
-  unlockedSegmentIds,
+  hubStations,
+  unlockedSlugs,
+  visitedSlugs,
+  mode,
+  isHydrated,
+  highlightSlug,
 }: SchoolhouseHubProps) {
+  const router = useRouter()
+  const [toastMessage, setToastMessage] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!toastMessage) return
+    const t = window.setTimeout(() => setToastMessage(null), 2400)
+    return () => window.clearTimeout(t)
+  }, [toastMessage])
+
+  const onStationTap = useCallback(
+    (slug: string) => {
+      if (mode === 'fest' && !unlockedSlugs.has(slug)) {
+        const station = hubStations.find((s) => s.slug === slug)
+        setToastMessage(
+          station
+            ? `„${station.titel}" ist noch zu — scanne den QR-Code an der Tür.`
+            : 'Diese Station ist noch gesperrt.',
+        )
+        return
+      }
+      router.push(`/raum/${slug}`)
+    },
+    [mode, unlockedSlugs, hubStations, router],
+  )
+
   const allLocked =
-    segments.length > 0 && unlockedSegmentIds.size === 0
+    isHydrated && isHubFullyLocked(mode, unlockedSlugs, hubStations.length)
 
   return (
     <div className="flex flex-col gap-6">
       <SchoolhouseSrNav
-        segments={segments}
-        unlockedSegmentIds={unlockedSegmentIds}
+        hubStations={hubStations}
+        unlockedSlugs={unlockedSlugs}
       />
-      <div className="relative aspect-[2/3] min-h-[50vh] max-h-[85vh] w-full">
-        <div className="absolute inset-0">
-          <SchoolhouseSvg
-            segments={segments}
-            unlockedSegmentIds={unlockedSegmentIds}
-          />
-        </div>
-        {!allLocked &&
-          segments.map((s) => {
-            if (!unlockedSegmentIds.has(s.puzzleSegmentId)) {
-              return null
-            }
-            return (
-              <Link
-                key={s.slug}
-                href={`/raum/${s.slug}`}
-                className="absolute z-10 block rounded-[var(--r-md)] ring-2 ring-transparent focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg-2"
-                style={{
-                  left: pct(s.x, 400),
-                  top: pct(s.y, 600),
-                  width: pct(s.width, 400),
-                  height: pct(s.height, 600),
-                }}
-                aria-label={`${s.titel} öffnen`}
-              >
-                <span className="sr-only">{s.titel}</span>
-              </Link>
-            )
-          })}
+      <div className="relative w-full">
+        <IsometricSchoolhouse
+          stations={hubStations}
+          visitedSlugs={visitedSlugs}
+          unlockedSlugs={unlockedSlugs}
+          highlightSlug={highlightSlug}
+          mode={mode}
+          isHydrated={isHydrated}
+          onStationTap={onStationTap}
+        />
       </div>
       {allLocked ? (
         <p
@@ -67,6 +81,11 @@ export function SchoolhouseHub({
         </p>
       ) : null}
       <ScanCta />
+      {toastMessage ? (
+        <Gs39ToastLayer>
+          <Gs39Toast message={toastMessage} icon="lock" />
+        </Gs39ToastLayer>
+      ) : null}
     </div>
   )
 }

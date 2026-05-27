@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { cookies } from 'next/headers'
 import { HubWithProgress } from '@/components/schoolhouse/hub-with-progress'
 import { ACCESS_COOKIE, validateToken } from '@/lib/access-tokens'
-import { buildSchoolhouseSegments } from '@/lib/schoolhouse-segments'
+import { buildIsometricHubStations } from '@/lib/schoolhouse-isometric-map'
 import { getAllStations } from '@/lib/stations'
 
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ export default async function Home() {
   const mode = access?.mode ?? 'heft'
 
   const stations = getAllStations()
-  const segments = buildSchoolhouseSegments(stations)
+  const hubStations = buildIsometricHubStations(stations)
   const validSlugs = stations.map((s) => s.slug)
 
   return (
@@ -34,7 +34,7 @@ export default async function Home() {
       </h2>
       <HubWithProgress
         mode={mode}
-        segments={segments}
+        hubStations={hubStations}
         validSlugs={validSlugs}
       />
     </main>
