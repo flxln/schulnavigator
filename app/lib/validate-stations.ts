@@ -1,8 +1,10 @@
 import type { Hotspot, Medium, Station, MediumTyp } from '@/lib/types'
 import {
-  EXPECTED_SEGMENT_IDS,
-  EXPECTED_SEGMENT_ID_SET,
-} from '@/lib/schoolhouse-layout'
+  buildIsometricHubStations,
+  ISOMETRIC_SLUG_MAP,
+} from '@/lib/schoolhouse-isometric-map'
+
+const EXPECTED_STATION_COUNT = Object.keys(ISOMETRIC_SLUG_MAP).length
 
 const MEDIUM_TYPEN: readonly MediumTyp[] = ['audio', 'video', 'foto', 'text']
 
@@ -95,6 +97,10 @@ function validateStation(raw: unknown, index: number): Station {
     `${prefix}: slug "${raw.slug}" ist kein kebab-case`,
   )
   assert(
+    ISOMETRIC_SLUG_MAP[raw.slug] !== undefined,
+    `${prefix}: slug "${raw.slug}" hat keine isometrische Hub-Zuordnung (ADR-009)`,
+  )
+  assert(
     typeof raw.titel === 'string' && raw.titel.length > 0,
     `${prefix}: titel fehlt`,
   )
@@ -139,14 +145,6 @@ function validateStation(raw: unknown, index: number): Station {
       )
     }
   }
-  assert(
-    typeof raw.puzzleSegmentId === 'string' && raw.puzzleSegmentId.length > 0,
-    `${prefix}: puzzleSegmentId fehlt oder ist leer`,
-  )
-  assert(
-    EXPECTED_SEGMENT_ID_SET.has(raw.puzzleSegmentId),
-    `${prefix}: puzzleSegmentId "${raw.puzzleSegmentId}" ist kein gültiges Schulhaus-Segment`,
-  )
   return {
     slug: raw.slug,
     titel: raw.titel,
@@ -154,7 +152,6 @@ function validateStation(raw: unknown, index: number): Station {
     bild: raw.bild as string | undefined,
     medien,
     hotspots,
-    puzzleSegmentId: raw.puzzleSegmentId,
   }
 }
 
@@ -170,24 +167,13 @@ export function validateStationsFile(raw: unknown): Station[] {
     return st
   })
   assert(
-    stations.length === EXPECTED_SEGMENT_IDS.length,
-    `stations: erwartet ${EXPECTED_SEGMENT_IDS.length} Einträge, erhalten ${stations.length}`,
+    stations.length === EXPECTED_STATION_COUNT,
+    `stations: erwartet ${EXPECTED_STATION_COUNT} Einträge, erhalten ${stations.length}`,
   )
-  const puzzleIds = new Set<string>()
-  for (const st of stations) {
-    assert(
-      !puzzleIds.has(st.puzzleSegmentId),
-      `doppeltes puzzleSegmentId "${st.puzzleSegmentId}"`,
-    )
-    puzzleIds.add(st.puzzleSegmentId)
+  const expectedSlugs = new Set(Object.keys(ISOMETRIC_SLUG_MAP))
+  for (const slug of expectedSlugs) {
+    assert(slugs.has(slug), `stations: fehlender slug "${slug}" für isometrischen Hub`)
   }
-  const expected = new Set(EXPECTED_SEGMENT_IDS)
-  assert(
-    puzzleIds.size === expected.size,
-    'stations: Anzahl puzzleSegmentId stimmt nicht mit Schulhaus-Layout überein',
-  )
-  for (const id of expected) {
-    assert(puzzleIds.has(id), `stations: fehlendes puzzleSegmentId "${id}"`)
-  }
+  buildIsometricHubStations(stations)
   return stations
 }

@@ -368,6 +368,15 @@
 
 /* ── Sparkle / Toast / Fade ── */
 
+.sh-window:focus {
+  outline: none;
+}
+
+.sh-window:focus-visible {
+  outline: 3px solid var(--brand-green);
+  outline-offset: 2px;
+}
+
 .sh-window--pop {
   animation: sh-pop 720ms var(--ease-out);
   transform-box: fill-box;

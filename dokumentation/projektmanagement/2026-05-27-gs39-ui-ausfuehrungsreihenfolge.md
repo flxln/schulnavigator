@@ -49,12 +49,12 @@ Nur Doku, kein App-Code.
 
 | Schritt | Plan | Abschnitt | Was |
 |---------|------|-----------|-----|
-| 13 | Plan 2 | Schritt 3, Punkt 1 | `schoolhouse-isometric-map.ts`: 11 Slugs → room + nr + accent (Hex); Vitest-Tests |
-| 14 | Plan 2 | Schritt 3, Punkt 2 | `isometric-schoolhouse.tsx` portieren; L3: transparente Hit-Area-Overlays ≥ 44×44 viewBox-px; L2: `tabIndex`, `role="button"`, `onKeyDown` pro Fenster; L7: `isHydrated`-Guard wie in `hub-with-progress.tsx`; L10: `fontFamily="var(--font-display)"` + Render-Test auf Gerät |
-| 15 | Plan 1 | Phase 2 — L8 | `hub-mode.ts` API komplett neu definieren (kein Ersetzen — alle Typen, Exports, 4 Tests neu schreiben) |
-| 16 | Plan 1 | Phase 2, Punkt 3 — L4 | `schoolhouse-segments.ts` + `schoolhouse-layout.ts` + `schoolhouse-svg.tsx` + Puzzle-Overlays in `schoolhouse-hub.tsx` entfernen; `puzzleSegmentId` aus `stations.json` und allen TS-Typen entfernen |
-| 17 | Plan 2 | Schritt 3, Punkt 4 | `schoolhouse-sr-nav.tsx` auf neue Slugs/Rooms anpassen (bleibt als versteckte `<Link>`-Liste für Screen-Reader) |
-| 18 | Plan 2 | Schritt 3 | `npm run test` → alle Tests grün; `npm run build` |
+| 13 | Plan 2 | Schritt 3, Punkt 1 | `schoolhouse-isometric-map.ts`: 11 Slugs → room + nr + accent (Hex); Vitest-Tests — **erledigt 2026-05-27** |
+| 14 | Plan 2 | Schritt 3, Punkt 2 | `isometric-schoolhouse.tsx` portieren; L3: transparente Hit-Area-Overlays ≥ 44×44 viewBox-px; L2: `tabIndex`, `role="button"`, `onKeyDown` pro Fenster; L7: `isHydrated`-Guard wie in `hub-with-progress.tsx`; L10: `fontFamily="var(--font-display)"` + Render-Test auf Gerät — **erledigt 2026-05-27** (Geräte-Render-Test manuell) |
+| 15 | Plan 1 | Phase 2 — L8 | `hub-mode.ts` API komplett neu definieren (kein Ersetzen — alle Typen, Exports, 4 Tests neu schreiben) — **erledigt 2026-05-27** |
+| 16 | Plan 1 | Phase 2, Punkt 3 — L4 | `schoolhouse-segments.ts` + `schoolhouse-layout.ts` + `schoolhouse-svg.tsx` + Puzzle-Overlays in `schoolhouse-hub.tsx` entfernen; `puzzleSegmentId` aus `stations.json` und allen TS-Typen entfernen — **erledigt 2026-05-27** |
+| 17 | Plan 2 | Schritt 3, Punkt 4 | `schoolhouse-sr-nav.tsx` auf neue Slugs/Rooms anpassen (bleibt als versteckte `<Link>`-Liste für Screen-Reader) — **erledigt 2026-05-27** |
+| 18 | Plan 2 | Schritt 3 | `npm run test` → alle Tests grün; `npm run build` — **erledigt 2026-05-27** |
 
 ---
 

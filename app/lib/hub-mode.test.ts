@@ -1,38 +1,59 @@
 import { describe, expect, it } from 'vitest'
-import { getUnlockedSegmentIdsForMode } from '@/lib/hub-mode'
+import {
+  getUnlockedSlugsForMode,
+  isHubFullyLocked,
+  isHubStationNavigable,
+} from '@/lib/hub-mode'
 
-const SEGMENTS = [
-  { slug: 'a', puzzleSegmentId: 'seg-01' },
-  { slug: 'b', puzzleSegmentId: 'seg-02' },
-  { slug: 'c', puzzleSegmentId: 'seg-03' },
-] as const
+const SLUGS = ['a', 'b', 'c'] as const
 
-describe('getUnlockedSegmentIdsForMode', () => {
-  it('heft: alle Segmente frei', () => {
-    const ids = getUnlockedSegmentIdsForMode('heft', SEGMENTS, new Set())
-    expect(ids).toEqual(new Set(['seg-01', 'seg-02', 'seg-03']))
+describe('getUnlockedSlugsForMode', () => {
+  it('heft: alle Slugs frei', () => {
+    const unlocked = getUnlockedSlugsForMode('heft', SLUGS, new Set())
+    expect(unlocked).toEqual(new Set(['a', 'b', 'c']))
   })
 
-  it('fest ohne Besuche: nichts frei', () => {
-    const ids = getUnlockedSegmentIdsForMode('fest', SEGMENTS, new Set())
-    expect(ids.size).toBe(0)
+  it('fest ohne Besuche: keine Slugs frei', () => {
+    const unlocked = getUnlockedSlugsForMode('fest', SLUGS, new Set())
+    expect(unlocked.size).toBe(0)
   })
 
   it('fest: nur besuchte Slugs frei', () => {
-    const ids = getUnlockedSegmentIdsForMode(
+    const unlocked = getUnlockedSlugsForMode(
       'fest',
-      SEGMENTS,
+      SLUGS,
       new Set(['a', 'c']),
     )
-    expect(ids).toEqual(new Set(['seg-01', 'seg-03']))
+    expect(unlocked).toEqual(new Set(['a', 'c']))
   })
 
   it('fest: alle besucht', () => {
-    const ids = getUnlockedSegmentIdsForMode(
+    const unlocked = getUnlockedSlugsForMode(
       'fest',
-      SEGMENTS,
+      SLUGS,
       new Set(['a', 'b', 'c']),
     )
-    expect(ids.size).toBe(3)
+    expect(unlocked.size).toBe(3)
+  })
+})
+
+describe('isHubStationNavigable', () => {
+  it('true wenn Slug in unlockedSlugs', () => {
+    expect(isHubStationNavigable('a', new Set(['a']))).toBe(true)
+    expect(isHubStationNavigable('b', new Set(['a']))).toBe(false)
+  })
+})
+
+describe('isHubFullyLocked', () => {
+  it('fest ohne Freischaltung: gesperrt', () => {
+    expect(isHubFullyLocked('fest', new Set(), 11)).toBe(true)
+  })
+
+  it('fest mit mindestens einer Station: nicht voll gesperrt', () => {
+    expect(isHubFullyLocked('fest', new Set(['musik']), 11)).toBe(false)
+  })
+
+  it('heft: nie voll gesperrt', () => {
+    expect(isHubFullyLocked('heft', new Set(), 11)).toBe(false)
   })
 })

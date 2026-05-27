@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { RaumStationClient } from '@/components/raum-station-client'
 import { StationVisitRecorder } from '@/components/station-visit-recorder'
+import { getIsometricMapping } from '@/lib/schoolhouse-isometric-map'
 import { getAllSlugs, getAllStations, getStationBySlug } from '@/lib/stations'
 
 type PageProps = {
@@ -37,11 +38,12 @@ export default async function RaumPage({ params }: PageProps) {
   }
 
   const validSlugs = getAllStations().map((s) => s.slug)
+  const { room } = getIsometricMapping(slug)
 
   return (
     <main
       className="mx-auto flex min-h-full max-w-lg flex-col gap-6 px-4 py-8"
-      data-puzzle-segment={station.puzzleSegmentId}
+      data-schoolhouse-room={room}
     >
       <StationVisitRecorder slug={slug} validSlugs={validSlugs} />
       <RaumStationClient station={station} validSlugs={validSlugs} />

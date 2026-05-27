@@ -1,23 +1,37 @@
 import type { EntryMode } from '@/lib/access-tokens'
 
-export type HubSegmentRef = {
-  slug: string
-  puzzleSegmentId: string
-}
-
-export function getUnlockedSegmentIdsForMode(
+/**
+ * Slugs, die vom Hub aus geöffnet werden dürfen (ADR-009).
+ * heft: alle Stationen; fest: nur besuchte (`sn_visited_slugs`).
+ */
+export function getUnlockedSlugsForMode(
   mode: EntryMode,
-  segments: readonly HubSegmentRef[],
+  stationSlugs: readonly string[],
   visitedSlugs: ReadonlySet<string>,
 ): ReadonlySet<string> {
   if (mode === 'heft') {
-    return new Set(segments.map((s) => s.puzzleSegmentId))
+    return new Set(stationSlugs)
   }
   const unlocked = new Set<string>()
-  for (const segment of segments) {
-    if (visitedSlugs.has(segment.slug)) {
-      unlocked.add(segment.puzzleSegmentId)
+  for (const slug of stationSlugs) {
+    if (visitedSlugs.has(slug)) {
+      unlocked.add(slug)
     }
   }
   return unlocked
+}
+
+export function isHubStationNavigable(
+  slug: string,
+  unlockedSlugs: ReadonlySet<string>,
+): boolean {
+  return unlockedSlugs.has(slug)
+}
+
+export function isHubFullyLocked(
+  mode: EntryMode,
+  unlockedSlugs: ReadonlySet<string>,
+  stationCount: number,
+): boolean {
+  return mode === 'fest' && stationCount > 0 && unlockedSlugs.size === 0
 }

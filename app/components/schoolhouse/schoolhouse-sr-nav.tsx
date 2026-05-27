@@ -1,20 +1,21 @@
 import Link from 'next/link'
-import type { SchoolhouseSegment } from '@/lib/schoolhouse-segments'
+import { isHubStationNavigable } from '@/lib/hub-mode'
+import type { IsometricHubStation } from '@/lib/schoolhouse-isometric-map'
 
 type SchoolhouseSrNavProps = {
-  segments: readonly SchoolhouseSegment[]
-  unlockedSegmentIds: ReadonlySet<string>
+  hubStations: readonly IsometricHubStation[]
+  unlockedSlugs: ReadonlySet<string>
 }
 
 export function SchoolhouseSrNav({
-  segments,
-  unlockedSegmentIds,
+  hubStations,
+  unlockedSlugs,
 }: SchoolhouseSrNavProps) {
   return (
     <nav aria-label="Alle Stationen" className="sr-only">
       <ul>
-        {segments.map((s) => {
-          const unlocked = unlockedSegmentIds.has(s.puzzleSegmentId)
+        {hubStations.map((s) => {
+          const unlocked = isHubStationNavigable(s.slug, unlockedSlugs)
           return (
             <li key={s.slug}>
               {unlocked ? (
