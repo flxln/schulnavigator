@@ -133,7 +133,7 @@ export function neutralAngleForPan(
     if (Math.abs(p + half) < 0.001) {
       return useCircularDelta ? normalizeDeg(angleDeg) : angleDeg
     }
-    let eff =
+    const eff =
       ((p + half) / half) * (GYRO_FULL_RANGE_DEG / GYRO_SENSITIVITY) / GYRO_ALPHA_PAN_SIGN
     const delta =
       eff > 0 ? eff + GYRO_DEADZONE_DEG : eff < 0 ? eff - GYRO_DEADZONE_DEG : 0
