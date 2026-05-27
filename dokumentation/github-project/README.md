@@ -26,7 +26,9 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issue **#56** (Raum-Viewer Mobil-Härtung) — dokumentiert, Code umgesetzt (GitHub-Status bei Bedarf mit Issue-Body abgleichen).
 - [x] Issue **#23** (Zugangskontrolle Cookie/Middleware/Scanner) — umgesetzt, ADR-007
 - [x] Issue **#57** (Eintritt In-App-Scanner auf `/eintritt`) — umgesetzt, ADR-008
-- [x] Issue **#21** (Stempel + Puzzle-Freischaltung) — umgesetzt (`sn_visited_slugs`, `hub-with-progress`)
+- [x] Issue **#21** (Stempel + Hub-Freischaltung) — geschlossen (`sn_visited_slugs`, `hub-with-progress`)
+- [x] Epic **#58** (GS39 UI) + Teil-Issues **#59–#63** — geschlossen (PR #64–#68, merged 2026-05-27)
+- [x] Issue **#22** (Abschluss-Animation) — geschlossen (über #63 / `SparkleBurst`)
 - [ ] Suche im Repo-Issue-Tracker nach veralteten Formulierungen (z. B. „8 Stationen“, „Admin-Interface entwickeln“ ohne Directus-Kontext).
 
-Letzter dokumentierter Abgleich: **2026-05-26** (Milestones, #1, #17, #21, #23, #46, #47, **#55**/**#56** Raum-Viewer).
+Letzter dokumentierter Abgleich: **2026-05-27** (#58/#59–#63/#22 geschlossen; zuvor #21, #23, #55/#56).

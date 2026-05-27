@@ -80,7 +80,7 @@ Nur Doku, kein App-Code.
 | 27 | Plan 1 | Phase 4 | `stations.json` optional um `schoolhouse`-Feld ergänzen (oder nur in Map belassen) — **entfallen** (nur `schoolhouse-isometric-map.ts`) |
 | 28 | Plan 1 | Phase 4 — Doku | `architektur.md`: Hub isometrisch; `lokal-testen-und-anschauen.md`: `/stationen` ergänzen — **erledigt 2026-05-27** |
 | 29 | Plan 2 | Schritt 5 — QA | Checkliste: Build, Tests, `curl /stationen` ohne Cookie → 302, Touch iOS ≥ 44px, Tastatur-Navigation, SVG-Fonts auf Gerät, SparkleBurst-Guard, `highlightSlug`-Flow — **Checkliste in** `lokal-testen-und-anschauen.md` |
-| 30 | Plan 2 | Schritt 5 — Abnahme | Slug↔Fenster-Tabelle + `ground-mid`-Zuordnung mit Auftraggeber durchgehen — **offen** (L13) |
+| 30 | Plan 2 | Schritt 5 — Abnahme | Slug↔Fenster-Tabelle + `ground-mid`-Zuordnung mit Auftraggeber durchgehen — **offen** (L13); Epic **#58** + #59–#63 auf GitHub **geschlossen** 2026-05-27 |
 
 ---
 
