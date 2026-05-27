@@ -1,6 +1,6 @@
 # Schulnavigator — Architektur
 
-_Stand: 2026-05-22 (Issue #16: Live-Deploy; **#55/#56:** Raum-Viewer; Gyro Portrait `alpha`/Armschwenk, GS39-Theme, Mobil-Härtung) — siehe [entscheidungen.md](./entscheidungen.md)_
+_Stand: 2026-05-27 (**ADR-009:** isometrischer Hub geplant; **#55/#56:** Raum-Viewer; GS39-Theme; Live #16) — siehe [entscheidungen.md](./entscheidungen.md)_
 
 ## Tech-Stack
 
@@ -16,15 +16,30 @@ _Stand: 2026-05-22 (Issue #16: Live-Deploy; **#55/#56:** Raum-Viewer; Gyro Portr
 | Zugangskontrolle    | Entry-Token, Cookie `sn_access` + Middleware, Modi `fest`/`heft` | gleich                           | [005](./adr/005-zugangskontrolle-token.md), [007](./adr/007-zugangskontrolle-cookie.md) |
 | Navigation          | In-App-Scanner Entry (`/eintritt`) + Räume (`/scan`) | gleich                           | [005](./adr/005-zugangskontrolle-token.md), [008](./adr/008-eintritt-in-app-scanner.md) |
 | Raum-Viewer         | Gyro-Pan, Hotspots, Tap-Fallback; normales Foto   | gleich                           | [006](./adr/006-raum-viewer-gyro-hotspots.md) |
-| UI / Schul-Theme    | GS39-Design-Tokens (`gs39-tokens.css`), Nunito      | pro Schule eigenes Token-Sheet   | Auftraggeber-CSS, [ADR-003](./adr/003-content-mvp-json-directus.md) |
+| UI / Schul-Theme    | GS39-Tokens + Jubiläums-UI (Epic #58)             | pro Schule eigenes Token-Sheet   | [ADR-009](./adr/009-hub-isometrisch.md), Auftraggeber-CSS |
+| Startseite-Hub      | Isometrisches Schulhaus-SVG (ersetzt Puzzle)      | gleich                           | [ADR-009](./adr/009-hub-isometrisch.md) |
 
-## UI & Theme (GS39, Issue #55)
+## UI & Theme (GS39, Issue #55 / Epic #58)
+
+**Design-Konzept (Umsetzung):** [`auftraggeber/Virtueller Schulrundgang/`](../auftraggeber/Virtueller%20Schulrundgang/) — [ADR-009](./adr/009-hub-isometrisch.md). Brand-Assets zur Laufzeit: [`app/public/brand/`](../app/public/brand/) (Kopie aus Submodule/Design-Paket).
 
 - **Source of Truth (Design):** [`auftraggeber/material/UI-Vorschläge/colors_and_type.css`](../auftraggeber/material/UI-Vorschläge/colors_and_type.css) — Auftraggeber-Submodule, nicht im Docker-Kontext. Regeln für Agenten: [build-kontext-submodule-regeln.md](./build-kontext-submodule-regeln.md).
 - **App-Kopie:** [`app/app/gs39-tokens.css`](../app/app/gs39-tokens.css) — `:root`-Variablen; in [`globals.css`](../app/app/globals.css) per `@import` und `@theme inline` als semantische Tailwind-Farben (`bg-1`, `fg-1`, `accent`, …).
 - **Schul-ID (MVP):** [`app/lib/school-theme.ts`](../app/lib/school-theme.ts) — `SCHOOL_ID = 'gs39'`; Komponenten nutzen semantische Klassen, keine direkten `--brand-*` in TSX. Mehrere Schulen später: anderes Token-Sheet pro Mandant (ADR-003).
 - **Dark Mode:** bewusst deaktiviert (Papier-Look).
 - **Build-Check:** `npm run validate:tokens` vergleicht App-Tokens mit der Referenz (`colors_and_type.css` lokal bzw. [`app/scripts/reference/colors_and_type.css`](../app/scripts/reference/colors_and_type.css) im Docker-Build). Wird von `npm run build` mitaufgerufen.
+- **Display/Script-Fonts (geplant #58):** Caveat Brush, Caveat via `next/font` — ergänzt Nunito.
+
+## Startseite-Hub (ADR-009, geplant)
+
+| Aspekt | Details |
+|--------|---------|
+| Komponente | `IsometricSchoolhouse` (Port aus Design-`schoolhouse.jsx`, `viewBox` 800×520) |
+| Zuordnung | `lib/schoolhouse-isometric-map.ts`: 11 Slugs → `room`, `nr`, `accent` (Hex) |
+| Freischaltung | wie #21/#23 über `visitedSlugs`; `fest` = nur besuchte Slots klickbar |
+| Entfällt | Puzzle-`SchoolhouseSvg`, `schoolhouse-layout.ts`, `puzzleSegmentId` in JSON |
+| A11y | SVG `role="button"` + SR-Nav (`schoolhouse-sr-nav`) |
+| Offen | Slug für SVG-Slot `ground-mid` (Eingangstür) mit Schule abstimmen |
 
 ## Raum-Viewer (Implementierung, Issue #55)
 
@@ -48,10 +63,12 @@ Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/
 /
 /eintritt
 /scan
+/stationen
 /raum/[slug]
 ```
 
-- **`/`** — Startseite mit Schulhaus-Hub; Modus aus Cookie: `heft` = alle Stationen, `fest` = Puzzle-Hub gesperrt (progressive Freischaltung → Issue #21).
+- **`/`** — Startseite mit **isometrischem** Schulhaus-Hub ([ADR-009](./adr/009-hub-isometrisch.md)); Modus aus Cookie: `heft` = alle Stationen, `fest` = nur besuchte Slots klickbar (#21).
+- **`/stationen`** — Stationsliste (Lock im Modus `fest`) — Epic #58.
 - **`/eintritt`** — Entry-QR (`?t=…`) setzt Cookie und leitet auf `/` um; ohne gültigen Zugang Hinweis-/Fehlerseite mit **integriertem Entry-Scanner** (#57, [ADR-008](./adr/008-eintritt-in-app-scanner.md)): `parseEntryScan` prüft nur Struktur (Origin, Pfad, `t` nicht leer); Gültigkeit nur Middleware.
 - **`/scan`** — In-App-QR-Scanner für Raum-QRs (nur mit Cookie); `parseRoomScan` + Slug-Whitelist — [ADR-005](./adr/005-zugangskontrolle-token.md), [ADR-007](./adr/007-zugangskontrolle-cookie.md).
 
@@ -90,7 +107,7 @@ interface Station {
   bild?: string; // /public/stations/… — fehlt → statische Ansicht
   medien: Medium[];
   hotspots?: Hotspot[];
-  puzzleSegmentId: string; // Zuordnung Schulhaus-Hub (11 Segmente), Pflicht im MVP-JSON
+  // puzzleSegmentId entfällt mit ADR-009 — Hub-Zuordnung in schoolhouse-isometric-map.ts
 }
 ```
 

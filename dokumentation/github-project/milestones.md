@@ -22,7 +22,7 @@ Der Fortschrittsbalken in GitHub ergibt sich automatisch aus den geschlossenen I
 ## Phase 2 — Content-Struktur + UI
 
 **Fällig:** 12.06.2026
-**Beschreibung:** Fertige App-Shell mit allen UI-Komponenten inkl. Raum-Viewer (Gyro, Hotspots, Tap-Fallback, ADR-006, Mobil-Härtung #56). Gleichzeitig muss die Schule den Content-Lieferplan abgeben — das ist der härteste Abhängigkeitspunkt.
+**Beschreibung:** Fertige App-Shell mit allen UI-Komponenten inkl. Raum-Viewer (Gyro, Hotspots, ADR-006, #56) und GS39-Jubiläums-UI (#58, ADR-009: isometrischer Hub). Gleichzeitig muss die Schule den Content-Lieferplan abgeben — das ist der härteste Abhängigkeitspunkt.
 
 ---
 
@@ -36,7 +36,7 @@ Der Fortschrittsbalken in GitHub ergibt sich automatisch aus den geschlossenen I
 ## Phase 4 — Live am Schulfest
 
 **Fällig:** 26.06.2026
-**Beschreibung:** Hard Deadline. 11 Stationen live (`fest`: Puzzle-Hub + Scanner), Entry-QR am Eingang, Tablet-Fallback.
+**Beschreibung:** Hard Deadline. 11 Stationen live (`fest`: isometrischer Hub + Scanner, ADR-009), Entry-QR am Eingang, Tablet-Fallback.
 
 ---
 

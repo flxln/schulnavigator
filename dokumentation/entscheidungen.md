@@ -14,6 +14,7 @@ Jede wichtige Entscheidung wird als eigenständiger ADR (Architecture Decision R
 | [006](./adr/006-raum-viewer-gyro-hotspots.md) | Raum-Viewer: Gyro (Standard), Hotspots, Tap-Fallback; Portrait `alpha`/Armschwenk, Mobil-Härtung (#56) in [architektur.md](./architektur.md) | entschieden | 2026-05-22 |
 | [007](./adr/007-zugangskontrolle-cookie.md) | Zugang: HttpOnly-Cookie + Middleware (ergänzt ADR-005 Speicher/Durchsetzung) | entschieden | 2026-05-22 |
 | [008](./adr/008-eintritt-in-app-scanner.md) | Eintritt: In-App-Scanner auf `/eintritt` (ergänzt ADR-005 Entry-UX) | entschieden | 2026-05-22 |
+| [009](./adr/009-hub-isometrisch.md) | Startseite: isometrischer Schulhaus-Hub + GS39 UI (ersetzt Puzzle-Hub #14) | entschieden | 2026-05-27 |
 
 ## Konventionen
 
@@ -29,10 +30,11 @@ MVP (bis 26.06.):     Next.js  ←  JSON + Medien im Repo
 Langfristig:          Next.js  ←  Directus (self-hosted, Coolify)
 
 Zugang:  /eintritt?t=…  →  Cookie sn_access (mode: fest | heft, ADR-007, #23)
-Fest:    Entry (Kamera) → Puzzle-Hub + In-App-Scanner für Räume
-Heft:    Entry im Heft → Hub mit allen Stationen
+Fest:    Entry (Kamera/In-App) → isometrischer Hub (ADR-009) + Scanner für Räume
+Heft:    Entry im Heft → Hub mit allen Stationen (alle Fenster klickbar)
 
 Station: /raum/[slug] → Gyro-Viewer + Hotspots (Tap-Fallback); normales Querformat-Foto
+/stationen → Stationsliste (ADR-009, Epic #58)
 ```
 
 Offen: YouTube-Freigabe (Recht, siehe ADR-004); Mandanten-Modell für weitere Schulen. Echtes Kamera-AR: Post-Fest (nicht ADR-006).

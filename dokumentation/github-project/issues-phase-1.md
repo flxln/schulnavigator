@@ -126,6 +126,8 @@ Schematische Schulhaus-Grafik (SVG) mit **11 Segmenten** — [ADR-005](../adr/00
 
 _Nicht in Phase 1:_ voller klickbarer Hub für `fest` (widerspricht Schulfest-Konzept).
 
+**Nachfolger (Darstellung):** Puzzle-Hub wird durch isometrisches Schulhaus ersetzt — [ADR-009](../adr/009-hub-isometrisch.md), Epic **#58** (Phase 2). Freischalt-Logik (#21) bleibt.
+
 ---
 
 ## #15 — QR-Code-Generator-Script
