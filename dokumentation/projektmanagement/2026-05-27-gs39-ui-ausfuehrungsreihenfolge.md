@@ -25,7 +25,7 @@ Nur Doku, kein App-Code.
 
 | Schritt | Plan | Abschnitt | Was |
 |---------|------|-----------|-----|
-| 5 | Plan 2 | Schritt 0 | ADR-009 + alle Doku-Dateien committen |
+| 5 | Plan 2 | Schritt 0 | ADR-009 + alle Doku-Dateien committen — **erledigt 2026-05-27** (Branch `docs/gs39-ui-pr1-governance`) |
 
 ---
 
