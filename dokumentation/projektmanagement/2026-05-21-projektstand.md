@@ -1,6 +1,6 @@
 # Schulnavigator — Projektstand
 
-**Stand:** 2026-05-22 (Phase 1 #9–#16; **#16** und **#55** auf GitHub geschlossen; **#56** Mobil-Härtung im Code; Live `schulnavigator.mpz.schule`)  
+**Stand:** 2026-05-28 (Phase 1 #9–#16; **#55/#56/#58–#63/#69** umgesetzt; Demo Dialog Otto/Frieda [ADR-010](../adr/010-dialog-cutscene-gated-audio.md); Live `schulnavigator.mpz.schule`)  
 **Projekt:** Schulnavigator (39. Grundschule Dresden)  
 **Auftraggeber:** Sten, Tina (Schule) · **Umsetzung:** MPZ (Felix, Julia, Thomas)  
 **Hard Deadline:** Schulfest am **26.06.2026**
@@ -24,6 +24,7 @@ Konzept und Planung sind weit fortgeschritten; **Next.js-App in `app/` läuft** 
 | Video-Hosting               | ✅ Entschieden       | [ADR-004](../adr/004-video-hosting-mpz.md) — MPZ; YouTube nach Rechtsklärung                            |
 | Zugangskontrolle            | ✅ Entschieden       | [ADR-005](../adr/005-zugangskontrolle-token.md) — Token, Modi fest/heft, In-App-Scanner                 |
 | Raum-Viewer                 | ✅ Umgesetzt (#55/#56) | [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md) — Gyro Portrait `alpha`/Armschwenk, Hotspots, Panel, Mobil-Härtung; Demo `/raum/musik` |
+| Dialog (Otto/Frieda)        | ✅ Demo (#69)          | [ADR-010](../adr/010-dialog-cutscene-gated-audio.md) — Cutscene, gated Audio `/api/dialog/…`; Stationen `daz`, `pc-raum` |
 | AVV / DSGVO                 | 🟡 Entwurf versendet | AVV-Entwurf an Schule (21.05., Thomas); **Unterschrift** bis Schulfest → Phase 4 (#43)                  |
 | Anwendungscode              | 🟢 Phase 1 + #55/#56 | Wie Phase 1; zusätzlich **Raum-Viewer** (Gyro/Hotspots, Mobil-Härtung), **GS39-Theme**, `validate:tokens`; Ops: [`anleitungen/fuer-entwickler.md`](../../anleitungen/fuer-entwickler.md) |
 | Content von der Schule      | 🟡 Teilweise         | 11 Stationen + Texte/Fotos; **Content-Lieferplan** (Medientyp/Klasse) bis 12.06. offen                  |
@@ -140,7 +141,7 @@ Kamera-AR/WebXR, 360°-Panorama, Lego-Trigger, **Directus** (erst nach Schulfest
 
 ## Aufgaben — bis 10.06.2026 (Meeting)
 
-- [ ] Demo der App-Shell (Stationen mit Demo-Daten, **Startseite Schulhaus**, **Raum-Viewer** `/raum/musik`)
+- [x] Demo der App-Shell vorbereitet — Hub, Scan, `/raum/musik` (4 Medientypen), `/raum/daz` + `/raum/pc-raum` (Dialog); Ablauf [`anleitungen/demo-meeting-2026-06-10.md`](../../anleitungen/demo-meeting-2026-06-10.md)
 - [ ] Content-Lieferplan von Schule einfordern: Raum → Medientyp → Klasse → Verantwortlich
 - [ ] WLAN/Mobilfunk: Testplan für Turnhalle und Außenbereich vereinbaren
 

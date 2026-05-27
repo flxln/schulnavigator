@@ -38,6 +38,7 @@ export type RoomImagePaneProps = {
   onHotspotTap?: (hotspot: Hotspot) => void
   onHotspotCenterHit?: (hotspot: Hotspot | null) => void
   layout?: RaumViewerLayout
+  orientationEnabled?: boolean
 }
 
 const NEUTRAL_CALIB_MS = 500
@@ -53,6 +54,7 @@ export function RoomImagePane({
   onHotspotTap,
   onHotspotCenterHit,
   layout = 'default',
+  orientationEnabled = true,
 }: RoomImagePaneProps) {
   const isHero = layout === 'hero'
   const [debugViewer, setDebugViewer] = useState(false)
@@ -99,7 +101,7 @@ export function RoomImagePane({
     panAxis,
     axisEpoch,
     requestAccess,
-  } = useDeviceOrientation(true)
+  } = useDeviceOrientation(orientationEnabled)
 
   const panMode = panMappingForAxis(panAxis)
   // alpha ist jetzt ein kontinuierlicher (entfalteter) Heading → einfache
@@ -131,6 +133,7 @@ export function RoomImagePane({
   useEffect(() => {
     panPxRef.current = panPx
   }, [panPx])
+
 
   useEffect(() => {
     // Pan nach maxPan-Änderung (Resize) begrenzen
@@ -251,6 +254,7 @@ export function RoomImagePane({
         return
       }
       if (
+        orientationEnabled &&
         !dragging.current &&
         orientState === 'active' &&
         angle !== null &&
@@ -281,7 +285,15 @@ export function RoomImagePane({
       running = false
       cancelAnimationFrame(raf)
     }
-  }, [orientState, angle, maxPan, panAxis, panMode, useCircularDelta])
+  }, [
+    orientationEnabled,
+    orientState,
+    angle,
+    maxPan,
+    panAxis,
+    panMode,
+    useCircularDelta,
+  ])
 
   const centerNorm = useMemo(
     () => normalizedViewportCenter(panPx, containerW, effectiveDisplayW),
@@ -500,7 +512,8 @@ export function RoomImagePane({
               sizes="100vw"
               className="object-contain object-left"
               draggable={false}
-              onLoadingComplete={(img) => {
+              onLoad={(e) => {
+                const img = e.currentTarget
                 setNaturalW(img.naturalWidth)
                 setNaturalH(img.naturalHeight)
               }}
@@ -526,13 +539,42 @@ export function RoomImagePane({
             priority
             sizes="100vw"
             className="object-cover"
-            onLoadingComplete={(img) => {
+            onLoad={(e) => {
+              const img = e.currentTarget
               setNaturalW(img.naturalWidth)
               setNaturalH(img.naturalHeight)
             }}
             onError={() => setBroken(true)}
           />
         )}
+
+        {/* hero-Modus: iOS-Permission-Overlay (blockiert Gyro ohne Berechtigung) */}
+        {isHero && orientState === 'needs-gesture' ? (
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-black/50 px-6">
+            <p className="text-center text-sm text-fg-on-dark">
+              Für die Raum-Bewegung bitte Orientierung erlauben (einmalig).
+            </p>
+            <button
+              type="button"
+              className="rounded-[var(--r-md)] bg-accent px-4 py-2 text-sm font-semibold text-fg-on-dark shadow-gs39-sm hover:bg-accent-hover"
+              onClick={() => void requestAccess()}
+            >
+              Orientierung aktivieren
+            </button>
+          </div>
+        ) : null}
+
+        {/* hero-Modus: Ansicht zentrieren (floating, wenn Gyro aktiv) */}
+        {isHero && orientState === 'active' ? (
+          <button
+            type="button"
+            aria-label="Raumansicht zurücksetzen"
+            className="absolute bottom-3 right-3 z-10 rounded-[var(--r-sm)] border border-white/20 bg-black/50 px-3 py-1.5 text-xs font-medium text-fg-on-dark backdrop-blur-sm"
+            onClick={recenterView}
+          >
+            Zentrieren
+          </button>
+        ) : null}
       </div>
       {!isHero ? orientationControls : null}
     </div>

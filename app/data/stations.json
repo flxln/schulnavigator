@@ -12,14 +12,143 @@
       "titel": "DaZ-Zimmer",
       "beschreibung": "Hi! Im DaZ-Zimmer lernen Kinder aus vielen Ländern Deutsch. Wir üben Wörter, Sätze und manchmal auch, wie man \"Schmetterling\" ohne Knoten in der Zunge sagt. Schön, dass Sie vorbeischauen!",
       "bild": "/stations/daz.jpg",
-      "medien": []
+      "medien": [],
+      "dialog": {
+        "figuren": ["frieda", "otto"],
+        "gruppen": [
+          {
+            "id": "gruesse",
+            "text": "Hello! · Hola! · Bonjour! · Merhaba! · Ciao!"
+          }
+        ],
+        "segmente": [
+          {
+            "id": "d1",
+            "rolle": "frieda",
+            "quelle": "/api/dialog/daz/01-frieda.wav",
+            "text": "Hallo, willkommen in unserem DaZ-Zimmer. Hier lernen Kinder aus vielen Ländern zusammen Deutsch."
+          },
+          {
+            "id": "d2",
+            "rolle": "otto",
+            "quelle": "/api/dialog/daz/02-otto.wav",
+            "text": "Wir haben ein kleines Sprachrätsel für euch. Könnt ihr raten, was diese Wörter bedeuten?"
+          },
+          {
+            "id": "d3",
+            "rolle": "frieda",
+            "quelle": "/api/dialog/daz/03-frieda.wav",
+            "text": "Hello!",
+            "gruppe": "gruesse"
+          },
+          {
+            "id": "d4",
+            "rolle": "otto",
+            "quelle": "/api/dialog/daz/04-otto.wav",
+            "text": "Hola!",
+            "gruppe": "gruesse"
+          },
+          {
+            "id": "d5",
+            "rolle": "frieda",
+            "quelle": "/api/dialog/daz/05-frieda.wav",
+            "text": "Bonjour!",
+            "gruppe": "gruesse"
+          },
+          {
+            "id": "d6",
+            "rolle": "otto",
+            "quelle": "/api/dialog/daz/06-otto.wav",
+            "text": "Merhaba!",
+            "gruppe": "gruesse"
+          },
+          {
+            "id": "d7",
+            "rolle": "frieda",
+            "quelle": "/api/dialog/daz/07-frieda.wav",
+            "text": "Ciao!",
+            "gruppe": "gruesse"
+          },
+          {
+            "id": "d8",
+            "rolle": "otto",
+            "quelle": "/api/dialog/daz/08-otto.wav",
+            "text": "Na, wisst ihr es schon?"
+          },
+          {
+            "id": "d9",
+            "rolle": "beide",
+            "quelle": "/api/dialog/daz/09-beide.wav",
+            "text": "Das heißt überall: \"Hallo, schön dass du da bist!\""
+          }
+        ]
+      }
     },
     {
       "slug": "pc-raum",
       "titel": "PC-Raum",
       "beschreibung": "Willkommen im PC-Raum! Hier tippen wir, klicken wir und lernen, wie Computer funktionieren. Und keine Sorge: wir wissen, welcher Knopf der Aus-Knopf ist – meistens jedenfalls.",
       "bild": "/stations/pc-raum.jpg",
-      "medien": []
+      "medien": [],
+      "dialog": {
+        "figuren": ["frieda", "otto"],
+        "segmente": [
+          {
+            "id": "p1",
+            "rolle": "frieda",
+            "quelle": "/api/dialog/pc-raum/01-frieda.wav",
+            "text": "Willkommen in unserem Computerraum. Hier gibt es 16 Computer zum Lernen und Arbeiten."
+          },
+          {
+            "id": "p2",
+            "rolle": "otto",
+            "quelle": "/api/dialog/pc-raum/02-otto.wav",
+            "text": "Damit alle gut arbeiten können, gibt es ein paar wichtige Regeln."
+          },
+          {
+            "id": "p3",
+            "rolle": "frieda",
+            "quelle": "/api/dialog/pc-raum/03-frieda.wav",
+            "text": "Wir gehen vorsichtig mit den Computern um."
+          },
+          {
+            "id": "p4",
+            "rolle": "otto",
+            "quelle": "/api/dialog/pc-raum/04-otto.wav",
+            "text": "Essen und Trinken bleiben draußen."
+          },
+          {
+            "id": "p5",
+            "rolle": "frieda",
+            "quelle": "/api/dialog/pc-raum/05-frieda.wav",
+            "text": "Wir arbeiten leise und helfen einander."
+          },
+          {
+            "id": "p6",
+            "rolle": "otto",
+            "quelle": "/api/dialog/pc-raum/06-otto.wav",
+            "text": "Im Internet besuchen wir nur erlaubte Seiten."
+          },
+          {
+            "id": "p7",
+            "rolle": "frieda",
+            "quelle": "/api/dialog/pc-raum/07-frieda.wav",
+            "text": "Nach der Arbeit fahren wir den Computer ordentlich herunter."
+          },
+          {
+            "id": "p8",
+            "rolle": "otto",
+            "quelle": "/api/dialog/pc-raum/08-otto.wav",
+            "text": "Und natürlich schieben wir die Stühle wieder an den Platz."
+          },
+          {
+            "id": "p9",
+            "rolle": "beide",
+            "quelle": "/api/dialog/pc-raum/09-beide.wav",
+            "text": "Dann macht das Lernen am Computer allen Spaß."
+          }
+        ]
+      }
     },
     {
       "slug": "werken",
@@ -73,24 +202,26 @@
           "id": "demo-audio",
           "typ": "audio",
           "quelle": "/demo/ton.wav",
-          "untertitel": "Platzhalter-Audio (Phase 2: Player)"
+          "untertitel": "Demo-Audio (Platzhalter)"
         },
         {
           "id": "demo-video",
           "typ": "video",
           "videoSource": "upload",
           "quelle": "/demo/video-plakat.jpg",
-          "untertitel": "Video folgt — Platzhalterbild"
+          "untertitel": "Video folgt — Demo-Poster"
         },
         {
           "id": "demo-foto",
           "typ": "foto",
-          "quelle": "/demo/foto.jpg"
+          "quelle": "/demo/foto.jpg",
+          "untertitel": "Demo-Foto"
         },
         {
           "id": "demo-text",
           "typ": "text",
-          "quelle": "/demo/musik-info.txt"
+          "quelle": "/demo/musik-info.txt",
+          "untertitel": "Demo-Text"
         }
       ],
       "hotspots": [
@@ -115,6 +246,7 @@
       "slug": "schulsozialarbeit",
       "titel": "Schulsozialarbeiterzimmer",
       "beschreibung": "Hallo! Hier arbeitet unser Schulsozialarbeiter. Zu ihm können wir kommen, wenn wir Sorgen haben, Streit klären wollen oder einfach jemanden brauchen, der zuhört. Er hat immer ein offenes Ohr und manchmal auch Gummibärchen.",
+      "bild": "/stations/schulsozialarbeit.jpg",
       "medien": [
         {
           "id": "ssa-info",

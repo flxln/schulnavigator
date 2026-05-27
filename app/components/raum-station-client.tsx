@@ -14,7 +14,8 @@ import {
 import { NextStationFooter } from '@/components/raum/next-station-footer'
 import { StationMediaPanel } from '@/components/station-media-panel'
 import { StationVisitedBadge } from '@/components/station-visited-badge'
-import { Gs39Chip, TopBar } from '@/components/ui'
+import { DialogPlayer } from '@/components/dialog/dialog-player'
+import { Gs39Button, Gs39Chip, TopBar } from '@/components/ui'
 import type { EntryMode } from '@/lib/access-tokens'
 import { useVisitedStations } from '@/hooks/use-visited-stations'
 import { getUnlockedSlugsForMode } from '@/lib/hub-mode'
@@ -39,6 +40,7 @@ export function RaumStationClient({
   const [panelOpen, setPanelOpen] = useState(false)
   const [selectedMedium, setSelectedMedium] = useState<Medium | null>(null)
   const [activeHotspotId, setActiveHotspotId] = useState<string | null>(null)
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   const { visitedSlugs } = useVisitedStations(validSlugs)
   const stationSlugs = useMemo(
@@ -94,6 +96,7 @@ export function RaumStationClient({
               onHotspotTap={onHotspotTap}
               onHotspotCenterHit={onHotspotCenterHit}
               layout="hero"
+              orientationEnabled={!dialogOpen}
             />
           ) : (
             <div className="flex h-full items-center justify-center px-4">
@@ -103,9 +106,29 @@ export function RaumStationClient({
         </RaumViewerErrorBoundary>
 
         <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-black/55"
+          className={`pointer-events-none absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-black/55 transition-opacity ${dialogOpen ? 'opacity-90' : ''}`}
           aria-hidden
         />
+
+        {station.dialog && !dialogOpen ? (
+          <div className="absolute inset-x-0 bottom-4 z-[15] flex justify-center px-4">
+            <Gs39Button
+              type="button"
+              variant="primary"
+              onClick={() => setDialogOpen(true)}
+            >
+              ▶ Dialog starten
+            </Gs39Button>
+          </div>
+        ) : null}
+
+        {station.dialog && dialogOpen ? (
+          <DialogPlayer
+            dialog={station.dialog}
+            accent={hubStation.accent}
+            onClose={() => setDialogOpen(false)}
+          />
+        ) : null}
 
         <div className="absolute left-0 right-0 top-0 z-10">
           <TopBar

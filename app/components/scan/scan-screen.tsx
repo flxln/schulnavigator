@@ -6,10 +6,11 @@ import { QrScanner } from '@/components/scan/qr-scanner'
 
 type ScanScreenProps = {
   origin: string
+  trustedOrigins: readonly string[]
   slugs: readonly string[]
 }
 
-export function ScanScreen({ origin, slugs }: ScanScreenProps) {
+export function ScanScreen({ origin, trustedOrigins, slugs }: ScanScreenProps) {
   const router = useRouter()
 
   return (
@@ -22,7 +23,13 @@ export function ScanScreen({ origin, slugs }: ScanScreenProps) {
       />
 
       <div className="relative z-[1] flex flex-1 flex-col items-center justify-center gap-5 px-6 pb-[max(1rem,env(safe-area-inset-bottom))]">
-        <QrScanner mode="room" chrome={true} origin={origin} slugs={slugs} />
+        <QrScanner
+          mode="room"
+          chrome={true}
+          origin={origin}
+          trustedOrigins={trustedOrigins}
+          slugs={slugs}
+        />
 
         <div className="max-w-xs text-center text-fg-on-dark">
           <p className="text-base font-extrabold">
