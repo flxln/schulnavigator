@@ -5,6 +5,7 @@ type DialogEmbeddedBubbleProps = {
   tail: 'left' | 'right' | 'center'
   accent: string
   visible: boolean
+  offsetX?: number
 }
 
 export function DialogEmbeddedBubble({
@@ -12,6 +13,7 @@ export function DialogEmbeddedBubble({
   tail,
   accent,
   visible,
+  offsetX = 0,
 }: DialogEmbeddedBubbleProps) {
   if (!visible || !text) {
     return null
@@ -28,7 +30,8 @@ export function DialogEmbeddedBubble({
         className={`sn-dialog-bubble sn-dialog-bubble--tail-${tail} max-w-md rounded-[var(--r-lg)] border border-border-1 bg-bg-2 px-4 py-3 text-center text-[15px] leading-relaxed text-fg-1 shadow-gs39-lg`}
         style={{
           borderColor: `${accent}33`,
-          WebkitTransform: 'translateZ(0)',
+          transform: `translateX(${offsetX}px) translateZ(0)`,
+          WebkitTransform: `translateX(${offsetX}px) translateZ(0)`,
         }}
       >
         {text}

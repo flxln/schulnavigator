@@ -93,9 +93,9 @@ export function HotspotOverlay({
                 <img
                   src={MASCOT_SRC[mascot]}
                   alt=""
-                  width={110}
-                  height={110}
-                  className={`sn-dialog-mascot__img h-[100px] w-[100px] object-contain drop-shadow-lg sm:h-[110px] sm:w-[110px] ${speaking ? 'sn-dialog-mascot__img--speaking' : ''}`}
+                  width={150}
+                  height={150}
+                  className={`sn-dialog-mascot__img h-[130px] w-[130px] object-contain drop-shadow-lg sm:h-[150px] sm:w-[150px] ${speaking ? 'sn-dialog-mascot__img--speaking' : ''}`}
                   draggable={false}
                 />
               </button>
