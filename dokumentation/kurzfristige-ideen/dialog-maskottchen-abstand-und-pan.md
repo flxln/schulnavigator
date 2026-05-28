@@ -13,6 +13,7 @@ _Kurzfristige Idee — Umsetzung nach dem Maskottchen-Spike (`daz`), vor oder mi
 | **Frieda / Otto** | Hotspots in `stations.json` (`x`/`y`), gerendert in [`hotspot-overlay.tsx`](../../app/components/raum-viewer/hotspot-overlay.tsx) |
 | **Mitpan (Gyro)** | Figuren hängen **in** der transformierten Bildebene ([`room-image-pane.tsx`](../../app/components/raum-viewer/room-image-pane.tsx) — gleiches `translate` wie das Panorama) → sie schwenken **mit dem Raumbild** |
 | **Sprechblase** | [`DialogEmbeddedBubble`](../../app/components/dialog/dialog-embedded-bubble.tsx) in [`raum-station-client.tsx`](../../app/components/raum-station-client.tsx) — **fix am Hero-Viewport**, pannt **nicht** |
+| **Dialog beenden / Zentrieren** | Seit [#72](https://github.com/flxln/schulnavigator/issues/72): **X** in TopBar (nicht unter Blase); **Stations-Chip** → `recenterView` (kein floating „Zentrieren“ im Hero) |
 | **Abstand `daz`/`pc-raum`** | Startwerte `x: 0.32` / `0.68` (ADR-011) — am Gerät ggf. weiter nachjustieren |
 
 Beim Schwenken während des Dialogs: Köpfe wandern mit dem Foto, die Blase bleibt mittig im sichtbaren Hero → optisch „Dialog zerreißt sich“. Das war im Hauptplan für v1 bewusst akzeptiert („Figur kann aus dem Sichtfeld pannen“).

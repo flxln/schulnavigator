@@ -5,7 +5,6 @@ type DialogEmbeddedBubbleProps = {
   tail: 'left' | 'right' | 'center'
   accent: string
   visible: boolean
-  onEnd?: () => void
 }
 
 export function DialogEmbeddedBubble({
@@ -13,7 +12,6 @@ export function DialogEmbeddedBubble({
   tail,
   accent,
   visible,
-  onEnd,
 }: DialogEmbeddedBubbleProps) {
   if (!visible || !text) {
     return null
@@ -35,15 +33,6 @@ export function DialogEmbeddedBubble({
       >
         {text}
       </p>
-      {onEnd ? (
-        <button
-          type="button"
-          className="pointer-events-auto min-h-11 rounded-full border border-border-1 bg-bg-2 px-4 text-sm font-medium text-fg-1 shadow-gs39-sm"
-          onClick={onEnd}
-        >
-          Dialog beenden
-        </button>
-      ) : null}
     </div>
   )
 }

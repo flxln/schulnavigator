@@ -181,7 +181,7 @@ Die App setzt **`robots.txt`** (`Disallow: /`) und **`noindex`** im Root-Layout 
 |---------|--------------|
 | GitHub-Quelle | In Coolify unter **Settings → Source** prüfen, ob die **GitHub-App** Zugriff auf das private Repo `flxln/schulnavigator` hat. Ohne Zugriff schlägt der Clone fehl. **Submodule:** siehe Abschnitt unten *Fehler beim Clone: private Git-Submodule* — für den Docker-Build aus `app/` meist **Submodules in Coolify deaktivieren**. |
 | DNS | **Wildcard** `*.mpz.schule` → **`217.154.120.240`** (Coolify-VPS) — deckt u. a. `schulnavigator.mpz.schule` ab; kein separater A-Record pro Subdomain nötig. Prüfen: `dig +short schulnavigator.mpz.schule` → VPS-IP |
-| VPS-RAM | Optional per SSH: `ssh coolify-server` (siehe MPZ-Doku) und `free -h` — `npm run build` im Image kann speicherintensiv sein. |
+| VPS-RAM | Optional per SSH: `ssh coolify-server` (Alias → `felixlein@217.154.120.240`, Key `~/.ssh/coolify-access`) und `free -h` — `npm run build` im Image kann speicherintensiv sein. |
 | Lokaler Docker-Build | `cd app && docker build -t schulnavigator-app .` — bestätigt das Dockerfile, bevor Coolify baut (Docker-Daemon muss laufen). |
 
 ### Neue Application in Coolify
@@ -263,6 +263,38 @@ curl -sS https://schulnavigator.mpz.schule/robots.txt
 **Build schlägt fehl:** `validate:tokens: ENOENT … /auftraggeber/.../colors_and_type.css` — der Docker-Kontext ist nur [`app/`](../app/); `validate:tokens` nutzt dort [`app/scripts/reference/colors_and_type.css`](../app/scripts/reference/colors_and_type.css). Nach Änderungen an der Auftraggeber-Quelle die Referenzkopie mitpflegen und `gs39-tokens.css` synchron halten.
 
 **Optional:** kostenloses Monitoring (z. B. UptimeRobot) auf `https://…/api/health`.
+
+### Staging / Dev (Coolify-Projekt „Schulprojekte“)
+
+Zweite Application für Tests vor Prod — **manuell** angelegt (Coolify erlaubt kein Kopieren einzelner Ressourcen innerhalb eines Projekts).
+
+| | Prod | Dev |
+|---|------|-----|
+| Coolify-Name | `schulnavigator:main-…` | `schulnavigator:development-feature` |
+| Application-UUID | `q1a8t4zswynvgutbw9og5l7n` | `jjgl5u105ucxjvbeuwflsjq4` |
+| URL | `https://schulnavigator.mpz.schule` | `https://schulnavigator-dev.mpz.schule` |
+| Branch (Stand 2026-05-28) | `main` | Feature-Branches für QA, z. B. `feat/raum-ui-dialog-topbar-chip-zentrieren` ([#72](https://github.com/flxln/schulnavigator/issues/72) / [PR #73](https://github.com/flxln/schulnavigator/pull/73)); nach Merge wieder **`main`** |
+
+Build-Einstellungen wie Prod: Base **`/app`**, Dockerfile **`/Dockerfile`**, Port **`3000`**, Env `PORT=3000`, `NODE_ENV=production`.
+
+**Feature-QA auf Dev:** Coolify → Application Dev → **Source → Branch** auf den PR-Branch stellen → **Redeploy**. Dialog-Test: `https://schulnavigator-dev.mpz.schule/eintritt?t=fest-2026`, dann `/raum/daz` (X neben Zurück, Chip zentriert). Siehe [`lokal-testen-und-anschauen.md`](lokal-testen-und-anschauen.md).
+
+**Pflicht bei jeder neuen Application:** unter **Advanced** / **Build** → **Git Submodules deaktivieren** (sonst schlägt der Clone wegen privater Submodule in [`.gitmodules`](../.gitmodules) fehl — siehe Abschnitt unten).
+
+**Submodule-Status per SSH prüfen:**
+
+```bash
+ssh coolify-server "docker exec coolify-db psql -U coolify -d coolify -t -A -c \
+  \"SELECT a.name, s.is_git_submodules_enabled FROM applications a \
+  JOIN application_settings s ON s.application_id = a.id \
+  WHERE a.git_repository LIKE '%schulnavigator%';\""
+```
+
+Erwartung: `is_git_submodules_enabled` = `f` (false) für Prod und Dev.
+
+**Smoke-Tests Dev:** Domain in den Befehlen aus dem Abschnitt *Smoke-Tests* durch `schulnavigator-dev.mpz.schule` ersetzen.
+
+**Hinweis:** QR-Codes und `NEXT_PUBLIC_BASE_URL` bleiben auf der **Prod-Domain** — Dev ist nur für manuelles Testen im Browser/Handy.
 
 ### Rollback
 

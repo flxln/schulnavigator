@@ -20,7 +20,7 @@ Kurzablauf für Sten/Tina auf echtem Gerät (**HTTPS**, z. B. `https://schulnavi
    `/raum/musik` — Gyro (Armschwenk), Hotspots. Medienliste unten: **Audio, Video (Poster), Foto, Text** — vier Typen, keine Platzhalter-UI-Lücken.
 
 4. **Story-Station `daz`**  
-   `/raum/daz` → **Frieda oder Otto** im Raumbild antippen (links/rechts). Sprechblase oben, Gyro bleibt an; Dialog durchspielen. Grüße-Block: Sprechblase bleibt, Stimmen wechseln. Audio nur mit gültigem Cookie (kein direkter Dateilink). **„Dialog beenden“** stoppt die Wiedergabe.
+   `/raum/daz` → **Frieda oder Otto** im Raumbild antippen (links/rechts). Sprechblase oben, Gyro bleibt an; Dialog durchspielen. Grüße-Block: Sprechblase bleibt, Stimmen wechseln. Audio nur mit gültigem Cookie (kein direkter Dateilink). **X** neben Zurück beendet die Wiedergabe; **Stations-Chip** zentriert die Raumansicht.
 
 5. **Zweiter Dialog `pc-raum`**  
    Gleicher Flow — Regeln am Computer.

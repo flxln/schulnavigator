@@ -48,7 +48,7 @@ npm run dev
 | [http://localhost:3000/robots.txt](http://localhost:3000/robots.txt) | `Disallow: /` (Issue #16) |
 | [http://localhost:3000/scan](http://localhost:3000/scan) | In-App-QR-Scanner mit dunklem Chrome und gelbem Scan-Rahmen (nach Entry; Kamera-Zugriff nötig) |
 | [http://localhost:3000/raum/musik](http://localhost:3000/raum/musik) | Demo: Raumbild, **Gyro-Armschwenk** Portrait (oder Wischen), **2 Hotspots** (Highlight per Mitte, Medien per Tap), **4 Medien-Slots** |
-| [http://localhost:3000/raum/daz](http://localhost:3000/raum/daz) | **Frieda/Otto** im Raumbild antippen → Dialog mit Sprechblase, Gyro an, **Dialog beenden** |
+| [http://localhost:3000/raum/daz](http://localhost:3000/raum/daz) | **Frieda/Otto** im Raumbild antippen → Dialog mit Sprechblase, Gyro an; **X** neben Zurück beendet Dialog; **Stations-Chip** tippen zentriert die Raumansicht |
 | [http://localhost:3000/raum/pc-raum](http://localhost:3000/raum/pc-raum) | Zweiter Dialog (PC-Regeln), gleicher Maskottchen-Flow |
 | [http://localhost:3000/raum/schulsozialarbeit](http://localhost:3000/raum/schulsozialarbeit) | Raumbild (Platzhalter) + Text-Medium |
 | [http://localhost:3000/raum/klassenzimmer](http://localhost:3000/raum/klassenzimmer) | Raumbild + **leere** Medienliste (Empty-State) |

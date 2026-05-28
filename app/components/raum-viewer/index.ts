@@ -1,12 +1,9 @@
 export {
   RaumViewer,
+  type RaumViewerHandle,
   type RaumViewerProps,
 } from '@/components/raum-viewer/raum-viewer'
 export { RaumViewerErrorBoundary } from '@/components/raum-viewer/raum-viewer-error-boundary'
-export {
-  RoomImagePane,
-  type RoomImagePaneProps,
-} from '@/components/raum-viewer/room-image-pane'
 export {
   HotspotOverlay,
   type HotspotOverlayProps,

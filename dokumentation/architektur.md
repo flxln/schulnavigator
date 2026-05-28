@@ -1,6 +1,6 @@
 # Schulnavigator — Architektur
 
-_Stand: 2026-05-27 (**ADR-009:** isometrischer Hub umgesetzt; **Epic #58:** GS39-UI-Screens; **#55/#56:** Raum-Viewer; Live #16) — siehe [entscheidungen.md](./entscheidungen.md)_
+_Stand: 2026-05-28 (**#72:** Dialog-Ende TopBar, Chip-Zentrieren; **ADR-009:** Hub; **#55/#56:** Raum-Viewer; Live #16) — siehe [entscheidungen.md](./entscheidungen.md)_
 
 ## Tech-Stack
 
@@ -50,7 +50,9 @@ Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/
 | Gyro-Pan | Höhenbasiert, horizontal `translateX`; Auto-Zoom bis `MIN_PAN_DISPLAY_RATIO` (2); **Portrait:** `deviceorientation.alpha` (Armschwenk, zweiseitig, Neutral in Bildmitte); **Landscape:** `gamma` (Kippen, einseitig); zirkuläre EMA für alpha; iOS nach Nutzer-Geste |
 | Neutral | ~500 ms Mittelwert (alpha: kreisförmig); nach **Wischen** Re-Kalibrierung (`neutralAngleForPan`); bei **Resize** und **orientationchange** Neu-Kalibrierung; ohne Kompass kann alpha langsam driften → **Ansicht zentrieren** |
 | Hotspots | JSON 0–1; bei vertikalem Beschnitt können extreme **y** unsichtbar sein — Build-Warnung in `validate:stations`, Runtime-`console.warn` |
-| UI | `touch-action: none` + CSS-Containment auf dem Viewer; Button **Ansicht zentrieren**; `?debug=1` für HUD |
+| UI | `touch-action: none` + CSS-Containment auf dem Viewer; Hero: **Zentrieren** über tappbaren **Stations-Chip** (nicht mehr floating); Default-Layout: Button **Ansicht zentrieren** unter dem Viewer; `?debug=1` für HUD |
+| TopBar (Raum) | `TopBar` mit `onBack`, optionalem `leftExtra` (z. B. Dialog-Ende **X** 38×38) und `right`; rechte Slot-Breite spiegelt links (`lib/ui/top-bar-layout.ts`) |
+| Recenter-API | `RaumViewerHandle.recenterView()` — intern `RoomImagePane`; **nicht** aus `raum-viewer/index.ts` als Pane exportiert (#72) |
 | Fallback | Wischen, Tap; Banner wenn Orientierung fehlt; `sessionStorage`-Merker iOS + 2s-Watchdog bei fehlenden Events |
 | Ohne `bild` | Statisches Layout + Medienliste ([ADR-006](./adr/006-raum-viewer-gyro-hotspots.md)) |
 | Demo | `/raum/musik` (Hotspots, 4 Medientypen); `/raum/daz`, `/raum/pc-raum` (Maskottchen-Dialog-Hotspots, [ADR-011](./adr/011-dialog-mascot-hotspots.md), Audio [ADR-010](./adr/010-dialog-cutscene-gated-audio.md)) — Gyro/Dialog auf iPhone nur unter **HTTPS**; Eintritt zuerst `/eintritt?t=fest-2026` |
@@ -122,8 +124,8 @@ interface Station {
 - **Öffentliche URL:** `https://schulnavigator.mpz.schule` — erreichbar über MPZ-Wildcard-DNS **`*.mpz.schule`** → Coolify-VPS `217.154.120.240` (kein eigener A-Record nur für `schulnavigator` nötig).
 - **Image:** [`app/Dockerfile`](../app/Dockerfile) — Multi-Stage, `output: 'standalone'`, Health `GET /api/health`, Container-Port **`PORT=3000`** (Coolify „Ports Exposes“ = `3000`).
 - **Suchmaschinen:** `robots.txt` mit `Disallow: /` und `noindex` im Root-Layout (Issue #16); Verfeinerung in #23 möglich.
-- **Coolify-Service:** nach Anlage UUID/Container-Name hier ergänzen (Betrieb).
-- **Staging:** noch offen — ggf. separates Coolify-Projekt auf demselben Server
+- **Coolify Prod:** Application `q1a8t4zswynvgutbw9og5l7n` — Projekt **Schulprojekte**, Branch `main`.
+- **Staging / Dev:** `https://schulnavigator-dev.mpz.schule` — Application `jjgl5u105ucxjvbeuwflsjq4` (`schulnavigator:development-feature`), gleicher Server, Branch `main` (Feature-Branches bei Bedarf in Coolify umstellen).
 
 ### Voraussetzungen fürs Dockerfile
 

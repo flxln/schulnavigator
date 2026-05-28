@@ -14,7 +14,7 @@ ADR-010 lieferte Dialog-Audio und eine **Vollbild-Cutscene** (Gyro pausiert, Fig
 2. **Rendering:** PNG aus `/brand/mascots/{mascot}.png` im [`hotspot-overlay.tsx`](../../app/components/raum-viewer/hotspot-overlay.tsx); Fußpunkt auf `(x, y)`; Touch-Ziel ≥ 44×44 px; `stopPropagation` auf `pointerDown` (Pan-Konflikt).
 3. **Trigger:** Tap auf Maskottchen → **synchron** `startFromUserGesture()` im Click-Handler; kein „Dialog starten“-Button, kein Vollbild-Cutscene für Dialog-Stationen.
 4. **Audio:** Ein `<audio>` dauerhaft in `raum-station-client.tsx`; Playlist über [`useDialogAudioPlaylist`](../../app/hooks/use-dialog-audio-playlist.ts) (ADR-010-Mechanik, `advanceRef`).
-5. **UI:** [`DialogEmbeddedBubble`](../../app/components/dialog/dialog-embedded-bubble.tsx) über dem Hero (festes `bg-bg-2`, kein `backdrop-blur` — iOS-Safari); „Beenden“ beendet Audio und schließt Dialog-UI.
+5. **UI:** [`DialogEmbeddedBubble`](../../app/components/dialog/dialog-embedded-bubble.tsx) über dem Hero (festes `bg-bg-2`, kein `backdrop-blur` — iOS-Safari), **ohne** Button unter der Blase. Dialog beenden: **X** (38×38) in der TopBar neben Zurück ([#72](https://github.com/flxln/schulnavigator/issues/72), [PR #73](https://github.com/flxln/schulnavigator/pull/73)). Raum zentrieren im Hero: tappbarer **Stations-Chip** (`RaumViewerHandle.recenterView`), kein floating „Zentrieren“.
 6. **Gyro:** während Dialog **an**; Figuren pannt mit dem Panorama; Sprechblase bleibt viewport-fix (v1).
 7. **Center-Hit:** Dialog-Hotspots von der Mitte-Hervorhebung ausgeschlossen.
 8. **Re-Tap:** Tap auf Figur während laufendem Dialog → ignorieren.
@@ -37,5 +37,5 @@ ADR-010 lieferte Dialog-Audio und eine **Vollbild-Cutscene** (Gyro pausiert, Fig
 
 - `stations.json`: `daz`, `pc-raum` mit je zwei Dialog-Hotspots.
 - Validator: `action`/`mascot`-Regeln; Warnung bei nur einem Maskottchen-Hotspot.
-- Demo-Meeting und `lokal-testen`: Tap auf Frieda/Otto statt Cutscene-Button.
+- Demo-Meeting und `lokal-testen`: Tap auf Frieda/Otto statt Cutscene-Button; Dialog-Ende/ Zentrieren siehe #72-Doku.
 - Feintuning Positionen am Gerät (`?debug=1`); Abstand Blase ↔ Figuren: Kurzidee-Dokument.
