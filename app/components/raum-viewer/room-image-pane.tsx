@@ -30,6 +30,7 @@ import {
   orientationToTargetPan,
   panMappingForAxis,
 } from '@/lib/raum-viewer/pan-from-orientation'
+import { panPxAfterRecenter } from '@/lib/raum-viewer/recenter-pan'
 import { roomPanZoom } from '@/lib/raum-viewer/room-pan-zoom'
 import { isMascotDialogHotspot } from '@/lib/dialog-hotspot'
 import { hitTestHotspot } from '@/lib/raum-viewer/hit-test-hotspot'
@@ -437,11 +438,7 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
   )
 
   const recenterView = useCallback(() => {
-    if (maxPan > 0) {
-      setPanPx(panAxis === 'alpha' ? centeredPanPx(maxPan) : 0)
-    } else {
-      setPanPx(0)
-    }
+    setPanPx(panPxAfterRecenter(maxPan, panAxis))
     if (angle !== null) {
       neutralAngle.current = angle
       neutralCalibrated.current = true
