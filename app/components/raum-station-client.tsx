@@ -54,6 +54,11 @@ export function RaumStationClient({
   const [panelOpen, setPanelOpen] = useState(false)
   const [selectedMedium, setSelectedMedium] = useState<Medium | null>(null)
   const [activeHotspotId, setActiveHotspotId] = useState<string | null>(null)
+  const [panInfo, setPanInfo] = useState<{
+    panPx: number
+    effectiveDisplayW: number
+    containerW: number
+  } | null>(null)
   const mascotDialogHotspot = useMemo(
     () => stationUsesMascotDialogHotspot(station),
     [station],
@@ -134,6 +139,25 @@ export function RaumStationClient({
     dialogUiActive,
   )
 
+  const handlePanChange = useCallback(
+    (panPx: number, effectiveDisplayW: number, containerW: number) => {
+      setPanInfo({ panPx, effectiveDisplayW, containerW })
+    },
+    [],
+  )
+
+  const bubbleOffsetX = useMemo(() => {
+    if (!panInfo || panInfo.effectiveDisplayW <= 0 || panInfo.containerW <= 0) return 0
+    const mascotXs = station.hotspots
+      .filter(isMascotDialogHotspot)
+      .map((h) => h.x)
+    if (mascotXs.length === 0) return 0
+    const midX = mascotXs.reduce((a, b) => a + b, 0) / mascotXs.length
+    const raw = panInfo.panPx + midX * panInfo.effectiveDisplayW - panInfo.containerW / 2
+    const limit = panInfo.containerW * 0.35
+    return Math.max(-limit, Math.min(limit, raw))
+  }, [panInfo, station.hotspots])
+
   return (
     <div className="sn-fade-in relative min-h-[100dvh] bg-bg-1">
       <section
@@ -154,6 +178,7 @@ export function RaumStationClient({
               }
               onHotspotTap={onHotspotTap}
               onHotspotCenterHit={onHotspotCenterHit}
+              onPanChange={handlePanChange}
               layout="hero"
               orientationEnabled
             />
@@ -209,6 +234,7 @@ export function RaumStationClient({
             tail={tail}
             accent={hubStation.accent}
             visible={dialogUiActive}
+            offsetX={bubbleOffsetX}
           />
         ) : null}
       </section>
