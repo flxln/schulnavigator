@@ -1,6 +1,6 @@
 # Schulnavigator — Architektur
 
-_Stand: 2026-05-27 (**ADR-009:** isometrischer Hub umgesetzt; **Epic #58:** GS39-UI-Screens; **#55/#56:** Raum-Viewer; Live #16) — siehe [entscheidungen.md](./entscheidungen.md)_
+_Stand: 2026-05-28 (**#72:** Dialog-Ende TopBar, Chip-Zentrieren; **ADR-009:** Hub; **#55/#56:** Raum-Viewer; Live #16) — siehe [entscheidungen.md](./entscheidungen.md)_
 
 ## Tech-Stack
 
