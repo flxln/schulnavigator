@@ -148,7 +148,7 @@ export function RaumStationClient({
 
   const bubbleOffsetX = useMemo(() => {
     if (!panInfo || panInfo.effectiveDisplayW <= 0 || panInfo.containerW <= 0) return 0
-    const mascotXs = station.hotspots
+    const mascotXs = (station.hotspots ?? [])
       .filter(isMascotDialogHotspot)
       .map((h) => h.x)
     if (mascotXs.length === 0) return 0
