@@ -38,6 +38,47 @@ describe('validateStationsFile isometrischer Hub', () => {
     expect(() => validateStationsFile(data as unknown)).toThrow('unbekannt')
   })
 
+  it('akzeptiert dialog-Hotspot ohne mediumId', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const daz = data.stations.find((s) => s.slug === 'daz') as Record<string, unknown>
+    const hotspots = daz.hotspots as Record<string, unknown>[]
+    expect(hotspots[0]?.action).toBe('dialog')
+    expect(hotspots[0]?.mediumId).toBeUndefined()
+    const stations = validateStationsFile(data as unknown)
+    expect(stations.find((s) => s.slug === 'daz')?.hotspots).toHaveLength(2)
+  })
+
+  it('wirft bei dialog-Hotspot mit mediumId', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const daz = data.stations.find((s) => s.slug === 'daz') as Record<string, unknown>
+    const hotspots = daz.hotspots as Record<string, unknown>[]
+    hotspots[0] = { ...hotspots[0], mediumId: 'x' }
+    expect(() => validateStationsFile(data as unknown)).toThrow(
+      'darf kein mediumId',
+    )
+  })
+
+  it('wirft wenn mascot nicht in dialog.figuren', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const daz = data.stations.find((s) => s.slug === 'daz') as Record<string, unknown>
+    const dialog = daz.dialog as Record<string, unknown>
+    dialog.figuren = ['frieda']
+    const segs = dialog.segmente as { rolle: string }[]
+    dialog.segmente = segs.filter((s) => s.rolle === 'frieda')
+    expect(() => validateStationsFile(data as unknown)).toThrow(
+      'fehlt in dialog.figuren',
+    )
+  })
+
+  it('wirft bei action dialog ohne station.dialog', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const daz = data.stations.find((s) => s.slug === 'daz') as Record<string, unknown>
+    delete daz.dialog
+    expect(() => validateStationsFile(data as unknown)).toThrow(
+      'erfordert station.dialog',
+    )
+  })
+
   it('wirft bei unbekanntem slug ohne Hub-Zuordnung', () => {
     const broken = structuredClone(raw) as {
       stations: { slug: string }[]

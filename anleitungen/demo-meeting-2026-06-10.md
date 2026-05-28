@@ -20,10 +20,10 @@ Kurzablauf für Sten/Tina auf echtem Gerät (**HTTPS**, z. B. `https://schulnavi
    `/raum/musik` — Gyro (Armschwenk), Hotspots. Medienliste unten: **Audio, Video (Poster), Foto, Text** — vier Typen, keine Platzhalter-UI-Lücken.
 
 4. **Story-Station `daz`**  
-   `/raum/daz` → **„Dialog starten“** (über dem Raumbild). Cutscene: Otto/Frieda wechseln, Sprechblase mit Untertiteln; Grüße-Block bleibt stehen, Figuren wechseln. Audio nur mit gültigem Cookie (kein direkter Dateilink).
+   `/raum/daz` → **Frieda oder Otto** im Raumbild antippen (links/rechts). Sprechblase oben, Gyro bleibt an; Dialog durchspielen. Grüße-Block: Sprechblase bleibt, Stimmen wechseln. Audio nur mit gültigem Cookie (kein direkter Dateilink). **„Dialog beenden“** stoppt die Wiedergabe.
 
 5. **Zweiter Dialog `pc-raum`**  
-   Gleicher Flow — Regeln am Computer, kein eingebettetes Lernspiel.
+   Gleicher Flow — Regeln am Computer.
 
 6. **Beliebiger anderer Raum**  
    Nur Foto + Schule-Text, leere Medien-Slots → „Hier kommen später Audio/Video der Kinder.“
@@ -36,7 +36,7 @@ Kurzablauf für Sten/Tina auf echtem Gerät (**HTTPS**, z. B. `https://schulnavi
 - Material (Fotos, Texte, Dialoge DaZ/PC) **kommt von der Schule** — App zeigt das echte Konzept.
 - **Content-Lieferplan** bis 12.06.: welche Klasse liefert welchen Raum in welchem Format.
 - Echte Kinder-Aufnahmen ersetzen Demo-Dateien unter `/demo/`; Dialog-Clips werden bei Bedarf ausgetauscht (`content/dialog-audio/`).
-- Figuren **noch nicht** im Panorama verankert — Cutscene ist bewusste Demo-Variante.
+- Figuren als **Hotspots im Panorama** (ADR-011); Positionen ggf. am echten Foto nachjustieren.
 
 ## Technische Smoke-Checks (Felix, vor dem Termin)
 

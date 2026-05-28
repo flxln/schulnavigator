@@ -1,7 +1,7 @@
 # ADR-010 — Dialog: Cutscene-Overlay, gated Audio, ein Audio-Element
 
 **Datum:** 2026-05-27  
-**Status:** entschieden
+**Status:** entschieden (UI-Präsentation ersetzt durch [ADR-011](./011-dialog-mascot-hotspots.md); Audio, API, `dialog`-JSON unverändert gültig)
 
 ## Kontext
 
@@ -12,7 +12,7 @@ Technische Alternativen: Figuren im Panorama verankert (Gyro-Komplexität), geme
 ## Entscheidung
 
 1. **Datenmodell:** optionales `station.dialog` mit `figuren`, `segmente[]`, optional `gruppen[]` (Anzeige-Gruppen für Stakkato, z. B. fünf Grüße = eine Sprechblase). Kein fünfter Medientyp.
-2. **UI:** **Cutscene-Overlay** über dem Raumbild (Gyro pausiert via `orientationEnabled`); Figuren links/rechts, Sprechblase als Untertitel; ein `<audio>`-Element, Clips als Playlist (`ended` → nächster Clip).
+2. **UI (ursprünglich):** **Cutscene-Overlay** über dem Raumbild (Gyro pausiert via `orientationEnabled`); Figuren links/rechts, Sprechblase als Untertitel; ein `<audio>`-Element, Clips als Playlist (`ended` → nächster Clip). **Ab 2026-05-28:** Dialog-Stationen nutzen Maskottchen-Hotspots im Raumbild ([ADR-011](./011-dialog-mascot-hotspots.md)); Cutscene-UI entfällt dort.
 3. **Audio-Auslieferung:** Dateien unter `app/content/dialog-audio/{slug}/`, Route `GET /api/dialog/[slug]/[clip]` mit Cookie-Auth (**403** ohne Token), **Range/206** für iOS, Path-Traversal-Schutz.
 4. **Docker:** `COPY content/ ./content/` im Runtime-Image (Standalone übernimmt `content/` nicht automatisch).
 

@@ -5,6 +5,7 @@ import type {
   DialogRolle,
   DialogSegment,
   Hotspot,
+  HotspotAction,
   Medium,
   Station,
   MediumTyp,
@@ -62,6 +63,10 @@ function validateMedium(m: unknown, ctx: string): Medium {
   return m as unknown as Medium
 }
 
+function isHotspotAction(v: unknown): v is HotspotAction {
+  return v === 'medium' || v === 'dialog'
+}
+
 function validateHotspot(h: unknown, ctx: string): Hotspot {
   assert(isRecord(h), `${ctx}: Hotspot ist kein Objekt`)
   assert(
@@ -69,9 +74,11 @@ function validateHotspot(h: unknown, ctx: string): Hotspot {
     `${ctx}: hotspot.id fehlt`,
   )
   assert(
-    typeof h.mediumId === 'string' && h.mediumId.length > 0,
-    `${ctx}: hotspot.mediumId fehlt`,
+    h.action === undefined || isHotspotAction(h.action),
+    `${ctx}: action muss "medium" oder "dialog" sein`,
   )
+  const action: HotspotAction =
+    h.action === undefined ? 'medium' : (h.action as HotspotAction)
   assert(
     typeof h.x === 'number' && Number.isFinite(h.x),
     `${ctx}: hotspot.x fehlt`,
@@ -95,7 +102,39 @@ function validateHotspot(h: unknown, ctx: string): Hotspot {
       `${ctx}: hotspot.radius muss 0–1 sein`,
     )
   }
-  return h as unknown as Hotspot
+  if (action === 'dialog') {
+    assert(
+      h.mediumId === undefined,
+      `${ctx}: dialog-Hotspot darf kein mediumId haben`,
+    )
+    assert(isDialogFigure(h.mascot), `${ctx}: mascot fehlt oder ungültig`)
+    return {
+      id: h.id,
+      label: h.label as string | undefined,
+      x: h.x,
+      y: h.y,
+      radius: h.radius as number | undefined,
+      action: 'dialog',
+      mascot: h.mascot,
+    }
+  }
+  assert(
+    typeof h.mediumId === 'string' && h.mediumId.length > 0,
+    `${ctx}: hotspot.mediumId fehlt`,
+  )
+  assert(
+    h.mascot === undefined,
+    `${ctx}: medium-Hotspot darf kein mascot haben`,
+  )
+  return {
+    id: h.id,
+    label: h.label as string | undefined,
+    x: h.x,
+    y: h.y,
+    radius: h.radius as number | undefined,
+    action: 'medium',
+    mediumId: h.mediumId,
+  }
 }
 
 function isDialogFigure(v: unknown): v is DialogFigure {
@@ -252,6 +291,10 @@ function validateStation(raw: unknown, index: number): Station {
     )
     mediumIds.add(medium.id)
   }
+  let dialog: Dialog | undefined
+  if (raw.dialog !== undefined) {
+    dialog = validateDialog(raw.dialog, prefix)
+  }
   let hotspots: Hotspot[] | undefined
   if (raw.hotspots !== undefined) {
     assert(Array.isArray(raw.hotspots), `${prefix}: hotspots muss Array sein`)
@@ -259,21 +302,35 @@ function validateStation(raw: unknown, index: number): Station {
       validateHotspot(h, `${prefix}.hotspots[${i}]`),
     )
     const hotspotIds = new Set<string>()
+    let mascotDialogCount = 0
     for (const hs of hotspots) {
       assert(
         !hotspotIds.has(hs.id),
         `${prefix}: doppelte hotspot.id "${hs.id}"`,
       )
       hotspotIds.add(hs.id)
-      assert(
-        mediumIds.has(hs.mediumId),
-        `${prefix}: hotspot "${hs.id}" verweist auf unbekanntes mediumId "${hs.mediumId}"`,
+      if (hs.action === 'dialog') {
+        assert(
+          dialog !== undefined,
+          `${prefix}: dialog-Hotspot "${hs.id}" erfordert station.dialog`,
+        )
+        assert(
+          dialog!.figuren.includes(hs.mascot!),
+          `${prefix}: mascot "${hs.mascot}" fehlt in dialog.figuren`,
+        )
+        mascotDialogCount += 1
+      } else {
+        assert(
+          hs.mediumId !== undefined && mediumIds.has(hs.mediumId),
+          `${prefix}: hotspot "${hs.id}" verweist auf unbekanntes mediumId "${hs.mediumId}"`,
+        )
+      }
+    }
+    if (dialog !== undefined && mascotDialogCount === 1) {
+      console.warn(
+        `stations.json: ${prefix}: nur ein Maskottchen-Dialog-Hotspot — empfohlen: zwei (frieda + otto)`,
       )
     }
-  }
-  let dialog: Dialog | undefined
-  if (raw.dialog !== undefined) {
-    dialog = validateDialog(raw.dialog, prefix)
   }
   return {
     slug: raw.slug,

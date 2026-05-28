@@ -14,8 +14,13 @@ import {
 import { NextStationFooter } from '@/components/raum/next-station-footer'
 import { StationMediaPanel } from '@/components/station-media-panel'
 import { StationVisitedBadge } from '@/components/station-visited-badge'
-import { DialogPlayer } from '@/components/dialog/dialog-player'
-import { Gs39Button, Gs39Chip, TopBar } from '@/components/ui'
+import { DialogEmbeddedBubble } from '@/components/dialog/dialog-embedded-bubble'
+import { Gs39Chip, TopBar } from '@/components/ui'
+import { useDialogAudioPlaylist } from '@/hooks/use-dialog-audio-playlist'
+import {
+  isMascotDialogHotspot,
+  stationUsesMascotDialogHotspot,
+} from '@/lib/dialog-hotspot'
 import type { EntryMode } from '@/lib/access-tokens'
 import { useVisitedStations } from '@/hooks/use-visited-stations'
 import { getUnlockedSlugsForMode } from '@/lib/hub-mode'
@@ -40,7 +45,19 @@ export function RaumStationClient({
   const [panelOpen, setPanelOpen] = useState(false)
   const [selectedMedium, setSelectedMedium] = useState<Medium | null>(null)
   const [activeHotspotId, setActiveHotspotId] = useState<string | null>(null)
-  const [dialogOpen, setDialogOpen] = useState(false)
+  const mascotDialogHotspot = useMemo(
+    () => stationUsesMascotDialogHotspot(station),
+    [station],
+  )
+  const {
+    audioRef: dialogAudioRef,
+    startFromUserGesture,
+    stopDialog,
+    dialogUiActive,
+    speakingRolle,
+    displayText,
+    tail,
+  } = useDialogAudioPlaylist(station.dialog)
 
   const { visitedSlugs } = useVisitedStations(validSlugs)
   const stationSlugs = useMemo(
@@ -66,24 +83,41 @@ export function RaumStationClient({
 
   const onHotspotTap = useCallback(
     (hs: Hotspot) => {
-      const m = station.medien.find((x) => x.id === hs.mediumId)
+      if (isMascotDialogHotspot(hs) && station.dialog) {
+        setActiveHotspotId(hs.id)
+        startFromUserGesture()
+        return
+      }
+      const m =
+        hs.mediumId !== undefined
+          ? station.medien.find((x) => x.id === hs.mediumId)
+          : undefined
       if (m) {
         setActiveHotspotId(hs.id)
         openMedium(m)
       }
     },
-    [station.medien, openMedium],
+    [station.dialog, station.medien, openMedium, startFromUserGesture],
   )
 
   const onHotspotCenterHit = useCallback((hs: Hotspot | null) => {
     setActiveHotspotId(hs?.id ?? null)
   }, [])
 
+  const endDialog = useCallback(() => {
+    stopDialog()
+    setActiveHotspotId(null)
+  }, [stopDialog])
+
+  const heroHeightClass = mascotDialogHotspot
+    ? 'h-[min(58vh,400px)]'
+    : 'h-[min(52vh,340px)]'
+
   return (
     <div className="sn-fade-in relative min-h-[100dvh] bg-bg-1">
       <section
         aria-labelledby="station-titel"
-        className="relative h-[min(52vh,340px)] bg-brand-navy"
+        className={`relative bg-brand-navy ${heroHeightClass}`}
       >
         <RaumViewerErrorBoundary>
           {station.bild ? (
@@ -93,10 +127,13 @@ export function RaumStationClient({
               hotspots={station.hotspots}
               medien={station.medien}
               activeHotspotId={activeHotspotId}
+              speakingRolle={
+                mascotDialogHotspot ? speakingRolle : null
+              }
               onHotspotTap={onHotspotTap}
               onHotspotCenterHit={onHotspotCenterHit}
               layout="hero"
-              orientationEnabled={!dialogOpen}
+              orientationEnabled
             />
           ) : (
             <div className="flex h-full items-center justify-center px-4">
@@ -105,30 +142,14 @@ export function RaumStationClient({
           )}
         </RaumViewerErrorBoundary>
 
+        {mascotDialogHotspot && station.dialog ? (
+          <audio ref={dialogAudioRef} preload="auto" className="sr-only" />
+        ) : null}
+
         <div
-          className={`pointer-events-none absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-black/55 transition-opacity ${dialogOpen ? 'opacity-90' : ''}`}
+          className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-black/15 via-transparent to-black/55"
           aria-hidden
         />
-
-        {station.dialog && !dialogOpen ? (
-          <div className="absolute inset-x-0 bottom-4 z-[15] flex justify-center px-4">
-            <Gs39Button
-              type="button"
-              variant="primary"
-              onClick={() => setDialogOpen(true)}
-            >
-              ▶ Dialog starten
-            </Gs39Button>
-          </div>
-        ) : null}
-
-        {station.dialog && dialogOpen ? (
-          <DialogPlayer
-            dialog={station.dialog}
-            accent={hubStation.accent}
-            onClose={() => setDialogOpen(false)}
-          />
-        ) : null}
 
         <div className="absolute left-0 right-0 top-0 z-10">
           <TopBar
@@ -147,6 +168,16 @@ export function RaumStationClient({
             tight
           />
         </div>
+
+        {mascotDialogHotspot && station.dialog ? (
+          <DialogEmbeddedBubble
+            text={displayText}
+            tail={tail}
+            accent={hubStation.accent}
+            visible={dialogUiActive}
+            onEnd={endDialog}
+          />
+        ) : null}
       </section>
 
       <div className="relative z-[2] -mt-6 rounded-t-[24px] bg-bg-1 px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-5">

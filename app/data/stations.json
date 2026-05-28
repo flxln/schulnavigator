@@ -13,6 +13,26 @@
       "beschreibung": "Hi! Im DaZ-Zimmer lernen Kinder aus vielen Ländern Deutsch. Wir üben Wörter, Sätze und manchmal auch, wie man \"Schmetterling\" ohne Knoten in der Zunge sagt. Schön, dass Sie vorbeischauen!",
       "bild": "/stations/daz.jpg",
       "medien": [],
+      "hotspots": [
+        {
+          "id": "hs-frieda",
+          "label": "Frieda",
+          "x": 0.32,
+          "y": 0.58,
+          "radius": 0.1,
+          "action": "dialog",
+          "mascot": "frieda"
+        },
+        {
+          "id": "hs-otto",
+          "label": "Otto",
+          "x": 0.68,
+          "y": 0.58,
+          "radius": 0.1,
+          "action": "dialog",
+          "mascot": "otto"
+        }
+      ],
       "dialog": {
         "figuren": ["frieda", "otto"],
         "gruppen": [
@@ -90,6 +110,26 @@
       "beschreibung": "Willkommen im PC-Raum! Hier tippen wir, klicken wir und lernen, wie Computer funktionieren. Und keine Sorge: wir wissen, welcher Knopf der Aus-Knopf ist – meistens jedenfalls.",
       "bild": "/stations/pc-raum.jpg",
       "medien": [],
+      "hotspots": [
+        {
+          "id": "hs-frieda",
+          "label": "Frieda",
+          "x": 0.32,
+          "y": 0.58,
+          "radius": 0.1,
+          "action": "dialog",
+          "mascot": "frieda"
+        },
+        {
+          "id": "hs-otto",
+          "label": "Otto",
+          "x": 0.68,
+          "y": 0.58,
+          "radius": 0.1,
+          "action": "dialog",
+          "mascot": "otto"
+        }
+      ],
       "dialog": {
         "figuren": ["frieda", "otto"],
         "segmente": [

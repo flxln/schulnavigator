@@ -6,7 +6,7 @@ Milestone: **Phase 2** | Fällig: 12.06.2026
 
 **Übernahmen aus Issue #16 (Phase 1):** Live unter HTTPS (`schulnavigator.mpz.schule`); website-weite Basis gegen Indexierung (`robots` / `noindex`); Route `/eintritt` mit **Platzhalter** (HTTP 200). **#23** baut darauf auf: Token, Middleware und Scanner sind der verbleibende Kern; SEO-Basis und Eintritt-404-Vermeidung sind **keine** Grünfeld-Aufgaben mehr. Detaillierte Abgrenzung: [`.cursor/plans/issue_16_coolify_deploy_39add57f.plan.md`](../../.cursor/plans/issue_16_coolify_deploy_39add57f.plan.md) (Abschnitt *Folge-Issues*). *Hinweis:* Zugehörige Cursor-**Chat-Request-ID** `51250690-23d9-4dfa-a554-4238883c9491` dient nur der Zuordnung zur Chat-Sitzung, nicht der technischen Referenz.
 
-**Architektur:** [ADR-004](../adr/004-video-hosting-mpz.md) · [ADR-005](../adr/005-zugangskontrolle-token.md) · [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md) · [ADR-008](../adr/008-eintritt-in-app-scanner.md) (#57) · [ADR-009](../adr/009-hub-isometrisch.md) (#58) · [ADR-010](../adr/010-dialog-cutscene-gated-audio.md) (#69)
+**Architektur:** [ADR-004](../adr/004-video-hosting-mpz.md) · [ADR-005](../adr/005-zugangskontrolle-token.md) · [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md) · [ADR-008](../adr/008-eintritt-in-app-scanner.md) (#57) · [ADR-009](../adr/009-hub-isometrisch.md) (#58) · [ADR-010](../adr/010-dialog-cutscene-gated-audio.md) (#69) · [ADR-011](../adr/011-dialog-mascot-hotspots.md) (#71)
 
 **Ausführungsreihenfolge:** [`projektmanagement/2026-05-27-gs39-ui-ausfuehrungsreihenfolge.md`](../projektmanagement/2026-05-27-gs39-ui-ausfuehrungsreihenfolge.md)
 
@@ -260,6 +260,25 @@ Aus Roh-m4a per `station-audio-transkript` Text + Zeitstempel prüfen, Clips in 
 
 - Automatischer Import der JSON zur Laufzeit
 - Lip-Sync / Panorama-Overlay (Cutscene bewusst für Demo 10.06.)
+
+---
+
+## #71 — Dialog-UI: Maskottchen-Hotspots im Raumbild (ADR-011)
+
+**Labels:** `tech` `design` `content`  
+**Assignee:** Felix  
+**GitHub:** https://github.com/flxln/schulnavigator/issues/71 — **offen** (Umsetzung im Repo 2026-05-28)
+
+Ersetzt Cutscene-UX für Dialog-Stationen; Audio/Route bleiben [ADR-010](../adr/010-dialog-cutscene-gated-audio.md). Spezifikation: [ADR-011](../adr/011-dialog-mascot-hotspots.md).
+
+### Akzeptanzkriterien
+
+- [x] Tap Frieda/Otto → Dialog + Sprechblase, Gyro an (`daz`, `pc-raum`)
+- [x] Schema `action: dialog` + `mascot`; Validator + Tests
+- [x] Re-Tap-Guard, „Dialog beenden“, Center-Hit ohne Maskottchen
+- [x] Spike iPhone (2026-05-28) dokumentiert
+- [ ] PR merged, Deploy, Geräte-QA am Produktions-HTTPS
+- [ ] Hotspot-Positionen am echten Foto feinjustieren (optional vor 10.06.)
 
 ---
 

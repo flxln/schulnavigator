@@ -21,7 +21,19 @@ npm install   # nur bei erstem Mal oder nach Dependency-Änderung
 npm run dev
 ```
 
-- **URL:** [http://localhost:3000](http://localhost:3000)
+- **URL am Mac:** [https://localhost:3000](https://localhost:3000) (`npm run dev` nutzt experimentelles HTTPS)
+- **iPhone im gleichen WLAN:** nur **`https://`** (nicht `http://`) — z. B. `https://192.168.x.x:3000/eintritt?t=fest-2026`
+- In `app/.env.local`: `ALLOWED_DEV_ORIGINS=<LAN-IP>` (Komma-getrennt). IP: `ipconfig getifaddr en0`
+- **Safari „Website öffnen“ tut nichts?** Das Dev-Zertifikat muss die **LAN-IP** enthalten (nicht nur `localhost`). Einmal im Ordner `app/`:
+
+```bash
+brew install mkcert   # falls noch nicht
+mkcert -install
+npm run cert:lan      # liest IPs aus .env.local
+npm run dev
+```
+
+- **iPhone:** mkcert-Root auf dem Gerät vertrauen (einmalig): am Mac `mkcert -CAROOT` → Datei `rootCA.pem` per AirDrop aufs iPhone → Einstellungen → Profil installieren → Einstellungen → Allgemein → Info → **Zertifikatvertrauen** → Schalter für mkcert aktivieren. Danach lädt `https://<LAN-IP>:3000` ohne blockierte „Website öffnen“-Schleife.
 - **Änderungen** an Code/CSS: Seite lädt in der Regel automatisch nach (Hot Reload).
 
 **Sinnvolle Seiten zum Durchklicken:**
@@ -36,8 +48,8 @@ npm run dev
 | [http://localhost:3000/robots.txt](http://localhost:3000/robots.txt) | `Disallow: /` (Issue #16) |
 | [http://localhost:3000/scan](http://localhost:3000/scan) | In-App-QR-Scanner mit dunklem Chrome und gelbem Scan-Rahmen (nach Entry; Kamera-Zugriff nötig) |
 | [http://localhost:3000/raum/musik](http://localhost:3000/raum/musik) | Demo: Raumbild, **Gyro-Armschwenk** Portrait (oder Wischen), **2 Hotspots** (Highlight per Mitte, Medien per Tap), **4 Medien-Slots** |
-| [http://localhost:3000/raum/daz](http://localhost:3000/raum/daz) | **Otto/Frieda-Dialog** (Cutscene, gated Audio) — [ADR-010](../dokumentation/adr/010-dialog-cutscene-gated-audio.md) |
-| [http://localhost:3000/raum/pc-raum](http://localhost:3000/raum/pc-raum) | Zweiter Dialog (PC-Regeln) |
+| [http://localhost:3000/raum/daz](http://localhost:3000/raum/daz) | **Frieda/Otto** im Raumbild antippen → Dialog mit Sprechblase, Gyro an, **Dialog beenden** |
+| [http://localhost:3000/raum/pc-raum](http://localhost:3000/raum/pc-raum) | Zweiter Dialog (PC-Regeln), gleicher Maskottchen-Flow |
 | [http://localhost:3000/raum/schulsozialarbeit](http://localhost:3000/raum/schulsozialarbeit) | Raumbild (Platzhalter) + Text-Medium |
 | [http://localhost:3000/raum/klassenzimmer](http://localhost:3000/raum/klassenzimmer) | Raumbild + **leere** Medienliste (Empty-State) |
 | [http://localhost:3000/raum/gibts-nicht](http://localhost:3000/raum/gibts-nicht) | **404** (nur im Dev-Server; unbekannte Slugs sind zur Build-Zeit fest) |
@@ -136,6 +148,20 @@ Identisches Laufzeit-Image wie in Produktion — Schritt-für-Schritt: Abschnitt
 ## Demo-Termin 10.06.
 
 Schritt-für-Schritt für das MPZ-Meeting mit Sten/Tina: [`demo-meeting-2026-06-10.md`](./demo-meeting-2026-06-10.md).
+
+---
+
+## Device-Spike: Maskottchen-Hotspot + Dialog-Audio (iPhone)
+
+**Voraussetzung:** HTTPS (lokal `npm run dev` mit `--experimental-https` oder Deploy). Zuerst Entry: `/eintritt?t=fest-2026`.
+
+1. `/raum/daz` öffnen — **Frieda** als große Figur **links in der Bildmitte** sichtbar? (Hotspot-`y` muss im sichtbaren Drittel liegen, sonst Konsole: `Hotspot … liegt außerhalb des sichtbaren Bereichs`)
+2. **Einmal auf Frieda tippen** (nicht wischen) — startet Clip 1 **sofort** mit Ton? (Kein zweiter Start-Button nötig.)
+3. Dialog läuft alle 9 Clips durch; Raum lässt sich **weiter** mit Gyro bewegen.
+4. Netzwerk: ohne Cookie → `/api/dialog/daz/01-frieda.wav` = 403; mit Cookie = 200/206.
+5. Regression: `/raum/musik` — kleine gelbe Hotspots öffnen weiter Medien-Panel.
+
+**Bekannte Spike-Grenzen:** keine Sprechblase im Raum; Cutscene-Button parallel noch vorhanden; nur eine Figur (Frieda) als Hotspot.
 
 ---
 
