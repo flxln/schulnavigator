@@ -17,7 +17,7 @@ Kurzablauf für Sten/Tina auf echtem Gerät (**HTTPS**, z. B. `https://schulnavi
    `/scan` → Raum-QR scannen (z. B. `musik`). Zurück zur Startseite: Fenster freigeschaltet, Fortschritt sichtbar.
 
 3. **Technik-Station `musik`**  
-   `/raum/musik` — Gyro (Armschwenk), Hotspots. Medienliste unten: **Audio, Video (Poster), Foto, Text** — vier Typen, keine Platzhalter-UI-Lücken.
+   `/raum/musik` — Gyro (Armschwenk), Hotspots, **Stations-Chip** zum Zentrieren. Medienliste unten: **Audio, Video (Poster), Foto, Text** — vier Typen, keine Platzhalter-UI-Lücken.
 
 4. **Story-Station `daz`**  
    `/raum/daz` → **Frieda oder Otto** im Raumbild antippen (links/rechts). Sprechblase oben, Gyro bleibt an; Dialog durchspielen. Grüße-Block: Sprechblase bleibt, Stimmen wechseln. Audio nur mit gültigem Cookie (kein direkter Dateilink). **X** neben Zurück beendet die Wiedergabe; **Stations-Chip** zentriert die Raumansicht.
@@ -25,8 +25,8 @@ Kurzablauf für Sten/Tina auf echtem Gerät (**HTTPS**, z. B. `https://schulnavi
 5. **Zweiter Dialog `pc-raum`**  
    Gleicher Flow — Regeln am Computer.
 
-6. **Beliebiger anderer Raum**  
-   Nur Foto + Schule-Text, leere Medien-Slots → „Hier kommen später Audio/Video der Kinder.“
+6. **Beliebiger anderer Raum** (z. B. `klassenzimmer`, `werken`, `turnhalle`)  
+   Gleiche Raum-Shell: TopBar, Gyro, **Chip zentriert** — oft noch leere Medien-Slots („Hier kommen später Audio/Video der Kinder“).
 
 7. **Optional: 11/11 & Sparkle**  
    Weitere Räume scannen bis `SparkleBurst` auf `/` (einmalig).

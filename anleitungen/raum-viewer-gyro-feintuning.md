@@ -80,7 +80,7 @@ Kommentar im Repo: Werte mit Nutzer auf **iPhone Safari** kalibriert; `GYRO_*` i
 
 - Zu **kurz:** Neutral schief, wenn der Nutzer sich schon bewegt.
 - Zu **lang:** Nutzer dreht bereits, bevor kalibriert ist.
-- **„Ansicht zentrieren“:** setzt Neutral und Pan neu (wichtig bei **Drift** — ohne Magnetometer kein echter Kompass, ADR-006).
+- **Zentrieren:** **Stations-Chip** auf `/raum/[slug]` tippen (#72) — setzt Neutral und Pan neu (wichtig bei **Drift**; ohne Magnetometer kein echter Kompass, ADR-006).
 - **Achswechsel** Portrait ↔ Landscape (`axisEpoch`): Neutral-Reset.
 
 ---
@@ -105,7 +105,7 @@ Dev-Warnung bei wenig Pan: `[RaumViewer] Wenig Gyro-Pan: …` in der Konsole (`N
 3. **~0,5 s ruhig halten** (Neutral-Kalibrierung).
 4. Armschwenk links/rechts: HUD `axis:α`, `n:` (Neutral), `pan:` / zweite Zahl = `maxPan`.
 5. Prüfen: Von Mitte aus ca. **`GYRO_FULL_RANGE_DEG`** bis linker und rechter Rand erreichbar?
-6. **Drift:** 30–60 s halten → „Ansicht zentrieren“ testen.
+6. **Drift:** 30–60 s halten → **Stations-Chip** tippen (zentrieren).
 7. **Portrait ↔ Landscape** (iPad): Achswechsel `α`/`γ`, kein Sprung.
 8. Pro Anpassung **nur eine** Konstante ändern, erneut testen.
 

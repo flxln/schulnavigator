@@ -31,6 +31,9 @@ import {
   shouldShowDialogEndIcon,
 } from '@/lib/raum-station/end-dialog-flow'
 
+/** Einheitliche Hero-Höhe für alle Raumstationen (#72, gleiche Shell). */
+const RAUM_HERO_HEIGHT_CLASS = 'h-[min(58vh,400px)]'
+
 type RaumStationClientProps = {
   station: Station
   validSlugs: readonly string[]
@@ -131,15 +134,11 @@ export function RaumStationClient({
     dialogUiActive,
   )
 
-  const heroHeightClass = mascotDialogHotspot
-    ? 'h-[min(58vh,400px)]'
-    : 'h-[min(52vh,340px)]'
-
   return (
     <div className="sn-fade-in relative min-h-[100dvh] bg-bg-1">
       <section
         aria-labelledby="station-titel"
-        className={`relative bg-brand-navy ${heroHeightClass}`}
+        className={`relative bg-brand-navy ${RAUM_HERO_HEIGHT_CLASS}`}
       >
         <RaumViewerErrorBoundary>
           {station.bild ? (
