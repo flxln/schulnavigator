@@ -43,12 +43,12 @@ _Stand: 2026-05-28 (**#72:** Dialog-Ende TopBar, Chip-Zentrieren; **ADR-009:** H
 
 ## Raum-Viewer (Implementierung, Issue #55)
 
-Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/) und Mathematik in [`app/lib/raum-viewer/`](../app/lib/raum-viewer/). Stationen-Seite: [`RaumStationClient`](../app/components/raum-station-client.tsx) auf `/raum/[slug]` — Hero-Layout mit Gyro-`RaumViewer` (`layout="hero"`), Stations-Chrome aus Design (#58).
+Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/) und Mathematik in [`app/lib/raum-viewer/`](../app/lib/raum-viewer/). **Alle 11 Stationen:** [`RaumStationClient`](../app/components/raum-station-client.tsx) auf `/raum/[slug]` — einheitliche Hero-Höhe, Gyro-`RaumViewer` (`layout="hero"`), TopBar, tappbarer Stations-Chip (#72), Dialog nur `daz`/`pc-raum` (#71).
 
 | Verhalten | Details |
 | --------- | ------- |
 | Gyro-Pan | Höhenbasiert, horizontal `translateX`; Auto-Zoom bis `MIN_PAN_DISPLAY_RATIO` (2); **Portrait:** `deviceorientation.alpha` (Armschwenk, zweiseitig, Neutral in Bildmitte); **Landscape:** `gamma` (Kippen, einseitig); zirkuläre EMA für alpha; iOS nach Nutzer-Geste |
-| Neutral | ~500 ms Mittelwert (alpha: kreisförmig); nach **Wischen** Re-Kalibrierung (`neutralAngleForPan`); bei **Resize** und **orientationchange** Neu-Kalibrierung; ohne Kompass kann alpha langsam driften → **Ansicht zentrieren** |
+| Neutral | ~500 ms Mittelwert (alpha: kreisförmig); nach **Wischen** Re-Kalibrierung (`neutralAngleForPan`); bei **Resize** und **orientationchange** Neu-Kalibrierung; ohne Kompass kann alpha langsam driften → **Stations-Chip** tippen (alle `/raum/[slug]` mit Hero) |
 | Hotspots | JSON 0–1; bei vertikalem Beschnitt können extreme **y** unsichtbar sein — Build-Warnung in `validate:stations`, Runtime-`console.warn` |
 | UI | `touch-action: none` + CSS-Containment auf dem Viewer; Hero: **Zentrieren** über tappbaren **Stations-Chip** (nicht mehr floating); Default-Layout: Button **Ansicht zentrieren** unter dem Viewer; `?debug=1` für HUD |
 | TopBar (Raum) | `TopBar` mit `onBack`, optionalem `leftExtra` (z. B. Dialog-Ende **X** 38×38) und `right`; rechte Slot-Breite spiegelt links (`lib/ui/top-bar-layout.ts`) |

@@ -38,6 +38,8 @@ npm run dev
 
 **Sinnvolle Seiten zum Durchklicken:**
 
+**Raumstationen (alle 11 Slugs):** Dieselbe Shell [`RaumStationClient`](../app/components/raum-station-client.tsx) unter `/raum/[slug]` — TopBar (Zurück, Stationsliste), Hero mit Gyro. **Stations-Chip** unter dem Hero tippen → Raumansicht zentrieren (#72, alle Stationen mit `bild`). **Nur** `daz` und `pc-raum`: Maskottchen antippen → Dialog; währenddessen **X** neben Zurück beendet die Wiedergabe.
+
 | Seite | Zweck |
 | ----- | ----- |
 | [http://localhost:3000/](http://localhost:3000/) | Startseite — **ohne** vorherigen Entry: Redirect zu `/eintritt` |
@@ -47,11 +49,17 @@ npm run dev
 | [http://localhost:3000/eintritt](http://localhost:3000/eintritt) | Hinweisseite + **In-App-Scanner** für Eintritts-QR (#57); Kamera nur auf `localhost`/HTTPS |
 | [http://localhost:3000/robots.txt](http://localhost:3000/robots.txt) | `Disallow: /` (Issue #16) |
 | [http://localhost:3000/scan](http://localhost:3000/scan) | In-App-QR-Scanner mit dunklem Chrome und gelbem Scan-Rahmen (nach Entry; Kamera-Zugriff nötig) |
-| [http://localhost:3000/raum/musik](http://localhost:3000/raum/musik) | Demo: Raumbild, **Gyro-Armschwenk** Portrait (oder Wischen), **2 Hotspots** (Highlight per Mitte, Medien per Tap), **4 Medien-Slots** |
-| [http://localhost:3000/raum/daz](http://localhost:3000/raum/daz) | **Frieda/Otto** im Raumbild antippen → Dialog mit Sprechblase, Gyro an; **X** neben Zurück beendet Dialog; **Stations-Chip** tippen zentriert die Raumansicht |
-| [http://localhost:3000/raum/pc-raum](http://localhost:3000/raum/pc-raum) | Zweiter Dialog (PC-Regeln), gleicher Maskottchen-Flow |
-| [http://localhost:3000/raum/schulsozialarbeit](http://localhost:3000/raum/schulsozialarbeit) | Raumbild (Platzhalter) + Text-Medium |
-| [http://localhost:3000/raum/klassenzimmer](http://localhost:3000/raum/klassenzimmer) | Raumbild + **leere** Medienliste (Empty-State) |
+| [http://localhost:3000/raum/klassenzimmer](http://localhost:3000/raum/klassenzimmer) | Standard-Raum-Chrome; leere Medienliste (Empty-State) |
+| [http://localhost:3000/raum/daz](http://localhost:3000/raum/daz) | **Dialog:** Frieda/Otto antippen; **X** beendet Dialog; Chip zentriert |
+| [http://localhost:3000/raum/pc-raum](http://localhost:3000/raum/pc-raum) | Zweiter Dialog, gleicher Flow |
+| [http://localhost:3000/raum/werken](http://localhost:3000/raum/werken) | Standard-Raum-Chrome |
+| [http://localhost:3000/raum/turnhalle](http://localhost:3000/raum/turnhalle) | Standard-Raum-Chrome |
+| [http://localhost:3000/raum/speiseraum](http://localhost:3000/raum/speiseraum) | Standard-Raum-Chrome |
+| [http://localhost:3000/raum/kunst](http://localhost:3000/raum/kunst) | Standard-Raum-Chrome |
+| [http://localhost:3000/raum/lesewelt](http://localhost:3000/raum/lesewelt) | Standard-Raum-Chrome |
+| [http://localhost:3000/raum/hort](http://localhost:3000/raum/hort) | Standard-Raum-Chrome |
+| [http://localhost:3000/raum/musik](http://localhost:3000/raum/musik) | **Gyro**, **2 Hotspots**, **4 Medien-Slots** (Demo-Typen); Chip zentriert |
+| [http://localhost:3000/raum/schulsozialarbeit](http://localhost:3000/raum/schulsozialarbeit) | Standard-Raum-Chrome; ein Text-Medium |
 | [http://localhost:3000/raum/gibts-nicht](http://localhost:3000/raum/gibts-nicht) | **404** (nur im Dev-Server; unbekannte Slugs sind zur Build-Zeit fest) |
 
 **Hinweis zu 404:** Die Routen kommen aus `data/stations.json` (`generateStaticParams`). Ein Slug, der **nicht** in der JSON-Datei steht, liefert in der **Produktion** nach `npm run build` eine 404-Seite. Unter `npm run dev` zeigt Next.js oft eine dynamische 404 — zum Verhalten wie online unbedingt **Abschnitt 3** ausführen.
@@ -83,7 +91,7 @@ npm run start
 
 `npm run build` ruft zuvor **`npm run validate:tokens`** (Abgleich `app/gs39-tokens.css` ↔ `auftraggeber/.../colors_and_type.css`) und **`npm run validate:stations`** auf: Es muss jede in `stations.json` referenzierte Datei unter `public/` existieren (Raumbilder, Demo-Medien). Fehlt etwas, bricht der Build mit einer klaren Meldung ab. Zusätzlich gibt `validate:stations` bei riskantem Hotspot-**y** (nach Auto-Zoom unsichtbar) eine **Warnung** aus (Heuristik).
 
-**Raum-Viewer (Issue #55 / #56, Mobil-Härtung):** `export const viewport` in [`app/app/layout.tsx`](../app/app/layout.tsx) — korrektes **device-width** auf dem Handy (kein „Mini-Desktop-Zoom“). Viewer `min(50vh, 360px)`; **Auto-Zoom** skaliert schmale Bilder so, dass horizontal mindestens `MIN_PAN_DISPLAY_RATIO` (2) erreicht wird — dabei kann **oben/unten beschnitten** werden; Hotspot-**y** im mittleren Drittel halten. **Gyro (Portrait):** Handy vor die Brust, **links und rechts drehen** (nicht kippen) — ca. ±60° vom Neutral zu beiden Raumrändern (`GYRO_FULL_RANGE_DEG`, Feintuning: [raum-viewer-gyro-feintuning.md](./raum-viewer-gyro-feintuning.md)); bei Drift **„Ansicht zentrieren“**. **Landscape (iPad):** Kippen (`gamma`) wie bisher. **Wischen** bleibt nach Loslassen stabil. Debug: `?debug=1` — HUD mit `axis`, `α`, `γ`, `∠`, `pan`. Unter `/raum/musik` — **iPhone nur unter HTTPS**; Portrait/Landscape-Wechsel prüfen (Neutral-Reset); Norddurchquerung (0°/360°) ohne Pan-Sprung.
+**Raum-Viewer (Issue #55 / #56, #72):** `export const viewport` in [`app/app/layout.tsx`](../app/app/layout.tsx) — korrektes **device-width** auf dem Handy (kein „Mini-Desktop-Zoom“). Hero auf allen Raumseiten `min(58vh, 400px)`. **Auto-Zoom** skaliert schmale Bilder so, dass horizontal mindestens `MIN_PAN_DISPLAY_RATIO` (2) erreicht wird — dabei kann **oben/unten beschnitten** werden; Hotspot-**y** im mittleren Drittel halten. **Gyro (Portrait):** Handy vor die Brust, **links und rechts drehen** (nicht kippen) — ca. ±60° vom Neutral zu beiden Raumrändern (`GYRO_FULL_RANGE_DEG`, Feintuning: [raum-viewer-gyro-feintuning.md](./raum-viewer-gyro-feintuning.md)); bei Drift **Stations-Chip** tippen (zentriert). **Landscape (iPad):** Kippen (`gamma`) wie bisher. **Wischen** bleibt nach Loslassen stabil. Debug: `?debug=1` — HUD mit `axis`, `α`, `γ`, `∠`, `pan`. Beliebige `/raum/…` — **iPhone nur unter HTTPS**; Portrait/Landscape-Wechsel prüfen (Neutral-Reset); Norddurchquerung (0°/360°) ohne Pan-Sprung.
 
 **Stempel & Hub-Freischaltung (Issue #21 / ADR-009):**
 
