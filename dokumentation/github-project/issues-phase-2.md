@@ -275,10 +275,31 @@ Ersetzt Cutscene-UX für Dialog-Stationen; Audio/Route bleiben [ADR-010](../adr/
 
 - [x] Tap Frieda/Otto → Dialog + Sprechblase, Gyro an (`daz`, `pc-raum`)
 - [x] Schema `action: dialog` + `mascot`; Validator + Tests
-- [x] Re-Tap-Guard, „Dialog beenden“, Center-Hit ohne Maskottchen
+- [x] Re-Tap-Guard, „Dialog beenden“ (v1 unter Sprechblase; UI-Polish → #72), Center-Hit ohne Maskottchen
 - [x] Spike iPhone (2026-05-28) dokumentiert
 - [x] Direkt auf `main` (`14cb740`); Deploy/Geräte-QA am Produktions-HTTPS ausstehend
 - [ ] Hotspot-Positionen am echten Foto feinjustieren (optional vor 10.06.)
+- UI-Polish TopBar/Chip: [#72](https://github.com/flxln/schulnavigator/issues/72)
+
+---
+
+## #72 — Raum-UI: Dialog beenden in TopBar, Zentrieren über Chip
+
+**Labels:** `design`, `tech`  
+**Assignee:** Felix  
+**GitHub:** https://github.com/flxln/schulnavigator/issues/72 — **offen** (QA/Dev, Merge ausstehend)  
+**PR:** https://github.com/flxln/schulnavigator/pull/73 — Branch `feat/raum-ui-dialog-topbar-chip-zentrieren`
+
+Follow-up zu **#71** / [ADR-011](../adr/011-dialog-mascot-hotspots.md). Kein ADR. Doku: [`architektur.md`](../architektur.md) (Raum-Viewer/TopBar), [`lokal-testen`](../../anleitungen/lokal-testen-und-anschauen.md).
+
+### Akzeptanzkriterien
+
+- [x] Dialog-Ende: **X**-Icon (38×38) neben Zurück in der TopBar; Sprechblase ohne Button darunter
+- [x] Hero: kein floating „Zentrieren“; Stations-Chip tappbar → `recenterView`
+- [x] Chip-Tap und „Zurück“ während Dialog: `endDialog()` (Audio + `activeHotspotId`)
+- [x] `npm run test` + `npm run build` grün (lokal/CI)
+- [ ] Geräte-QA auf Dev-HTTPS (`schulnavigator-dev.mpz.schule`, Branch siehe PR)
+- [ ] Merge PR #73 → `main`, Prod-Deploy, Dev-Branch wieder `main`
 
 ---
 
