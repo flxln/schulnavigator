@@ -1,6 +1,6 @@
 'use client'
 
-import type { Hotspot, Medium } from '@/lib/types'
+import type { DialogRolle, Hotspot, Medium } from '@/lib/types'
 import { RoomImagePane } from '@/components/raum-viewer/room-image-pane'
 
 export type RaumViewerLayout = 'default' | 'hero'
@@ -11,6 +11,7 @@ export type RaumViewerProps = {
   hotspots?: Hotspot[]
   medien: Medium[]
   activeHotspotId?: string | null
+  speakingRolle?: DialogRolle | null
   onHotspotTap?: (hotspot: Hotspot) => void
   onHotspotCenterHit?: (hotspot: Hotspot | null) => void
   layout?: RaumViewerLayout
@@ -23,6 +24,7 @@ export function RaumViewer({
   hotspots,
   medien,
   activeHotspotId,
+  speakingRolle = null,
   onHotspotTap,
   onHotspotCenterHit,
   layout = 'default',
@@ -38,6 +40,7 @@ export function RaumViewer({
         hotspots={hotspots}
         medien={medien}
         activeHotspotId={activeHotspotId}
+        speakingRolle={speakingRolle}
         onHotspotTap={onHotspotTap}
         onHotspotCenterHit={onHotspotCenterHit}
         layout={layout}

@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import type { Hotspot, Medium } from '@/lib/types'
+import type { DialogRolle, Hotspot, Medium } from '@/lib/types'
 import {
   clampPan,
   HOTSPOT_CENTER_DWELL_MS,
@@ -23,6 +23,7 @@ import {
   panMappingForAxis,
 } from '@/lib/raum-viewer/pan-from-orientation'
 import { roomPanZoom } from '@/lib/raum-viewer/room-pan-zoom'
+import { isMascotDialogHotspot } from '@/lib/dialog-hotspot'
 import { hitTestHotspot } from '@/lib/raum-viewer/hit-test-hotspot'
 import { normalizedViewportCenter } from '@/lib/raum-viewer/viewport-center'
 import { HotspotOverlay } from '@/components/raum-viewer/hotspot-overlay'
@@ -35,6 +36,7 @@ export type RoomImagePaneProps = {
   hotspots?: Hotspot[]
   medien: Medium[]
   activeHotspotId?: string | null
+  speakingRolle?: DialogRolle | null
   onHotspotTap?: (hotspot: Hotspot) => void
   onHotspotCenterHit?: (hotspot: Hotspot | null) => void
   layout?: RaumViewerLayout
@@ -51,6 +53,7 @@ export function RoomImagePane({
   hotspots = [],
   medien,
   activeHotspotId = null,
+  speakingRolle = null,
   onHotspotTap,
   onHotspotCenterHit,
   layout = 'default',
@@ -300,11 +303,23 @@ export function RoomImagePane({
     [panPx, containerW, effectiveDisplayW],
   )
 
+  const centerHitHotspots = useMemo(
+    () => hotspots.filter((hs) => !isMascotDialogHotspot(hs)),
+    [hotspots],
+  )
+
   useEffect(() => {
-    if (!onHotspotCenterHit || hotspots.length === 0) {
+    if (!onHotspotCenterHit) {
       return
     }
-    const hit = hitTestHotspot({ x: centerNorm.x, y: centerNorm.y }, hotspots)
+    if (centerHitHotspots.length === 0) {
+      onHotspotCenterHit(null)
+      return
+    }
+    const hit = hitTestHotspot(
+      { x: centerNorm.x, y: centerNorm.y },
+      centerHitHotspots,
+    )
     pendingCenterHit.current = hit
 
     if (centerDebounce.current) {
@@ -336,7 +351,7 @@ export function RoomImagePane({
         clearTimeout(centerDwell.current)
       }
     }
-  }, [centerNorm, hotspots, onHotspotCenterHit])
+  }, [centerNorm, centerHitHotspots, onHotspotCenterHit])
 
   useEffect(() => {
     if (!debugViewer) {
@@ -523,6 +538,7 @@ export function RoomImagePane({
               hotspots={hotspots}
               medien={medien}
               activeHotspotId={activeHotspotId}
+              speakingRolle={speakingRolle}
               onHotspotTap={onHotspotTap}
             />
             {debugViewer ? (

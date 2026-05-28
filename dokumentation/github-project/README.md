@@ -32,5 +32,6 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [ ] Suche im Repo-Issue-Tracker nach veralteten Formulierungen (z. B. „8 Stationen“, „Admin-Interface entwickeln“ ohne Directus-Kontext).
 
 - [x] Issue **#69** (Otto-Frieda-Dialog `daz`/`pc-raum`, ADR-010, gated Audio) — geschlossen (2026-05-28)
+- [x] Issue **#71** (Maskottchen-Hotspots UI, ADR-011) — umgesetzt im Repo (2026-05-28); PR/Deploy offen
 
-Letzter dokumentierter Abgleich: **2026-05-28** (#69 Dialog-Demo; zuvor 2026-05-27 #58/#59–#63/#22).
+Letzter dokumentierter Abgleich: **2026-05-28** (#71 ADR-011 UI; #69 Audio; zuvor 2026-05-27 #58/#59–#63/#22).

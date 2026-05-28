@@ -25,13 +25,20 @@ export interface Dialog {
   gruppen?: DialogGruppe[]
 }
 
+export type HotspotAction = 'medium' | 'dialog'
+
 export interface Hotspot {
   id: string
   label?: string
   x: number
   y: number
   radius?: number
-  mediumId: string
+  /** Default `medium` — verknüpft mit `medien[]`. */
+  action?: HotspotAction
+  /** Pflicht bei `action: 'medium'` (bzw. ohne action). */
+  mediumId?: string
+  /** Pflicht bei `action: 'dialog'`; muss in `station.dialog.figuren` stehen. */
+  mascot?: DialogFigure
 }
 
 export interface Medium {

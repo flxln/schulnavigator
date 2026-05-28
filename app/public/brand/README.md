@@ -8,7 +8,7 @@ Statische Marken-Dateien für den Schulnavigator. Werden **versioniert und commi
 |--------|--------|
 | `logos/` | **Committed** — stabil, klein (SVG) |
 | `motifs/` | **Committed**, sobald PNGs vom Auftraggeber vorliegen; bis dahin nur README + CSS-Fallback in `sn-theme.css` |
-| `mascots/` | **Committed** — Frieda/Otto (Alpha-PNG) für Dialog-Cutscene |
+| `mascots/` | **Committed** — Frieda/Otto (Alpha-PNG) für Dialog-Hotspots im Raumbild ([ADR-011](../../dokumentation/adr/011-dialog-mascot-hotspots.md)) |
 
 Nicht in `.gitignore` aufnehmen.
 

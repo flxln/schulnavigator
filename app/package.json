@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --hostname 0.0.0.0 --experimental-https",
-    "dev:http": "next dev",
+    "cert:lan": "node scripts/generate-dev-https-cert.mjs",
+    "dev": "next dev --hostname 0.0.0.0 --experimental-https --experimental-https-key ./certificates/localhost-key.pem --experimental-https-cert ./certificates/localhost.pem",
+    "dev:http": "next dev --hostname 0.0.0.0",
     "generate:qr": "tsx scripts/generate-qr-codes.ts",
     "validate:stations": "node scripts/validate-station-assets.mjs",
     "validate:tokens": "node scripts/validate-tokens.mjs",
