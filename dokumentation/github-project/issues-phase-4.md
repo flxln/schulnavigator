@@ -39,6 +39,8 @@ Milestone: **Phase 4** | Fällig: 26.06.2026
 - Betreuung durch vertrauenswürdigen Schüler
 - Fallback ohne eigenes Smartphone / schwacher Mobilfunk
 
+**Software (Phase 2):** UI-Skalierung für Tablets — Epic **#74** / [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) / [epic-tablet-ipad-layout.md](./epic-tablet-ipad-layout.md) (Unterissues #75–#78). Organisatorisches (#41) und Layout-Epic sind getrennt.
+
 ---
 
 ## #42 — Ansprechperson am Schulfest

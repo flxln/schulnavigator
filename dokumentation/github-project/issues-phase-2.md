@@ -6,7 +6,7 @@ Milestone: **Phase 2** | Fällig: 12.06.2026
 
 **Übernahmen aus Issue #16 (Phase 1):** Live unter HTTPS (`schulnavigator.mpz.schule`); website-weite Basis gegen Indexierung (`robots` / `noindex`); Route `/eintritt` mit **Platzhalter** (HTTP 200). **#23** baut darauf auf: Token, Middleware und Scanner sind der verbleibende Kern; SEO-Basis und Eintritt-404-Vermeidung sind **keine** Grünfeld-Aufgaben mehr. Detaillierte Abgrenzung: [`.cursor/plans/issue_16_coolify_deploy_39add57f.plan.md`](../../.cursor/plans/issue_16_coolify_deploy_39add57f.plan.md) (Abschnitt *Folge-Issues*). *Hinweis:* Zugehörige Cursor-**Chat-Request-ID** `51250690-23d9-4dfa-a554-4238883c9491` dient nur der Zuordnung zur Chat-Sitzung, nicht der technischen Referenz.
 
-**Architektur:** [ADR-004](../adr/004-video-hosting-mpz.md) · [ADR-005](../adr/005-zugangskontrolle-token.md) · [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md) · [ADR-008](../adr/008-eintritt-in-app-scanner.md) (#57) · [ADR-009](../adr/009-hub-isometrisch.md) (#58) · [ADR-010](../adr/010-dialog-cutscene-gated-audio.md) (#69) · [ADR-011](../adr/011-dialog-mascot-hotspots.md) (#71)
+**Architektur:** [ADR-004](../adr/004-video-hosting-mpz.md) · [ADR-005](../adr/005-zugangskontrolle-token.md) · [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md) · [ADR-008](../adr/008-eintritt-in-app-scanner.md) (#57) · [ADR-009](../adr/009-hub-isometrisch.md) (#58) · [ADR-010](../adr/010-dialog-cutscene-gated-audio.md) (#69) · [ADR-011](../adr/011-dialog-mascot-hotspots.md) (#71) · [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) (Epic Tablet, #74–#78)
 
 **Ausführungsreihenfolge:** [`projektmanagement/2026-05-27-gs39-ui-ausfuehrungsreihenfolge.md`](../projektmanagement/2026-05-27-gs39-ui-ausfuehrungsreihenfolge.md)
 
@@ -299,6 +299,40 @@ Follow-up zu **#71** / [ADR-011](../adr/011-dialog-mascot-hotspots.md). Kein ADR
 - [x] `npm run test` + `npm run build` grün
 - [x] Geräte-QA auf Dev-HTTPS (`schulnavigator-dev.mpz.schule`)
 - [x] Merge PR #73 → `main` (Prod-Deploy: Coolify; Dev-Branch wieder `main` empfohlen)
+
+---
+
+## #74 — Tablet/iPad: Layout-Skalierung (Epic)
+
+**Labels:** `design`, `tech`  
+**Assignee:** Felix  
+**Milestone:** Phase 2  
+**GitHub:** https://github.com/flxln/schulnavigator/issues/74 — **offen** (angelegt 2026-05-28)
+
+Spezifikation: [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) · Detail: [epic-tablet-ipad-layout.md](./epic-tablet-ipad-layout.md)
+
+**Ziel:** Mobile-first-App für **Stationstablets** (iPad, Android-Tablet) per Tailwind `md`/`lg` skalieren — breitere Spalte, höherer Raum-Hero — **ohne** CSS-Zoom und ohne Desktop-Redesign. Gyro/Hotspots ([#56](#56--raum-viewer-mobil-härtung-folge-zu-55)) bleiben; Regressionstest auf iPad.
+
+**Abgrenzung:** [#72](#72--raum-ui-dialog-beenden-in-topbar-zentrieren-über-chip) erledigt; nicht im selben PR. Hardware-Fallback: [#41](./issues-phase-4.md) (Phase 4).
+
+### Unterissues (geplant)
+
+| Nr. | Titel | PR-Reihenfolge |
+|-----|-------|----------------|
+| **#75** | Layout-Container (`max-w` ab `md`) | 1 |
+| **#76** | Raum-Viewer / Hero-Höhen | 2 |
+| **#77** | Hub + Startseite | 3 |
+| **#78** | Dialog + Medien-Panel (optional) | 4 |
+
+### Epic-Checkliste
+
+- [x] GitHub: Parent #74 + Unterissues #75–#78 angelegt (2026-05-28); URLs in dieser Datei und in `epic-tablet-ipad-layout.md`
+- [ ] #75 — `max-w-lg` → responsive auf `/`, `/raum`, `/eintritt`, `/scan`, `/stationen`, Medien-Panel
+- [ ] #76 — Hero/`ROOM_VIEWER_*` tablet-aware; Gyro-Matrix iPad
+- [ ] #77 — Hub/Startseite nutzt breitere Spalte
+- [ ] #78 — Dialog/Maskottchen + Panel (oder nach Schulfest verschoben)
+- [ ] `anleitungen/lokal-testen-und-anschauen.md` — Tablet-Viewports (768, 1024, 834)
+- [ ] `architektur.md` — Abschnitt Responsive/Tablet
 
 ---
 
