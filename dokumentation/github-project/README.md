@@ -33,6 +33,6 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 
 - [x] Issue **#69** (Otto-Frieda-Dialog `daz`/`pc-raum`, ADR-010, gated Audio) — geschlossen (2026-05-28)
 - [x] Issue **#71** (Maskottchen-Hotspots UI, ADR-011) — geschlossen (2026-05-28, `main` @ `14cb740`)
-- [ ] Issue **#72** (Raum-UI TopBar/Chip, Follow-up #71) — Code in [PR #73](https://github.com/flxln/schulnavigator/pull/73); QA auf Dev, Merge offen
+- [x] Issue **#72** (Raum-UI TopBar/Chip, Follow-up #71) — geschlossen (2026-05-28, [PR #73](https://github.com/flxln/schulnavigator/pull/73) → `main` @ `7fc23c6`)
 
-Letzter dokumentierter Abgleich: **2026-05-28** (#72 PR #73; #71 ADR-011; #69 Audio; zuvor 2026-05-27 #58/#59–#63/#22).
+Letzter dokumentierter Abgleich: **2026-05-28** (#72 merged; #71 ADR-011; #69 Audio; zuvor 2026-05-27 #58/#59–#63/#22).
