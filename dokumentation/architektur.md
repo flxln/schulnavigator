@@ -1,6 +1,6 @@
 # Schulnavigator — Architektur
 
-_Stand: 2026-05-28 (**#72:** Dialog-Ende TopBar, Chip-Zentrieren; **ADR-009:** Hub; **#55/#56:** Raum-Viewer; Live #16) — siehe [entscheidungen.md](./entscheidungen.md)_
+_Stand: 2026-05-28 (**#72:** Dialog-Ende TopBar, Chip-Zentrieren; **ADR-012:** Tablet-Layout geplant [#74–#78]; **ADR-009:** Hub; **#55/#56:** Raum-Viewer; Live #16) — siehe [entscheidungen.md](./entscheidungen.md)_
 
 ## Tech-Stack
 
@@ -18,6 +18,13 @@ _Stand: 2026-05-28 (**#72:** Dialog-Ende TopBar, Chip-Zentrieren; **ADR-009:** H
 | Raum-Viewer         | Gyro-Pan, Hotspots, Tap-Fallback; normales Foto   | gleich                           | [006](./adr/006-raum-viewer-gyro-hotspots.md) |
 | UI / Schul-Theme    | GS39-Tokens + Jubiläums-UI (Epic #58)             | pro Schule eigenes Token-Sheet   | [ADR-009](./adr/009-hub-isometrisch.md), Auftraggeber-CSS |
 | Startseite-Hub      | Isometrisches Schulhaus-SVG (ersetzt Puzzle)      | gleich                           | [ADR-009](./adr/009-hub-isometrisch.md) |
+| Responsive / Tablet | Phone `max-w-lg`; Tablet-Skalierung geplant       | Breakpoints `md`/`lg`            | [ADR-012](./adr/012-tablet-ipad-responsive-layout.md), Epic [#74–#78](./github-project/epic-tablet-ipad-layout.md) |
+
+## Responsive Layout (ADR-012, geplant)
+
+**Ist-Zustand:** Mobile-first — Haupt-Routen `mx-auto max-w-lg` (≈ 512 px); Raum-Hero `min(52–58vh, 340–400px)`; Viewer-Konstante `min(50vh, 360px)` ([`constants.ts`](../app/lib/raum-viewer/constants.ts)). Viewport-Meta `device-width`, `initialScale: 1` ([#56](./github-project/issues-phase-2.md)).
+
+**Ziel (Epic #74):** Ab `md` (768 px) breitere Content-Spalte und höherer Hero — **kein** CSS-`zoom`. Phone-Baseline unter `md` unverändert. Unterissues: Container (#75) → Raum-Hero (#76) → Hub (#77) → Dialog/Panel optional (#78). Spezifikation: [`github-project/epic-tablet-ipad-layout.md`](./github-project/epic-tablet-ipad-layout.md).
 
 ## UI & Theme (GS39, Issue #55 / Epic #58)
 
