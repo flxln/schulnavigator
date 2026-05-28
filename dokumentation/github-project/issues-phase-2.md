@@ -267,7 +267,7 @@ Aus Roh-m4a per `station-audio-transkript` Text + Zeitstempel prüfen, Clips in 
 
 **Labels:** `tech` `design` `content`  
 **Assignee:** Felix  
-**GitHub:** https://github.com/flxln/schulnavigator/issues/71 — **offen** (Umsetzung im Repo 2026-05-28)
+**GitHub:** https://github.com/flxln/schulnavigator/issues/71 — **geschlossen** (2026-05-28, Commit `14cb740` auf `main`)
 
 Ersetzt Cutscene-UX für Dialog-Stationen; Audio/Route bleiben [ADR-010](../adr/010-dialog-cutscene-gated-audio.md). Spezifikation: [ADR-011](../adr/011-dialog-mascot-hotspots.md).
 
@@ -277,7 +277,7 @@ Ersetzt Cutscene-UX für Dialog-Stationen; Audio/Route bleiben [ADR-010](../adr/
 - [x] Schema `action: dialog` + `mascot`; Validator + Tests
 - [x] Re-Tap-Guard, „Dialog beenden“, Center-Hit ohne Maskottchen
 - [x] Spike iPhone (2026-05-28) dokumentiert
-- [ ] PR merged, Deploy, Geräte-QA am Produktions-HTTPS
+- [x] Direkt auf `main` (`14cb740`); Deploy/Geräte-QA am Produktions-HTTPS ausstehend
 - [ ] Hotspot-Positionen am echten Foto feinjustieren (optional vor 10.06.)
 
 ---
