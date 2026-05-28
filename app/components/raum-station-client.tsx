@@ -1,15 +1,16 @@
 'use client'
 
 import Link from 'next/link'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Check, List } from 'lucide-react'
+import { Check, List, X } from 'lucide-react'
 import type { Hotspot, Medium, Station } from '@/lib/types'
 import { MediaSlotList } from '@/components/media-slot-list'
 import {
   RaumViewer,
   RaumViewerErrorBoundary,
   StaticRoomFallback,
+  type RaumViewerHandle,
 } from '@/components/raum-viewer'
 import { NextStationFooter } from '@/components/raum/next-station-footer'
 import { StationMediaPanel } from '@/components/station-media-panel'
@@ -25,6 +26,10 @@ import type { EntryMode } from '@/lib/access-tokens'
 import { useVisitedStations } from '@/hooks/use-visited-stations'
 import { getUnlockedSlugsForMode } from '@/lib/hub-mode'
 import type { IsometricHubStation } from '@/lib/schoolhouse-isometric-map'
+import {
+  handleStationBack,
+  shouldShowDialogEndIcon,
+} from '@/lib/raum-station/end-dialog-flow'
 
 type RaumStationClientProps = {
   station: Station
@@ -42,6 +47,7 @@ export function RaumStationClient({
   mode,
 }: RaumStationClientProps) {
   const router = useRouter()
+  const viewerRef = useRef<RaumViewerHandle>(null)
   const [panelOpen, setPanelOpen] = useState(false)
   const [selectedMedium, setSelectedMedium] = useState<Medium | null>(null)
   const [activeHotspotId, setActiveHotspotId] = useState<string | null>(null)
@@ -109,6 +115,22 @@ export function RaumStationClient({
     setActiveHotspotId(null)
   }, [stopDialog])
 
+  const handleBack = useCallback(() => {
+    handleStationBack(dialogUiActive, endDialog, () => router.push(backHref))
+  }, [dialogUiActive, endDialog, router, backHref])
+
+  const handleChipRecenter = useCallback(() => {
+    if (dialogUiActive) {
+      endDialog()
+    }
+    viewerRef.current?.recenterView()
+  }, [dialogUiActive, endDialog])
+
+  const showDialogEndIcon = shouldShowDialogEndIcon(
+    mascotDialogHotspot,
+    dialogUiActive,
+  )
+
   const heroHeightClass = mascotDialogHotspot
     ? 'h-[min(58vh,400px)]'
     : 'h-[min(52vh,340px)]'
@@ -122,6 +144,7 @@ export function RaumStationClient({
         <RaumViewerErrorBoundary>
           {station.bild ? (
             <RaumViewer
+              ref={viewerRef}
               bild={station.bild}
               alt={`Raumansicht ${station.titel}`}
               hotspots={station.hotspots}
@@ -155,7 +178,19 @@ export function RaumStationClient({
           <TopBar
             dark
             title=""
-            onBack={() => router.push(backHref)}
+            onBack={handleBack}
+            leftExtra={
+              showDialogEndIcon ? (
+                <button
+                  type="button"
+                  aria-label="Dialog beenden"
+                  onClick={endDialog}
+                  className="grid h-[38px] w-[38px] shrink-0 place-items-center rounded-full border-0 bg-white/15 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+                >
+                  <X size={20} aria-hidden />
+                </button>
+              ) : undefined
+            }
             right={
               <Link
                 href="/stationen"
@@ -175,21 +210,34 @@ export function RaumStationClient({
             tail={tail}
             accent={hubStation.accent}
             visible={dialogUiActive}
-            onEnd={endDialog}
           />
         ) : null}
       </section>
 
       <div className="relative z-[2] -mt-6 rounded-t-[24px] bg-bg-1 px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-5">
         <div className="flex items-start gap-3">
-          <Gs39Chip
-            className="!text-fg-on-dark"
-            style={{ background: hubStation.accent }}
-          >
-            <span className="font-display text-[28px] leading-none tracking-wide">
-              {hubStation.nr}
-            </span>
-          </Gs39Chip>
+          {station.bild ? (
+            <Gs39Chip
+              as="button"
+              aria-label={`Station ${hubStation.nr} — Raumansicht zurücksetzen`}
+              className="!text-fg-on-dark"
+              style={{ background: hubStation.accent }}
+              onClick={handleChipRecenter}
+            >
+              <span className="font-display text-[28px] leading-none tracking-wide">
+                {hubStation.nr}
+              </span>
+            </Gs39Chip>
+          ) : (
+            <Gs39Chip
+              className="!text-fg-on-dark"
+              style={{ background: hubStation.accent }}
+            >
+              <span className="font-display text-[28px] leading-none tracking-wide">
+                {hubStation.nr}
+              </span>
+            </Gs39Chip>
+          )}
           <div className="min-w-0 flex-1">
             <p
               className="t-eyebrow text-[11px]"

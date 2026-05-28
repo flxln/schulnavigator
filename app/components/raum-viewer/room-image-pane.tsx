@@ -1,7 +1,15 @@
 'use client'
 
 import Image from 'next/image'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import type { DialogRolle, Hotspot, Medium } from '@/lib/types'
 import {
   clampPan,
@@ -43,22 +51,30 @@ export type RoomImagePaneProps = {
   orientationEnabled?: boolean
 }
 
+export type RoomImagePaneHandle = {
+  recenterView: () => void
+}
+
 const NEUTRAL_CALIB_MS = 500
 const RESIZE_RESET_PX = 5
 const GAMMA_SAMPLE_MAX_ABS = 90
 
-export function RoomImagePane({
-  src,
-  alt,
-  hotspots = [],
-  medien,
-  activeHotspotId = null,
-  speakingRolle = null,
-  onHotspotTap,
-  onHotspotCenterHit,
-  layout = 'default',
-  orientationEnabled = true,
-}: RoomImagePaneProps) {
+export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>(
+  function RoomImagePane(
+    {
+      src,
+      alt,
+      hotspots = [],
+      medien,
+      activeHotspotId = null,
+      speakingRolle = null,
+      onHotspotTap,
+      onHotspotCenterHit,
+      layout = 'default',
+      orientationEnabled = true,
+    },
+    ref,
+  ) {
   const isHero = layout === 'hero'
   const [debugViewer, setDebugViewer] = useState(false)
 
@@ -432,6 +448,8 @@ export function RoomImagePane({
     }
   }, [angle, maxPan, panAxis])
 
+  useImperativeHandle(ref, () => ({ recenterView }), [recenterView])
+
   const orientationBanner = () => {
     if (orientState === 'active' || orientState === 'needs-gesture') {
       return null
@@ -580,19 +598,9 @@ export function RoomImagePane({
           </div>
         ) : null}
 
-        {/* hero-Modus: Ansicht zentrieren (floating, wenn Gyro aktiv) */}
-        {isHero && orientState === 'active' ? (
-          <button
-            type="button"
-            aria-label="Raumansicht zurücksetzen"
-            className="absolute bottom-3 right-3 z-10 rounded-[var(--r-sm)] border border-white/20 bg-black/50 px-3 py-1.5 text-xs font-medium text-fg-on-dark backdrop-blur-sm"
-            onClick={recenterView}
-          >
-            Zentrieren
-          </button>
-        ) : null}
       </div>
       {!isHero ? orientationControls : null}
     </div>
   )
-}
+},
+)

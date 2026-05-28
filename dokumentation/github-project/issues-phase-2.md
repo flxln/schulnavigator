@@ -279,6 +279,24 @@ Ersetzt Cutscene-UX für Dialog-Stationen; Audio/Route bleiben [ADR-010](../adr/
 - [x] Spike iPhone (2026-05-28) dokumentiert
 - [x] Direkt auf `main` (`14cb740`); Deploy/Geräte-QA am Produktions-HTTPS ausstehend
 - [ ] Hotspot-Positionen am echten Foto feinjustieren (optional vor 10.06.)
+- UI-Polish TopBar/Chip: [#72](https://github.com/flxln/schulnavigator/issues/72)
+
+---
+
+## #72 — Raum-UI: Dialog beenden in TopBar, Zentrieren über Chip
+
+**Labels:** `design`, `tech`  
+**Assignee:** Felix  
+**GitHub:** https://github.com/flxln/schulnavigator/issues/72 — **offen**
+
+Follow-up zu **#71** / [ADR-011](../adr/011-dialog-mascot-hotspots.md). Kein ADR.
+
+### Akzeptanzkriterien
+
+- [ ] Dialog-Ende: **X**-Icon (38×38) neben Zurück in der TopBar; Sprechblase ohne Button darunter
+- [ ] Hero: kein floating „Zentrieren“; Stations-Chip tappbar → `recenterView`
+- [ ] Chip-Tap und „Zurück“ während Dialog: `endDialog()` (Audio + `activeHotspotId`)
+- [ ] `npm run test` + `npm run build` grün
 
 ---
 
