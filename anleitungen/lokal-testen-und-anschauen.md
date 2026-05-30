@@ -46,7 +46,8 @@ npm run dev
 | [http://localhost:3000/eintritt?t=fest-2026](http://localhost:3000/eintritt?t=fest-2026) | Entry Schulfest: Cookie + Redirect `/` → isometrischer Hub **gesperrt** (0/11), Fenster nach Raumbesuch frei (#21) |
 | [http://localhost:3000/eintritt?t=heft-2026-27](http://localhost:3000/eintritt?t=heft-2026-27) | Entry Heft: voller Hub (alle Stationen klickbar), Fortschritt zählt trotzdem (#21) |
 | [http://localhost:3000/stationen](http://localhost:3000/stationen) | Alle 11 Stationen als Liste (Lock im Modus `fest`) — Epic #58 |
-| [http://localhost:3000/eintritt](http://localhost:3000/eintritt) | Hinweisseite + **In-App-Scanner** für Eintritts-QR (#57); Kamera nur auf `localhost`/HTTPS |
+| [http://localhost:3000/eintritt](http://localhost:3000/eintritt) | Hinweisseite (Willkommens-Karte → Link auf Scan-Route); Fehler `?reason=expired\|invalid` |
+| [http://localhost:3000/eintritt/scan](http://localhost:3000/eintritt/scan) | **Vollbild-Entry-Scanner** (#57, #82); Kamera nur auf `localhost`/HTTPS; ohne Cookie erreichbar |
 | [http://localhost:3000/robots.txt](http://localhost:3000/robots.txt) | `Disallow: /` (Issue #16) |
 | [http://localhost:3000/scan](http://localhost:3000/scan) | In-App-QR-Scanner mit dunklem Chrome und gelbem Scan-Rahmen (nach Entry; Kamera-Zugriff nötig) |
 | [http://localhost:3000/raum/klassenzimmer](http://localhost:3000/raum/klassenzimmer) | Standard-Raum-Chrome; leere Medienliste (Empty-State) |
@@ -105,6 +106,7 @@ npm run start
 8. Zwei Tabs (`/` + `/scan`): im zweiten Tab scannen → erster Tab aktualisiert bei Fokus
 9. Alle 11 Stationen besucht → `SparkleBurst` auf `/` **einmalig**; `localStorage` `sn_sparkle_done` verhindert Wiederholung
 10. `curl -sI http://localhost:3000/stationen` ohne Cookie → `307` nach `/eintritt`
+11. **Regression #83 (`fest`):** Einen Raum per QR freischalten → in Raum „Nächste Station“ (Schloss) → Scanner ohne Scan schließen → Hub-Vorschlag (Schloss) öffnet **`/scan`**, nicht den Raum; `sn_visited_slugs` enthält **nicht** die ungescannte Station
 
 **Manuelle Test-Matrix (Schulfest-relevant):**
 

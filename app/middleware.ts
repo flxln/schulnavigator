@@ -29,7 +29,9 @@ export function middleware(req: NextRequest) {
 
   const t = url.searchParams.get('t')
 
-  if (url.pathname === '/eintritt' && t === null) {
+  // Explizite Whitelist — kein startsWith, damit /eintritt/foo nicht versehentlich cookie-frei wird.
+  const EINTRITT_BYPASS = ['/eintritt', '/eintritt/scan'] as const
+  if (EINTRITT_BYPASS.some((p) => p === url.pathname) && t === null) {
     return NextResponse.next()
   }
 
@@ -75,10 +77,11 @@ export const ACCESS_PROTECTED_MATCHER = [
   '/raum/:path*',
   '/scan',
   '/eintritt',
+  '/eintritt/:path*',
   '/stationen',
 ] as const
 
 // Next.js erfordert statisch parsebare matcher-Literale (kein Spread aus Konstante).
 export const config = {
-  matcher: ['/', '/raum/:path*', '/scan', '/eintritt', '/stationen'],
+  matcher: ['/', '/raum/:path*', '/scan', '/eintritt', '/eintritt/:path*', '/stationen'],
 }

@@ -103,6 +103,7 @@ Die zentrierte Phone-Spalte (`max-w-lg`) auf Tablets verbreitern, ohne Phone zu 
 | `app/app/page.tsx` | `max-w-lg` | `max-w-lg md:max-w-2xl lg:max-w-3xl` |
 | `app/app/raum/[slug]/page.tsx` | `max-w-lg` | wie oben |
 | `app/app/eintritt/page.tsx` | `max-w-lg` | wie oben |
+| `app/app/eintritt/scan/page.tsx` | `max-w-lg` | Vollbild-Scanner (Shell); Tablet-Fix zentral über `ScanFullscreenShell` |
 | `app/app/scan/page.tsx` | `max-w-lg` | siehe Sonderfall „Scan" unten |
 | `app/app/stationen/page.tsx` | `max-w-lg` | wie oben |
 | `components/station-media-panel.tsx` | inner `max-w-lg` | siehe Sonderfall „Medien-Panel" unten |
@@ -147,7 +148,7 @@ Parent: #74 · ADR-012
 
 ## Akzeptanzkriterien
 
-- [ ] `/`, `/eintritt`, `/scan`, `/stationen`, `/raum/musik`: kein `overflow-x` auf 375 px, 768 px, 1024 px
+- [ ] `/`, `/eintritt`, `/eintritt/scan`, `/scan`, `/stationen`, `/raum/musik`: kein `overflow-x` auf 375 px, 768 px, 1024 px
 - [ ] Ab `md`: Content nutzt mehr Breite (kein schmaler Streifen mittig auf iPad)
 - [ ] Ab `lg`: Content cap bei `max-w-3xl` (kein weiteres Wachsen auf iPad Pro)
 - [ ] Medien-Panel: ab `md:` zentriertes Modal, kein edge-to-edge Sheet; Safe-Area-Insets oben + unten respektiert

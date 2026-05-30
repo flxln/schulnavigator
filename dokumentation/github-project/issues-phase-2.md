@@ -128,12 +128,42 @@ Spezifikation: [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
 _Hinweis: Hub-Darstellung Puzzle → isometrisch siehe **#58** / [ADR-009](../adr/009-hub-isometrisch.md); Freischalt-Logik (`visitedSlugs`) bleibt._
 
 - [x] `localStorage` Key `sn_visited_slugs` (JSON-Array Slugs) — getrennt vom **Access-Token** ([ADR-005](../adr/005-zugangskontrolle-token.md)); Logik in `lib/visited-stations.ts`, Hook `hooks/use-visited-stations.ts`
-- [x] Besuch markieren auf `/raum/[slug]` via `components/station-visit-recorder.tsx` (Scanner-Navigation und System-Kamera-Deeplink)
+- [x] Besuch markieren: **`heft`** auf `/raum/[slug]` via `station-visit-recorder.tsx`; **`fest`** nur bei erfolgreichem Raum-QR in `qr-scanner.tsx` (#83)
 - [x] **Modus `fest`:** freigeschaltete Hub-Slots nach Besuch (aktuell Puzzle-Segmente; #58 → isometrische Fenster); Hub-Platzhalter bis Hydration (kein „alles gesperrt“-Flash)
 - [x] **Modus `heft`:** alle Stationen klickbar; Fortschritt trotzdem sichtbar
 - [x] Fortschritt „n von 11“ (`HubWithProgress`, `total = segments.length`)
 - [x] Badge „Besucht“ auf Stationsseite (`station-visited-badge.tsx`)
 - [x] Cache-Löschen setzt Stempel zurück — akzeptabel
+
+### Nachfolger (2026-05-30)
+
+Hub-Vorschlag und `StationVisitRecorder` umgingen die Fest-Sperre — gesperrte Räume wurden ohne QR freigeschaltet. Fix + Spezifikation: [ADR-009 Nachtrag](../adr/009-hub-isometrisch.md#nachtrag-2026-05-30--fest-freischaltung-nur-per-raum-qr-83). Issue **#83** (Sub-Issue zu #21).
+
+---
+
+## #83 — Fest: Hub-Vorschlag und Stempel nur per Raum-QR (Folge zu #21)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/83 — **geschlossen** (2026-05-30)
+
+**Labels:** `tech` `bug`  
+**Assignee:** Felix  
+**Milestone:** Phase 2  
+**Parent / Kontext:** Folge zu **#21** — Freischalt-Logik `visitedSlugs` / `hub-mode.ts`
+
+**Problem:** Nach dem ersten freigeschalteten Raum führte der Hub-**Vorschlag** direkt nach `/raum/[slug]` (ohne Freischalt-Check). `StationVisitRecorder` markierte jeden Raumaufruf sofort in `sn_visited_slugs` → im Modus `fest` war die nächste Station ohne Scan am Türcode klickbar.
+
+**Ziel:** Im Modus `fest` wächst `sn_visited_slugs` nur nach **erfolgreichem** Raum-QR (`QrScanner`); gesperrte Vorschläge (Hub-Karte, Footer „Nächste Station“) öffnen `/scan`.
+
+### Akzeptanzkriterien
+
+- [x] `home-screen.tsx`: Vorschlag bei gesperrter Station → `/scan` (Schloss-UI wie Footer)
+- [x] `station-visit-recorder.tsx`: im `fest`-Modus kein Auto-`markVisited` auf Raum-Seite
+- [x] `qr-scanner.tsx`: `markVisitedSlug` bei erfolgreichem Raum-Scan vor Navigation
+- [x] ADR-009 Nachtrag; Doku: `architektur.md`, Anleitungen, diese Datei
+
+### Nicht im Scope
+
+- Serverseitige Sperre von `/raum/[slug]` ohne Stempel (Entry-Cookie reicht weiter für direkte URL)
 
 ---
 
@@ -202,6 +232,38 @@ Spezifikation: [ADR-008](../adr/008-eintritt-in-app-scanner.md) (inkl. Nachtrag 
 ### Abhängigkeiten
 
 - **#23** (geschlossen) — Middleware, Cookie, `html5-qrcode` auf `/scan`
+
+### Nachfolger (2026-05-30)
+
+Entry-Scanner von Inline-Block auf **`/eintritt/scan`** verschoben; gemeinsame `ScanFullscreenShell` mit `/scan`. Spezifikation: [ADR-008 Nachtrag](../adr/008-eintritt-in-app-scanner.md#nachtrag-2026-05-30--scanner-auf-eigene-route-eintrittscan). Issue **#82** (Sub-Issue zu #57).
+
+---
+
+## #82 — Eintritt-Scan: Route `/eintritt/scan` + `ScanFullscreenShell` (Folge zu #57)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/82 — **umgesetzt** (2026-05-30)
+
+**Labels:** `tech`  
+**Assignee:** Felix  
+**Milestone:** Phase 2  
+**Parent / Kontext:** Folge zu **#57** — ersetzt evaluierten Overlay-Ansatz (kein `history.pushState`, kein Body-Scroll-Lock)
+
+**Problem:** Inline-`QrScanner` auf `/eintritt` ohne `chrome` wirkte wie leere Box; Overlay-Lösung wäre aufwendig in Mobile/A11y.
+
+**Ziel:** Entry-Scan als **eigene Page** `/eintritt/scan` (wie `/scan`); Shell extrahiert; Middleware-Whitelist; Hinweisseite nur noch Link-CTA.
+
+### Akzeptanzkriterien
+
+- [x] `ScanFullscreenShell` — von `ScanScreen` und `EintrittScanScreen` genutzt
+- [x] `/eintritt/scan` — Server-Page, `mode="entry"` `chrome`, SR-`<h1>`, `onBack` → `push('/eintritt')`
+- [x] `/eintritt` — kein Inline-Scanner; Karte + Fehler-CTA → `/eintritt/scan`
+- [x] Middleware: Matcher `/eintritt` + `/eintritt/:path*`; Bypass-Whitelist `['/eintritt', '/eintritt/scan']`
+- [x] Vitest: `/eintritt/scan` ohne Cookie, `?t=` auf Scan-Route, `/eintritt/foo` → Redirect, Drift-Guard
+- [x] ADR-008 Nachtrag; Doku: `architektur.md`, Anleitungen, `entscheidungen.md`
+
+### Nicht im Scope
+
+- `autoStart` Kamera, Telemetrie, Tablet-Layout (#74)
 
 ---
 
