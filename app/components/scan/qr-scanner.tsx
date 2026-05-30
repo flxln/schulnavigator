@@ -158,18 +158,28 @@ export function QrScanner(props: QrScannerProps) {
     ? 'rounded-[var(--r-md)] bg-white/10 px-3 py-2 text-center text-sm text-white'
     : 'rounded-[var(--r-md)] bg-bg-3 px-3 py-2 text-sm text-fg-1'
 
-  const cameraNode = showCameraRegion ? (
+  const cameraMount = showCameraRegion ? (
     <div
       ref={containerRef}
       id={regionId}
       className={
         chrome
-          ? 'sn-scan-camera'
+          ? 'sn-scan-camera-mount'
           : 'min-h-[240px] w-full overflow-hidden rounded-[var(--r-md)] bg-bg-dark'
       }
       aria-hidden={state === 'idle'}
     />
   ) : null
+
+  const framedCamera =
+    showFrame && cameraMount ? (
+      <div className="sn-scan-frame">
+        <div className="sn-scan-camera">{cameraMount}</div>
+        <ScanFrameOverlay active={state === 'scanning'} />
+      </div>
+    ) : (
+      cameraMount
+    )
 
   return (
     <div
@@ -177,14 +187,7 @@ export function QrScanner(props: QrScannerProps) {
         chrome ? 'sn-scan-chrome flex flex-col items-center gap-4' : 'flex flex-col gap-4'
       }
     >
-      {showFrame ? (
-        <div className="sn-scan-frame">
-          {cameraNode}
-          <ScanFrameOverlay active={state === 'scanning'} />
-        </div>
-      ) : (
-        cameraNode
-      )}
+      {framedCamera}
 
       {state === 'pending' ? (
         <p
