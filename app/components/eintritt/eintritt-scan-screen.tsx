@@ -4,32 +4,28 @@ import { useRouter } from 'next/navigation'
 import { ScanFullscreenShell } from '@/components/scan/scan-fullscreen-shell'
 import { QrScanner } from '@/components/scan/qr-scanner'
 
-type ScanScreenProps = {
+type Props = {
   origin: string
   trustedOrigins: readonly string[]
-  slugs: readonly string[]
 }
 
-export function ScanScreen({ origin, trustedOrigins, slugs }: ScanScreenProps) {
+export function EintrittScanScreen({ origin, trustedOrigins }: Props) {
   const router = useRouter()
 
   return (
     <>
-      <h1 className="sr-only">Raum-QR scannen</h1>
-      <ScanFullscreenShell title="Raum-QR scannen" onBack={() => router.push('/')}>
-        <QrScanner
-          mode="room"
-          chrome={true}
-          origin={origin}
-          trustedOrigins={trustedOrigins}
-          slugs={slugs}
-        />
+      <h1 className="sr-only">Eintritts-QR scannen</h1>
+      <ScanFullscreenShell
+        title="Eintritts-QR scannen"
+        onBack={() => router.push('/eintritt')}
+      >
+        <QrScanner mode="entry" chrome={true} origin={origin} trustedOrigins={trustedOrigins} />
         <div className="max-w-xs text-center text-fg-on-dark">
           <p className="text-base font-extrabold">
-            Halten Sie den Raum-QR in den Rahmen
+            Halten Sie den Eintritts-QR in den Rahmen
           </p>
           <p className="mt-1 text-sm text-white/75">
-            Nur Codes der 39. Grundschule werden akzeptiert.
+            Am Eingang oder im Schulstartheft.
           </p>
         </div>
       </ScanFullscreenShell>

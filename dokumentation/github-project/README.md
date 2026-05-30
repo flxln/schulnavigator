@@ -27,6 +27,8 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issue **#56** (Raum-Viewer Mobil-Härtung) — dokumentiert, Code umgesetzt (GitHub-Status bei Bedarf mit Issue-Body abgleichen).
 - [x] Issue **#23** (Zugangskontrolle Cookie/Middleware/Scanner) — umgesetzt, ADR-007
 - [x] Issue **#57** (Eintritt In-App-Scanner auf `/eintritt`) — umgesetzt, ADR-008
+- [x] Issue **#82** (Eintritt-Scan Route `/eintritt/scan` + Shell, Folge #57) — umgesetzt 2026-05-30, ADR-008 Nachtrag
+- [x] Issue **#83** (Fest: Hub-Vorschlag + Stempel nur per Raum-QR, Folge #21) — umgesetzt 2026-05-30, ADR-009 Nachtrag
 - [x] Issue **#21** (Stempel + Hub-Freischaltung) — geschlossen (`sn_visited_slugs`, `hub-with-progress`)
 - [x] Epic **#58** (GS39 UI) + Teil-Issues **#59–#63** — geschlossen (PR #64–#68, merged 2026-05-27)
 - [x] Issue **#22** (Abschluss-Animation) — geschlossen (über #63 / `SparkleBurst`)
@@ -38,4 +40,4 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issue **#81** (Scan-Chrome: Kamerabild füllt Rahmen, Folge #62) — geschlossen (2026-05-30, Sub-Issue von #62)
 - [ ] Epic **#74** (Tablet/iPad Layout) + **#75–#78** — angelegt 2026-05-28; Spezifikation [epic-tablet-ipad-layout.md](epic-tablet-ipad-layout.md), [ADR-012](../adr/012-tablet-ipad-responsive-layout.md)
 
-Letzter dokumentierter Abgleich: **2026-05-30** (#81 Scan-Chrome Layout); zuvor **2026-05-28** (#72 merged; Epic Tablet #74–#78; #71 ADR-011).
+Letzter dokumentierter Abgleich: **2026-05-30** (#83 Fest-Freischaltung/Hub-Vorschlag, #82 Eintritt-Scan Route `/eintritt/scan`, #81 Scan-Chrome); zuvor **2026-05-28** (#72 merged; Epic Tablet #74–#78; #71 ADR-011).

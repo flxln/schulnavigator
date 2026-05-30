@@ -1,16 +1,19 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import type { EntryMode } from '@/lib/access-tokens'
 import { markVisitedSlug } from '@/lib/visited-stations'
 
 type StationVisitRecorderProps = {
   slug: string
   validSlugs: readonly string[]
+  mode: EntryMode
 }
 
 export function StationVisitRecorder({
   slug,
   validSlugs,
+  mode,
 }: StationVisitRecorderProps) {
   const didMark = useRef(false)
 
@@ -19,9 +22,11 @@ export function StationVisitRecorder({
       return
     }
     didMark.current = true
-    const validSlugSet = new Set(validSlugs)
-    markVisitedSlug(slug, validSlugSet)
-  }, [slug, validSlugs])
+    if (mode === 'fest') {
+      return
+    }
+    markVisitedSlug(slug, new Set(validSlugs))
+  }, [slug, validSlugs, mode])
 
   return null
 }

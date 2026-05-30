@@ -28,6 +28,21 @@ Phase 2 verlangt eine **fertige App-Shell**, die dem Endprodukt entspricht ([`pr
 - Logik **#21** / **#23** bleibt: `fest` = nur besuchte Stationen am Hub klickbar; `heft` = alle klickbar; Fortschritt über `visitedSlugs`.
 - Steuerung erfolgt über **Slug + `room`-Map**, nicht über `puzzleSegmentId` / Segment-Overlays.
 
+#### Nachtrag 2026-05-30 — `fest`: Freischaltung nur per Raum-QR (#83)
+
+**Problem:** Der Hub-**Vorschlag** auf `/` navigierte gesperrte Stationen direkt nach `/raum/[slug]`. `StationVisitRecorder` schrieb beim bloßen Seitenaufruf sofort in `sn_visited_slugs` — im Modus `fest` galt damit „besucht“ = freigeschaltet **ohne** Scan am Türcode.
+
+**Entscheidung:**
+
+| Modus | Wann `sn_visited_slugs` wächst |
+|-------|--------------------------------|
+| `fest` | Nur nach **erfolgreichem** Raum-QR in `QrScanner` (`/scan`, `mode=room`) — `markVisitedSlug` vor Navigation |
+| `heft` | Weiterhin beim Öffnen von `/raum/[slug]` via `StationVisitRecorder` |
+
+**Navigation gesperrter Stationen:** Hub-Vorschlag (`home-screen.tsx`) und Footer „Nächste Station“ (`next-station-footer.tsx`) leiten zu **`/scan`**, nicht zu `/raum/…` — analog zur Sperre am isometrischen Hub (`schoolhouse-hub.tsx`).
+
+**Hinweis:** Direkt-URL `/raum/[slug]` ohne vorherigen Scan bleibt technisch erreichbar (nur Entry-Cookie), markiert im `fest`-Modus aber **keinen** Stempel mehr — Hub bleibt gesperrt bis QR-Scan.
+
 ### Interaktion und Barrierefreiheit
 
 - Klicks primär **im SVG** (`onClick` pro Fenster/Bereich), mit **`tabIndex={0}`**, **`role="button"`**, **`onKeyDown`** (Enter/Space).

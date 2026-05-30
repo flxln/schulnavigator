@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { parseEntryScan, parseRoomScan } from '@/lib/scan-url'
+import { markVisitedSlug } from '@/lib/visited-stations'
 
 type QrScannerProps =
   | {
@@ -92,6 +93,7 @@ export function QrScanner(props: QrScannerProps) {
       const slug = parseRoomScan(decoded, props.origin, props.slugs, trustedOrigins)
       if (slug) {
         void stopScanner()
+        markVisitedSlug(slug, new Set(props.slugs))
         router.push(`/raum/${slug}`)
         return
       }

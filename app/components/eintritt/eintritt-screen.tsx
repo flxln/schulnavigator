@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { AlertCircle, QrCode } from 'lucide-react'
-import { FestiveDecor, Gs39Card, Gs39Chip } from '@/components/ui'
+import { FestiveDecor, Gs39Chip } from '@/components/ui'
 
 export type EintrittVariant = 'fresh' | 'expired' | 'wrong'
 
@@ -59,7 +59,11 @@ export function EintrittScreen({ variant = 'fresh' }: EintrittScreenProps) {
       </div>
 
       {!isError ? (
-        <Gs39Card className="relative z-[1] p-5 shadow-[var(--shadow-md)]">
+        <Link
+          href="/eintritt/scan"
+          className="sn-card sn-card--interactive relative z-[1] block p-5 text-left shadow-[var(--shadow-md)]"
+          aria-label="Eintritts-QR scannen, Kamera starten"
+        >
           <div className="mb-3.5 flex items-center gap-3.5">
             <Gs39Chip tone="green">
               <QrCode size={28} aria-hidden className="text-fg-on-dark" />
@@ -74,9 +78,9 @@ export function EintrittScreen({ variant = 'fresh' }: EintrittScreenProps) {
             </div>
           </div>
           <p className="text-sm leading-relaxed text-fg-2">
-            Scannen Sie den Code unten in der App — kein App-Store nötig.
+            Tippen Sie hier — die Kamera startet in der App. Kein App-Store nötig.
           </p>
-        </Gs39Card>
+        </Link>
       ) : (
         <div
           className="relative z-[1] rounded-[var(--r-lg)] border-[1.5px] border-brand-red bg-[#fff5f5] p-5 shadow-[var(--shadow-md)]"
@@ -104,7 +108,7 @@ export function EintrittScreen({ variant = 'fresh' }: EintrittScreenProps) {
             bei Bedarf einen neuen Code aus.
           </p>
           <Link
-            href="/eintritt"
+            href="/eintritt/scan"
             className="sn-btn sn-btn--primary sn-btn--block gap-2"
           >
             <QrCode size={20} aria-hidden />
