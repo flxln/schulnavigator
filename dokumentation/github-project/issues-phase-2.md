@@ -33,6 +33,7 @@ Spezifikation: [ADR-009](../adr/009-hub-isometrisch.md) · Quelle: [`auftraggebe
 - [x] **#60** — `schoolhouse-isometric-map.ts` + `IsometricSchoolhouse`; Puzzle-Hub entfernt — PR #66 — https://github.com/flxln/schulnavigator/issues/60
 - [x] **#61** — Home + Eintritt nach `screens.jsx` — PR #67 — https://github.com/flxln/schulnavigator/issues/61
 - [x] **#62** — Raum-Chrome, `/stationen`, Scan-Chrome — PR #68 — https://github.com/flxln/schulnavigator/issues/62
+- [x] **#81** — Scan-Chrome: Kamerabild füllt Rahmen (Folge #62, html5-qrcode-Mount) — https://github.com/flxln/schulnavigator/issues/81
 - [x] **#63** — Abschluss-Sparkle bei 11/11 (#22) — PR #68 — https://github.com/flxln/schulnavigator/issues/63
 
 ### Abhängigkeiten / Verknüpfung
@@ -201,6 +202,37 @@ Spezifikation: [ADR-008](../adr/008-eintritt-in-app-scanner.md) (inkl. Nachtrag 
 ### Abhängigkeiten
 
 - **#23** (geschlossen) — Middleware, Cookie, `html5-qrcode` auf `/scan`
+
+---
+
+## #81 — Scan-Chrome: Kamerabild füllt quadratischen Rahmen (Folge zu #62)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/81 — **geschlossen** (2026-05-30) · Sub-Issue von **#62**
+
+**Labels:** `tech` `design`  
+**Assignee:** Felix  
+**Milestone:** Phase 2
+
+**Problem:** Auf `/scan` (`chrome={true}`) war `.sn-scan-frame` (240×240 px) größer als das Kamerabild; `<video>` blieb im natürlichen Seitenverhältnis (~240×180 px).
+
+**Ursache:** `html5-qrcode` setzt beim Start `position: relative` auf das Mount-Element. Lag die Klasse `.sn-scan-camera` (`position: absolute; inset: 0`) auf demselben Element, fiel die absolute Positionierung weg — der Container schrumpfte auf die Video-Höhe.
+
+**Lösung:**
+
+- Äußerer Wrapper `.sn-scan-camera` (füllt den Rahmen, wird von der Library nicht verändert)
+- Inneres Mount `.sn-scan-camera-mount` für `Html5Qrcode`
+- Video-Styling unverändert: `.sn-scan-camera video { width/height: 100%; object-fit: cover; }`
+
+**Dateien:** `app/components/scan/qr-scanner.tsx`, `app/app/sn-theme.css`
+
+### Akzeptanzkriterien
+
+- [x] Live-Kamerabild füllt den quadratischen Rahmen auf `/scan` ohne sichtbaren Leerraum
+- [x] Ecken-Overlay und Scan-Line bleiben am Rahmen ausgerichtet
+
+### Abhängigkeiten
+
+- **#62** (geschlossen) — Scan-Chrome / dunkler Viewport
 
 ---
 
