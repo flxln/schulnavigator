@@ -42,25 +42,26 @@ npm run dev
 
 | Seite | Zweck |
 | ----- | ----- |
-| [http://localhost:3000/](http://localhost:3000/) | Startseite — **ohne** vorherigen Entry: Redirect zu `/eintritt` |
-| [http://localhost:3000/eintritt?t=fest-2026](http://localhost:3000/eintritt?t=fest-2026) | Entry Schulfest: Cookie + Redirect `/` → isometrischer Hub **gesperrt** (0/11), Fenster nach Raumbesuch frei (#21) |
-| [http://localhost:3000/eintritt?t=heft-2026-27](http://localhost:3000/eintritt?t=heft-2026-27) | Entry Heft: voller Hub (alle Stationen klickbar), Fortschritt zählt trotzdem (#21) |
-| [http://localhost:3000/stationen](http://localhost:3000/stationen) | Alle 11 Stationen als Liste (Lock im Modus `fest`) — Epic #58 |
-| [http://localhost:3000/eintritt](http://localhost:3000/eintritt) | Hinweisseite + **In-App-Scanner** für Eintritts-QR (#57); Kamera nur auf `localhost`/HTTPS |
-| [http://localhost:3000/robots.txt](http://localhost:3000/robots.txt) | `Disallow: /` (Issue #16) |
-| [http://localhost:3000/scan](http://localhost:3000/scan) | In-App-QR-Scanner mit dunklem Chrome und gelbem Scan-Rahmen (nach Entry; Kamera-Zugriff nötig) |
-| [http://localhost:3000/raum/klassenzimmer](http://localhost:3000/raum/klassenzimmer) | Standard-Raum-Chrome; leere Medienliste (Empty-State) |
-| [http://localhost:3000/raum/daz](http://localhost:3000/raum/daz) | **Dialog:** Frieda/Otto antippen; **X** beendet Dialog; Chip zentriert |
-| [http://localhost:3000/raum/pc-raum](http://localhost:3000/raum/pc-raum) | Zweiter Dialog, gleicher Flow |
-| [http://localhost:3000/raum/werken](http://localhost:3000/raum/werken) | Standard-Raum-Chrome |
-| [http://localhost:3000/raum/turnhalle](http://localhost:3000/raum/turnhalle) | Standard-Raum-Chrome |
-| [http://localhost:3000/raum/speiseraum](http://localhost:3000/raum/speiseraum) | Standard-Raum-Chrome |
-| [http://localhost:3000/raum/kunst](http://localhost:3000/raum/kunst) | Standard-Raum-Chrome |
-| [http://localhost:3000/raum/lesewelt](http://localhost:3000/raum/lesewelt) | Standard-Raum-Chrome |
-| [http://localhost:3000/raum/hort](http://localhost:3000/raum/hort) | Standard-Raum-Chrome |
-| [http://localhost:3000/raum/musik](http://localhost:3000/raum/musik) | **Gyro**, **2 Hotspots**, **4 Medien-Slots** (Demo-Typen); Chip zentriert |
-| [http://localhost:3000/raum/schulsozialarbeit](http://localhost:3000/raum/schulsozialarbeit) | Standard-Raum-Chrome; ein Text-Medium |
-| [http://localhost:3000/raum/gibts-nicht](http://localhost:3000/raum/gibts-nicht) | **404** (nur im Dev-Server; unbekannte Slugs sind zur Build-Zeit fest) |
+| [https://localhost:3000/](https://localhost:3000/) | Startseite — **ohne** vorherigen Entry: Redirect zu `/eintritt` |
+| [https://localhost:3000/eintritt?t=fest-2026](https://localhost:3000/eintritt?t=fest-2026) | Entry Schulfest: Cookie + Redirect `/` → isometrischer Hub **gesperrt** (0/11), Fenster nach Raumbesuch frei (#21) |
+| [https://localhost:3000/eintritt?t=heft-2026-27](https://localhost:3000/eintritt?t=heft-2026-27) | Entry Heft: voller Hub (alle Stationen klickbar), Fortschritt zählt trotzdem (#21) |
+| [https://localhost:3000/stationen](https://localhost:3000/stationen) | Alle 11 Stationen als Liste (Lock im Modus `fest`) — Epic #58 |
+| [https://localhost:3000/eintritt](https://localhost:3000/eintritt) | Hinweisseite (Willkommens-Karte → Link auf Scan-Route); Fehler `?reason=expired\|invalid` |
+| [https://localhost:3000/eintritt/scan](https://localhost:3000/eintritt/scan) | **Vollbild-Entry-Scanner** (#57, #82); Kamera nur auf `localhost`/HTTPS; ohne Cookie erreichbar |
+| [https://localhost:3000/robots.txt](https://localhost:3000/robots.txt) | `Disallow: /` (Issue #16) |
+| [https://localhost:3000/scan](https://localhost:3000/scan) | In-App-QR-Scanner mit dunklem Chrome und gelbem Scan-Rahmen (nach Entry; Kamera-Zugriff nötig) |
+| [https://localhost:3000/raum/klassenzimmer](https://localhost:3000/raum/klassenzimmer) | Standard-Raum-Chrome; leere Medienliste (Empty-State) |
+| [https://localhost:3000/raum/daz](https://localhost:3000/raum/daz) | **Dialog:** Frieda/Otto antippen; **X** beendet Dialog; Chip zentriert |
+| [https://localhost:3000/raum/pc-raum](https://localhost:3000/raum/pc-raum) | Zweiter Dialog, gleicher Flow |
+| [https://localhost:3000/raum/werken](https://localhost:3000/raum/werken) | Standard-Raum-Chrome |
+| [https://localhost:3000/raum/turnhalle](https://localhost:3000/raum/turnhalle) | Standard-Raum-Chrome |
+| [https://localhost:3000/raum/speiseraum](https://localhost:3000/raum/speiseraum) | Standard-Raum-Chrome |
+| [https://localhost:3000/raum/kunst](https://localhost:3000/raum/kunst) | Standard-Raum-Chrome |
+| [https://localhost:3000/raum/lesewelt](https://localhost:3000/raum/lesewelt) | Standard-Raum-Chrome |
+| [https://localhost:3000/raum/hort](https://localhost:3000/raum/hort) | Standard-Raum-Chrome |
+| [https://localhost:3000/raum/musik](https://localhost:3000/raum/musik) | **Gyro**, **2 Hotspots**, **4 Medien-Slots** (Demo-Typen); Chip zentriert |
+| [https://localhost:3000/raum/schulsozialarbeit](https://localhost:3000/raum/schulsozialarbeit) | Standard-Raum-Chrome; ein Text-Medium |
+| [https://localhost:3000/raum/gibts-nicht](https://localhost:3000/raum/gibts-nicht) | **404** (nur im Dev-Server; unbekannte Slugs sind zur Build-Zeit fest) |
 
 **Hinweis zu 404:** Die Routen kommen aus `data/stations.json` (`generateStaticParams`). Ein Slug, der **nicht** in der JSON-Datei steht, liefert in der **Produktion** nach `npm run build` eine 404-Seite. Unter `npm run dev` zeigt Next.js oft eine dynamische 404 — zum Verhalten wie online unbedingt **Abschnitt 3** ausführen.
 
@@ -86,7 +87,7 @@ npm run build
 npm run start
 ```
 
-- App unter [http://localhost:3000](http://localhost:3000) (Port siehe Terminal-Ausgabe).
+- App unter [https://localhost:3000](https://localhost:3000) (Port siehe Terminal-Ausgabe).
 - Zum Beenden: im Terminal `Ctrl+C`.
 
 `npm run build` ruft zuvor **`npm run validate:tokens`** (Abgleich `app/gs39-tokens.css` ↔ `auftraggeber/.../colors_and_type.css`) und **`npm run validate:stations`** auf: Es muss jede in `stations.json` referenzierte Datei unter `public/` existieren (Raumbilder, Demo-Medien). Fehlt etwas, bricht der Build mit einer klaren Meldung ab. Zusätzlich gibt `validate:stations` bei riskantem Hotspot-**y** (nach Auto-Zoom unsichtbar) eine **Warnung** aus (Heuristik).
@@ -104,7 +105,13 @@ npm run start
 7. `fest` mit bereits besuchten Stationen: Hub neu laden → kurzer Lade-Platzhalter, kein „alles gesperrt“-Flash
 8. Zwei Tabs (`/` + `/scan`): im zweiten Tab scannen → erster Tab aktualisiert bei Fokus
 9. Alle 11 Stationen besucht → `SparkleBurst` auf `/` **einmalig**; `localStorage` `sn_sparkle_done` verhindert Wiederholung
-10. `curl -sI http://localhost:3000/stationen` ohne Cookie → `307` nach `/eintritt`
+10. `curl -sI https://localhost:3000/stationen` ohne Cookie → `307` nach `/eintritt`
+11. **Regression #83 (`fest`):** Einen Raum per QR freischalten → in Raum „Nächste Station“ (Schloss) → Scanner ohne Scan schließen → geteilter CTA unter der Fortschrittskarte (Schloss + „Beliebiger QR“) öffnet **`/scan`**, nicht den Raum; `sn_visited_slugs` enthält **nicht** die ungescannte Station
+12. **`fest` 1–10:** unter der Karte **ein** geteilter Primär-Button (Nächste Station | Beliebiger QR), **kein** zweiter Scan-Button
+13. **`fest` 0/11:** nur ein Scan-Button „QR an der Tür scannen“
+14. **`fest` 11/11:** kein Scan-CTA unter der Karte (Sparkle in der Karte optional)
+15. **`heft` mit Fortschritt:** Vorschlag **in** der Fortschrittskarte → Raum; **kein** Scan-Button auf `/`
+16. **Kein Flash:** `fest` mit Fortschritt neu laden → vor Hydration Einzel-Scan, danach geteilter Button (kein Layout-Sprung der Button-Anzahl prüfen)
 
 **Manuelle Test-Matrix (Schulfest-relevant):**
 
@@ -140,7 +147,7 @@ npm run generate:qr -- --dry-run   # QR-URLs prüfen (Issue #15, schreibt keine 
 Mit laufendem Server (`dev` oder `start`):
 
 ```bash
-curl -s http://localhost:3000/api/health
+curl -s https://localhost:3000/api/health
 ```
 
 Erwartung: HTTP **200** und eine kurze OK-Antwort (für Monitoring/Coolify relevant).

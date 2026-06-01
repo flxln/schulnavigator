@@ -62,7 +62,11 @@ export default async function RaumPage({ params }: PageProps) {
       className="mx-auto min-h-[100dvh] max-w-lg overflow-x-hidden"
       data-schoolhouse-room={room}
     >
-      <StationVisitRecorder slug={slug} validSlugs={validSlugs} />
+      <StationVisitRecorder
+        slug={slug}
+        validSlugs={validSlugs}
+        mode={mode}
+      />
       <RaumStationClient
         station={station}
         validSlugs={validSlugs}

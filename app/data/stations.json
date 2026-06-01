@@ -18,7 +18,7 @@
           "id": "hs-frieda",
           "label": "Frieda",
           "x": 0.32,
-          "y": 0.58,
+          "y": 0.78,
           "radius": 0.1,
           "action": "dialog",
           "mascot": "frieda"
@@ -27,7 +27,7 @@
           "id": "hs-otto",
           "label": "Otto",
           "x": 0.68,
-          "y": 0.58,
+          "y": 0.78,
           "radius": 0.1,
           "action": "dialog",
           "mascot": "otto"
@@ -115,7 +115,7 @@
           "id": "hs-frieda",
           "label": "Frieda",
           "x": 0.32,
-          "y": 0.58,
+          "y": 0.78,
           "radius": 0.1,
           "action": "dialog",
           "mascot": "frieda"
@@ -124,7 +124,7 @@
           "id": "hs-otto",
           "label": "Otto",
           "x": 0.68,
-          "y": 0.58,
+          "y": 0.78,
           "radius": 0.1,
           "action": "dialog",
           "mascot": "otto"

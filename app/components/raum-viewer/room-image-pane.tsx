@@ -48,6 +48,7 @@ export type RoomImagePaneProps = {
   speakingRolle?: DialogRolle | null
   onHotspotTap?: (hotspot: Hotspot) => void
   onHotspotCenterHit?: (hotspot: Hotspot | null) => void
+  onPanChange?: (panPx: number, effectiveDisplayW: number, containerW: number) => void
   layout?: RaumViewerLayout
   orientationEnabled?: boolean
 }
@@ -71,6 +72,7 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
       speakingRolle = null,
       onHotspotTap,
       onHotspotCenterHit,
+      onPanChange,
       layout = 'default',
       orientationEnabled = true,
     },
@@ -160,6 +162,10 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
     // eslint-disable-next-line react-hooks/set-state-in-effect -- maxPan kommt aus Messwerten; einmaliges Clamping
     setPanPx((p) => clampPan(p, maxPan))
   }, [maxPan])
+
+  useEffect(() => {
+    onPanChange?.(panPx, effectiveDisplayW, containerW)
+  }, [panPx, effectiveDisplayW, containerW, onPanChange])
 
   useEffect(() => {
     const el = containerRef.current

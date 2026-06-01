@@ -1,16 +1,17 @@
 import { NextRequest } from 'next/server'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { ACCESS_COOKIE } from '@/lib/access-tokens'
-import { middleware } from './middleware'
+import { middleware, ACCESS_PROTECTED_MATCHER } from './middleware'
 
 const BASE = 'http://localhost:3000'
 
-/** Entspricht ACCESS_PROTECTED_MATCHER in middleware.ts */
+/** Gespiegelte Matcher-Logik — muss mit ACCESS_PROTECTED_MATCHER und config.matcher übereinstimmen. */
 function middlewareRunsFor(pathname: string): boolean {
   return (
     pathname === '/' ||
     pathname === '/scan' ||
     pathname === '/eintritt' ||
+    pathname.startsWith('/eintritt/') ||
     pathname === '/stationen' ||
     pathname.startsWith('/raum/')
   )
@@ -89,5 +90,39 @@ describe('middleware', () => {
     const res = middleware(req('/stations/klassenzimmer.jpg'))
     expect(res.status).toBe(200)
     expect(res.headers.get('location')).toBeNull()
+  })
+
+  it('lässt /eintritt/scan ohne Cookie durch', () => {
+    const res = middleware(req('/eintritt/scan'))
+    expect(res.status).toBe(200)
+    expect(res.headers.get('location')).toBeNull()
+  })
+
+  it('setzt Cookie bei gültigem ?t= auf /eintritt/scan und leitet nach / um', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-06-01'))
+    const res = middleware(req('/eintritt/scan?t=fest-2026'))
+    expect(res.status).toBe(307)
+    expect(res.headers.get('location')).toBe(`${BASE}/`)
+    const setCookie = res.headers.get('set-cookie') ?? ''
+    expect(setCookie).toContain(`${ACCESS_COOKIE}=fest-2026`)
+  })
+
+  it('leitet /eintritt/foo ohne Cookie nach /eintritt um (nicht in Whitelist)', () => {
+    const res = middleware(req('/eintritt/foo'))
+    expect(res.status).toBe(307)
+    expect(res.headers.get('location')).toBe(`${BASE}/eintritt`)
+  })
+
+  it('Drift-Guard: middlewareRunsFor deckt ACCESS_PROTECTED_MATCHER ab', () => {
+    // Stellt sicher, dass Matcher-Konstante, config.matcher und die gespiegelte
+    // Test-Funktion nicht auseinanderlaufen, wenn neue Routen hinzukommen.
+    const staticRoutes = ACCESS_PROTECTED_MATCHER.filter((p) => !p.includes(':'))
+    for (const route of staticRoutes) {
+      expect(middlewareRunsFor(route)).toBe(true)
+    }
+    // Wildcards manuell mit konkreten Beispielpfaden prüfen
+    expect(middlewareRunsFor('/raum/pc-raum')).toBe(true)
+    expect(middlewareRunsFor('/eintritt/scan')).toBe(true)
   })
 })

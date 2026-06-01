@@ -28,6 +28,39 @@ Phase 2 verlangt eine **fertige App-Shell**, die dem Endprodukt entspricht ([`pr
 - Logik **#21** / **#23** bleibt: `fest` = nur besuchte Stationen am Hub klickbar; `heft` = alle klickbar; Fortschritt über `visitedSlugs`.
 - Steuerung erfolgt über **Slug + `room`-Map**, nicht über `puzzleSegmentId` / Segment-Overlays.
 
+#### Nachtrag 2026-05-30 — `fest`: Freischaltung nur per Raum-QR (#83)
+
+**Problem:** Der Hub-**Vorschlag** auf `/` navigierte gesperrte Stationen direkt nach `/raum/[slug]`. `StationVisitRecorder` schrieb beim bloßen Seitenaufruf sofort in `sn_visited_slugs` — im Modus `fest` galt damit „besucht“ = freigeschaltet **ohne** Scan am Türcode.
+
+**Entscheidung:**
+
+| Modus | Wann `sn_visited_slugs` wächst |
+|-------|--------------------------------|
+| `fest` | Nur nach **erfolgreichem** Raum-QR in `QrScanner` (`/scan`, `mode=room`) — `markVisitedSlug` vor Navigation |
+| `heft` | Weiterhin beim Öffnen von `/raum/[slug]` via `StationVisitRecorder` |
+
+**Navigation gesperrter Stationen:** Hub-Vorschlag (`home-screen.tsx`) und Footer „Nächste Station“ (`next-station-footer.tsx`) leiten zu **`/scan`**, nicht zu `/raum/…` — analog zur Sperre am isometrischen Hub (`schoolhouse-hub.tsx`).
+
+**Hinweis:** Direkt-URL `/raum/[slug]` ohne vorherigen Scan bleibt technisch erreichbar (nur Entry-Cookie), markiert im `fest`-Modus aber **keinen** Stempel mehr — Hub bleibt gesperrt bis QR-Scan.
+
+#### Nachtrag 2026-06-01 — Startseite: modusabhängige CTAs
+
+**Problem:** Auf `/` wirkten Fortschrittskarte („Nächste Station“) und Primär-Button „QR an der Tür scannen“ im Modus `fest` redundant (beide → `/scan`). Im Modus `heft` war der Scan-Button überflüssig (Hub + `/stationen` decken Navigation ab).
+
+**Entscheidung:**
+
+| Modus | Zustand | CTA unter der Fortschrittskarte |
+|-------|---------|----------------------------------|
+| `fest` | 0/11 | Ein Scan-Button |
+| `fest` | 1–10, nächste unbesuchte Station | **Ein** geteilter Primär-Button (links Empfehlung + Schloss, rechts „Beliebiger QR“) → `/scan` |
+| `fest` | 11/11 | Kein Scan-CTA (Sparkle in der Karte bleibt) |
+| `heft` | mit Fortschritt | Vorschlag **in** der Karte → `/raum/[slug]`; kein Scan auf `/` |
+| `heft` | sonst | Hub + Listen-Icon `/stationen` |
+
+**Technik:** `getHomeFooterCta` ([`app/lib/home-cta.ts`](../../app/lib/home-cta.ts)), geteilter Button [`home-fest-scan-cta.tsx`](../../app/components/home/home-fest-scan-cta.tsx), gemeinsame nächste Station [`getNextStation`](../../app/lib/next-station.ts) (Home + Footer; Footer überspringt besuchte Räume und den aktuellen Raum). Vor Hydration im `fest`: stabiler Einzel-Scan (`isHydrated` in der CTA-Entscheidung).
+
+Issue: **#84** (Sub-Issue zu **#83**, Kontext **#61**) — https://github.com/flxln/schulnavigator/issues/84 — siehe [issues-phase-2.md](../github-project/issues-phase-2.md).
+
 ### Interaktion und Barrierefreiheit
 
 - Klicks primär **im SVG** (`onClick` pro Fenster/Bereich), mit **`tabIndex={0}`**, **`role="button"`**, **`onKeyDown`** (Enter/Space).
