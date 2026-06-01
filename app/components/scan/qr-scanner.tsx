@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { parseEntryScan, parseRoomScan } from '@/lib/scan-url'
+import { markVisitedSlug } from '@/lib/visited-stations'
 
 type QrScannerProps =
   | {
@@ -92,6 +93,7 @@ export function QrScanner(props: QrScannerProps) {
       const slug = parseRoomScan(decoded, props.origin, props.slugs, trustedOrigins)
       if (slug) {
         void stopScanner()
+        markVisitedSlug(slug, new Set(props.slugs))
         router.push(`/raum/${slug}`)
         return
       }
@@ -158,18 +160,28 @@ export function QrScanner(props: QrScannerProps) {
     ? 'rounded-[var(--r-md)] bg-white/10 px-3 py-2 text-center text-sm text-white'
     : 'rounded-[var(--r-md)] bg-bg-3 px-3 py-2 text-sm text-fg-1'
 
-  const cameraNode = showCameraRegion ? (
+  const cameraMount = showCameraRegion ? (
     <div
       ref={containerRef}
       id={regionId}
       className={
         chrome
-          ? 'sn-scan-camera'
+          ? 'sn-scan-camera-mount'
           : 'min-h-[240px] w-full overflow-hidden rounded-[var(--r-md)] bg-bg-dark'
       }
       aria-hidden={state === 'idle'}
     />
   ) : null
+
+  const framedCamera =
+    showFrame && cameraMount ? (
+      <div className="sn-scan-frame">
+        <div className="sn-scan-camera">{cameraMount}</div>
+        <ScanFrameOverlay active={state === 'scanning'} />
+      </div>
+    ) : (
+      cameraMount
+    )
 
   return (
     <div
@@ -177,14 +189,7 @@ export function QrScanner(props: QrScannerProps) {
         chrome ? 'sn-scan-chrome flex flex-col items-center gap-4' : 'flex flex-col gap-4'
       }
     >
-      {showFrame ? (
-        <div className="sn-scan-frame">
-          {cameraNode}
-          <ScanFrameOverlay active={state === 'scanning'} />
-        </div>
-      ) : (
-        cameraNode
-      )}
+      {framedCamera}
 
       {state === 'pending' ? (
         <p

@@ -14,7 +14,7 @@ _Stand: 2026-05-28 (**#72:** Dialog-Ende TopBar, Chip-Zentrieren; **ADR-012:** T
 | QR-Code-Generierung | Script `npm run generate:qr`, `lib/qr-urls.ts` (URLs) | gleich                           | —                                             |
 | Video-Hosting       | MPZ-Server (Upload)                               | YouTube-Embed nach Rechtsklärung | [004](./adr/004-video-hosting-mpz.md)         |
 | Zugangskontrolle    | Entry-Token, Cookie `sn_access` + Middleware, Modi `fest`/`heft` | gleich                           | [005](./adr/005-zugangskontrolle-token.md), [007](./adr/007-zugangskontrolle-cookie.md) |
-| Navigation          | In-App-Scanner Entry (`/eintritt`) + Räume (`/scan`) | gleich                           | [005](./adr/005-zugangskontrolle-token.md), [008](./adr/008-eintritt-in-app-scanner.md) |
+| Navigation          | In-App-Scanner Entry (`/eintritt/scan`) + Räume (`/scan`) | gleich                      | [005](./adr/005-zugangskontrolle-token.md), [008](./adr/008-eintritt-in-app-scanner.md) |
 | Raum-Viewer         | Gyro-Pan, Hotspots, Tap-Fallback; normales Foto   | gleich                           | [006](./adr/006-raum-viewer-gyro-hotspots.md) |
 | UI / Schul-Theme    | GS39-Tokens + Jubiläums-UI (Epic #58)             | pro Schule eigenes Token-Sheet   | [ADR-009](./adr/009-hub-isometrisch.md), Auftraggeber-CSS |
 | Startseite-Hub      | Isometrisches Schulhaus-SVG (ersetzt Puzzle)      | gleich                           | [ADR-009](./adr/009-hub-isometrisch.md) |
@@ -43,7 +43,7 @@ _Stand: 2026-05-28 (**#72:** Dialog-Ende TopBar, Chip-Zentrieren; **ADR-012:** T
 |--------|---------|
 | Komponente | `IsometricSchoolhouse` (Port aus Design-`schoolhouse.jsx`, `viewBox` 800×520) |
 | Zuordnung | `lib/schoolhouse-isometric-map.ts`: 11 Slugs → `room`, `nr`, `accent` (Hex) |
-| Freischaltung | wie #21/#23 über `visitedSlugs`; `fest` = nur besuchte Slots klickbar |
+| Freischaltung | wie #21/#23 über `visitedSlugs`; `fest` = nur besuchte Slots klickbar; Stempel nur per Raum-QR (#83, [ADR-009 Nachtrag](./adr/009-hub-isometrisch.md#nachtrag-2026-05-30--fest-freischaltung-nur-per-raum-qr-83)) |
 | Entfällt | Puzzle-`SchoolhouseSvg`, `schoolhouse-layout.ts`, `puzzleSegmentId` in JSON |
 | A11y | SVG `role="button"` + SR-Nav (`schoolhouse-sr-nav`) |
 | Offen | Slug für SVG-Slot `ground-mid` (Eingangstür) mit Schule abstimmen |
@@ -71,20 +71,22 @@ Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/
 ```
 /
 /eintritt
+/eintritt/scan
 /scan
 /stationen
 /raum/[slug]
 /api/dialog/[slug]/[clip]
 ```
 
-- **`/`** — Startseite mit **isometrischem** Schulhaus-Hub ([ADR-009](./adr/009-hub-isometrisch.md)); Modus aus Cookie: `heft` = alle Stationen, `fest` = nur besuchte Slots klickbar (#21).
+- **`/`** — Startseite mit **isometrischem** Schulhaus-Hub ([ADR-009](./adr/009-hub-isometrisch.md)); Modus aus Cookie: `heft` = alle Stationen, `fest` = nur besuchte Slots klickbar (#21). **CTAs** modusabhängig ([ADR-009 Nachtrag CTAs](./adr/009-hub-isometrisch.md#nachtrag-2026-06-01--startseite-modusabhängige-ctas)): `fest` = geteilter Scan-Button (1–10) bzw. Einzel-Scan (0/11); `heft` = Vorschlag in der Fortschrittskarte, kein Scan auf `/`. Logik: `lib/home-cta.ts`, `lib/next-station.ts`.
 - **`/stationen`** — Stationsliste (Lock im Modus `fest`) — Epic #58.
-- **`/eintritt`** — Entry-QR (`?t=…`) setzt Cookie und leitet auf `/` um; ohne gültigen Zugang Hinweis-/Fehlerseite mit **integriertem Entry-Scanner** (#57, [ADR-008](./adr/008-eintritt-in-app-scanner.md)): `parseEntryScan` prüft nur Struktur (Origin, Pfad, `t` nicht leer); Gültigkeit nur Middleware.
+- **`/eintritt`** — Entry-QR (`?t=…`) setzt Cookie und leitet auf `/` um; ohne gültigen Zugang **Hinweis-/Fehlerseite** (Willkommens-Karte verlinkt auf `/eintritt/scan`). Kein Inline-Scanner mehr (#57, #82, [ADR-008](./adr/008-eintritt-in-app-scanner.md)).
+- **`/eintritt/scan`** — Vollbild-Entry-Scanner (gleiche Shell wie `/scan`, `ScanFullscreenShell`); `QrScanner` `mode="entry"` `chrome`; ohne Cookie erreichbar (Middleware-Whitelist). `parseEntryScan` prüft nur Struktur (Origin, Pfad `/eintritt`, `t` nicht leer); Gültigkeit nur Middleware.
 - **`/scan`** — In-App-QR-Scanner für Raum-QRs (nur mit Cookie); dunkles Scan-Chrome mit gelbem Rahmen; `parseRoomScan` + Slug-Whitelist — [ADR-005](./adr/005-zugangskontrolle-token.md), [ADR-007](./adr/007-zugangskontrolle-cookie.md).
 - **Fortschritt 11/11:** `SparkleBurst` auf der Startseite einmalig (`sn_sparkle_done` in `localStorage`, L6).
 - **`/api/dialog/[slug]/[clip]`** — Dialog-Audio aus `content/dialog-audio/`; **403** ohne Cookie; **206** Range ([ADR-010](./adr/010-dialog-cutscene-gated-audio.md), #69).
 
-**Zugang (Issue #23, Entry-Scanner #57):** Token-Liste [`app/lib/access-tokens.ts`](../app/lib/access-tokens.ts) (sync mit [`app/scripts/qr-config.mjs`](../app/scripts/qr-config.mjs)); Middleware [`app/middleware.ts`](../app/middleware.ts) setzt/prüft Cookie `sn_access`. Entry-Treffer im Scanner: `location.replace` zu `/eintritt?t=…` (kein Token im Client-Bundle). Ausnahmen: `/api/health`, `/_next/*`, `favicon.ico`, `robots.txt`, `/eintritt` ohne `?t=`.
+**Zugang (Issue #23, Entry-Scanner #57, Route #82):** Token-Liste [`app/lib/access-tokens.ts`](../app/lib/access-tokens.ts) (sync mit [`app/scripts/qr-config.mjs`](../app/scripts/qr-config.mjs)); Middleware [`app/middleware.ts`](../app/middleware.ts) setzt/prüft Cookie `sn_access`. Entry-Treffer im Scanner: `location.replace` zu `/eintritt?t=…` (kein Token im Client-Bundle). Cookie-frei ohne `?t=`: explizite Whitelist `/eintritt`, `/eintritt/scan` (kein `startsWith` — siehe ADR-008 Nachtrag). Weitere Ausnahmen: `/api/health`, `/_next/*`, `favicon.ico`, `robots.txt`.
 
 Sprechende Raum-Slugs (z. B. `/raum/musik`) — siehe [ADR-002](./adr/002-frontend-nextjs.md).
 

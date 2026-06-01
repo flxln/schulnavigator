@@ -72,7 +72,7 @@ schulnavigator/
 | [005](./dokumentation/adr/005-zugangskontrolle-token.md)    | Zugang: Entry-Token, fest/heft, In-App-Scanner         | entschieden |
 | [006](./dokumentation/adr/006-raum-viewer-gyro-hotspots.md) | Raum-Viewer: Gyro (Standard), Hotspots, Tap-Fallback   | entschieden |
 | [007](./dokumentation/adr/007-zugangskontrolle-cookie.md)   | Zugang: HttpOnly-Cookie + Middleware (ergänzt ADR-005) | entschieden |
-| [008](./dokumentation/adr/008-eintritt-in-app-scanner.md)   | Eintritt: In-App-Scanner auf `/eintritt` (ergänzt ADR-005) | entschieden |
+| [008](./dokumentation/adr/008-eintritt-in-app-scanner.md)   | Eintritt: In-App-Scanner auf `/eintritt/scan` (ergänzt ADR-005; Shell mit `/scan`) | entschieden |
 
 Vollständiger ADR-Index: [`dokumentation/entscheidungen.md`](./dokumentation/entscheidungen.md)
 

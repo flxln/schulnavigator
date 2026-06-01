@@ -20,6 +20,7 @@ export type RaumViewerProps = {
   speakingRolle?: DialogRolle | null
   onHotspotTap?: (hotspot: Hotspot) => void
   onHotspotCenterHit?: (hotspot: Hotspot | null) => void
+  onPanChange?: (panPx: number, effectiveDisplayW: number, containerW: number) => void
   layout?: RaumViewerLayout
   orientationEnabled?: boolean
 }
@@ -35,6 +36,7 @@ export const RaumViewer = forwardRef<RaumViewerHandle, RaumViewerProps>(
       speakingRolle = null,
       onHotspotTap,
       onHotspotCenterHit,
+      onPanChange,
       layout = 'default',
       orientationEnabled = true,
     },
@@ -63,6 +65,7 @@ export const RaumViewer = forwardRef<RaumViewerHandle, RaumViewerProps>(
           speakingRolle={speakingRolle}
           onHotspotTap={onHotspotTap}
           onHotspotCenterHit={onHotspotCenterHit}
+          onPanChange={onPanChange}
           layout={layout}
           orientationEnabled={orientationEnabled}
         />

@@ -1,7 +1,7 @@
 # ADR-008 — Eintritt: In-App-Scanner auf `/eintritt`
 
 **Datum:** 2026-05-22  
-**Status:** entschieden
+**Status:** entschieden (Nachtrag 2026-05-30: Scanner auf eigene Route `/eintritt/scan` verschoben)
 
 ## Kontext
 
@@ -11,10 +11,10 @@ Nutzer ohne gültiges Cookie landen auf `/eintritt` (Hinweisseite). `/scan` ist 
 
 ## Entscheidung
 
-- Auf **`/eintritt`** (Hinweisseite, ohne gültiges Cookie) wird ein **In-App-QR-Scanner** angeboten — gleiche Technik wie `/scan` (`html5-qrcode`, dynamischer Import, Kamera nach Nutzer-Geste).
+- Auf **`/eintritt/scan`** (eigene Vollbild-Route, ohne gültiges Cookie erreichbar) läuft der **In-App-QR-Scanner** für Entry — gleiche Technik und Shell wie `/scan` (`ScanFullscreenShell`, `html5-qrcode`, dynamischer Import, Kamera nach Nutzer-Geste). **`/eintritt`** zeigt nur die Hinweisseite; die Willkommens-Karte verlinkt auf `/eintritt/scan` (Nachtrag 2026-05-30, Issue #82).
 - Der Scanner akzeptiert nur **Entry-URLs** im Sinne von Struktur: same-origin, Pfad `/eintritt`, Query-Parameter `t` nicht leer.
 - Bei Treffer: `window.location.replace` zu `/eintritt?t=<token>` → bestehende **Middleware** (#23) setzt Cookie und leitet auf `/` um.
-- **`/scan`** bleibt unverändert: nur Raum-QRs, nur mit gültigem Cookie erreichbar. Kein Entry-Scan auf `/scan`.
+- **`/scan`** bleibt unverändert in der Rolle: nur Raum-QRs, nur mit gültigem Cookie erreichbar. Kein Entry-Scan auf `/scan`.
 
 Parsing als reine Funktion + Vitest (`parseEntryScan` in `lib/scan-url.ts`).
 
@@ -46,3 +46,29 @@ Die ursprüngliche Formulierung „Token aus `access-tokens.ts`" bezieht sich au
 - Issue **#57** (Folge zu #23); Abhängigkeit: #23 abgeschlossen.
 - ADR-005 Abschnitt „System-Kamera“ bleibt gültig als **Fallback**; In-App-Scan auf `/eintritt` ist **zusätzlicher** Standardweg.
 - Doku: `issues-phase-2.md`, `fuer-lehrkraefte.md`, `lokal-testen-und-anschauen.md` bei Umsetzung anpassen.
+
+---
+
+## Nachtrag 2026-05-30 — Scanner auf eigene Route `/eintritt/scan`
+
+### Änderung gegenüber der ursprünglichen Entscheidung
+
+Der Entry-Scanner läuft nicht mehr als **Inline-Block** auf `/eintritt`, sondern als **eigene Vollbild-Route** `/eintritt/scan` — dasselbe Muster wie der Raum-Scanner auf `/scan`.
+
+**Begründung:** Ein früher evaluierter Overlay-Ansatz (Vollbild-Modal mit `history.pushState`, Body-Scroll-Lock, Focus-Restore) hätte erhebliches Mobile-/A11y-Hardening erfordert. Die bestehende `ScanScreen`-Komponente ist bereits eine Page-Komponente, kein Overlay — dieses Pattern ist robuster, weil der Browser History, Scroll und Focus nativ übernimmt. In einem Aufwasch wurde das gemeinsame Vollbild-Layout in `ScanFullscreenShell` extrahiert, das beide Routen nutzen.
+
+### Konkrete Änderungen
+
+| Datei | Änderung |
+|-------|----------|
+| `app/components/scan/scan-fullscreen-shell.tsx` | Neue gemeinsame Shell (Layout + TopBar) |
+| `app/components/scan/scan-screen.tsx` | Nutzt Shell statt eigenes Layout |
+| `app/components/eintritt/eintritt-scan-screen.tsx` | Neue Entry-Variante via Shell |
+| `app/app/eintritt/scan/page.tsx` | Server-Wrapper für `/eintritt/scan` |
+| `app/components/eintritt/eintritt-screen.tsx` | Willkommens-Karte als `<Link href="/eintritt/scan">` |
+| `app/app/eintritt/page.tsx` | Inline-Scanner entfernt; nur noch `EintrittScreen` |
+| `app/middleware.ts` | Matcher um `/eintritt/:path*` erweitert; Bypass-Whitelist `['/eintritt', '/eintritt/scan']` |
+
+### Middleware-Bypass
+
+`/eintritt/scan` muss ohne Cookie erreichbar sein (Entry-Flow). Die Whitelist ist **explizit** (kein `startsWith('/eintritt')`), damit zukünftig versehentlich angelegte Pfade unter `/eintritt/*` nicht automatisch cookie-frei werden.

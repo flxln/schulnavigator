@@ -5,7 +5,9 @@ import { useMemo, useState } from 'react'
 import { List, QrCode } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { HighlightSlugSync } from '@/components/home/highlight-slug-sync'
+import { HomeFestScanCta } from '@/components/home/home-fest-scan-cta'
 import { SchoolhouseHub } from '@/components/schoolhouse/schoolhouse-hub'
+import { NextStationRow } from '@/components/raum/next-station-row'
 import {
   FestiveDecor,
   Gs39Button,
@@ -17,8 +19,14 @@ import {
 import { isSparkleDone, markSparkleDone } from '@/lib/sparkle-done'
 import type { EntryMode } from '@/lib/access-tokens'
 import { useVisitedStations } from '@/hooks/use-visited-stations'
-import { getUnlockedSlugsForMode, isHubFullyLocked } from '@/lib/hub-mode'
+import { getHomeFooterCta } from '@/lib/home-cta'
+import {
+  getUnlockedSlugsForMode,
+  isHubFullyLocked,
+} from '@/lib/hub-mode'
+import { getNextStation } from '@/lib/next-station'
 import type { IsometricHubStation } from '@/lib/schoolhouse-isometric-map'
+
 type HomeScreenProps = {
   mode: EntryMode
   hubStations: readonly IsometricHubStation[]
@@ -69,12 +77,19 @@ export function HomeScreen({
   const allLocked =
     isHydrated && isHubFullyLocked(mode, unlockedSlugs, hubStations.length)
 
-  const nextStation = useMemo(() => {
-    if (visitedCount === 0 || visitedCount >= hubStations.length) {
-      return null
-    }
-    return hubStations.find((s) => !visitedSlugs.has(s.slug)) ?? null
-  }, [hubStations, visitedCount, visitedSlugs])
+  const nextStation = useMemo(
+    () => getNextStation(hubStations, visitedSlugs),
+    [hubStations, visitedSlugs],
+  )
+
+  const hasNext = nextStation !== null
+  const footerCta = getHomeFooterCta(
+    mode,
+    isHydrated,
+    visitedCount,
+    hubStations.length,
+    hasNext,
+  )
 
   const modeLabel =
     mode === 'heft'
@@ -155,26 +170,14 @@ export function HomeScreen({
               ? 'Alle Stationen entdeckt!'
               : 'Stationen entdeckt'}
         </p>
-        {nextStation && visitedCount > 0 ? (
-          <button
-            type="button"
+        {footerCta === 'heft-suggestion' && nextStation ? (
+          <NextStationRow
+            station={nextStation}
+            locked={false}
+            eyebrow="Vorschlag"
             onClick={() => router.push(`/raum/${nextStation.slug}`)}
-            className="mt-3.5 flex w-full items-center gap-2.5 rounded-[var(--r-md)] border-0 bg-bg-3 p-3 text-left"
-          >
-            <Gs39Chip
-              size="sm"
-              className="!text-fg-on-dark"
-              style={{ background: nextStation.accent }}
-            >
-              <span className="text-sm font-extrabold">{nextStation.nr}</span>
-            </Gs39Chip>
-            <span className="min-w-0 flex-1">
-              <span className="t-eyebrow block text-[10px]">Vorschlag</span>
-              <span className="block truncate text-sm font-bold text-fg-1">
-                {nextStation.titel}
-              </span>
-            </span>
-          </button>
+            variant="card"
+          />
         ) : null}
       </Gs39Card>
 
@@ -187,14 +190,20 @@ export function HomeScreen({
         </p>
       ) : null}
 
-      <Gs39Button
-        block
-        className="gap-2.5"
-        onClick={() => router.push('/scan')}
-      >
-        <QrCode size={22} aria-hidden />
-        QR an der Tür scannen
-      </Gs39Button>
+      {footerCta === 'fest-split' && nextStation ? (
+        <HomeFestScanCta nextStation={nextStation} />
+      ) : null}
+
+      {footerCta === 'fest-scan' ? (
+        <Gs39Button
+          block
+          className="gap-2.5"
+          onClick={() => router.push('/scan')}
+        >
+          <QrCode size={22} aria-hidden />
+          QR an der Tür scannen
+        </Gs39Button>
+      ) : null}
 
       <div className="sn-ribbon text-center text-xl">
         Gemeinsam feiern. Erinnern. Zukunft gestalten.
