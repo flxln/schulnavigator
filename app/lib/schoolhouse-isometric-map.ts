@@ -39,19 +39,20 @@ export const ISOMETRIC_SLUG_MAP: Record<string, IsometricSlugMapping> = {
   schulsozialarbeit: { room: 'garden', nr: 11 },
 }
 
+/** Sync mit app/design-reference/isometric-schoolhouse.svg (Illustrator-Layout). */
 export const ISOMETRIC_ROOM_FRAMES: Record<
   IsometricWindowRoom,
   readonly [x: number, y: number, w: number, h: number]
 > = {
-  'top-left': [205, 158, 60, 70],
-  'top-mid': [305, 158, 60, 70],
-  'top-right': [405, 158, 60, 70],
-  'mid-left': [205, 240, 60, 70],
-  'mid-mid': [305, 240, 60, 70],
-  'mid-right': [405, 240, 60, 70],
-  'ground-left': [205, 322, 60, 70],
-  'ground-mid': [305, 322, 60, 70],
-  'ground-right': [405, 322, 60, 70],
+  'top-left': [95, 130, 78, 82],
+  'top-mid': [226, 130, 78, 82],
+  'top-right': [356, 130, 78, 82],
+  'mid-left': [95, 225, 78, 82],
+  'mid-mid': [226, 225, 78, 82],
+  'mid-right': [356, 225, 78, 82],
+  'ground-left': [95, 321, 78, 82],
+  'ground-mid': [226, 321, 78, 82],
+  'ground-right': [356, 321, 78, 82],
 }
 
 export type IsometricHubStation = {
