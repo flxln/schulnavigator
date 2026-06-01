@@ -1,230 +1,349 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  Referenz-SVG für isometrisches Schulhaus (Hub-Startseite).
-  Quelle: app/components/schoolhouse/isometric-schoolhouse.tsx (Stand main)
-  viewBox: 0 0 800 520 — bei Layout-Änderungen beibehalten oder dokumentieren.
-
-  Ebenen (Illustrator: Gruppen/Ebenen beibehalten):
-    ground        — Boden, Schatten
-    garden        — Station schulsozialarbeit (Nr. 11)
-    gym           — Station turnhalle (Nr. 10)
-    main-building — Fassade, Dach, Dekor (ohne Fenster)
-    windows       — 9 klickbare Slots (→ ISOMETRIC_ROOM_FRAMES in schoolhouse-isometric-map.ts)
-
-  Nach Bearbeitung: Koordinaten zurück in isometric-schoolhouse.tsx übernehmen.
-  Dynamik (Besucht/Gesperrt, Hit-Areas) bleibt React-only.
--->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" width="800" height="520">
-  <title>Isometrisches Schulhaus — Design-Referenz</title>
-  <desc>GS39 Schulnavigator Hub. Standardzustand (unbesucht). Nicht zur Laufzeit.</desc>
-
+<svg id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 800 520">
+  <!-- Generator: Adobe Illustrator 30.5.0, SVG Export Plug-In . SVG Version: 2.1.4 Build 167)  -->
   <defs>
-    <linearGradient id="sh-wall" x1="0" x2="0" y1="0" y2="1">
-      <stop offset="0" stop-color="#FFFDF6"/>
-      <stop offset="1" stop-color="#F1ECDD"/>
+    <style>
+      .st0, .st1, .st2, .st3, .st4 {
+        fill: none;
+      }
+
+      .st5 {
+        letter-spacing: .05em;
+      }
+
+      .st5, .st6, .st3, .st7, .st8, .st9, .st10, .st11 {
+        isolation: isolate;
+      }
+
+      .st5, .st8 {
+        fill: #fff;
+        font-family: Georgia, Georgia;
+      }
+
+      .st5, .st10 {
+        font-size: 11px;
+      }
+
+      .st12 {
+        fill: #e1ddd2;
+      }
+
+      .st13 {
+        fill: url(#Unbenannter_Verlauf);
+      }
+
+      .st1 {
+        stroke-width: 2px;
+      }
+
+      .st1, .st2 {
+        stroke: #5e4a2e;
+      }
+
+      .st14 {
+        fill: url(#Unbenannter_Verlauf_4);
+      }
+
+      .st15 {
+        fill: #cfc6b3;
+      }
+
+      .st6 {
+        fill: #4b9a23;
+        opacity: .85;
+      }
+
+      .st2, .st16 {
+        stroke-width: 1.5px;
+      }
+
+      .st17 {
+        fill: #bcb29c;
+      }
+
+      .st18 {
+        fill: #9aa18f;
+      }
+
+      .st3 {
+        opacity: .35;
+        stroke-dasharray: 4 3;
+      }
+
+      .st3, .st4, .st16 {
+        stroke: #082a50;
+      }
+
+      .st19 {
+        fill: #b9ac8c;
+      }
+
+      .st20 {
+        fill: #8a8478;
+        stroke: #3d2814;
+      }
+
+      .st21 {
+        fill: #b9a98c;
+      }
+
+      .st7 {
+        font-size: 7.57px;
+        letter-spacing: .15em;
+      }
+
+      .st7, .st22 {
+        fill: #fbbb24;
+      }
+
+      .st7, .st9, .st10 {
+        font-family: Helvetica-Bold, Helvetica;
+        font-weight: 700;
+      }
+
+      .st23 {
+        fill: url(#Unbenannter_Verlauf_2);
+      }
+
+      .st23, .st24 {
+        stroke: #06203d;
+        stroke-width: 1.2px;
+      }
+
+      .st24 {
+        fill: url(#Unbenannter_Verlauf_3);
+      }
+
+      .st8 {
+        font-size: 11.65px;
+        letter-spacing: .05em;
+      }
+
+      .st25 {
+        fill: #f7f1de;
+      }
+
+      .st26 {
+        fill: #6bb246;
+      }
+
+      .st27 {
+        fill: #8b6a3a;
+      }
+
+      .st28, .st9, .st10 {
+        fill: #082a50;
+      }
+
+      .st9 {
+        font-size: 12.82px;
+      }
+
+      .st29 {
+        fill: #2a2a35;
+      }
+
+      .st30 {
+        fill: #3e4a5e;
+      }
+
+      .st31 {
+        fill: #0b3565;
+      }
+
+      .st11 {
+        fill: #e8e0cb;
+        opacity: .7;
+      }
+
+      .st32 {
+        fill: #c7c0ab;
+      }
+
+      .st33 {
+        fill: #ef3a37;
+      }
+
+      .st16 {
+        fill: #e4f3fc;
+      }
+    </style>
+    <linearGradient id="Unbenannter_Verlauf" data-name="Unbenannter Verlauf" x1="-552.13" y1="799.63" x2="-550.82" y2="799.63" gradientTransform="translate(43533 245736) scale(78 -307)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e8e2cf"/>
+      <stop offset="1" stop-color="#d6cfb7"/>
     </linearGradient>
-    <linearGradient id="sh-rightwall" x1="0" x2="1" y1="0" y2="0">
-      <stop offset="0" stop-color="#E8E2CF"/>
-      <stop offset="1" stop-color="#D6CFB7"/>
-    </linearGradient>
-    <linearGradient id="sh-roof" x1="0" x2="0" y1="0" y2="1">
-      <stop offset="0" stop-color="#082A50"/>
+    <linearGradient id="Unbenannter_Verlauf_2" data-name="Unbenannter Verlauf 2" x1="-556.2" y1="798.25" x2="-556.2" y2="797.08" gradientTransform="translate(127233 67861) scale(228 -85)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#082a50"/>
       <stop offset="1" stop-color="#13396a"/>
     </linearGradient>
-    <style>
-      .window-frame { fill: rgba(20, 30, 50, 0.18); stroke: rgba(255,255,255,.55); stroke-width: 2.5; }
-      .window-sill { fill: #b9a98c; }
-      .station-nr { font-family: system-ui, sans-serif; font-size: 11px; font-weight: 800; fill: #082a50; text-anchor: middle; }
-      .window-guide { fill: none; stroke: #082a50; stroke-width: 1; stroke-dasharray: 4 3; opacity: 0.35; }
-    </style>
+    <linearGradient id="Unbenannter_Verlauf_3" data-name="Unbenannter Verlauf 3" x1="-556.98" y1="796.89" x2="-556.98" y2="795.73" gradientTransform="translate(178491 46261) scale(320 -58)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#082a50"/>
+      <stop offset="1" stop-color="#13396a"/>
+    </linearGradient>
+    <linearGradient id="Unbenannter_Verlauf_4" data-name="Unbenannter Verlauf 4" x1="-556.92" y1="800.1" x2="-556.92" y2="798.93" gradientTransform="translate(172911 220136) scale(310 -275)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fffdf6"/>
+      <stop offset="1" stop-color="#f1ecdd"/>
+    </linearGradient>
   </defs>
-
   <g id="ground">
-    <ellipse cx="400" cy="485" rx="380" ry="32" fill="#E8E0CB" opacity="0.7"/>
-    <rect x="0" y="460" width="800" height="60" fill="rgba(199,188,158,.35)"/>
+    <ellipse class="st11" cx="400" cy="485" rx="380" ry="32"/>
+    <rect y="460" width="800" height="60"/>
   </g>
-
-  <g id="garden">
-    <!-- Station: schulsozialarbeit, Nr. 11 -->
-    <polygon id="garden-patch" points="65,440 220,460 270,432 110,415" fill="#9aa18f" stroke="rgba(8,42,80,.25)" stroke-width="1.5"/>
-    <polygon points="95,432 165,440 175,432 110,425" fill="#8a8478" stroke="#3d2814" stroke-width="1"/>
-    <polygon points="125,420 198,427 210,419 140,413" fill="#8a8478" stroke="#3d2814" stroke-width="1"/>
-    <line x1="65" y1="440" x2="70" y2="460" stroke="#5e4a2e" stroke-width="2"/>
-    <line x1="130" y1="444" x2="132" y2="462" stroke="#5e4a2e" stroke-width="2"/>
-    <line x1="195" y1="452" x2="196" y2="464" stroke="#5e4a2e" stroke-width="2"/>
-    <line x1="65" y1="448" x2="220" y2="464" stroke="#5e4a2e" stroke-width="1.5"/>
-    <!-- Station-Chip-Position (Nr. 11) -->
-    <circle id="garden-station-chip" cx="258" cy="420" r="11" fill="rgba(255,255,255,.95)" stroke="rgba(8,42,80,.35)" stroke-width="1"/>
-    <text class="station-nr" x="258" y="423.5">11</text>
-  </g>
-
   <g id="gym">
-    <!-- Station: turnhalle, Nr. 10 -->
-    <polygon points="760,250 778,238 778,388 760,395" fill="#C7C0AB"/>
-    <polygon points="580,250 760,250 778,238 598,238" fill="#3E4A5E"/>
-    <rect x="580" y="250" width="180" height="145" fill="#E1DDD2" stroke="rgba(8,42,80,.2)" stroke-width="1"/>
-    <rect x="580" y="310" width="180" height="3" fill="rgba(8,42,80,.12)"/>
+    <polygon class="st32" points="760 250 778 238 778 388 760 395 760 250"/>
+    <polygon class="st30" points="580 250 760 250 778 238 598 238 580 250"/>
+    <rect class="st12" x="580" y="250" width="180" height="145"/>
+    <rect x="580" y="310" width="180" height="3"/>
     <g id="gym-windows">
-      <rect x="610" y="264" width="30" height="36" class="window-frame"/>
-      <line x1="625" y1="264" x2="625" y2="300" stroke="rgba(255,255,255,.55)" stroke-width="1"/>
-      <line x1="610" y1="282" x2="640" y2="282" stroke="rgba(255,255,255,.55)" stroke-width="1"/>
-      <rect x="660" y="264" width="30" height="36" class="window-frame"/>
-      <line x1="675" y1="264" x2="675" y2="300" stroke="rgba(255,255,255,.55)" stroke-width="1"/>
-      <line x1="660" y1="282" x2="690" y2="282" stroke="rgba(255,255,255,.55)" stroke-width="1"/>
-      <rect x="710" y="264" width="30" height="36" class="window-frame"/>
-      <line x1="725" y1="264" x2="725" y2="300" stroke="rgba(255,255,255,.55)" stroke-width="1"/>
-      <line x1="710" y1="282" x2="740" y2="282" stroke="rgba(255,255,255,.55)" stroke-width="1"/>
+      <rect x="610" y="264" width="30" height="36"/>
+      <line class="st0" x1="625" y1="264" x2="625" y2="300"/>
+      <line class="st0" x1="610" y1="282" x2="640" y2="282"/>
+      <rect x="660" y="264" width="30" height="36"/>
+      <line class="st0" x1="675" y1="264" x2="675" y2="300"/>
+      <line class="st0" x1="660" y1="282" x2="690" y2="282"/>
+      <rect x="710" y="264" width="30" height="36"/>
+      <line class="st0" x1="725" y1="264" x2="725" y2="300"/>
+      <line class="st0" x1="710" y1="282" x2="740" y2="282"/>
     </g>
-    <rect x="655" y="335" width="32" height="58" fill="#2a2a35" stroke="rgba(255,255,255,.55)" stroke-width="2"/>
-    <line x1="671" y1="335" x2="671" y2="393" stroke="rgba(255,255,255,.55)" stroke-width="1"/>
-    <rect x="605" y="320" width="48" height="12" rx="2" fill="rgba(60,70,90,.6)"/>
-    <text x="629" y="329" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#ffffff" letter-spacing="0.5">SPORT</text>
-    <rect x="697" y="320" width="48" height="12" rx="2" fill="rgba(60,70,90,.6)"/>
-    <text x="721" y="329" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#ffffff" letter-spacing="0.5">HALLE</text>
-    <circle id="gym-station-chip" cx="770" cy="250" r="11" fill="rgba(255,255,255,.95)" stroke="rgba(8,42,80,.35)" stroke-width="1"/>
-    <text class="station-nr" x="770" y="253.5">10</text>
+    <rect class="st29" x="655" y="335" width="32" height="58"/>
+    <line class="st0" x1="671" y1="335" x2="671" y2="393"/>
+    <rect x="605" y="320" width="48" height="12" rx="2" ry="2"/>
+    <text class="st5" transform="translate(609.96 329)"><tspan x="0" y="0">SPORT</tspan></text>
+    <rect x="697" y="320" width="48" height="12" rx="2" ry="2"/>
+    <text class="st5" transform="translate(701.35 329)"><tspan x="0" y="0">HALLE</tspan></text>
+    <circle id="gym-station-chip" cx="770" cy="250" r="11"/>
+    <text class="st10" transform="translate(763.88 253.5)"><tspan x="0" y="0">10</tspan></text>
   </g>
-
   <g id="main-building">
-    <polygon id="right-wall" points="490,140 568,108 568,400 490,415" fill="url(#sh-rightwall)" stroke="rgba(8,42,80,.25)" stroke-width="1.2"/>
-    <polygon id="roof-right" points="490,140 568,108 482,55 340,82" fill="url(#sh-roof)" stroke="#06203d" stroke-width="1.2"/>
-    <polygon id="roof-left" points="170,140 340,82 490,140" fill="url(#sh-roof)" stroke="#06203d" stroke-width="1.2"/>
-    <polygon id="roof-attic" points="180,140 330,88 480,140" fill="#F7F1DE" stroke="rgba(8,42,80,.22)" stroke-width="1"/>
+    <polygon id="right-wall" class="st13" points="467.18 108.94 569 71.66 569 411.89 467.18 429.37 467.18 108.94"/>
+    <polygon id="roof-right" class="st23" points="467.18 108.94 569 71.66 456.73 9.9 271.36 41.36 467.18 108.94"/>
+    <polygon id="roof-left" class="st24" points="49.44 108.94 271.36 41.36 467.18 108.94 49.44 108.94"/>
+    <polygon id="roof-attic" class="st25" points="62.5 108.94 258.31 48.35 454.12 108.94 62.5 108.94"/>
     <g id="clock">
-      <circle cx="330" cy="118" r="9" fill="#e4f3fc" stroke="#082a50" stroke-width="1.5"/>
-      <line x1="330" y1="109" x2="330" y2="127" stroke="#082a50" stroke-width="1"/>
-      <line x1="321" y1="118" x2="339" y2="118" stroke="#082a50" stroke-width="1"/>
+      <ellipse class="st16" cx="258.31" cy="83.31" rx="11.75" ry="10.49"/>
+      <line class="st4" x1="258.31" y1="72.82" x2="258.31" y2="93.8"/>
+      <line class="st4" x1="246.56" y1="83.31" x2="270.06" y2="83.31"/>
     </g>
-    <rect id="front-wall" x="180" y="140" width="310" height="275" fill="url(#sh-wall)" stroke="rgba(8,42,80,.18)" stroke-width="1"/>
-    <rect x="176" y="225" width="318" height="4" fill="rgba(8,42,80,.12)"/>
-    <rect x="176" y="307" width="318" height="4" fill="rgba(8,42,80,.12)"/>
-    <rect x="176" y="395" width="318" height="20" fill="#B9AC8C"/>
+    <rect id="front-wall" class="st14" x="62.5" y="108.94" width="404.68" height="320.42"/>
+    <rect x="57.27" y="207.98" width="415.13" height="4.66"/>
+    <rect x="57.27" y="303.53" width="415.13" height="4.66"/>
+    <rect class="st19" x="57.27" y="406.06" width="415.13" height="23.3"/>
     <g id="flag">
-      <rect x="428" y="72" width="10" height="26" fill="#0B3565"/>
-      <polygon points="424,72 442,72 433,55" fill="#ef3a37"/>
-      <circle cx="433" cy="50" r="3.5" fill="#fbbb24"/>
+      <rect class="st31" x="386.24" y="29.71" width="13.05" height="30.29"/>
+      <polygon class="st33" points="381.02 29.71 404.52 29.71 392.77 9.9 381.02 29.71"/>
+      <ellipse class="st22" cx="392.77" cy="4.08" rx="4.57" ry="4.08"/>
     </g>
-    <g id="jubilee-badge" transform="translate(255, 350)">
-      <rect x="0" y="0" width="42" height="22" rx="2" fill="#082a50"/>
-      <text x="21" y="10" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#ffffff" letter-spacing="0.5">150</text>
-      <text x="21" y="19" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="800" font-size="6.5" fill="#fbbb24" letter-spacing="1">JAHRE</text>
+    <g id="jubilee-badge">
+      <rect class="st28" x="160.4" y="353.63" width="54.83" height="25.63" rx="2" ry="2"/>
+      <text class="st8" transform="translate(176.58 365.28) scale(1.12 1)"><tspan x="0" y="0">150</tspan></text>
+      <text class="st7" transform="translate(170.17 375.77) scale(1.12 1)"><tspan x="0" y="0">JAHRE</tspan></text>
     </g>
     <g id="decor-trees">
-      <ellipse cx="170" cy="420" rx="28" ry="14" fill="#4B9A23" opacity="0.85"/>
-      <ellipse cx="170" cy="415" rx="22" ry="12" fill="#6BB246"/>
-      <ellipse cx="500" cy="425" rx="22" ry="12" fill="#4B9A23" opacity="0.85"/>
-      <ellipse cx="500" cy="420" rx="17" ry="10" fill="#6BB246"/>
+      <ellipse class="st6" cx="49.44" cy="435.19" rx="36.55" ry="16.31"/>
+      <ellipse class="st26" cx="49.44" cy="429.37" rx="28.72" ry="13.98"/>
+      <ellipse class="st6" cx="480.23" cy="441.02" rx="28.72" ry="13.98"/>
+      <ellipse class="st26" cx="480.23" cy="435.19" rx="22.19" ry="11.65"/>
     </g>
     <g id="decor-bench">
-      <rect x="340" y="425" width="40" height="3" fill="#8b6a3a"/>
-      <rect x="343" y="428" width="3" height="7" fill="#8b6a3a"/>
-      <rect x="374" y="428" width="3" height="7" fill="#8b6a3a"/>
+      <rect class="st27" x="271.36" y="441.02" width="52.22" height="3.5"/>
+      <rect class="st27" x="275.28" y="444.51" width="3.92" height="8.16"/>
+      <rect class="st27" x="315.75" y="444.51" width="3.92" height="8.16"/>
     </g>
   </g>
-
+  <g id="garden">
+    <polygon id="garden-patch" class="st18" points="521.5 416.16 676.5 436.16 726.5 408.16 566.5 391.16 521.5 416.16"/>
+    <polygon class="st20" points="551.5 408.16 621.5 416.16 631.5 408.16 566.5 401.16 551.5 408.16"/>
+    <polygon class="st20" points="581.5 396.16 654.5 403.16 666.5 395.16 596.5 389.16 581.5 396.16"/>
+    <line class="st1" x1="521.5" y1="416.16" x2="526.5" y2="436.16"/>
+    <line class="st1" x1="586.5" y1="420.16" x2="588.5" y2="438.16"/>
+    <line class="st1" x1="651.5" y1="428.16" x2="652.5" y2="440.16"/>
+    <line class="st2" x1="521.5" y1="424.16" x2="676.5" y2="440.16"/>
+    <circle id="garden-station-chip" cx="714.5" cy="396.16" r="11"/>
+    <text class="st10" transform="translate(708.68 399.66)"><tspan x="0" y="0">11</tspan></text>
+  </g>
   <g id="windows">
-    <!-- Fenster-Slots → ISOMETRIC_ROOM_FRAMES (x, y, w, h) -->
-    <!-- Gestrichelte Rahmen = Koordinaten-Referenz für React-Sync -->
-
-    <!-- pc-raum, Nr. 5 -->
-    <g id="window-top-left" data-room="top-left" data-slug="pc-raum" data-nr="5">
-      <rect x="205" y="158" width="60" height="70" class="window-guide"/>
-      <rect x="201" y="226" width="68" height="5" class="window-sill"/>
-      <rect x="205" y="158" width="60" height="70" class="window-frame"/>
-      <line x1="235" y1="158" x2="235" y2="228" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
-      <line x1="205" y1="193" x2="265" y2="193" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
-      <circle cx="261" cy="162" r="10" fill="rgba(255,255,255,.92)" stroke="rgba(8,42,80,.35)" stroke-width="1"/>
-      <text class="station-nr" x="261" y="165.5">5</text>
+    <g id="window-top-left" data-nr="5" data-room="top-left" data-slug="pc-raum">
+      <rect class="st3" x="95.13" y="129.92" width="78.33" height="81.56"/>
+      <rect class="st21" x="89.91" y="209.15" width="88.77" height="5.83"/>
+      <rect x="95.13" y="129.92" width="78.33" height="81.56"/>
+      <line class="st0" x1="134.29" y1="129.92" x2="134.29" y2="211.48"/>
+      <line class="st0" x1="95.13" y1="170.7" x2="173.46" y2="170.7"/>
+      <ellipse cx="168.23" cy="134.58" rx="13.05" ry="11.65"/>
+      <text class="st9" transform="translate(164.24 138.66) scale(1.12 1)"><tspan x="0" y="0">5</tspan></text>
     </g>
-
-    <!-- lesewelt, Nr. 6 -->
-    <g id="window-top-mid" data-room="top-mid" data-slug="lesewelt" data-nr="6">
-      <rect x="305" y="158" width="60" height="70" class="window-guide"/>
-      <rect x="301" y="226" width="68" height="5" class="window-sill"/>
-      <rect x="305" y="158" width="60" height="70" class="window-frame"/>
-      <line x1="335" y1="158" x2="335" y2="228" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
-      <line x1="305" y1="193" x2="365" y2="193" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
-      <circle cx="361" cy="162" r="10" fill="rgba(255,255,255,.92)" stroke="rgba(8,42,80,.35)" stroke-width="1"/>
-      <text class="station-nr" x="361" y="165.5">6</text>
+    <g id="window-top-mid" data-nr="6" data-room="top-mid" data-slug="lesewelt">
+      <rect class="st3" x="225.67" y="129.92" width="78.33" height="81.56"/>
+      <rect class="st21" x="220.45" y="209.15" width="88.77" height="5.83"/>
+      <rect x="225.67" y="129.92" width="78.33" height="81.56"/>
+      <line class="st0" x1="264.84" y1="129.92" x2="264.84" y2="211.48"/>
+      <line class="st0" x1="225.67" y1="170.7" x2="304" y2="170.7"/>
+      <ellipse cx="298.78" cy="134.58" rx="13.05" ry="11.65"/>
+      <text class="st9" transform="translate(294.78 138.66) scale(1.12 1)"><tspan x="0" y="0">6</tspan></text>
     </g>
-
-    <!-- werken, Nr. 7 -->
-    <g id="window-top-right" data-room="top-right" data-slug="werken" data-nr="7">
-      <rect x="405" y="158" width="60" height="70" class="window-guide"/>
-      <rect x="401" y="226" width="68" height="5" class="window-sill"/>
-      <rect x="405" y="158" width="60" height="70" class="window-frame"/>
-      <line x1="435" y1="158" x2="435" y2="228" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
-      <line x1="405" y1="193" x2="465" y2="193" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
-      <circle cx="461" cy="162" r="10" fill="rgba(255,255,255,.92)" stroke="rgba(8,42,80,.35)" stroke-width="1"/>
-      <text class="station-nr" x="461" y="165.5">7</text>
+    <g id="window-top-right" data-nr="7" data-room="top-right" data-slug="werken">
+      <rect class="st3" x="356.22" y="129.92" width="78.33" height="81.56"/>
+      <rect class="st21" x="350.99" y="209.15" width="88.77" height="5.83"/>
+      <rect x="356.22" y="129.92" width="78.33" height="81.56"/>
+      <line class="st0" x1="395.38" y1="129.92" x2="395.38" y2="211.48"/>
+      <line class="st0" x1="356.22" y1="170.7" x2="434.54" y2="170.7"/>
+      <ellipse cx="429.32" cy="134.58" rx="13.05" ry="11.65"/>
+      <text class="st9" transform="translate(425.33 138.66) scale(1.12 1)"><tspan x="0" y="0">7</tspan></text>
     </g>
-
-    <!-- musik, Nr. 2 -->
-    <g id="window-mid-left" data-room="mid-left" data-slug="musik" data-nr="2">
-      <rect x="205" y="240" width="60" height="70" class="window-guide"/>
-      <rect x="201" y="308" width="68" height="5" class="window-sill"/>
-      <rect x="205" y="240" width="60" height="70" class="window-frame"/>
-      <line x1="235" y1="240" x2="235" y2="310" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
-      <line x1="205" y1="275" x2="265" y2="275" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
-      <circle cx="261" cy="244" r="10" fill="rgba(255,255,255,.92)" stroke="rgba(8,42,80,.35)" stroke-width="1"/>
-      <text class="station-nr" x="261" y="247.5">2</text>
+    <g id="window-mid-left" data-nr="2" data-room="mid-left" data-slug="musik">
+      <rect class="st3" x="95.13" y="225.46" width="78.33" height="81.56"/>
+      <rect class="st21" x="89.91" y="304.69" width="88.77" height="5.83"/>
+      <rect x="95.13" y="225.46" width="78.33" height="81.56"/>
+      <line class="st0" x1="134.29" y1="225.46" x2="134.29" y2="307.02"/>
+      <line class="st0" x1="95.13" y1="266.24" x2="173.46" y2="266.24"/>
+      <ellipse cx="168.23" cy="230.12" rx="13.05" ry="11.65"/>
+      <text class="st9" transform="translate(164.24 234.2) scale(1.12 1)"><tspan x="0" y="0">2</tspan></text>
     </g>
-
-    <!-- daz, Nr. 3 -->
-    <g id="window-mid-mid" data-room="mid-mid" data-slug="daz" data-nr="3">
-      <rect x="305" y="240" width="60" height="70" class="window-guide"/>
-      <rect x="301" y="308" width="68" height="5" class="window-sill"/>
-      <rect x="305" y="240" width="60" height="70" class="window-frame"/>
-      <line x1="335" y1="240" x2="335" y2="310" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
-      <line x1="305" y1="275" x2="365" y2="275" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
-      <circle cx="361" cy="244" r="10" fill="rgba(255,255,255,.92)" stroke="rgba(8,42,80,.35)" stroke-width="1"/>
-      <text class="station-nr" x="361" y="247.5">3</text>
+    <g id="window-mid-mid" data-nr="3" data-room="mid-mid" data-slug="daz">
+      <rect class="st3" x="225.67" y="225.46" width="78.33" height="81.56"/>
+      <rect class="st21" x="220.45" y="304.69" width="88.77" height="5.83"/>
+      <rect x="225.67" y="225.46" width="78.33" height="81.56"/>
+      <line class="st0" x1="264.84" y1="225.46" x2="264.84" y2="307.02"/>
+      <line class="st0" x1="225.67" y1="266.24" x2="304" y2="266.24"/>
+      <ellipse cx="298.78" cy="230.12" rx="13.05" ry="11.65"/>
+      <text class="st9" transform="translate(294.78 234.2) scale(1.12 1)"><tspan x="0" y="0">3</tspan></text>
     </g>
-
-    <!-- kunst, Nr. 4 -->
-    <g id="window-mid-right" data-room="mid-right" data-slug="kunst" data-nr="4">
-      <rect x="405" y="240" width="60" height="70" class="window-guide"/>
-      <rect x="401" y="308" width="68" height="5" class="window-sill"/>
-      <rect x="405" y="240" width="60" height="70" class="window-frame"/>
-      <line x1="435" y1="240" x2="435" y2="310" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
-      <line x1="405" y1="275" x2="465" y2="275" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
-      <circle cx="461" cy="244" r="10" fill="rgba(255,255,255,.92)" stroke="rgba(8,42,80,.35)" stroke-width="1"/>
-      <text class="station-nr" x="461" y="247.5">4</text>
+    <g id="window-mid-right" data-nr="4" data-room="mid-right" data-slug="kunst">
+      <rect class="st3" x="356.22" y="225.46" width="78.33" height="81.56"/>
+      <rect class="st21" x="350.99" y="304.69" width="88.77" height="5.83"/>
+      <rect x="356.22" y="225.46" width="78.33" height="81.56"/>
+      <line class="st0" x1="395.38" y1="225.46" x2="395.38" y2="307.02"/>
+      <line class="st0" x1="356.22" y1="266.24" x2="434.54" y2="266.24"/>
+      <ellipse cx="429.32" cy="230.12" rx="13.05" ry="11.65"/>
+      <text class="st9" transform="translate(425.33 234.2) scale(1.12 1)"><tspan x="0" y="0">4</tspan></text>
     </g>
-
-    <!-- speiseraum, Nr. 8 -->
-    <g id="window-ground-left" data-room="ground-left" data-slug="speiseraum" data-nr="8">
-      <rect x="205" y="322" width="60" height="70" class="window-guide"/>
-      <rect x="201" y="390" width="68" height="5" class="window-sill"/>
-      <rect x="205" y="322" width="60" height="70" class="window-frame"/>
-      <line x1="235" y1="322" x2="235" y2="392" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
-      <line x1="205" y1="357" x2="265" y2="357" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
-      <circle cx="261" cy="326" r="10" fill="rgba(255,255,255,.92)" stroke="rgba(8,42,80,.35)" stroke-width="1"/>
-      <text class="station-nr" x="261" y="329.5">8</text>
+    <g id="window-ground-left" data-nr="8" data-room="ground-left" data-slug="speiseraum">
+      <rect class="st3" x="95.13" y="321.01" width="78.33" height="81.56"/>
+      <rect class="st21" x="89.91" y="400.24" width="88.77" height="5.83"/>
+      <rect x="95.13" y="321.01" width="78.33" height="81.56"/>
+      <line class="st0" x1="134.29" y1="321.01" x2="134.29" y2="402.57"/>
+      <line class="st0" x1="95.13" y1="361.79" x2="173.46" y2="361.79"/>
+      <ellipse cx="168.23" cy="325.67" rx="13.05" ry="11.65"/>
+      <text class="st9" transform="translate(164.24 329.74) scale(1.12 1)"><tspan x="0" y="0">8</tspan></text>
     </g>
-
-    <!-- klassenzimmer (Eingang), Nr. 1 -->
-    <g id="window-ground-mid" data-room="ground-mid" data-slug="klassenzimmer" data-nr="1">
-      <rect x="305" y="322" width="60" height="70" class="window-guide"/>
-      <path d="M 305 392 L 305 340 Q 335 314 365 340 L 365 392 Z" fill="#2a2a35" stroke="rgba(255,255,255,.55)" stroke-width="2.5"/>
-      <line x1="335" y1="334" x2="335" y2="392" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
-      <circle cx="330" cy="371" r="1.8" fill="#fbbb24"/>
-      <circle cx="340" cy="371" r="1.8" fill="#fbbb24"/>
-      <rect x="299" y="392" width="72" height="6" fill="#cfc6b3"/>
-      <rect x="295" y="398" width="80" height="4" fill="#bcb29c"/>
-      <circle cx="361" cy="326" r="10" fill="rgba(255,255,255,.92)" stroke="rgba(8,42,80,.35)" stroke-width="1"/>
-      <text class="station-nr" x="361" y="329.5">1</text>
+    <g id="window-ground-mid" data-nr="1" data-room="ground-mid" data-slug="klassenzimmer">
+      <rect class="st3" x="225.67" y="321.01" width="78.33" height="81.56"/>
+      <path class="st29" d="M225.67,402.57v-60.59c26.11-20.2,52.22-20.2,78.33,0v60.59h-78.33Z"/>
+      <line class="st0" x1="264.84" y1="334.99" x2="264.84" y2="402.57"/>
+      <ellipse class="st22" cx="258.31" cy="378.1" rx="2.35" ry="2.1"/>
+      <ellipse class="st22" cx="271.36" cy="378.1" rx="2.35" ry="2.1"/>
+      <rect class="st15" x="217.84" y="402.57" width="93.99" height="6.99"/>
+      <rect class="st17" x="212.62" y="409.56" width="104.43" height="4.66"/>
+      <ellipse cx="298.78" cy="325.67" rx="13.05" ry="11.65"/>
+      <text class="st9" transform="translate(294.78 329.74) scale(1.12 1)"><tspan x="0" y="0">1</tspan></text>
     </g>
-
-    <!-- hort, Nr. 9 -->
-    <g id="window-ground-right" data-room="ground-right" data-slug="hort" data-nr="9">
-      <rect x="405" y="322" width="60" height="70" class="window-guide"/>
-      <rect x="401" y="390" width="68" height="5" class="window-sill"/>
-      <rect x="405" y="322" width="60" height="70" class="window-frame"/>
-      <line x1="435" y1="322" x2="435" y2="392" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
-      <line x1="405" y1="357" x2="465" y2="357" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
-      <circle cx="461" cy="326" r="10" fill="rgba(255,255,255,.92)" stroke="rgba(8,42,80,.35)" stroke-width="1"/>
-      <text class="station-nr" x="461" y="329.5">9</text>
+    <g id="window-ground-right" data-nr="9" data-room="ground-right" data-slug="hort">
+      <rect class="st3" x="356.22" y="321.01" width="78.33" height="81.56"/>
+      <rect class="st21" x="350.99" y="400.24" width="88.77" height="5.83"/>
+      <rect x="356.22" y="321.01" width="78.33" height="81.56"/>
+      <line class="st0" x1="395.38" y1="321.01" x2="395.38" y2="402.57"/>
+      <line class="st0" x1="356.22" y1="361.79" x2="434.54" y2="361.79"/>
+      <ellipse cx="429.32" cy="325.67" rx="13.05" ry="11.65"/>
+      <text class="st9" transform="translate(425.33 329.74) scale(1.12 1)"><tspan x="0" y="0">9</tspan></text>
     </g>
   </g>
 </svg>

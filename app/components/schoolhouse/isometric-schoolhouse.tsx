@@ -75,6 +75,10 @@ function StationWindow({
   const accent = station.accent
   const glassFill = visited ? station.visitedGlassFill : LOCKED_GLASS
   const frameStroke = visited ? accent : FRAME_LOCKED
+  const chipX = x + w - 5
+  const chipY = y + 5
+  const archDepth = h * (60.59 / 81.56)
+  const archRise = 20.2 * (w / 78.33)
 
   const activate = () => onTap(station.slug)
 
@@ -93,43 +97,37 @@ function StationWindow({
       {isEntrance ? (
         <g>
           <path
-            d={`M ${x} ${y + h} L ${x} ${y + 18} Q ${x + w / 2} ${y - 8} ${x + w} ${y + 18} L ${x + w} ${y + h} Z`}
+            d={`M ${x} ${y + h} v-${archDepth} c ${w * 0.333} -${archRise} ${w * 0.667} -${archRise} ${w} 0 v${archDepth} H ${x} Z`}
             fill={visited ? station.visitedDoorFill : '#2a2a35'}
             stroke={frameStroke}
             strokeWidth={2.5}
           />
           <line
             x1={x + w / 2}
-            y1={y + 12}
+            y1={y + h * 0.17}
             x2={x + w / 2}
             y2={y + h}
             stroke={frameStroke}
             strokeWidth={1.5}
           />
           <circle
-            cx={x + w / 2 - 5}
+            cx={x + w * 0.405}
             cy={y + h * 0.7}
-            r={1.8}
+            r={2.1}
             fill={GS39_BRAND_HEX.sun}
           />
           <circle
-            cx={x + w / 2 + 5}
+            cx={x + w * 0.575}
             cy={y + h * 0.7}
-            r={1.8}
+            r={2.1}
             fill={GS39_BRAND_HEX.sun}
           />
-          <rect x={x - 6} y={y + h} width={w + 12} height={6} fill="#cfc6b3" />
-          <rect
-            x={x - 10}
-            y={y + h + 6}
-            width={w + 20}
-            height={4}
-            fill="#bcb29c"
-          />
+          <rect x={x - 8} y={y + h} width={w + 16} height={7} fill="#cfc6b3" />
+          <rect x={x - 13} y={y + h + 7} width={w + 26} height={5} fill="#bcb29c" />
         </g>
       ) : (
         <g>
-          <rect x={x - 4} y={y + h - 2} width={w + 8} height={5} fill="#b9a98c" />
+          <rect x={x - 5} y={y + h - 2} width={w + 10} height={6} fill="#b9a98c" />
           <rect
             x={x}
             y={y}
@@ -167,15 +165,15 @@ function StationWindow({
       {visited ? (
         <g>
           <circle
-            cx={x + w - 4}
-            cy={y + 4}
+            cx={chipX}
+            cy={chipY}
             r={11}
             fill={accent}
             stroke={GS39_BRAND_HEX.paper}
             strokeWidth={2}
           />
           <path
-            d={`M ${x + w - 9} ${y + 4} L ${x + w - 5} ${y + 8} L ${x + w + 1} ${y - 1}`}
+            d={`M ${chipX - 5} ${chipY} L ${chipX - 1} ${chipY + 4} L ${chipX + 5} ${chipY - 4}`}
             fill="none"
             stroke="#fff"
             strokeWidth={2.2}
@@ -186,16 +184,16 @@ function StationWindow({
       ) : (
         <g opacity={0.85}>
           <circle
-            cx={x + w - 4}
-            cy={y + 4}
+            cx={chipX}
+            cy={chipY}
             r={10}
             fill="rgba(255,255,255,.92)"
             stroke="rgba(8,42,80,.35)"
             strokeWidth={1}
           />
           <text
-            x={x + w - 4}
-            y={y + 7.5}
+            x={chipX}
+            y={chipY + 3.5}
             textAnchor="middle"
             fontFamily="var(--font-ui)"
             fontSize={11}
@@ -413,7 +411,7 @@ type GardenPatchProps = {
 }
 
 function GardenPatch({ station, visited, highlighted, onTap }: GardenPatchProps) {
-  const [hx, hy, hw, hh] = expandHitRect(50, 370, 210, 90)
+  const [hx, hy, hw, hh] = expandHitRect(521, 389, 206, 48)
   const activate = () => onTap(station.slug)
 
   return (
@@ -428,14 +426,14 @@ function GardenPatch({ station, visited, highlighted, onTap }: GardenPatchProps)
     >
       <rect x={hx} y={hy} width={hw} height={hh} fill="transparent" />
       <polygon
-        points="65,440 220,460 270,432 110,415"
+        points="521.5,416.16 676.5,436.16 726.5,408.16 566.5,391.16"
         fill={visited ? '#7BAE5A' : '#9aa18f'}
         stroke={visited ? GS39_BRAND_HEX.green700 : 'rgba(8,42,80,.25)'}
         strokeWidth={1.5}
       />
       {[
-        { p: '95,432 165,440 175,432 110,425', soil: '#6b4a2a' },
-        { p: '125,420 198,427 210,419 140,413', soil: '#7a5530' },
+        { p: '551.5,408.16 621.5,416.16 631.5,408.16 566.5,401.16', soil: '#6b4a2a' },
+        { p: '581.5,396.16 654.5,403.16 666.5,395.16 596.5,389.16', soil: '#7a5530' },
       ].map((bed, i) => (
         <g key={i}>
           <polygon
@@ -447,20 +445,20 @@ function GardenPatch({ station, visited, highlighted, onTap }: GardenPatchProps)
           {visited ? (
             <>
               <circle
-                cx={110 + i * 30}
-                cy={425 + i * 2}
+                cx={566 + i * 30}
+                cy={403 + i * 2}
                 r={3.5}
                 fill={GS39_BRAND_HEX.green700}
               />
               <circle
-                cx={130 + i * 30}
-                cy={427 + i * 2}
+                cx={586 + i * 30}
+                cy={405 + i * 2}
                 r={3.5}
                 fill={GS39_BRAND_HEX.green700}
               />
               <circle
-                cx={150 + i * 30}
-                cy={429 + i * 2}
+                cx={606 + i * 30}
+                cy={407 + i * 2}
                 r={3.5}
                 fill={GS39_BRAND_HEX.green700}
               />
@@ -469,7 +467,7 @@ function GardenPatch({ station, visited, highlighted, onTap }: GardenPatchProps)
         </g>
       ))}
       {visited ? (
-        <g transform="translate(80, 380)">
+        <g transform="translate(536, 388)">
           <line
             x1={0}
             y1={0}
@@ -493,18 +491,18 @@ function GardenPatch({ station, visited, highlighted, onTap }: GardenPatchProps)
           <circle cx={0} cy={0} r={3.5} fill={GS39_BRAND_HEX.navy} />
         </g>
       ) : null}
-      <line x1={65} y1={440} x2={70} y2={460} stroke="#5e4a2e" strokeWidth={2} />
-      <line x1={130} y1={444} x2={132} y2={462} stroke="#5e4a2e" strokeWidth={2} />
-      <line x1={195} y1={452} x2={196} y2={464} stroke="#5e4a2e" strokeWidth={2} />
+      <line x1={521.5} y1={416.16} x2={526.5} y2={436.16} stroke="#5e4a2e" strokeWidth={2} />
+      <line x1={586.5} y1={420.16} x2={588.5} y2={438.16} stroke="#5e4a2e" strokeWidth={2} />
+      <line x1={651.5} y1={428.16} x2={652.5} y2={440.16} stroke="#5e4a2e" strokeWidth={2} />
       <line
-        x1={65}
-        y1={448}
-        x2={220}
-        y2={464}
+        x1={521.5}
+        y1={424.16}
+        x2={676.5}
+        y2={440.16}
         stroke="#5e4a2e"
         strokeWidth={1.5}
       />
-      <StationChip x={258} y={420} station={station} visited={visited} />
+      <StationChip x={714.5} y={396.16} station={station} visited={visited} />
     </g>
   )
 }
@@ -571,15 +569,6 @@ export function IsometricSchoolhouse({
       <ellipse cx={400} cy={485} rx={380} ry={32} fill="#E8E0CB" opacity={0.7} />
       <rect x={0} y={460} width={800} height={60} fill="rgba(199,188,158,.35)" />
 
-      {garden ? (
-        <GardenPatch
-          station={garden}
-          visited={isVisited(garden.slug)}
-          highlighted={isHighlighted(garden.slug)}
-          onTap={handleTap}
-        />
-      ) : null}
-
       {gym ? (
         <GymBuilding
           station={gym}
@@ -590,65 +579,114 @@ export function IsometricSchoolhouse({
       ) : null}
 
       <polygon
-        points="490,140 568,108 568,400 490,415"
+        points="467.18,108.94 569,71.66 569,411.89 467.18,429.37"
         fill="url(#sh-rightwall)"
         stroke="rgba(8,42,80,.25)"
         strokeWidth={1.2}
       />
       <polygon
-        points="490,140 568,108 482,55 340,82"
+        points="467.18,108.94 569,71.66 456.73,9.9 271.36,41.36"
         fill="url(#sh-roof)"
         stroke="#06203d"
         strokeWidth={1.2}
       />
       <polygon
-        points="170,140 340,82 490,140"
+        points="49.44,108.94 271.36,41.36 467.18,108.94"
         fill="url(#sh-roof)"
         stroke="#06203d"
         strokeWidth={1.2}
       />
       <polygon
-        points="180,140 330,88 480,140"
+        points="62.5,108.94 258.31,48.35 454.12,108.94"
         fill="#F7F1DE"
         stroke="rgba(8,42,80,.22)"
         strokeWidth={1}
       />
-      <circle
-        cx={330}
-        cy={118}
-        r={9}
+      <ellipse
+        cx={258.31}
+        cy={83.31}
+        rx={11.75}
+        ry={10.49}
         fill={GS39_BRAND_HEX.sky50}
         stroke={GS39_BRAND_HEX.navy}
         strokeWidth={1.5}
       />
       <line
-        x1={330}
-        y1={109}
-        x2={330}
-        y2={127}
+        x1={258.31}
+        y1={72.82}
+        x2={258.31}
+        y2={93.8}
         stroke={GS39_BRAND_HEX.navy}
         strokeWidth={1}
       />
       <line
-        x1={321}
-        y1={118}
-        x2={339}
-        y2={118}
+        x1={246.56}
+        y1={83.31}
+        x2={270.06}
+        y2={83.31}
         stroke={GS39_BRAND_HEX.navy}
         strokeWidth={1}
       />
       <rect
-        x={180}
-        y={140}
-        width={310}
-        height={275}
+        x={62.5}
+        y={108.94}
+        width={404.68}
+        height={320.42}
         fill="url(#sh-wall)"
         stroke="rgba(8,42,80,.18)"
         strokeWidth={1}
       />
-      <rect x={176} y={225} width={318} height={4} fill="rgba(8,42,80,.12)" />
-      <rect x={176} y={307} width={318} height={4} fill="rgba(8,42,80,.12)" />
-      <rect x={176} y={395} width={318} height={20} fill="#B9AC8C" />
+      <rect x={57.27} y={207.98} width={415.13} height={4.66} fill="rgba(8,42,80,.12)" />
+      <rect x={57.27} y={303.53} width={415.13} height={4.66} fill="rgba(8,42,80,.12)" />
+      <rect x={57.27} y={406.06} width={415.13} height={23.3} fill="#B9AC8C" />
+
+      <rect x={386.24} y={29.71} width={13.05} height={30.29} fill="#0B3565" />
+      <polygon points="381.02,29.71 404.52,29.71 392.77,9.9" fill={GS39_BRAND_HEX.red} />
+      <circle cx={392.77} cy={4.08} r={4.57} fill={GS39_BRAND_HEX.sun} />
+
+      <g transform="translate(160.4, 353.63)">
+        <rect x={0} y={0} width={54.83} height={25.63} rx={2} fill={GS39_BRAND_HEX.navy} />
+        <text
+          x={27.4}
+          y={11.5}
+          textAnchor="middle"
+          fontFamily="var(--font-display)"
+          fontSize={11}
+          fill="#fff"
+          letterSpacing={0.5}
+        >
+          150
+        </text>
+        <text
+          x={27.4}
+          y={21}
+          textAnchor="middle"
+          fontFamily="var(--font-ui)"
+          fontWeight={800}
+          fontSize={7}
+          fill={GS39_BRAND_HEX.sun}
+          letterSpacing={1}
+        >
+          JAHRE
+        </text>
+      </g>
+
+      <ellipse cx={49.44} cy={435.19} rx={36.55} ry={16.31} fill="#4B9A23" opacity={0.85} />
+      <ellipse cx={49.44} cy={429.37} rx={28.72} ry={13.98} fill="#6BB246" />
+      <ellipse cx={480.23} cy={441.02} rx={28.72} ry={13.98} fill="#4B9A23" opacity={0.85} />
+      <ellipse cx={480.23} cy={435.19} rx={22.19} ry={11.65} fill="#6BB246" />
+      <rect x={271.36} y={441.02} width={52.22} height={3.5} fill="#8b6a3a" />
+      <rect x={275.28} y={444.51} width={3.92} height={8.16} fill="#8b6a3a" />
+      <rect x={315.75} y={444.51} width={3.92} height={8.16} fill="#8b6a3a" />
+
+      {garden ? (
+        <GardenPatch
+          station={garden}
+          visited={isVisited(garden.slug)}
+          highlighted={isHighlighted(garden.slug)}
+          onTap={handleTap}
+        />
+      ) : null}
 
       {inside.map((station) => (
         <StationWindow
@@ -660,47 +698,8 @@ export function IsometricSchoolhouse({
         />
       ))}
 
-      <rect x={428} y={72} width={10} height={26} fill="#0B3565" />
-      <polygon points="424,72 442,72 433,55" fill={GS39_BRAND_HEX.red} />
-      <circle cx={433} cy={50} r={3.5} fill={GS39_BRAND_HEX.sun} />
-
-      <g transform="translate(255, 350)">
-        <rect x={0} y={0} width={42} height={22} rx={2} fill={GS39_BRAND_HEX.navy} />
-        <text
-          x={21}
-          y={10}
-          textAnchor="middle"
-          fontFamily="var(--font-display)"
-          fontSize={10}
-          fill="#fff"
-          letterSpacing={0.5}
-        >
-          150
-        </text>
-        <text
-          x={21}
-          y={19}
-          textAnchor="middle"
-          fontFamily="var(--font-ui)"
-          fontWeight={800}
-          fontSize={6.5}
-          fill={GS39_BRAND_HEX.sun}
-          letterSpacing={1}
-        >
-          JAHRE
-        </text>
-      </g>
-
-      <ellipse cx={170} cy={420} rx={28} ry={14} fill="#4B9A23" opacity={0.85} />
-      <ellipse cx={170} cy={415} rx={22} ry={12} fill="#6BB246" />
-      <ellipse cx={500} cy={425} rx={22} ry={12} fill="#4B9A23" opacity={0.85} />
-      <ellipse cx={500} cy={420} rx={17} ry={10} fill="#6BB246" />
-      <rect x={340} y={425} width={40} height={3} fill="#8b6a3a" />
-      <rect x={343} y={428} width={3} height={7} fill="#8b6a3a" />
-      <rect x={374} y={428} width={3} height={7} fill="#8b6a3a" />
-
       {effectiveVisited.size > 0 ? (
-        <g transform="translate(433, 50)">
+        <g transform="translate(393, 4)">
           <line x1={0} y1={0} x2={0} y2={-22} stroke="#0B3565" strokeWidth={1.5} />
           <polygon points="0,-22 14,-18 0,-14" fill={GS39_BRAND_HEX.red} />
         </g>
