@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Referenz-SVG für isometrisches Schulhaus (Hub-Startseite).
+  Quelle: app/components/schoolhouse/isometric-schoolhouse.tsx (Stand main)
+  viewBox: 0 0 800 520  bei Layout-Änderungen beibehalten oder dokumentieren.
+
+  Ebenen (Illustrator: Gruppen/Ebenen beibehalten):
+    ground         Boden, Schatten
+    garden         Station schulsozialarbeit (Nr. 11)
+    gym            Station turnhalle (Nr. 10)
+    main-building  Fassade, Dach, Dekor (ohne Fenster)
+    windows        9 klickbare Slots (’ ISOMETRIC_ROOM_FRAMES in schoolhouse-isometric-map.ts)
+
+  Nach Bearbeitung: Koordinaten zurück in isometric-schoolhouse.tsx übernehmen.
+  Dynamik (Besucht/Gesperrt, Hit-Areas) bleibt React-only.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" width="800" height="520">
+  <title>Isometrisches Schulhaus  Design-Referenz</title>
+  <desc>GS39 Schulnavigator Hub. Standardzustand (unbesucht). Nicht zur Laufzeit.</desc>
+
+  <defs>
+    <linearGradient id="sh-wall" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#FFFDF6"/>
+      <stop offset="1" stop-color="#F1ECDD"/>
+    </linearGradient>
+    <linearGradient id="sh-rightwall" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#E8E2CF"/>
+      <stop offset="1" stop-color="#D6CFB7"/>
+    </linearGradient>
+    <linearGradient id="sh-roof" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#082A50"/>
+      <stop offset="1" stop-color="#13396a"/>
+    </linearGradient>
+    <style>
+      .window-frame { fill: rgba(20, 30, 50, 0.18); stroke: rgba(255,255,255,.55); stroke-width: 2.5; }
+      .window-sill { fill: #b9a98c; }
+      .station-nr { font-family: system-ui, sans-serif; font-size: 11px; font-weight: 800; fill: #082a50; text-anchor: middle; }
+      .window-guide { fill: none; stroke: #082a50; stroke-width: 1; stroke-dasharray: 4 3; opacity: 0.35; }
+    </style>
+  </defs>
+
+  <g id="ground">
+    <ellipse cx="400" cy="485" rx="380" ry="32" fill="#E8E0CB" opacity="0.7"/>
+    <rect x="0" y="460" width="800" height="60" fill="rgba(199,188,158,.35)"/>
+  </g>
+
+  <g id="garden">
+    <!-- Station: schulsozialarbeit, Nr. 11 -->
+    <polygon id="garden-patch" points="65,440 220,460 270,432 110,415" fill="#9aa18f" stroke="rgba(8,42,80,.25)" stroke-width="1.5"/>
+    <polygon points="95,432 165,440 175,432 110,425" fill="#8a8478" stroke="#3d2814" stroke-width="1"/>
+    <polygon points="125,420 198,427 210,419 140,413" fill="#8a8478" stroke="#3d2814" stroke-width="1"/>
+    <line x1="65" y1="440" x2="70" y2="460" stroke="#5e4a2e" stroke-width="2"/>
+    <line x1="130" y1="444" x2="132" y2="462" stroke="#5e4a2e" stroke-width="2"/>
+    <line x1="195" y1="452" x2="196" y2="464" stroke="#5e4a2e" stroke-width="2"/>
+    <line x1="65" y1="448" x2="220" y2="464" stroke="#5e4a2e" stroke-width="1.5"/>
+    <!-- Station-Chip-Position (Nr. 11) -->
+    <circle id="garden-station-chip" cx="258" cy="420" r="11" fill="rgba(255,255,255,.95)" stroke="rgba(8,42,80,.35)" stroke-width="1"/>
+    <text class="station-nr" x="258" y="423.5">11</text>
+  </g>
+
+  <g id="gym">
+    <!-- Station: turnhalle, Nr. 10 -->
+    <polygon points="760,250 778,238 778,388 760,395" fill="#C7C0AB"/>
+    <polygon points="580,250 760,250 778,238 598,238" fill="#3E4A5E"/>
+    <rect x="580" y="250" width="180" height="145" fill="#E1DDD2" stroke="rgba(8,42,80,.2)" stroke-width="1"/>
+    <rect x="580" y="310" width="180" height="3" fill="rgba(8,42,80,.12)"/>
+    <g id="gym-windows">
+      <rect x="610" y="264" width="30" height="36" class="window-frame"/>
+      <line x1="625" y1="264" x2="625" y2="300" stroke="rgba(255,255,255,.55)" stroke-width="1"/>
+      <line x1="610" y1="282" x2="640" y2="282" stroke="rgba(255,255,255,.55)" stroke-width="1"/>
+      <rect x="660" y="264" width="30" height="36" class="window-frame"/>
+      <line x1="675" y1="264" x2="675" y2="300" stroke="rgba(255,255,255,.55)" stroke-width="1"/>
+      <line x1="660" y1="282" x2="690" y2="282" stroke="rgba(255,255,255,.55)" stroke-width="1"/>
+      <rect x="710" y="264" width="30" height="36" class="window-frame"/>
+      <line x1="725" y1="264" x2="725" y2="300" stroke="rgba(255,255,255,.55)" stroke-width="1"/>
+      <line x1="710" y1="282" x2="740" y2="282" stroke="rgba(255,255,255,.55)" stroke-width="1"/>
+    </g>
+    <rect x="655" y="335" width="32" height="58" fill="#2a2a35" stroke="rgba(255,255,255,.55)" stroke-width="2"/>
+    <line x1="671" y1="335" x2="671" y2="393" stroke="rgba(255,255,255,.55)" stroke-width="1"/>
+    <rect x="605" y="320" width="48" height="12" rx="2" fill="rgba(60,70,90,.6)"/>
+    <text x="629" y="329" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#ffffff" letter-spacing="0.5">SPORT</text>
+    <rect x="697" y="320" width="48" height="12" rx="2" fill="rgba(60,70,90,.6)"/>
+    <text x="721" y="329" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#ffffff" letter-spacing="0.5">HALLE</text>
+    <circle id="gym-station-chip" cx="770" cy="250" r="11" fill="rgba(255,255,255,.95)" stroke="rgba(8,42,80,.35)" stroke-width="1"/>
+    <text class="station-nr" x="770" y="253.5">10</text>
+  </g>
+
+  <g id="main-building">
+    <polygon id="right-wall" points="490,140 568,108 568,400 490,415" fill="url(#sh-rightwall)" stroke="rgba(8,42,80,.25)" stroke-width="1.2"/>
+    <polygon id="roof-right" points="490,140 568,108 482,55 340,82" fill="url(#sh-roof)" stroke="#06203d" stroke-width="1.2"/>
+    <polygon id="roof-left" points="170,140 340,82 490,140" fill="url(#sh-roof)" stroke="#06203d" stroke-width="1.2"/>
+    <polygon id="roof-attic" points="180,140 330,88 480,140" fill="#F7F1DE" stroke="rgba(8,42,80,.22)" stroke-width="1"/>
+    <g id="clock">
+      <circle cx="330" cy="118" r="9" fill="#e4f3fc" stroke="#082a50" stroke-width="1.5"/>
+      <line x1="330" y1="109" x2="330" y2="127" stroke="#082a50" stroke-width="1"/>
+      <line x1="321" y1="118" x2="339" y2="118" stroke="#082a50" stroke-width="1"/>
+    </g>
+    <rect id="front-wall" x="180" y="140" width="310" height="275" fill="url(#sh-wall)" stroke="rgba(8,42,80,.18)" stroke-width="1"/>
+    <rect x="176" y="225" width="318" height="4" fill="rgba(8,42,80,.12)"/>
+    <rect x="176" y="307" width="318" height="4" fill="rgba(8,42,80,.12)"/>
+    <rect x="176" y="395" width="318" height="20" fill="#B9AC8C"/>
+    <g id="flag">
+      <rect x="428" y="72" width="10" height="26" fill="#0B3565"/>
+      <polygon points="424,72 442,72 433,55" fill="#ef3a37"/>
+      <circle cx="433" cy="50" r="3.5" fill="#fbbb24"/>
+    </g>
+    <g id="jubilee-badge" transform="translate(255, 350)">
+      <rect x="0" y="0" width="42" height="22" rx="2" fill="#082a50"/>
+      <text x="21" y="10" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#ffffff" letter-spacing="0.5">150</text>
+      <text x="21" y="19" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="800" font-size="6.5" fill="#fbbb24" letter-spacing="1">JAHRE</text>
+    </g>
+    <g id="decor-trees">
+      <ellipse cx="170" cy="420" rx="28" ry="14" fill="#4B9A23" opacity="0.85"/>
+      <ellipse cx="170" cy="415" rx="22" ry="12" fill="#6BB246"/>
+      <ellipse cx="500" cy="425" rx="22" ry="12" fill="#4B9A23" opacity="0.85"/>
+      <ellipse cx="500" cy="420" rx="17" ry="10" fill="#6BB246"/>
+    </g>
+    <g id="decor-bench">
+      <rect x="340" y="425" width="40" height="3" fill="#8b6a3a"/>
+      <rect x="343" y="428" width="3" height="7" fill="#8b6a3a"/>
+      <rect x="374" y="428" width="3" height="7" fill="#8b6a3a"/>
+    </g>
+  </g>
+
+  <g id="windows">
+    <!-- Fenster-Slots ’ ISOMETRIC_ROOM_FRAMES (x, y, w, h) -->
+    <!-- Gestrichelte Rahmen = Koordinaten-Referenz für React-Sync -->
+
+    <!-- pc-raum, Nr. 5 -->
+    <g id="window-top-left" data-room="top-left" data-slug="pc-raum" data-nr="5">
+      <rect x="205" y="158" width="60" height="70" class="window-guide"/>
+      <rect x="201" y="226" width="68" height="5" class="window-sill"/>
+      <rect x="205" y="158" width="60" height="70" class="window-frame"/>
+      <line x1="235" y1="158" x2="235" y2="228" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
+      <line x1="205" y1="193" x2="265" y2="193" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
+      <circle cx="261" cy="162" r="10" fill="rgba(255,255,255,.92)" stroke="rgba(8,42,80,.35)" stroke-width="1"/>
+      <text class="station-nr" x="261" y="165.5">5</text>
+    </g>
+
+    <!-- lesewelt, Nr. 6 -->
+    <g id="window-top-mid" data-room="top-mid" data-slug="lesewelt" data-nr="6">
+      <rect x="305" y="158" width="60" height="70" class="window-guide"/>
+      <rect x="301" y="226" width="68" height="5" class="window-sill"/>
+      <rect x="305" y="158" width="60" height="70" class="window-frame"/>
+      <line x1="335" y1="158" x2="335" y2="228" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
+      <line x1="305" y1="193" x2="365" y2="193" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
+      <circle cx="361" cy="162" r="10" fill="rgba(255,255,255,.92)" stroke="rgba(8,42,80,.35)" stroke-width="1"/>
+      <text class="station-nr" x="361" y="165.5">6</text>
+    </g>
+
+    <!-- werken, Nr. 7 -->
+    <g id="window-top-right" data-room="top-right" data-slug="werken" data-nr="7">
+      <rect x="405" y="158" width="60" height="70" class="window-guide"/>
+      <rect x="401" y="226" width="68" height="5" class="window-sill"/>
+      <rect x="405" y="158" width="60" height="70" class="window-frame"/>
+      <line x1="435" y1="158" x2="435" y2="228" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
+      <line x1="405" y1="193" x2="465" y2="193" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
+      <circle cx="461" cy="162" r="10" fill="rgba(255,255,255,.92)" stroke="rgba(8,42,80,.35)" stroke-width="1"/>
+      <text class="station-nr" x="461" y="165.5">7</text>
+    </g>
+
+    <!-- musik, Nr. 2 -->
+    <g id="window-mid-left" data-room="mid-left" data-slug="musik" data-nr="2">
+      <rect x="205" y="240" width="60" height="70" class="window-guide"/>
+      <rect x="201" y="308" width="68" height="5" class="window-sill"/>
+      <rect x="205" y="240" width="60" height="70" class="window-frame"/>
+      <line x1="235" y1="240" x2="235" y2="310" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
+      <line x1="205" y1="275" x2="265" y2="275" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
+      <circle cx="261" cy="244" r="10" fill="rgba(255,255,255,.92)" stroke="rgba(8,42,80,.35)" stroke-width="1"/>
+      <text class="station-nr" x="261" y="247.5">2</text>
+    </g>
+
+    <!-- daz, Nr. 3 -->
+    <g id="window-mid-mid" data-room="mid-mid" data-slug="daz" data-nr="3">
+      <rect x="305" y="240" width="60" height="70" class="window-guide"/>
+      <rect x="301" y="308" width="68" height="5" class="window-sill"/>
+      <rect x="305" y="240" width="60" height="70" class="window-frame"/>
+      <line x1="335" y1="240" x2="335" y2="310" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
+      <line x1="305" y1="275" x2="365" y2="275" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
+      <circle cx="361" cy="244" r="10" fill="rgba(255,255,255,.92)" stroke="rgba(8,42,80,.35)" stroke-width="1"/>
+      <text class="station-nr" x="361" y="247.5">3</text>
+    </g>
+
+    <!-- kunst, Nr. 4 -->
+    <g id="window-mid-right" data-room="mid-right" data-slug="kunst" data-nr="4">
+      <rect x="405" y="240" width="60" height="70" class="window-guide"/>
+      <rect x="401" y="308" width="68" height="5" class="window-sill"/>
+      <rect x="405" y="240" width="60" height="70" class="window-frame"/>
+      <line x1="435" y1="240" x2="435" y2="310" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
+      <line x1="405" y1="275" x2="465" y2="275" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
+      <circle cx="461" cy="244" r="10" fill="rgba(255,255,255,.92)" stroke="rgba(8,42,80,.35)" stroke-width="1"/>
+      <text class="station-nr" x="461" y="247.5">4</text>
+    </g>
+
+    <!-- speiseraum, Nr. 8 -->
+    <g id="window-ground-left" data-room="ground-left" data-slug="speiseraum" data-nr="8">
+      <rect x="205" y="322" width="60" height="70" class="window-guide"/>
+      <rect x="201" y="390" width="68" height="5" class="window-sill"/>
+      <rect x="205" y="322" width="60" height="70" class="window-frame"/>
+      <line x1="235" y1="322" x2="235" y2="392" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
+      <line x1="205" y1="357" x2="265" y2="357" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
+      <circle cx="261" cy="326" r="10" fill="rgba(255,255,255,.92)" stroke="rgba(8,42,80,.35)" stroke-width="1"/>
+      <text class="station-nr" x="261" y="329.5">8</text>
+    </g>
+
+    <!-- klassenzimmer (Eingang), Nr. 1 -->
+    <g id="window-ground-mid" data-room="ground-mid" data-slug="klassenzimmer" data-nr="1">
+      <rect x="305" y="322" width="60" height="70" class="window-guide"/>
+      <path d="M 305 392 L 305 340 Q 335 314 365 340 L 365 392 Z" fill="#2a2a35" stroke="rgba(255,255,255,.55)" stroke-width="2.5"/>
+      <line x1="335" y1="334" x2="335" y2="392" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
+      <circle cx="330" cy="371" r="1.8" fill="#fbbb24"/>
+      <circle cx="340" cy="371" r="1.8" fill="#fbbb24"/>
+      <rect x="299" y="392" width="72" height="6" fill="#cfc6b3"/>
+      <rect x="295" y="398" width="80" height="4" fill="#bcb29c"/>
+      <circle cx="361" cy="326" r="10" fill="rgba(255,255,255,.92)" stroke="rgba(8,42,80,.35)" stroke-width="1"/>
+      <text class="station-nr" x="361" y="329.5">1</text>
+    </g>
+
+    <!-- hort, Nr. 9 -->
+    <g id="window-ground-right" data-room="ground-right" data-slug="hort" data-nr="9">
+      <rect x="405" y="322" width="60" height="70" class="window-guide"/>
+      <rect x="401" y="390" width="68" height="5" class="window-sill"/>
+      <rect x="405" y="322" width="60" height="70" class="window-frame"/>
+      <line x1="435" y1="322" x2="435" y2="392" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
+      <line x1="405" y1="357" x2="465" y2="357" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
+      <circle cx="461" cy="326" r="10" fill="rgba(255,255,255,.92)" stroke="rgba(8,42,80,.35)" stroke-width="1"/>
+      <text class="station-nr" x="461" y="329.5">9</text>
+    </g>
+  </g>
+</svg>

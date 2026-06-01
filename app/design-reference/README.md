@@ -26,8 +26,34 @@ auftraggeber/Virtueller Schulrundgang/
 | Tokens (Docker-Build-Check) | [`scripts/reference/colors_and_type.css`](../scripts/reference/colors_and_type.css) |
 | Logos (Runtime) | [`public/brand/logos/`](../public/brand/logos/) |
 | Motive (PNG) | [`public/brand/motifs/`](../public/brand/motifs/) — siehe README dort |
+| Isometrisches Schulhaus (Hub) | [`isometric-schoolhouse.svg`](./isometric-schoolhouse.svg) — Illustrator-Referenz, nicht zur Laufzeit |
 
 Nach Änderungen am Design-Paket: Tokens und Logos in `app/` synchron halten, `npm run validate:tokens` ausführen.
+
+## Isometrisches Schulhaus — Illustrator-Workflow
+
+Datei: [`isometric-schoolhouse.svg`](./isometric-schoolhouse.svg) (viewBox `0 0 800 520`).
+
+**Ebenen / Gruppen:**
+
+| Gruppe | Inhalt |
+|--------|--------|
+| `ground` | Boden, Schatten |
+| `garden` | Station schulsozialarbeit (Nr. 11) |
+| `gym` | Station turnhalle (Nr. 10) |
+| `main-building` | Fassade, Dach, Flagge, Dekor |
+| `windows` | 9 Fenster-Slots (`data-room` → `ISOMETRIC_ROOM_FRAMES`) |
+
+Gestrichelte Rahmen (`.window-guide`) sind Koordinaten-Hilfen — vor React-Sync entfernen oder ausblenden.
+
+**Ablauf:**
+
+1. SVG in Illustrator öffnen, Layout anpassen (Gruppen beibehalten).
+2. Fertige SVG ins Repo zurücklegen (dieselbe Datei oder `-v2`-Suffix).
+3. Koordinaten in [`components/schoolhouse/isometric-schoolhouse.tsx`](../components/schoolhouse/isometric-schoolhouse.tsx) und ggf. [`lib/schoolhouse-isometric-map.ts`](../lib/schoolhouse-isometric-map.ts) übernehmen.
+4. Startseite lokal prüfen (Touch-Targets, Fest/Heft-Modus).
+
+Laufzeit-Implementierung: [`isometric-schoolhouse.tsx`](../components/schoolhouse/isometric-schoolhouse.tsx) (dynamisch: Besucht/Gesperrt, Hit-Areas).
 
 ## Architektur
 
