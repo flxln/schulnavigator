@@ -1,24 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Referenz-SVG für isometrisches Schulhaus (Hub-Startseite).
-  Quelle: app/components/schoolhouse/isometric-schoolhouse.tsx (Stand main)
-  viewBox: 0 0 800 520 — bei Layout-Änderungen beibehalten oder dokumentieren.
+  Hero-Karte der Startseite — Layout-Referenz für Illustrator.
+  Quelle: app/components/home/home-screen.tsx (Hero-Block, Modus heft)
 
-  Ebenen (Illustrator: Gruppen/Ebenen beibehalten):
-    ground        — Boden, Schatten
-    garden        — Station schulsozialarbeit (Nr. 11)
-    gym           — Station turnhalle (Nr. 10)
-    main-building — Fassade, Dach, Dekor (ohne Fenster)
-    windows       — 9 klickbare Slots (→ ISOMETRIC_ROOM_FRAMES in schoolhouse-isometric-map.ts)
+  Canvas: 480 × 418 px — entspricht Hero-Karte bei max-w-lg (512px main minus px-4).
+  Karten-Padding: 16px (px-4), pt-3=12, pb-2=8, mt-2=8 zwischen Text und Schulhaus.
 
-  Nach Bearbeitung: Koordinaten zurück in isometric-schoolhouse.tsx übernehmen.
-  Dynamik (Besucht/Gesperrt, Hit-Areas) bleibt React-only.
+  Ebenen:
+    hero-card-bg     — Hintergrund #FBF8F0, abgerundet
+    hero-text        — Überschrift + Untertitel (Referenz-Rahmen + Text)
+    schoolhouse      — eingebettetes isometrisches Schulhaus (viewBox 800×520, skaliert auf 448×291)
+
+  Schriften (App): Caveat Brush (.sn-brush), Caveat (.t-script) — ggf. lokal installieren.
+  Gestrichelte Rahmen (.text-guide, .window-guide) vor Export entfernen oder ausblenden.
+  Schulhaus-Inhalt eingebettet — bei Geometrie-Änderungen auch isometric-schoolhouse.svg pflegen.
 -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" width="800" height="520">
-  <title>Isometrisches Schulhaus — Design-Referenz</title>
-  <desc>GS39 Schulnavigator Hub. Standardzustand (unbesucht). Nicht zur Laufzeit.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     viewBox="0 0 480 418" width="480" height="418">
+  <title>Hub Hero-Karte — Design-Referenz (Heft-Modus)</title>
+  <desc>GS39 Schulnavigator Startseite. Text + Schulhaus. Nicht zur Laufzeit.</desc>
 
   <defs>
+    <style>
+      .text-guide {
+        fill: none;
+        stroke: #e67e22;
+        stroke-width: 1;
+        stroke-dasharray: 5 4;
+        opacity: 0.85;
+      }
+      .text-guide-label {
+        font-family: system-ui, sans-serif;
+        font-size: 9px;
+        fill: #e67e22;
+        font-weight: 600;
+      }
+      .sn-brush-ref {
+        font-family: 'Caveat Brush', 'Permanent Marker', cursive;
+        font-size: 30px;
+        fill: #082a50;
+        letter-spacing: 0.005em;
+        text-transform: uppercase;
+      }
+      .t-script-ref {
+        font-family: 'Caveat', 'Bradley Hand', cursive;
+        font-size: 18px;
+        fill: rgba(8, 42, 80, 0.8);
+      }
+      .t-script-ref--muted {
+        font-family: 'Caveat', 'Bradley Hand', cursive;
+        font-size: 18px;
+        fill: rgba(8, 42, 80, 0.35);
+      }
+    </style>
+    <!-- Aquarell-Hinweis (FestiveDecor, vereinfacht) -->
+    <radialGradient id="hero-wc-blue" cx="18%" cy="25%" r="65%">
+      <stop offset="0%" stop-color="rgba(158, 218, 254, 0.55)"/>
+      <stop offset="70%" stop-color="rgba(158, 218, 254, 0)"/>
+    </radialGradient>
+    <radialGradient id="hero-wc-green" cx="88%" cy="18%" r="55%">
+      <stop offset="0%" stop-color="rgba(166, 208, 138, 0.42)"/>
+      <stop offset="70%" stop-color="rgba(166, 208, 138, 0)"/>
+    </radialGradient>
+  </defs>
+
+  <g id="hero-card-bg">
+    <rect x="0" y="0" width="480" height="418" rx="16" fill="#FBF8F0"/>
+    <rect x="0" y="0" width="480" height="418" rx="16" fill="url(#hero-wc-blue)"/>
+    <rect x="0" y="0" width="480" height="418" rx="16" fill="url(#hero-wc-green)"/>
+  </g>
+
+  <g id="hero-text" transform="translate(16, 12)">
+    <!-- Referenz: h1.sn-brush text-[30px] leading-[0.95] — 2 Zeilen -->
+    <rect id="headline-guide" class="text-guide" x="0" y="0" width="300" height="57" rx="2"/>
+    <text class="text-guide-label" x="0" y="-3">h1 · sn-brush · 30px · leading 0.95</text>
+
+    <!-- Grüner Pinselstrich hinter „Schule“ (.sn-brush-hl) -->
+    <path id="schule-highlight"
+          d="M 118 34 L 218 30 Q 224 42 220 52 L 118 56 Q 112 46 118 34 Z"
+          fill="#4b9a23" transform="rotate(-2 168 43)"/>
+
+    <text class="sn-brush-ref">
+      <tspan x="0" y="28">Entdecke</tspan>
+      <tspan x="0" y="57">unsere </tspan>
+      <tspan fill="#ffffff">Schule</tspan>
+    </text>
+
+    <!-- Referenz: p.t-script text-lg mt-2 — Heft-Modus -->
+    <rect id="subtitle-heft-guide" class="text-guide" x="0" y="65" width="448" height="26" rx="2"/>
+    <text class="text-guide-label" x="0" y="62">p · t-script · 18px · mt-2 · Modus heft</text>
+    <text class="t-script-ref" x="0" y="84">
+      Tippen Sie auf einen Raum, um hineinzuschauen.
+    </text>
+
+    <!-- Optional: Fest-Modus (ausgegraut, zum Vergleich) -->
+    <g id="hero-text-fest" opacity="0.45">
+      <rect class="text-guide" x="0" y="97" width="448" height="26" rx="2" stroke="#9b59b6"/>
+      <text class="text-guide-label" x="0" y="94" fill="#9b59b6">p · t-script · Modus fest (Alternative)</text>
+      <text class="t-script-ref--muted" x="0" y="116">
+        Scannen Sie den QR an jeder Tür — Raum für Raum.
+      </text>
+    </g>
+  </g>
+
+  <!-- Schulhaus: mt-2 nach Untertitel heft → y = 12 + 57 + 8 + 26 + 8 = 111 -->
+  <g id="schoolhouse-slot">
+    <rect class="text-guide" x="16" y="103" width="448" height="291" rx="2"/>
+    <text class="text-guide-label" x="16" y="100">SchoolhouseHub · w-full · aspect 800/520</text>
+
+    <svg id="schoolhouse" x="16" y="111" width="448" height="291"
+         viewBox="0 0 800 520" preserveAspectRatio="xMidYMid meet">
+<defs>
     <linearGradient id="sh-wall" x1="0" x2="0" y1="0" y2="1">
       <stop offset="0" stop-color="#FFFDF6"/>
       <stop offset="1" stop-color="#F1ECDD"/>
@@ -227,4 +319,9 @@
       <text class="station-nr" x="461" y="329.5">9</text>
     </g>
   </g>
+
+    </svg>
+  </g>
+
+  <!-- Abstand unten: pb-2 = 8px → Kartenhöhe 111+291+8 = 410 (+ Rand) -->
 </svg>

@@ -26,9 +26,23 @@ auftraggeber/Virtueller Schulrundgang/
 | Tokens (Docker-Build-Check) | [`scripts/reference/colors_and_type.css`](../scripts/reference/colors_and_type.css) |
 | Logos (Runtime) | [`public/brand/logos/`](../public/brand/logos/) |
 | Motive (PNG) | [`public/brand/motifs/`](../public/brand/motifs/) — siehe README dort |
-| Isometrisches Schulhaus (Hub) | [`isometric-schoolhouse.svg`](./isometric-schoolhouse.svg) — Illustrator-Referenz, nicht zur Laufzeit |
+| Isometrisches Schulhaus (Hub) | [`isometric-schoolhouse.svg`](./isometric-schoolhouse.svg) — nur Gebäude |
+| Hero-Karte mit Text (Hub) | [`hub-hero-card-reference.svg`](./hub-hero-card-reference.svg) — Überschrift + Untertitel + Schulhaus |
 
 Nach Änderungen am Design-Paket: Tokens und Logos in `app/` synchron halten, `npm run validate:tokens` ausführen.
+
+## Hub Hero-Karte — Illustrator-Workflow
+
+**Mit Text-Referenz (empfohlen für Layout):** [`hub-hero-card-reference.svg`](./hub-hero-card-reference.svg)
+
+- Canvas `480 × 418` — Hero-Karte bei `max-w-lg` (Heft-Modus)
+- Ebenen: `hero-card-bg`, `hero-text` (gestrichelte `.text-guide`-Rahmen), `schoolhouse`
+- Überschrift: „Entdecke / unsere Schule“ (`.sn-brush` + grüner `.sn-brush-hl`)
+- Untertitel Heft: „Tippen Sie auf einen Raum …“ (`.t-script`)
+- Untertitel Fest als ausgegraute Alternative in `hero-text-fest`
+- Schulhaus **eingebettet** (Gruppen `ground`, `garden`, `gym`, `main-building`, `windows`) — bei Geometrie-Änderungen auch [`isometric-schoolhouse.svg`](./isometric-schoolhouse.svg) aktualisieren
+
+**Nur Gebäude:** [`isometric-schoolhouse.svg`](./isometric-schoolhouse.svg) (viewBox `0 0 800 520`).
 
 ## Isometrisches Schulhaus — Illustrator-Workflow
 
