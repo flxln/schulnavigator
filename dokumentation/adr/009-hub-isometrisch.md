@@ -43,6 +43,24 @@ Phase 2 verlangt eine **fertige App-Shell**, die dem Endprodukt entspricht ([`pr
 
 **Hinweis:** Direkt-URL `/raum/[slug]` ohne vorherigen Scan bleibt technisch erreichbar (nur Entry-Cookie), markiert im `fest`-Modus aber **keinen** Stempel mehr — Hub bleibt gesperrt bis QR-Scan.
 
+#### Nachtrag 2026-06-01 — Startseite: modusabhängige CTAs
+
+**Problem:** Auf `/` wirkten Fortschrittskarte („Nächste Station“) und Primär-Button „QR an der Tür scannen“ im Modus `fest` redundant (beide → `/scan`). Im Modus `heft` war der Scan-Button überflüssig (Hub + `/stationen` decken Navigation ab).
+
+**Entscheidung:**
+
+| Modus | Zustand | CTA unter der Fortschrittskarte |
+|-------|---------|----------------------------------|
+| `fest` | 0/11 | Ein Scan-Button |
+| `fest` | 1–10, nächste unbesuchte Station | **Ein** geteilter Primär-Button (links Empfehlung + Schloss, rechts „Beliebiger QR“) → `/scan` |
+| `fest` | 11/11 | Kein Scan-CTA (Sparkle in der Karte bleibt) |
+| `heft` | mit Fortschritt | Vorschlag **in** der Karte → `/raum/[slug]`; kein Scan auf `/` |
+| `heft` | sonst | Hub + Listen-Icon `/stationen` |
+
+**Technik:** `getHomeFooterCta` ([`app/lib/home-cta.ts`](../../app/lib/home-cta.ts)), geteilter Button [`home-fest-scan-cta.tsx`](../../app/components/home/home-fest-scan-cta.tsx), gemeinsame nächste Station [`getNextStation`](../../app/lib/next-station.ts) (Home + Footer; Footer überspringt besuchte Räume und den aktuellen Raum). Vor Hydration im `fest`: stabiler Einzel-Scan (`isHydrated` in der CTA-Entscheidung).
+
+Issue: **#84** (Sub-Issue zu **#83**, Kontext **#61**) — https://github.com/flxln/schulnavigator/issues/84 — siehe [issues-phase-2.md](../github-project/issues-phase-2.md).
+
 ### Interaktion und Barrierefreiheit
 
 - Klicks primär **im SVG** (`onClick` pro Fenster/Bereich), mit **`tabIndex={0}`**, **`role="button"`**, **`onKeyDown`** (Enter/Space).

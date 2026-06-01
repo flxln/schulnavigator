@@ -161,9 +161,41 @@ Hub-Vorschlag und `StationVisitRecorder` umgingen die Fest-Sperre — gesperrte 
 - [x] `qr-scanner.tsx`: `markVisitedSlug` bei erfolgreichem Raum-Scan vor Navigation
 - [x] ADR-009 Nachtrag; Doku: `architektur.md`, Anleitungen, diese Datei
 
+### Nachfolger (2026-06-01)
+
+UX-Konsolidierung der Startseiten-CTAs (kein Doppel-Scan im `fest`, kein Scan auf `/` im `heft`): Issue **#84** (Sub-Issue von **#83**), [ADR-009 Nachtrag CTAs](../adr/009-hub-isometrisch.md#nachtrag-2026-06-01--startseite-modusabhängige-ctas).
+
 ### Nicht im Scope
 
 - Serverseitige Sperre von `/raum/[slug]` ohne Stempel (Entry-Cookie reicht weiter für direkte URL)
+
+---
+
+## #84 — Startseite: modusabhängige CTAs (Fest Split / Heft Vorschlag)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/84 — **geschlossen** (2026-06-01, Sub-Issue von **#83**)
+
+**Labels:** `tech` `design`  
+**Assignee:** Felix  
+**Milestone:** Phase 2  
+**Parent / Kontext:** Sub-Issue zu **#83** (Fest-Navigation → `/scan`); UX-Folge zu **#61** (Home-Screen GS39)
+
+**Problem:** Im Modus `fest` wirkten Fortschritts-Vorschlag und Primär-Button „QR an der Tür scannen“ doppelt (beide → `/scan`). Im Modus `heft` war der Scan-Button auf `/` überflüssig (Hub + `/stationen`).
+
+**Ziel:** Ein klarer CTA pro Zustand; gemeinsame Logik für „nächste unbesuchte Station“ auf Home und im Raum-Footer.
+
+### Akzeptanzkriterien
+
+- [x] `fest` 1–10: geteilter Primär-Button unter der Karte (Nächste Station | Beliebiger QR) → `/scan`
+- [x] `fest` 0/11: ein Scan-Button; 11/11: kein Scan unter der Karte
+- [x] `heft`: Vorschlag in der Fortschrittskarte → Raum; kein Scan auf `/`
+- [x] `getNextStation`, `getHomeFooterCta`; `next-station-row`; Footer überspringt besuchte Räume
+- [x] Tests: `home-cta.test.ts`, `next-station.test.ts`, `next-station-footer.test.ts`
+- [x] Doku: ADR-009 Nachtrag, `architektur.md`, `fuer-entwickler.md`, manuelle Checkliste `lokal-testen-und-anschauen.md`
+
+### Nicht im Scope
+
+- Scan-CTA auf [`/stationen`](../app/components/stationen/stationen-screen.tsx) im Modus `fest` (unverändert)
 
 ---
 

@@ -63,6 +63,7 @@ Nur Doku, kein App-Code.
 | Schritt | Plan | Abschnitt | Was |
 |---------|------|-----------|-----|
 | 19 | Plan 1 | Phase 3.1 | `home-screen.tsx`: Brand-Strip, Hero, `IsometricSchoolhouse`, `Gs39Progress`, Scan-CTA, Ribbon — **erledigt 2026-05-27** |
+| 19b | — | — | Modusabhängige CTAs auf `/` (Fest Split-Scan, Heft nur Vorschlag in Karte) — **erledigt 2026-06-01**, Issue **#84**, ADR-009 Nachtrag |
 | 20 | Plan 1 | Phase 3.2 | `eintritt/page.tsx`: Brush-Headline, Karte, Fehlerkarten — keine Demo-Buttons — **erledigt 2026-05-27** (`eintritt-screen.tsx`) |
 | 21 | Plan 1 | Phase 3.5 | `app/stationen/page.tsx` neu: Station-Cards mit Lock/Visited — **erledigt 2026-05-27** (`stationen-screen.tsx`) |
 | 22 | Plan 1 | Phase 3.5 — L1 | `middleware.ts:82`: `'/stationen'` zum `config.matcher` hinzufügen — **erledigt 2026-05-27** |

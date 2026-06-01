@@ -308,6 +308,7 @@ export function RaumStationClient({
             hubStations={hubStations}
             mode={mode}
             unlockedSlugs={unlockedSlugs}
+            visitedSlugs={visitedSlugs}
           />
         </div>
       </div>
