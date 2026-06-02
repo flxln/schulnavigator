@@ -3,7 +3,8 @@
  * source: auftraggeber/material/UI-Vorschläge/colors_and_type.css (:root)
  *         auftraggeber/Virtueller Schulrundgang/assets/colors_and_type.css (gleicher :root)
  * synced: 2026-05-27 — npm run validate:tokens (Phase 0 GS39 UI)
- * Abweichung zur Quelle: nur --font-ui (next/font Variable --font-nunito-ui)
+ * Abweichung zur Quelle: --font-ui (next/font), --font-display und --font-script
+ * (Druckschrift Nunito statt Caveat Brush / Caveat — bessere Lesbarkeit in der App)
  */
 
 :root {
@@ -56,9 +57,8 @@
   --error: var(--brand-red);
 
   /* ---------- TYPE — FAMILIES ---------- */
-  --font-display: var(--font-caveat-brush), 'Caveat Brush', 'Permanent Marker',
-    system-ui, sans-serif;
-  --font-script: var(--font-caveat), 'Caveat', 'Bradley Hand', cursive;
+  --font-display: var(--font-ui);
+  --font-script: var(--font-ui);
   --font-ui:
     var(--font-nunito-ui), 'Nunito', system-ui, -apple-system, 'Segoe UI',
     sans-serif;

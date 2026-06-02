@@ -106,10 +106,10 @@ npm run start
 8. Zwei Tabs (`/` + `/scan`): im zweiten Tab scannen → erster Tab aktualisiert bei Fokus
 9. Alle 11 Stationen besucht → `SparkleBurst` auf `/` **einmalig**; `localStorage` `sn_sparkle_done` verhindert Wiederholung
 10. `curl -sI https://localhost:3000/stationen` ohne Cookie → `307` nach `/eintritt`
-11. **Regression #83 (`fest`):** Einen Raum per QR freischalten → in Raum „Nächste Station“ (Schloss) → Scanner ohne Scan schließen → geteilter CTA unter der Fortschrittskarte (Schloss + „Beliebiger QR“) öffnet **`/scan`**, nicht den Raum; `sn_visited_slugs` enthält **nicht** die ungescannte Station
-12. **`fest` 1–10:** unter der Karte **ein** geteilter Primär-Button (Nächste Station | Beliebiger QR), **kein** zweiter Scan-Button
-13. **`fest` 0/11:** nur ein Scan-Button „QR an der Tür scannen“
-14. **`fest` 11/11:** kein Scan-CTA unter der Karte (Sparkle in der Karte optional)
+11. **Regression #83 (`fest`):** Einen Raum per QR freischalten → in Raum „Nächste Station“ (Schloss) → Scanner ohne Scan schließen → geteilter CTA **über** der Fortschrittskarte (Schloss + „Beliebiger QR“) öffnet **`/scan`**, nicht den Raum; `sn_visited_slugs` enthält **nicht** die ungescannte Station
+12. **`fest` 1–10:** **über** der Fortschrittskarte **ein** geteilter Primär-Button (Nächste Station | Beliebiger QR), **kein** zweiter Scan-Button
+13. **`fest` 0/11:** nur ein Scan-Button „QR an der Tür scannen“ **über** der Fortschrittskarte
+14. **`fest` 11/11:** kein Scan-CTA (Sparkle in der Fortschrittskarte optional)
 15. **`heft` mit Fortschritt:** Vorschlag **in** der Fortschrittskarte → Raum; **kein** Scan-Button auf `/`
 16. **Kein Flash:** `fest` mit Fortschritt neu laden → vor Hydration Einzel-Scan, danach geteilter Button (kein Layout-Sprung der Button-Anzahl prüfen)
 

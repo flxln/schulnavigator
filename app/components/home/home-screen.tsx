@@ -151,6 +151,30 @@ export function HomeScreen({
         </div>
       </div>
 
+      {allLocked ? (
+        <p
+          className="rounded-[var(--r-md)] bg-bg-3 px-3 py-2 text-center text-sm text-fg-1"
+          role="status"
+        >
+          Stationen sind gesperrt. Bitte scanne den QR-Code an der Raumtür.
+        </p>
+      ) : null}
+
+      {footerCta === 'fest-split' && nextStation ? (
+        <HomeFestScanCta nextStation={nextStation} />
+      ) : null}
+
+      {footerCta === 'fest-scan' ? (
+        <Gs39Button
+          block
+          className="gap-2.5"
+          onClick={() => router.push('/scan')}
+        >
+          <QrCode size={22} aria-hidden />
+          QR an der Tür scannen
+        </Gs39Button>
+      ) : null}
+
       <Gs39Card className="relative p-4">
         {showSparkle ? (
           <SparkleBurst
@@ -180,30 +204,6 @@ export function HomeScreen({
           />
         ) : null}
       </Gs39Card>
-
-      {allLocked ? (
-        <p
-          className="rounded-[var(--r-md)] bg-bg-3 px-3 py-2 text-center text-sm text-fg-1"
-          role="status"
-        >
-          Stationen sind gesperrt. Bitte scanne den QR-Code an der Raumtür.
-        </p>
-      ) : null}
-
-      {footerCta === 'fest-split' && nextStation ? (
-        <HomeFestScanCta nextStation={nextStation} />
-      ) : null}
-
-      {footerCta === 'fest-scan' ? (
-        <Gs39Button
-          block
-          className="gap-2.5"
-          onClick={() => router.push('/scan')}
-        >
-          <QrCode size={22} aria-hidden />
-          QR an der Tür scannen
-        </Gs39Button>
-      ) : null}
 
       <div className="sn-ribbon text-center text-xl">
         Gemeinsam feiern. Erinnern. Zukunft gestalten.
