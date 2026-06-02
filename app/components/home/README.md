@@ -13,4 +13,9 @@ Steuerung über [`lib/home-cta.ts`](../../lib/home-cta.ts) (`getHomeFooterCta`).
 | `heft-suggestion` | `heft`, Fortschritt > 0, nächste Station | [`next-station-row.tsx`](../raum/next-station-row.tsx) in `Gs39Card` → `/raum/[slug]` |
 | `none` | `heft` ohne Vorschlag o. ä. | nur Hub + Link `/stationen` |
 
+## Layout-Reihenfolge (visuell)
+
+- **Fest:** Scan-CTA (`fest-scan` / `fest-split`) direkt unter dem Schulhaus-Hero, Fortschrittskarte (`Gs39Card`) darunter.
+- **Heft:** Hub + Fortschrittskarte; Vorschlag bleibt in der Karte, kein Footer-Scan.
+
 Spezifikation: [ADR-009 Nachtrag CTAs](../../../dokumentation/adr/009-hub-isometrisch.md#nachtrag-2026-06-01--startseite-modusabhängige-ctas). Issue **#84** (Sub-Issue **#83**).

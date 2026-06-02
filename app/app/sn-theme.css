@@ -10,7 +10,7 @@
 .t-display-m,
 .t-jubilaeum {
   font-family: var(--font-display);
-  font-weight: var(--w-regular);
+  font-weight: var(--w-black);
   line-height: var(--lh-tight);
   letter-spacing: 0.005em;
   text-transform: uppercase;
@@ -32,7 +32,7 @@
 .t-script {
   font-family: var(--font-script);
   font-weight: var(--w-medium);
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(1.125rem, 4vw, 1.375rem);
   line-height: var(--lh-snug);
   color: var(--fg-2);
@@ -100,10 +100,16 @@
   color: var(--brand-navy);
 }
 
+/* Tailwind font-display — Druckschrift mit Display-Gewicht */
+.font-display {
+  font-weight: var(--w-black);
+}
+
 /* ── Brush & Ribbon ── */
 
 .sn-brush {
   font-family: var(--font-display);
+  font-weight: var(--w-black);
   text-transform: uppercase;
   color: var(--brand-navy);
   letter-spacing: 0.005em;
@@ -139,7 +145,8 @@
   position: relative;
   font-family: var(--font-script);
   font-size: 22px;
-  font-style: italic;
+  font-weight: var(--w-semibold);
+  font-style: normal;
   line-height: 1.1;
   text-align: center;
 }

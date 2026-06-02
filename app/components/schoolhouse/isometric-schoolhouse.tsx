@@ -15,6 +15,18 @@ const MIN_HIT_PX = 44
 const LOCKED_GLASS = 'rgba(20, 30, 50, 0.18)'
 const FRAME_LOCKED = 'rgba(255,255,255,.55)'
 
+/** Stationsnummern-Kreis — skaliert zum vergrößerten Fenster-Layout (78×82). */
+const STATION_CHIP = {
+  rLocked: 16,
+  rVisited: 17,
+  fontSize: 15,
+  stroke: 2,
+  insetX: 10,
+  insetY: 10,
+  offsetX: 3,
+  offsetY: -3,
+} as const
+
 type IsometricSchoolhouseProps = {
   stations: readonly IsometricHubStation[]
   visitedSlugs: ReadonlySet<string>
@@ -75,8 +87,8 @@ function StationWindow({
   const accent = station.accent
   const glassFill = visited ? station.visitedGlassFill : LOCKED_GLASS
   const frameStroke = visited ? accent : FRAME_LOCKED
-  const chipX = x + w - 5
-  const chipY = y + 5
+  const chipX = x + w - STATION_CHIP.insetX
+  const chipY = y + STATION_CHIP.insetY
   const archDepth = h * (60.59 / 81.56)
   const archRise = 20.2 * (w / 78.33)
 
@@ -162,48 +174,7 @@ function StationWindow({
         </g>
       )}
 
-      {visited ? (
-        <g>
-          <circle
-            cx={chipX}
-            cy={chipY}
-            r={11}
-            fill={accent}
-            stroke={GS39_BRAND_HEX.paper}
-            strokeWidth={2}
-          />
-          <path
-            d={`M ${chipX - 5} ${chipY} L ${chipX - 1} ${chipY + 4} L ${chipX + 5} ${chipY - 4}`}
-            fill="none"
-            stroke="#fff"
-            strokeWidth={2.2}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </g>
-      ) : (
-        <g opacity={0.85}>
-          <circle
-            cx={chipX}
-            cy={chipY}
-            r={10}
-            fill="rgba(255,255,255,.92)"
-            stroke="rgba(8,42,80,.35)"
-            strokeWidth={1}
-          />
-          <text
-            x={chipX}
-            y={chipY + 3.5}
-            textAnchor="middle"
-            fontFamily="var(--font-ui)"
-            fontSize={11}
-            fontWeight={800}
-            fill={GS39_BRAND_HEX.navy}
-          >
-            {station.nr}
-          </text>
-        </g>
-      )}
+      <StationChip x={chipX} y={chipY} station={station} visited={visited} />
     </g>
   )
 }
@@ -219,22 +190,25 @@ function StationChip({
   station: IsometricHubStation
   visited: boolean
 }) {
+  const cx = x + STATION_CHIP.offsetX
+  const cy = y + STATION_CHIP.offsetY
+
   if (visited) {
     return (
       <g>
         <circle
-          cx={x}
-          cy={y}
-          r={12}
+          cx={cx}
+          cy={cy}
+          r={STATION_CHIP.rVisited}
           fill={station.accent}
           stroke={GS39_BRAND_HEX.paper}
-          strokeWidth={2}
+          strokeWidth={STATION_CHIP.stroke}
         />
         <path
-          d={`M ${x - 5} ${y} L ${x - 1} ${y + 4} L ${x + 5} ${y - 4}`}
+          d={`M ${cx - 7} ${cy} L ${cx - 2} ${cy + 6} L ${cx + 7} ${cy - 6}`}
           fill="none"
           stroke="#fff"
-          strokeWidth={2.2}
+          strokeWidth={2.6}
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -242,21 +216,21 @@ function StationChip({
     )
   }
   return (
-    <g>
+    <g opacity={0.85}>
       <circle
-        cx={x}
-        cy={y}
-        r={11}
+        cx={cx}
+        cy={cy}
+        r={STATION_CHIP.rLocked}
         fill="rgba(255,255,255,.95)"
         stroke="rgba(8,42,80,.35)"
-        strokeWidth={1}
+        strokeWidth={1.2}
       />
       <text
-        x={x}
-        y={y + 3.5}
+        x={cx}
+        y={cy + 5.5}
         textAnchor="middle"
         fontFamily="var(--font-ui)"
-        fontSize={11}
+        fontSize={STATION_CHIP.fontSize}
         fontWeight={800}
         fill={GS39_BRAND_HEX.navy}
       >
@@ -374,6 +348,7 @@ function GymBuilding({ station, visited, highlighted, onTap }: GymBuildingProps)
         textAnchor="middle"
         fontFamily="var(--font-display)"
         fontSize={11}
+        fontWeight={800}
         fill={GS39_BRAND_HEX.white}
         letterSpacing={0.5}
       >
@@ -393,6 +368,7 @@ function GymBuilding({ station, visited, highlighted, onTap }: GymBuildingProps)
         textAnchor="middle"
         fontFamily="var(--font-display)"
         fontSize={11}
+        fontWeight={800}
         fill={GS39_BRAND_HEX.white}
         letterSpacing={0.5}
       >
@@ -652,6 +628,7 @@ export function IsometricSchoolhouse({
           textAnchor="middle"
           fontFamily="var(--font-display)"
           fontSize={11}
+          fontWeight={800}
           fill="#fff"
           letterSpacing={0.5}
         >

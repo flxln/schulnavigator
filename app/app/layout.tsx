@@ -1,24 +1,12 @@
 import type { Metadata, Viewport } from 'next'
-import { Caveat, Caveat_Brush, Nunito } from 'next/font/google'
+import { Nunito } from 'next/font/google'
 import './globals.css'
 
 const nunito = Nunito({
   variable: '--font-nunito-ui',
   subsets: ['latin', 'latin-ext'],
   display: 'swap',
-})
-
-const caveatBrush = Caveat_Brush({
-  variable: '--font-caveat-brush',
-  weight: '400',
-  subsets: ['latin', 'latin-ext'],
-  display: 'swap',
-})
-
-const caveat = Caveat({
-  variable: '--font-caveat',
-  subsets: ['latin', 'latin-ext'],
-  display: 'swap',
+  weight: ['400', '500', '600', '700', '800', '900'],
 })
 
 export const metadata: Metadata = {
@@ -39,10 +27,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html
-      lang="de"
-      className={`${nunito.variable} ${caveatBrush.variable} ${caveat.variable} h-full antialiased`}
-    >
+    <html lang="de" className={`${nunito.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col font-sans">{children}</body>
     </html>
   )
