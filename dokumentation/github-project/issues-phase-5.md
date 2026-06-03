@@ -96,7 +96,7 @@ Im Gespräch am 07.05. wurden mehrere Features diskutiert, die explizit auf "nac
 Nach der Auswertung entscheiden, welche davon umgesetzt werden:
 
 - [ ] Echtes AR (Kamera/WebXR/iframe) — **nicht** MVP-Gyro-Viewer ([ADR-006](../adr/006-raum-viewer-gyro-hotspots.md))
-- [ ] 360°-Panorama-Viewer
+- [ ] 360°-Panorama-Viewer — Planung: [`360-panorama-viewer-planung.md`](../kurzfristige-ideen/360-panorama-viewer-planung.md) (2026-06-03)
 - [ ] Interaktive Trigger (Lego-Motor, Tafel-Steuerung per App)
 - [ ] Mal-App im Kunstzimmer
 - [ ] Mini-Spiel "Schulranzen packen"
