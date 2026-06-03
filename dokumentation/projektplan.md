@@ -200,7 +200,7 @@ Die Schule liefert bis **12.06.** einen Plan: welche Klasse macht welchen Raum i
 
 - [ ] Mandantenfähigkeit: andere Schulen können eigene Instanz aufsetzen
 - [ ] Onboarding-Dokumentation für neue Schulen
-- [ ] Echtes AR (WebXR/Kamera), 360°-Panorama, Lego-/Tafel-Trigger als opt-in Erweiterung (MVP hat Gyro-Viewer, siehe ADR-006)
+- [ ] Echtes AR (WebXR/Kamera), 360°-Panorama, Lego-/Tafel-Trigger als opt-in Erweiterung (MVP hat Gyro-Viewer, siehe ADR-006) — **360° in Planung:** [`kurzfristige-ideen/360-panorama-viewer-planung.md`](./kurzfristige-ideen/360-panorama-viewer-planung.md)
 
 ---
 
