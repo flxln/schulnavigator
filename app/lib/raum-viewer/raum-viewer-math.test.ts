@@ -5,6 +5,7 @@ import {
   angleDeltaDeg,
   circularEmaDeg,
   circularMeanDeg,
+  isGimbalLock,
   lerpPan,
   neutralAngleForPan,
   orientationToTargetPan,
@@ -13,8 +14,12 @@ import {
 import { roomPanZoom } from '@/lib/raum-viewer/room-pan-zoom'
 import { normalizedViewportCenter } from '@/lib/raum-viewer/viewport-center'
 import {
+  GIMBAL_LOCK_ENTER_DEG,
+  GIMBAL_LOCK_EXIT_DEG,
   GYRO_DEADZONE_DEG,
   GYRO_FULL_RANGE_DEG,
+  GYRO_GAMMA_FALLBACK_FULL_RANGE_DEG,
+  GYRO_GAMMA_PAN_SIGN,
   MIN_PAN_DISPLAY_RATIO,
   RECOMMENDED_SOURCE_ASPECT_MIN,
   clampPan,
@@ -232,6 +237,83 @@ describe('neutralAngleForPan', () => {
       true,
     )
     expect(pan2).toBeCloseTo(pan, 0)
+  })
+})
+
+describe('isGimbalLock', () => {
+  it('betritt Zone bei β nahe 90°', () => {
+    expect(isGimbalLock(90, false)).toBe(true)
+    expect(isGimbalLock(90 - GIMBAL_LOCK_ENTER_DEG + 1, false)).toBe(true)
+  })
+
+  it('verlässt Zone erst oberhalb EXIT', () => {
+    expect(isGimbalLock(90 - GIMBAL_LOCK_EXIT_DEG - 1, true)).toBe(false)
+  })
+
+  it('hält Zustand in der Hysterese-Lücke', () => {
+    const between = (GIMBAL_LOCK_ENTER_DEG + GIMBAL_LOCK_EXIT_DEG) / 2
+    expect(isGimbalLock(90 - between, true)).toBe(true)
+    expect(isGimbalLock(90 - between, false)).toBe(false)
+  })
+})
+
+describe('γ-Fallback opts', () => {
+  it('Default unverändert ohne opts', () => {
+    const maxPan = 200
+    const withDefault = orientationToTargetPan(20, maxPan, 0, 'centered', false)
+    const explicit = orientationToTargetPan(20, maxPan, 0, 'centered', false, {
+      sign: 1,
+      fullRangeDeg: GYRO_FULL_RANGE_DEG,
+    })
+    expect(explicit).toBeCloseTo(withDefault, 5)
+  })
+
+  it('γ-Override invertiert Richtung (sign=-1)', () => {
+    const maxPan = 200
+    const alphaPan = orientationToTargetPan(30, maxPan, 0, 'centered', false)
+    const gammaPan = orientationToTargetPan(30, maxPan, 0, 'centered', false, {
+      sign: GYRO_GAMMA_PAN_SIGN,
+      fullRangeDeg: GYRO_GAMMA_FALLBACK_FULL_RANGE_DEG,
+    })
+    // GYRO_GAMMA_PAN_SIGN=-1 mit gleichem fullRangeDeg → spiegelverkehrt zur Mitte
+    expect(gammaPan).toBeCloseTo(-maxPan - alphaPan, 5)
+    expect(alphaPan).toBeGreaterThan(-maxPan / 2)
+    expect(gammaPan).toBeLessThan(-maxPan / 2)
+  })
+
+  it('Moduswechsel: Re-Anchor hält panPx stetig', () => {
+    const maxPan = 200
+    const alphaRaw = 25
+    const gammaRaw = -12
+    const gammaOpts = {
+      sign: GYRO_GAMMA_PAN_SIGN,
+      fullRangeDeg: GYRO_GAMMA_FALLBACK_FULL_RANGE_DEG,
+    }
+    const panPx = orientationToTargetPan(
+      alphaRaw,
+      maxPan,
+      0,
+      'centered',
+      false,
+    )
+
+    const reAnchoredGamma = neutralAngleForPan(
+      gammaRaw,
+      panPx,
+      maxPan,
+      'centered',
+      false,
+      gammaOpts,
+    )
+    const panAfterSwitch = orientationToTargetPan(
+      gammaRaw,
+      maxPan,
+      reAnchoredGamma,
+      'centered',
+      false,
+      gammaOpts,
+    )
+    expect(panAfterSwitch).toBeCloseTo(panPx, 0)
   })
 })
 
