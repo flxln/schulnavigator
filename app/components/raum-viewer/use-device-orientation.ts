@@ -33,6 +33,7 @@ function isIosOrientationPermissionModel(): boolean {
 export function useDeviceOrientation(enabled: boolean) {
   const [state, setState] = useState<OrientationAuthState>('unsupported')
   const [alpha, setAlpha] = useState<number | null>(null)
+  const [beta, setBeta] = useState<number | null>(null)
   const [gamma, setGamma] = useState<number | null>(null)
   const [panAngle, setPanAngle] = useState<number | null>(null)
   const [panAxis, setPanAxis] = useState<PanAxis>('alpha')
@@ -44,6 +45,7 @@ export function useDeviceOrientation(enabled: boolean) {
   const prevRawAlpha = useRef<number | null>(null)
   const unwrappedAlpha = useRef<number | null>(null)
   const lastGoodGamma = useRef<number | null>(null)
+  const lastGoodBeta = useRef<number | null>(null)
   const panAxisRef = useRef<PanAxis>('alpha')
   const pendingIosWatchdogRef = useRef(false)
   const watchdogTimerRef = useRef<number | null>(null)
@@ -72,12 +74,14 @@ export function useDeviceOrientation(enabled: boolean) {
         isIosOrientationPermissionModel() ? 'needs-gesture' : 'unsupported',
       )
       setAlpha(null)
+      setBeta(null)
       setGamma(null)
       setPanAngle(null)
       prevRawAlpha.current = null
       unwrappedAlpha.current = null
       latestAlpha.current = null
       lastGoodGamma.current = null
+      lastGoodBeta.current = null
     }, WATCHDOG_MS)
   }, [clearWatchdog])
 
@@ -92,12 +96,17 @@ export function useDeviceOrientation(enabled: boolean) {
 
   const flush = useCallback(() => {
     raf.current = null
-    const axis = panAxisRef.current
-    if (axis === 'alpha' && latestAlpha.current !== null) {
+    if (latestAlpha.current !== null) {
       setAlpha(latestAlpha.current)
-      setPanAngle(latestAlpha.current)
-    } else if (latestGamma.current !== null) {
+    }
+    if (lastGoodBeta.current !== null) {
+      setBeta(lastGoodBeta.current)
+    }
+    if (latestGamma.current !== null) {
       setGamma(latestGamma.current)
+    }
+    const axis = panAxisRef.current
+    if (axis === 'gamma' && latestGamma.current !== null) {
       setPanAngle(latestGamma.current)
     }
   }, [])
@@ -170,6 +179,16 @@ export function useDeviceOrientation(enabled: boolean) {
             latestAlpha.current =
               prevSmoothed + ORIENTATION_EMA_ALPHA * (unwrapped - prevSmoothed)
           }
+        }
+      }
+
+      const b = e.beta
+      if (typeof b === 'number' && !Number.isNaN(b)) {
+        const prevB = lastGoodBeta.current
+        if (prevB === null || Math.abs(b - prevB) <= GLITCH_JUMP_DEG) {
+          const smoothed =
+            prevB === null ? b : prevB + ORIENTATION_EMA_ALPHA * (b - prevB)
+          lastGoodBeta.current = smoothed
         }
       }
 
@@ -255,6 +274,7 @@ export function useDeviceOrientation(enabled: boolean) {
   return {
     state,
     alpha,
+    beta,
     gamma,
     panAngle,
     panAxis,

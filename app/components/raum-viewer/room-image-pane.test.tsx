@@ -29,6 +29,7 @@ vi.mock('@/components/raum-viewer/use-device-orientation', () => ({
   useDeviceOrientation: () => ({
     state: 'active' as const,
     alpha: 10,
+    beta: 85,
     gamma: 0,
     panAngle: 10,
     panAxis: 'alpha' as const,

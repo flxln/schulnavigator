@@ -10,6 +10,14 @@ export const GYRO_FULL_RANGE_DEG = 60
  * Am iPhone verifizieren; bei invertiertem Pan Vorzeichen flippen.
  */
 export const GYRO_ALPHA_PAN_SIGN = 1
+/** Portrait-Gimbal-Zone betreten: |β−90°| < diese Toleranz → γ-Fallback aktiv. */
+export const GIMBAL_LOCK_ENTER_DEG = 10
+/** Verlassen erst bei |β−90°| > diese Toleranz (Hysterese gegen Flattern am Rand). */
+export const GIMBAL_LOCK_EXIT_DEG = 15
+/** γ-Fallback: am iPhone verifizieren; bei invertiertem Pan Vorzeichen flippen. */
+export const GYRO_GAMMA_PAN_SIGN = -1
+/** γ-als-Yaw-Hub bei β≈90°; separat von GYRO_FULL_RANGE_DEG tunebar. */
+export const GYRO_GAMMA_FALLBACK_FULL_RANGE_DEG = 60
 export const PAN_SMOOTHING = 0.22
 /** Viewport-Mitte im Hotspot: nur Marker hervorheben, nicht Medien öffnen. */
 export const HOTSPOT_CENTER_DWELL_MS = 450

@@ -1,4 +1,6 @@
 import {
+  GIMBAL_LOCK_ENTER_DEG,
+  GIMBAL_LOCK_EXIT_DEG,
   GYRO_ALPHA_PAN_SIGN,
   GYRO_DEADZONE_DEG,
   GYRO_FULL_RANGE_DEG,
@@ -9,6 +11,32 @@ import {
 export type PanMappingMode = 'centered' | 'oneSided'
 
 export type PanAxis = 'alpha' | 'gamma'
+
+export type PanMappingOpts = {
+  sign?: number
+  fullRangeDeg?: number
+}
+
+function resolveMappingOpts(opts?: PanMappingOpts): {
+  sign: number
+  fullRangeDeg: number
+} {
+  return {
+    sign: opts?.sign ?? GYRO_ALPHA_PAN_SIGN,
+    fullRangeDeg: opts?.fullRangeDeg ?? GYRO_FULL_RANGE_DEG,
+  }
+}
+
+export function isGimbalLock(beta: number, wasLocked: boolean): boolean {
+  const dist = Math.abs(beta - 90)
+  if (dist < GIMBAL_LOCK_ENTER_DEG) {
+    return true
+  }
+  if (dist > GIMBAL_LOCK_EXIT_DEG) {
+    return false
+  }
+  return wasLocked
+}
 
 export function normalizeDeg(deg: number): number {
   let d = deg % 360
@@ -94,10 +122,12 @@ export function orientationToTargetPan(
   neutralDeg: number | null,
   mode: PanMappingMode,
   useCircularDelta: boolean,
+  opts?: PanMappingOpts,
 ): number {
   if (maxPanPx <= 0) {
     return 0
   }
+  const { sign, fullRangeDeg } = resolveMappingOpts(opts)
   const ref = neutralDeg ?? angleDeg
   const rawDelta = useCircularDelta
     ? angleDeltaDeg(angleDeg, ref)
@@ -107,12 +137,11 @@ export function orientationToTargetPan(
   if (mode === 'centered') {
     const half = maxPanPx / 2
     const raw =
-      -half +
-      (GYRO_ALPHA_PAN_SIGN * delta) / GYRO_FULL_RANGE_DEG * half * GYRO_SENSITIVITY
+      -half + (sign * delta) / fullRangeDeg * half * GYRO_SENSITIVITY
     return clampPan(raw, maxPanPx)
   }
 
-  const factor = (-delta / GYRO_FULL_RANGE_DEG) * GYRO_SENSITIVITY
+  const factor = (-delta / fullRangeDeg) * GYRO_SENSITIVITY
   return clampPan(factor * maxPanPx, maxPanPx)
 }
 
@@ -122,10 +151,12 @@ export function neutralAngleForPan(
   maxPanPx: number,
   mode: PanMappingMode,
   useCircularDelta: boolean,
+  opts?: PanMappingOpts,
 ): number {
   if (maxPanPx <= 0) {
     return angleDeg
   }
+  const { sign, fullRangeDeg } = resolveMappingOpts(opts)
   const p = clampPan(panPx, maxPanPx)
 
   if (mode === 'centered') {
@@ -134,7 +165,7 @@ export function neutralAngleForPan(
       return useCircularDelta ? normalizeDeg(angleDeg) : angleDeg
     }
     const eff =
-      ((p + half) / half) * (GYRO_FULL_RANGE_DEG / GYRO_SENSITIVITY) / GYRO_ALPHA_PAN_SIGN
+      ((p + half) / half) * (fullRangeDeg / GYRO_SENSITIVITY) / sign
     const delta =
       eff > 0 ? eff + GYRO_DEADZONE_DEG : eff < 0 ? eff - GYRO_DEADZONE_DEG : 0
     const neutral = angleDeg - delta
@@ -144,7 +175,7 @@ export function neutralAngleForPan(
   if (p === 0) {
     return angleDeg
   }
-  const eff = (-p / maxPanPx) * (GYRO_FULL_RANGE_DEG / GYRO_SENSITIVITY)
+  const eff = (-p / maxPanPx) * (fullRangeDeg / GYRO_SENSITIVITY)
   const delta =
     eff > 0 ? eff + GYRO_DEADZONE_DEG : eff < 0 ? eff - GYRO_DEADZONE_DEG : 0
   return angleDeg - delta
