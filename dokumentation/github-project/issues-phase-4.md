@@ -13,9 +13,13 @@ Milestone: **Phase 4** | Fällig: 26.06.2026
 **Labels:** `org`  
 **Assignee:** Sten / Tina
 
-- **11 Raum-QRs** an Türen (25.06. oder früher)
+> **Scope Nachtrag 2026-06-03:** Nicht mehr pauschal „11× an Türen“. Schulfest: nur **offene Räume** + **Hof-Virtualisierungen** laut Playbook — siehe [issues-schulfest-gs39-nachtrag.md](./issues-schulfest-gs39-nachtrag.md) (Epic **#86**, Issues **#87–#91**). Tag der offenen Tür: Tür-QRs separat planen.
+
+- **Raum-QRs** nur für die im Playbook (#87) freigegebenen Slugs (Ziel: ~5 physisch + 2–4 Hof, **≤7** gesamt am Schulfest)
+- **Offene Räume:** QR an Tür oder im Raum, Augenhöhe Erwachsene
+- **Hof-Virtualisierung:** Outdoor-Spec (#89) — beschriftet, matt laminiert, ≥5 cm
 - Nur Raum-URL, kein Entry-Token auf dem Sticker
-- Lesbar, Augenhöhe Erwachsene
+- **Nicht** aushängen: QR an geschlossenen Klassentüren „für alle 11 Stationen“
 
 ---
 
