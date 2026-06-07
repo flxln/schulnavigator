@@ -1,0 +1,13 @@
+# Keine Originalaufnahmen — nur optimierte Exporte (≤ 500 KB, Kleinbuchstaben .jpg)
+# Rohdateien gehören nach: auftraggeber/material/stationen-360-pano/flat/{slug}/raw/
+*.JPG
+*.JPEG
+*.CR2
+*.CR3
+*.DNG
+*.TIFF
+*.TIF
+*.HEIC
+*.HEIF
+*.ARW
+*.RAF
