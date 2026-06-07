@@ -61,7 +61,9 @@ Alle Befehle im Verzeichnis `app/` ausführen.
 | `lib/`             | Hilfsfunktionen, Typen, Daten-Loader; u. a. `access-tokens.ts`, `scan-url.ts` (#23), `schoolhouse-segments.ts` (#14), `qr-urls.ts` (#15) |
 | `middleware.ts`    | Zugangskontrolle: Cookie `sn_access`, Entry `?t=`, Redirect `/eintritt` (#23, ADR-007) |
 | `data/`            | `stations.json` (Phase 1, Issue #12)                          |
-| `public/stations/` | Raumbilder (`{slug}.jpg`)                                     |
+| `public/stations/` | Raumbilder (`{slug}.jpg`, ≤ 500 KB) — Gyro-Viewer (ADR-006); Slug-Liste + Anforderungen: [`dokumentation/content-verzeichnisstruktur.md`](../dokumentation/content-verzeichnisstruktur.md) |
+| `public/media/`    | Öffentliche Stations-Medien (`{slug}/audio/`, `/video/`, `/fotos/`, `/texte/`) — statisch ausgeliefert; wird befüllt wenn echte Inhalte vorliegen (bis dahin `/demo/`) |
+| `content/`         | Dialog-Audio WAV-Clips (`dialog-audio/{slug}/{nn}-{sprecher}.wav`) — Cookie-geschützt via `GET /api/dialog/…` (ADR-010); `COPY content/ ./content/` im Dockerfile |
 | `public/qr/`       | generierte QR-PNGs + `manifest.json` (Issue #15; PNGs gitignored) |
 
 Dateinamen für Nicht-Komponenten: `kebab-case` (siehe [`CLAUDE.md`](../CLAUDE.md)).
