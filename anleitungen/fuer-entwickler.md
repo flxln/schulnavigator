@@ -140,6 +140,32 @@ Produktion: Multi-Stage-Image wie in [`app/Dockerfile`](../app/Dockerfile), Heal
 
 Die App setzt **`robots.txt`** (`Disallow: /`) und **`noindex`** im Root-Layout (Phase 1, Issue #16), damit die Subdomain nicht in Suchmaschinen indexiert wird.
 
+### Git LFS — Raumbilder (`public/stations/*.jpg`)
+
+Panorama-Exporte unter `public/stations/` werden per [`.gitattributes`](../app/.gitattributes) als **Git LFS** versioniert. `npm run validate:stations` bricht den Build ab, wenn eine `.jpg` ein LFS-Pointer statt echter JPEG-Daten ist.
+
+**Nach Push prüfen (erster LFS-Deploy):**
+
+```bash
+# Altes 4:3-Platzhalter: content-length 457340
+# Neues Pano musik.jpg: ~349000
+curl -sI https://schulnavigator.mpz.schule/stations/musik.jpg | grep -i content-length
+curl -s https://schulnavigator.mpz.schule/stations/musik.jpg | head -c 2 | xxd   # ff d8
+```
+
+**Wenn Coolify-Build mit LFS-Fehler abbricht** (`ist ein Git-LFS-Pointer` in `validate:stations`):
+
+1. Coolify: Build-Umgebung muss `git-lfs` haben und beim Clone smudgen (`git lfs pull` nach Checkout), **oder**
+2. Nixpacks/Pre-Build-Hook: `apk add git-lfs && git lfs pull` (Alpine) vor `docker build`.
+
+Details und History-Entscheidung: [`dokumentation/build-kontext-submodule-regeln.md`](../dokumentation/build-kontext-submodule-regeln.md) (Abschnitt Git LFS).
+
+**Panorama neu exportieren (lokal):**
+
+```bash
+cd app && node scripts/export-pano.mjs
+```
+
 ---
 
 ## Zugangskontrolle (Issue #23, ADR-005/007)
