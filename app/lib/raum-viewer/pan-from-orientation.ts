@@ -38,6 +38,47 @@ export function isGimbalLock(beta: number, wasLocked: boolean): boolean {
   return wasLocked
 }
 
+const DEG_TO_RAD = Math.PI / 180
+const RAD_TO_DEG = 180 / Math.PI
+
+/**
+ * Stabiler Yaw (Blickrichtung) aus α/β/γ statt rohem α.
+ *
+ * Nahe β=90° (Handy aufrecht) sind α und γ Euler-gekoppelt: der Sensor verteilt
+ * dieselbe Drehung mal auf α, mal auf γ → rohes α zittert. Wir bauen stattdessen
+ * den Welt-Richtungsvektor der Geräte-Rückseite (−Z) aus der vollen
+ * Rotationsmatrix und nehmen dessen horizontalen Azimut. Das Euler-Zittern kürzt
+ * sich in der Matrix heraus — die Richtung bleibt durch β=90° hindurch ruhig.
+ *
+ * Bei senkrechtem Handy (β=90°, γ=0) reduziert sich das Ergebnis auf α, damit die
+ * vorhandene Pan-Kalibrierung (Vorzeichen/Range) unverändert weiter gilt.
+ *
+ * Liefert `null`, wenn die Rückseite (fast) senkrecht zeigt (Handy flach, β≈0) —
+ * dort ist der Azimut undefiniert; Aufrufer behält dann den letzten Wert.
+ */
+export function headingFromOrientation(
+  alphaDeg: number,
+  betaDeg: number,
+  gammaDeg: number,
+): number | null {
+  const a = alphaDeg * DEG_TO_RAD
+  const b = betaDeg * DEG_TO_RAD
+  const g = gammaDeg * DEG_TO_RAD
+  const cA = Math.cos(a)
+  const sA = Math.sin(a)
+  const sB = Math.sin(b)
+  const cG = Math.cos(g)
+  const sG = Math.sin(g)
+  // Horizontale Weltkomponenten der Rückseiten-Richtung (−Z im Gerät).
+  // β steckt nur in der Vertikalkomponente → für den Azimut nicht nötig.
+  const worldX = -(cA * sG + cG * sA * sB)
+  const worldY = -(sA * sG - cA * cG * sB)
+  if (Math.abs(worldX) < 1e-6 && Math.abs(worldY) < 1e-6) {
+    return null
+  }
+  return Math.atan2(-worldX, worldY) * RAD_TO_DEG
+}
+
 export function normalizeDeg(deg: number): number {
   let d = deg % 360
   if (d < 0) {

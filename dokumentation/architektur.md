@@ -54,8 +54,8 @@ Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/
 
 | Verhalten | Details |
 | --------- | ------- |
-| Gyro-Pan | Höhenbasiert, horizontal `translateX`; Auto-Zoom bis `MIN_PAN_DISPLAY_RATIO` (2); **Portrait:** `deviceorientation.alpha` (Armschwenk, zweiseitig, Neutral in Bildmitte); **Landscape:** `gamma` (Kippen, einseitig); zirkuläre EMA für alpha; iOS nach Nutzer-Geste |
-| Neutral | ~500 ms Mittelwert (alpha: kreisförmig); nach **Wischen** Re-Kalibrierung (`neutralAngleForPan`); bei **Resize** und **orientationchange** Neu-Kalibrierung; ohne Kompass kann alpha langsam driften → **Stations-Chip** tippen (alle `/raum/[slug]` mit Hero) |
+| Gyro-Pan | Höhenbasiert, horizontal `translateX`; Auto-Zoom bis `MIN_PAN_DISPLAY_RATIO` (2); **Portrait:** stabiler **Yaw aus α/β/γ** (`headingFromOrientation`, Armschwenk, zweiseitig, Neutral in Bildmitte) — **nicht** mehr rohes `alpha`, das bei β≈90° (Handy aufrecht) durch Euler-Gimbal-Lock zittert; der Matrix-Yaw kürzt dieses α↔γ-Zittern heraus (bei β=90° gilt `yaw = α+γ`). **Landscape:** `gamma` (Kippen, einseitig); EMA-Glättung; iOS nach Nutzer-Geste |
+| Neutral | ~500 ms Mittelwert; nach **Wischen** Re-Kalibrierung (`neutralAngleForPan`); bei **Resize** und **orientationchange** Neu-Kalibrierung; ohne Kompass kann der Yaw langsam driften → **Stations-Chip** tippen (alle `/raum/[slug]` mit Hero) |
 | Hotspots | JSON 0–1; bei vertikalem Beschnitt können extreme **y** unsichtbar sein — Build-Warnung in `validate:stations`, Runtime-`console.warn` |
 | UI | `touch-action: none` + CSS-Containment auf dem Viewer; Hero: **Zentrieren** über tappbaren **Stations-Chip** (nicht mehr floating); Default-Layout: Button **Ansicht zentrieren** unter dem Viewer; `?debug=1` für HUD |
 | TopBar (Raum) | `TopBar` mit `onBack`, optionalem `leftExtra` (z. B. Dialog-Ende **X** 38×38) und `right`; rechte Slot-Breite spiegelt links (`lib/ui/top-bar-layout.ts`) |

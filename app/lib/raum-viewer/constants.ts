@@ -10,6 +10,15 @@ export const GYRO_FULL_RANGE_DEG = 60
  * Am iPhone verifizieren; bei invertiertem Pan Vorzeichen flippen.
  */
 export const GYRO_ALPHA_PAN_SIGN = 1
+/**
+ * Portrait-γ-Fallback global an/aus. AUS, weil die symmetrische Lock-Zone
+ * (80–100°) die stabile Seite (80–90°, Handy aufrecht „vor der Brust") mitfing
+ * und genau dort von α auf γ umschaltete → sichtbares Springen in der
+ * Normalhaltung. Mit `false` pant Portrait durchgehend über α-Delta.
+ * Zum Reaktivieren (z. B. Variante B: Zone nur oberhalb 90°) auf `true` und
+ * GIMBAL_LOCK_ENTER/EXIT entsprechend verschieben.
+ */
+export const PORTRAIT_GAMMA_FALLBACK_ENABLED = false
 /** Portrait-Gimbal-Zone betreten: |β−90°| < diese Toleranz → γ-Fallback aktiv. */
 export const GIMBAL_LOCK_ENTER_DEG = 10
 /** Verlassen erst bei |β−90°| > diese Toleranz (Hysterese gegen Flattern am Rand). */

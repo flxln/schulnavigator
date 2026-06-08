@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   angleDeltaDeg,
+  headingFromOrientation,
   resolvePanAxis,
   type PanAxis,
 } from '@/lib/raum-viewer/pan-from-orientation'
@@ -160,8 +161,20 @@ export function useDeviceOrientation(enabled: boolean) {
     }
 
     const onOrient = (e: DeviceOrientationEvent) => {
-      const a = e.alpha
-      if (typeof a === 'number' && !Number.isNaN(a)) {
+      const ea = e.alpha
+      const eb = e.beta
+      const eg = e.gamma
+      // Portrait-Pan-Winkel: stabiler Yaw aus α/β/γ statt rohem α (ruhig durch β=90°).
+      const a =
+        typeof ea === 'number' &&
+        !Number.isNaN(ea) &&
+        typeof eb === 'number' &&
+        !Number.isNaN(eb) &&
+        typeof eg === 'number' &&
+        !Number.isNaN(eg)
+          ? headingFromOrientation(ea, eb, eg)
+          : null
+      if (a !== null) {
         const prevRaw = prevRawAlpha.current
         if (prevRaw === null) {
           prevRawAlpha.current = a
