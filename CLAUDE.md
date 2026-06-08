@@ -12,7 +12,7 @@ Eine Web-App für Schulen. Besucher eines Tags der offenen Tür scannen QR-Codes
 
 ## Projektphasen
 
-Das Projekt liegt unter `2_in-arbeit/schulnavigator/`. **Phase 0** (Architektur-ADRs) ist abgeschlossen; **Phase 1** (Foundation) umfasst **#9–#16** (Next.js, Docker, `/raum/[slug]`, `stations.json`, Raum-Shell, **Startseite Schulhaus-Hub**, Vitest, **QR-Generator**, **Deploy-Runbook + Go-Live-Härtung**) — siehe [`dokumentation/projektplan.md`](./dokumentation/projektplan.md). **Phase 2:** Raum-Viewer Gyro + Hotspots + GS39-Theme (**#55**) sowie Mobil-Härtung (**#56**); Dialog Maskottchen (**#71**, ADR-011) und Raum-UI Polish TopBar/Chip (**#72**, [PR #73](https://github.com/flxln/schulnavigator/pull/73)) — umgesetzt bzw. in PR. Offen in Phase 1: u. a. **#17** (Raumfotos, extern). **Live:** `https://schulnavigator.mpz.schule` (Coolify) — Betrieb und Troubleshooting in [`anleitungen/fuer-entwickler.md`](./anleitungen/fuer-entwickler.md).
+Das Projekt liegt unter `2_in-arbeit/schulnavigator/`. **Phase 0** (Architektur-ADRs) ist abgeschlossen; **Phase 1** (Foundation) umfasst **#9–#16** — siehe [`dokumentation/projektplan.md`](./dokumentation/projektplan.md). **Phase 2:** Raum-Viewer (**#55**/#56), GS39-UI (**#58**), Dialog Maskottchen (**#71**/#72) — umgesetzt. **Raumbilder:** **#27** geschlossen (8/11 Panorama in `public/stations/`); **#17** offen für `kunst`, `hort`, `schulsozialarbeit`. **Live:** `https://schulnavigator.mpz.schule` (Coolify) — [`anleitungen/fuer-entwickler.md`](./anleitungen/fuer-entwickler.md).
 
 ---
 
@@ -153,3 +153,4 @@ Kurzfassung (vorläufig):
 | Welche Entscheidungen wurden bereits getroffen? | `dokumentation/entscheidungen.md`          |
 | Wie wird deployed?                              | `dokumentation/adr/001-hosting-coolify.md` |
 | Docker nur `app/`, Submodule nicht einbinden?   | `dokumentation/build-kontext-submodule-regeln.md` |
+| Content-Architektur (Pfade, Slugs, Ablage)      | `dokumentation/content-verzeichnisstruktur.md` |

@@ -24,6 +24,8 @@ Milestone: **Phase 3** | Fällig: 24.06.2026
 
 ## #27 — Raumfotos einpflegen
 
+**GitHub:** https://github.com/flxln/schulnavigator/issues/27 — **geschlossen** (2026-06-08, MVP 8/11 Panorama)
+
 **Labels:** `content`  
 **Assignee:** Felix
 
@@ -31,6 +33,20 @@ Milestone: **Phase 3** | Fällig: 24.06.2026
 - Zuordnung nach [`zuordnung-stationen-bilder.md`](../../auftraggeber/material/stationen/zuordnung-stationen-bilder.md) → `public/stations/{slug}.jpg`
 - WebP/optimiertes JPG, max. ~500 KB; **Panorama** für Gyro-Viewer: **≥ 2,5 : 1**, min. 2400 px Breite ([ADR-006](../adr/006-raum-viewer-gyro-hotspots.md), Briefing [`zuordnung-stationen-bilder.md`](../../auftraggeber/material/stationen/zuordnung-stationen-bilder.md))
 - `schulsozialarbeit`: bis HD-Foto fehlt → ohne Gyro (statisch)
+
+### Umsetzung (08.06.2026)
+
+- [x] Export-Skript [`app/scripts/export-pano.mjs`](../../app/scripts/export-pano.mjs) — `sips`, Rohquelle `auftraggeber/.../flat/{slug}/raw/`, Ziel `export/` + `app/public/stations/`
+- [x] **8** Panorama-Exporte (4320×1440 → optimiert ≤500 KB, Ratio 3:1): `klassenzimmer`, `daz`, `pc-raum`, `werken`, `turnhalle`, `speiseraum`, `lesewelt`, `musik`
+- [x] Erster **Git-LFS**-Push (`public/stations/*.jpg`); `validate:stations` mit JPEG-Magic-Byte-Check; Live-Deploy verifiziert (`musik.jpg` ~349 KB)
+- [x] `schulsozialarbeit`: `bild` aus `stations.json` entfernt, Platzhalter-JPG gelöscht
+- [x] Doku: [`app/public/stations/README.md`](../../app/public/stations/README.md), [`build-kontext-submodule-regeln.md`](../build-kontext-submodule-regeln.md) (LFS), [`fuer-entwickler.md`](../../anleitungen/fuer-entwickler.md)
+
+### Nicht im Scope (bleibt **#17**)
+
+- [ ] `kunst`, `hort` — weiterhin 4:3-Platzhalter (kein Pano-Rohmaterial)
+- [ ] `schulsozialarbeit` — Foto-Nachlieferung Schule
+- [ ] Hotspot-Feintuning `daz`/`pc-raum` nach Sichtkontrolle Handy ([`lokal-testen-und-anschauen.md`](../../anleitungen/lokal-testen-und-anschauen.md))
 
 ---
 

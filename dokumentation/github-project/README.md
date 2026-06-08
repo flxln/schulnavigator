@@ -41,5 +41,7 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issue **#72** (Raum-UI TopBar/Chip, Follow-up #71) — geschlossen (2026-05-28, [PR #73](https://github.com/flxln/schulnavigator/pull/73) → `main` @ `7fc23c6`)
 - [x] Issue **#81** (Scan-Chrome: Kamerabild füllt Rahmen, Folge #62) — geschlossen (2026-05-30, Sub-Issue von #62)
 - [ ] Epic **#74** (Tablet/iPad Layout) + **#75–#78** — angelegt 2026-05-28; Spezifikation [epic-tablet-ipad-layout.md](epic-tablet-ipad-layout.md), [ADR-012](../adr/012-tablet-ipad-responsive-layout.md)
+- [x] Issue **#27** (Raumfotos einpflegen) — geschlossen 2026-06-08: 8× Panorama in `public/stations/`, LFS, `export-pano.mjs`
+- [ ] Issue **#17** (Raumfotos liefern, extern) — Teillieferung 8/11; offen: `kunst`, `hort`, `schulsozialarbeit`
 
-Letzter dokumentierter Abgleich: **2026-06-01** (#84 Startseiten-CTAs, Sub-Issue #83); zuvor **2026-05-30** (#83 Fest-Freischaltung/Hub-Vorschlag, #82 Eintritt-Scan, #81 Scan-Chrome).
+Letzter dokumentierter Abgleich: **2026-06-08** (#27 Panorama-Raumbilder, #17 Teillieferung); zuvor **2026-06-01** (#84 Startseiten-CTAs).
