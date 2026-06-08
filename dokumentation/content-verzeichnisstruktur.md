@@ -49,9 +49,9 @@ auftraggeber/material/
 │   ├── zuordnung-stationen-bilder.md   # Slug ↔ Foto (Referenz)
 │   ├── Virtueller Schulrundgang.html
 │   ├── 001.jpeg … 012.jpeg             # 4:3-Rohfotos
-│   └── transkripte/                    # Dialog-Artefakte
-│       ├── daz/
-│       └── pc-raum/
+│   └── transkripte/                    # Dialog-Artefakte (Nummern-Schema)
+│       ├── 010-PC-Raum/                # → app/content/dialog-audio/pc-raum/ (Kopie umbenennen)
+│       └── 011-DaZ-Zimmer/             # → app/content/dialog-audio/daz/ (Kopie umbenennen)
 │
 ├── stationen-360-pano/                 # Gyro-Panoramas (ADR-006)
 │   ├── README.md
@@ -120,9 +120,9 @@ app/
 | Texte, Hotspots, Dialog-Metadaten | `stationen/`, `transkripte/` | `data/stations.json` | SSR/Client |
 | Raumbild / Gyro-Panorama | `stationen-360-pano/flat/{slug}/export/` | `public/stations/{slug}.jpg` | statisch |
 | 360°-Kugel (später, ADR-014) | `stationen-360-pano/equirect/` | `public/stations/360/{slug}.jpg` | statisch |
-| Dialog-Audio | `transkripte/{slug}/` | `content/dialog-audio/{slug}/` | `GET /api/dialog/…` (Cookie) |
+| Dialog-Audio | `transkripte/010-PC-Raum/`, `011-DaZ-Zimmer/` (→ Slug beim Kopieren) | `content/dialog-audio/{slug}/` | `GET /api/dialog/…` (Cookie) |
 | Audio / Video / Foto / Text | `medien/{slug}/` | `public/media/{slug}/…` | statisch |
-| Brand / Maskottchen | `UI-Vorschläge/assets/` | `public/brand/` | statisch |
+| Brand / Maskottchen | `Virtueller Schulrundgang/assets/` | `public/brand/` | statisch |
 | QR-Codes | — | `public/qr/` | statisch |
 
 ---
@@ -132,7 +132,7 @@ app/
 - **Dateiname:** `{nn}-{sprecher}.wav` — nn zweistellig (01–99), sprecher: `frieda`, `otto` oder `beide`
 - **Ablage:** `app/content/dialog-audio/{slug}/`
 - **Route:** `GET /api/dialog/{slug}/{clip}` mit Cookie-Auth (403 ohne Token), Range/206 für iOS
-- **Quelle:** `auftraggeber/material/stationen/transkripte/{slug}/`
+- **Quelle:** `auftraggeber/material/stationen/transkripte/` — Ordner nach Nummern-Schema (z. B. `010-PC-Raum/`, `011-DaZ-Zimmer/`); beim Deploy nach `content/dialog-audio/{slug}/` kopieren und Ordner nach App-Slug umbenennen
 
 Details: [ADR-010](./adr/010-dialog-cutscene-gated-audio.md).
 
