@@ -113,6 +113,18 @@ npm run start
 15. **`heft` mit Fortschritt:** Vorschlag **in** der Fortschrittskarte → Raum; **kein** Scan-Button auf `/`
 16. **Kein Flash:** `fest` mit Fortschritt neu laden → vor Hydration Einzel-Scan, danach geteilter Button (kein Layout-Sprung der Button-Anzahl prüfen)
 
+**Panorama-Raumbilder (#17/#27) — nach Pano-Tausch:**
+
+| Route | Prüfen |
+| ----- | ------ |
+| `/raum/daz?debug=1` | Gyro-Pan sichtbar (3:1); Frieda/Otto unten tappbar (`y≈0,78`); Sprechblase + Dialog |
+| `/raum/pc-raum?debug=1` | wie `daz` |
+| `/raum/musik` | Demo-Hotspots Video/Audio treffen |
+| `/raum/schulsozialarbeit` | **kein** Raumbild — nur Text/Medienliste |
+| `/raum/kunst`, `/raum/hort` | 4:3-Platzhalter — Gyro schwach, Auto-Zoom-Warnung erwartbar |
+
+Live nach erstem LFS-Push: `curl -sI https://schulnavigator.mpz.schule/stations/musik.jpg` — `content-length` deutlich größer als ~130 B; Magic-Bytes `ff d8` (kein LFS-Pointer im Image).
+
 **Manuelle Test-Matrix (Schulfest-relevant):**
 
 | Umgebung | Prüfen |

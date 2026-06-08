@@ -8,6 +8,9 @@ const publicDir = join(appRoot, 'public')
 const stationsPath = join(appRoot, 'data', 'stations.json')
 
 const WARN_BYTES = 500 * 1024
+const MIN_JPEG_BYTES = 1024
+const JPEG_MAGIC = Buffer.from([0xff, 0xd8])
+const LFS_POINTER_PREFIX = 'version https://git-lfs.github.com/spec/v1'
 const MIN_PAN_DISPLAY_RATIO = 2
 const REF_PHONE_W = 390
 const REF_PHONE_H = 360
@@ -44,6 +47,44 @@ function resolveAssetPath(urlPath) {
   return join(publicDir, rel)
 }
 
+function isJpegFile(fsPath) {
+  const head = readFileSync(fsPath, { flag: 'r' }).subarray(0, 2)
+  return head.length === 2 && head[0] === JPEG_MAGIC[0] && head[1] === JPEG_MAGIC[1]
+}
+
+function checkJpegAsset(label, urlPath, fsPath) {
+  let st
+  try {
+    st = statSync(fsPath)
+  } catch {
+    return
+  }
+  if (st.size < MIN_JPEG_BYTES) {
+    console.error(
+      `${label}: ${urlPath} ist zu klein (${st.size} B) — vermutlich LFS-Pointer oder leere Datei`,
+    )
+    process.exitCode = 1
+    return
+  }
+  if (!isJpegFile(fsPath)) {
+    const peek = readFileSync(fsPath, 'utf8').slice(0, 80)
+    if (peek.startsWith(LFS_POINTER_PREFIX)) {
+      console.error(
+        `${label}: ${urlPath} ist ein Git-LFS-Pointer — lokal „git lfs pull“ oder Build ohne Smudge`,
+      )
+    } else {
+      console.error(`${label}: ${urlPath} ist keine gültige JPEG-Datei (Magic-Bytes fehlen)`)
+    }
+    process.exitCode = 1
+    return
+  }
+  if (st.size > WARN_BYTES) {
+    console.warn(
+      `${label}: ${urlPath} ist groß (${Math.round(st.size / 1024)} KB, Schwellwert ${WARN_BYTES / 1024} KB)`,
+    )
+  }
+}
+
 function checkPath(label, urlPath) {
   const fsPath = resolveAssetPath(urlPath)
   if (!fsPath) {
@@ -54,6 +95,10 @@ function checkPath(label, urlPath) {
   if (!existsSync(fsPath)) {
     console.error(`${label}: Datei fehlt — ${urlPath}`)
     process.exitCode = 1
+    return
+  }
+  if (/\.jpe?g$/i.test(fsPath)) {
+    checkJpegAsset(label, urlPath, fsPath)
     return
   }
   try {

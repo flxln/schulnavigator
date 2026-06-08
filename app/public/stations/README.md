@@ -13,9 +13,13 @@ Raumbilder für den Gyro-Viewer. Eine Datei pro Station, Dateiname = Slug.
 
 Großbuchstaben-Endungen (`.JPG`, `.CR2`, `.DNG`, `.TIFF`, `.HEIC`) sind per `.gitignore` blockiert. Nur freigegebene, optimierte Exporte committen.
 
-## Aktueller Stand
+## Aktueller Stand (Juni 2026)
 
-Alle 11 Stationen als 4:3-Platzhalter vorhanden. Panorama-Exporte (≥ 2,5:1) werden sukzessive nachgeliefert (Issue #17).
+| Slug | Status | Quelle |
+|------|--------|--------|
+| `klassenzimmer`, `daz`, `pc-raum`, `werken`, `turnhalle`, `speiseraum`, `lesewelt`, `musik` | Panorama 3:1 (4320×1440 exportiert) | `auftraggeber/.../flat/{slug}/export/` via `scripts/export-pano.mjs` |
+| `kunst`, `hort` | 4:3-Platzhalter (kein Pano-Rohmaterial) | `auftraggeber/material/stationen/` |
+| `schulsozialarbeit` | kein `bild` in `stations.json` — statische Ansicht bis Foto nachgeliefert | — |
 
 Zuordnung Slug ↔ Rohfoto: [`auftraggeber/material/stationen/zuordnung-stationen-bilder.md`](../../../auftraggeber/material/stationen/zuordnung-stationen-bilder.md)  
 Gyro-Anforderungen: [`anleitungen/fuer-entwickler.md`](../../../anleitungen/fuer-entwickler.md) (Abschnitt „Raumbilder")  

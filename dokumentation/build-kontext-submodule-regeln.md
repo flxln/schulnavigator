@@ -72,7 +72,9 @@ Coolify klont oft **nur** das Hauptrepo (Submodule deaktiviert). Selbst mit Subm
 | Design-Tokens (Build-Check) | `app/scripts/reference/` | `colors_and_type.css` |
 | App-CSS (Runtime) | `app/app/` | `gs39-tokens.css` |
 | Stationen-Daten | `app/data/` | `stations.json` |
-| Statische Medien | `app/public/` | `public/stations/{slug}.jpg` |
+| Raumbilder (Gyro) | `app/public/stations/` | `public/stations/{slug}.jpg` |
+| Öffentliche Medien | `app/public/media/` | `public/media/{slug}/audio/…` |
+| Dialog-Audio (geschützt) | `app/content/` | `content/dialog-audio/{slug}/` |
 | QR-PNGs (generiert) | `app/public/qr/` | `npm run generate:qr` |
 
 **Source of Truth** für Auftraggeber-Themen bleibt im Submodule; die **App** nutzt die **kopierte, versionierte** Fassung im Hauptrepo.
@@ -106,9 +108,25 @@ Workflow bei Token-Änderung:
 
 ---
 
+## Git LFS — `public/stations/*.jpg` (Juni 2026)
+
+**Entscheidung (Option B, pragmatisch):** Keine History-Rewrite-Migration (`git lfs migrate import`). Die elf ursprünglichen 4:3-Platzhalter bleiben als normale Git-Blobs in der History; **neue** Panorama-Exporte unter `public/stations/` gehen ab dem ersten LFS-Push als LFS-Pointer ins Repo. Bloat in der History ist für dieses junge Repo akzeptabel.
+
+| Thema | Regel |
+|-------|--------|
+| `.gitattributes` | `public/stations/*.jpg` → LFS (siehe [`app/.gitattributes`](../app/.gitattributes)) |
+| Validierung | `validate:stations` prüft JPEG-Magic-Bytes — LFS-Pointer (~130 B Text) brechen den Build ab |
+| Coolify / Docker | `COPY . .` kopiert nur **gesmudgte** Working-Copy-Dateien. Coolify muss LFS beim Clone smudgen (`git lfs pull` o. ä.). **Vor Massen-Rollout:** eine Datei deployen und Live-Room prüfen (siehe unten). |
+| Erster LFS-Push | Nach Push: `https://schulnavigator.mpz.schule/raum/musik` — Bild sichtbar? Wenn kaputt: Build um `git-lfs` + `git lfs pull` vor `docker build` ergänzen und in [`anleitungen/fuer-entwickler.md`](../anleitungen/fuer-entwickler.md) dokumentieren. |
+
+**Hinweis:** Roh-Panoramas liegen im Submodule `auftraggeber/material/stationen-360-pano/` (nicht im Image). Export-Skript: `app/scripts/export-pano.mjs` → Kopie nach `app/public/stations/`.
+
+---
+
 ## Verwandte Dokumente
 
 - [`CLAUDE.md`](../CLAUDE.md) — Agenten-Einstieg, Verweis hierher
 - [`anleitungen/fuer-entwickler.md`](../anleitungen/fuer-entwickler.md) — Coolify, Submodule-Fehler, Troubleshooting
 - [`dokumentation/architektur.md`](./architektur.md) — UI-Tokens, Deployment
+- [`dokumentation/content-verzeichnisstruktur.md`](./content-verzeichnisstruktur.md) — Content-Ablage (Autorenzone, Laufzeit, Slugs)
 - [`app/AGENTS.md`](../app/AGENTS.md) — Regeln im npm-Projektroot
