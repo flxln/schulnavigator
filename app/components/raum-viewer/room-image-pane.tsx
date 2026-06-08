@@ -19,6 +19,7 @@ import {
   HOTSPOT_DEBOUNCE_MS,
   MIN_PAN_DISPLAY_RATIO,
   PAN_SMOOTHING,
+  PORTRAIT_GAMMA_FALLBACK_ENABLED,
   RECOMMENDED_SOURCE_ASPECT_MIN,
   ROOM_VIEWER_HEIGHT_CSS,
   ROOM_VIEWER_MAX_HEIGHT_PX,
@@ -68,6 +69,14 @@ const GAMMA_SAMPLE_MAX_ABS = 90
 const GAMMA_FALLBACK_OPTS: PanMappingOpts = {
   sign: GYRO_GAMMA_PAN_SIGN,
   fullRangeDeg: GYRO_GAMMA_FALLBACK_FULL_RANGE_DEG,
+}
+
+/** Portrait-Lock nur, wenn der γ-Fallback aktiviert ist (sonst durchgehend α). */
+function portraitLock(beta: number, wasLocked: boolean): boolean {
+  if (!PORTRAIT_GAMMA_FALLBACK_ENABLED) {
+    return false
+  }
+  return isGimbalLock(beta, wasLocked)
 }
 
 function mean(samples: readonly number[]): number {
@@ -257,7 +266,7 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
           gammaSamples.current.length > 0 ? mean(gammaSamples.current) : 0
         const betaMean =
           betaSamples.current.length > 0 ? mean(betaSamples.current) : 90
-        lockedRef.current = isGimbalLock(betaMean, false)
+        lockedRef.current = portraitLock(betaMean, false)
       } else {
         neutralGamma.current =
           gammaSamples.current.length > 0 ? mean(gammaSamples.current) : 0
@@ -366,7 +375,7 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
           const b = betaRef.current
           const g = gammaRef.current
           if (a !== null && b !== null && g !== null) {
-            const locked = isGimbalLock(b, lockedRef.current)
+            const locked = portraitLock(b, lockedRef.current)
             if (locked !== lockedRef.current) {
               if (locked) {
                 // Entering gamma: Euler rearranges at singularity — wait, then re-anchor
@@ -492,9 +501,9 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
   const debugHud = (() => {
     if (!debugViewer) return ''
     const portraitActive = panAxis === 'alpha' && alpha !== null && beta !== null && gamma !== null
-    const locked = portraitActive ? isGimbalLock(beta, lockedRef.current) : false
+    const locked = portraitActive ? portraitLock(beta, lockedRef.current) : false
     const activeAngle = portraitActive ? (locked ? gamma : alpha) : (panAngle ?? gamma)
-    return `${orientState} | axis:${panAxis === 'alpha' ? 'α' : 'γ'} | α:${alpha?.toFixed(1) ?? '—'} | β:${beta?.toFixed(1) ?? '—'} | γ:${gamma?.toFixed(1) ?? '—'} | lock:${locked ? 1 : 0} | ∠:${activeAngle?.toFixed(1) ?? '—'} | nα:${neutralAlpha.current?.toFixed(1) ?? '—'} | nγ:${neutralGamma.current?.toFixed(1) ?? '—'} | pan:${panPxRef.current.toFixed(0)}/${maxPan.toFixed(0)} | dw:${effectiveDisplayW.toFixed(0)}/${containerW} | z:${zoom.toFixed(2)}`
+    return `${orientState} | axis:${panAxis === 'alpha' ? 'α' : 'γ'} | yaw:${alpha?.toFixed(1) ?? '—'} | β:${beta?.toFixed(1) ?? '—'} | γ:${gamma?.toFixed(1) ?? '—'} | lock:${locked ? 1 : 0} | ∠:${activeAngle?.toFixed(1) ?? '—'} | nα:${neutralAlpha.current?.toFixed(1) ?? '—'} | nγ:${neutralGamma.current?.toFixed(1) ?? '—'} | pan:${panPxRef.current.toFixed(0)}/${maxPan.toFixed(0)} | dw:${effectiveDisplayW.toFixed(0)}/${containerW} | z:${zoom.toFixed(2)}`
   })()
 
   const onPointerDown = useCallback(
@@ -535,7 +544,7 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
         beta !== null &&
         gamma !== null
       ) {
-        const locked = isGimbalLock(beta, lockedRef.current)
+        const locked = portraitLock(beta, lockedRef.current)
         lockedRef.current = locked
         const activeRaw = locked ? gamma : alpha
         const opts = locked ? GAMMA_FALLBACK_OPTS : undefined
@@ -578,7 +587,7 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
       beta !== null &&
       gamma !== null
     ) {
-      const locked = isGimbalLock(beta, lockedRef.current)
+      const locked = portraitLock(beta, lockedRef.current)
       lockedRef.current = locked
       if (locked) {
         neutralGamma.current = gamma

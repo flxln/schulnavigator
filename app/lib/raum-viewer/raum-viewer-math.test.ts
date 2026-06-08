@@ -5,6 +5,7 @@ import {
   angleDeltaDeg,
   circularEmaDeg,
   circularMeanDeg,
+  headingFromOrientation,
   isGimbalLock,
   lerpPan,
   neutralAngleForPan,
@@ -237,6 +238,39 @@ describe('neutralAngleForPan', () => {
       true,
     )
     expect(pan2).toBeCloseTo(pan, 0)
+  })
+})
+
+describe('headingFromOrientation', () => {
+  const norm = (d: number) => ((d % 360) + 360) % 360
+
+  it('reduziert sich bei senkrechtem Handy (β=90, γ=0) auf α', () => {
+    for (const alpha of [0, 45, 90, 180, 270, 359]) {
+      const h = headingFromOrientation(alpha, 90, 0)
+      expect(h).not.toBeNull()
+      expect(norm(h as number)).toBeCloseTo(norm(alpha), 4)
+    }
+  })
+
+  it('bleibt durch β=90° hinweg stetig (kein Sprung in der Singularität)', () => {
+    const alpha = 120
+    const below = headingFromOrientation(alpha, 85, 0) as number
+    const at = headingFromOrientation(alpha, 90, 0) as number
+    const above = headingFromOrientation(alpha, 95, 0) as number
+    expect(Math.abs(angleDeltaDeg(at, below))).toBeLessThan(2)
+    expect(Math.abs(angleDeltaDeg(above, at))).toBeLessThan(2)
+  })
+
+  it('kürzt Euler-Zittern (α↔γ-Kopplung) bei β=90° exakt heraus', () => {
+    // Bei β=90° fallen α- und γ-Achse zusammen → dieselbe Lage; das Sensor-
+    // Zittern verteilt sich auf α/γ, die Richtung bleibt identisch.
+    const clean = headingFromOrientation(120, 90, 0) as number
+    const jittered = headingFromOrientation(120 + 8, 90, -8) as number
+    expect(Math.abs(angleDeltaDeg(jittered, clean))).toBeLessThan(0.001)
+  })
+
+  it('liefert null, wenn die Rückseite senkrecht zeigt (Handy flach, β≈0)', () => {
+    expect(headingFromOrientation(0, 0, 0)).toBeNull()
   })
 })
 
