@@ -166,6 +166,8 @@ Zwei Ausgabe-Typen ([ADR-005](../adr/005-zugangskontrolle-token.md)):
 
 ## #17 — Raumfotos für alle 11 Stationen liefern
 
+**GitHub:** https://github.com/flxln/schulnavigator/issues/17 — **offen** (Teillieferung 8/11 Panorama, Juni 2026)
+
 **Labels:** `content` `extern`  
 **Assignee:** Sten / Tina
 
@@ -173,4 +175,13 @@ Zwei Ausgabe-Typen ([ADR-005](../adr/005-zugangskontrolle-token.md)):
 - **Panorama für Gyro-Viewer** ([ADR-006](../adr/006-raum-viewer-gyro-hotspots.md), umgesetzt in #55/#56): **Empfehlung** überbreites Querformat, **Seitenverhältnis ≥ 2,5 : 1** (z. B. 2500×1000 px), **min. 2400 px** Breite — weniger vertikaler Beschnitt als bei 4:3. **Hinweis:** Die App zoomt schmalere Bilder automatisch, damit am Handy horizontal genug Pan entsteht; Hotspots in **y** nicht zu nah an den Rändern platzieren (Briefing).
 - Aufnahme-Tipp: Handy quer, langsam durch den Raum schwenken / mehrere Bilder zu einem Panorama stitchen — Hotspots später auf genau diesem Bild
 - Format JPG oder WebP; Details: [`zuordnung-stationen-bilder.md`](../../auftraggeber/material/stationen/zuordnung-stationen-bilder.md), [`anleitungen/fuer-entwickler.md`](../../anleitungen/fuer-entwickler.md)
-- Bis 28.05. für Phase 2; **Zielqualität** bleibt Panorama — vorliegende 4:3-JPEGs sind in der App nutzbar (#56 Auto-Zoom), aber mit stärkerem Beschnitt
+
+### Stand (08.06.2026)
+
+| Slug | Lieferung | Rohmaterial | App |
+|------|-----------|-------------|-----|
+| `klassenzimmer`, `daz`, `pc-raum`, `werken`, `turnhalle`, `speiseraum`, `lesewelt`, `musik` | ✅ Panorama 4320×1440 (3:1) | `stationen-360-pano/flat/{slug}/raw/` | eingepflegt via **#27** |
+| `kunst`, `hort` | ❌ nur 4:3-Platzhalter | fehlt unter `flat/{slug}/raw/` | 4:3 aus `material/stationen/` |
+| `schulsozialarbeit` | ❌ kein HD-Foto | — | kein `bild` in `stations.json` (statisch) |
+
+**Offen bis Issue schließbar:** Panorama-Nachlieferung für `kunst`, `hort`; HD-Foto für `schulsozialarbeit`.

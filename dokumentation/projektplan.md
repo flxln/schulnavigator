@@ -142,7 +142,7 @@ Die Schule liefert bis **12.06.** einen Plan: welche Klasse macht welchen Raum i
 
 **Schule (Sten/Tina)**
 
-- [ ] Raumfotos für alle **11** Stationen (Sten/Tina; Material als Fallback)
+- [x] Raumfotos Panorama **8/11** geliefert und eingepflegt (#17/#27, Juni 2026) — offen: `kunst`, `hort` (Pano), `schulsozialarbeit` (HD-Foto)
 - [ ] Zwei Wochen vor Schulfest: Kinder produzieren Content in Klassen
 - [ ] Content gesammelt und an Felix übergeben (spätestens 22.06.)
 
