@@ -161,3 +161,11 @@ Details: [ADR-010](./adr/010-dialog-cutscene-gated-audio.md).
 4. Demo-Datei entfernen, sobald alle Referenzen umgestellt sind
 
 **Owner:** MPZ/Entwickler bei Content-Freigabe der jeweiligen Station.
+
+### Referenz-Migration (umgesetzt 2026-06-10, Issue **#93**)
+
+| Station | Rohquelle | Laufzeit | Hotspots |
+|---------|-----------|----------|----------|
+| `klassenzimmer` | `auftraggeber/material/medien/demo-generiert/` | `app/public/media/klassenzimmer/` (mp3, mp4, jpg, md) | 4 (`hs-text`, `hs-video`, `hs-audio`, `hs-foto`) |
+
+`musik` und `schulsozialarbeit` nutzen weiterhin `/demo/*.txt` für Text-Medien (jetzt inline via `TextViewer`, nicht mehr als externer Link).

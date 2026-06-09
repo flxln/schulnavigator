@@ -5,7 +5,68 @@
       "titel": "Klassenzimmer",
       "beschreibung": "Hallo und willkommen in unserem Klassenzimmer! Hier lernen wir jeden Tag spannende Sachen und manchmal sogar freiwillig. Unsere Stifte machen gern Urlaub unter den Tischen, aber wir finden sie meistens wieder. Viel Spaß beim Rundgang!",
       "bild": "/stations/klassenzimmer.jpg",
-      "medien": []
+      "medien": [
+        {
+          "id": "demo-audio",
+          "typ": "audio",
+          "quelle": "/media/klassenzimmer/audio/grundschule_demo.mp3",
+          "untertitel": "Mein Schultag (Audio)"
+        },
+        {
+          "id": "demo-video",
+          "typ": "video",
+          "videoSource": "upload",
+          "quelle": "/media/klassenzimmer/video/grundschule_demo.mp4",
+          "poster": "/media/klassenzimmer/fotos/grundschule_demo.jpg",
+          "untertitel": "Mein Schultag (Video)"
+        },
+        {
+          "id": "demo-foto",
+          "typ": "foto",
+          "quelle": "/media/klassenzimmer/fotos/grundschule_demo.jpg",
+          "untertitel": "Schulfoto"
+        },
+        {
+          "id": "demo-text",
+          "typ": "text",
+          "quelle": "/media/klassenzimmer/texte/grundschule_demo.md",
+          "untertitel": "Mein Schultag"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "hs-text",
+          "label": "Korkpinnwand",
+          "x": 0.22,
+          "y": 0.45,
+          "radius": 0.06,
+          "mediumId": "demo-text"
+        },
+        {
+          "id": "hs-video",
+          "label": "Tafel",
+          "x": 0.35,
+          "y": 0.38,
+          "radius": 0.06,
+          "mediumId": "demo-video"
+        },
+        {
+          "id": "hs-audio",
+          "label": "Klassentische",
+          "x": 0.52,
+          "y": 0.55,
+          "radius": 0.06,
+          "mediumId": "demo-audio"
+        },
+        {
+          "id": "hs-foto",
+          "label": "Fensterseite",
+          "x": 0.75,
+          "y": 0.4,
+          "radius": 0.06,
+          "mediumId": "demo-foto"
+        }
+      ]
     },
     {
       "slug": "daz",

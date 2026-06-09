@@ -20,7 +20,10 @@ Slug = App-Slug aus der [kanonischen Slug-Liste](../../../dokumentation/content-
 ```json
 { "typ": "audio", "quelle": "/media/{slug}/audio/{dateiname}.mp3" }
 { "typ": "video", "quelle": "/media/{slug}/video/{dateiname}.mp4" }
+{ "typ": "text", "quelle": "/media/{slug}/texte/{dateiname}.md" }
 ```
+
+**Referenz-Station:** `klassenzimmer/` — erste vollständige Migration aus `auftraggeber/material/medien/demo-generiert/` (Issue **#93**).
 
 ## Workflow
 
@@ -32,3 +35,7 @@ Slug = App-Slug aus der [kanonischen Slug-Liste](../../../dokumentation/content-
 ## Hinweis Demo-Platzhalter
 
 Solange kein echter Content vorliegt, zeigt `stations.json` auf `/demo/…`. Nicht löschen bevor alle Referenzen umgestellt sind.
+
+## Text-Medien (inline)
+
+`typ: "text"` wird im Medien-Panel von [`TextViewer`](../../components/media/text-viewer.tsx) gerendert (Markdown `.md` oder Plaintext `.txt`). Keine Cookie-Prüfung — statische Dateien wie Audio/Video/Foto.

@@ -1,6 +1,6 @@
 # Projektplan — Schulnavigator
 
-Stand: 2026-06-09 (Phase 2: #55/#56/#21/#23/#58; Medien-Player **#18–#20**; **ADR-009** GS39 UI) | Schulfest (Hard Deadline): 2026-06-26
+Stand: 2026-06-10 (Phase 2: #55/#56/#21/#23/#58; Medien-Player **#18–#20** + **TextViewer**; Demo-Station **`klassenzimmer`**; **ADR-009** GS39 UI) | Schulfest (Hard Deadline): 2026-06-26
 
 ---
 
@@ -89,6 +89,8 @@ Phase 5 │ Post-Fest / Admin-Interface    │ ab Juli
 - [x] Video-Player-Komponente (Upload/Poster-only/YouTube-Stub; `videoSource`-Schema; `poster?`-Feld) — **#19** (`components/media/video-player.tsx`)
 - [x] Foto-Viewer: Einzelbild + Lightbox expand-in-place (kein Swipe, kein zweites Dialog-Overlay) — **#20** (`components/media/photo-viewer.tsx`)
 - [x] Medientyp-Routing: `MediaPlayerByTyp` delegiert an dedizierte Player — **#18–#20**
+- [x] Text-Viewer: Markdown/Plaintext inline im Medien-Panel (`TextViewer`, lazy) — Follow-up **#18–#20**, Issue **#93**
+- [x] Demo-Station **`klassenzimmer`**: 4 Medien + 4 Hotspots aus `auftraggeber/.../demo-generiert/` → `public/media/klassenzimmer/` — Issue **#93**
 
 **Gamification (Minimal)**
 

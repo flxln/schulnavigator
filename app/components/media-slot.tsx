@@ -37,17 +37,7 @@ export function MediaSlot({ medium, onMediaSelect }: MediaSlotProps) {
         </div>
       ) : null}
       {medium.typ === 'text' ? (
-        <p className="mt-2 text-sm text-fg-2">
-          <a
-            href={medium.quelle}
-            className="font-medium text-accent-alt underline-offset-2 hover:underline"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Textdatei öffnen
-          </a>
-          <span className="text-fg-3"> ({medium.quelle})</span>
-        </p>
+        <p className="mt-2 text-xs text-fg-3">Text im Medienfenster lesen</p>
       ) : null}
       {(medium.typ === 'audio' || medium.typ === 'video') && (
         <p className="mt-2 text-xs text-fg-3">Tippen zum Abspielen</p>

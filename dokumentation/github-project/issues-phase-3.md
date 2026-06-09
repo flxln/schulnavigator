@@ -4,6 +4,8 @@ Milestone: **Phase 3** | Fällig: 24.06.2026
 
 **Voraussetzung:** Content-Lieferplan (#25). **11 Stationen** (Issue #1 / Material Tina).
 
+**Referenz (Phase 2, #93):** `klassenzimmer` hat Demo-Medien unter `public/media/klassenzimmer/` — Vorlage für weitere Stationen.
+
 **Content-Pipeline:** JSON + Dateien in `/public` — [ADR-003](../adr/003-content-mvp-json-directus.md). Videos: MPZ-Upload — [ADR-004](../adr/004-video-hosting-mpz.md). Raum-Viewer: [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md).
 
 | Nr. | Slug (Vorschlag) | Raum |

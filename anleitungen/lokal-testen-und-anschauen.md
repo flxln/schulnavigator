@@ -50,7 +50,7 @@ npm run dev
 | [https://localhost:3000/eintritt/scan](https://localhost:3000/eintritt/scan) | **Vollbild-Entry-Scanner** (#57, #82); Kamera nur auf `localhost`/HTTPS; ohne Cookie erreichbar |
 | [https://localhost:3000/robots.txt](https://localhost:3000/robots.txt) | `Disallow: /` (Issue #16) |
 | [https://localhost:3000/scan](https://localhost:3000/scan) | In-App-QR-Scanner mit dunklem Chrome und gelbem Scan-Rahmen (nach Entry; Kamera-Zugriff nötig) |
-| [https://localhost:3000/raum/klassenzimmer](https://localhost:3000/raum/klassenzimmer) | Standard-Raum-Chrome; leere Medienliste (Empty-State) |
+| [https://localhost:3000/raum/klassenzimmer](https://localhost:3000/raum/klassenzimmer) | **Gyro**, **4 Hotspots**, **4 Medien** (Audio/Video/Foto/Text); Text inline als Markdown im Panel |
 | [https://localhost:3000/raum/daz](https://localhost:3000/raum/daz) | **Dialog:** Frieda/Otto antippen; **X** beendet Dialog; Chip zentriert |
 | [https://localhost:3000/raum/pc-raum](https://localhost:3000/raum/pc-raum) | Zweiter Dialog, gleicher Flow |
 | [https://localhost:3000/raum/werken](https://localhost:3000/raum/werken) | Standard-Raum-Chrome |
@@ -113,12 +113,16 @@ npm run start
 15. **`heft` mit Fortschritt:** Vorschlag **in** der Fortschrittskarte → Raum; **kein** Scan-Button auf `/`
 16. **Kein Flash:** `fest` mit Fortschritt neu laden → vor Hydration Einzel-Scan, danach geteilter Button (kein Layout-Sprung der Button-Anzahl prüfen)
 
-**Medien-Player (#18–#20) — nach Demo-Hotspots:**
+**Medien-Player (#18–#20, TextViewer #93) — nach Demo-Hotspots:**
 
 | Route | Prüfen |
 | ----- | ------ |
+| `/eintritt?t=heft-2026-27` → `/raum/klassenzimmer` | **4 Hotspots** im Panorama; Hotspot **Text** → Markdown inline (Tabelle, Blockquote); Hotspot **Video** → MP4-Wiedergabe |
+| `/raum/klassenzimmer` Medienliste | Alle 4 Tiles; Text-Tile → „Tippen zum Lesen"; Markdown im Panel |
 | `/eintritt?t=heft-2026-27` → `/raum/musik` | Hotspot **Audio** öffnet Panel → Custom-Player (Play/Pause, Balken, Lautstärke); Panel schließen **während Wiedergabe** → Audio stoppt (Cleanup-Check) |
 | `/raum/musik` Hotspot **Video** | Poster-only-Modus (`/demo/video-plakat.jpg`); kein Autoplay, kein leeres `<video>` |
+| `/raum/musik` Medienliste → **Text** | Inline-Plaintext aus `/demo/musik-info.txt` (kein externer Link mehr) |
+| `/raum/schulsozialarbeit` → **Text** | Inline-Plaintext aus `/demo/ssa-hinweis.txt`, Umlaute korrekt |
 | `/raum/musik` Medienliste → **Foto** | Inline-Bild; „Vergrößern"-Button → Vollbild expand-in-place; `Escape` → zurück auf Bild, dann Panel schließen |
 | JSON `videoSource: 'youtube'` (manuell) | Hinweistext „Noch nicht verfügbar", kein Embed |
 | `npm run build` | grün — kein fehlender `poster`-Pfad, kein LFS-Pointer |
