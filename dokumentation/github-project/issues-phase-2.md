@@ -63,7 +63,7 @@ Spezifikation: [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
 - [x] **iOS:** Orientierung nach Nutzer-Geste; HTTPS (bereits #16)
 - [x] Medien-Panel: öffnet Wiedergabe je nach `medium.typ` (dedizierte Player #18–#20)
 - [x] Ohne `bild`: statisches Layout + Medienliste unterhalb
-- [x] Demo-Station mit 1–2 Test-Hotspots für Meeting 10.06. (#25)
+- [x] Demo-Station mit Hotspots für Meeting 10.06. — `musik` (2 HS), **`klassenzimmer`** (4 HS, #93)
 
 ---
 
@@ -133,6 +133,37 @@ Spezifikation: [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
 - `Escape` schließt Vollbild (ohne Panel zu schließen); Tap auf Bild ebenfalls
 - Swipe-Galerie für Fotosets bewusst auf Phase 3 verschoben (kein `bilder[]`)
 - GS39-Styling (`sn-media-photo*`, `.sn-media-photo--enlarged` in `sn-theme.css`)
+
+---
+
+## #93 — TextViewer inline + Demo-Station `klassenzimmer`
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/93 — **geschlossen** (2026-06-10)
+
+**Labels:** `tech` `content`  
+**Assignee:** Felix
+
+Follow-up zu **#18–#20**: `typ: "text"` wird nicht mehr als externer Link gerendert, sondern inline im `StationMediaPanel`.
+
+**Umsetzung:**
+
+- `app/components/media/text-viewer.tsx` + Tests — `fetch` same-origin `.md`/`.txt`; Markdown (`react-markdown`, `remark-gfm`); Plaintext `pre-wrap`; Redirect-/Content-Type-Guard
+- Lazy-Load via `next/dynamic` in `MediaPlayerByTyp`
+- GS39 `.sn-media-text*` in `sn-theme.css`
+- **Globale Wirkung:** `musik` und `schulsozialarbeit` (`.txt` aus `/demo/`) zeigen Text ebenfalls inline
+
+**Demo-Content `klassenzimmer`:**
+
+- Rohquelle: `auftraggeber/material/medien/demo-generiert/`
+- Laufzeit: `app/public/media/klassenzimmer/` (mp3, mp4, jpg, md)
+- `stations.json`: 4 Medien + 4 Hotspots (`hs-text`, `hs-video`, `hs-audio`, `hs-foto`)
+
+### Akzeptanzkriterien
+
+- [x] `/raum/klassenzimmer`: Gyro, 4 Hotspots, 4 Medien-Tiles; Text als Markdown (Tabelle, Blockquote)
+- [x] `/raum/musik`, `/raum/schulsozialarbeit`: Text inline (Regression)
+- [x] `npm run validate:stations` + `npm test` grün
+- [x] Doku: `architektur.md`, `projektplan.md`, `content-verzeichnisstruktur.md`, Meeting-Doku, `lokal-testen`
 
 ---
 

@@ -44,5 +44,6 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issue **#27** (Raumfotos einpflegen) — geschlossen 2026-06-08: 8× Panorama in `public/stations/`, LFS, `export-pano.mjs`
 - [ ] Issue **#17** (Raumfotos liefern, extern) — Teillieferung 8/11; offen: `kunst`, `hort`, `schulsozialarbeit`
 - [x] Issues **#18–#20** (Audio-/Video-Player, Foto-Viewer) — geschlossen 2026-06-09: `app/components/media/`, `MediaPlayerByTyp`, `poster?`-Schema
+- [x] Issue **#93** (TextViewer inline + Demo `klassenzimmer`) — geschlossen 2026-06-10: `TextViewer`, `public/media/klassenzimmer/`, 4 Hotspots
 
-Letzter dokumentierter Abgleich: **2026-06-09** (#18–#20 Medien-Player); zuvor **2026-06-08** (#27 Panorama-Raumbilder).
+Letzter dokumentierter Abgleich: **2026-06-10** (#93 TextViewer + Klassenzimmer-Demo); zuvor **2026-06-09** (#18–#20 Medien-Player).

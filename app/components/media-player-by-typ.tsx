@@ -1,9 +1,15 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import type { Medium } from '@/lib/types'
 import { AudioPlayer } from '@/components/media/audio-player'
 import { VideoPlayer } from '@/components/media/video-player'
 import { PhotoViewer } from '@/components/media/photo-viewer'
+
+const TextViewer = dynamic(
+  () => import('@/components/media/text-viewer').then((m) => m.TextViewer),
+  { ssr: false },
+)
 
 export type MediaPlayerByTypProps = {
   medium: Medium
@@ -18,18 +24,7 @@ export function MediaPlayerByTyp({ medium }: MediaPlayerByTypProps) {
     case 'foto':
       return <PhotoViewer src={medium.quelle} alt={medium.untertitel ?? 'Stationsfoto'} />
     case 'text':
-      return (
-        <p className="text-sm text-fg-2">
-          <a
-            href={medium.quelle}
-            className="font-medium text-accent-alt underline-offset-2 hover:underline"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Textdatei öffnen
-          </a>
-        </p>
-      )
+      return <TextViewer src={medium.quelle} />
     default:
       return null
   }

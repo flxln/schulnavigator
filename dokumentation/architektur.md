@@ -1,6 +1,6 @@
 # Schulnavigator — Architektur
 
-_Stand: 2026-06-09 (**#18–#20:** Medien-Player; **#72:** Dialog-Ende TopBar, Chip-Zentrieren; **ADR-012:** Tablet-Layout geplant [#74–#78]; **ADR-009:** Hub; **#55/#56:** Raum-Viewer; Live #16) — siehe [entscheidungen.md](./entscheidungen.md)_
+_Stand: 2026-06-10 (**#93:** TextViewer + Demo `klassenzimmer`; **#18–#20:** Medien-Player; **#72:** Dialog-Ende TopBar, Chip-Zentrieren; **ADR-012:** Tablet-Layout geplant [#74–#78]; **ADR-009:** Hub; **#55/#56:** Raum-Viewer; Live #16) — siehe [entscheidungen.md](./entscheidungen.md)_
 
 ## Tech-Stack
 
@@ -62,7 +62,7 @@ Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/
 | Recenter-API | `RaumViewerHandle.recenterView()` — intern `RoomImagePane`; **nicht** aus `raum-viewer/index.ts` als Pane exportiert (#72) |
 | Fallback | Wischen, Tap; Banner wenn Orientierung fehlt; `sessionStorage`-Merker iOS + 2s-Watchdog bei fehlenden Events |
 | Ohne `bild` | Statisches Layout + Medienliste ([ADR-006](./adr/006-raum-viewer-gyro-hotspots.md)) |
-| Demo | `/raum/musik` (Hotspots, 4 Medientypen); `/raum/daz`, `/raum/pc-raum` (Maskottchen-Dialog-Hotspots, [ADR-011](./adr/011-dialog-mascot-hotspots.md), Audio [ADR-010](./adr/010-dialog-cutscene-gated-audio.md)) — Gyro/Dialog auf iPhone nur unter **HTTPS**; Eintritt zuerst `/eintritt?t=fest-2026` |
+| Demo | `/raum/klassenzimmer` (4 Hotspots, 4 Medientypen inkl. Markdown-Text inline, echte Dateien unter `/media/klassenzimmer/`); `/raum/musik` (2 Hotspots, 4 Medientypen, Platzhalter `/demo/`); `/raum/daz`, `/raum/pc-raum` (Maskottchen-Dialog-Hotspots, [ADR-011](./adr/011-dialog-mascot-hotspots.md), Audio [ADR-010](./adr/010-dialog-cutscene-gated-audio.md)) — Gyro/Dialog auf iPhone nur unter **HTTPS**; Eintritt zuerst `/eintritt?t=fest-2026` |
 
 **Raumbilder (#17 / #27):** **8/11** Stationen mit Panorama 3:1 in `public/stations/` (Juni 2026, Git LFS); `kunst`/`hort` noch 4:3; `schulsozialarbeit` ohne `bild`. **Panorama** (≥ **2,5 : 1**, min. 2400 px Breite) bleibt ideal. Die App **zoomt** schmalere Bilder automatisch so, dass horizontal mindestens **`MIN_PAN_DISPLAY_RATIO` (2)** erreicht wird (`roomPanZoom`) — dabei entsteht **vertikaler Beschnitt**; Hotspot-**y** im mittleren Drittel platzieren. Konstanten: `lib/raum-viewer/constants.ts`, Geometrie: `room-pan-zoom.ts`, `clip-zone.ts`. Briefing: [`zuordnung-stationen-bilder.md`](../auftraggeber/material/stationen/zuordnung-stationen-bilder.md). **Viewport:** [`app/app/layout.tsx`](../app/app/layout.tsx) exportiert `viewport` (`device-width`, `initialScale: 1`).
 
@@ -75,7 +75,7 @@ Hotspot oder Medienliste → [`StationMediaPanel`](../app/components/station-med
 | `audio` | [`AudioPlayer`](../app/components/media/audio-player.tsx) | Custom Controls (Play/Pause, Fortschritt, Lautstärke), GS39 (`sn-media-audio*`); `pause()` im Unmount-Cleanup |
 | `video` | [`VideoPlayer`](../app/components/media/video-player.tsx) | Modus nach **`videoSource`** (führend): `upload` + MP4 → `<video controls playsInline>`; `upload` + Bild → Poster-only; `youtube` → Hinweistext (MVP inaktiv, [ADR-004](./adr/004-video-hosting-mpz.md)) |
 | `foto` | [`PhotoViewer`](../app/components/media/photo-viewer.tsx) | Inline `<img>` (bewusst kein `next/image` — dynamische JSON-URLs); Expand-in-place-Vollbild innerhalb des Panels; kein Swipe-Set (Phase 3) |
-| `text` | Link in `MediaPlayerByTyp` | unverändert |
+| `text` | [`TextViewer`](../app/components/media/text-viewer.tsx) (lazy via `dynamic()`) | `fetch` same-origin `.md`/`.txt`; Markdown (`react-markdown` + `remark-gfm`) oder Plaintext (`pre-wrap`); Redirect-/Content-Type-Guard; GS39 `.sn-media-text*` |
 
 **Video-Datenvertrag** (`videoSource` führend, Endung nur Fallback bei `upload`):
 

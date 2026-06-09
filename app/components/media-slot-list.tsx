@@ -65,7 +65,9 @@ export function MediaSlotList({
                   <p className="truncate text-sm font-extrabold text-fg-1">
                     {medium.untertitel ?? medium.typ}
                   </p>
-                  <p className="mt-0.5 text-xs text-fg-3">Tippen zum Abspielen</p>
+                  <p className="mt-0.5 text-xs text-fg-3">
+                    {medium.typ === 'text' ? 'Tippen zum Lesen' : 'Tippen zum Abspielen'}
+                  </p>
                 </div>
               </button>
             </li>
