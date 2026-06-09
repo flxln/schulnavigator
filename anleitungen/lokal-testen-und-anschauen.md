@@ -59,7 +59,7 @@ npm run dev
 | [https://localhost:3000/raum/kunst](https://localhost:3000/raum/kunst) | Standard-Raum-Chrome |
 | [https://localhost:3000/raum/lesewelt](https://localhost:3000/raum/lesewelt) | Standard-Raum-Chrome |
 | [https://localhost:3000/raum/hort](https://localhost:3000/raum/hort) | Standard-Raum-Chrome |
-| [https://localhost:3000/raum/musik](https://localhost:3000/raum/musik) | **Gyro**, **2 Hotspots**, **4 Medien-Slots** (Demo-Typen); Chip zentriert |
+| [https://localhost:3000/raum/musik](https://localhost:3000/raum/musik) | **Gyro**, **2 Hotspots**, **4 Medien-Slots** (Audio/Video/Foto/Text, Player #18–#20); Chip zentriert |
 | [https://localhost:3000/raum/schulsozialarbeit](https://localhost:3000/raum/schulsozialarbeit) | Standard-Raum-Chrome; ein Text-Medium |
 | [https://localhost:3000/raum/gibts-nicht](https://localhost:3000/raum/gibts-nicht) | **404** (nur im Dev-Server; unbekannte Slugs sind zur Build-Zeit fest) |
 
@@ -112,6 +112,18 @@ npm run start
 14. **`fest` 11/11:** kein Scan-CTA (Sparkle in der Fortschrittskarte optional)
 15. **`heft` mit Fortschritt:** Vorschlag **in** der Fortschrittskarte → Raum; **kein** Scan-Button auf `/`
 16. **Kein Flash:** `fest` mit Fortschritt neu laden → vor Hydration Einzel-Scan, danach geteilter Button (kein Layout-Sprung der Button-Anzahl prüfen)
+
+**Medien-Player (#18–#20) — nach Demo-Hotspots:**
+
+| Route | Prüfen |
+| ----- | ------ |
+| `/eintritt?t=heft-2026-27` → `/raum/musik` | Hotspot **Audio** öffnet Panel → Custom-Player (Play/Pause, Balken, Lautstärke); Panel schließen **während Wiedergabe** → Audio stoppt (Cleanup-Check) |
+| `/raum/musik` Hotspot **Video** | Poster-only-Modus (`/demo/video-plakat.jpg`); kein Autoplay, kein leeres `<video>` |
+| `/raum/musik` Medienliste → **Foto** | Inline-Bild; „Vergrößern"-Button → Vollbild expand-in-place; `Escape` → zurück auf Bild, dann Panel schließen |
+| JSON `videoSource: 'youtube'` (manuell) | Hinweistext „Noch nicht verfügbar", kein Embed |
+| `npm run build` | grün — kein fehlender `poster`-Pfad, kein LFS-Pointer |
+
+---
 
 **Panorama-Raumbilder (#17/#27) — nach Pano-Tausch:**
 

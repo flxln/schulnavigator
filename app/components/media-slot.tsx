@@ -50,9 +50,7 @@ export function MediaSlot({ medium, onMediaSelect }: MediaSlotProps) {
         </p>
       ) : null}
       {(medium.typ === 'audio' || medium.typ === 'video') && (
-        <p className="mt-2 text-sm text-fg-2">
-          Player und Wiedergabe folgen in Phase 2.
-        </p>
+        <p className="mt-2 text-xs text-fg-3">Tippen zum Abspielen</p>
       )}
     </>
   )

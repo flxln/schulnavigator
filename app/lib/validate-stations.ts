@@ -54,6 +54,16 @@ function validateMedium(m: unknown, ctx: string): Medium {
       `${ctx}: videoSource ungültig`,
     )
   }
+  if (m.poster !== undefined) {
+    assert(
+      m.typ === 'video',
+      `${ctx}: poster darf nur bei typ 'video' gesetzt sein`,
+    )
+    assert(
+      typeof m.poster === 'string' && m.poster.startsWith('/'),
+      `${ctx}: poster muss string mit führendem / sein`,
+    )
+  }
   if (m.untertitel !== undefined) {
     assert(
       typeof m.untertitel === 'string',

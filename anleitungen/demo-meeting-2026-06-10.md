@@ -17,7 +17,7 @@ Kurzablauf für Sten/Tina auf echtem Gerät (**HTTPS**, z. B. `https://schulnavi
    `/scan` → Raum-QR scannen (z. B. `musik`). Zurück zur Startseite: Fenster freigeschaltet, Fortschritt sichtbar.
 
 3. **Technik-Station `musik`**  
-   `/raum/musik` — Gyro (Armschwenk), Hotspots, **Stations-Chip** zum Zentrieren. Medienliste unten: **Audio, Video (Poster), Foto, Text** — vier Typen, keine Platzhalter-UI-Lücken.
+   `/raum/musik` — Gyro (Armschwenk), Hotspots, **Stations-Chip** zum Zentrieren. Medienliste unten: **Audio** (Custom-Player), **Video** (Poster-only), **Foto** (Lightbox), **Text** — vier Typen mit funktionierender Wiedergabe (#18–#20).
 
 4. **Story-Station `daz`**  
    `/raum/daz` → **Frieda oder Otto** im Raumbild antippen (links/rechts). Sprechblase oben, Gyro bleibt an; Dialog durchspielen. Grüße-Block: Sprechblase bleibt, Stimmen wechseln. Audio nur mit gültigem Cookie (kein direkter Dateilink). **X** neben Zurück beendet die Wiedergabe; **Stations-Chip** zentriert die Raumansicht.

@@ -1,6 +1,6 @@
 # Projektplan — Schulnavigator
 
-Stand: 2026-05-27 (Phase 2: #55/#56/#21/#23; **ADR-009** GS39 UI / isometrischer Hub in Umsetzung) | Schulfest (Hard Deadline): 2026-06-26
+Stand: 2026-06-09 (Phase 2: #55/#56/#21/#23/#58; Medien-Player **#18–#20**; **ADR-009** GS39 UI) | Schulfest (Hard Deadline): 2026-06-26
 
 ---
 
@@ -85,23 +85,23 @@ Phase 5 │ Post-Fest / Admin-Interface    │ ab Juli
 
 **Medien**
 
-- [ ] Audio-Player-Komponente (native HTML5, kein externes Plugin)
-- [ ] Video-Player-Komponente (MPZ-Upload; YouTube-Feld im Schema, MVP nicht nutzen)
-- [ ] Bild-Galerie-Komponente (für Fotosets)
-- [ ] Medientyp-Routing: Station zeigt je nach Inhalt automatisch den richtigen Player
+- [x] Audio-Player-Komponente (Custom Controls, GS39; Cleanup bei Panel-Unmount) — **#18** (`components/media/audio-player.tsx`)
+- [x] Video-Player-Komponente (Upload/Poster-only/YouTube-Stub; `videoSource`-Schema; `poster?`-Feld) — **#19** (`components/media/video-player.tsx`)
+- [x] Foto-Viewer: Einzelbild + Lightbox expand-in-place (kein Swipe, kein zweites Dialog-Overlay) — **#20** (`components/media/photo-viewer.tsx`)
+- [x] Medientyp-Routing: `MediaPlayerByTyp` delegiert an dedizierte Player — **#18–#20**
 
 **Gamification (Minimal)**
 
 - [x] Stempel-System via `localStorage`: Station besucht = Häkchen gesetzt — **#21**
 - [x] Startseite zeigt Fortschritt (z.B. 3/11 Stationen besucht) — **#21** (UI-Polish → #58)
-- [ ] Abschluss-Animation wenn alle 11 erledigt (Sparkle/Konfetti) — **#22** / **#58**
+- [x] Abschluss-Animation wenn alle 11 erledigt (Sparkle/Konfetti) — **#22** / **#58**
 
 **GS39 UI — Design „Virtueller Schulrundgang“** ([ADR-009](./adr/009-hub-isometrisch.md), Epic **#58**)
 
 - [x] ADR-009 + Doku-Sync (Hub isometrisch statt Puzzle)
-- [ ] Isometrisches Schulhaus-Hub + `schoolhouse-isometric-map.ts` (ersetzt #14 Puzzle)
-- [ ] GS39-Chrome: Fonts (Caveat), `sn-theme`, UI-Primitives, Brand-Assets unter `app/public/brand/`
-- [ ] Screens: Home, Eintritt, `/stationen`, Raum-/Scan-Chrome um bestehenden Viewer
+- [x] Isometrisches Schulhaus-Hub + `schoolhouse-isometric-map.ts` (ersetzt #14 Puzzle)
+- [x] GS39-Chrome: Fonts (Caveat), `sn-theme`, UI-Primitives, Brand-Assets unter `app/public/brand/`
+- [x] Screens: Home, Eintritt, `/stationen`, Raum-/Scan-Chrome um bestehenden Viewer
 - [ ] Mit Schule: Zuordnung SVG-Slot `ground-mid` (Eingangstür) → Station-Slug
 
 **Zugangskontrolle** ([ADR-005](./adr/005-zugangskontrolle-token.md), [ADR-007](./adr/007-zugangskontrolle-cookie.md)) — GitHub **#23**

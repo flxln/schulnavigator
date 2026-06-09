@@ -109,7 +109,20 @@ app/
 |------|------|--------------|
 | `bild` | `/stations/{slug}.jpg` | statisch |
 | `medien[].quelle` (audio/video/foto/text) | `/media/{slug}/{typ}/{datei}` | statisch |
+| `medien[].poster` (nur `typ: video`) | `/media/{slug}/video/{datei}` oder Demo-Pfad | statisch; optional bei Upload-MP4 |
 | `dialog.segmente[].quelle` | `/api/dialog/{slug}/{nn}-{sprecher}.wav` | Route-Handler, Cookie-geschützt |
+
+### Video-Felder (`typ: video`, #19)
+
+`videoSource` ist die führende Modus-Quelle (nicht die Dateiendung):
+
+| Modus | `videoSource` | `quelle` | `poster?` |
+|-------|---------------|----------|-----------|
+| Upload-Video | `upload` | Pfad `.mp4`/`.webm`/`.mov` | optional |
+| Poster-only (noch kein MP4) | `upload` | Pfad auf Poster-Bild | leer |
+| YouTube (MVP inaktiv) | `youtube` | bare Video-ID (kein `/`) | n/a |
+
+`poster` darf nur bei `typ === 'video'` gesetzt sein (`validate-stations.ts`). YouTube-`quelle` ohne `/` wird vom Asset-Validator übersprungen.
 
 ---
 

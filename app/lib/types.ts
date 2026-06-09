@@ -46,6 +46,8 @@ export interface Medium {
   typ: MediumTyp
   quelle: string
   videoSource?: VideoSource
+  /** Nur typ === 'video' (videoSource 'upload'): optionales Vorschaubild. Validator erzwingt den Typ-Scope. */
+  poster?: string
   untertitel?: string
 }
 

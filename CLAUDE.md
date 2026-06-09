@@ -12,7 +12,7 @@ Eine Web-App für Schulen. Besucher eines Tags der offenen Tür scannen QR-Codes
 
 ## Projektphasen
 
-Das Projekt liegt unter `2_in-arbeit/schulnavigator/`. **Phase 0** (Architektur-ADRs) ist abgeschlossen; **Phase 1** (Foundation) umfasst **#9–#16** — siehe [`dokumentation/projektplan.md`](./dokumentation/projektplan.md). **Phase 2:** Raum-Viewer (**#55**/#56), GS39-UI (**#58**), Dialog Maskottchen (**#71**/#72) — umgesetzt. **Raumbilder:** **#27** geschlossen (8/11 Panorama in `public/stations/`); **#17** offen für `kunst`, `hort`, `schulsozialarbeit`. **Live:** `https://schulnavigator.mpz.schule` (Coolify) — [`anleitungen/fuer-entwickler.md`](./anleitungen/fuer-entwickler.md).
+Das Projekt liegt unter `2_in-arbeit/schulnavigator/`. **Phase 0** (Architektur-ADRs) ist abgeschlossen; **Phase 1** (Foundation) umfasst **#9–#16** — siehe [`dokumentation/projektplan.md`](./dokumentation/projektplan.md). **Phase 2:** Raum-Viewer (**#55**/#56), GS39-UI (**#58**), Dialog Maskottchen (**#71**/#72), Medien-Player (**#18–#20**) — umgesetzt. **Raumbilder:** **#27** geschlossen (8/11 Panorama in `public/stations/`); **#17** offen für `kunst`, `hort`, `schulsozialarbeit`. **Live:** `https://schulnavigator.mpz.schule` (Coolify) — [`anleitungen/fuer-entwickler.md`](./anleitungen/fuer-entwickler.md).
 
 ---
 
@@ -48,7 +48,7 @@ schulnavigator/
 │
 └── app/                               # Next.js (npm-Projektroot) = Docker-Build-Kontext
     ├── app/                           # App Router: `/`, `/scan`, `/raum/[slug]`, `api/health`; `gs39-tokens.css`
-    ├── components/                    # u. a. `raum-viewer/`, `raum-station-client.tsx`, `schoolhouse/` (#14)
+    ├── components/                    # u. a. `raum-viewer/`, `media/` (#18–#20), `raum-station-client.tsx`, `schoolhouse/` (#14)
     ├── data/
     ├── lib/                           # u. a. `stations.ts`, `school-theme.ts`, `raum-viewer/`, `schoolhouse-*.ts` (#14)
     ├── scripts/                       # u. a. `validate-tokens.mjs`, `reference/colors_and_type.css` (Docker)

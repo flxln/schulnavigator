@@ -130,6 +130,9 @@ for (const st of stations) {
     if (m?.quelle && typeof m.quelle === 'string' && m.quelle.startsWith('/')) {
       checkPath(`Station ${slug} (medium ${m.id ?? '?'})`, m.quelle)
     }
+    if (m?.poster && typeof m.poster === 'string' && m.poster.startsWith('/')) {
+      checkPath(`Station ${slug} (medium ${m.id ?? '?'} poster)`, m.poster)
+    }
   }
   const dialogSegs = st.dialog?.segmente
   if (Array.isArray(dialogSegs)) {
