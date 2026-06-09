@@ -65,11 +65,7 @@ export function MediaSlotList({
                   <p className="truncate text-sm font-extrabold text-fg-1">
                     {medium.untertitel ?? medium.typ}
                   </p>
-                  <p className="mt-0.5 text-xs text-fg-3">
-                    {medium.typ === 'audio' || medium.typ === 'video'
-                      ? 'Wiedergabe folgt in Phase 2'
-                      : 'Tippen zum Öffnen'}
-                  </p>
+                  <p className="mt-0.5 text-xs text-fg-3">Tippen zum Abspielen</p>
                 </div>
               </button>
             </li>

@@ -43,5 +43,6 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [ ] Epic **#74** (Tablet/iPad Layout) + **#75–#78** — angelegt 2026-05-28; Spezifikation [epic-tablet-ipad-layout.md](epic-tablet-ipad-layout.md), [ADR-012](../adr/012-tablet-ipad-responsive-layout.md)
 - [x] Issue **#27** (Raumfotos einpflegen) — geschlossen 2026-06-08: 8× Panorama in `public/stations/`, LFS, `export-pano.mjs`
 - [ ] Issue **#17** (Raumfotos liefern, extern) — Teillieferung 8/11; offen: `kunst`, `hort`, `schulsozialarbeit`
+- [x] Issues **#18–#20** (Audio-/Video-Player, Foto-Viewer) — geschlossen 2026-06-09: `app/components/media/`, `MediaPlayerByTyp`, `poster?`-Schema
 
-Letzter dokumentierter Abgleich: **2026-06-08** (#27 Panorama-Raumbilder, #17 Teillieferung); zuvor **2026-06-01** (#84 Startseiten-CTAs).
+Letzter dokumentierter Abgleich: **2026-06-09** (#18–#20 Medien-Player); zuvor **2026-06-08** (#27 Panorama-Raumbilder).

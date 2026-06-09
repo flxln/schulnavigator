@@ -1,6 +1,6 @@
 # Schulnavigator — Architektur
 
-_Stand: 2026-05-28 (**#72:** Dialog-Ende TopBar, Chip-Zentrieren; **ADR-012:** Tablet-Layout geplant [#74–#78]; **ADR-009:** Hub; **#55/#56:** Raum-Viewer; Live #16) — siehe [entscheidungen.md](./entscheidungen.md)_
+_Stand: 2026-06-09 (**#18–#20:** Medien-Player; **#72:** Dialog-Ende TopBar, Chip-Zentrieren; **ADR-012:** Tablet-Layout geplant [#74–#78]; **ADR-009:** Hub; **#55/#56:** Raum-Viewer; Live #16) — siehe [entscheidungen.md](./entscheidungen.md)_
 
 ## Tech-Stack
 
@@ -66,6 +66,27 @@ Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/
 
 **Raumbilder (#17 / #27):** **8/11** Stationen mit Panorama 3:1 in `public/stations/` (Juni 2026, Git LFS); `kunst`/`hort` noch 4:3; `schulsozialarbeit` ohne `bild`. **Panorama** (≥ **2,5 : 1**, min. 2400 px Breite) bleibt ideal. Die App **zoomt** schmalere Bilder automatisch so, dass horizontal mindestens **`MIN_PAN_DISPLAY_RATIO` (2)** erreicht wird (`roomPanZoom`) — dabei entsteht **vertikaler Beschnitt**; Hotspot-**y** im mittleren Drittel platzieren. Konstanten: `lib/raum-viewer/constants.ts`, Geometrie: `room-pan-zoom.ts`, `clip-zone.ts`. Briefing: [`zuordnung-stationen-bilder.md`](../auftraggeber/material/stationen/zuordnung-stationen-bilder.md). **Viewport:** [`app/app/layout.tsx`](../app/app/layout.tsx) exportiert `viewport` (`device-width`, `initialScale: 1`).
 
+## Medien-Player (Issues #18–#20, umgesetzt)
+
+Hotspot oder Medienliste → [`StationMediaPanel`](../app/components/station-media-panel.tsx) → [`MediaPlayerByTyp`](../app/components/media-player-by-typ.tsx) (dünner Router).
+
+| `typ` | Komponente | Verhalten |
+| ----- | ---------- | --------- |
+| `audio` | [`AudioPlayer`](../app/components/media/audio-player.tsx) | Custom Controls (Play/Pause, Fortschritt, Lautstärke), GS39 (`sn-media-audio*`); `pause()` im Unmount-Cleanup |
+| `video` | [`VideoPlayer`](../app/components/media/video-player.tsx) | Modus nach **`videoSource`** (führend): `upload` + MP4 → `<video controls playsInline>`; `upload` + Bild → Poster-only; `youtube` → Hinweistext (MVP inaktiv, [ADR-004](./adr/004-video-hosting-mpz.md)) |
+| `foto` | [`PhotoViewer`](../app/components/media/photo-viewer.tsx) | Inline `<img>` (bewusst kein `next/image` — dynamische JSON-URLs); Expand-in-place-Vollbild innerhalb des Panels; kein Swipe-Set (Phase 3) |
+| `text` | Link in `MediaPlayerByTyp` | unverändert |
+
+**Video-Datenvertrag** (`videoSource` führend, Endung nur Fallback bei `upload`):
+
+| Modus | `videoSource` | `quelle` | `poster?` |
+| ----- | ------------- | -------- | --------- |
+| Upload-Video | `upload` | Pfad `.mp4`/`.webm`/`.mov` | optional Vorschaubild |
+| Poster-only (noch kein MP4) | `upload` | Pfad auf Poster-Bild | leer — `quelle` ist das Poster |
+| YouTube (inaktiv) | `youtube` | bare Video-ID (kein `/`) | n/a |
+
+`poster` nur bei `typ === 'video'` (Validator-Guard). Dialog-Audio ([ADR-010](./adr/010-dialog-cutscene-gated-audio.md), [ADR-011](./adr/011-dialog-mascot-hotspots.md)) bleibt getrennt von #18.
+
 ## URL-Schema
 
 ```
@@ -113,6 +134,7 @@ interface Medium {
   typ: "audio" | "video" | "foto" | "text";
   quelle: string;
   videoSource?: "upload" | "youtube";
+  poster?: string; // nur typ === "video" (upload); optional Vorschaubild
   untertitel?: string;
 }
 

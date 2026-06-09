@@ -22,7 +22,7 @@ Der Fortschrittsbalken in GitHub ergibt sich automatisch aus den geschlossenen I
 ## Phase 2 — Content-Struktur + UI
 
 **Fällig:** 12.06.2026
-**Beschreibung:** Fertige App-Shell mit allen UI-Komponenten inkl. Raum-Viewer (Gyro, Hotspots, ADR-006, #56) und GS39-Jubiläums-UI (#58, ADR-009: isometrischer Hub). Gleichzeitig muss die Schule den Content-Lieferplan abgeben — das ist der härteste Abhängigkeitspunkt.
+**Beschreibung:** Fertige App-Shell mit allen UI-Komponenten inkl. Raum-Viewer (Gyro, Hotspots, ADR-006, #56), GS39-Jubiläums-UI (#58, ADR-009: isometrischer Hub) und Medien-Player (#18–#20: Audio, Video, Foto). Gleichzeitig muss die Schule den Content-Lieferplan abgeben — das ist der härteste Abhängigkeitspunkt.
 
 ---
 

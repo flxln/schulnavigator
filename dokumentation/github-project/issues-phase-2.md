@@ -39,7 +39,7 @@ Spezifikation: [ADR-009](../adr/009-hub-isometrisch.md) · Quelle: [`auftraggebe
 ### Abhängigkeiten / Verknüpfung
 
 - Ersetzt Hub-Darstellung aus **#14** (Puzzle-SVG), nicht die Freischalt-Logik aus **#21**
-- **#18–#20** bleiben eigene Issues (Player-Logik); Medien-Panel nutzt bereits GS39-Tokens
+- **#18–#20** (Medien-Player) — geschlossen 2026-06-09; `components/media/*`, Router `MediaPlayerByTyp`
 
 ### Nach Epic (nicht blockierend)
 
@@ -61,7 +61,7 @@ Spezifikation: [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
 - [x] **Hotspots:** Overlay-Marker aus JSON; Aktivierung wenn Viewport-Mitte im Radius **oder** Tap
 - [x] **Tap-Fallback:** Marker immer tappbar; Hinweis wenn Orientierung fehlt/abgelehnt; optional Wischen
 - [x] **iOS:** Orientierung nach Nutzer-Geste; HTTPS (bereits #16)
-- [x] Medien-Panel: öffnet Wiedergabe je nach `medium.typ` (HTML5-Basis; UI-Polish in #18–#20)
+- [x] Medien-Panel: öffnet Wiedergabe je nach `medium.typ` (dedizierte Player #18–#20)
 - [x] Ohne `bild`: statisches Layout + Medienliste unterhalb
 - [x] Demo-Station mit 1–2 Test-Hotspots für Meeting 10.06. (#25)
 
@@ -87,34 +87,52 @@ Spezifikation: [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
 
 ## #18 — Audio-Player-Komponente
 
+**GitHub:** https://github.com/flxln/schulnavigator/issues/18 — **geschlossen** (2026-06-09)
+
 **Labels:** `tech`  
 **Assignee:** Felix
 
-- HTML5-Audio, App-Design, Play/Pause, Fortschritt
-- Einbindung bei `medien.typ === 'audio'`
+**Umsetzung:** `app/components/media/audio-player.tsx` + `audio-player.test.tsx`
+
+- Custom Controls (Play/Pause, Fortschrittsbalken, Lautstärke-Slider) via `useRef<HTMLAudioElement>`
+- GS39-Styling (`sn-media-audio*` in `sn-theme.css`); `preload="metadata"`, kein Autoplay
+- Fehlerzustand mit Fallback-Link; `aria-label` auf allen Controls
+- Cleanup `pause()` im `useEffect`-Rückgabe (kein Audio nach Panel-Unmount)
+- Einbindung via `MediaPlayerByTyp` bei `typ === 'audio'`
 
 ---
 
 ## #19 — Video-Player-Komponente
 
+**GitHub:** https://github.com/flxln/schulnavigator/issues/19 — **geschlossen** (2026-06-09)
+
 **Labels:** `tech`  
 **Assignee:** Felix
 
-- HTML5-Video, Quelle: **MPZ-Upload** (`/public` oder Storage-URL) — [ADR-004](../adr/004-video-hosting-mpz.md)
-- Kein Autoplay; Controls + Vollbild
-- Max. ~50 MB / 60 s; Schema-Feld `videoSource: 'upload'` (youtube vorbereitet, MVP inaktiv)
-- Einbindung bei `medien.typ === 'video'`
+**Umsetzung:** `app/components/media/video-player.tsx` + `video-player.test.tsx`
+
+- Drei Modi nach `videoSource` (führend): `upload` (MP4/Poster-only), `youtube` (Hinweistext, MVP inaktiv per ADR-004)
+- Poster-only-Modus: `<img>` wenn `quelle` kein Video-Extension; MP4-Modus: `<video controls playsInline>`
+- Optionales `poster`-Feld in `Medium` (Types + Validator-Guard `typ === 'video'`); asset-check in `validate-station-assets.mjs`
+- Cleanup `pause()` im `useEffect`-Rückgabe
+- Schema-Feld `videoSource: 'upload'` | `'youtube'`; Endungs-Heuristik nur als Upload-Fallback
 
 ---
 
 ## #20 — Bild-Galerie-Komponente
 
+**GitHub:** https://github.com/flxln/schulnavigator/issues/20 — **geschlossen** (2026-06-09, Einzelbild + Lightbox)
+
 **Labels:** `tech`  
 **Assignee:** Felix
 
-- Galerie für Fotosets (Mobile: swipe)
-- Optional Lightbox
-- Einbindung bei `medien.typ === 'foto'`
+**Umsetzung:** `app/components/media/photo-viewer.tsx` + `photo-viewer.test.tsx`
+
+- Inline `<img>` mit `object-contain`, bewusst **nicht** `next/image` (dynamische JSON-URLs, keine `remotePatterns` nötig); Kommentar im Code
+- Expand-in-place-Vollbild (`enlarged`-State) innerhalb des Panel-Containers — kein zweites `role="dialog"` (ADR: Panel ist bereits Modal)
+- `Escape` schließt Vollbild (ohne Panel zu schließen); Tap auf Bild ebenfalls
+- Swipe-Galerie für Fotosets bewusst auf Phase 3 verschoben (kein `bilder[]`)
+- GS39-Styling (`sn-media-photo*`, `.sn-media-photo--enlarged` in `sn-theme.css`)
 
 ---
 
