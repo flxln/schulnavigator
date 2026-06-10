@@ -113,6 +113,19 @@ for (const st of stations) {
     if (m?.poster && typeof m.poster === 'string' && m.poster.startsWith('/')) {
       checkPath(`Station ${slug} (medium ${m.id ?? '?'} poster)`, m.poster)
     }
+    if (
+      m?.thumbnail &&
+      typeof m.thumbnail === 'string' &&
+      m.thumbnail.startsWith('/')
+    ) {
+      checkPath(`Station ${slug} (medium ${m.id ?? '?'} thumbnail)`, m.thumbnail)
+    }
+  }
+  const hotspots = Array.isArray(st.hotspots) ? st.hotspots : []
+  for (const hs of hotspots) {
+    if (hs?.icon && typeof hs.icon === 'string' && hs.icon.startsWith('/')) {
+      checkPath(`Station ${slug} (hotspot ${hs.id ?? '?'} icon)`, hs.icon)
+    }
   }
   const dialogSegs = st.dialog?.segmente
   if (Array.isArray(dialogSegs)) {

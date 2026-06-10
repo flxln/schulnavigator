@@ -184,7 +184,7 @@ Orientierung: Eintrag `klassenzimmer` in `stations.json` (Issue **#93**).
 | `typ` | ja | `audio` \| `video` \| `foto` \| `text` — **geplant Post-Fest:** `link` \| `embed` ([ADR-017](../dokumentation/adr/017-externe-medien-hotspot-marker.md)) |
 | `quelle` | ja | Pfad mit führendem `/`, Datei muss unter `app/public/` liegen — bei `link`/`embed`: `https://…` |
 | `untertitel` | nein | Anzeige in Medienliste und Panel |
-| `thumbnail` | nein | **Geplant (ADR-017):** Vorschaubild unter `/public/…` — Medienliste und Hotspot-Fallback |
+| `thumbnail` | nein | Vorschaubild unter `/public/…` — Medienliste und Hotspot-Fallback ([ADR-017](../dokumentation/adr/017-externe-medien-hotspot-marker.md) Stufe 1) |
 | `videoSource` | bei Video | `upload` (Standard) oder `youtube` (MVP: nur Hinweistext, kein Embed) |
 | `poster` | nein | Nur bei `typ: video` — Vorschaubild-Pfad |
 | `openIn` | bei `link` | **Geplant:** nur `external` (neuer Browser-Tab) |
@@ -211,8 +211,8 @@ Orientierung: Eintrag `klassenzimmer` in `stations.json` (Issue **#93**).
 | `mascot` | bei Dialog | `frieda` \| `otto` |
 | `mascotSize` | nein | Anteil der Panorama-Höhe (0,05–1); nur bei `action: "dialog"` — siehe [ADR-014](../dokumentation/adr/014-mascot-size-json.md) |
 | `mascotFlipX` | nein | `true` = Figur horizontal gespiegelt (links↔rechts); Fußpunkt bleibt auf `(x, y)` |
-| `icon` | nein | **Geplant (ADR-017):** Pfad `/media/{slug}/icons/….png` — ersetzt gelben Punkt |
-| `iconSize` | nein | **Geplant:** 0,05–0,25 — Anteil der Panorama-Höhe (wie `mascotSize`) |
+| `icon` | nein | Pfad `/media/{slug}/icons/….svg` oder PNG — ersetzt gelben Punkt ([ADR-017](../dokumentation/adr/017-externe-medien-hotspot-marker.md) Stufe 1) |
+| `iconSize` | nein | 0,05–0,25 — Anteil der Panorama-Höhe (wie `mascotSize`) |
 
 **Dialog-Stationen** (`daz`, `pc-raum`): Audio läuft über `dialog.segmente[]` und `/api/dialog/…` — nicht über `typ: audio` in `medien[]`. Dort Hotspots mit `action: "dialog"`, `mascot: "frieda"` \| `"otto"` und optional `mascotSize` (Default im Code: `0.22`) sowie `mascotFlipX`.
 
@@ -368,13 +368,13 @@ Station: _____________  Slug: _____________
 
 ---
 
-## Geplant: externe Links, Delightex-Embed, Hotspot-Icons (Post-Fest)
+## Hotspot-Icons (Stufe 1, live) und geplant: Links, Delightex-Embed
 
-**Status:** Architektur entschieden ([ADR-017](../dokumentation/adr/017-externe-medien-hotspot-marker.md)), Code folgt sukzessiv ab Juli 2026.
+**Stufe 1 (live):** Medien-Hotspots zeigen `icon` → `thumbnail` → Typ-Preset (`/brand/hotspot-icons/`) → gelber Punkt. Beispiel: `klassenzimmer` / `hs-video` mit `play.svg`. Details: [ADR-017](../dokumentation/adr/017-externe-medien-hotspot-marker.md).
 
 | Stufe | Inhalt | Redaktion |
 |-------|--------|-----------|
-| 1 | Icons statt gelber Punkt | PNG/SVG unter `public/media/{slug}/icons/` |
+| 1 | Icons statt gelber Punkt | **live** — SVG/PNG unter `public/media/{slug}/icons/` |
 | 2 | `typ: link` | Delightex-Share-URL oder andere HTTPS-Seite |
 | 3 | `typ: embed` | Nur nach DSB-Freigabe; öffentliche Embed-URL von Delightex |
 

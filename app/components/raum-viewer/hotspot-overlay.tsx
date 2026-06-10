@@ -7,6 +7,7 @@ import {
   resolveMascotHeightPx,
 } from '@/lib/dialog-hotspot'
 import { isMascotSpeaking } from '@/lib/dialog-display'
+import { resolveHotspotMarker } from '@/lib/hotspot-marker'
 import {
   hotspotImageY,
   type HotspotYBand,
@@ -120,6 +121,69 @@ export function HotspotOverlay({
                   draggable={false}
                 />
               </button>
+            </li>
+          )
+        }
+
+        const medium = hs.mediumId
+          ? medien.find((x) => x.id === hs.mediumId)
+          : undefined
+        const marker = resolveHotspotMarker(hs, medium, containerHeight)
+        const ringClass = isActive
+          ? 'ring-4 ring-accent/40'
+          : 'ring-2 ring-bg-dark/25'
+
+        if (marker.kind === 'image') {
+          const imgClass =
+            'object-contain drop-shadow-lg pointer-events-none select-none'
+          if (interactive) {
+            return (
+              <li key={hs.id} style={centerAnchorStyle}>
+                <button
+                  type="button"
+                  className={`pointer-events-auto flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full ${ringClass}`}
+                  aria-label={label}
+                  aria-current={isActive ? 'true' : undefined}
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onClick={() => onHotspotTap(hs)}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element -- Hotspot-Icon PNG/SVG */}
+                  <img
+                    src={marker.src}
+                    alt=""
+                    className={imgClass}
+                    style={{
+                      height: marker.heightPx,
+                      width: 'auto',
+                      display: 'block',
+                    }}
+                    draggable={false}
+                  />
+                </button>
+              </li>
+            )
+          }
+          return (
+            <li key={hs.id} style={centerAnchorStyle}>
+              <span
+                role="img"
+                aria-label={label}
+                tabIndex={-1}
+                className={`pointer-events-auto flex min-h-11 min-w-11 items-center justify-center rounded-full ${ringClass}`}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element -- Hotspot-Icon PNG/SVG */}
+                <img
+                  src={marker.src}
+                  alt=""
+                  className={imgClass}
+                  style={{
+                    height: marker.heightPx,
+                    width: 'auto',
+                    display: 'block',
+                  }}
+                  draggable={false}
+                />
+              </span>
             </li>
           )
         }

@@ -143,6 +143,65 @@ describe('validateStationsFile Hub (ADR-016)', () => {
     expect(() => validateStationsFile(data as unknown)).toThrow('mascotSize muss')
   })
 
+  it('akzeptiert icon und iconSize auf Medien-Hotspot', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const klassenzimmer = data.stations.find(
+      (s) => s.slug === 'klassenzimmer',
+    ) as Record<string, unknown>
+    const hotspots = klassenzimmer.hotspots as Record<string, unknown>[]
+    hotspots[1] = {
+      ...hotspots[1],
+      icon: '/media/klassenzimmer/icons/play.svg',
+      iconSize: 0.12,
+    }
+    const stations = validateStationsFile(data as unknown)
+    const hs = stations
+      .find((s) => s.slug === 'klassenzimmer')
+      ?.hotspots?.find((h) => h.id === 'hs-video')
+    expect(hs?.icon).toBe('/media/klassenzimmer/icons/play.svg')
+    expect(hs?.iconSize).toBe(0.12)
+  })
+
+  it('wirft bei icon auf Dialog-Hotspot', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const daz = data.stations.find((s) => s.slug === 'daz') as Record<string, unknown>
+    const hotspots = daz.hotspots as Record<string, unknown>[]
+    hotspots[0] = {
+      ...hotspots[0],
+      icon: '/media/x/icon.svg',
+    }
+    expect(() => validateStationsFile(data as unknown)).toThrow(
+      'darf kein icon',
+    )
+  })
+
+  it('wirft bei iconSize auf Medien-Hotspot außerhalb des Bereichs', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const klassenzimmer = data.stations.find(
+      (s) => s.slug === 'klassenzimmer',
+    ) as Record<string, unknown>
+    const hotspots = klassenzimmer.hotspots as Record<string, unknown>[]
+    hotspots[0] = { ...hotspots[0], iconSize: 0.5 }
+    expect(() => validateStationsFile(data as unknown)).toThrow('iconSize muss')
+  })
+
+  it('akzeptiert thumbnail am Medium', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const klassenzimmer = data.stations.find(
+      (s) => s.slug === 'klassenzimmer',
+    ) as Record<string, unknown>
+    const medien = klassenzimmer.medien as Record<string, unknown>[]
+    medien[1] = {
+      ...medien[1],
+      thumbnail: '/media/klassenzimmer/fotos/grundschule_demo.jpg',
+    }
+    const stations = validateStationsFile(data as unknown)
+    const m = stations
+      .find((s) => s.slug === 'klassenzimmer')
+      ?.medien.find((x) => x.id === 'demo-video')
+    expect(m?.thumbnail).toBe('/media/klassenzimmer/fotos/grundschule_demo.jpg')
+  })
+
   it('wirft bei unbekanntem slug ohne Hub-Zuordnung', () => {
     const broken = structuredClone(raw) as {
       stations: { slug: string }[]
