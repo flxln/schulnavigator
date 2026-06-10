@@ -6,3 +6,5 @@
 # Cursor: lokale Pläne und IDE-Artefakte nicht versionieren (.cursor/rules/ versioniert)
 .cursor/*
 !.cursor/rules/
+
+.DS_Store
