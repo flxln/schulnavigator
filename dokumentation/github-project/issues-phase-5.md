@@ -101,9 +101,9 @@ Nach der Auswertung entscheiden, welche davon umgesetzt werden:
 - [ ] Mal-App im Kunstzimmer
 - [ ] Mini-Spiel "Schulranzen packen"
 - [ ] Kind-gezeichnete interaktive Schulhaus-Karte
-- [x] Verlinkung zu externen Lernspielen — Epic **#97** / [#99](https://github.com/flxln/schulnavigator/issues/99) ([ADR-017](../adr/017-externe-medien-hotspot-marker.md))
-- [x] iframe-Einbettung (Delightex) — Epic **#97** / [#100](https://github.com/flxln/schulnavigator/issues/100) ([ADR-017](../adr/017-externe-medien-hotspot-marker.md))
-- [x] Hotspot-Icons statt gelber Punkt — Epic **#97** / [#98](https://github.com/flxln/schulnavigator/issues/98) ([ADR-017](../adr/017-externe-medien-hotspot-marker.md))
+- [x] Verlinkung zu externen Lernspielen — [#99](https://github.com/flxln/schulnavigator/issues/99) erledigt (PR #102)
+- [ ] iframe-Einbettung (Delightex) — [#100](https://github.com/flxln/schulnavigator/issues/100) offen (DSB-Freigabe)
+- [x] Hotspot-Icons statt gelber Punkt — [#98](https://github.com/flxln/schulnavigator/issues/98) erledigt (PR #101)
 
 **Umsetzungsplan:** [`projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md`](../projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md) · **Epic-Spezifikation:** [epic-externe-medien-hotspot-marker.md](./epic-externe-medien-hotspot-marker.md)
 
@@ -122,36 +122,37 @@ Sukzessive Post-Fest-Erweiterung: Hotspot-Marker → externe Links → iframe (D
 
 ### Unterissues
 
-- [ ] [#98](https://github.com/flxln/schulnavigator/issues/98) — Hotspot-Marker & `thumbnail` (Stufe 1)
-- [ ] [#99](https://github.com/flxln/schulnavigator/issues/99) — Medientyp `link` (Stufe 2)
+- [x] [#98](https://github.com/flxln/schulnavigator/issues/98) — Hotspot-Marker & `thumbnail` (Stufe 1) — PR #101
+- [x] [#99](https://github.com/flxln/schulnavigator/issues/99) — Medientyp `link` (Stufe 2) — PR #102
 - [ ] [#100](https://github.com/flxln/schulnavigator/issues/100) — Medientyp `embed` / iframe (Stufe 3)
 
 ### Epic erledigt wenn
 
-- [ ] #98, #99, #100 geschlossen
-- [ ] Demo-Station mit Icon-Hotspot; PC-Raum mit Link oder Embed (wenn Schule liefert)
-- [ ] `content-einpflegen.md` beschreibt neue Felder produktiv
+- [ ] #100 geschlossen
+- [x] Demo: `klassenzimmer` Icon-Hotspot; `pc-raum` mit `typ: link`
+- [x] `content-einpflegen.md` beschreibt Stufe 1–2 produktiv
 
 ---
 
-## #98 — Hotspot-Marker & thumbnail (ADR-017 Stufe 1)
+## #98 — Hotspot-Marker & thumbnail (ADR-017 Stufe 1) — erledigt
 
 **GitHub:** https://github.com/flxln/schulnavigator/issues/98  
 **Parent:** #97  
 **Labels:** `tech`, `design`  
-**Assignee:** Felix
+**Assignee:** Felix  
+**Status:** geschlossen (PR #101, 2026-06-10)
 
 `hotspots[].icon`, `iconSize`; `medien[].thumbnail`; Fallback gelber Punkt. Siehe [Epic Stufe 1](./epic-externe-medien-hotspot-marker.md#98--hotspot-marker--thumbnail-stufe-1).
 
 ---
 
-## #99 — Medientyp link (ADR-017 Stufe 2)
+## #99 — Medientyp link (ADR-017 Stufe 2) — erledigt
 
 **GitHub:** https://github.com/flxln/schulnavigator/issues/99  
 **Parent:** #97  
 **Labels:** `tech`  
 **Assignee:** Felix  
-**Empfohlen nach:** #98
+**Status:** geschlossen (PR #102, 2026-06-10)
 
 `typ: link`, `openIn: external` — z. B. Delightex-Share-URL im neuen Tab.
 

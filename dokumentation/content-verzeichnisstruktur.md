@@ -122,13 +122,13 @@ app/
 | Poster-only (noch kein MP4) | `upload` | Pfad auf Poster-Bild | leer |
 | YouTube (MVP inaktiv) | `youtube` | bare Video-ID (kein `/`) | n/a |
 
-### Geplant: `link`, `embed`, Hotspot-Icons ([ADR-017](./adr/017-externe-medien-hotspot-marker.md))
+### ADR-017: Hotspot-Icons, `link` (live) — `embed` geplant
 
-| Modus | `typ` | `quelle` | Assets unter `public/` |
-|-------|-------|----------|------------------------|
-| Externer Link | `link` | `https://…` | optional `thumbnail`, Hotspot-`icon` |
-| iframe-Embed (Delightex) | `embed` | `https://…` (Embed-URL) | optional `thumbnail`, Hotspot-`icon` |
-| Hotspot-Marker | — | — | `/media/{slug}/icons/*.png` |
+| Modus | `typ` | `quelle` | Assets unter `public/` | Status |
+|-------|-------|----------|------------------------|--------|
+| Hotspot-Marker | — | — | `/media/{slug}/icons/*.svg` | **live** (#98) |
+| Externer Link | `link` | `https://…` | optional `thumbnail`, Hotspot-`icon` | **live** (#99) |
+| iframe-Embed (Delightex) | `embed` | `https://…` (Embed-URL) | optional `thumbnail`, Hotspot-`icon` | geplant (#100) |
 
 Umsetzungsplan: [`projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md`](./projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md)
 
