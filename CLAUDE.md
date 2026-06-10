@@ -154,3 +154,4 @@ Kurzfassung (vorläufig):
 | Wie wird deployed?                              | `dokumentation/adr/001-hosting-coolify.md` |
 | Docker nur `app/`, Submodule nicht einbinden?   | `dokumentation/build-kontext-submodule-regeln.md` |
 | Content-Architektur (Pfade, Slugs, Ablage)      | `dokumentation/content-verzeichnisstruktur.md` |
+| Content manuell einpflegen (JSON, Hotspots)     | `anleitungen/content-einpflegen.md`            |

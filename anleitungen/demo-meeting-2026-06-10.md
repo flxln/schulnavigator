@@ -2,6 +2,8 @@
 
 Kurzablauf für Sten/Tina auf echtem Gerät (**HTTPS**, z. B. `https://schulnavigator.mpz.schule`).
 
+**Gesamtfahrplan inkl. Abstimmung Content & Schulfest:** [`meeting-fahrplan-2026-06-10.md`](./meeting-fahrplan-2026-06-10.md)
+
 ## Vorbereitung
 
 - Entry-QR oder Link: `/eintritt?t=fest-2026` (Schulfest-Modus)
