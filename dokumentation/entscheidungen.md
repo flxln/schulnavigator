@@ -22,6 +22,7 @@ Jede wichtige Entscheidung wird als eigenständiger ADR (Architecture Decision R
 | [013](./adr/013-dialog-blase-mitpan.md) | Dialog-Blase folgt Maskottchen beim Panning (Option C, ergänzt ADR-011 Pkt. 6) | entschieden | 2026-05-28 |
 | [014](./adr/014-mascot-size-json.md) | Dialog-Maskottchen: `mascotSize` normiert in JSON, px-Render via `effectiveDisplayH` (ergänzt ADR-011 Pkt. 2) | entschieden | 2026-06-10 |
 | [015](./adr/015-dialog-bubble-json.md) | Dialog-Sprechblase: `dialog.bubble` (Position/Größe, `followPan`), optional `segmente[].tail` (ergänzt ADR-011/013) | entschieden | 2026-06-10 |
+| [017](./adr/017-externe-medien-hotspot-marker.md) | Externe Medien (`link`, `embed`), Hotspot-Icons; sukzessive Post-Fest-Umsetzung (Stufe 1–3) | entschieden | 2026-06-10 |
 
 ## Konventionen
 
@@ -44,4 +45,4 @@ Station: /raum/[slug] → Gyro-Viewer + Hotspots (Tap-Fallback); normales Querfo
 /stationen → Stationsliste (ADR-016, Epic #58)
 ```
 
-Offen: YouTube-Freigabe (Recht, siehe ADR-004); Mandanten-Modell für weitere Schulen. Echtes Kamera-AR: Post-Fest (nicht ADR-006).
+Offen: YouTube-Freigabe (Recht, siehe ADR-004); Delightex-Embed/DSB (siehe ADR-017 Stufe 3); Mandanten-Modell für weitere Schulen. Echtes Kamera-AR: Post-Fest (nicht ADR-006). Hotspot-Marker + externe Links: ADR-017, Plan [`projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md`](./projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md).

@@ -73,6 +73,7 @@ schulnavigator/
 | [006](./dokumentation/adr/006-raum-viewer-gyro-hotspots.md) | Raum-Viewer: Gyro (Standard), Hotspots, Tap-Fallback   | entschieden |
 | [007](./dokumentation/adr/007-zugangskontrolle-cookie.md)   | Zugang: HttpOnly-Cookie + Middleware (ergänzt ADR-005) | entschieden |
 | [008](./dokumentation/adr/008-eintritt-in-app-scanner.md)   | Eintritt: In-App-Scanner auf `/eintritt/scan` (ergänzt ADR-005; Shell mit `/scan`) | entschieden |
+| [017](./dokumentation/adr/017-externe-medien-hotspot-marker.md) | Post-Fest: `link`/`embed`, Hotspot-Icons ([Umsetzungsplan](./dokumentation/projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md)) | entschieden |
 
 Vollständiger ADR-Index: [`dokumentation/entscheidungen.md`](./dokumentation/entscheidungen.md)
 

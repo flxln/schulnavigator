@@ -10,6 +10,7 @@ Dieser Ordner ist die **führende Spezifikation** für Milestones und Issues in 
 | [issues-phase-0.md](issues-phase-0.md) … [issues-phase-5.md](issues-phase-5.md) | Issues pro Phase inkl. Labels, Assignees, Akzeptanzkriterien |
 | [issues-schulfest-gs39-nachtrag.md](issues-schulfest-gs39-nachtrag.md) | Epic **#86** (Vorlage): GS39-Nachtrag Schulfest/Hof-QR/Content — Unterissues #87–#91, Anpassung #39 |
 | [epic-tablet-ipad-layout.md](epic-tablet-ipad-layout.md) | Epic **#74** (geplant): Tablet/iPad-Layout — Parent + Unterissues #75–#78, Issue-Bodies für GitHub |
+| [epic-externe-medien-hotspot-marker.md](epic-externe-medien-hotspot-marker.md) | Epic **#97**: ADR-017 — Hotspot-Marker, `link`, `embed` — Unterissues #98–#100 |
 | [labels.md](labels.md) | Label-Konventionen |
 
 Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) und [entscheidungen.md](../entscheidungen.md).
@@ -46,4 +47,6 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issues **#18–#20** (Audio-/Video-Player, Foto-Viewer) — geschlossen 2026-06-09: `app/components/media/`, `MediaPlayerByTyp`, `poster?`-Schema
 - [x] Issue **#93** (TextViewer inline + Demo `klassenzimmer`) — geschlossen 2026-06-10: `TextViewer`, `public/media/klassenzimmer/`, 4 Hotspots
 
-Letzter dokumentierter Abgleich: **2026-06-10** (#93 TextViewer + Klassenzimmer-Demo); zuvor **2026-06-09** (#18–#20 Medien-Player).
+- [x] Epic **#97** (ADR-017 Externe Medien & Hotspot-Marker) + **#98–#100** — angelegt 2026-06-10, Sub-issues verknüpft; [epic-externe-medien-hotspot-marker.md](epic-externe-medien-hotspot-marker.md)
+
+Letzter dokumentierter Abgleich: **2026-06-10** (Epic #97 / #98–#100 ADR-017); zuvor **2026-06-10** (#93 TextViewer + Klassenzimmer-Demo).

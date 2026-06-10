@@ -181,11 +181,14 @@ Orientierung: Eintrag `klassenzimmer` in `stations.json` (Issue **#93**).
 | Feld | Pflicht | Werte / Hinweis |
 |------|---------|-----------------|
 | `id` | ja | Eindeutig **pro Station** (z. B. `werken-audio`) |
-| `typ` | ja | `audio` \| `video` \| `foto` \| `text` |
-| `quelle` | ja | Pfad mit führendem `/`, Datei muss unter `app/public/` liegen |
+| `typ` | ja | `audio` \| `video` \| `foto` \| `text` — **geplant Post-Fest:** `link` \| `embed` ([ADR-017](../dokumentation/adr/017-externe-medien-hotspot-marker.md)) |
+| `quelle` | ja | Pfad mit führendem `/`, Datei muss unter `app/public/` liegen — bei `link`/`embed`: `https://…` |
 | `untertitel` | nein | Anzeige in Medienliste und Panel |
+| `thumbnail` | nein | **Geplant (ADR-017):** Vorschaubild unter `/public/…` — Medienliste und Hotspot-Fallback |
 | `videoSource` | bei Video | `upload` (Standard) oder `youtube` (MVP: nur Hinweistext, kein Embed) |
 | `poster` | nein | Nur bei `typ: video` — Vorschaubild-Pfad |
+| `openIn` | bei `link` | **Geplant:** nur `external` (neuer Browser-Tab) |
+| `embedAllow` | bei `embed` | **Geplant:** Domain-Suffixe (Default: `delightex.com`) |
 
 ### Video-Modi (`videoSource`)
 
@@ -208,6 +211,8 @@ Orientierung: Eintrag `klassenzimmer` in `stations.json` (Issue **#93**).
 | `mascot` | bei Dialog | `frieda` \| `otto` |
 | `mascotSize` | nein | Anteil der Panorama-Höhe (0,05–1); nur bei `action: "dialog"` — siehe [ADR-014](../dokumentation/adr/014-mascot-size-json.md) |
 | `mascotFlipX` | nein | `true` = Figur horizontal gespiegelt (links↔rechts); Fußpunkt bleibt auf `(x, y)` |
+| `icon` | nein | **Geplant (ADR-017):** Pfad `/media/{slug}/icons/….png` — ersetzt gelben Punkt |
+| `iconSize` | nein | **Geplant:** 0,05–0,25 — Anteil der Panorama-Höhe (wie `mascotSize`) |
 
 **Dialog-Stationen** (`daz`, `pc-raum`): Audio läuft über `dialog.segmente[]` und `/api/dialog/…` — nicht über `typ: audio` in `medien[]`. Dort Hotspots mit `action: "dialog"`, `mascot: "frieda"` \| `"otto"` und optional `mascotSize` (Default im Code: `0.22`) sowie `mascotFlipX`.
 
@@ -363,11 +368,28 @@ Station: _____________  Slug: _____________
 
 ---
 
+## Geplant: externe Links, Delightex-Embed, Hotspot-Icons (Post-Fest)
+
+**Status:** Architektur entschieden ([ADR-017](../dokumentation/adr/017-externe-medien-hotspot-marker.md)), Code folgt sukzessiv ab Juli 2026.
+
+| Stufe | Inhalt | Redaktion |
+|-------|--------|-----------|
+| 1 | Icons statt gelber Punkt | PNG/SVG unter `public/media/{slug}/icons/` |
+| 2 | `typ: link` | Delightex-Share-URL oder andere HTTPS-Seite |
+| 3 | `typ: embed` | Nur nach DSB-Freigabe; öffentliche Embed-URL von Delightex |
+
+Umsetzungsplan: [`dokumentation/projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md`](../dokumentation/projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md)
+
+**PC-Raum bis Stufe 2 live:** Audio/Video der Kinder **oder** `typ: link` auf Delightex — kein iframe nötig.
+
+---
+
 ## Was bewusst nicht in dieser Anleitung steht
 
 - **Dialog-Audio-Dateien kopieren / API-Route** — siehe Abschnitt `dialog` oben, [ADR-010](../dokumentation/adr/010-dialog-cutscene-gated-audio.md) und [fuer-entwickler.md](./fuer-entwickler.md)
 - **Directus** / Admin-Oberfläche — Phase 5
 - **YouTube-Embed** — ADR-004, rechtlich offen
+- **Delightex-iframe** — ADR-017 Stufe 3, DSB-Freigabe offen
 - **QR-Druck** — [qr-codes-drucken.md](./qr-codes-drucken.md)
 
 ---

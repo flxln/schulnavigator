@@ -40,6 +40,7 @@ Sie werden **nicht** in Auftraggebergesprächen thematisiert.
 
 - ✅ **Video-Hosting vorerst:** Upload auf MPZ-Server — [ADR-004](./adr/004-video-hosting-mpz.md)
 - 🟡 **YouTube-Embed:** Option für später, wenn Schule/DSB rechtlich freigibt; Player/Datenmodell vorbereiten
+- 🟡 **Delightex / iframe-Embed:** Architektur [ADR-017](./adr/017-externe-medien-hotspot-marker.md) Stufe 3; DSB-Freigabe und öffentliche Embed-URL von Schule nötig; bis dahin `typ: link` (externer Tab)
 - Offen: Maximale Dateigröße / Kompression beim Upload
 - Offen: Object Storage vs. `public/`-Ordner im Container
 
