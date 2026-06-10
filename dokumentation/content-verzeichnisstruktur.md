@@ -122,6 +122,16 @@ app/
 | Poster-only (noch kein MP4) | `upload` | Pfad auf Poster-Bild | leer |
 | YouTube (MVP inaktiv) | `youtube` | bare Video-ID (kein `/`) | n/a |
 
+### Geplant: `link`, `embed`, Hotspot-Icons ([ADR-017](./adr/017-externe-medien-hotspot-marker.md))
+
+| Modus | `typ` | `quelle` | Assets unter `public/` |
+|-------|-------|----------|------------------------|
+| Externer Link | `link` | `https://…` | optional `thumbnail`, Hotspot-`icon` |
+| iframe-Embed (Delightex) | `embed` | `https://…` (Embed-URL) | optional `thumbnail`, Hotspot-`icon` |
+| Hotspot-Marker | — | — | `/media/{slug}/icons/*.png` |
+
+Umsetzungsplan: [`projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md`](./projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md)
+
 `poster` darf nur bei `typ === 'video'` gesetzt sein (`validate-stations.ts`). YouTube-`quelle` ohne `/` wird vom Asset-Validator übersprungen.
 
 ---

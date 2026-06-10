@@ -68,7 +68,7 @@ Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/
 
 ## Medien-Player (Issues #18–#20, umgesetzt)
 
-Hotspot oder Medienliste → [`StationMediaPanel`](../app/components/station-media-panel.tsx) → [`MediaPlayerByTyp`](../app/components/media-player-by-typ.tsx) (dünner Router).
+Hotspot oder Medienliste → [`StationMediaPanel`](../app/components/station-media-panel.tsx) → [`MediaPlayerByTyp`](../app/components/media-player-by-typ.tsx) (dünner Router). Geplant Post-Fest: `link` (externer Tab), `embed` (iframe, Delightex) und Hotspot-Icons — [ADR-017](./adr/017-externe-medien-hotspot-marker.md).
 
 | `typ` | Komponente | Verhalten |
 | ----- | ---------- | --------- |
@@ -126,6 +126,8 @@ interface Hotspot {
   radius?: number;
   action?: "medium" | "dialog"; // default medium
   mediumId?: string; // bei medium
+  icon?: string; // /public/…; Medien-Hotspot; [ADR-017]
+  iconSize?: number; // 0.05–0.25, Anteil effectiveDisplayH; [ADR-017]
   mascot?: "frieda" | "otto"; // bei dialog
   mascotSize?: number; // 0.05–1, Anteil effectiveDisplayH; [ADR-014]
   mascotFlipX?: boolean; // horizontal spiegeln; [ADR-014]
@@ -133,10 +135,13 @@ interface Hotspot {
 
 interface Medium {
   id: string;
-  typ: "audio" | "video" | "foto" | "text";
-  quelle: string;
+  typ: "audio" | "video" | "foto" | "text" | "link" | "embed"; // link/embed Post-Fest [ADR-017]
+  quelle: string; // /public/… oder https:// bei link/embed
   videoSource?: "upload" | "youtube";
   poster?: string; // nur typ === "video" (upload); optional Vorschaubild
+  thumbnail?: string; // optional, /public/…; Liste + Hotspot-Fallback [ADR-017]
+  openIn?: "external"; // nur typ === "link"
+  embedAllow?: string[]; // nur typ === "embed"; Domain-Suffixe
   untertitel?: string;
 }
 

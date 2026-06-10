@@ -95,15 +95,77 @@ Aktuell **11 Stationen** im MVP; Erweiterung über JSON (bis Directus #47 live).
 Im Gespräch am 07.05. wurden mehrere Features diskutiert, die explizit auf "nach 26.6." verschoben wurden.
 Nach der Auswertung entscheiden, welche davon umgesetzt werden:
 
-- [ ] Echtes AR (Kamera/WebXR/iframe) — **nicht** MVP-Gyro-Viewer ([ADR-006](../adr/006-raum-viewer-gyro-hotspots.md))
+- [ ] Echtes AR (Kamera/WebXR) — **nicht** MVP-Gyro-Viewer ([ADR-006](../adr/006-raum-viewer-gyro-hotspots.md))
 - [ ] 360°-Panorama-Viewer — Planung: [`360-panorama-viewer-planung.md`](../kurzfristige-ideen/360-panorama-viewer-planung.md) (2026-06-03)
 - [ ] Interaktive Trigger (Lego-Motor, Tafel-Steuerung per App)
 - [ ] Mal-App im Kunstzimmer
 - [ ] Mini-Spiel "Schulranzen packen"
 - [ ] Kind-gezeichnete interaktive Schulhaus-Karte
-- [ ] Verlinkung zu externen Lernspielen
+- [x] Verlinkung zu externen Lernspielen — Epic **#97** / [#99](https://github.com/flxln/schulnavigator/issues/99) ([ADR-017](../adr/017-externe-medien-hotspot-marker.md))
+- [x] iframe-Einbettung (Delightex) — Epic **#97** / [#100](https://github.com/flxln/schulnavigator/issues/100) ([ADR-017](../adr/017-externe-medien-hotspot-marker.md))
+- [x] Hotspot-Icons statt gelber Punkt — Epic **#97** / [#98](https://github.com/flxln/schulnavigator/issues/98) ([ADR-017](../adr/017-externe-medien-hotspot-marker.md))
 
-Jedes Feature bekommt einen eigenen Issue wenn es beschlossen wird.
+**Umsetzungsplan:** [`projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md`](../projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md) · **Epic-Spezifikation:** [epic-externe-medien-hotspot-marker.md](./epic-externe-medien-hotspot-marker.md)
+
+Verbleibende Wunschliste-Punkte bekommen weiterhin einen eigenen Issue, wenn sie beschlossen werden.
+
+---
+
+## #97 — Externe Medien & Hotspot-Marker (Epic, ADR-017)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/97  
+**Labels:** `tech`, `design`  
+**Assignee:** Felix  
+**Milestone:** Phase 5 — Post-Fest
+
+Sukzessive Post-Fest-Erweiterung: Hotspot-Marker → externe Links → iframe (Delightex).
+
+### Unterissues
+
+- [ ] [#98](https://github.com/flxln/schulnavigator/issues/98) — Hotspot-Marker & `thumbnail` (Stufe 1)
+- [ ] [#99](https://github.com/flxln/schulnavigator/issues/99) — Medientyp `link` (Stufe 2)
+- [ ] [#100](https://github.com/flxln/schulnavigator/issues/100) — Medientyp `embed` / iframe (Stufe 3)
+
+### Epic erledigt wenn
+
+- [ ] #98, #99, #100 geschlossen
+- [ ] Demo-Station mit Icon-Hotspot; PC-Raum mit Link oder Embed (wenn Schule liefert)
+- [ ] `content-einpflegen.md` beschreibt neue Felder produktiv
+
+---
+
+## #98 — Hotspot-Marker & thumbnail (ADR-017 Stufe 1)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/98  
+**Parent:** #97  
+**Labels:** `tech`, `design`  
+**Assignee:** Felix
+
+`hotspots[].icon`, `iconSize`; `medien[].thumbnail`; Fallback gelber Punkt. Siehe [Epic Stufe 1](./epic-externe-medien-hotspot-marker.md#98--hotspot-marker--thumbnail-stufe-1).
+
+---
+
+## #99 — Medientyp link (ADR-017 Stufe 2)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/99  
+**Parent:** #97  
+**Labels:** `tech`  
+**Assignee:** Felix  
+**Empfohlen nach:** #98
+
+`typ: link`, `openIn: external` — z. B. Delightex-Share-URL im neuen Tab.
+
+---
+
+## #100 — Medientyp embed / iframe Delightex (ADR-017 Stufe 3)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/100  
+**Parent:** #97  
+**Labels:** `tech`  
+**Assignee:** Felix  
+**Blockiert durch:** DSB-Freigabe; öffentliche Embed-URL
+
+`typ: embed`, CSP, Allowlist `delightex.com`.
 
 ---
 
