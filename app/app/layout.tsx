@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Nunito } from 'next/font/google'
+import { DisableZoom } from '@/components/ui/disable-zoom'
 import './globals.css'
 
 const nunito = Nunito({
@@ -18,6 +19,9 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
+  minimumScale: 1,
+  maximumScale: 1,
+  userScalable: false,
   viewportFit: 'cover',
 }
 
@@ -28,7 +32,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="de" className={`${nunito.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col font-sans">{children}</body>
+      <body className="flex min-h-full flex-col font-sans">
+        <DisableZoom />
+        {children}
+      </body>
     </html>
   )
 }
