@@ -1,4 +1,6 @@
-export type MediumTyp = 'audio' | 'video' | 'foto' | 'text'
+export type MediumTyp = 'audio' | 'video' | 'foto' | 'text' | 'link'
+
+export type LinkOpenIn = 'external'
 
 export type VideoSource = 'upload' | 'youtube'
 
@@ -78,6 +80,8 @@ export interface Medium {
   poster?: string
   /** Optionales Vorschaubild für Medienliste und Hotspot-Fallback; [ADR-017]. */
   thumbnail?: string
+  /** Nur typ === 'link'; Default im Code: external. */
+  openIn?: LinkOpenIn
   untertitel?: string
 }
 
