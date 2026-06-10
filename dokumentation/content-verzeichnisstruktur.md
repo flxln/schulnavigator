@@ -60,7 +60,7 @@ auftraggeber/material/
 │   │       ├── raw/                    # Originalaufnahmen
 │   │       └── export/
 │   │           └── {slug}.jpg          # freigegebenes Exportbild → app/public/stations/
-│   └── equirect/                       # optional später (ADR-014)
+│   └── equirect/                       # optional später (360°-Kugel, geplant — siehe kurzfristige-ideen/360-panorama-viewer-planung.md)
 │       └── {slug}/export/
 │
 ├── medien/                             # Stations-Medien (Roh)
@@ -132,7 +132,7 @@ app/
 |-------------|-------------|----------|--------------|
 | Texte, Hotspots, Dialog-Metadaten | `stationen/`, `transkripte/` | `data/stations.json` | SSR/Client |
 | Raumbild / Gyro-Panorama | `stationen-360-pano/flat/{slug}/export/` | `public/stations/{slug}.jpg` | statisch |
-| 360°-Kugel (später, ADR-014) | `stationen-360-pano/equirect/` | `public/stations/360/{slug}.jpg` | statisch |
+| 360°-Kugel (später, geplant) | `stationen-360-pano/equirect/` | `public/stations/360/{slug}.jpg` | statisch |
 | Dialog-Audio | `transkripte/010-PC-Raum/`, `011-DaZ-Zimmer/` (→ Slug beim Kopieren) | `content/dialog-audio/{slug}/` | `GET /api/dialog/…` (Cookie) |
 | Audio / Video / Foto / Text | `medien/{slug}/` | `public/media/{slug}/…` | statisch |
 | Brand / Maskottchen | `Virtueller Schulrundgang/assets/` | `public/brand/` | statisch |
@@ -148,6 +148,12 @@ app/
 - **Quelle:** `auftraggeber/material/stationen/transkripte/` — Ordner nach Nummern-Schema (z. B. `010-PC-Raum/`, `011-DaZ-Zimmer/`); beim Deploy nach `content/dialog-audio/{slug}/` kopieren und Ordner nach App-Slug umbenennen
 
 Details: [ADR-010](./adr/010-dialog-cutscene-gated-audio.md).
+
+---
+
+## Content einpflegen (Workflow)
+
+Schritt-für-Schritt für MPZ/Lehrkräfte: [`anleitungen/content-einpflegen.md`](../anleitungen/content-einpflegen.md) (Dateien, `stations.json`, Hotspots, Prüfcommands).
 
 ---
 

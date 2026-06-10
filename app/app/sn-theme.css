@@ -650,6 +650,12 @@
   position: relative;
 }
 
+/* Horizontal spiegeln (links↔rechts) um die vertikale Mittelachse. */
+.sn-dialog-mascot__img--flip-x {
+  transform: scaleX(-1);
+  transform-origin: center bottom;
+}
+
 .sn-dialog-mascot__img--speaking {
   animation: sn-mascot-speak 0.55s ease-in-out infinite;
 }
@@ -666,6 +672,20 @@
   50% {
     transform: translateY(-4px) scale(1.03);
   }
+}
+
+@keyframes sn-mascot-speak-flip-x {
+  0%,
+  100% {
+    transform: scaleX(-1) translateY(0) scale(1);
+  }
+  50% {
+    transform: scaleX(-1) translateY(-4px) scale(1.03);
+  }
+}
+
+.sn-dialog-mascot__img--flip-x.sn-dialog-mascot__img--speaking {
+  animation: sn-mascot-speak-flip-x 0.55s ease-in-out infinite;
 }
 
 /* ── Media Players (#18–#20) ── */
@@ -1033,7 +1053,8 @@
   .sn-scan-line,
   .sn-fade-in,
   .sn-toast,
-  .sn-dialog-mascot__img--speaking {
+  .sn-dialog-mascot__img--speaking,
+  .sn-dialog-mascot__img--flip-x.sn-dialog-mascot__img--speaking {
     animation: none;
   }
 }

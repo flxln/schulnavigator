@@ -15,11 +15,11 @@ Die App ist nicht öffentlich im Internet auffindbar. Besucher brauchen einen **
 
 **Raum-QRs** an den Türen führen immer zu `/raum/…` — sie ersetzen nicht den Eintritts-QR. Ohne Zugang: auf der **Hinweisseite** (`/eintritt`) die Karte „Eintritts-QR scannen“ antippen → Vollbild-Scanner (`/eintritt/scan`) startet die Kamera in der App. Nach dem Eintritt nutzt die **Scanner-Funktion** (`/scan`) die Raum-QRs an den Türen — ohne ständigen Wechsel zur Handy-Kamera.
 
-*Inhaltspflege (Directus) folgt später — siehe Abschnitte unten.*
+**MVP (bis Schulfest):** Content liefert die Schule als Dateien; MPZ pflegt sie ins Repo ein. Schritt-für-Schritt: **[content-einpflegen.md](./content-einpflegen.md)** (Medien, `stations.json`, Hotspots).
+
+*Directus / Admin-Oberfläche folgt in Phase 5 (ADR-003) — Abschnitte unten sind Platzhalter.*
 
 ---
-
-*Wird nach Fertigstellung des Admin-Interfaces befüllt (mit Screenshots).*
 
 ## Schritt 1: Anmelden
 

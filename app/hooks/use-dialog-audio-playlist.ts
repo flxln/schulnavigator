@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { Dialog, DialogRolle } from '@/lib/types'
-import { dialogBubbleText, dialogTailSide } from '@/lib/dialog-display'
+import { dialogBubbleText, resolveDialogTail } from '@/lib/dialog-display'
 
 /**
  * Dialog-Playlist (ein <audio>) mit UI-State für eingebettete Sprechblase.
@@ -126,7 +126,7 @@ export function useDialogAudioPlaylist(dialog: Dialog | undefined) {
   const activeRolle: DialogRolle | null = segment?.rolle ?? null
   const displayText =
     dialog && segment ? dialogBubbleText(segment, dialog) : ''
-  const tail = activeRolle ? dialogTailSide(activeRolle) : 'center'
+  const tail = segment ? resolveDialogTail(segment) : 'center'
   const dialogUiActive = segmentIndex !== null
 
   const speakingRolle: DialogRolle | null = useMemo(() => {

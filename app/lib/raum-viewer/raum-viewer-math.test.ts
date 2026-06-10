@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { visibleYNormalRange } from '@/lib/raum-viewer/clip-zone'
+import {
+  hotspotImageY,
+  viewportYFromImageY,
+  visibleYNormalRange,
+} from '@/lib/raum-viewer/clip-zone'
 import { hitTestHotspot } from '@/lib/raum-viewer/hit-test-hotspot'
 import {
   angleDeltaDeg,
@@ -92,6 +96,22 @@ describe('visibleYNormalRange', () => {
     expect(r.yMin).toBeGreaterThan(0)
     expect(r.yMax).toBeLessThan(1)
     expect(r.yMax - r.yMin).toBeLessThan(1)
+  })
+})
+
+describe('hotspotImageY / viewportYFromImageY', () => {
+  const band = { yMin: 0.269, yMax: 0.731 }
+
+  it('mappt viewport 0/1 auf sichtbare Ränder', () => {
+    expect(hotspotImageY(0, band)).toBeCloseTo(0.269, 5)
+    expect(hotspotImageY(1, band)).toBeCloseTo(0.731, 5)
+  })
+
+  it('roundtrip', () => {
+    expect(viewportYFromImageY(hotspotImageY(0.78, band), band)).toBeCloseTo(
+      0.78,
+      5,
+    )
   })
 })
 

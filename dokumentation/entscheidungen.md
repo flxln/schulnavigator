@@ -19,6 +19,8 @@ Jede wichtige Entscheidung wird als eigenständiger ADR (Architecture Decision R
 | [011](./adr/011-dialog-mascot-hotspots.md) | Dialog-UI: Maskottchen-Hotspots, Gyro an, Sprechblase; Steuerung TopBar/Chip ([#72](https://github.com/flxln/schulnavigator/issues/72)) — Punkt 6 ergänzt durch ADR-013 | entschieden | 2026-05-28 |
 | [012](./adr/012-tablet-ipad-responsive-layout.md) | Tablet/iPad: responsive Layout per Breakpoints (Epic #74–#78, Mobile-first erweitern) | vorgeschlagen | 2026-05-28 |
 | [013](./adr/013-dialog-blase-mitpan.md) | Dialog-Blase folgt Maskottchen beim Panning (Option C, ergänzt ADR-011 Pkt. 6) | entschieden | 2026-05-28 |
+| [014](./adr/014-mascot-size-json.md) | Dialog-Maskottchen: `mascotSize` normiert in JSON, px-Render via `effectiveDisplayH` (ergänzt ADR-011 Pkt. 2) | entschieden | 2026-06-10 |
+| [015](./adr/015-dialog-bubble-json.md) | Dialog-Sprechblase: `dialog.bubble` (Position/Größe, `followPan`), optional `segmente[].tail` (ergänzt ADR-011/013) | entschieden | 2026-06-10 |
 
 ## Konventionen
 

@@ -79,6 +79,70 @@ describe('validateStationsFile isometrischer Hub', () => {
     )
   })
 
+  it('akzeptiert dialog-Hotspot mit gültigem mascotSize', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const daz = data.stations.find((s) => s.slug === 'daz') as Record<string, unknown>
+    const hotspots = daz.hotspots as Record<string, unknown>[]
+    hotspots[0] = { ...hotspots[0], mascotSize: 0.22 }
+    const stations = validateStationsFile(data as unknown)
+    const hs = stations.find((s) => s.slug === 'daz')?.hotspots?.[0]
+    expect(hs?.mascotSize).toBe(0.22)
+  })
+
+  it('gibt mascotSize im Round-Trip zurück', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const daz = data.stations.find((s) => s.slug === 'daz') as Record<string, unknown>
+    const hotspots = daz.hotspots as Record<string, unknown>[]
+    hotspots[0] = { ...hotspots[0], mascotSize: 0.3 }
+    const stations = validateStationsFile(data as unknown)
+    expect(
+      stations.find((s) => s.slug === 'daz')?.hotspots?.[0]?.mascotSize,
+    ).toBe(0.3)
+  })
+
+  it('wirft bei mascotSize auf Medien-Hotspot', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const klassenzimmer = data.stations.find(
+      (s) => s.slug === 'klassenzimmer',
+    ) as Record<string, unknown>
+    const hotspots = klassenzimmer.hotspots as Record<string, unknown>[]
+    hotspots[0] = { ...hotspots[0], mascotSize: 0.2 }
+    expect(() => validateStationsFile(data as unknown)).toThrow(
+      'darf kein mascotSize',
+    )
+  })
+
+  it('akzeptiert mascotFlipX auf Dialog-Hotspot', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const daz = data.stations.find((s) => s.slug === 'daz') as Record<string, unknown>
+    const hotspots = daz.hotspots as Record<string, unknown>[]
+    hotspots[0] = { ...hotspots[0], mascotFlipX: true }
+    const stations = validateStationsFile(data as unknown)
+    expect(
+      stations.find((s) => s.slug === 'daz')?.hotspots?.[0]?.mascotFlipX,
+    ).toBe(true)
+  })
+
+  it('wirft bei mascotFlipX auf Medien-Hotspot', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const klassenzimmer = data.stations.find(
+      (s) => s.slug === 'klassenzimmer',
+    ) as Record<string, unknown>
+    const hotspots = klassenzimmer.hotspots as Record<string, unknown>[]
+    hotspots[0] = { ...hotspots[0], mascotFlipX: true }
+    expect(() => validateStationsFile(data as unknown)).toThrow(
+      'darf kein mascotFlipX',
+    )
+  })
+
+  it('wirft bei mascotSize außerhalb des Bereichs', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const daz = data.stations.find((s) => s.slug === 'daz') as Record<string, unknown>
+    const hotspots = daz.hotspots as Record<string, unknown>[]
+    hotspots[0] = { ...hotspots[0], mascotSize: 1.5 }
+    expect(() => validateStationsFile(data as unknown)).toThrow('mascotSize muss')
+  })
+
   it('wirft bei unbekanntem slug ohne Hub-Zuordnung', () => {
     const broken = structuredClone(raw) as {
       stations: { slug: string }[]
@@ -86,6 +150,66 @@ describe('validateStationsFile isometrischer Hub', () => {
     broken.stations[0]!.slug = 'unbekannter-raum'
     expect(() => validateStationsFile(broken as unknown)).toThrow(
       'keine isometrische Hub-Zuordnung',
+    )
+  })
+
+  it('akzeptiert gültigen dialog.bubble-Block', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const daz = data.stations.find((s) => s.slug === 'daz') as Record<string, unknown>
+    const dialog = daz.dialog as Record<string, unknown>
+    dialog.bubble = {
+      y: 0.1,
+      x: 0.5,
+      maxWidth: 0.9,
+      fontSize: 0.035,
+      followPan: true,
+    }
+    const stations = validateStationsFile(data as unknown)
+    expect(stations.find((s) => s.slug === 'daz')?.dialog?.bubble).toEqual({
+      y: 0.1,
+      x: 0.5,
+      maxWidth: 0.9,
+      fontSize: 0.035,
+      followPan: true,
+    })
+  })
+
+  it('wirft bei bubble.y außerhalb 0–1', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const daz = data.stations.find((s) => s.slug === 'daz') as Record<string, unknown>
+    const dialog = daz.dialog as Record<string, unknown>
+    dialog.bubble = { y: 1.5 }
+    expect(() => validateStationsFile(data as unknown)).toThrow('bubble.y muss')
+  })
+
+  it('wirft bei ungültigem segment.tail', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const daz = data.stations.find((s) => s.slug === 'daz') as Record<string, unknown>
+    const dialog = daz.dialog as Record<string, unknown>
+    const segs = dialog.segmente as Record<string, unknown>[]
+    segs[0]!.tail = 'oben'
+    expect(() => validateStationsFile(data as unknown)).toThrow('tail ungültig')
+  })
+
+  it('akzeptiert segment.tail und gibt ihn im Round-Trip zurück', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const daz = data.stations.find((s) => s.slug === 'daz') as Record<string, unknown>
+    const dialog = daz.dialog as Record<string, unknown>
+    const segs = dialog.segmente as Record<string, unknown>[]
+    segs[2]!.tail = 'left'
+    const stations = validateStationsFile(data as unknown)
+    expect(
+      stations.find((s) => s.slug === 'daz')?.dialog?.segmente[2]?.tail,
+    ).toBe('left')
+  })
+
+  it('wirft bei followPan ohne boolean', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const daz = data.stations.find((s) => s.slug === 'daz') as Record<string, unknown>
+    const dialog = daz.dialog as Record<string, unknown>
+    dialog.bubble = { followPan: 'yes' }
+    expect(() => validateStationsFile(data as unknown)).toThrow(
+      'followPan muss boolean',
     )
   })
 })

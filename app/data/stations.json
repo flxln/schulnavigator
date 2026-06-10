@@ -78,20 +78,24 @@
         {
           "id": "hs-frieda",
           "label": "Frieda",
-          "x": 0.32,
-          "y": 0.78,
+          "x": 0.58,
+          "y": 1.0,
           "radius": 0.1,
           "action": "dialog",
-          "mascot": "frieda"
+          "mascot": "frieda",
+          "mascotSize": 0.7,
+          "mascotFlipX": false
         },
         {
           "id": "hs-otto",
           "label": "Otto",
-          "x": 0.68,
-          "y": 0.78,
+          "x": 0.38,
+          "y": 0.7,
           "radius": 0.1,
           "action": "dialog",
-          "mascot": "otto"
+          "mascot": "otto",
+          "mascotSize": 0.44,
+          "mascotFlipX": true
         }
       ],
       "dialog": {
@@ -179,7 +183,9 @@
           "y": 0.78,
           "radius": 0.1,
           "action": "dialog",
-          "mascot": "frieda"
+          "mascot": "frieda",
+          "mascotSize": 0.22,
+          "mascotFlipX": false
         },
         {
           "id": "hs-otto",
@@ -188,7 +194,9 @@
           "y": 0.78,
           "radius": 0.1,
           "action": "dialog",
-          "mascot": "otto"
+          "mascot": "otto",
+          "mascotSize": 0.22,
+          "mascotFlipX": false
         }
       ],
       "dialog": {
