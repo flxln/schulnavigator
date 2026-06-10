@@ -68,7 +68,7 @@ Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/
 
 ## Medien-Player (Issues #18–#20, umgesetzt)
 
-Hotspot oder Medienliste → [`StationMediaPanel`](../app/components/station-media-panel.tsx) → [`MediaPlayerByTyp`](../app/components/media-player-by-typ.tsx) (dünner Router). Geplant Post-Fest: `link` (externer Tab), `embed` (iframe, Delightex) und Hotspot-Icons — [ADR-017](./adr/017-externe-medien-hotspot-marker.md).
+Hotspot oder Medienliste → [`StationMediaPanel`](../app/components/station-media-panel.tsx) → [`MediaPlayerByTyp`](../app/components/media-player-by-typ.tsx) (dünner Router). **Live (ADR-017):** Hotspot-Icons, `typ: link` (externer Tab). **Geplant:** `typ: embed` (iframe, Delightex) — [ADR-017](./adr/017-externe-medien-hotspot-marker.md).
 
 | `typ` | Komponente | Verhalten |
 | ----- | ---------- | --------- |
@@ -76,6 +76,7 @@ Hotspot oder Medienliste → [`StationMediaPanel`](../app/components/station-med
 | `video` | [`VideoPlayer`](../app/components/media/video-player.tsx) | Modus nach **`videoSource`** (führend): `upload` + MP4 → `<video controls playsInline>`; `upload` + Bild → Poster-only; `youtube` → Hinweistext (MVP inaktiv, [ADR-004](./adr/004-video-hosting-mpz.md)) |
 | `foto` | [`PhotoViewer`](../app/components/media/photo-viewer.tsx) | Inline `<img>` (bewusst kein `next/image` — dynamische JSON-URLs); Expand-in-place-Vollbild innerhalb des Panels; kein Swipe-Set (Phase 3) |
 | `text` | [`TextViewer`](../app/components/media/text-viewer.tsx) (lazy via `dynamic()`) | `fetch` same-origin `.md`/`.txt`; Markdown (`react-markdown` + `remark-gfm`) oder Plaintext (`pre-wrap`); Redirect-/Content-Type-Guard; GS39 `.sn-media-text*` |
+| `link` | [`LinkViewer`](../app/components/media/link-viewer.tsx) | Hinweis „App verlassen“; synchrones `window.open` bei Tap; Button „Im Browser öffnen“ ([ADR-017](./adr/017-externe-medien-hotspot-marker.md) Stufe 2) |
 
 **Video-Datenvertrag** (`videoSource` führend, Endung nur Fallback bei `upload`):
 

@@ -83,16 +83,16 @@ flowchart TB
 
 ### Akzeptanzkriterien
 
-- [ ] Ohne `icon`/`thumbnail`: gelber Punkt wie bisher
-- [ ] Mit `icon`: Bild skaliert mit `iconSize × effectiveDisplayH`
-- [ ] Dialog-Hotspots unverändert (Maskottchen)
-- [ ] `npm run test` und `npm run build` grün
-- [ ] iPhone: Touch-Ziel ≥ 44 px, Gyro-Pan unverändert
+- [x] Ohne `icon`/`thumbnail`: gelber Punkt wie bisher
+- [x] Mit `icon`: Bild skaliert mit `iconSize × effectiveDisplayH`
+- [x] Dialog-Hotspots unverändert (Maskottchen)
+- [x] `npm run test` und `npm run build` grün
+- [x] iPhone: Touch-Ziel ≥ 44 px, Gyro-Pan unverändert
 
 ### GitHub
 
 - Epic: [#97](https://github.com/flxln/schulnavigator/issues/97)
-- Stufe 1: [#98](https://github.com/flxln/schulnavigator/issues/98)
+- Stufe 1: [#98](https://github.com/flxln/schulnavigator/issues/98) — **erledigt** (PR #101)
 
 ---
 
@@ -129,17 +129,17 @@ flowchart TB
 
 ### Akzeptanzkriterien
 
-- [ ] Tap auf Hotspot → Panel → Link öffnet in neuem Tab (`rel=noopener`)
-- [ ] Ungültige URL bricht Build ab (`validate:stations`)
-- [ ] Bestehende Stationen ohne `link` unverändert
+- [x] Tap auf Hotspot → Panel → Link öffnet in neuem Tab (`rel=noopener`)
+- [x] Ungültige URL bricht Build ab (`validate:stations`)
+- [x] Bestehende Stationen ohne `link` unverändert
 
 ### Voraussetzung Schule
 
-- Öffentliche Delightex-**Share-URL** (ohne Klassencode-Login), oder beliebige andere HTTPS-Zielseite
+- Öffentliche Delightex-**Share-URL** (ohne Klassencode-Login), oder beliebige andere HTTPS-Zielseite — **nach DSB** in `pc-raum` eintragen
 
 ### GitHub
 
-[#99](https://github.com/flxln/schulnavigator/issues/99)
+[#99](https://github.com/flxln/schulnavigator/issues/99) — **erledigt** (PR #102)
 
 ---
 

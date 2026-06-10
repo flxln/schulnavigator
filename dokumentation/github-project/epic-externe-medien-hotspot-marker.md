@@ -2,7 +2,7 @@
 
 **Milestone:** Phase 5 — Post-Fest  
 **Fällig:** 31.10.2026 (Epic gesamt; Stufen sukzessiv Juli–Herbst)  
-**Status:** auf GitHub angelegt (2026-06-10); Sub-issues #98–#100 unter #97 verknüpft
+**Status:** Stufe 1–2 live (2026-06-10, PR #101/#102); Stufe 3 (#100) offen — DSB-Freigabe Delightex
 
 **Quellen:**
 
@@ -18,9 +18,9 @@
 | Rolle | Nr. | Titel (kurz) | Labels | Blockiert durch |
 |-------|-----|--------------|--------|-----------------|
 | **Epic (Parent)** | `#97` | Externe Medien & Hotspot-Marker (ADR-017) | `tech`, `design` | — |
-| Unterissue | `#98` | Hotspot-Marker & `thumbnail` (Stufe 1) | `tech`, `design` | — |
-| Unterissue | `#99` | Medientyp `link` (Stufe 2) | `tech` | `#98` (empfohlen) |
-| Unterissue | `#100` | Medientyp `embed` / iframe Delightex (Stufe 3) | `tech` | `#99`, DSB-Freigabe |
+| Unterissue | `#98` | Hotspot-Marker & `thumbnail` (Stufe 1) | `tech`, `design` | — **erledigt** |
+| Unterissue | `#99` | Medientyp `link` (Stufe 2) | `tech` | — **erledigt** |
+| Unterissue | `#100` | Medientyp `embed` / iframe Delightex (Stufe 3) | `tech` | DSB-Freigabe, Embed-URL |
 | Organisatorisch | — | Delightex Share-URL + DSB (Schule) | `extern`, `org` | `#100` |
 
 **Empfohlene Reihenfolge:** `#98` → `#99` → (Schule: URL + DSB) → `#100`.
@@ -52,8 +52,8 @@ Drei Post-Fest-Erweiterungen des Content-Modells sukzessiv umsetzen:
 
 ### Unterissues
 
-- [ ] `#98` — Hotspot-Marker & `thumbnail` (Stufe 1)
-- [ ] `#99` — Medientyp `link` (Stufe 2)
+- [x] `#98` — Hotspot-Marker & `thumbnail` (Stufe 1) — PR #101
+- [x] `#99` — Medientyp `link` (Stufe 2) — PR #102
 - [ ] `#100` — Medientyp `embed` / iframe (Stufe 3)
 
 ### Nicht im Scope
@@ -65,19 +65,20 @@ Drei Post-Fest-Erweiterungen des Content-Modells sukzessiv umsetzen:
 
 ### Epic erledigt wenn
 
-- [ ] Alle drei Unterissues geschlossen
-- [ ] `content-einpflegen.md` und Validator dokumentieren die neuen Felder (live, nicht nur „geplant“)
-- [ ] Mindestens eine Demo-Station mit Icon-Hotspot (`klassenzimmer` oder PC-Raum)
-- [ ] PC-Raum: `typ: link` **oder** `typ: embed` mit echter Delightex-URL (wenn Schule liefert)
-- [ ] `#50` Kommentar: ADR-017-Punkte abgehakt
+- [ ] `#100` geschlossen (Stufe 3)
+- [x] `content-einpflegen.md` und Validator: Stufe 1–2 live dokumentiert
+- [x] Demo: `klassenzimmer` Icon-Hotspot; `pc-raum` mit `typ: link`
+- [ ] Echte Delightex-Share-URL in Produktion (nach DSB)
+- [x] `#50`: Hotspot-Icons + externe Links abgehakt (#100 = iframe offen)
 
 ---
 
-## `#98` — Hotspot-Marker & `thumbnail` (Stufe 1)
+## `#98` — Hotspot-Marker & `thumbnail` (Stufe 1) — erledigt
 
 **Parent:** #97  
 **Labels:** `tech`, `design`  
-**Assignee:** Felix
+**Assignee:** Felix  
+**Status:** geschlossen (PR #101, 2026-06-10)
 
 ### Ziel
 
@@ -85,24 +86,24 @@ Optionale Felder `hotspots[].icon`, `hotspots[].iconSize`, `medien[].thumbnail`.
 
 ### Akzeptanzkriterien
 
-- [ ] Schema + Validator in `validate-stations.ts`
-- [ ] `HotspotOverlay` rendert Bild-Marker, Touch ≥ 44 px
-- [ ] `MediaSlot` zeigt `thumbnail`
-- [ ] Preset-Icons unter `public/brand/hotspot-icons/`
-- [ ] Demo in `klassenzimmer` (min. 1 Hotspot mit Icon)
-- [ ] `npm run test` + `npm run build` grün
-- [ ] Doku `content-einpflegen.md` (Felder aktiv, nicht „geplant“)
+- [x] Schema + Validator in `validate-stations.ts`
+- [x] `HotspotOverlay` rendert Bild-Marker, Touch ≥ 44 px
+- [x] `MediaSlot` zeigt `thumbnail`
+- [x] Preset-Icons unter `public/brand/hotspot-icons/`
+- [x] Demo in `klassenzimmer` (min. 1 Hotspot mit Icon)
+- [x] `npm run test` + `npm run build` grün
+- [x] Doku `content-einpflegen.md` (Felder aktiv)
 
 **Spezifikation:** [Umsetzungsplan Stufe 1](../projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md#stufe-1--hotspot-marker-und-thumbnail)
 
 ---
 
-## `#99` — Medientyp `link` (Stufe 2)
+## `#99` — Medientyp `link` (Stufe 2) — erledigt
 
 **Parent:** #97  
 **Labels:** `tech`  
 **Assignee:** Felix  
-**Blockiert durch:** `#98` empfohlen (Icons für Link-Hotspots)
+**Status:** geschlossen (PR #102, 2026-06-10)
 
 ### Ziel
 
@@ -110,11 +111,11 @@ Optionale Felder `hotspots[].icon`, `hotspots[].iconSize`, `medien[].thumbnail`.
 
 ### Akzeptanzkriterien
 
-- [ ] Validator lehnt `http://` und lokale Pfade ab
-- [ ] `LinkViewer` + `MediaPlayerByTyp` + `MediaSlot`
-- [ ] Hotspot `mediumId` → Link wie andere Medientypen
-- [ ] Tests Validator + Viewer
-- [ ] Optional: PC-Raum-Content wenn Share-URL von Schule vorliegt (`extern`)
+- [x] Validator lehnt `http://` und lokale Pfade ab
+- [x] `LinkViewer` + `MediaPlayerByTyp` + `MediaSlot`
+- [x] Hotspot `mediumId` → Link wie andere Medientypen
+- [x] Tests Validator + Viewer
+- [x] PC-Raum-Demo mit `typ: link` (Delightex-URL nach DSB)
 
 **Spezifikation:** [Umsetzungsplan Stufe 2](../projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md#stufe-2--typ-link)
 

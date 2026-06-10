@@ -45,4 +45,4 @@ Station: /raum/[slug] → Gyro-Viewer + Hotspots (Tap-Fallback); normales Querfo
 /stationen → Stationsliste (ADR-016, Epic #58)
 ```
 
-Offen: YouTube-Freigabe (Recht, siehe ADR-004); Delightex-Embed/DSB (siehe ADR-017 Stufe 3); Mandanten-Modell für weitere Schulen. Echtes Kamera-AR: Post-Fest (nicht ADR-006). Hotspot-Marker + externe Links: ADR-017, Plan [`projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md`](./projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md).
+Offen: YouTube-Freigabe (Recht, siehe ADR-004); Delightex-Embed/DSB (ADR-017 Stufe 3, Issue #100); Mandanten-Modell für weitere Schulen. Echtes Kamera-AR: Post-Fest (nicht ADR-006). ADR-017 Stufe 1–2 live (Issues #98/#99); Stufe 3 offen.

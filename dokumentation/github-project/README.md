@@ -47,6 +47,6 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issues **#18–#20** (Audio-/Video-Player, Foto-Viewer) — geschlossen 2026-06-09: `app/components/media/`, `MediaPlayerByTyp`, `poster?`-Schema
 - [x] Issue **#93** (TextViewer inline + Demo `klassenzimmer`) — geschlossen 2026-06-10: `TextViewer`, `public/media/klassenzimmer/`, 4 Hotspots
 
-- [x] Epic **#97** (ADR-017 Externe Medien & Hotspot-Marker) + **#98–#100** — angelegt 2026-06-10, Sub-issues verknüpft; [epic-externe-medien-hotspot-marker.md](epic-externe-medien-hotspot-marker.md)
+- [ ] Epic **#97** (ADR-017) — Stufe 1–2 erledigt (#98 PR #101, #99 PR #102); #100 offen; [epic-externe-medien-hotspot-marker.md](epic-externe-medien-hotspot-marker.md)
 
-Letzter dokumentierter Abgleich: **2026-06-10** (Epic #97 / #98–#100 ADR-017); zuvor **2026-06-10** (#93 TextViewer + Klassenzimmer-Demo).
+Letzter dokumentierter Abgleich: **2026-06-10** (Epic #97: #98/#99 abgeschlossen, #100 offen); zuvor **2026-06-10** (#93 TextViewer + Klassenzimmer-Demo).
