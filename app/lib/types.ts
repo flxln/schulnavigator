@@ -30,7 +30,9 @@ export type HotspotAction = 'medium' | 'dialog'
 export interface Hotspot {
   id: string
   label?: string
+  /** 0–1: linker/rechter Rand des Quellbildes (horizontal pannbar). */
   x: number
+  /** 0–1: oben/unten im sichtbaren vertikalen Ausschnitt (nicht volles Quellbild bei Zoom). */
   y: number
   radius?: number
   /** Default `medium` — verknüpft mit `medien[]`. */
@@ -39,6 +41,10 @@ export interface Hotspot {
   mediumId?: string
   /** Pflicht bei `action: 'dialog'`; muss in `station.dialog.figuren` stehen. */
   mascot?: DialogFigure
+  /** Anteil der Panorama-Anzeigehöhe (0–1); nur bei action: 'dialog'. */
+  mascotSize?: number
+  /** Horizontal spiegeln (links↔rechts); Fußpunkt bleibt am Anker (nur action: 'dialog'). */
+  mascotFlipX?: boolean
 }
 
 export interface Medium {
