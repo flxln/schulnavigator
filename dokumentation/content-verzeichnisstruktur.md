@@ -151,6 +151,12 @@ Details: [ADR-010](./adr/010-dialog-cutscene-gated-audio.md).
 
 ---
 
+## Content einpflegen (Workflow)
+
+Schritt-für-Schritt für MPZ/Lehrkräfte: [`anleitungen/content-einpflegen.md`](../anleitungen/content-einpflegen.md) (Dateien, `stations.json`, Hotspots, Prüfcommands).
+
+---
+
 ## Demo → Media Migration
 
 `public/demo/` enthält Platzhalter-Medien für Stationen ohne echten Content. Migration pro Station:

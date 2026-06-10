@@ -194,6 +194,19 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
     [effectiveDisplayW, containerW],
   )
 
+  const yBand = useMemo(
+    () =>
+      naturalW > 0 && naturalH > 0 && containerW > 0 && containerH > 0
+        ? visibleYNormalRange(
+            naturalW / naturalH,
+            containerW,
+            containerH,
+            MIN_PAN_DISPLAY_RATIO,
+          )
+        : { yMin: 0, yMax: 1 },
+    [naturalW, naturalH, containerW, containerH],
+  )
+
   useEffect(() => {
     panPxRef.current = panPx
   }, [panPx])
@@ -319,29 +332,6 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
       )
     }
   }, [effectiveDisplayW, containerW, naturalW, naturalH, zoom])
-
-  useEffect(() => {
-    if (hotspots.length === 0 || naturalW <= 0 || naturalH <= 0) {
-      return
-    }
-    if (containerW <= 0 || containerH <= 0) {
-      return
-    }
-    const aspect = naturalW / naturalH
-    const { yMin, yMax } = visibleYNormalRange(
-      aspect,
-      containerW,
-      containerH,
-      MIN_PAN_DISPLAY_RATIO,
-    )
-    for (const hs of hotspots) {
-      if (hs.y < yMin || hs.y > yMax) {
-        console.warn(
-          `[RaumViewer] Hotspot „${hs.id}“ y=${hs.y.toFixed(3)} liegt außerhalb des sichtbaren Bereichs (${yMin.toFixed(3)}–${yMax.toFixed(3)}) bei aktuellem Zoom.`,
-        )
-      }
-    }
-  }, [hotspots, naturalW, naturalH, containerW, containerH])
 
   useEffect(() => {
     let running = true
@@ -715,6 +705,8 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
             <HotspotOverlay
               hotspots={hotspots}
               medien={medien}
+              containerHeight={effectiveDisplayH}
+              yBand={yBand}
               activeHotspotId={activeHotspotId}
               speakingRolle={speakingRolle}
               onHotspotTap={onHotspotTap}

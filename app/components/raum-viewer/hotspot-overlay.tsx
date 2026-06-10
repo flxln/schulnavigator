@@ -1,8 +1,16 @@
 'use client'
 
 import type { DialogFigure, DialogRolle, Hotspot, Medium } from '@/lib/types'
-import { isMascotDialogHotspot, mascotFromHotspot } from '@/lib/dialog-hotspot'
+import {
+  isMascotDialogHotspot,
+  mascotFromHotspot,
+  resolveMascotHeightPx,
+} from '@/lib/dialog-hotspot'
 import { isMascotSpeaking } from '@/lib/dialog-display'
+import {
+  hotspotImageY,
+  type HotspotYBand,
+} from '@/lib/raum-viewer/clip-zone'
 
 const MASCOT_SRC: Record<DialogFigure, string> = {
   frieda: '/brand/mascots/frieda.png',
@@ -19,6 +27,10 @@ const TYP_LABEL: Record<Medium['typ'], string> = {
 export type HotspotOverlayProps = {
   hotspots: Hotspot[]
   medien: Medium[]
+  /** Panorama-Anzeigehöhe in px (= effectiveDisplayH). */
+  containerHeight: number
+  /** Sichtbarer y-Bereich auf dem Bild-Layer (für viewport-relative JSON-y). */
+  yBand: HotspotYBand
   activeHotspotId?: string | null
   speakingRolle?: DialogRolle | null
   onHotspotTap?: (hotspot: Hotspot) => void
@@ -41,6 +53,8 @@ function hotspotAriaLabel(hs: Hotspot, medien: Medium[]): string {
 export function HotspotOverlay({
   hotspots,
   medien,
+  containerHeight,
+  yBand,
   activeHotspotId = null,
   speakingRolle = null,
   onHotspotTap,
@@ -58,11 +72,18 @@ export function HotspotOverlay({
         const label = hotspotAriaLabel(hs, medien)
         const interactive = typeof onHotspotTap === 'function'
         const isActive = activeHotspotId === hs.id
-        const anchorStyle = {
+        const imageY = hotspotImageY(hs.y, yBand)
+        const centerAnchorStyle = {
           position: 'absolute',
           left: `${hs.x * 100}%`,
-          top: `${hs.y * 100}%`,
+          top: `${imageY * 100}%`,
           transform: 'translate(-50%, -50%)',
+        } as const
+        const footAnchorStyle = {
+          position: 'absolute',
+          left: `${hs.x * 100}%`,
+          top: `${imageY * 100}%`,
+          transform: 'translate(-50%, -100%)',
         } as const
         const colorClass = isActive
           ? 'bg-accent ring-4 ring-accent/40'
@@ -78,12 +99,13 @@ export function HotspotOverlay({
             ? isMascotSpeaking(speakingRolle, mascot)
             : isActive
           const dimmed = Boolean(speakingRolle && !speaking)
+          const mascPx = resolveMascotHeightPx(hs, containerHeight)
+          const mascotImgClass = `sn-dialog-mascot__img object-contain drop-shadow-lg ${speaking ? 'sn-dialog-mascot__img--speaking' : ''}`
           return (
-            <li key={hs.id} style={anchorStyle}>
+            <li key={hs.id} style={footAnchorStyle}>
               <button
                 type="button"
-                className={`pointer-events-auto touch-manipulation transition-opacity duration-300 ${dimmed ? 'opacity-45' : 'opacity-100'}`}
-                style={{ transform: 'translate(-50%, -100%)' }}
+                className={`pointer-events-auto flex min-h-11 min-w-11 touch-manipulation items-end justify-center transition-opacity duration-300 ${dimmed ? 'opacity-45' : 'opacity-100'}`}
                 aria-label={label}
                 aria-current={isActive ? 'true' : undefined}
                 onPointerDown={(e) => e.stopPropagation()}
@@ -93,9 +115,8 @@ export function HotspotOverlay({
                 <img
                   src={MASCOT_SRC[mascot]}
                   alt=""
-                  width={150}
-                  height={150}
-                  className={`sn-dialog-mascot__img h-[130px] w-[130px] object-contain drop-shadow-lg sm:h-[150px] sm:w-[150px] ${speaking ? 'sn-dialog-mascot__img--speaking' : ''}`}
+                  className={`${mascotImgClass}${hs.mascotFlipX ? ' sn-dialog-mascot__img--flip-x' : ''}`}
+                  style={{ height: mascPx, width: 'auto', display: 'block' }}
                   draggable={false}
                 />
               </button>
@@ -105,7 +126,7 @@ export function HotspotOverlay({
 
         if (interactive) {
           return (
-            <li key={hs.id} style={anchorStyle}>
+            <li key={hs.id} style={centerAnchorStyle}>
               <button
                 type="button"
                 className={`${baseMarker} ${colorClass}`}
@@ -119,7 +140,7 @@ export function HotspotOverlay({
         }
 
         return (
-          <li key={hs.id} style={anchorStyle}>
+          <li key={hs.id} style={centerAnchorStyle}>
             <span
               role="img"
               aria-label={label}
