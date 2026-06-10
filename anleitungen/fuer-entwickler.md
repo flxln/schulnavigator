@@ -91,6 +91,8 @@ Für Stationen mit `bild` in `stations.json` ([ADR-006](../dokumentation/adr/006
 
 Der Viewer skaliert **höhenbasiert** (`ROOM_VIEWER_HEIGHT_CSS` = `min(50vh, 360px)`). **Auto-Zoom** (`roomPanZoom` in `lib/raum-viewer/room-pan-zoom.ts`): Ist das Quellbild zu „hoch“ im Verhältnis zur Viewport-Breite, wird es so weit vergrößert, dass horizontal mindestens **`MIN_PAN_DISPLAY_RATIO` (2)** erreicht wird — Gyro hat dann Spielraum; **oben/unten** kann beschnitten werden (`visibleYNormalRange` in `clip-zone.ts`). Der äußere Rahmen hat **`touch-action: none`** und **`contain: layout paint style`**, damit Wischen nicht mit Pull-to-Refresh oder Browser-Gesten kollidiert.
 
+**Browser-Pinch-Zoom** (Issue **#96**, Folge zu #56): Projektweit in [`app/app/layout.tsx`](../app/app/layout.tsx) — Viewport `userScalable: false`, `body { touch-action: manipulation }`, Client-Komponente [`DisableZoom`](../app/components/ui/disable-zoom.tsx) für iOS Safari (`touchmove` bei >1 Finger, `gesturestart`). Coolify deployt nicht automatisch — nach Push **Redeploy manuell** anstoßen.
+
 | Anforderung | Empfehlung |
 | ----------- | ---------- |
 | Aufnahme | **Panorama** bevorzugt (≥ **2,5 : 1**), Konstante `RECOMMENDED_SOURCE_ASPECT_MIN` |
