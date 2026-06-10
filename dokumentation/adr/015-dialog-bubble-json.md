@@ -12,7 +12,7 @@ Maskottchen sind seit ADR-014 per JSON positionier- und skalierbar (`x`, `y`, `m
 
 Ziel: Blase am Gerät nachjustieren können, ohne CSS-Deploy — analog zu Maskottchen und viewport-relativem `y`.
 
-## Entscheidung (Vorschlag)
+## Entscheidung
 
 ### 1. Neuer optionaler Block `dialog.bubble`
 
@@ -146,5 +146,5 @@ Bestehend (kein Schema-Bruch):
 | `content-einpflegen.md` | Abschnitt Dialog-Blase + `segmente` |
 | `stations.json` | optional `bubble` für `daz`, `pc-raum` nach Feintuning |
 
-**Implementierungsreihenfolge (Vorschlag):** (1) Types + Validator + Defaults ohne JSON-Werte, (2) Größe (`maxWidth`, `fontSize`), (3) `y`, (4) `x` + Mitpan-Tests, (5) `segmente[].tail`, (6) Doku + Demo-Werte.
+**Umsetzung:** Branch `feature/dialog-bubble-json` (zusammen mit ADR-014 auf `feature/mascot-size-json` gemergt, 2026-06-10). `stations.json` nutzt zunächst Defaults ohne `bubble`-Block; Feintuning am Gerät optional.
 
