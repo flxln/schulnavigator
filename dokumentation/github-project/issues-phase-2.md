@@ -456,8 +456,29 @@ Ersetzt Cutscene-UX für Dialog-Stationen; Audio/Route bleiben [ADR-010](../adr/
 - [x] Re-Tap-Guard, „Dialog beenden“ (v1 unter Sprechblase; UI-Polish → #72), Center-Hit ohne Maskottchen
 - [x] Spike iPhone (2026-05-28) dokumentiert
 - [x] Direkt auf `main` (`14cb740`); Deploy/Geräte-QA am Produktions-HTTPS ausstehend
-- [ ] Hotspot-Positionen am echten Foto feinjustieren (optional vor 10.06.)
+- [x] Hotspot-Positionen/Größe per JSON (`mascotSize`, viewport-`y`) — [ADR-014](../adr/014-mascot-size-json.md), Branch `feature/dialog-bubble-json`
 - UI-Polish TopBar/Chip: [#72](https://github.com/flxln/schulnavigator/issues/72) — erledigt (PR #73)
+
+---
+
+## Dialog-Layout JSON (ADR-014 / ADR-015)
+
+**Labels:** `tech` `content`  
+**Assignee:** Felix  
+**Branch:** `feature/dialog-bubble-json` (ADR-014 + ADR-015 gemergt, noch nicht auf `main`)
+
+| ADR | Inhalt | Status |
+|-----|--------|--------|
+| [014](../adr/014-mascot-size-json.md) | `mascotSize`, `mascotFlipX`, viewport-relative `y` | umgesetzt |
+| [015](../adr/015-dialog-bubble-json.md) | `dialog.bubble` (Position/Größe, `followPan`), `segmente[].tail` | umgesetzt |
+
+### Akzeptanzkriterien
+
+- [x] Types, Validator, Tests (`validate-stations`, `dialog-bubble-layout`, `hotspot-overlay`)
+- [x] `daz` / `pc-raum`: `mascotSize` in `stations.json`; Doku [`content-einpflegen.md`](../../anleitungen/content-einpflegen.md)
+- [x] `npm run test` grün
+- [ ] `npm run build` + PR → `main`; Geräte-QA Dialog-Layout
+- [ ] Optional: `dialog.bubble` in `stations.json` nach Feintuning am Gerät
 
 ---
 

@@ -189,7 +189,7 @@ Die Hero-Höhe in `raum-station-client.tsx` ist auf **eine Konstante** vereinfac
 | `components/raum-viewer/static-room-fallback.tsx` | nutzt `ROOM_VIEWER_HEIGHT_CSS` — mitziehen |
 | `components/raum-viewer/raum-viewer-error-boundary.tsx` | nutzt `ROOM_VIEWER_HEIGHT_CSS` — mitziehen |
 | `components/dialog/dialog-embedded-bubble.tsx` | `max-w-md` → `md:max-w-lg` (von `#78` hierher gezogen, damit Dialog auf Tablet nicht „verloren mittig" wirkt) |
-| `components/raum-viewer/hotspot-overlay.tsx` | Maskottchen `sm:h-[110px]` → `md:h-[130px]` (von `#78` hierher gezogen — Tap-Target skaliert mit Hero) |
+| `components/raum-viewer/hotspot-overlay.tsx` | ~~feste Breakpoints~~ → **Nachtrag 2026-06-10:** Maskottchen-Skalierung über `mascotSize` ([ADR-014](../adr/014-mascot-size-json.md), Branch `feature/dialog-bubble-json`). `#78` betrifft hier nur noch Tap-Target-Polish, nicht px-Höhen in CSS. |
 | `stations.json` / Bild-Pipeline | ggf. Hotspot-Y-Rebalancing oder neue Bilder (siehe „Content-Voraussetzung" unten) |
 
 ### Vorschlag Werte (Startpunkt, im PR feinjustieren)
