@@ -72,4 +72,18 @@ describe('resolveHotspotMarker', () => {
       kind: 'dot',
     })
   })
+
+  it('nutzt link-Preset für typ link', () => {
+    const linkMedium: Medium = {
+      id: 'ext',
+      typ: 'link',
+      quelle: 'https://example.com',
+    }
+    const marker = resolveHotspotMarker(mediaHotspot(), linkMedium, 200)
+    expect(marker).toEqual({
+      kind: 'image',
+      src: '/brand/hotspot-icons/link.svg',
+      heightPx: 20,
+    })
+  })
 })

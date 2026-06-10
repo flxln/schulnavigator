@@ -14,6 +14,7 @@ const MEDIA_TILE_BG: Record<Medium['typ'], string> = {
   video: '#FFF1DA',
   foto: '#E9F5DD',
   text: '#F0EAD9',
+  link: '#E8EEF5',
 }
 
 export function MediaSlotList({

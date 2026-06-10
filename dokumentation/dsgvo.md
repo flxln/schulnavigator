@@ -25,6 +25,7 @@ Entscheidung: [ADR-005](./adr/005-zugangskontrolle-token.md)
 
 - Serverstandort: Deutschland (MPZ-Hetzner, siehe ADR-001)
 - Drittanbieter (Video-Hosting, Analytics, …): Video vorerst MPZ; YouTube nur nach Klärung (ADR-004)
+- Externe Links (`typ: link`, ADR-017): Die App lädt keine Drittanbieter-Inhalte ein; erst ein expliziter Nutzer-Tap öffnet die HTTPS-Zielseite in einem neuen Tab. Bei produktiver Delightex-Nutzung: Datenschutzerklärung und ggf. AVV mit Schule/DSB klären (analog YouTube, ADR-004)
 
 ## Auftragsverarbeitung (AVV)
 

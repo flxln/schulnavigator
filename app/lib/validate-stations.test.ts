@@ -202,6 +202,87 @@ describe('validateStationsFile Hub (ADR-016)', () => {
     expect(m?.thumbnail).toBe('/media/klassenzimmer/fotos/grundschule_demo.jpg')
   })
 
+  it('akzeptiert typ link mit https-URL', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const pcRaum = data.stations.find(
+      (s) => s.slug === 'pc-raum',
+    ) as Record<string, unknown>
+    pcRaum.medien = [
+      {
+        id: 'pc-delightex',
+        typ: 'link',
+        quelle: 'https://example.com/demo',
+        untertitel: 'Demo-Link',
+      },
+    ]
+    const stations = validateStationsFile(data as unknown)
+    const m = stations
+      .find((s) => s.slug === 'pc-raum')
+      ?.medien.find((x) => x.id === 'pc-delightex')
+    expect(m?.typ).toBe('link')
+    expect(m?.quelle).toBe('https://example.com/demo')
+  })
+
+  it('wirft bei link mit http-URL', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const pcRaum = data.stations.find(
+      (s) => s.slug === 'pc-raum',
+    ) as Record<string, unknown>
+    pcRaum.medien = [
+      {
+        id: 'bad-link',
+        typ: 'link',
+        quelle: 'http://example.com',
+      },
+    ]
+    expect(() => validateStationsFile(data as unknown)).toThrow('https-URL')
+  })
+
+  it('wirft bei link mit lokalem Pfad', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const pcRaum = data.stations.find(
+      (s) => s.slug === 'pc-raum',
+    ) as Record<string, unknown>
+    pcRaum.medien = [
+      {
+        id: 'bad-link',
+        typ: 'link',
+        quelle: '/media/foo',
+      },
+    ]
+    expect(() => validateStationsFile(data as unknown)).toThrow('https-URL')
+  })
+
+  it('wirft bei openIn auf Video-Medium', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const klassenzimmer = data.stations.find(
+      (s) => s.slug === 'klassenzimmer',
+    ) as Record<string, unknown>
+    const medien = klassenzimmer.medien as Record<string, unknown>[]
+    medien[1] = { ...medien[1], openIn: 'external' }
+    expect(() => validateStationsFile(data as unknown)).toThrow(
+      "openIn nur bei typ 'link'",
+    )
+  })
+
+  it('wirft bei poster auf link', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const pcRaum = data.stations.find(
+      (s) => s.slug === 'pc-raum',
+    ) as Record<string, unknown>
+    pcRaum.medien = [
+      {
+        id: 'bad-link',
+        typ: 'link',
+        quelle: 'https://example.com',
+        poster: '/media/x.jpg',
+      },
+    ]
+    expect(() => validateStationsFile(data as unknown)).toThrow(
+      'darf kein poster',
+    )
+  })
+
   it('wirft bei unbekanntem slug ohne Hub-Zuordnung', () => {
     const broken = structuredClone(raw) as {
       stations: { slug: string }[]

@@ -26,7 +26,7 @@ Design-System-Doku: `auftraggeber/material/UI-Vorschläge/UI-vorschlag-website.m
 - Logos: `/brand/logos/jubilaeum-lockup.svg`, `/brand/logos/badge.svg` (Next.js `public/`-Pfad)
 - Motive: `/brand/motifs/…` (wenn vorhanden)
 - Maskottchen: `/brand/mascots/frieda.png`, `/brand/mascots/otto.png`
-- Hotspot-Presets: `/brand/hotspot-icons/audio.svg`, `video.svg`, `foto.svg`, `text.svg`
+- Hotspot-Presets: `/brand/hotspot-icons/audio.svg`, `video.svg`, `foto.svg`, `text.svg`, `link.svg`
 - Farben/Typo: CSS-Variablen in `app/gs39-tokens.css`, nicht direkte Hex-Werte in TSX
 
 ## Pflege
