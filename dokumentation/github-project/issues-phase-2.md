@@ -75,6 +75,7 @@ Spezifikation: [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
 **Assignee:** Felix
 
 - [x] Viewport-Meta (`device-width`) — kein „gezoomter“ Mobile-Layout-Bug
+- [x] **Pinch-Zoom gesperrt** ([#96](https://github.com/flxln/schulnavigator/issues/96), Folge zu #56): `userScalable: false` + `DisableZoom` (iOS Safari: `touchmove`/`gesturestart`); `body { touch-action: manipulation }`
 - [x] `touch-action: none` + CSS-Containment auf dem Viewer; kein Pull-to-Refresh-Konflikt beim Wischen
 - [x] Auto-Zoom bis `MIN_PAN_DISPLAY_RATIO` (2); Hotspot-y Build-/Runtime-Warnungen
 - [x] Gyro: Neutral ~500 ms (alpha: kreisförmig); Re-Kalibrierung nach Wischen; Resize + `orientationchange`-Reset; `GYRO_FULL_RANGE_DEG` / Sensitivity / Deadzone; zirkuläre EMA für alpha; Gamma-Sanity nur für `gamma`
@@ -82,6 +83,21 @@ Spezifikation: [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
 - [x] iOS: `sessionStorage` + 2s-Watchdog bei Cache ohne Sensordaten
 - [x] Button „Ansicht zentrieren“; `?debug=1` für Diagnose-HUD
 - [x] Doku (u. a. `lokal-testen-und-anschauen.md`, `fuer-entwickler.md`, `architektur.md`, ADR-006, Projektplan, GitHub-Projekt-README) + Testmatrix
+
+---
+
+## #96 — Pinch-Zoom projektweit sperren (Folge zu #56)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/96 — **geschlossen** (Umsetzung `6bea507`)
+
+**Labels:** `tech`  
+**Assignee:** Felix
+
+- [x] Viewport: `minimumScale`/`maximumScale: 1`, `userScalable: false` in `app/app/layout.tsx`
+- [x] CSS: `body { touch-action: manipulation }` in `globals.css`
+- [x] iOS Safari: `DisableZoom` — `touchmove` (>1 Finger) + `gesturestart`, `passive: false`
+- [x] Auf Live nach manuellem Coolify-Redeploy verifiziert (iOS Pinch blockiert)
+- [x] Doku: `architektur.md`, `lokal-testen-und-anschauen.md`, `fuer-entwickler.md`, #56-Checkliste oben
 
 ---
 
