@@ -27,6 +27,8 @@ Slug = App-Slug aus der [kanonischen Slug-Liste](../../../dokumentation/content-
 
 ## Workflow
 
+Vollständige Anleitung: [`anleitungen/content-einpflegen.md`](../../../anleitungen/content-einpflegen.md)
+
 1. Rohmaterial liegt in `auftraggeber/material/medien/{slug}/`
 2. Nach Freigabe: optimierte Datei hierher kopieren
 3. `stations.json` anpassen (Pfad von `/demo/…` auf `/media/{slug}/…`)

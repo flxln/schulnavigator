@@ -9,7 +9,7 @@ export type TextViewerProps = {
 }
 
 function getExtension(src: string): string {
-  const path = src.split('?')[0]
+  const path = src.split('?')[0] ?? src
   const dot = path.lastIndexOf('.')
   return dot !== -1 ? path.slice(dot + 1).toLowerCase() : ''
 }

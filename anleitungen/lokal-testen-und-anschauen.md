@@ -2,7 +2,8 @@
 
 _Kurzanleitung: Entwicklungsstand im Browser prüfen, typische Checks, produktionsnahes Verhalten._
 
-Ausführliches Setup und Docker: [`fuer-entwickler.md`](./fuer-entwickler.md).
+Ausführliches Setup und Docker: [`fuer-entwickler.md`](./fuer-entwickler.md).  
+Content einpflegen (JSON, Medien, Hotspots): [`content-einpflegen.md`](./content-einpflegen.md).
 
 ---
 

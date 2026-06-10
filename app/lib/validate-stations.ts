@@ -14,6 +14,10 @@ import {
   buildIsometricHubStations,
   ISOMETRIC_SLUG_MAP,
 } from '@/lib/schoolhouse-isometric-map'
+import {
+  MAX_MASCOT_SIZE_NORM,
+  MIN_MASCOT_SIZE_NORM,
+} from '@/lib/raum-viewer/constants'
 
 const EXPECTED_STATION_COUNT = Object.keys(ISOMETRIC_SLUG_MAP).length
 
@@ -97,8 +101,11 @@ function validateHotspot(h: unknown, ctx: string): Hotspot {
     typeof h.y === 'number' && Number.isFinite(h.y),
     `${ctx}: hotspot.y fehlt`,
   )
-  assert(h.x >= 0 && h.x <= 1, `${ctx}: hotspot.x muss 0–1 sein`)
-  assert(h.y >= 0 && h.y <= 1, `${ctx}: hotspot.y muss 0–1 sein`)
+  assert(h.x >= 0 && h.x <= 1, `${ctx}: hotspot.x muss 0–1 sein (Quellbild)`)
+  assert(
+    h.y >= 0 && h.y <= 1,
+    `${ctx}: hotspot.y muss 0–1 sein (sichtbarer Ausschnitt: 0 oben, 1 unten)`,
+  )
   if (h.label !== undefined) {
     assert(typeof h.label === 'string', `${ctx}: label muss string sein`)
   }
@@ -118,6 +125,23 @@ function validateHotspot(h: unknown, ctx: string): Hotspot {
       `${ctx}: dialog-Hotspot darf kein mediumId haben`,
     )
     assert(isDialogFigure(h.mascot), `${ctx}: mascot fehlt oder ungültig`)
+    if (h.mascotSize !== undefined) {
+      assert(
+        typeof h.mascotSize === 'number' && Number.isFinite(h.mascotSize),
+        `${ctx}: mascotSize muss Zahl sein`,
+      )
+      assert(
+        h.mascotSize >= MIN_MASCOT_SIZE_NORM &&
+          h.mascotSize <= MAX_MASCOT_SIZE_NORM,
+        `${ctx}: mascotSize muss ${MIN_MASCOT_SIZE_NORM}–${MAX_MASCOT_SIZE_NORM} sein`,
+      )
+    }
+    if (h.mascotFlipX !== undefined) {
+      assert(
+        typeof h.mascotFlipX === 'boolean',
+        `${ctx}: mascotFlipX muss boolean sein`,
+      )
+    }
     return {
       id: h.id,
       label: h.label as string | undefined,
@@ -126,6 +150,8 @@ function validateHotspot(h: unknown, ctx: string): Hotspot {
       radius: h.radius as number | undefined,
       action: 'dialog',
       mascot: h.mascot,
+      mascotSize: h.mascotSize as number | undefined,
+      mascotFlipX: h.mascotFlipX as boolean | undefined,
     }
   }
   assert(
@@ -135,6 +161,14 @@ function validateHotspot(h: unknown, ctx: string): Hotspot {
   assert(
     h.mascot === undefined,
     `${ctx}: medium-Hotspot darf kein mascot haben`,
+  )
+  assert(
+    h.mascotSize === undefined,
+    `${ctx}: medium-Hotspot darf kein mascotSize haben`,
+  )
+  assert(
+    h.mascotFlipX === undefined,
+    `${ctx}: medium-Hotspot darf kein mascotFlipX haben`,
   )
   return {
     id: h.id,

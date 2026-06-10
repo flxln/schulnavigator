@@ -395,13 +395,16 @@ Entry-Scanner von Inline-Block auf **`/eintritt/scan`** verschoben; gemeinsame `
 **Labels:** `org` `blocker`  
 **Assignee:** Felix / Thomas
 
+**Fahrplan (45–60 Min.):** [`anleitungen/meeting-fahrplan-2026-06-10.md`](../../anleitungen/meeting-fahrplan-2026-06-10.md) · Demo-Ablauf: [`demo-meeting-2026-06-10.md`](../../anleitungen/demo-meeting-2026-06-10.md)
+
 Agenda:
 
-1. Demo App-Shell: Hub (`fest`, nach #58 isometrisch), Scanner, eine Beispiel-Station mit Gyro-Viewer + Hotspots + Medien
-2. Content-Lieferplan: 11 Räume → Medientyp → Klasse → Verantwortlich
-3. WLAN/Mobilfunk (Turnhalle, Außenbereich)
-4. AVV-Status (#43)
-5. Projekttag 24./25.06.
+1. Demo App-Shell: Hub (`fest`), Scanner, `musik`/`daz`/`klassenzimmer` (Ziel-Workflow)
+2. Content-Lieferplan: 11 Räume → Medientyp → Klasse → Verantwortlich → **Deadline 12.06.**
+3. Schulfest-QR-Strategie (offene Räume vs. Hof-Virtualisierung, Nachtrag #86)
+4. WLAN/Mobilfunk (Turnhalle, Außenbereich)
+5. AVV-Status (#43)
+6. Projekttag 24./25.06.
 
 **Ohne Content-Lieferplan keine Phase 3.**
 
