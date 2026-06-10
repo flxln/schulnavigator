@@ -63,6 +63,10 @@ export interface Hotspot {
   mascotSize?: number
   /** Horizontal spiegeln (links↔rechts); Fußpunkt bleibt am Anker (nur action: 'dialog'). */
   mascotFlipX?: boolean
+  /** Medien-Hotspot: Pfad unter /public (PNG/SVG/WebP); [ADR-017]. */
+  icon?: string
+  /** Medien-Hotspot: Anteil effectiveDisplayH (0,05–0,25); [ADR-017]. */
+  iconSize?: number
 }
 
 export interface Medium {
@@ -72,6 +76,8 @@ export interface Medium {
   videoSource?: VideoSource
   /** Nur typ === 'video' (videoSource 'upload'): optionales Vorschaubild. Validator erzwingt den Typ-Scope. */
   poster?: string
+  /** Optionales Vorschaubild für Medienliste und Hotspot-Fallback; [ADR-017]. */
+  thumbnail?: string
   untertitel?: string
 }
 

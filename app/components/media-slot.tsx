@@ -13,9 +13,20 @@ export type MediaSlotProps = {
   onMediaSelect?: (medium: Medium) => void
 }
 
+function previewSrc(medium: Medium): string | undefined {
+  if (medium.thumbnail) {
+    return medium.thumbnail
+  }
+  if (medium.typ === 'foto') {
+    return medium.quelle
+  }
+  return undefined
+}
+
 export function MediaSlot({ medium, onMediaSelect }: MediaSlotProps) {
   const label = TYP_LABEL[medium.typ]
   const interactive = typeof onMediaSelect === 'function'
+  const preview = previewSrc(medium)
 
   const body = (
     <>
@@ -25,11 +36,11 @@ export function MediaSlot({ medium, onMediaSelect }: MediaSlotProps) {
       {medium.untertitel ? (
         <p className="mt-1 text-sm text-fg-2">{medium.untertitel}</p>
       ) : null}
-      {medium.typ === 'foto' ? (
+      {preview ? (
         <div className="relative mt-3 aspect-video w-full max-h-48 overflow-hidden rounded-[var(--r-sm)] bg-bg-3">
           <Image
-            src={medium.quelle}
-            alt={medium.untertitel ?? 'Stationsfoto'}
+            src={preview}
+            alt={medium.untertitel ?? 'Vorschaubild'}
             fill
             className="object-cover"
             sizes="(max-width: 512px) 100vw, 512px"
