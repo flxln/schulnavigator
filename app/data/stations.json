@@ -177,7 +177,15 @@
       "titel": "PC-Raum",
       "beschreibung": "Willkommen im PC-Raum! Hier tippen wir, klicken wir und lernen, wie Computer funktionieren. Und keine Sorge: wir wissen, welcher Knopf der Aus-Knopf ist – meistens jedenfalls.",
       "bild": "/stations/pc-raum.jpg",
-      "medien": [],
+      "medien": [
+        {
+          "id": "pc-delightex",
+          "typ": "link",
+          "quelle": "https://edu.delightex.com/WVX-NAQ",
+          "untertitel": "Unsere 3D-Welt",
+          "thumbnail": "/media/pc-raum/icons/delightex.svg"
+        }
+      ],
       "hotspots": [
         {
           "id": "hs-frieda",
@@ -200,6 +208,16 @@
           "mascot": "otto",
           "mascotSize": 0.22,
           "mascotFlipX": false
+        },
+        {
+          "id": "hs-delightex",
+          "label": "3D-Welt",
+          "x": 0.5,
+          "y": 0.45,
+          "radius": 0.06,
+          "mediumId": "pc-delightex",
+          "icon": "/media/pc-raum/icons/delightex.svg",
+          "iconSize": 0.1
         }
       ],
       "dialog": {

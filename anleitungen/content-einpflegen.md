@@ -181,13 +181,12 @@ Orientierung: Eintrag `klassenzimmer` in `stations.json` (Issue **#93**).
 | Feld | Pflicht | Werte / Hinweis |
 |------|---------|-----------------|
 | `id` | ja | Eindeutig **pro Station** (z. B. `werken-audio`) |
-| `typ` | ja | `audio` \| `video` \| `foto` \| `text` — **geplant Post-Fest:** `link` \| `embed` ([ADR-017](../dokumentation/adr/017-externe-medien-hotspot-marker.md)) |
-| `quelle` | ja | Pfad mit führendem `/`, Datei muss unter `app/public/` liegen — bei `link`/`embed`: `https://…` |
+| `typ` | ja | `audio` \| `video` \| `foto` \| `text` \| `link` — **geplant:** `embed` ([ADR-017](../dokumentation/adr/017-externe-medien-hotspot-marker.md)) |
+| `quelle` | ja | Pfad mit `/` unter `app/public/` — bei `typ: link`: `https://…` (externer Tab); bei `embed`: `https://…` |
 | `untertitel` | nein | Anzeige in Medienliste und Panel |
 | `thumbnail` | nein | Vorschaubild unter `/public/…` — Medienliste und Hotspot-Fallback ([ADR-017](../dokumentation/adr/017-externe-medien-hotspot-marker.md) Stufe 1) |
 | `videoSource` | bei Video | `upload` (Standard) oder `youtube` (MVP: nur Hinweistext, kein Embed) |
 | `poster` | nein | Nur bei `typ: video` — Vorschaubild-Pfad |
-| `openIn` | bei `link` | **Geplant:** nur `external` (neuer Browser-Tab) |
 | `embedAllow` | bei `embed` | **Geplant:** Domain-Suffixe (Default: `delightex.com`) |
 
 ### Video-Modi (`videoSource`)
@@ -368,19 +367,19 @@ Station: _____________  Slug: _____________
 
 ---
 
-## Hotspot-Icons (Stufe 1, live) und geplant: Links, Delightex-Embed
+## Hotspot-Icons und externe Links (live) — Delightex-Embed geplant
 
-**Stufe 1 (live):** Medien-Hotspots zeigen `icon` → `thumbnail` → Typ-Preset (`/brand/hotspot-icons/`) → gelber Punkt. Beispiel: `klassenzimmer` / `hs-video` mit `play.svg`. Details: [ADR-017](../dokumentation/adr/017-externe-medien-hotspot-marker.md).
+**Stufe 1 (live):** Medien-Hotspots zeigen `icon` → `thumbnail` → Typ-Preset (`/brand/hotspot-icons/`) → gelber Punkt.
+
+**Stufe 2 (live):** `typ: link` mit `quelle: https://…` — öffnet in neuem Browser-Tab (Hotspot oder Medienliste). Beispiel: `pc-raum` / `pc-delightex`. Delightex-Share-URL erst nach DSB-Freigabe eintragen.
 
 | Stufe | Inhalt | Redaktion |
 |-------|--------|-----------|
-| 1 | Icons statt gelber Punkt | **live** — SVG/PNG unter `public/media/{slug}/icons/` |
-| 2 | `typ: link` | Delightex-Share-URL oder andere HTTPS-Seite |
+| 1 | Icons statt gelber Punkt | **live** |
+| 2 | `typ: link` | **live** — HTTPS-URL; optional `thumbnail` / Hotspot-`icon` |
 | 3 | `typ: embed` | Nur nach DSB-Freigabe; öffentliche Embed-URL von Delightex |
 
 Umsetzungsplan: [`dokumentation/projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md`](../dokumentation/projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md)
-
-**PC-Raum bis Stufe 2 live:** Audio/Video der Kinder **oder** `typ: link` auf Delightex — kein iframe nötig.
 
 ---
 

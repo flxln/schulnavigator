@@ -26,6 +26,7 @@ import {
   buildHubStations,
   HUB_SLUG_MAP,
 } from '@/lib/schoolhouse-hub-map'
+import { isValidHttpsUrl } from '@/lib/external-link'
 import {
   MAX_ICON_SIZE_NORM,
   MAX_MASCOT_SIZE_NORM,
@@ -35,7 +36,13 @@ import {
 
 const EXPECTED_STATION_COUNT = Object.keys(HUB_SLUG_MAP).length
 
-const MEDIUM_TYPEN: readonly MediumTyp[] = ['audio', 'video', 'foto', 'text']
+const MEDIUM_TYPEN: readonly MediumTyp[] = [
+  'audio',
+  'video',
+  'foto',
+  'text',
+  'link',
+]
 
 const DIALOG_FIGUREN: readonly DialogFigure[] = ['frieda', 'otto']
 const DIALOG_ROLLEN: readonly DialogRolle[] = ['frieda', 'otto', 'beide']
@@ -71,6 +78,25 @@ function validateMedium(m: unknown, ctx: string): Medium {
     typeof m.quelle === 'string' && m.quelle.length > 0,
     `${ctx}: medium.quelle fehlt`,
   )
+  if (m.typ === 'link') {
+    assert(
+      isValidHttpsUrl(m.quelle),
+      `${ctx}: link.quelle muss gültige https-URL sein`,
+    )
+    assert(
+      m.videoSource === undefined,
+      `${ctx}: link darf kein videoSource haben`,
+    )
+    assert(m.poster === undefined, `${ctx}: link darf kein poster haben`)
+    if (m.openIn !== undefined) {
+      assert(
+        m.openIn === 'external',
+        `${ctx}: openIn muss 'external' sein`,
+      )
+    }
+  } else if (m.openIn !== undefined) {
+    assert(false, `${ctx}: openIn nur bei typ 'link' erlaubt`)
+  }
   if (m.videoSource !== undefined) {
     assert(
       m.videoSource === 'upload' || m.videoSource === 'youtube',
