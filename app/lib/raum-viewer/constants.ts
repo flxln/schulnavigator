@@ -4,6 +4,10 @@ export const MIN_MASCOT_SIZE_NORM = 0.05
 export const MAX_MASCOT_SIZE_NORM = 1
 /** Startkandidat (~130 px bei effectiveDisplayH ≈ 590 px im Hero). */
 export const DEFAULT_MASCOT_SIZE_NORM = 0.22
+/** Medien-Hotspot-Icon: Anteil von effectiveDisplayH; [ADR-017]. */
+export const MIN_ICON_SIZE_NORM = 0.05
+export const MAX_ICON_SIZE_NORM = 0.25
+export const DEFAULT_ICON_SIZE_NORM = 0.1
 /** Mit Nutzer auf iPhone Safari kalibriert; bei Beschwerden in 0,1-Schritten anpassen. */
 export const GYRO_DEADZONE_DEG = 2
 /** Mit Nutzer auf iPhone Safari kalibriert; bei Beschwerden in 0,1-Schritten anpassen. */

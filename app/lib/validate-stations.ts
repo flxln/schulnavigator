@@ -27,7 +27,9 @@ import {
   HUB_SLUG_MAP,
 } from '@/lib/schoolhouse-hub-map'
 import {
+  MAX_ICON_SIZE_NORM,
   MAX_MASCOT_SIZE_NORM,
+  MIN_ICON_SIZE_NORM,
   MIN_MASCOT_SIZE_NORM,
 } from '@/lib/raum-viewer/constants'
 
@@ -83,6 +85,12 @@ function validateMedium(m: unknown, ctx: string): Medium {
     assert(
       typeof m.poster === 'string' && m.poster.startsWith('/'),
       `${ctx}: poster muss string mit führendem / sein`,
+    )
+  }
+  if (m.thumbnail !== undefined) {
+    assert(
+      typeof m.thumbnail === 'string' && m.thumbnail.startsWith('/'),
+      `${ctx}: thumbnail muss string mit führendem / sein`,
     )
   }
   if (m.untertitel !== undefined) {
@@ -159,6 +167,14 @@ function validateHotspot(h: unknown, ctx: string): Hotspot {
         `${ctx}: mascotFlipX muss boolean sein`,
       )
     }
+    assert(
+      h.icon === undefined,
+      `${ctx}: dialog-Hotspot darf kein icon haben`,
+    )
+    assert(
+      h.iconSize === undefined,
+      `${ctx}: dialog-Hotspot darf kein iconSize haben`,
+    )
     return {
       id: h.id,
       label: h.label as string | undefined,
@@ -187,6 +203,22 @@ function validateHotspot(h: unknown, ctx: string): Hotspot {
     h.mascotFlipX === undefined,
     `${ctx}: medium-Hotspot darf kein mascotFlipX haben`,
   )
+  if (h.icon !== undefined) {
+    assert(
+      typeof h.icon === 'string' && h.icon.startsWith('/'),
+      `${ctx}: icon muss string mit führendem / sein`,
+    )
+  }
+  if (h.iconSize !== undefined) {
+    assert(
+      typeof h.iconSize === 'number' && Number.isFinite(h.iconSize),
+      `${ctx}: iconSize muss Zahl sein`,
+    )
+    assert(
+      h.iconSize >= MIN_ICON_SIZE_NORM && h.iconSize <= MAX_ICON_SIZE_NORM,
+      `${ctx}: iconSize muss ${MIN_ICON_SIZE_NORM}–${MAX_ICON_SIZE_NORM} sein`,
+    )
+  }
   return {
     id: h.id,
     label: h.label as string | undefined,
@@ -195,6 +227,8 @@ function validateHotspot(h: unknown, ctx: string): Hotspot {
     radius: h.radius as number | undefined,
     action: 'medium',
     mediumId: h.mediumId,
+    icon: h.icon as string | undefined,
+    iconSize: h.iconSize as number | undefined,
   }
 }
 
