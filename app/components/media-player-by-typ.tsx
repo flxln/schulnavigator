@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic'
 import type { Medium } from '@/lib/types'
 import { AudioPlayer } from '@/components/media/audio-player'
 import { VideoPlayer } from '@/components/media/video-player'
+import { LinkViewer } from '@/components/media/link-viewer'
 import { PhotoViewer } from '@/components/media/photo-viewer'
 
 const TextViewer = dynamic(
@@ -25,6 +26,10 @@ export function MediaPlayerByTyp({ medium }: MediaPlayerByTypProps) {
       return <PhotoViewer src={medium.quelle} alt={medium.untertitel ?? 'Stationsfoto'} />
     case 'text':
       return <TextViewer src={medium.quelle} />
+    case 'link':
+      return (
+        <LinkViewer url={medium.quelle} label={medium.untertitel} />
+      )
     default:
       return null
   }

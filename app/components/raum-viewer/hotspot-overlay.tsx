@@ -23,6 +23,7 @@ const TYP_LABEL: Record<Medium['typ'], string> = {
   video: 'Video',
   foto: 'Foto',
   text: 'Text',
+  link: 'Link',
 }
 
 export type HotspotOverlayProps = {
