@@ -2,12 +2,12 @@
 
 import { Lock, QrCode } from 'lucide-react'
 import { Gs39Chip } from '@/components/ui'
-import type { IsometricHubStation } from '@/lib/schoolhouse-isometric-map'
+import type { HubStation } from '@/lib/schoolhouse-hub-map'
 
 type NextStationRowVariant = 'card' | 'footer'
 
 type NextStationRowProps = {
-  station: IsometricHubStation
+  station: HubStation
   locked: boolean
   eyebrow: string
   onClick: () => void

@@ -17,7 +17,7 @@ _Stand: 2026-06-10 (**#93:** TextViewer + Demo `klassenzimmer`; **#18–#20:** M
 | Navigation          | In-App-Scanner Entry (`/eintritt/scan`) + Räume (`/scan`) | gleich                      | [005](./adr/005-zugangskontrolle-token.md), [008](./adr/008-eintritt-in-app-scanner.md) |
 | Raum-Viewer         | Gyro-Pan, Hotspots, Tap-Fallback; normales Foto   | gleich                           | [006](./adr/006-raum-viewer-gyro-hotspots.md) |
 | UI / Schul-Theme    | GS39-Tokens + Jubiläums-UI (Epic #58)             | pro Schule eigenes Token-Sheet   | [ADR-009](./adr/009-hub-isometrisch.md), Auftraggeber-CSS |
-| Startseite-Hub      | Isometrisches Schulhaus-SVG (ersetzt Puzzle)      | gleich                           | [ADR-009](./adr/009-hub-isometrisch.md) |
+| Startseite-Hub      | Frontansicht GS39 (SVG-Outline, Slot-Map)         | gleich                           | [ADR-016](./adr/016-hub-frontansicht-39gs.md) |
 | Responsive / Tablet | Phone `max-w-lg`; Tablet-Skalierung geplant       | Breakpoints `md`/`lg`            | [ADR-012](./adr/012-tablet-ipad-responsive-layout.md), Epic [#74–#78](./github-project/epic-tablet-ipad-layout.md) |
 
 ## Responsive Layout (ADR-012, geplant)
@@ -37,16 +37,16 @@ _Stand: 2026-06-10 (**#93:** TextViewer + Demo `klassenzimmer`; **#18–#20:** M
 - **Build-Check:** `npm run validate:tokens` vergleicht App-Tokens mit der Referenz (`colors_and_type.css` lokal bzw. [`app/scripts/reference/colors_and_type.css`](../app/scripts/reference/colors_and_type.css) im Docker-Build). Wird von `npm run build` mitaufgerufen.
 - **Display/Script-Fonts (#58):** Caveat Brush, Caveat via `next/font` — ergänzt Nunito; App-Klassen in [`sn-theme.css`](../app/app/sn-theme.css).
 
-## Startseite-Hub (ADR-009, umgesetzt)
+## Startseite-Hub (ADR-016, umgesetzt)
 
 | Aspekt | Details |
 |--------|---------|
-| Komponente | `IsometricSchoolhouse` (Port aus Design-`schoolhouse.jsx`, `viewBox` 800×520) |
-| Zuordnung | `lib/schoolhouse-isometric-map.ts`: 11 Slugs → `room`, `nr`, `accent` (Hex) |
+| Komponente | `FrontSchoolhouse` — Outline `public/brand/hub/gs39-front-outline.svg`, `viewBox` 1086.5×1453.9 |
+| Zuordnung | `lib/schoolhouse-hub-map.ts`: 11 Slugs → `slotId`, Rechteck, `nr`, `accent`; Portal = klassenzimmer |
 | Freischaltung | wie #21/#23 über `visitedSlugs`; `fest` = nur besuchte Slots klickbar; Stempel nur per Raum-QR (#83, [ADR-009 Nachtrag](./adr/009-hub-isometrisch.md#nachtrag-2026-05-30--fest-freischaltung-nur-per-raum-qr-83)) |
-| Entfällt | Puzzle-`SchoolhouseSvg`, `schoolhouse-layout.ts`, `puzzleSegmentId` in JSON |
+| Touch | `expandHitRect` mit Nachbar-Klemmung (`schoolhouse-hub-hit.ts`) |
 | A11y | SVG `role="button"` + SR-Nav (`schoolhouse-sr-nav`) |
-| Offen | Slug für SVG-Slot `ground-mid` (Eingangstür) mit Schule abstimmen |
+| Offen | Fenster-Zuordnung mit Schule feinjustieren (Vorschlag 2026-06-10 in Map) |
 
 ## Raum-Viewer (Implementierung, Issue #55)
 

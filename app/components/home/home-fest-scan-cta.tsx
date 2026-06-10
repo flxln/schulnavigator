@@ -3,10 +3,10 @@
 import { Lock, QrCode } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Gs39Chip } from '@/components/ui'
-import type { IsometricHubStation } from '@/lib/schoolhouse-isometric-map'
+import type { HubStation } from '@/lib/schoolhouse-hub-map'
 
 type HomeFestScanCtaProps = {
-  nextStation: IsometricHubStation
+  nextStation: HubStation
 }
 
 export function HomeFestScanCta({ nextStation }: HomeFestScanCtaProps) {

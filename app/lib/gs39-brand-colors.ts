@@ -22,7 +22,7 @@ export const GS39_BRAND_HEX = {
 
 export type Gs39BrandHexKey = keyof typeof GS39_BRAND_HEX
 
-/** Akzentfarben pro Station (PR3 schoolhouse-isometric-map) — vorläufig, ground-mid TBD */
+/** Akzentfarben pro Station (Hub schoolhouse-hub-map, ADR-016) */
 export const GS39_STATION_ACCENT_HEX: Record<string, string> = {
   klassenzimmer: GS39_BRAND_HEX.blue,
   daz: GS39_BRAND_HEX.blue,

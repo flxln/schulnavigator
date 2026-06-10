@@ -2,7 +2,7 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { RaumStationClient } from '@/components/raum-station-client'
-import { buildIsometricHubStations } from '@/lib/schoolhouse-isometric-map'
+import { buildHubStations } from '@/lib/schoolhouse-hub-map'
 import { getAllStations, getStationBySlug } from '@/lib/stations'
 
 const mocks = vi.hoisted(() => ({
@@ -70,7 +70,7 @@ function renderDaz() {
   if (!station) {
     throw new Error('daz station missing')
   }
-  const hubStations = buildIsometricHubStations(getAllStations())
+  const hubStations = buildHubStations(getAllStations())
   const hubStation = hubStations.find((s) => s.slug === 'daz')
   if (!hubStation) {
     throw new Error('daz hub station missing')

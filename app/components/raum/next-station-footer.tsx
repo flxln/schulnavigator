@@ -5,11 +5,11 @@ import { NextStationRow } from '@/components/raum/next-station-row'
 import type { EntryMode } from '@/lib/access-tokens'
 import { isHubStationNavigable } from '@/lib/hub-mode'
 import { getNextStation } from '@/lib/next-station'
-import type { IsometricHubStation } from '@/lib/schoolhouse-isometric-map'
+import type { HubStation } from '@/lib/schoolhouse-hub-map'
 
 type NextStationFooterProps = {
   currentSlug: string
-  hubStations: readonly IsometricHubStation[]
+  hubStations: readonly HubStation[]
   mode: EntryMode
   unlockedSlugs: ReadonlySet<string>
   visitedSlugs: ReadonlySet<string>

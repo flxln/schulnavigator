@@ -1,17 +1,17 @@
 import { describe, expect, it } from 'vitest'
 import { getNextStation } from '@/lib/next-station'
-import type { IsometricHubStation } from '@/lib/schoolhouse-isometric-map'
+import type { HubStation } from '@/lib/schoolhouse-hub-map'
 
-function stub(slug: string, nr: number): IsometricHubStation {
+function stub(slug: string, nr: number): HubStation {
   return {
     slug,
     titel: slug,
     nr,
-    room: 'top-left',
+    slotId: 'fenster-uc-l',
+    kind: 'fenster',
+    frame: [0, 0, 50, 50],
     accent: '#112233',
-    visitedGlassFill: '#a',
-    visitedDoorFill: '#b',
-    visitedGymGlassFill: '#c',
+    visitedGlassFill: '#aabbcc',
   }
 }
 
@@ -40,11 +40,7 @@ describe('getNextStation', () => {
     expect(getNextStation(STATIONS, new Set(['a', 'b', 'c']))).toBeNull()
   })
 
-  it('fromSlug unbekannt → erste unbesuchte', () => {
-    expect(getNextStation(STATIONS, new Set(['a']), 'unknown')?.slug).toBe('b')
-  })
-
-  it('fromSlug: schlägt aktuellen Raum nicht vor', () => {
-    expect(getNextStation(STATIONS, new Set(['b', 'c']), 'a')).toBeNull()
+  it('fromSlug ist letzter und alle davor besucht → Wrap zu erster unbesuchter', () => {
+    expect(getNextStation(STATIONS, new Set(['a']), 'c')?.slug).toBe('b')
   })
 })

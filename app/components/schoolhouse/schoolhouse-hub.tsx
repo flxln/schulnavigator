@@ -2,16 +2,16 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { IsometricSchoolhouse } from '@/components/schoolhouse/isometric-schoolhouse'
+import { FrontSchoolhouse } from '@/components/schoolhouse/front-schoolhouse'
 import { ScanCta } from '@/components/schoolhouse/scan-cta'
 import { SchoolhouseSrNav } from '@/components/schoolhouse/schoolhouse-sr-nav'
 import { Gs39Toast, Gs39ToastLayer } from '@/components/ui/gs39-toast'
 import type { EntryMode } from '@/lib/access-tokens'
 import { isHubFullyLocked } from '@/lib/hub-mode'
-import type { IsometricHubStation } from '@/lib/schoolhouse-isometric-map'
+import type { HubStation } from '@/lib/schoolhouse-hub-map'
 
 type SchoolhouseHubProps = {
-  hubStations: readonly IsometricHubStation[]
+  hubStations: readonly HubStation[]
   unlockedSlugs: ReadonlySet<string>
   visitedSlugs: ReadonlySet<string>
   mode: EntryMode
@@ -65,7 +65,7 @@ export function SchoolhouseHub({
         unlockedSlugs={unlockedSlugs}
       />
       <div className="relative w-full">
-        <IsometricSchoolhouse
+        <FrontSchoolhouse
           stations={hubStations}
           visitedSlugs={visitedSlugs}
           unlockedSlugs={unlockedSlugs}

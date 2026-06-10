@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import { isHubStationNavigable } from '@/lib/hub-mode'
-import type { IsometricHubStation } from '@/lib/schoolhouse-isometric-map'
+import type { HubStation } from '@/lib/schoolhouse-hub-map'
 
 type SchoolhouseSrNavProps = {
-  hubStations: readonly IsometricHubStation[]
+  hubStations: readonly HubStation[]
   unlockedSlugs: ReadonlySet<string>
 }
 

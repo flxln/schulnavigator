@@ -29,7 +29,7 @@ import {
 import type { EntryMode } from '@/lib/access-tokens'
 import { useVisitedStations } from '@/hooks/use-visited-stations'
 import { getUnlockedSlugsForMode } from '@/lib/hub-mode'
-import type { IsometricHubStation } from '@/lib/schoolhouse-isometric-map'
+import type { HubStation } from '@/lib/schoolhouse-hub-map'
 import {
   handleStationBack,
   shouldShowDialogEndIcon,
@@ -41,8 +41,8 @@ const RAUM_HERO_HEIGHT_CLASS = 'h-[min(58vh,400px)]'
 type RaumStationClientProps = {
   station: Station
   validSlugs: readonly string[]
-  hubStation: IsometricHubStation
-  hubStations: readonly IsometricHubStation[]
+  hubStation: HubStation
+  hubStations: readonly HubStation[]
   mode: EntryMode
 }
 

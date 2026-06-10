@@ -8,13 +8,13 @@ import { Gs39Button, Gs39Toast, Gs39ToastLayer } from '@/components/ui'
 import type { EntryMode } from '@/lib/access-tokens'
 import { useVisitedStations } from '@/hooks/use-visited-stations'
 import { getUnlockedSlugsForMode, isHubStationNavigable } from '@/lib/hub-mode'
-import type { IsometricHubStation } from '@/lib/schoolhouse-isometric-map'
+import type { HubStation } from '@/lib/schoolhouse-hub-map'
 import { mixHex } from '@/lib/gs39-hex-blend'
 import { GS39_BRAND_HEX } from '@/lib/gs39-brand-colors'
 
 type StationenScreenProps = {
   mode: EntryMode
-  hubStations: readonly IsometricHubStation[]
+  hubStations: readonly HubStation[]
   validSlugs: readonly string[]
 }
 
@@ -45,7 +45,7 @@ export function StationenScreen({
   }, [toastMessage])
 
   const onStationTap = useCallback(
-    (station: IsometricHubStation) => {
+    (station: HubStation) => {
       if (!isHubStationNavigable(station.slug, unlockedSlugs)) {
         setToastMessage(
           `„${station.titel}" — bitte an der Tür scannen.`,
