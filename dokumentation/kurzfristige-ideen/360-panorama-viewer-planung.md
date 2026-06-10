@@ -1,10 +1,12 @@
 # 360°-Panorama-Viewer — Planung
 
-**Stand:** 2026-06-03  
+**Stand:** 2026-06-10  
 **Status:** Planung (noch kein ADR)  
 **Bezug:** [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md) (Gyro-Viewer MVP) · Issue [#50](../github-project/issues-phase-5.md) (Wunschliste Post-Fest) · [`projektplan.md`](../projektplan.md) (Langfrist 2027+)
 
-Die Schule bzw. das MPZ will das Feature mit **360°-Kamera-Aufnahmen** (equirectangular / Kugelpanorama) wieder aufnehmen. Dieses Dokument bündelt den bisherigen Stand, offene Entscheidungen, einen Spike-Vorschlag und eine grobe Umsetzungsphasen — Grundlage für **ADR-014** und GitHub-Issues, sobald die Klärungsfragen beantwortet sind.
+> **Hinweis:** Die Nummer **ADR-014** ist seit 2026-06-10 für [Dialog-Maskottchen-Größe](../adr/014-mascot-size-json.md) vergeben. Der 360°-Viewer braucht beim Start einen **neuen** ADR (nächste freie Nummer, voraussichtlich **016**).
+
+Die Schule bzw. das MPZ will das Feature mit **360°-Kamera-Aufnahmen** (equirectangular / Kugelpanorama) wieder aufnehmen. Dieses Dokument bündelt den bisherigen Stand, offene Entscheidungen, einen Spike-Vorschlag und eine grobe Umsetzungsphasen — Grundlage für den **360°-ADR** und GitHub-Issues, sobald die Klärungsfragen beantwortet sind.
 
 ---
 
@@ -152,10 +154,10 @@ hotspots360?: Array<{
 |-------|--------|----------|------|
 | **0 — Klärung** | Workshop Fragen oben | Go/No-Go, Pilot-Räume, Kamera-Workflow | 0,5–1 PT org |
 | **1 — Spike** | 1 Panorama, PSV, Gyro, 1 Marker, iPhone | Spike-Notiz + Library-Entscheid | 1–2 PT dev |
-| **2 — ADR-014** | Ersetzen/Coexistenz, Felder, Library | ADR `entschieden`, `entscheidungen.md` | 0,5 PT |
+| **2 — ADR (360°)** | Ersetzen/Coexistenz, Felder, Library | ADR `entschieden`, `entscheidungen.md` | 0,5 PT |
 | **3 — Viewer MVP** | `SphereRaumViewer`, `viewer`-Flag, Fallback flat | 1 Pilot-Station in JSON | 3–5 PT |
 | **4 — Hotspots & Medien** | `hotspots360`, Panel-Anbindung wie heute | `musik` voll nutzbar | 2–3 PT |
-| **5 — Dialog-Strategie** | Maskottchen in 360° (oder bewusst aus) | ADR-Nachtrag oder ADR-015 | 2–8 PT (stark abhängig) |
+| **5 — Dialog-Strategie** | Maskottchen in 360° (oder bewusst aus) | ADR-Nachtrag oder neuer ADR | 2–8 PT (stark abhängig) |
 | **6 — Content-Rollout** | MPZ liefert 11 Panoramen, Validierung | `zuordnung-stationen-bilder.md` | parallel MPZ |
 | **7 — Aufräumen** | Deprecation flat? Metriken, Doku | nur wenn alle Stationen 360° | optional |
 
@@ -167,7 +169,7 @@ hotspots360?: Array<{
 
 | Issue | Titel |
 |-------|--------|
-| Epic | 360°-Panorama-Viewer (ADR-014) |
+| Epic | 360°-Panorama-Viewer (eigener ADR, vorauss. 016) |
 | Spike | PSV + Gyro + 1 Marker, iPhone HTTPS |
 | Feature | `viewer` / `panorama360` Schema + Validierung |
 | Feature | `SphereRaumViewer` + Integration `RaumStationClient` |
@@ -185,8 +187,8 @@ Issue **#50** ([`issues-phase-5.md`](../github-project/issues-phase-5.md)): Chec
 1. **Termin MPZ/Schule:** Offene Klärungsfragen (oben) — insbesondere Kamera, Pilot-Räume, Zeitplan.
 2. **Test-Panorama beschaffen:** Eine equirectangular-Datei (2:1) nach MPZ-Standard in `app/public/` (Spike, nicht ins Submodule `auftraggeber/` als Laufzeit-Abhängigkeit).
 3. **Spike-Branch:** `SphereRaumViewer` hinter Feature-Flag, Route nur `/raum/musik?sphere=1` oder Test-Slug — **ohne** Produktions-Umschaltung aller Stationen.
-4. **ADR-014 anlegen** (Status `offen` → nach Spike `entschieden`), ADR-006 um Zeile „360°: siehe ADR-014“ in Konsequenzen ergänzen (nicht Status ändern).
-5. **`architektur.md`:** Verweis auf Planungsdokument bis ADR-014 entschieden.
+4. **360°-ADR anlegen** (nächste freie Nummer, Status `offen` → nach Spike `entschieden`), ADR-006 um Zeile „360°: siehe ADR-…“ in Konsequenzen ergänzen (nicht Status ändern).
+5. **`architektur.md`:** Verweis auf dieses Planungsdokument bis der 360°-ADR entschieden ist.
 
 ---
 

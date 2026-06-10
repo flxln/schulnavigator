@@ -23,6 +23,8 @@ Die App läuft unter [http://localhost:3000](http://localhost:3000).
 
 **Lokal testen und Screens durchklicken:** [lokal-testen-und-anschauen.md](./lokal-testen-und-anschauen.md) (Demo-Routen, Build wie Produktion, Checkliste).
 
+**Content einpflegen (JSON + Dateien, Hotspots):** [content-einpflegen.md](./content-einpflegen.md).
+
 ---
 
 ## Umgebungsvariablen

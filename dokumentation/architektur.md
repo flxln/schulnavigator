@@ -64,7 +64,7 @@ Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/
 | Ohne `bild` | Statisches Layout + Medienliste ([ADR-006](./adr/006-raum-viewer-gyro-hotspots.md)) |
 | Demo | `/raum/klassenzimmer` (4 Hotspots, 4 Medientypen inkl. Markdown-Text inline, echte Dateien unter `/media/klassenzimmer/`); `/raum/musik` (2 Hotspots, 4 Medientypen, Platzhalter `/demo/`); `/raum/daz`, `/raum/pc-raum` (Maskottchen-Dialog-Hotspots, [ADR-011](./adr/011-dialog-mascot-hotspots.md), Audio [ADR-010](./adr/010-dialog-cutscene-gated-audio.md)) — Gyro/Dialog auf iPhone nur unter **HTTPS**; Eintritt zuerst `/eintritt?t=fest-2026` |
 
-**Raumbilder (#17 / #27):** **8/11** Stationen mit Panorama 3:1 in `public/stations/` (Juni 2026, Git LFS); `kunst`/`hort` noch 4:3; `schulsozialarbeit` ohne `bild`. **Panorama** (≥ **2,5 : 1**, min. 2400 px Breite) bleibt ideal. Die App **zoomt** schmalere Bilder automatisch so, dass horizontal mindestens **`MIN_PAN_DISPLAY_RATIO` (2)** erreicht wird (`roomPanZoom`) — dabei entsteht **vertikaler Beschnitt**; Hotspot-**y** im mittleren Drittel platzieren. Konstanten: `lib/raum-viewer/constants.ts`, Geometrie: `room-pan-zoom.ts`, `clip-zone.ts`. Briefing: [`zuordnung-stationen-bilder.md`](../auftraggeber/material/stationen/zuordnung-stationen-bilder.md). **Viewport:** [`app/app/layout.tsx`](../app/app/layout.tsx) exportiert `viewport` (`device-width`, `initialScale: 1`).
+**Raumbilder (#17 / #27):** **8/11** Stationen mit Panorama 3:1 in `public/stations/` (Juni 2026, Git LFS); `kunst`/`hort` noch 4:3; `schulsozialarbeit` ohne `bild`. **Panorama** (≥ **2,5 : 1**, min. 2400 px Breite) bleibt ideal. Die App **zoomt** schmalere Bilder automatisch so, dass horizontal mindestens **`MIN_PAN_DISPLAY_RATIO` (2)** erreicht wird (`roomPanZoom`) — dabei entsteht **vertikaler Beschnitt**. Hotspot-**`x`**: Quellbild (0–1); **`y`**: sichtbarer Ausschnitt (0 oben, 1 unten), siehe [ADR-014](./adr/014-mascot-size-json.md) und `content-einpflegen.md`. Konstanten: `lib/raum-viewer/constants.ts`, Geometrie: `room-pan-zoom.ts`, `clip-zone.ts`. Briefing: [`zuordnung-stationen-bilder.md`](../auftraggeber/material/stationen/zuordnung-stationen-bilder.md). **Viewport:** [`app/app/layout.tsx`](../app/app/layout.tsx) exportiert `viewport` (`device-width`, `initialScale: 1`).
 
 ## Medien-Player (Issues #18–#20, umgesetzt)
 
@@ -127,6 +127,8 @@ interface Hotspot {
   action?: "medium" | "dialog"; // default medium
   mediumId?: string; // bei medium
   mascot?: "frieda" | "otto"; // bei dialog
+  mascotSize?: number; // 0.05–1, Anteil effectiveDisplayH; [ADR-014]
+  mascotFlipX?: boolean; // horizontal spiegeln; [ADR-014]
 }
 
 interface Medium {
@@ -138,6 +140,30 @@ interface Medium {
   untertitel?: string;
 }
 
+interface DialogBubbleLayout {
+  y?: number; // 0–1, Anteil containerH (Hero-Box)
+  x?: number; // 0–1; fehlt → ADR-013 Mitpan
+  maxWidth?: number; // 0.3–1, Anteil containerW
+  fontSize?: number; // 0.02–0.06, Anteil containerH
+  followPan?: boolean; // Default true; [ADR-015]
+}
+
+interface DialogSegment {
+  id: string;
+  rolle: "frieda" | "otto" | "beide";
+  quelle: string;
+  text: string;
+  gruppe?: string;
+  tail?: "left" | "right" | "center"; // [ADR-015]
+}
+
+interface Dialog {
+  figuren: ("frieda" | "otto")[];
+  segmente: DialogSegment[];
+  gruppen?: { id: string; text: string }[];
+  bubble?: DialogBubbleLayout; // [ADR-015]
+}
+
 interface Station {
   slug: string;
   titel: string;
@@ -145,6 +171,7 @@ interface Station {
   bild?: string; // /public/stations/… — fehlt → statische Ansicht
   medien: Medium[];
   hotspots?: Hotspot[];
+  dialog?: Dialog;
   // puzzleSegmentId entfällt mit ADR-009 — Hub-Zuordnung in schoolhouse-isometric-map.ts
 }
 ```
