@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import raw from '@/data/stations.json'
 import { validateStationsFile } from '@/lib/validate-stations'
 
-describe('validateStationsFile isometrischer Hub', () => {
+describe('validateStationsFile Hub (ADR-016)', () => {
   it('akzeptiert gültige stations.json', () => {
     const stations = validateStationsFile(raw)
     expect(stations).toHaveLength(11)
@@ -149,7 +149,7 @@ describe('validateStationsFile isometrischer Hub', () => {
     }
     broken.stations[0]!.slug = 'unbekannter-raum'
     expect(() => validateStationsFile(broken as unknown)).toThrow(
-      'keine isometrische Hub-Zuordnung',
+      'keine Hub-Zuordnung (ADR-016)',
     )
   })
 

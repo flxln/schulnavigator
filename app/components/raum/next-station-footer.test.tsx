@@ -2,7 +2,7 @@
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { NextStationFooter } from '@/components/raum/next-station-footer'
-import type { IsometricHubStation } from '@/lib/schoolhouse-isometric-map'
+import type { HubStation } from '@/lib/schoolhouse-hub-map'
 
 const routerPush = vi.fn()
 
@@ -10,16 +10,16 @@ vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: routerPush }),
 }))
 
-function stub(slug: string, nr: number): IsometricHubStation {
+function stub(slug: string, nr: number): HubStation {
   return {
     slug,
     titel: `Titel ${slug}`,
     nr,
-    room: 'top-left',
+    slotId: 'fenster-uc-l',
+    kind: 'fenster',
+    frame: [0, 0, 50, 50],
     accent: '#112233',
-    visitedGlassFill: '#a',
-    visitedDoorFill: '#b',
-    visitedGymGlassFill: '#c',
+    visitedGlassFill: '#aabbcc',
   }
 }
 

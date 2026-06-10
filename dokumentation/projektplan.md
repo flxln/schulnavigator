@@ -98,10 +98,11 @@ Phase 5 │ Post-Fest / Admin-Interface    │ ab Juli
 - [x] Startseite zeigt Fortschritt (z.B. 3/11 Stationen besucht) — **#21** (UI-Polish → #58)
 - [x] Abschluss-Animation wenn alle 11 erledigt (Sparkle/Konfetti) — **#22** / **#58**
 
-**GS39 UI — Design „Virtueller Schulrundgang“** ([ADR-009](./adr/009-hub-isometrisch.md), Epic **#58**)
+**GS39 UI — Design „Virtueller Schulrundgang“** (Epic **#58**; Hub [ADR-016](./adr/016-hub-frontansicht-39gs.md))
 
 - [x] ADR-009 + Doku-Sync (Hub isometrisch statt Puzzle)
-- [x] Isometrisches Schulhaus-Hub + `schoolhouse-isometric-map.ts` (ersetzt #14 Puzzle)
+- [x] Isometrisches Schulhaus-Hub (ersetzt durch ADR-016)
+- [x] Frontansicht-Hub: `FrontSchoolhouse`, `schoolhouse-hub-map.ts`, Asset `public/brand/hub/`
 - [x] GS39-Chrome: Fonts (Caveat), `sn-theme`, UI-Primitives, Brand-Assets unter `app/public/brand/`
 - [x] Screens: Home, Eintritt, `/stationen`, Raum-/Scan-Chrome um bestehenden Viewer
 - [ ] Mit Schule: Zuordnung SVG-Slot `ground-mid` (Eingangstür) → Station-Slug

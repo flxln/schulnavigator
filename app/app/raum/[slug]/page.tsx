@@ -5,9 +5,9 @@ import { RaumStationClient } from '@/components/raum-station-client'
 import { StationVisitRecorder } from '@/components/station-visit-recorder'
 import { ACCESS_COOKIE, validateToken } from '@/lib/access-tokens'
 import {
-  buildIsometricHubStations,
-  getIsometricMapping,
-} from '@/lib/schoolhouse-isometric-map'
+  buildHubStations,
+  getHubMapping,
+} from '@/lib/schoolhouse-hub-map'
 import { getAllSlugs, getAllStations, getStationBySlug } from '@/lib/stations'
 
 type PageProps = {
@@ -49,18 +49,18 @@ export default async function RaumPage({ params }: PageProps) {
 
   const stations = getAllStations()
   const validSlugs = stations.map((s) => s.slug)
-  const hubStations = buildIsometricHubStations(stations)
+  const hubStations = buildHubStations(stations)
   const hubStation = hubStations.find((s) => s.slug === slug)
   if (!hubStation) {
     notFound()
   }
 
-  const { room } = getIsometricMapping(slug)
+  const { slotId } = getHubMapping(slug)
 
   return (
     <main
       className="mx-auto min-h-[100dvh] max-w-lg overflow-x-hidden"
-      data-schoolhouse-room={room}
+      data-hub-slot={slotId}
     >
       <StationVisitRecorder
         slug={slug}

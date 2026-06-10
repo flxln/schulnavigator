@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { cookies } from 'next/headers'
 import { StationenScreen } from '@/components/stationen/stationen-screen'
 import { ACCESS_COOKIE, validateToken } from '@/lib/access-tokens'
-import { buildIsometricHubStations } from '@/lib/schoolhouse-isometric-map'
+import { buildHubStations } from '@/lib/schoolhouse-hub-map'
 import { getAllStations } from '@/lib/stations'
 
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ export default async function StationenPage() {
   const mode = access?.mode ?? 'heft'
 
   const stations = getAllStations()
-  const hubStations = buildIsometricHubStations(stations)
+  const hubStations = buildHubStations(stations)
   const validSlugs = stations.map((s) => s.slug)
 
   return (

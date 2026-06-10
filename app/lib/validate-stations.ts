@@ -23,15 +23,15 @@ import {
   MIN_BUBBLE_Y,
 } from '@/lib/dialog-bubble-layout'
 import {
-  buildIsometricHubStations,
-  ISOMETRIC_SLUG_MAP,
-} from '@/lib/schoolhouse-isometric-map'
+  buildHubStations,
+  HUB_SLUG_MAP,
+} from '@/lib/schoolhouse-hub-map'
 import {
   MAX_MASCOT_SIZE_NORM,
   MIN_MASCOT_SIZE_NORM,
 } from '@/lib/raum-viewer/constants'
 
-const EXPECTED_STATION_COUNT = Object.keys(ISOMETRIC_SLUG_MAP).length
+const EXPECTED_STATION_COUNT = Object.keys(HUB_SLUG_MAP).length
 
 const MEDIUM_TYPEN: readonly MediumTyp[] = ['audio', 'video', 'foto', 'text']
 
@@ -398,8 +398,8 @@ function validateStation(raw: unknown, index: number): Station {
     `${prefix}: slug "${raw.slug}" ist kein kebab-case`,
   )
   assert(
-    ISOMETRIC_SLUG_MAP[raw.slug] !== undefined,
-    `${prefix}: slug "${raw.slug}" hat keine isometrische Hub-Zuordnung (ADR-009)`,
+    HUB_SLUG_MAP[raw.slug] !== undefined,
+    `${prefix}: slug "${raw.slug}" hat keine Hub-Zuordnung (ADR-016)`,
   )
   assert(
     typeof raw.titel === 'string' && raw.titel.length > 0,
@@ -494,10 +494,10 @@ export function validateStationsFile(raw: unknown): Station[] {
     stations.length === EXPECTED_STATION_COUNT,
     `stations: erwartet ${EXPECTED_STATION_COUNT} Einträge, erhalten ${stations.length}`,
   )
-  const expectedSlugs = new Set(Object.keys(ISOMETRIC_SLUG_MAP))
+  const expectedSlugs = new Set(Object.keys(HUB_SLUG_MAP))
   for (const slug of expectedSlugs) {
-    assert(slugs.has(slug), `stations: fehlender slug "${slug}" für isometrischen Hub`)
+    assert(slugs.has(slug), `stations: fehlender slug "${slug}" für Hub`)
   }
-  buildIsometricHubStations(stations)
+  buildHubStations(stations)
   return stations
 }

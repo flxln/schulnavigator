@@ -1,7 +1,7 @@
 # ADR-009 — Startseite: isometrischer Schulhaus-Hub (GS39 UI)
 
 **Datum:** 2026-05-27  
-**Status:** entschieden
+**Status:** ersetzt durch [ADR-016](./016-hub-frontansicht-39gs.md) (Hub-Darstellung; Nachträge zu `fest`/CTAs bleiben über ADR-016 gültig)
 
 ## Kontext
 

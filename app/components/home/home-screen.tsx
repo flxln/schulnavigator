@@ -25,11 +25,11 @@ import {
   isHubFullyLocked,
 } from '@/lib/hub-mode'
 import { getNextStation } from '@/lib/next-station'
-import type { IsometricHubStation } from '@/lib/schoolhouse-isometric-map'
+import type { HubStation } from '@/lib/schoolhouse-hub-map'
 
 type HomeScreenProps = {
   mode: EntryMode
-  hubStations: readonly IsometricHubStation[]
+  hubStations: readonly HubStation[]
   validSlugs: readonly string[]
   highlightSlug?: string
 }
@@ -37,7 +37,7 @@ type HomeScreenProps = {
 function HubLoadingPlaceholder() {
   return (
     <div
-      className="relative aspect-[800/520] min-h-[40vh] w-full rounded-[var(--r-md)] bg-bg-3"
+      className="relative aspect-[1087/1454] min-h-[40vh] w-full rounded-[var(--r-md)] bg-bg-3"
       aria-busy="true"
       aria-label="Fortschritt wird geladen"
     />

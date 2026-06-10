@@ -1,14 +1,14 @@
-import type { IsometricHubStation } from '@/lib/schoolhouse-isometric-map'
+import type { HubStation } from '@/lib/schoolhouse-hub-map'
 
 /**
  * Nächste unbesuchte Station in Hub-Reihenfolge.
  * Optional ab `fromSlug` (Wraparound); unbekannter Slug → erste unbesuchte ab Index 0.
  */
 export function getNextStation(
-  stations: readonly IsometricHubStation[],
+  stations: readonly HubStation[],
   visitedSlugs: ReadonlySet<string>,
   fromSlug?: string,
-): IsometricHubStation | null {
+): HubStation | null {
   if (stations.length === 0) return null
 
   const startIdx = fromSlug
