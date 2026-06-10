@@ -19,6 +19,10 @@ import { DialogEmbeddedBubble } from '@/components/dialog/dialog-embedded-bubble
 import { Gs39Chip, TopBar } from '@/components/ui'
 import { useDialogAudioPlaylist } from '@/hooks/use-dialog-audio-playlist'
 import {
+  clampBubbleOffsetX,
+  resolveBubbleLayoutPx,
+} from '@/lib/dialog-bubble-layout'
+import {
   isMascotDialogHotspot,
   stationUsesMascotDialogHotspot,
 } from '@/lib/dialog-hotspot'
@@ -58,6 +62,7 @@ export function RaumStationClient({
     panPx: number
     effectiveDisplayW: number
     containerW: number
+    containerH: number
   } | null>(null)
   const mascotDialogHotspot = useMemo(
     () => stationUsesMascotDialogHotspot(station),
@@ -140,23 +145,57 @@ export function RaumStationClient({
   )
 
   const handlePanChange = useCallback(
-    (panPx: number, effectiveDisplayW: number, containerW: number) => {
-      setPanInfo({ panPx, effectiveDisplayW, containerW })
+    (
+      panPx: number,
+      effectiveDisplayW: number,
+      containerW: number,
+      containerH: number,
+    ) => {
+      setPanInfo({ panPx, effectiveDisplayW, containerW, containerH })
     },
     [],
   )
 
   const bubbleOffsetX = useMemo(() => {
-    if (!panInfo || panInfo.effectiveDisplayW <= 0 || panInfo.containerW <= 0) return 0
+    if (!panInfo || panInfo.effectiveDisplayW <= 0 || panInfo.containerW <= 0)
+      return 0
     const mascotXs = (station.hotspots ?? [])
       .filter(isMascotDialogHotspot)
       .map((h) => h.x)
     if (mascotXs.length === 0) return 0
     const midX = mascotXs.reduce((a, b) => a + b, 0) / mascotXs.length
-    const raw = panInfo.panPx + midX * panInfo.effectiveDisplayW - panInfo.containerW / 2
-    const limit = panInfo.containerW * 0.35
-    return Math.max(-limit, Math.min(limit, raw))
+    const raw =
+      panInfo.panPx +
+      midX * panInfo.effectiveDisplayW -
+      panInfo.containerW / 2
+    return clampBubbleOffsetX(raw, panInfo.containerW)
   }, [panInfo, station.hotspots])
+
+  const bubbleLayoutPx = useMemo(() => {
+    const bubble = station.dialog?.bubble
+    if (!bubble || !panInfo || panInfo.containerH <= 0) {
+      return null
+    }
+    return resolveBubbleLayoutPx(
+      bubble,
+      panInfo.containerW,
+      panInfo.containerH,
+    )
+  }, [station.dialog?.bubble, panInfo])
+
+  const bubbleOffsetXResolved = useMemo(() => {
+    if (!panInfo) return 0
+    const bubble = station.dialog?.bubble
+    if (bubble?.x === undefined) {
+      return bubbleOffsetX
+    }
+    if (!bubbleLayoutPx) return 0
+    const panDelta = bubbleLayoutPx.followPan ? panInfo.panPx : 0
+    return clampBubbleOffsetX(
+      bubbleLayoutPx.baseOffsetX + panDelta,
+      panInfo.containerW,
+    )
+  }, [panInfo, station.dialog?.bubble, bubbleLayoutPx, bubbleOffsetX])
 
   return (
     <div className="sn-fade-in relative min-h-[100dvh] bg-bg-1">
@@ -234,7 +273,8 @@ export function RaumStationClient({
             tail={tail}
             accent={hubStation.accent}
             visible={dialogUiActive}
-            offsetX={bubbleOffsetX}
+            layoutPx={station.dialog.bubble ? bubbleLayoutPx : undefined}
+            offsetX={bubbleOffsetXResolved}
           />
         ) : null}
       </section>

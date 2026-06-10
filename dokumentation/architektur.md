@@ -138,6 +138,30 @@ interface Medium {
   untertitel?: string;
 }
 
+interface DialogBubbleLayout {
+  y?: number; // 0–1, Anteil containerH (Hero-Box)
+  x?: number; // 0–1; fehlt → ADR-013 Mitpan
+  maxWidth?: number; // 0.3–1, Anteil containerW
+  fontSize?: number; // 0.02–0.06, Anteil containerH
+  followPan?: boolean; // Default true; [ADR-015]
+}
+
+interface DialogSegment {
+  id: string;
+  rolle: "frieda" | "otto" | "beide";
+  quelle: string;
+  text: string;
+  gruppe?: string;
+  tail?: "left" | "right" | "center"; // [ADR-015]
+}
+
+interface Dialog {
+  figuren: ("frieda" | "otto")[];
+  segmente: DialogSegment[];
+  gruppen?: { id: string; text: string }[];
+  bubble?: DialogBubbleLayout; // [ADR-015]
+}
+
 interface Station {
   slug: string;
   titel: string;
@@ -145,6 +169,7 @@ interface Station {
   bild?: string; // /public/stations/… — fehlt → statische Ansicht
   medien: Medium[];
   hotspots?: Hotspot[];
+  dialog?: Dialog;
   // puzzleSegmentId entfällt mit ADR-009 — Hub-Zuordnung in schoolhouse-isometric-map.ts
 }
 ```
