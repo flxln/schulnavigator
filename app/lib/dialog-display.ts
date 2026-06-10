@@ -1,4 +1,9 @@
-import type { Dialog, DialogRolle, DialogSegment } from '@/lib/types'
+import type {
+  Dialog,
+  DialogBubbleTail,
+  DialogRolle,
+  DialogSegment,
+} from '@/lib/types'
 
 export function dialogBubbleText(
   segment: DialogSegment,
@@ -13,7 +18,7 @@ export function dialogBubbleText(
   return segment.text
 }
 
-export function dialogTailSide(rolle: DialogRolle): 'left' | 'right' | 'center' {
+export function dialogTailSide(rolle: DialogRolle): DialogBubbleTail {
   if (rolle === 'frieda') {
     return 'left'
   }
@@ -21,6 +26,11 @@ export function dialogTailSide(rolle: DialogRolle): 'left' | 'right' | 'center' 
     return 'right'
   }
   return 'center'
+}
+
+/** Optional per-segment override; falls undefined, wird aus rolle abgeleitet. */
+export function resolveDialogTail(segment: DialogSegment): DialogBubbleTail {
+  return segment.tail ?? dialogTailSide(segment.rolle)
 }
 
 export function isMascotSpeaking(

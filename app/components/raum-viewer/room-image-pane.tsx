@@ -53,7 +53,12 @@ export type RoomImagePaneProps = {
   speakingRolle?: DialogRolle | null
   onHotspotTap?: (hotspot: Hotspot) => void
   onHotspotCenterHit?: (hotspot: Hotspot | null) => void
-  onPanChange?: (panPx: number, effectiveDisplayW: number, containerW: number) => void
+  onPanChange?: (
+    panPx: number,
+    effectiveDisplayW: number,
+    containerW: number,
+    containerH: number,
+  ) => void
   layout?: RaumViewerLayout
   orientationEnabled?: boolean
 }
@@ -201,8 +206,8 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
   }, [maxPan])
 
   useEffect(() => {
-    onPanChange?.(panPx, effectiveDisplayW, containerW)
-  }, [panPx, effectiveDisplayW, containerW, onPanChange])
+    onPanChange?.(panPx, effectiveDisplayW, containerW, containerH)
+  }, [panPx, effectiveDisplayW, containerW, containerH, onPanChange])
 
   useEffect(() => {
     const el = containerRef.current

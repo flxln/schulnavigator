@@ -20,7 +20,12 @@ export type RaumViewerProps = {
   speakingRolle?: DialogRolle | null
   onHotspotTap?: (hotspot: Hotspot) => void
   onHotspotCenterHit?: (hotspot: Hotspot | null) => void
-  onPanChange?: (panPx: number, effectiveDisplayW: number, containerW: number) => void
+  onPanChange?: (
+    panPx: number,
+    effectiveDisplayW: number,
+    containerW: number,
+    containerH: number,
+  ) => void
   layout?: RaumViewerLayout
   orientationEnabled?: boolean
 }

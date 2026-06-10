@@ -1,5 +1,7 @@
 import type {
   Dialog,
+  DialogBubbleLayout,
+  DialogBubbleTail,
   DialogFigure,
   DialogGruppe,
   DialogRolle,
@@ -11,6 +13,16 @@ import type {
   MediumTyp,
 } from '@/lib/types'
 import {
+  MAX_BUBBLE_FONT_SIZE,
+  MAX_BUBBLE_MAX_WIDTH,
+  MAX_BUBBLE_X,
+  MAX_BUBBLE_Y,
+  MIN_BUBBLE_FONT_SIZE,
+  MIN_BUBBLE_MAX_WIDTH,
+  MIN_BUBBLE_X,
+  MIN_BUBBLE_Y,
+} from '@/lib/dialog-bubble-layout'
+import {
   buildIsometricHubStations,
   ISOMETRIC_SLUG_MAP,
 } from '@/lib/schoolhouse-isometric-map'
@@ -21,6 +33,11 @@ const MEDIUM_TYPEN: readonly MediumTyp[] = ['audio', 'video', 'foto', 'text']
 
 const DIALOG_FIGUREN: readonly DialogFigure[] = ['frieda', 'otto']
 const DIALOG_ROLLEN: readonly DialogRolle[] = ['frieda', 'otto', 'beide']
+const DIALOG_BUBBLE_TAILS: readonly DialogBubbleTail[] = [
+  'left',
+  'right',
+  'center',
+]
 
 const SLUG_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/
 
@@ -155,6 +172,72 @@ function isDialogRolle(v: unknown): v is DialogRolle {
   return typeof v === 'string' && (DIALOG_ROLLEN as readonly string[]).includes(v)
 }
 
+function isDialogBubbleTail(v: unknown): v is DialogBubbleTail {
+  return (
+    typeof v === 'string' &&
+    (DIALOG_BUBBLE_TAILS as readonly string[]).includes(v)
+  )
+}
+
+function validateDialogBubble(raw: unknown, prefix: string): DialogBubbleLayout {
+  assert(isRecord(raw), `${prefix}: bubble ist kein Objekt`)
+  if (raw.y !== undefined) {
+    assert(
+      typeof raw.y === 'number' && Number.isFinite(raw.y),
+      `${prefix}.bubble.y muss Zahl sein`,
+    )
+    assert(
+      raw.y >= MIN_BUBBLE_Y && raw.y <= MAX_BUBBLE_Y,
+      `${prefix}.bubble.y muss ${MIN_BUBBLE_Y}–${MAX_BUBBLE_Y} sein`,
+    )
+  }
+  if (raw.x !== undefined) {
+    assert(
+      typeof raw.x === 'number' && Number.isFinite(raw.x),
+      `${prefix}.bubble.x muss Zahl sein`,
+    )
+    assert(
+      raw.x >= MIN_BUBBLE_X && raw.x <= MAX_BUBBLE_X,
+      `${prefix}.bubble.x muss ${MIN_BUBBLE_X}–${MAX_BUBBLE_X} sein`,
+    )
+  }
+  if (raw.maxWidth !== undefined) {
+    assert(
+      typeof raw.maxWidth === 'number' && Number.isFinite(raw.maxWidth),
+      `${prefix}.bubble.maxWidth muss Zahl sein`,
+    )
+    assert(
+      raw.maxWidth >= MIN_BUBBLE_MAX_WIDTH &&
+        raw.maxWidth <= MAX_BUBBLE_MAX_WIDTH,
+      `${prefix}.bubble.maxWidth muss ${MIN_BUBBLE_MAX_WIDTH}–${MAX_BUBBLE_MAX_WIDTH} sein`,
+    )
+  }
+  if (raw.fontSize !== undefined) {
+    assert(
+      typeof raw.fontSize === 'number' && Number.isFinite(raw.fontSize),
+      `${prefix}.bubble.fontSize muss Zahl sein`,
+    )
+    assert(
+      raw.fontSize >= MIN_BUBBLE_FONT_SIZE &&
+        raw.fontSize <= MAX_BUBBLE_FONT_SIZE,
+      `${prefix}.bubble.fontSize muss ${MIN_BUBBLE_FONT_SIZE}–${MAX_BUBBLE_FONT_SIZE} sein`,
+    )
+  }
+  if (raw.followPan !== undefined) {
+    assert(
+      typeof raw.followPan === 'boolean',
+      `${prefix}.bubble.followPan muss boolean sein`,
+    )
+  }
+  return {
+    y: raw.y as number | undefined,
+    x: raw.x as number | undefined,
+    maxWidth: raw.maxWidth as number | undefined,
+    fontSize: raw.fontSize as number | undefined,
+    followPan: raw.followPan as boolean | undefined,
+  }
+}
+
 function validateDialogSegment(
   raw: unknown,
   ctx: string,
@@ -178,12 +261,16 @@ function validateDialogSegment(
       `${ctx}: gruppe "${raw.gruppe}" unbekannt`,
     )
   }
+  if (raw.tail !== undefined) {
+    assert(isDialogBubbleTail(raw.tail), `${ctx}: tail ungültig`)
+  }
   return {
     id: raw.id,
     rolle: raw.rolle,
     quelle: raw.quelle,
     text: raw.text,
     gruppe: raw.gruppe as string | undefined,
+    tail: raw.tail as DialogBubbleTail | undefined,
   }
 }
 
@@ -253,10 +340,15 @@ function validateDialog(raw: unknown, prefix: string): Dialog {
     }
     segmente.push(seg)
   }
+  let bubble: DialogBubbleLayout | undefined
+  if (raw.bubble !== undefined) {
+    bubble = validateDialogBubble(raw.bubble, prefix)
+  }
   return {
     figuren,
     segmente,
     gruppen: gruppen.length > 0 ? gruppen : undefined,
+    bubble,
   }
 }
 
