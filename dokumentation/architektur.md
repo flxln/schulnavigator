@@ -1,6 +1,6 @@
 # Schulnavigator — Architektur
 
-_Stand: 2026-06-10 (**#93:** TextViewer + Demo `klassenzimmer`; **#18–#20:** Medien-Player; **#72:** Dialog-Ende TopBar, Chip-Zentrieren; **ADR-012:** Tablet-Layout geplant [#74–#78]; **ADR-009:** Hub; **#55/#56:** Raum-Viewer; Live #16) — siehe [entscheidungen.md](./entscheidungen.md)_
+_Stand: 2026-06-11 (**#111:** Card-Peek Raumseiten + iOS-Breitenfix; **#107:** Swipe-Onboarding; **#93:** TextViewer; **#72:** Raum-UI; **#55/#56:** Raum-Viewer; Live #16) — siehe [entscheidungen.md](./entscheidungen.md)_
 
 ## Tech-Stack
 
@@ -22,7 +22,7 @@ _Stand: 2026-06-10 (**#93:** TextViewer + Demo `klassenzimmer`; **#18–#20:** M
 
 ## Responsive Layout (ADR-012, geplant)
 
-**Ist-Zustand:** Mobile-first — Haupt-Routen `mx-auto max-w-lg` (≈ 512 px); Raum-Hero `min(52–58vh, 340–400px)`; Viewer-Konstante `min(50vh, 360px)` ([`constants.ts`](../app/lib/raum-viewer/constants.ts)). **Pinch-Zoom gesperrt** projektweit ([#96](https://github.com/flxln/schulnavigator/issues/96), Folge zu [#56](./github-project/issues-phase-2.md)): Viewport `userScalable: false` + Client-Komponente [`DisableZoom`](../app/components/ui/disable-zoom.tsx) (iOS Safari ignoriert Meta-Tag); OS-Schriftgröße und Desktop-Browser-Zoom bleiben möglich.
+**Ist-Zustand:** Mobile-first — Haupt-Routen `mx-auto w-full max-w-lg` (≈ 512 px); Raumseiten `/raum/[slug]`: Hero `calc(100svh - 6.5rem)` (#111 Card-Peek), Inhaltskarte mit `-mt-6` — initial nur Überschriftenzeile sichtbar, Rest per **Body-Scroll**; `overflow-x: clip` auf `html`/`body` (iOS Safari/Chrome). Viewer-Konstante `min(50vh, 360px)` für Nicht-Hero-Layouts ([`constants.ts`](../app/lib/raum-viewer/constants.ts)). **Pinch-Zoom gesperrt** projektweit ([#96](https://github.com/flxln/schulnavigator/issues/96), Folge zu [#56](./github-project/issues-phase-2.md)): Viewport `userScalable: false` + Client-Komponente [`DisableZoom`](../app/components/ui/disable-zoom.tsx) (iOS Safari ignoriert Meta-Tag); OS-Schriftgröße und Desktop-Browser-Zoom bleiben möglich.
 
 **Ziel (Epic #74):** Ab `md` (768 px) breitere Content-Spalte und höherer Hero — **kein** CSS-`zoom`. Phone-Baseline unter `md` unverändert. Unterissues: Container (#75) → Raum-Hero (#76) → Hub (#77) → Dialog/Panel optional (#78). Spezifikation: [`github-project/epic-tablet-ipad-layout.md`](./github-project/epic-tablet-ipad-layout.md).
 
@@ -55,7 +55,7 @@ _Stand: 2026-06-10 (**#93:** TextViewer + Demo `klassenzimmer`; **#18–#20:** M
 
 ## Raum-Viewer (Implementierung, Issue #55)
 
-Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/) und Mathematik in [`app/lib/raum-viewer/`](../app/lib/raum-viewer/). **Alle 11 Stationen:** [`RaumStationClient`](../app/components/raum-station-client.tsx) auf `/raum/[slug]` — einheitliche Hero-Höhe, Gyro-`RaumViewer` (`layout="hero"`), TopBar, tappbarer Stations-Chip (#72), Dialog nur `daz`/`pc-raum` (#71).
+Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/) und Mathematik in [`app/lib/raum-viewer/`](../app/lib/raum-viewer/). **Alle 11 Stationen:** [`RaumStationClient`](../app/components/raum-station-client.tsx) auf `/raum/[slug]` — Hero `calc(100svh - 6.5rem)`, Card-Peek unten (#111: Überschrift sichtbar, Rest per Body-Scroll), Gyro-`RaumViewer` (`layout="hero"`), TopBar, tappbarer Stations-Chip (#72), Dialog nur `daz`/`pc-raum` (#71). `<main>`: `w-full max-w-lg` — verhindert `fit-content`-Überbreite im Flex-Body bei langen Titeln (iOS).
 
 | Verhalten | Details |
 | --------- | ------- |

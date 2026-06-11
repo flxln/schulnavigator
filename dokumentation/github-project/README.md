@@ -55,5 +55,6 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issue **#106** (Scanner: Lesbarkeit bei System-Dark-Mode, `color-scheme` light/dark) — umgesetzt 2026-06-11
 - [x] Issue **#107** (Raum-Viewer: Einmaliges Swipe-Onboarding, `PanOnboardingOverlay`, iOS-Bugfix Timer-Entkopplung) — umgesetzt + gemergt PR #108, 2026-06-11
 - [x] Issue **#109** (Delightex-Fallback Mobile, Folge #100 / ADR-017 Aufgabe 3.6) — umgesetzt 2026-06-11, Branch `feature/delightex-fallback`
+- [x] Issue **#111** (Raum-Inhaltskarte Card-Peek + iOS-Viewport-Fix, Folge #72) — umgesetzt 2026-06-11, Branch `feat/raum-card-peek-layout`
 
-Letzter dokumentierter Abgleich: **2026-06-11** (#109 Delightex-Fallback Mobile; #107 Swipe-Onboarding; Epic #97); zuvor **2026-06-11** (#106 Scanner-Dark-Mode; #105 Hub-Glas/Chips; #104 CTA).
+Letzter dokumentierter Abgleich: **2026-06-11** (#111 Card-Peek Raumseiten; #109 Delightex-Fallback; #107 Swipe-Onboarding); zuvor **2026-06-11** (#106 Scanner-Dark-Mode; #105 Stationssymbole; #104 CTA).

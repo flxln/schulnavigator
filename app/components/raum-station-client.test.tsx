@@ -65,6 +65,25 @@ vi.mock('@/components/raum-viewer', () => {
   }
 })
 
+function stubBrowserLayoutApis() {
+  class ResizeObserverMock {
+    constructor(_cb: ResizeObserverCallback) {}
+    observe = vi.fn()
+    disconnect = vi.fn()
+    unobserve = vi.fn()
+  }
+  vi.stubGlobal('ResizeObserver', ResizeObserverMock)
+  vi.stubGlobal(
+    'matchMedia',
+    vi.fn().mockImplementation((query: string) => ({
+      matches: false,
+      media: query,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    })),
+  )
+}
+
 function renderDaz() {
   const station = getStationBySlug('daz')
   if (!station) {
@@ -88,6 +107,7 @@ function renderDaz() {
 
 describe('RaumStationClient dialog chrome', () => {
   beforeEach(() => {
+    stubBrowserLayoutApis()
     mocks.stopDialog.mockClear()
     mocks.routerPush.mockClear()
     mocks.dialogUiActive = true
@@ -95,6 +115,7 @@ describe('RaumStationClient dialog chrome', () => {
 
   afterEach(() => {
     cleanup()
+    vi.unstubAllGlobals()
   })
 
   it('shows Dialog beenden when dialogUiActive', () => {
@@ -122,5 +143,35 @@ describe('RaumStationClient dialog chrome', () => {
     const stopOrder = mocks.stopDialog.mock.invocationCallOrder[0]
     const pushOrder = mocks.routerPush.mock.invocationCallOrder[0]
     expect(stopOrder).toBeLessThan(pushOrder)
+  })
+})
+
+describe('RaumStationClient card peek (body scroll)', () => {
+  beforeEach(() => {
+    stubBrowserLayoutApis()
+    mocks.dialogUiActive = false
+  })
+
+  afterEach(() => {
+    cleanup()
+    vi.unstubAllGlobals()
+  })
+
+  it('renders station title and description in the content card', () => {
+    const station = getStationBySlug('pc-raum')
+    if (!station) throw new Error('pc-raum missing')
+    const hubStations = buildHubStations(getAllStations())
+    const hubStation = hubStations.find((s) => s.slug === 'pc-raum')!
+    render(
+      <RaumStationClient
+        station={station}
+        validSlugs={getAllStations().map((s) => s.slug)}
+        hubStation={hubStation}
+        hubStations={hubStations}
+        mode="heft"
+      />,
+    )
+    expect(screen.getByRole('heading', { name: /PC-RAUM/i })).toBeTruthy()
+    expect(screen.getByText(station.beschreibung)).toBeTruthy()
   })
 })
