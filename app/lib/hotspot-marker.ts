@@ -16,6 +16,7 @@ const PRESET_ICON: Record<MediumTyp, string> = {
   foto: '/brand/hotspot-icons/foto.svg',
   text: '/brand/hotspot-icons/text.svg',
   link: '/brand/hotspot-icons/link.svg',
+  embed: '/brand/hotspot-icons/embed.svg',
 }
 
 export function resolveIconSizeNorm(hs: Hotspot): number {

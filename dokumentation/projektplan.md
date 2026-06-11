@@ -103,6 +103,8 @@ Phase 5 │ Post-Fest / Admin-Interface    │ ab Juli
 - [x] ADR-009 + Doku-Sync (Hub isometrisch statt Puzzle)
 - [x] Isometrisches Schulhaus-Hub (ersetzt durch ADR-016)
 - [x] Frontansicht-Hub: `FrontSchoolhouse`, `schoolhouse-hub-map.ts`, Asset `public/brand/hub/`
+- [x] Startseite: Hub volle Breite, Wordmark Dresden-Plauen, `Gs39ChipMark` — **#103**, ADR-016 Nachtrag
+- [x] Scan-CTA vereinheitlicht, keine Stationsnamen, Fortschrittskarte → `/stationen` — **#104**, ADR-009 Nachtrag
 - [x] GS39-Chrome: Fonts (Caveat), `sn-theme`, UI-Primitives, Brand-Assets unter `app/public/brand/`
 - [x] Screens: Home, Eintritt, `/stationen`, Raum-/Scan-Chrome um bestehenden Viewer
 - [ ] Mit Schule: Zuordnung SVG-Slot `ground-mid` (Eingangstür) → Station-Slug

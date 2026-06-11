@@ -7,6 +7,7 @@ const TYP_LABEL: Record<Medium['typ'], string> = {
   foto: 'Foto',
   text: 'Text',
   link: 'Link',
+  embed: 'Embed',
 }
 
 export type MediaSlotProps = {
@@ -53,6 +54,9 @@ export function MediaSlot({ medium, onMediaSelect }: MediaSlotProps) {
       ) : null}
       {medium.typ === 'link' ? (
         <p className="mt-2 text-xs text-fg-3">Öffnet extern</p>
+      ) : null}
+      {medium.typ === 'embed' ? (
+        <p className="mt-2 text-xs text-fg-3">Wird in der App eingebettet</p>
       ) : null}
       {(medium.typ === 'audio' || medium.typ === 'video') && (
         <p className="mt-2 text-xs text-fg-3">Tippen zum Abspielen</p>

@@ -2,20 +2,37 @@
 
 Client-Komponente: [`home-screen.tsx`](./home-screen.tsx) (von [`app/page.tsx`](../../app/page.tsx) mit `mode` aus Cookie).
 
+## Kopfzeile (Wordmark)
+
+- Navy-Chip: [`Gs39ChipMark`](../ui/gs39-chip-mark.tsx) — **39.** (weiß, `font-display`)
+- Titel: **Grundschule Dresden-Plauen**
+- Listen-Icon → `/stationen`
+
+Eintritt-Screen: gleicher Chip; dort Titel „Schulnavigator“ + Unterzeile „39. Grundschule Dresden-Plauen“.
+
+Spezifikation: [ADR-016 Nachtrag Wordmark](../../../dokumentation/adr/016-hub-frontansicht-39gs.md#nachtrag-2026-06-10--startseiten-layout--wordmark-103). Issue **#103**.
+
+## Layout
+
+| Block | Breite | Inhalt |
+|-------|--------|--------|
+| Hero-Text | `px-4` in Creme-Karte | Brush-Headline „Entdecke unsere Schule“ |
+| Hub | `w-full`, kein `px-4` | `SchoolhouseHub` / Lade-Platzhalter |
+| Footer | zentriert | Ribbon, Jubiläumszeile, **darunter** `modeLabel` |
+
 ## Modusabhängige CTAs
 
 Steuerung über [`lib/home-cta.ts`](../../lib/home-cta.ts) (`getHomeFooterCta`). Nächste Station: [`lib/next-station.ts`](../../lib/next-station.ts).
 
 | `footerCta` | Wann | UI |
 |-------------|------|-----|
-| `fest-scan` | `fest`, vor Hydration oder 0/11 oder 11/11 | `Gs39Button` → `/scan` |
-| `fest-split` | `fest`, 1–10 mit unbesuchter Station | [`home-fest-scan-cta.tsx`](./home-fest-scan-cta.tsx) → `/scan` |
-| `heft-suggestion` | `heft`, Fortschritt > 0, nächste Station | [`next-station-row.tsx`](../raum/next-station-row.tsx) in `Gs39Card` → `/raum/[slug]` |
-| `none` | `heft` ohne Vorschlag o. ä. | nur Hub + Link `/stationen` |
+| `fest-scan` | `fest`, vor Hydration oder 0/11 | `Gs39Button` → `/scan` |
+| `scan-next` | `fest`/`heft`, 1–10 mit unbesuchter Station | [`home-fest-scan-cta.tsx`](./home-fest-scan-cta.tsx) „Scanne die nächste Station!“ → `/scan` |
+| `none` | alle besucht oder `heft` ohne Fortschritt | nur Hub + Link `/stationen` |
 
 ## Layout-Reihenfolge (visuell)
 
-- **Fest:** Scan-CTA (`fest-scan` / `fest-split`) direkt unter dem Schulhaus-Hero, Fortschrittskarte (`Gs39Card`) darunter.
-- **Heft:** Hub + Fortschrittskarte; Vorschlag bleibt in der Karte, kein Footer-Scan.
+- **Fest:** Scan-CTA (`fest-scan` / `scan-next`) unter dem Hub, Fortschrittskarte (`Gs39Card`) darunter.
+- **Heft:** Hub + Fortschrittskarte; bei Fortschritt derselbe Scan-CTA wie im Fest-Modus.
 
-Spezifikation: [ADR-009 Nachtrag CTAs](../../../dokumentation/adr/009-hub-isometrisch.md#nachtrag-2026-06-01--startseite-modusabhängige-ctas). Issue **#84** (Sub-Issue **#83**).
+Spezifikation CTAs: [ADR-009 Nachtrag CTAs](../../../dokumentation/adr/009-hub-isometrisch.md#nachtrag-2026-06-01--startseite-modusabhängige-ctas). Issue **#84** (Sub-Issue **#83**).

@@ -4,10 +4,8 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { NextStationFooter } from '@/components/raum/next-station-footer'
 import type { HubStation } from '@/lib/schoolhouse-hub-map'
 
-const routerPush = vi.fn()
-
 vi.mock('next/navigation', () => ({
-  useRouter: () => ({ push: routerPush }),
+  useRouter: () => ({ push: vi.fn() }),
 }))
 
 function stub(slug: string, nr: number): HubStation {
@@ -27,22 +25,19 @@ const HUB = [stub('a', 1), stub('b', 2), stub('c', 3)] as const
 
 afterEach(() => {
   cleanup()
-  routerPush.mockClear()
 })
 
 describe('NextStationFooter', () => {
-  it('überspringt besuchte Räume', () => {
+  it('zeigt Scan-CTA, solange noch unbesuchte Stationen übrig sind', () => {
     render(
       <NextStationFooter
         currentSlug="a"
         hubStations={HUB}
-        mode="heft"
-        unlockedSlugs={new Set(['a', 'b', 'c'])}
         visitedSlugs={new Set(['b'])}
       />,
     )
-    expect(screen.getByText('Titel c')).toBeTruthy()
-    expect(screen.queryByText('Titel b')).toBeNull()
+    expect(screen.getByRole('button', { name: /Scanne die nächste Station/i })).toBeTruthy()
+    expect(screen.queryByText('Titel c')).toBeNull()
   })
 
   it('rendert nichts, wenn alle anderen besucht sind', () => {
@@ -50,8 +45,6 @@ describe('NextStationFooter', () => {
       <NextStationFooter
         currentSlug="a"
         hubStations={HUB}
-        mode="heft"
-        unlockedSlugs={new Set(['a', 'b', 'c'])}
         visitedSlugs={new Set(['b', 'c'])}
       />,
     )

@@ -283,6 +283,69 @@ describe('validateStationsFile Hub (ADR-016)', () => {
     )
   })
 
+  it('akzeptiert typ embed mit Delightex-URL', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const pcRaum = data.stations.find(
+      (s) => s.slug === 'pc-raum',
+    ) as Record<string, unknown>
+    pcRaum.medien = [
+      {
+        id: 'pc-delightex',
+        typ: 'embed',
+        quelle: 'https://edu.delightex.com/share/demo',
+        untertitel: '3D-Welt',
+      },
+    ]
+    const stations = validateStationsFile(data as unknown)
+    const m = stations
+      .find((s) => s.slug === 'pc-raum')
+      ?.medien.find((x) => x.id === 'pc-delightex')
+    expect(m?.typ).toBe('embed')
+  })
+
+  it('wirft bei embed mit fremder Domain', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const pcRaum = data.stations.find(
+      (s) => s.slug === 'pc-raum',
+    ) as Record<string, unknown>
+    pcRaum.medien = [
+      {
+        id: 'bad-embed',
+        typ: 'embed',
+        quelle: 'https://example.com/x',
+      },
+    ]
+    expect(() => validateStationsFile(data as unknown)).toThrow('Allowlist')
+  })
+
+  it('wirft bei embedAllow mit Nicht-Subset-Domain', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const pcRaum = data.stations.find(
+      (s) => s.slug === 'pc-raum',
+    ) as Record<string, unknown>
+    pcRaum.medien = [
+      {
+        id: 'bad-embed',
+        typ: 'embed',
+        quelle: 'https://edu.delightex.com/x',
+        embedAllow: ['foo.com'],
+      },
+    ]
+    expect(() => validateStationsFile(data as unknown)).toThrow('embedAllow')
+  })
+
+  it('wirft bei embedAllow auf Video-Medium', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const klassenzimmer = data.stations.find(
+      (s) => s.slug === 'klassenzimmer',
+    ) as Record<string, unknown>
+    const medien = klassenzimmer.medien as Record<string, unknown>[]
+    medien[1] = { ...medien[1], embedAllow: ['delightex.com'] }
+    expect(() => validateStationsFile(data as unknown)).toThrow(
+      "embedAllow nur bei typ 'embed'",
+    )
+  })
+
   it('wirft bei unbekanntem slug ohne Hub-Zuordnung', () => {
     const broken = structuredClone(raw) as {
       stations: { slug: string }[]

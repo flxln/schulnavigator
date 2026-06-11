@@ -73,6 +73,20 @@ describe('resolveHotspotMarker', () => {
     })
   })
 
+  it('nutzt embed-Preset für typ embed', () => {
+    const embedMedium: Medium = {
+      id: 'ext',
+      typ: 'embed',
+      quelle: 'https://edu.delightex.com/x',
+    }
+    const marker = resolveHotspotMarker(mediaHotspot(), embedMedium, 200)
+    expect(marker).toEqual({
+      kind: 'image',
+      src: '/brand/hotspot-icons/embed.svg',
+      heightPx: 20,
+    })
+  })
+
   it('nutzt link-Preset für typ link', () => {
     const linkMedium: Medium = {
       id: 'ext',

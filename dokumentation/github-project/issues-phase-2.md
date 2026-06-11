@@ -254,13 +254,62 @@ UX-Konsolidierung der Startseiten-CTAs (kein Doppel-Scan im `fest`, kein Scan au
 - [x] `fest` 1–10: geteilter Primär-Button unter der Karte (Nächste Station | Beliebiger QR) → `/scan`
 - [x] `fest` 0/11: ein Scan-Button; 11/11: kein Scan unter der Karte
 - [x] `heft`: Vorschlag in der Fortschrittskarte → Raum; kein Scan auf `/`
-- [x] `getNextStation`, `getHomeFooterCta`; `next-station-row`; Footer überspringt besuchte Räume
+- [x] `getNextStation`, `getHomeFooterCta`; Footer überspringt besuchte Räume (→ #104: `next-station-row` entfernt)
 - [x] Tests: `home-cta.test.ts`, `next-station.test.ts`, `next-station-footer.test.ts`
 - [x] Doku: ADR-009 Nachtrag, `architektur.md`, `fuer-entwickler.md`, manuelle Checkliste `lokal-testen-und-anschauen.md`
 
 ### Nicht im Scope
 
 - Scan-CTA auf [`/stationen`](../app/components/stationen/stationen-screen.tsx) im Modus `fest` (unverändert)
+
+### Nachfolger (2026-06-11)
+
+CTA-Vereinfachung ohne Stationsnamen: Issue **#104** (Folge **#84**), [ADR-009 Nachtrag #104](../adr/009-hub-isometrisch.md#nachtrag-2026-06-11--scan-cta-ohne-stationsvorschlag-104). Ersetzt geteilten Fest-Button, Heft-Vorschlag in der Karte und benannte Raum-Footer-Zeile.
+
+---
+
+## #104 — Scan-CTA vereinheitlichen, keine Stationsnamen (Folge #84)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/104 — **geschlossen** (2026-06-11)
+
+**Labels:** `tech`, `design`  
+**Assignee:** Felix  
+**Milestone:** Phase 2  
+**Parent / Kontext:** Folge **#84** / **#103** (Wordmark-Schriftgröße)
+
+**Ziel:** Überall nur noch „Scanne die nächste Station!“ bzw. Erst-Scan „QR an der Tür scannen“ — keine Empfehlung einer konkreten Station auf `/` oder im Raum-Footer.
+
+### Akzeptanzkriterien
+
+- [x] `fest`/`heft` 1–10: ein Scan-Button (`scan-next`) → `/scan`
+- [x] Raum-Footer: gleicher Text, kein Stationsname; nur sichtbar wenn unbesuchte Stationen übrig
+- [x] Fortschrittskarte auf `/` tippbar → `/stationen`
+- [x] Wordmark „Grundschule Dresden-Plauen“ `text-[19px]`
+- [x] `next-station-row.tsx` entfernt; Tests `home-cta`, `next-station-footer`
+- [x] Doku: ADR-009 Nachtrag, `architektur.md`, Anleitungen, diese Datei
+
+---
+
+## #103 — Startseite: Hub volle Breite & Wordmark Dresden-Plauen (Folge ADR-016)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/103 — **geschlossen** (2026-06-10)
+
+**Labels:** `tech`, `design`  
+**Assignee:** Felix  
+**Milestone:** Phase 2
+
+Spezifikation: [ADR-016 Nachtrag](../adr/016-hub-frontansicht-39gs.md#nachtrag-2026-06-10--startseiten-layout--wordmark-103) · Folge zu **#58** / **#61** nach Frontansicht-Hub (ADR-016)
+
+**Ziel:** Schulkontext in der Kopfzeile, Hub nutzt volle Viewport-Breite; Eintritt-Chip konsistent.
+
+### Akzeptanzkriterien
+
+- [x] Home: Headline und Hub in getrennten Blöcken; Hub `w-full` ohne seitliches Padding
+- [x] `Gs39ChipMark`: **39.** weiß (`font-display`); Chip `aria-label` „39. Grundschule Dresden-Plauen“
+- [x] Home Kopfzeile: **Grundschule Dresden-Plauen** (statt „Schulnavigator“)
+- [x] Eintritt: gleicher Chip-Mark; Unterzeile „39. Grundschule Dresden-Plauen“
+- [x] Modus-Label unter Jubiläumszeile (nicht in Kopfzeile)
+- [x] Doku: ADR-016 Nachtrag, `home/README.md`, `architektur.md`, `projektplan.md`, diese Datei
 
 ---
 

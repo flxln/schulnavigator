@@ -47,6 +47,8 @@ _Stand: 2026-06-10 (**#93:** TextViewer + Demo `klassenzimmer`; **#18–#20:** M
 | Touch | `expandHitRect` mit Nachbar-Klemmung (`schoolhouse-hub-hit.ts`) |
 | A11y | SVG `role="button"` + SR-Nav (`schoolhouse-sr-nav`) |
 | Offen | Fenster-Zuordnung mit Schule feinjustieren (Vorschlag 2026-06-10 in Map) |
+| Layout | Headline und Hub getrennt; Hub **volle `main`-Breite** ohne seitliches Padding ([ADR-016 Nachtrag](./adr/016-hub-frontansicht-39gs.md#nachtrag-2026-06-10--startseiten-layout--wordmark-103), #103) |
+| Wordmark | `Gs39ChipMark` (39. weiß) + „Grundschule Dresden-Plauen“ auf `/`; Eintritt-Chip gleich, Titel dort „Schulnavigator“ |
 
 ## Raum-Viewer (Implementierung, Issue #55)
 
@@ -100,7 +102,7 @@ Hotspot oder Medienliste → [`StationMediaPanel`](../app/components/station-med
 /api/dialog/[slug]/[clip]
 ```
 
-- **`/`** — Startseite mit **isometrischem** Schulhaus-Hub ([ADR-009](./adr/009-hub-isometrisch.md)); Modus aus Cookie: `heft` = alle Stationen, `fest` = nur besuchte Slots klickbar (#21). **CTAs** modusabhängig ([ADR-009 Nachtrag CTAs](./adr/009-hub-isometrisch.md#nachtrag-2026-06-01--startseite-modusabhängige-ctas)): `fest` = geteilter Scan-Button (1–10) bzw. Einzel-Scan (0/11); `heft` = Vorschlag in der Fortschrittskarte, kein Scan auf `/`. Logik: `lib/home-cta.ts`, `lib/next-station.ts`.
+- **`/`** — Startseite mit **Frontansicht**-Hub ([ADR-016](./adr/016-hub-frontansicht-39gs.md)); Modus aus Cookie: `heft` = alle Stationen, `fest` = nur besuchte Slots klickbar (#21). **CTAs** modusabhängig ([ADR-009 Nachtrag CTAs](./adr/009-hub-isometrisch.md#nachtrag-2026-06-01--startseite-modusabhängige-ctas), [Nachtrag #104](./adr/009-hub-isometrisch.md#nachtrag-2026-06-11--scan-cta-ohne-stationsvorschlag-104)): `fest` 0/11 = Einzel-Scan; `fest`/`heft` 1–10 = „Scanne die nächste Station!“; Fortschrittskarte → `/stationen`. Logik: `lib/home-cta.ts`, `lib/next-station.ts` (Sichtbarkeit). Wordmark/Layout: [ADR-016 Nachtrag](./adr/016-hub-frontansicht-39gs.md#nachtrag-2026-06-10--startseiten-layout--wordmark-103) (#103, Schriftgröße #104).
 - **`/stationen`** — Stationsliste (Lock im Modus `fest`) — Epic #58.
 - **`/eintritt`** — Entry-QR (`?t=…`) setzt Cookie und leitet auf `/` um; ohne gültigen Zugang **Hinweis-/Fehlerseite** (Willkommens-Karte verlinkt auf `/eintritt/scan`). Kein Inline-Scanner mehr (#57, #82, [ADR-008](./adr/008-eintritt-in-app-scanner.md)).
 - **`/eintritt/scan`** — Vollbild-Entry-Scanner (gleiche Shell wie `/scan`, `ScanFullscreenShell`); `QrScanner` `mode="entry"` `chrome`; ohne Cookie erreichbar (Middleware-Whitelist). `parseEntryScan` prüft nur Struktur (Origin, Pfad `/eintritt`, `t` nicht leer); Gültigkeit nur Middleware.

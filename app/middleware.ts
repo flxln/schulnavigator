@@ -4,9 +4,34 @@ import {
   ACCESS_TOKENS,
   maxAgeSeconds,
   validateToken,
+  type AccessToken,
 } from '@/lib/access-tokens'
+import { DEV_UNLOCK_HEFT_TOKEN, isDevUnlockAll } from '@/lib/dev-unlock'
 
 const IS_PROD = process.env.NODE_ENV === 'production'
+
+function setAccessCookie(res: NextResponse, entry: AccessToken): void {
+  res.cookies.set(ACCESS_COOKIE, entry.token, {
+    httpOnly: true,
+    secure: IS_PROD,
+    sameSite: 'lax',
+    path: '/',
+    maxAge: maxAgeSeconds(entry.expiresAt),
+  })
+}
+
+function devUnlockResponse(): NextResponse | null {
+  if (!isDevUnlockAll()) {
+    return null
+  }
+  const heft = validateToken(DEV_UNLOCK_HEFT_TOKEN)
+  if (!heft) {
+    return null
+  }
+  const res = NextResponse.next()
+  setAccessCookie(res, heft)
+  return res
+}
 
 function isPublicAssetPath(pathname: string): boolean {
   return (
@@ -42,21 +67,24 @@ export function middleware(req: NextRequest) {
       dest.searchParams.delete('t')
       dest.pathname = '/'
       const res = NextResponse.redirect(dest)
-      res.cookies.set(ACCESS_COOKIE, valid.token, {
-        httpOnly: true,
-        secure: IS_PROD,
-        sameSite: 'lax',
-        path: '/',
-        maxAge: maxAgeSeconds(valid.expiresAt),
-      })
+      setAccessCookie(res, valid)
       return res
     }
     return redirectToHint(url, 'invalid')
   }
 
   const cookie = req.cookies.get(ACCESS_COOKIE)?.value
-  if (validateToken(cookie)) {
+  const validCookie = validateToken(cookie)
+  if (validCookie) {
+    if (isDevUnlockAll() && validCookie.mode === 'fest') {
+      return devUnlockResponse()
+    }
     return NextResponse.next()
+  }
+
+  const devUnlock = devUnlockResponse()
+  if (devUnlock) {
+    return devUnlock
   }
 
   const wasKnown =

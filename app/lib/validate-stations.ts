@@ -26,6 +26,12 @@ import {
   buildHubStations,
   HUB_SLUG_MAP,
 } from '@/lib/schoolhouse-hub-map'
+import {
+  DEFAULT_EMBED_ALLOW_SUFFIXES,
+  isEmbedAllowSubset,
+  isEmbedUrlAllowed,
+  resolveEmbedAllowlist,
+} from '@/lib/embed-allowlist'
 import { isValidHttpsUrl } from '@/lib/external-link'
 import {
   MAX_ICON_SIZE_NORM,
@@ -42,6 +48,7 @@ const MEDIUM_TYPEN: readonly MediumTyp[] = [
   'foto',
   'text',
   'link',
+  'embed',
 ]
 
 const DIALOG_FIGUREN: readonly DialogFigure[] = ['frieda', 'otto']
@@ -96,6 +103,37 @@ function validateMedium(m: unknown, ctx: string): Medium {
     }
   } else if (m.openIn !== undefined) {
     assert(false, `${ctx}: openIn nur bei typ 'link' erlaubt`)
+  }
+  if (m.typ === 'embed') {
+    assert(
+      m.videoSource === undefined,
+      `${ctx}: embed darf kein videoSource haben`,
+    )
+    assert(m.poster === undefined, `${ctx}: embed darf kein poster haben`)
+    assert(m.openIn === undefined, `${ctx}: embed darf kein openIn haben`)
+    if (m.embedAllow !== undefined) {
+      assert(Array.isArray(m.embedAllow), `${ctx}: embedAllow muss Array sein`)
+      assert(m.embedAllow.length > 0, `${ctx}: embedAllow darf nicht leer sein`)
+      for (const entry of m.embedAllow) {
+        assert(
+          typeof entry === 'string' && !entry.includes('/'),
+          `${ctx}: embedAllow-Einträge dürfen keine Pfade enthalten`,
+        )
+      }
+      assert(
+        isEmbedAllowSubset(m.embedAllow as string[]),
+        `${ctx}: embedAllow darf nur Einträge aus ${DEFAULT_EMBED_ALLOW_SUFFIXES.join(', ')} enthalten`,
+      )
+    }
+    const allowlist = resolveEmbedAllowlist({
+      embedAllow: m.embedAllow as string[] | undefined,
+    })
+    assert(
+      isEmbedUrlAllowed(m.quelle, allowlist),
+      `${ctx}: embed.quelle muss gültige https-URL auf Allowlist-Domain sein`,
+    )
+  } else if (m.embedAllow !== undefined) {
+    assert(false, `${ctx}: embedAllow nur bei typ 'embed' erlaubt`)
   }
   if (m.videoSource !== undefined) {
     assert(

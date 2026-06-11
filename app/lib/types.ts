@@ -1,4 +1,4 @@
-export type MediumTyp = 'audio' | 'video' | 'foto' | 'text' | 'link'
+export type MediumTyp = 'audio' | 'video' | 'foto' | 'text' | 'link' | 'embed'
 
 export type LinkOpenIn = 'external'
 
@@ -82,6 +82,8 @@ export interface Medium {
   thumbnail?: string
   /** Nur typ === 'link'; Default im Code: external. */
   openIn?: LinkOpenIn
+  /** Nur typ === 'embed'; Subset von DEFAULT_EMBED_ALLOW_SUFFIXES im Code. */
+  embedAllow?: string[]
   untertitel?: string
 }
 

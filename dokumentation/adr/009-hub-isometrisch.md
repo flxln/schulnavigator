@@ -39,7 +39,7 @@ Phase 2 verlangt eine **fertige App-Shell**, die dem Endprodukt entspricht ([`pr
 | `fest` | Nur nach **erfolgreichem** Raum-QR in `QrScanner` (`/scan`, `mode=room`) — `markVisitedSlug` vor Navigation |
 | `heft` | Weiterhin beim Öffnen von `/raum/[slug]` via `StationVisitRecorder` |
 
-**Navigation gesperrter Stationen:** Hub-Vorschlag (`home-screen.tsx`) und Footer „Nächste Station“ (`next-station-footer.tsx`) leiten zu **`/scan`**, nicht zu `/raum/…` — analog zur Sperre am isometrischen Hub (`schoolhouse-hub.tsx`).
+**Navigation gesperrter Stationen:** Hub und Raum-Footer leiten zu **`/scan`**, nicht zu `/raum/…` — analog zur Sperre am Hub (`schoolhouse-hub.tsx`). Seit #104 ohne Anzeige eines konkreten Stationsnamens (siehe Nachtrag 2026-06-11).
 
 **Hinweis:** Direkt-URL `/raum/[slug]` ohne vorherigen Scan bleibt technisch erreichbar (nur Entry-Cookie), markiert im `fest`-Modus aber **keinen** Stempel mehr — Hub bleibt gesperrt bis QR-Scan.
 
@@ -60,6 +60,24 @@ Phase 2 verlangt eine **fertige App-Shell**, die dem Endprodukt entspricht ([`pr
 **Technik:** `getHomeFooterCta` ([`app/lib/home-cta.ts`](../../app/lib/home-cta.ts)), geteilter Button [`home-fest-scan-cta.tsx`](../../app/components/home/home-fest-scan-cta.tsx), gemeinsame nächste Station [`getNextStation`](../../app/lib/next-station.ts) (Home + Footer; Footer überspringt besuchte Räume und den aktuellen Raum). Vor Hydration im `fest`: stabiler Einzel-Scan (`isHydrated` in der CTA-Entscheidung).
 
 Issue: **#84** (Sub-Issue zu **#83**, Kontext **#61**) — https://github.com/flxln/schulnavigator/issues/84 — siehe [issues-phase-2.md](../github-project/issues-phase-2.md).
+
+#### Nachtrag 2026-06-11 — Scan-CTA ohne Stationsvorschlag (#104)
+
+**Problem:** Geteilter Fest-Button und Raum-Footer mit Stationsnamen („Weiter zu Turnhalle“, „Nächste Station | Beliebiger QR“) wirkten unübersichtlich; Heft-Vorschlag in der Fortschrittskarte widersprach dem Wunsch, keine konkrete Station zu empfehlen.
+
+**Entscheidung:**
+
+| Ort | Verhalten |
+|-----|-----------|
+| `/` `fest` 0/11 | Ein Scan-Button „QR an der Tür scannen“ |
+| `/` `fest`/`heft` 1–10 | Ein Button „Scanne die nächste Station!“ → `/scan` (`scan-next`) |
+| `/` `fest`/`heft` 11/11 | Kein Scan-CTA unter dem Hub |
+| Fortschrittskarte `/` | Tipp öffnet `/stationen` (wie Listen-Icon) |
+| Raum-Footer | Nur „Scanne die nächste Station!“ → `/scan`, wenn noch unbesuchte Stationen existieren |
+
+**Technik:** `getHomeFooterCta` liefert `fest-scan` | `scan-next` | `none`. [`home-fest-scan-cta.tsx`](../../app/components/home/home-fest-scan-cta.tsx) und [`next-station-footer.tsx`](../../app/components/raum/next-station-footer.tsx) nutzen denselben Button. `getNextStation` nur noch zur Sichtbarkeitsentscheidung (nicht zur Anzeige). `next-station-row.tsx` entfernt.
+
+Issue: **#104** (Folge **#84**) — https://github.com/flxln/schulnavigator/issues/104
 
 ### Interaktion und Barrierefreiheit
 

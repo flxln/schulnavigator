@@ -25,8 +25,11 @@ function req(path: string, cookie?: string): NextRequest {
 }
 
 describe('middleware', () => {
+  const envSnapshot = { ...process.env }
+
   afterEach(() => {
     vi.useRealTimers()
+    process.env = { ...envSnapshot }
   })
 
   it('leitet ohne Cookie von / nach /eintritt um', () => {
@@ -112,6 +115,30 @@ describe('middleware', () => {
     const res = middleware(req('/eintritt/foo'))
     expect(res.status).toBe(307)
     expect(res.headers.get('location')).toBe(`${BASE}/eintritt`)
+  })
+
+  it('DEV_UNLOCK_ALL: setzt Heft-Cookie ohne Zugang', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-06-01'))
+    process.env.DEV_UNLOCK_ALL = 'true'
+    process.env.NODE_ENV = 'development'
+
+    const res = middleware(req('/'))
+    expect(res.status).toBe(200)
+    const setCookie = res.headers.get('set-cookie') ?? ''
+    expect(setCookie).toContain(`${ACCESS_COOKIE}=heft-2026-27`)
+  })
+
+  it('DEV_UNLOCK_ALL: hebt fest-Cookie auf Heft an', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-06-01'))
+    process.env.DEV_UNLOCK_ALL = 'true'
+    process.env.NODE_ENV = 'development'
+
+    const res = middleware(req('/', 'fest-2026'))
+    expect(res.status).toBe(200)
+    const setCookie = res.headers.get('set-cookie') ?? ''
+    expect(setCookie).toContain(`${ACCESS_COOKIE}=heft-2026-27`)
   })
 
   it('Drift-Guard: middlewareRunsFor deckt ACCESS_PROTECTED_MATCHER ab', () => {

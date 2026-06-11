@@ -181,13 +181,13 @@ Orientierung: Eintrag `klassenzimmer` in `stations.json` (Issue **#93**).
 | Feld | Pflicht | Werte / Hinweis |
 |------|---------|-----------------|
 | `id` | ja | Eindeutig **pro Station** (z. B. `werken-audio`) |
-| `typ` | ja | `audio` \| `video` \| `foto` \| `text` \| `link` — **geplant:** `embed` ([ADR-017](../dokumentation/adr/017-externe-medien-hotspot-marker.md)) |
-| `quelle` | ja | Pfad mit `/` unter `app/public/` — bei `typ: link`: `https://…` (externer Tab); bei `embed`: `https://…` |
+| `typ` | ja | `audio` \| `video` \| `foto` \| `text` \| `link` \| `embed` ([ADR-017](../dokumentation/adr/017-externe-medien-hotspot-marker.md)) |
+| `quelle` | ja | Pfad mit `/` unter `app/public/` — bei `link`/`embed`: `https://…` (nur Allowlist-Domains bei `embed`) |
 | `untertitel` | nein | Anzeige in Medienliste und Panel |
 | `thumbnail` | nein | Vorschaubild unter `/public/…` — Medienliste und Hotspot-Fallback ([ADR-017](../dokumentation/adr/017-externe-medien-hotspot-marker.md) Stufe 1) |
 | `videoSource` | bei Video | `upload` (Standard) oder `youtube` (MVP: nur Hinweistext, kein Embed) |
 | `poster` | nein | Nur bei `typ: video` — Vorschaubild-Pfad |
-| `embedAllow` | bei `embed` | **Geplant:** Domain-Suffixe (Default: `delightex.com`) |
+| `embedAllow` | bei `embed` | Optional; nur Subset von `delightex.com` (Code-Default) — verengen erlaubt, keine neuen Domains |
 
 ### Video-Modi (`videoSource`)
 
@@ -367,17 +367,19 @@ Station: _____________  Slug: _____________
 
 ---
 
-## Hotspot-Icons und externe Links (live) — Delightex-Embed geplant
+## Hotspot-Icons, Links und Delightex-Embed (ADR-017, live)
 
-**Stufe 1 (live):** Medien-Hotspots zeigen `icon` → `thumbnail` → Typ-Preset (`/brand/hotspot-icons/`) → gelber Punkt.
+**Stufe 1:** Medien-Hotspots zeigen `icon` → `thumbnail` → Typ-Preset → gelber Punkt.
 
-**Stufe 2 (live):** `typ: link` mit `quelle: https://…` — öffnet in neuem Browser-Tab (Hotspot oder Medienliste). Beispiel: `pc-raum` / `pc-delightex`. Delightex-Share-URL erst nach DSB-Freigabe eintragen.
+**Stufe 2:** `typ: link` — öffnet externen Tab.
+
+**Stufe 3:** `typ: embed` — Delightex im Medien-Panel (`iframe`). Beispiel: `pc-raum` / `pc-delightex`. Öffentliche Embed-URL von Delightex; Button „Im Browser öffnen“ ist immer verfügbar.
 
 | Stufe | Inhalt | Redaktion |
 |-------|--------|-----------|
 | 1 | Icons statt gelber Punkt | **live** |
-| 2 | `typ: link` | **live** — HTTPS-URL; optional `thumbnail` / Hotspot-`icon` |
-| 3 | `typ: embed` | Nur nach DSB-Freigabe; öffentliche Embed-URL von Delightex |
+| 2 | `typ: link` | **live** |
+| 3 | `typ: embed` | **live** — `https://…` auf `delightex.com`; DSB-Freigabe vorausgesetzt |
 
 Umsetzungsplan: [`dokumentation/projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md`](../dokumentation/projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md)
 
@@ -388,7 +390,6 @@ Umsetzungsplan: [`dokumentation/projektmanagement/2026-06-10-externe-medien-hots
 - **Dialog-Audio-Dateien kopieren / API-Route** — siehe Abschnitt `dialog` oben, [ADR-010](../dokumentation/adr/010-dialog-cutscene-gated-audio.md) und [fuer-entwickler.md](./fuer-entwickler.md)
 - **Directus** / Admin-Oberfläche — Phase 5
 - **YouTube-Embed** — ADR-004, rechtlich offen
-- **Delightex-iframe** — ADR-017 Stufe 3, DSB-Freigabe offen
 - **QR-Druck** — [qr-codes-drucken.md](./qr-codes-drucken.md)
 
 ---

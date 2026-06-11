@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { AlertCircle, QrCode } from 'lucide-react'
-import { FestiveDecor, Gs39Chip } from '@/components/ui'
+import { FestiveDecor, Gs39Chip, Gs39ChipMark } from '@/components/ui'
 
 export type EintrittVariant = 'fresh' | 'expired' | 'wrong'
 
@@ -28,14 +28,19 @@ export function EintrittScreen({ variant = 'fresh' }: EintrittScreenProps) {
       <FestiveDecor className="-inset-x-4" />
 
       <div className="relative z-[1] flex items-center gap-2 pt-1">
-        <Gs39Chip tone="navy" size="sm">
-          <span className="sn-brush text-lg leading-none tracking-wide">39</span>
+        <Gs39Chip
+          tone="navy"
+          size="sm"
+          className="!w-auto min-w-10 px-1.5"
+          aria-label="39. Grundschule Dresden-Plauen"
+        >
+          <Gs39ChipMark />
         </Gs39Chip>
         <div className="min-w-0 flex-1">
           <p className="text-sm font-black leading-tight text-fg-1">
             Schulnavigator
           </p>
-          <p className="text-[11px] text-fg-3">39. Grundschule Dresden</p>
+          <p className="text-[11px] text-fg-3">39. Grundschule Dresden-Plauen</p>
         </div>
       </div>
 
