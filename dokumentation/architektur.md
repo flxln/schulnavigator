@@ -33,7 +33,7 @@ _Stand: 2026-06-10 (**#93:** TextViewer + Demo `klassenzimmer`; **#18–#20:** M
 - **Source of Truth (Design):** [`auftraggeber/material/UI-Vorschläge/colors_and_type.css`](../auftraggeber/material/UI-Vorschläge/colors_and_type.css) — Auftraggeber-Submodule, nicht im Docker-Kontext. Regeln für Agenten: [build-kontext-submodule-regeln.md](./build-kontext-submodule-regeln.md).
 - **App-Kopie:** [`app/app/gs39-tokens.css`](../app/app/gs39-tokens.css) — `:root`-Variablen; in [`globals.css`](../app/app/globals.css) per `@import` und `@theme inline` als semantische Tailwind-Farben (`bg-1`, `fg-1`, `accent`, …).
 - **Schul-ID (MVP):** [`app/lib/school-theme.ts`](../app/lib/school-theme.ts) — `SCHOOL_ID = 'gs39'`; Komponenten nutzen semantische Klassen, keine direkten `--brand-*` in TSX. Mehrere Schulen später: anderes Token-Sheet pro Mandant (ADR-003).
-- **Dark Mode:** bewusst deaktiviert (Papier-Look).
+- **Dark Mode:** bewusst deaktiviert (Papier-Look). `color-scheme: light` auf `html` verhindert Browser-Auto-Darkening bei OS-Dark-Mode; Scanner-Vollbild (`sn-scan-shell`) setzt lokal `color-scheme: dark` für den bewusst dunklen Kamera-Chrome.
 - **Build-Check:** `npm run validate:tokens` vergleicht App-Tokens mit der Referenz (`colors_and_type.css` lokal bzw. [`app/scripts/reference/colors_and_type.css`](../app/scripts/reference/colors_and_type.css) im Docker-Build). Wird von `npm run build` mitaufgerufen.
 - **Display/Script-Fonts (#58):** Caveat Brush, Caveat via `next/font` — ergänzt Nunito; App-Klassen in [`sn-theme.css`](../app/app/sn-theme.css).
 

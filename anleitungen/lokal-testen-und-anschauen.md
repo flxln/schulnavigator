@@ -66,6 +66,14 @@ npm run dev
 
 **Hinweis zu 404:** Die Routen kommen aus `data/stations.json` (`generateStaticParams`). Ein Slug, der **nicht** in der JSON-Datei steht, liefert in der **Produktion** nach `npm run build` eine 404-Seite. Unter `npm run dev` zeigt Next.js oft eine dynamische 404 — zum Verhalten wie online unbedingt **Abschnitt 3** ausführen.
 
+### Scanner bei System-Dark-Mode
+
+Auf einem echten Gerät mit **aktivem System-Dark-Mode** (iOS Safari oder Android Chrome) prüfen:
+
+- [ ] `/eintritt/scan` — TopBar-Titel, Hinweistext, Button „Eintritts-QR scannen“, Status „Kamera wird gestartet …“
+- [ ] `/scan` (nach Entry) — gleiche Elemente; bei falschem QR Fehlermeldung lesbar
+- Erwartung: helle/weiße Schrift auf schwarzem Hintergrund, gut lesbar (kein unsichtbarer Text)
+
 ---
 
 ## 2. Mobil / schmales Layout prüfen

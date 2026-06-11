@@ -182,3 +182,29 @@ Voraussetzungen:
 - Onboarding-Anleitung für Lehrkräfte erstellt
 
 Zeitrahmen: frühestens Schuljahr 2026/27.
+
+---
+
+## #106 — Scanner: Text bei System-Dark-Mode unsichtbar
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/106
+
+**Labels:** `tech` `design`  
+**Assignee:** Felix  
+**Milestone:** Phase 5 — Post-Fest
+
+**Problem:** Auf Geräten mit aktivem System-Dark-Mode war die Scanner-UI (`/scan`, `/eintritt/scan`) teils unlesbar — helle Schrift auf schwarzem Hintergrund wurde vom Browser zu dunkler Schrift korrigiert.
+
+**Lösung:**
+
+- `color-scheme: light` auf `html` (`globals.css`)
+- `sn-scan-shell` mit `color-scheme: dark` auf `ScanFullscreenShell`
+- Explizite `text-white`-Klassen im Scanner-Chrome; `themeColor` Papierfarbe in `layout.tsx`
+- Manuelle Test-Checkliste in `anleitungen/lokal-testen-und-anschauen.md`
+
+**Dateien:** `app/app/globals.css`, `app/app/layout.tsx`, `app/app/sn-theme.css`, `app/components/scan/*`, `app/components/ui/top-bar.tsx`, `app/components/eintritt/eintritt-scan-screen.tsx`
+
+### Akzeptanzkriterien
+
+- [x] TopBar, Hinweise, Buttons und Status auf `/scan` und `/eintritt/scan` bei OS-Dark-Mode lesbar (hell auf schwarz)
+- [x] Rest der App bleibt Papier-Look ohne unerwartetes Auto-Darkening

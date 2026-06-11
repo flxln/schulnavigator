@@ -24,11 +24,11 @@ export function ScanScreen({ origin, trustedOrigins, slugs }: ScanScreenProps) {
           trustedOrigins={trustedOrigins}
           slugs={slugs}
         />
-        <div className="max-w-xs text-center text-fg-on-dark">
+        <div className="max-w-xs text-center text-white">
           <p className="text-base font-extrabold">
             Halten Sie den Raum-QR in den Rahmen
           </p>
-          <p className="mt-1 text-sm text-white/75">
+          <p className="mt-1 text-sm text-white/90">
             Nur Codes der 39. Grundschule werden akzeptiert.
           </p>
         </div>

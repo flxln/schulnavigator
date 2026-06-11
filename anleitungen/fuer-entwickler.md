@@ -177,7 +177,7 @@ cd app && node scripts/export-pano.mjs
 - **Token-Quelle:** [`app/lib/access-tokens.ts`](../app/lib/access-tokens.ts) — muss mit [`app/scripts/qr-config.mjs`](../app/scripts/qr-config.mjs) synchron bleiben (Vitest-Sync-Guard in `access-tokens.test.ts`).
 - **Cookie:** `sn_access` (HttpOnly, `Secure` nur in Production, `SameSite=Lax`). Inhalt = Token-String; Ablauf/Modus werden bei jedem Request gegen die Token-Liste validiert.
 - **Middleware:** [`app/middleware.ts`](../app/middleware.ts) — gültiges `?t=` → Cookie + Redirect `/`; ohne Cookie → `/eintritt` (`?reason=expired` wenn Token bekannt, aber abgelaufen).
-- **Scanner:** `html5-qrcode` in `components/scan/qr-scanner.tsx`; gemeinsame Vollbild-Shell `components/scan/scan-fullscreen-shell.tsx` — Entry auf `/eintritt/scan` (`EintrittScanScreen`, `mode: entry`), Räume auf `/scan` (`ScanScreen`, `mode: room`); `parseEntryScan` / `parseRoomScan` in `lib/scan-url.ts` — Entry ohne Token-Whitelist im Client (#57, #82, ADR-008).
+- **Scanner:** `html5-qrcode` in `components/scan/qr-scanner.tsx`; gemeinsame Vollbild-Shell `components/scan/scan-fullscreen-shell.tsx` (`sn-scan-shell`, `color-scheme: dark`) — Entry auf `/eintritt/scan` (`EintrittScanScreen`, `mode: entry`), Räume auf `/scan` (`ScanScreen`, `mode: room`); `parseEntryScan` / `parseRoomScan` in `lib/scan-url.ts` — Entry ohne Token-Whitelist im Client (#57, #82, ADR-008). Global `color-scheme: light` auf `html` (#106).
 
 ### Token pflegen / rotieren
 

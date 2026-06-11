@@ -20,11 +20,11 @@ export function EintrittScanScreen({ origin, trustedOrigins }: Props) {
         onBack={() => router.push('/eintritt')}
       >
         <QrScanner mode="entry" chrome={true} origin={origin} trustedOrigins={trustedOrigins} />
-        <div className="max-w-xs text-center text-fg-on-dark">
+        <div className="max-w-xs text-center text-white">
           <p className="text-base font-extrabold">
             Halten Sie den Eintritts-QR in den Rahmen
           </p>
-          <p className="mt-1 text-sm text-white/75">
+          <p className="mt-1 text-sm text-white/90">
             Am Eingang oder im Schulstartheft.
           </p>
         </div>
