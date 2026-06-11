@@ -7,6 +7,11 @@ import {
   isEmbedEnabled,
   isEmbedUrlAllowed,
 } from '@/lib/embed-allowlist'
+import {
+  isDelightexUrl,
+  shouldSkipEmbedIframe,
+} from '@/lib/delightex-fallback'
+import { DelightexFallbackPanel } from '@/components/media/delightex-fallback-panel'
 
 const LOAD_HINT_MS = 8000
 
@@ -22,14 +27,16 @@ export function EmbedViewer({ url, allowlist, label }: EmbedViewerProps) {
   const host = externalLinkHostname(url)
   const urlAllowed = isEmbedUrlAllowed(url, allowlist)
   const embedActive = isEmbedEnabled() && urlAllowed
+  const isDelightex = isDelightexUrl(url)
+  const skipIframe = isDelightex && shouldSkipEmbedIframe()
 
   useEffect(() => {
-    if (!embedActive) {
+    if (!embedActive || skipIframe) {
       return
     }
     const timer = window.setTimeout(() => setLoadHint(true), LOAD_HINT_MS)
     return () => window.clearTimeout(timer)
-  }, [embedActive, url])
+  }, [embedActive, skipIframe, url])
 
   const openInBrowser = useCallback(() => {
     openExternalLink(url)
@@ -43,15 +50,24 @@ export function EmbedViewer({ url, allowlist, label }: EmbedViewerProps) {
     void el.requestFullscreen?.()
   }, [])
 
+  // Delightex auf Touch-Geräten: kein iframe — direkt Fallback-Karte
+  if (isDelightex && skipIframe) {
+    return <DelightexFallbackPanel url={url} label={label} variant="embed" />
+  }
+
   return (
     <div className="flex flex-col gap-3">
-      <p className="text-sm text-fg-2">
-        Inhalt eines Drittanbieters (Delightex) wird in der App eingebettet.
-      </p>
-      {host ? (
-        <p className="text-xs text-fg-3">
-          Quelle: <span className="font-medium text-fg-2">{host}</span>
-        </p>
+      {!isDelightex ? (
+        <>
+          <p className="text-sm text-fg-2">
+            Inhalt eines Drittanbieters wird in der App eingebettet.
+          </p>
+          {host ? (
+            <p className="text-xs text-fg-3">
+              Quelle: <span className="font-medium text-fg-2">{host}</span>
+            </p>
+          ) : null}
+        </>
       ) : null}
       {label ? (
         <p className="text-sm font-medium text-fg-1">{label}</p>
@@ -103,13 +119,18 @@ export function EmbedViewer({ url, allowlist, label }: EmbedViewerProps) {
         </p>
       ) : null}
 
-      <button
-        type="button"
-        className="min-h-11 w-full rounded-[var(--r-sm)] bg-accent px-4 py-2 text-sm font-semibold text-fg-on-accent shadow-gs39-sm transition-[transform,box-shadow] hover:shadow-gs39-md active:scale-[0.98]"
-        onClick={openInBrowser}
-      >
-        Im Browser öffnen
-      </button>
+      {/* Delightex auf Desktop: Fallback-Panel unter dem iframe (Browser-Button + Store) */}
+      {isDelightex ? (
+        <DelightexFallbackPanel url={url} variant="embed" />
+      ) : (
+        <button
+          type="button"
+          className="min-h-11 w-full rounded-[var(--r-sm)] bg-accent px-4 py-2 text-sm font-semibold text-fg-on-accent shadow-gs39-sm transition-[transform,box-shadow] hover:shadow-gs39-md active:scale-[0.98]"
+          onClick={openInBrowser}
+        >
+          Im Browser öffnen
+        </button>
+      )}
     </div>
   )
 }

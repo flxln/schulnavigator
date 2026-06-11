@@ -191,10 +191,23 @@ Voraussetzung lokal: `NEXT_PUBLIC_EMBED_ENABLED=true` in `app/.env.local` (siehe
 | -------------- | ------ |
 | `/raum/pc-raum` → Hotspot „3D-Welt“ | Panel mit iframe; Button „Im Browser öffnen“ immer sichtbar |
 | Delightex-Interaktion | 3D-Welt drehen/schwenken, Klicks auf Objekte — nicht nur „Seite lädt“ |
-| iPhone Safari | iframe sichtbar oder Vollbild-Button; Fallback Browser-Tab |
-| `NEXT_PUBLIC_EMBED_ENABLED=false` | Kein iframe, Hinweis + Browser-Button |
+| Desktop Chrome | iframe + Fallback-Panel darunter (Browser-Button + App-Store-Links) |
+| `NEXT_PUBLIC_EMBED_ENABLED=false` | Kein iframe; Fallback-Panel bleibt sichtbar |
 
 Echte Embed-URL in `stations.json` (`pc-delightex.quelle`) muss öffentlich einbettbar sein (kein `X-Frame-Options: DENY`).
+
+**Delightex-Fallback auf Mobile:**
+
+Auf Touch-Geräten wird kein iframe gerendert — stattdessen erscheint direkt die Fallback-Karte (WebGL im eingebetteten Frame funktioniert auf iOS/Android oft nicht).
+
+| Gerät / Modus | Erwartung |
+| ------------- | --------- |
+| iPhone Safari | Kein iframe; Hinweis „Die 3D-Welt braucht WebGL…"; „Im Browser öffnen" + „Delightex-App installieren" (App Store) |
+| Android Chrome | wie iPhone; App-Button → Google Play |
+| Desktop Chrome | iframe + Fallback-Panel darunter |
+| `typ: link` + Delightex-URL | Hotspot-Tap → Panel (kein Auto-Tab); Fallback-Karte im Panel |
+
+DevTools: Mobilgerät simulieren (Geräte-Modus, pointer: coarse) — reicht für grundlegenden Check. Echtes Gerät vor Merge empfohlen.
 
 **Design-Tokens:** Farben und Typo folgen [`auftraggeber/material/UI-Vorschläge/colors_and_type.css`](../auftraggeber/material/UI-Vorschläge/colors_and_type.css) (Kopie in `app/app/gs39-tokens.css`). **Dark Mode** der App ist bewusst deaktiviert (Papier-Look).
 

@@ -145,6 +145,28 @@ Optionale Felder `hotspots[].icon`, `hotspots[].iconSize`, `medien[].thumbnail`.
 
 ---
 
+## `#109` — Delightex-Fallback Mobile (Folge #100) — erledigt
+
+**Parent:** #97  
+**Labels:** `tech`  
+**Assignee:** Felix  
+**Status:** geschlossen (2026-06-11, Branch `feature/delightex-fallback`)
+
+### Ziel
+
+Auf Touch-Geräten kein Delightex-iframe; stattdessen Fallback-Karte mit Hinweis, „Im Browser öffnen“ und App-Store-Links. Desktop: iframe + Panel darunter.
+
+### Akzeptanzkriterien
+
+- [x] `DelightexFallbackPanel` für `embed` und `link`
+- [x] `shouldSkipEmbedIframe()` via `pointer: coarse`
+- [x] Kein Auto-`window.open` bei Delightex-`typ: link`
+- [x] Mobile-Matrix in `lokal-testen-und-anschauen.md`
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/109
+
+---
+
 ## Abhängigkeiten
 
 | Thema | Issue / Doku |
