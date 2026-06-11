@@ -12,7 +12,7 @@ Eine Web-App für Schulen. Besucher eines Tags der offenen Tür scannen QR-Codes
 
 ## Projektphasen
 
-Das Projekt liegt unter `2_in-arbeit/schulnavigator/`. **Phase 0** (Architektur-ADRs) ist abgeschlossen; **Phase 1** (Foundation) umfasst **#9–#16** — siehe [`dokumentation/projektplan.md`](./dokumentation/projektplan.md). **Phase 2:** Raum-Viewer (**#55**/#56), GS39-UI (**#58**), Dialog Maskottchen (**#71**/#72), Medien-Player (**#18–#20**) + **TextViewer** (**#93**) — umgesetzt. **In Arbeit (Branch `feature/dialog-bubble-json`):** Dialog-Layout per JSON — [ADR-014](./dokumentation/adr/014-mascot-size-json.md) (`mascotSize`, viewport-`y`) + [ADR-015](./dokumentation/adr/015-dialog-bubble-json.md) (`dialog.bubble`, `segmente[].tail`). **Demo-Content:** **`klassenzimmer`** mit 4 Medien/Hotspots (`public/media/klassenzimmer/`). **Raumbilder:** **#27** geschlossen (8/11 Panorama in `public/stations/`); **#17** offen für `kunst`, `hort`, `schulsozialarbeit`. **Live:** `https://schulnavigator.mpz.schule` (Coolify) — [`anleitungen/fuer-entwickler.md`](./anleitungen/fuer-entwickler.md).
+Das Projekt liegt unter `2_in-arbeit/schulnavigator/`. **Phase 0** (Architektur-ADRs) ist abgeschlossen; **Phase 1** (Foundation) umfasst **#9–#16** — siehe [`dokumentation/projektplan.md`](./dokumentation/projektplan.md). **Phase 2:** Raum-Viewer (**#55**/#56), GS39-UI (**#58**), Dialog Maskottchen (**#71**/#72), Medien-Player (**#18–#20**) + **TextViewer** (**#93**) — umgesetzt. **360°-Sphere-Viewer** (**#113**, Branch `feature/360-sphere-viewer`): PSV v5 + Gyro, Koexistenz Flat/Sphere per `viewer`-Flag ([ADR-018](./dokumentation/adr/018-360-sphere-viewer.md)), Pilot `musik` — umgesetzt. **Demo-Content:** **`klassenzimmer`** mit 4 Medien/Hotspots (`public/media/klassenzimmer/`). **Raumbilder:** **#27** geschlossen (8/11 Panorama in `public/stations/`); **#17** offen für `kunst`, `hort`, `schulsozialarbeit`. **Live:** `https://schulnavigator.mpz.schule` (Coolify) — [`anleitungen/fuer-entwickler.md`](./anleitungen/fuer-entwickler.md).
 
 ---
 
@@ -74,6 +74,7 @@ schulnavigator/
 | [007](./dokumentation/adr/007-zugangskontrolle-cookie.md)   | Zugang: HttpOnly-Cookie + Middleware (ergänzt ADR-005) | entschieden |
 | [008](./dokumentation/adr/008-eintritt-in-app-scanner.md)   | Eintritt: In-App-Scanner auf `/eintritt/scan` (ergänzt ADR-005; Shell mit `/scan`) | entschieden |
 | [017](./dokumentation/adr/017-externe-medien-hotspot-marker.md) | Post-Fest: `link`/`embed`, Hotspot-Icons ([Umsetzungsplan](./dokumentation/projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md)) | entschieden |
+| [018](./dokumentation/adr/018-360-sphere-viewer.md)             | 360°-Sphere-Viewer (PSV v5) + Flat-Koexistenz per `viewer`-Flag; Gyro-Plugin; Spike Musikraum | entschieden |
 
 Vollständiger ADR-Index: [`dokumentation/entscheidungen.md`](./dokumentation/entscheidungen.md)
 

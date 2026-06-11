@@ -4,13 +4,21 @@ import Link from 'next/link'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Check, ChevronUp, List, X } from 'lucide-react'
-import type { Hotspot, Medium, Station } from '@/lib/types'
+import type {
+  Hotspot,
+  Hotspot360,
+  HotspotBase,
+  Medium,
+  ScreenProjection,
+  Station,
+  StationViewerHandle,
+} from '@/lib/types'
 import { MediaSlotList } from '@/components/media-slot-list'
 import {
   RaumViewer,
   RaumViewerErrorBoundary,
+  SphereRaumViewer,
   StaticRoomFallback,
-  type RaumViewerHandle,
 } from '@/components/raum-viewer'
 import { NextStationFooter } from '@/components/raum/next-station-footer'
 import { openExternalLink } from '@/lib/external-link'
@@ -62,10 +70,13 @@ export function RaumStationClient({
   mode,
 }: RaumStationClientProps) {
   const router = useRouter()
-  const viewerRef = useRef<RaumViewerHandle>(null)
+  const viewerRef = useRef<StationViewerHandle>(null)
   const [panelOpen, setPanelOpen] = useState(false)
   const [selectedMedium, setSelectedMedium] = useState<Medium | null>(null)
   const [activeHotspotId, setActiveHotspotId] = useState<string | null>(null)
+  const isSphere = station.viewer === 'equirectangular'
+  const [sphereProjection, setSphereProjection] =
+    useState<ScreenProjection | null>(null)
   const [panInfo, setPanInfo] = useState<{
     panPx: number
     effectiveDisplayW: number
@@ -111,8 +122,8 @@ export function RaumStationClient({
     setPanelOpen(false)
   }, [])
 
-  const onHotspotTap = useCallback(
-    (hs: Hotspot) => {
+  const handleHotspotAction = useCallback(
+    (hs: HotspotBase) => {
       if (isMascotDialogHotspot(hs) && station.dialog) {
         setActiveHotspotId(hs.id)
         startFromUserGesture()
@@ -128,6 +139,16 @@ export function RaumStationClient({
       }
     },
     [station.dialog, station.medien, openMedium, startFromUserGesture],
+  )
+
+  const onHotspotTap = useCallback(
+    (hs: Hotspot) => handleHotspotAction(hs),
+    [handleHotspotAction],
+  )
+
+  const onHotspot360Tap = useCallback(
+    (hs: Hotspot360) => handleHotspotAction(hs),
+    [handleHotspotAction],
   )
 
   const onHotspotCenterHit = useCallback((hs: Hotspot | null) => {
@@ -167,7 +188,29 @@ export function RaumStationClient({
     [],
   )
 
+  const handleSphereContainerReady = useCallback((w: number, h: number) => {
+    setPanInfo({ panPx: 0, effectiveDisplayW: w, containerW: w, containerH: h })
+  }, [])
+
+  const handleViewChange = useCallback(
+    (_yaw: number, _pitch: number) => {
+      if (!activeHotspotId) {
+        setSphereProjection(null)
+        return
+      }
+      const proj = viewerRef.current?.projectHotspot?.(activeHotspotId) ?? null
+      setSphereProjection(proj)
+    },
+    [activeHotspotId],
+  )
+
   const bubbleOffsetX = useMemo(() => {
+    if (isSphere) {
+      if (!sphereProjection || !sphereProjection.visible) return 0
+      if (!panInfo) return 0
+      const raw = sphereProjection.x - panInfo.containerW / 2
+      return clampBubbleOffsetX(raw, panInfo.containerW)
+    }
     if (!panInfo || panInfo.effectiveDisplayW <= 0 || panInfo.containerW <= 0)
       return 0
     const mascotXs = (station.hotspots ?? [])
@@ -180,7 +223,7 @@ export function RaumStationClient({
       midX * panInfo.effectiveDisplayW -
       panInfo.containerW / 2
     return clampBubbleOffsetX(raw, panInfo.containerW)
-  }, [panInfo, station.hotspots])
+  }, [panInfo, station.hotspots, isSphere, sphereProjection])
 
   const bubbleLayoutPx = useMemo(() => {
     const bubble = station.dialog?.bubble
@@ -215,7 +258,22 @@ export function RaumStationClient({
         className={`relative bg-brand-navy ${RAUM_HERO_HEIGHT_CLASS}`}
       >
         <RaumViewerErrorBoundary>
-          {station.bild ? (
+          {isSphere && station.panorama360 ? (
+            <SphereRaumViewer
+              ref={viewerRef}
+              panorama={station.panorama360}
+              alt={`Raumansicht ${station.titel}`}
+              hotspots360={station.hotspots360}
+              medien={station.medien}
+              activeHotspotId={activeHotspotId}
+              speakingRolle={mascotDialogHotspot ? speakingRolle : null}
+              onHotspotTap={onHotspot360Tap}
+              onViewChange={handleViewChange}
+              onContainerReady={handleSphereContainerReady}
+              layout="hero"
+              orientationEnabled
+            />
+          ) : station.bild ? (
             <RaumViewer
               ref={viewerRef}
               bild={station.bild}
@@ -283,7 +341,10 @@ export function RaumStationClient({
             text={displayText}
             tail={tail}
             accent={hubStation.accent}
-            visible={dialogUiActive}
+            visible={
+              dialogUiActive &&
+              (!isSphere || sphereProjection?.visible !== false)
+            }
             layoutPx={station.dialog.bubble ? bubbleLayoutPx : undefined}
             offsetX={bubbleOffsetXResolved}
           />
@@ -292,7 +353,7 @@ export function RaumStationClient({
 
       <div className="relative z-[2] -mt-6 rounded-t-[24px] bg-bg-1 px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-5">
         <div className="flex items-start gap-3">
-          {station.bild ? (
+          {station.bild || isSphere ? (
             <Gs39Chip
               as="button"
               aria-label={`${station.titel}, Raum ${hubStation.nr} von ${hubStations.length} — Raumansicht zurücksetzen`}

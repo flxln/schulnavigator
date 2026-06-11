@@ -57,8 +57,19 @@ vi.mock('@/components/raum-viewer', () => {
     },
   )
   RaumViewer.displayName = 'RaumViewer'
+  const SphereRaumViewer = React.forwardRef(
+    (_props: unknown, ref: React.Ref<{ recenterView: () => void }>) => {
+      React.useImperativeHandle(ref, () => ({
+        recenterView: vi.fn(),
+        projectHotspot: vi.fn(() => null),
+      }))
+      return <div data-testid="sphere-raum-viewer" />
+    },
+  )
+  SphereRaumViewer.displayName = 'SphereRaumViewer'
   return {
     RaumViewer,
+    SphereRaumViewer,
     RaumViewerErrorBoundary: ({ children }: { children: React.ReactNode }) =>
       children,
     StaticRoomFallback: () => null,

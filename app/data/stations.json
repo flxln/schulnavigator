@@ -4,6 +4,8 @@
       "slug": "klassenzimmer",
       "titel": "Klassenzimmer",
       "beschreibung": "Hallo und willkommen in unserem Klassenzimmer! Hier lernen wir jeden Tag spannende Sachen und manchmal sogar freiwillig. Unsere Stifte machen gern Urlaub unter den Tischen, aber wir finden sie meistens wieder. Viel Spaß beim Rundgang!",
+      "viewer": "equirectangular",
+      "panorama360": "/stations/360/klassenzimmer.jpg",
       "bild": "/stations/klassenzimmer.jpg",
       "medien": [
         {
@@ -34,21 +36,19 @@
           "untertitel": "Mein Schultag"
         }
       ],
-      "hotspots": [
+      "hotspots360": [
         {
           "id": "hs-text",
           "label": "Korkpinnwand",
-          "x": 0.22,
-          "y": 0.45,
-          "radius": 0.06,
+          "yaw": -28,
+          "pitch": 2,
           "mediumId": "demo-text"
         },
         {
           "id": "hs-video",
           "label": "Tafel",
-          "x": 0.35,
-          "y": 0.38,
-          "radius": 0.06,
+          "yaw": -15,
+          "pitch": 6,
           "mediumId": "demo-video",
           "icon": "/media/klassenzimmer/icons/play.svg",
           "iconSize": 0.1
@@ -56,17 +56,15 @@
         {
           "id": "hs-audio",
           "label": "Klassentische",
-          "x": 0.52,
-          "y": 0.55,
-          "radius": 0.06,
+          "yaw": 2,
+          "pitch": -2,
           "mediumId": "demo-audio"
         },
         {
           "id": "hs-foto",
           "label": "Fensterseite",
-          "x": 0.75,
-          "y": 0.4,
-          "radius": 0.06,
+          "yaw": 25,
+          "pitch": 5,
           "mediumId": "demo-foto"
         }
       ]
@@ -75,15 +73,16 @@
       "slug": "daz",
       "titel": "DaZ-Zimmer",
       "beschreibung": "Hi! Im DaZ-Zimmer lernen Kinder aus vielen Ländern Deutsch. Wir üben Wörter, Sätze und manchmal auch, wie man \"Schmetterling\" ohne Knoten in der Zunge sagt. Schön, dass Sie vorbeischauen!",
+      "viewer": "equirectangular",
+      "panorama360": "/stations/360/daz.jpg",
       "bild": "/stations/daz.jpg",
       "medien": [],
-      "hotspots": [
+      "hotspots360": [
         {
           "id": "hs-frieda",
           "label": "Frieda",
-          "x": 0.58,
-          "y": 1.0,
-          "radius": 0.1,
+          "yaw": 8,
+          "pitch": -25,
           "action": "dialog",
           "mascot": "frieda",
           "mascotSize": 0.7,
@@ -92,9 +91,8 @@
         {
           "id": "hs-otto",
           "label": "Otto",
-          "x": 0.38,
-          "y": 0.7,
-          "radius": 0.1,
+          "yaw": -12,
+          "pitch": -10,
           "action": "dialog",
           "mascot": "otto",
           "mascotSize": 0.44,
@@ -176,6 +174,8 @@
       "slug": "pc-raum",
       "titel": "PC-Raum",
       "beschreibung": "Willkommen im PC-Raum! Hier tippen wir, klicken wir und lernen, wie Computer funktionieren. Und keine Sorge: wir wissen, welcher Knopf der Aus-Knopf ist – meistens jedenfalls.",
+      "viewer": "equirectangular",
+      "panorama360": "/stations/360/pc-raum.jpg",
       "bild": "/stations/pc-raum.jpg",
       "medien": [
         {
@@ -186,13 +186,12 @@
           "thumbnail": "/media/pc-raum/icons/delightex.svg"
         }
       ],
-      "hotspots": [
+      "hotspots360": [
         {
           "id": "hs-frieda",
           "label": "Frieda",
-          "x": 0.32,
-          "y": 0.78,
-          "radius": 0.1,
+          "yaw": -18,
+          "pitch": -14,
           "action": "dialog",
           "mascot": "frieda",
           "mascotSize": 0.22,
@@ -201,9 +200,8 @@
         {
           "id": "hs-otto",
           "label": "Otto",
-          "x": 0.68,
-          "y": 0.78,
-          "radius": 0.1,
+          "yaw": 18,
+          "pitch": -14,
           "action": "dialog",
           "mascot": "otto",
           "mascotSize": 0.22,
@@ -212,9 +210,8 @@
         {
           "id": "hs-delightex",
           "label": "3D-Welt",
-          "x": 0.5,
-          "y": 0.45,
-          "radius": 0.06,
+          "yaw": 0,
+          "pitch": 2,
           "mediumId": "pc-delightex",
           "icon": "/media/pc-raum/icons/delightex.svg",
           "iconSize": 0.1
@@ -284,6 +281,8 @@
       "slug": "werken",
       "titel": "Werkenzimmer",
       "beschreibung": "Hallo! Im Werkenzimmer wird gesägt, gehämmert und gebaut. Manchmal sieht es hier aus wie in einer Erfinderwerkstatt und manchmal wie nach einem kleinen Wirbelsturm. Aber am Ende entsteht immer etwas Cooles!",
+      "viewer": "equirectangular",
+      "panorama360": "/stations/360/werken.jpg",
       "bild": "/stations/werken.jpg",
       "medien": []
     },
@@ -291,6 +290,8 @@
       "slug": "turnhalle",
       "titel": "Turnhalle",
       "beschreibung": "Willkommen in der Turnhalle! Hier rennen wir, springen wir und spielen Spiele, bei denen niemand weiß, wer eigentlich gewonnen hat, aber alle hatten Spaß. Viel Bewegung beim Zuhören!",
+      "viewer": "equirectangular",
+      "panorama360": "/stations/360/turnhalle.jpg",
       "bild": "/stations/turnhalle.jpg",
       "medien": []
     },
@@ -298,6 +299,8 @@
       "slug": "speiseraum",
       "titel": "Speiseraum",
       "beschreibung": "Hallo! Das ist unser Speiseraum. Hier essen wir zusammen, lachen viel und manchmal diskutieren wir, ob Brokkoli wirklich Gemüse ist. Wir finden: ja, aber lecker ist er trotzdem!",
+      "viewer": "equirectangular",
+      "panorama360": "/stations/360/speiseraum.jpg",
       "bild": "/stations/speiseraum.jpg",
       "medien": []
     },
@@ -312,6 +315,8 @@
       "slug": "lesewelt",
       "titel": "Lesewelt",
       "beschreibung": "Psst … willkommen in der Lesewelt! Hier tauchen wir in Geschichten ein, reisen in andere Länder und treffen Drachen, Piraten und sprechende Tiere. Lesen ist wie Kino im Kopf, nur ohne Popcorn.",
+      "viewer": "equirectangular",
+      "panorama360": "/stations/360/lesewelt.jpg",
       "bild": "/stations/lesewelt.jpg",
       "medien": []
     },
@@ -326,6 +331,8 @@
       "slug": "musik",
       "titel": "Musikzimmer",
       "beschreibung": "Willkommen im Musikzimmer! Hier singen wir, trommeln wir und spielen Instrumente. Manchmal klingt es wunderschön und manchmal klingt es … naja … kreativ. Aber Spaß macht es immer!",
+      "viewer": "equirectangular",
+      "panorama360": "/stations/360/musik.jpg",
       "bild": "/stations/musik.jpg",
       "medien": [
         {
@@ -354,20 +361,19 @@
           "untertitel": "Demo-Text"
         }
       ],
-      "hotspots": [
+      "hotspots360": [
         {
           "id": "hs-video",
           "label": "Video-Bereich",
-          "x": 0.32,
-          "y": 0.42,
-          "radius": 0.06,
+          "yaw": -25,
+          "pitch": -8,
           "mediumId": "demo-video"
         },
         {
           "id": "hs-audio",
           "label": "Audio-Bereich",
-          "x": 0.7,
-          "y": 0.5,
+          "yaw": 18,
+          "pitch": -5,
           "mediumId": "demo-audio"
         }
       ]
