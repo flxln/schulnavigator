@@ -168,7 +168,7 @@ flowchart TB
 | 3.3 | `EmbedViewer`: responsive iframe, Sandbox-Attribute, Fehler-Fallback | `embed-viewer.tsx` |
 | 3.4 | Vollbild-Toggle (optional, Mobile UX) | `embed-viewer.tsx` |
 | 3.5 | CSP `frame-src` in `next.config.ts` | `next.config.ts` |
-| 3.6 | Fehlerzustand: „Einbettung nicht möglich“ + Link-Fallback (`typ: link` duplizieren oder CTA) | `embed-viewer.tsx` |
+| 3.6 | Fehlerzustand: „Einbettung nicht möglich“ + Link-Fallback (`typ: link` duplizieren oder CTA) | `embed-viewer.tsx`, `delightex-fallback-panel.tsx` — **erledigt** (#109) |
 | 3.7 | Tests: Allowlist, CSP-Konfiguration smoke | Tests |
 | 3.8 | DSB-Freigabe dokumentieren | `dsgvo.md`, ADR-004-Verweis |
 | 3.9 | Manuell: iPhone Safari + Android Chrome mit echter Delightex-URL | Testprotokoll in `lokal-testen-und-anschauen.md` |
