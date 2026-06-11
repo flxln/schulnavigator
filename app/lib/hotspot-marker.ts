@@ -1,4 +1,4 @@
-import type { Hotspot, Medium, MediumTyp } from '@/lib/types'
+import type { Hotspot, HotspotBase, Medium, MediumTyp } from '@/lib/types'
 import {
   DEFAULT_ICON_SIZE_NORM,
   MAX_ICON_SIZE_NORM,
@@ -19,7 +19,7 @@ const PRESET_ICON: Record<MediumTyp, string> = {
   embed: '/brand/hotspot-icons/embed.svg',
 }
 
-export function resolveIconSizeNorm(hs: Hotspot): number {
+export function resolveIconSizeNorm(hs: Pick<HotspotBase, 'iconSize'>): number {
   const v = hs.iconSize ?? DEFAULT_ICON_SIZE_NORM
   return clamp(v, MIN_ICON_SIZE_NORM, MAX_ICON_SIZE_NORM)
 }

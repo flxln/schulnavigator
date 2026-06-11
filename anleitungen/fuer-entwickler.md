@@ -108,6 +108,17 @@ Der Viewer skaliert **höhenbasiert** (`ROOM_VIEWER_HEIGHT_CSS` = `min(50vh, 360
 
 Zuordnung Foto ↔ Station: [`auftraggeber/material/stationen/zuordnung-stationen-bilder.md`](../auftraggeber/material/stationen/zuordnung-stationen-bilder.md). Demo mit Hotspots: `/raum/musik` — Gyro auf dem iPhone nur unter **HTTPS** testen (siehe [lokal-testen-und-anschauen.md](./lokal-testen-und-anschauen.md)).
 
+### Equirectangular 360° (Sphere-Viewer, ADR-018)
+
+| Anforderung | Wert |
+|-------------|------|
+| Format | Equirectangular **2:1** (JPEG/WebP) |
+| Pfad | `public/stations/360/{slug}.jpg` → `panorama360` in `stations.json` |
+| Größe | max. **4 MB** (`validate:stations` prüft Ratio + Magic-Bytes) |
+| Export | `cd app && npm run export:pano360` (macOS `sips`, Rohdatei im Submodule `stationen-360-pano/flat/{slug}/raw/*360*.JPG`) |
+
+8 Panorama-Stationen nutzen `viewer: "equirectangular"`; `kunst`, `hort`, `schulsozialarbeit` bleiben ohne 360°-Content auf Flat bzw. ohne `bild`.
+
 ---
 
 ## Docker (lokal, Issue #10)

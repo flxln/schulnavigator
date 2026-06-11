@@ -59,4 +59,6 @@ Zwei Viewer koexistieren hinter einem expliziten Flag `viewer: 'flat' | 'equirec
 - **Spike-Gates vor Phase-1-Vollausbau:** Build-Kompat (PSV + Next 16 Turbopack/ESM), FPS iPhone Safari, Projektions-PoC (`dataHelper`→`ScreenProjection`), iOS-Gyro-Permission-Trigger
 - **Dialog in 360° (Phase 3):** Bubble bleibt 2D-Overlay; Maskottchen ist PSV-Marker-Element; `visible: false` aus `ScreenProjection` blendet Bubble bei verdecktem Maskottchen aus
 - **Nicht betroffen:** ADR-006 bleibt gültig für Flat-Stationen; ADR-006 erhält Querverweiszeile auf ADR-018
-- **Offen bis Spike:** `onHotspotCenterHit`-Äquivalent für Sphere (Gyro-Zentrierung → `activeHotspotId`); Tablet-Hero-Höhe im Sphere-Viewer (ADR-012 Epic)
+- **`onHotspotCenterHit` (entschieden 2026-06-11):** Für Sphere **bewusst entfallen**. Gyro-Zentrierung im Flat-Viewer setzt `activeHotspotId` per Hit-Test (`room-image-pane.tsx`); in der Kugel wählen Nutzer Maskottchen/Medien per Tap. Kein Auto-Highlight beim Drehen.
+- **Rollout (2026-06-11):** 8 Stationen auf `equirectangular` (`klassenzimmer`, `daz`, `pc-raum`, `werken`, `turnhalle`, `speiseraum`, `lesewelt`, `musik`); Export via `app/scripts/export-pano-equirect.mjs`; Maskottchen-Marker in `app/lib/raum-viewer/sphere-marker-html.ts`.
+- **Offen:** Tablet-Hero-Höhe im Sphere-Viewer (ADR-012 Epic); FPS/Ladezeit iPhone Safari (manuell messen).

@@ -20,10 +20,15 @@ import type {
   ScreenProjection,
   StationViewerHandle,
 } from '@/lib/types'
-import { ROOM_VIEWER_HEIGHT_CSS } from '@/lib/raum-viewer/constants'
+import {
+  ROOM_VIEWER_HEIGHT_CSS,
+  SPHERE_GYRO_ROLL_ENABLED,
+} from '@/lib/raum-viewer/constants'
 import type { RaumViewerLayout } from '@/components/raum-viewer/raum-viewer'
 import { PanOnboardingOverlay } from '@/components/raum-viewer/pan-onboarding-overlay'
 import { useDeviceOrientation } from '@/components/raum-viewer/use-device-orientation'
+import { buildSphereMarkerHtml } from '@/lib/raum-viewer/sphere-marker-html'
+import { isMascotDialogHotspot } from '@/lib/dialog-hotspot'
 
 export type SphereRaumViewerInnerProps = {
   panorama: string
@@ -53,7 +58,7 @@ export const SphereRaumViewerInner = forwardRef<
     hotspots360,
     medien,
     activeHotspotId,
-    speakingRolle: _speakingRolle,
+    speakingRolle,
     onHotspotTap,
     onViewChange,
     onContainerReady,
@@ -84,11 +89,13 @@ export const SphereRaumViewerInner = forwardRef<
 
   const startGyroIfPossible = useCallback(async () => {
     const plugin = gyroPluginRef.current
-    if (!plugin || !orientationEnabled || plugin.isEnabled()) return
+    if (!plugin || !orientationEnabled || plugin.isEnabled()) {
+      return
+    }
     try {
       await plugin.start()
     } catch {
-      // denied or unsupported — touch/drag remains as fallback
+      // Gyroskop nicht verfügbar oder verweigert — stiller Fallback auf Touch-Steuerung
     }
   }, [orientationEnabled])
 
@@ -159,6 +166,7 @@ export const SphereRaumViewerInner = forwardRef<
                 {
                   touchmove: true,
                   absolutePosition: false,
+                  roll: SPHERE_GYRO_ROLL_ENABLED,
                 },
               ] as [typeof GyroscopePlugin, object],
             ]
@@ -168,15 +176,47 @@ export const SphereRaumViewerInner = forwardRef<
 
     viewerRef.current = viewer
     markersPluginRef.current = viewer.getPlugin(MarkersPlugin) as MarkersPlugin
-    gyroPluginRef.current = orientationEnabled
+    const gyroPlugin = orientationEnabled
       ? (viewer.getPlugin(GyroscopePlugin) as GyroscopePlugin)
       : null
+    gyroPluginRef.current = gyroPlugin
+
+    // PSV's __checkSupport() resolves on the very first 'deviceorientation' event,
+    // which may carry alpha=null on Android during sensor calibration. Replace the
+    // isSupported promise so it waits for the first event with a valid alpha value.
+    if (
+      gyroPlugin &&
+      typeof (window as unknown as { DeviceOrientationEvent?: { requestPermission?: unknown } })
+        .DeviceOrientationEvent?.requestPermission !== 'function'
+    ) {
+      const gpState = (
+        gyroPlugin as unknown as { state: { isSupported: Promise<boolean> } }
+      ).state
+      gpState.isSupported = new Promise<boolean>((resolve) => {
+        let done = false
+        const onEvt = (e: DeviceOrientationEvent) => {
+          if (done) return
+          if (e.alpha !== null && !isNaN(e.alpha)) {
+            done = true
+            window.removeEventListener('deviceorientation', onEvt)
+            resolve(true)
+          }
+        }
+        window.addEventListener('deviceorientation', onEvt)
+        window.setTimeout(() => {
+          if (!done) {
+            done = true
+            window.removeEventListener('deviceorientation', onEvt)
+            resolve(false)
+          }
+        }, 10_000)
+      })
+    }
 
     viewer.addEventListener('position-updated', (e) => {
-      onViewChangeRef.current?.(
-        e.position.yaw * (180 / Math.PI),
-        e.position.pitch * (180 / Math.PI),
-      )
+      const yawDeg = e.position.yaw * (180 / Math.PI)
+      const pitchDeg = e.position.pitch * (180 / Math.PI)
+      onViewChangeRef.current?.(yawDeg, pitchDeg)
     })
 
     const markersPlugin = markersPluginRef.current
@@ -229,6 +269,8 @@ export const SphereRaumViewerInner = forwardRef<
     plugin.clearMarkers()
     if (!hotspots360?.length) return
 
+    const containerHeight = viewerRef.current?.getSize().height ?? 400
+
     for (const hs of hotspots360) {
       const isActive = hs.id === activeHotspotId
       plugin.addMarker({
@@ -237,12 +279,18 @@ export const SphereRaumViewerInner = forwardRef<
           yaw: hs.yaw * (Math.PI / 180),
           pitch: hs.pitch * (Math.PI / 180),
         },
-        html: buildMarkerHtml(hs, medien, isActive),
-        anchor: 'bottom center',
+        html: buildSphereMarkerHtml({
+          hs,
+          medien,
+          containerHeight,
+          isActive,
+          speakingRolle,
+        }),
+        anchor: isMascotDialogHotspot(hs) ? 'bottom center' : 'center center',
         tooltip: hs.label ?? undefined,
       })
     }
-  }, [hotspots360, medien, activeHotspotId, ready])
+  }, [hotspots360, medien, activeHotspotId, speakingRolle, ready])
 
   return (
     <div
@@ -260,7 +308,9 @@ export const SphereRaumViewerInner = forwardRef<
           <button
             type="button"
             className="rounded-[var(--r-md)] bg-accent px-4 py-2 text-sm font-semibold text-fg-on-dark shadow-gs39-sm hover:bg-accent-hover"
-            onClick={() => void requestAccess()}
+            onClick={() => {
+              void requestAccess()
+            }}
           >
             Orientierung aktivieren
           </button>
@@ -271,27 +321,3 @@ export const SphereRaumViewerInner = forwardRef<
 })
 
 SphereRaumViewerInner.displayName = 'SphereRaumViewerInner'
-
-function buildMarkerHtml(
-  hs: Hotspot360,
-  _medien: Medium[],
-  isActive: boolean,
-): string {
-  const baseClass =
-    'flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-2 transition-transform'
-  const colorClass =
-    hs.action === 'dialog'
-      ? isActive
-        ? 'border-accent bg-accent/90 text-fg-on-dark scale-110'
-        : 'border-accent bg-brand-sky-50/90 text-accent'
-      : isActive
-        ? 'border-yellow-400 bg-yellow-400 text-fg-1 scale-110'
-        : 'border-yellow-400 bg-yellow-300/90 text-fg-1'
-  return `<div class="${baseClass} ${colorClass}" aria-label="${hs.label ?? hs.id}">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-      ${hs.action === 'dialog'
-        ? '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'
-        : '<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>'}
-    </svg>
-  </div>`
-}

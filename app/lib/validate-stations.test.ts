@@ -7,6 +7,9 @@ describe('validateStationsFile Hub (ADR-016)', () => {
     const stations = validateStationsFile(raw)
     expect(stations).toHaveLength(11)
     expect(stations.some((s) => s.slug === 'musik')).toBe(true)
+    const musik = stations.find((s) => s.slug === 'musik')
+    expect(musik?.viewer).toBe('equirectangular')
+    expect(musik?.panorama360).toBe('/stations/360/musik.jpg')
   })
 
   it('akzeptiert dialog mit gruppe und beide', () => {
@@ -41,17 +44,17 @@ describe('validateStationsFile Hub (ADR-016)', () => {
   it('akzeptiert dialog-Hotspot ohne mediumId', () => {
     const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
     const daz = data.stations.find((s) => s.slug === 'daz') as Record<string, unknown>
-    const hotspots = daz.hotspots as Record<string, unknown>[]
+    const hotspots = daz.hotspots360 as Record<string, unknown>[]
     expect(hotspots[0]?.action).toBe('dialog')
     expect(hotspots[0]?.mediumId).toBeUndefined()
     const stations = validateStationsFile(data as unknown)
-    expect(stations.find((s) => s.slug === 'daz')?.hotspots).toHaveLength(2)
+    expect(stations.find((s) => s.slug === 'daz')?.hotspots360).toHaveLength(2)
   })
 
   it('wirft bei dialog-Hotspot mit mediumId', () => {
     const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
     const daz = data.stations.find((s) => s.slug === 'daz') as Record<string, unknown>
-    const hotspots = daz.hotspots as Record<string, unknown>[]
+    const hotspots = daz.hotspots360 as Record<string, unknown>[]
     hotspots[0] = { ...hotspots[0], mediumId: 'x' }
     expect(() => validateStationsFile(data as unknown)).toThrow(
       'darf kein mediumId',
@@ -82,21 +85,21 @@ describe('validateStationsFile Hub (ADR-016)', () => {
   it('akzeptiert dialog-Hotspot mit gültigem mascotSize', () => {
     const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
     const daz = data.stations.find((s) => s.slug === 'daz') as Record<string, unknown>
-    const hotspots = daz.hotspots as Record<string, unknown>[]
+    const hotspots = daz.hotspots360 as Record<string, unknown>[]
     hotspots[0] = { ...hotspots[0], mascotSize: 0.22 }
     const stations = validateStationsFile(data as unknown)
-    const hs = stations.find((s) => s.slug === 'daz')?.hotspots?.[0]
+    const hs = stations.find((s) => s.slug === 'daz')?.hotspots360?.[0]
     expect(hs?.mascotSize).toBe(0.22)
   })
 
   it('gibt mascotSize im Round-Trip zurück', () => {
     const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
     const daz = data.stations.find((s) => s.slug === 'daz') as Record<string, unknown>
-    const hotspots = daz.hotspots as Record<string, unknown>[]
+    const hotspots = daz.hotspots360 as Record<string, unknown>[]
     hotspots[0] = { ...hotspots[0], mascotSize: 0.3 }
     const stations = validateStationsFile(data as unknown)
     expect(
-      stations.find((s) => s.slug === 'daz')?.hotspots?.[0]?.mascotSize,
+      stations.find((s) => s.slug === 'daz')?.hotspots360?.[0]?.mascotSize,
     ).toBe(0.3)
   })
 
@@ -105,7 +108,7 @@ describe('validateStationsFile Hub (ADR-016)', () => {
     const klassenzimmer = data.stations.find(
       (s) => s.slug === 'klassenzimmer',
     ) as Record<string, unknown>
-    const hotspots = klassenzimmer.hotspots as Record<string, unknown>[]
+    const hotspots = klassenzimmer.hotspots360 as Record<string, unknown>[]
     hotspots[0] = { ...hotspots[0], mascotSize: 0.2 }
     expect(() => validateStationsFile(data as unknown)).toThrow(
       'darf kein mascotSize',
@@ -115,11 +118,11 @@ describe('validateStationsFile Hub (ADR-016)', () => {
   it('akzeptiert mascotFlipX auf Dialog-Hotspot', () => {
     const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
     const daz = data.stations.find((s) => s.slug === 'daz') as Record<string, unknown>
-    const hotspots = daz.hotspots as Record<string, unknown>[]
+    const hotspots = daz.hotspots360 as Record<string, unknown>[]
     hotspots[0] = { ...hotspots[0], mascotFlipX: true }
     const stations = validateStationsFile(data as unknown)
     expect(
-      stations.find((s) => s.slug === 'daz')?.hotspots?.[0]?.mascotFlipX,
+      stations.find((s) => s.slug === 'daz')?.hotspots360?.[0]?.mascotFlipX,
     ).toBe(true)
   })
 
@@ -128,7 +131,7 @@ describe('validateStationsFile Hub (ADR-016)', () => {
     const klassenzimmer = data.stations.find(
       (s) => s.slug === 'klassenzimmer',
     ) as Record<string, unknown>
-    const hotspots = klassenzimmer.hotspots as Record<string, unknown>[]
+    const hotspots = klassenzimmer.hotspots360 as Record<string, unknown>[]
     hotspots[0] = { ...hotspots[0], mascotFlipX: true }
     expect(() => validateStationsFile(data as unknown)).toThrow(
       'darf kein mascotFlipX',
@@ -138,7 +141,7 @@ describe('validateStationsFile Hub (ADR-016)', () => {
   it('wirft bei mascotSize außerhalb des Bereichs', () => {
     const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
     const daz = data.stations.find((s) => s.slug === 'daz') as Record<string, unknown>
-    const hotspots = daz.hotspots as Record<string, unknown>[]
+    const hotspots = daz.hotspots360 as Record<string, unknown>[]
     hotspots[0] = { ...hotspots[0], mascotSize: 1.5 }
     expect(() => validateStationsFile(data as unknown)).toThrow('mascotSize muss')
   })
@@ -148,7 +151,7 @@ describe('validateStationsFile Hub (ADR-016)', () => {
     const klassenzimmer = data.stations.find(
       (s) => s.slug === 'klassenzimmer',
     ) as Record<string, unknown>
-    const hotspots = klassenzimmer.hotspots as Record<string, unknown>[]
+    const hotspots = klassenzimmer.hotspots360 as Record<string, unknown>[]
     hotspots[1] = {
       ...hotspots[1],
       icon: '/media/klassenzimmer/icons/play.svg',
@@ -157,7 +160,7 @@ describe('validateStationsFile Hub (ADR-016)', () => {
     const stations = validateStationsFile(data as unknown)
     const hs = stations
       .find((s) => s.slug === 'klassenzimmer')
-      ?.hotspots?.find((h) => h.id === 'hs-video')
+      ?.hotspots360?.find((h) => h.id === 'hs-video')
     expect(hs?.icon).toBe('/media/klassenzimmer/icons/play.svg')
     expect(hs?.iconSize).toBe(0.12)
   })
@@ -165,7 +168,7 @@ describe('validateStationsFile Hub (ADR-016)', () => {
   it('wirft bei icon auf Dialog-Hotspot', () => {
     const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
     const daz = data.stations.find((s) => s.slug === 'daz') as Record<string, unknown>
-    const hotspots = daz.hotspots as Record<string, unknown>[]
+    const hotspots = daz.hotspots360 as Record<string, unknown>[]
     hotspots[0] = {
       ...hotspots[0],
       icon: '/media/x/icon.svg',
@@ -180,7 +183,7 @@ describe('validateStationsFile Hub (ADR-016)', () => {
     const klassenzimmer = data.stations.find(
       (s) => s.slug === 'klassenzimmer',
     ) as Record<string, unknown>
-    const hotspots = klassenzimmer.hotspots as Record<string, unknown>[]
+    const hotspots = klassenzimmer.hotspots360 as Record<string, unknown>[]
     hotspots[0] = { ...hotspots[0], iconSize: 0.5 }
     expect(() => validateStationsFile(data as unknown)).toThrow('iconSize muss')
   })
