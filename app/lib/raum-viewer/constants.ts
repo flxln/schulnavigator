@@ -48,6 +48,9 @@ export const MIN_PAN_DISPLAY_RATIO = 2
 /** Empfohlenes Seitenverhältnis Breite:Höhe der Quelldatei (Panorama, z. B. 2500×1000). */
 export const RECOMMENDED_SOURCE_ASPECT_MIN = 2.5
 
+/** Sphere-Viewer (PSV): Gyro-Roll (Seitwärts-Kippen des Bildes) — `GyroscopePlugin.roll`. */
+export const SPHERE_GYRO_ROLL_ENABLED = false
+
 export function clamp(n: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, n))
 }

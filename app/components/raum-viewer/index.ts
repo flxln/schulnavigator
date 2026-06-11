@@ -3,6 +3,10 @@ export {
   type RaumViewerHandle,
   type RaumViewerProps,
 } from '@/components/raum-viewer/raum-viewer'
+export {
+  SphereRaumViewer,
+  type SphereRaumViewerProps,
+} from '@/components/raum-viewer/sphere-raum-viewer'
 export { RaumViewerErrorBoundary } from '@/components/raum-viewer/raum-viewer-error-boundary'
 export {
   HotspotOverlay,

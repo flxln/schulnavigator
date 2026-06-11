@@ -9,7 +9,14 @@ const TOTAL_MS = VISIBLE_MS + FADE_MS
 
 type Phase = 'idle' | 'visible' | 'done'
 
-export function PanOnboardingOverlay({ skip = false }: { skip?: boolean }) {
+export function PanOnboardingOverlay({
+  skip = false,
+  mode = 'flat',
+}: {
+  skip?: boolean
+  /** 'sphere' zeigt „Drehe dich um" statt „Links oder rechts wischen". */
+  mode?: 'flat' | 'sphere'
+}) {
   const [phase, setPhase] = useState<Phase>('idle')
   const [opacity, setOpacity] = useState(1)
   const dismissedRef = useRef(false)
@@ -88,37 +95,55 @@ export function PanOnboardingOverlay({ skip = false }: { skip?: boolean }) {
       aria-hidden="true"
     >
       <div className="flex flex-col items-center gap-2 rounded-[var(--r-lg)] bg-black/55 px-6 py-4">
-        <svg
-          width="56"
-          height="20"
-          viewBox="0 0 56 20"
-          fill="none"
-          aria-hidden="true"
-        >
-          <polyline
-            points="8,4 2,10 8,16"
+        {mode === 'sphere' ? (
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            fill="none"
             stroke="white"
-            strokeWidth="2"
+            strokeWidth="1.75"
             strokeLinecap="round"
             strokeLinejoin="round"
-          />
-          <circle
-            cx="28"
-            cy="10"
-            r="4"
-            fill="white"
-            style={{ animation: 'sn-swipe-hint 1.2s ease-in-out 0.3s infinite' }}
-          />
-          <polyline
-            points="48,4 54,10 48,16"
-            stroke="white"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+            <path d="M2 12h20" />
+          </svg>
+        ) : (
+          <svg
+            width="56"
+            height="20"
+            viewBox="0 0 56 20"
+            fill="none"
+            aria-hidden="true"
+          >
+            <polyline
+              points="8,4 2,10 8,16"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <circle
+              cx="28"
+              cy="10"
+              r="4"
+              fill="white"
+              style={{ animation: 'sn-swipe-hint 1.2s ease-in-out 0.3s infinite' }}
+            />
+            <polyline
+              points="48,4 54,10 48,16"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        )}
         <p className="text-center text-sm font-semibold text-fg-on-dark">
-          Links oder rechts wischen
+          {mode === 'sphere' ? 'Drehe dich um' : 'Links oder rechts wischen'}
         </p>
       </div>
     </div>

@@ -209,7 +209,9 @@ Die Schule liefert bis **12.06.** einen Plan: welche Klasse macht welchen Raum i
 
 - [ ] Mandantenfähigkeit: andere Schulen können eigene Instanz aufsetzen
 - [ ] Onboarding-Dokumentation für neue Schulen
-- [ ] Echtes AR (WebXR/Kamera), 360°-Panorama, Lego-/Tafel-Trigger als opt-in Erweiterung (MVP hat Gyro-Viewer, siehe ADR-006) — **360° in Planung:** [`kurzfristige-ideen/360-panorama-viewer-planung.md`](./kurzfristige-ideen/360-panorama-viewer-planung.md)
+- [x] **360°-Sphere-Viewer Spike** umgesetzt: PSV v5, Koexistenz Flat/Sphere per `viewer`-Flag, Pilot `musik` mit Gyro-Panning — [ADR-018](./adr/018-360-sphere-viewer.md), Issue **#113** (2026-06-11)
+- [ ] Rollout 360° auf weitere Stationen (Folgearbeit, Branch `feature/360-sphere-rollout`)
+- [ ] Echtes AR (WebXR/Kamera), Lego-/Tafel-Trigger als opt-in Erweiterung (Post-Fest, ADR-006)
 
 ---
 
