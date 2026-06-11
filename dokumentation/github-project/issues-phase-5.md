@@ -170,6 +170,28 @@ Sukzessive Post-Fest-Erweiterung: Hotspot-Marker → externe Links → iframe (D
 
 ---
 
+## #109 — Delightex-Fallback Mobile (Folge #100, ADR-017 Aufgabe 3.6) — erledigt
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/109  
+**Parent:** #97  
+**Labels:** `tech`  
+**Assignee:** Felix  
+**Milestone:** Phase 5 — Post-Fest  
+**Status:** geschlossen (2026-06-11, Branch `feature/delightex-fallback`)
+
+Delightex-Embed auf Touch-Geräten ohne iframe; `DelightexFallbackPanel` mit Browser- und App-Store-Buttons; gleiche UI bei `typ: link`; kein Auto-Tab bei Delightex-Links.
+
+**Dateien:** `app/lib/delightex-fallback.ts`, `app/components/media/delightex-fallback-panel.tsx`, `embed-viewer.tsx`, `link-viewer.tsx`, `raum-station-client.tsx`
+
+### Akzeptanzkriterien
+
+- [x] Mobile: Fallback-Karte statt iframe
+- [x] Desktop: iframe + Fallback-Panel
+- [x] Delightex-Host-Erkennung ohne JSON-Schema-Change
+- [x] Tests + Doku aktualisiert
+
+---
+
 ## #51 — Mandantenfähigkeit: andere Schulen vorbereiten
 
 **Labels:** `tech`

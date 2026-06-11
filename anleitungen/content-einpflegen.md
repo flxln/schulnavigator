@@ -375,6 +375,8 @@ Station: _____________  Slug: _____________
 
 **Stufe 3:** `typ: embed` — Delightex im Medien-Panel (`iframe`). Beispiel: `pc-raum` / `pc-delightex`. Öffentliche Embed-URL von Delightex; Button „Im Browser öffnen“ ist immer verfügbar.
 
+**Delightex-Fallback (automatisch):** Bei `delightex.com`-URLs erkennt die App das Gerät automatisch. Auf Smartphones und Tablets wird kein iframe angezeigt — stattdessen erscheint eine Fallback-Karte mit „Im Browser öffnen“ und einem Link zur Delightex-App (App Store / Play Store). Auf dem Desktop bleibt das iframe erhalten. Keine Redaktionsänderung nötig — die Share-URL aus Delightex reicht.
+
 | Stufe | Inhalt | Redaktion |
 |-------|--------|-----------|
 | 1 | Icons statt gelber Punkt | **live** |
