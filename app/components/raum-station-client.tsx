@@ -14,6 +14,7 @@ import {
 } from '@/components/raum-viewer'
 import { NextStationFooter } from '@/components/raum/next-station-footer'
 import { openExternalLink } from '@/lib/external-link'
+import { isDelightexUrl } from '@/lib/delightex-fallback'
 import { StationMediaPanel } from '@/components/station-media-panel'
 import { StationVisitedBadge } from '@/components/station-visited-badge'
 import { DialogEmbeddedBubble } from '@/components/dialog/dialog-embedded-bubble'
@@ -95,7 +96,7 @@ export function RaumStationClient({
   const backHref = `/?highlight=${encodeURIComponent(station.slug)}`
 
   const openMedium = useCallback((m: Medium) => {
-    if (m.typ === 'link') {
+    if (m.typ === 'link' && !isDelightexUrl(m.quelle)) {
       openExternalLink(m.quelle)
     }
     setSelectedMedium(m)
