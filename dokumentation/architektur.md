@@ -66,6 +66,7 @@ Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/
 | TopBar (Raum) | `TopBar` mit `onBack`, optionalem `leftExtra` (z. B. Dialog-Ende **X** 38×38) und `right`; rechte Slot-Breite spiegelt links (`lib/ui/top-bar-layout.ts`) |
 | Recenter-API | `RaumViewerHandle.recenterView()` — intern `RoomImagePane`; **nicht** aus `raum-viewer/index.ts` als Pane exportiert (#72) |
 | Fallback | Wischen, Tap; Banner wenn Orientierung fehlt; `sessionStorage`-Merker iOS + 2s-Watchdog bei fehlenden Events |
+| Onboarding (#107) | Einmaliges Overlay „Links oder rechts wischen“ (`PanOnboardingOverlay`); `localStorage` `schulnav.pan-onboarding.seen`; auf iOS erst nach Gyro-Berechtigung |
 | Ohne `bild` | Statisches Layout + Medienliste ([ADR-006](./adr/006-raum-viewer-gyro-hotspots.md)) |
 | Demo | `/raum/klassenzimmer` (4 Hotspots, 4 Medientypen inkl. Markdown-Text inline, echte Dateien unter `/media/klassenzimmer/`); `/raum/musik` (2 Hotspots, 4 Medientypen, Platzhalter `/demo/`); `/raum/daz`, `/raum/pc-raum` (Maskottchen-Dialog-Hotspots, [ADR-011](./adr/011-dialog-mascot-hotspots.md), Audio [ADR-010](./adr/010-dialog-cutscene-gated-audio.md)) — Gyro/Dialog auf iPhone nur unter **HTTPS**; Eintritt zuerst `/eintritt?t=fest-2026` |
 
