@@ -58,5 +58,6 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issue **#111** (Raum-Inhaltskarte Card-Peek + iOS-Viewport-Fix, Folge #72) — umgesetzt 2026-06-11, Branch `feat/raum-card-peek-layout`
 
 - [x] Issue **#113** (360°-Sphere-Viewer: PSV-Koexistenz, Gyro-Panning, ADR-018, Pilot Musikraum) — umgesetzt 2026-06-11, Branch `feature/360-sphere-viewer`
+- [x] Issue **#114** (360°-Sphere-Viewer: Rollout 8 Stationen, Maskottchen-Marker, Gyro-Bugfix, Folge #113) — umgesetzt 2026-06-11, Branch `feature/360-sphere-viewer`
 
-Letzter dokumentierter Abgleich: **2026-06-11** (#113 360°-Sphere-Viewer Spike; #111 Card-Peek; #109 Delightex-Fallback; #107 Swipe-Onboarding).
+Letzter dokumentierter Abgleich: **2026-06-11** (#114 360°-Rollout + Gyro-Bugfix; #113 360°-Sphere-Viewer Spike; #111 Card-Peek; #109 Delightex-Fallback; #107 Swipe-Onboarding).

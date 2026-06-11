@@ -39,6 +39,8 @@ vi.mock('@photo-sphere-viewer/core', async () => {
   const mockGyroPlugin = {
     start: mocks.gyroStart,
     isEnabled: mocks.gyroIsEnabled,
+    isSupported: vi.fn().mockResolvedValue(true),
+    state: { isSupported: Promise.resolve(true) },
   }
   return {
     Viewer: vi.fn().mockImplementation(() => ({

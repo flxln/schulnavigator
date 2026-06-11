@@ -13,11 +13,20 @@ Equirectangular-Panoramen für den Sphere-Viewer (ADR-018). Eine Datei pro Stati
 
 | Slug | Status |
 |------|--------|
-| `musik` | Equirectangular 5376×2688 — Quelle `flat/musik/raw/009-360-Musikraum.JPG` |
+| `klassenzimmer` | Equirectangular 5376×2688 |
+| `daz` | Equirectangular 5376×2688 (Dialog-Maskottchen) |
+| `pc-raum` | Equirectangular 5376×2688 (Dialog + Embed-Hotspot) |
+| `werken` | Equirectangular 5376×2688 |
+| `turnhalle` | Equirectangular 5376×2688 |
+| `speiseraum` | Equirectangular 5376×2688 |
+| `lesewelt` | Equirectangular 5376×2688 |
+| `musik` | Equirectangular 5376×2688 (Medien-Hotspots) |
+
+Export: `node scripts/export-pano-equirect.mjs` (aus `app/`, macOS `sips`).
 
 ## Produktionsvorbereitung
 
-Echte Aufnahmen nach `auftraggeber/material/stationen-360-pano/equirect/{slug}/` ablegen
-und per Export-Skript hierher kopieren (siehe `dokumentation/content-verzeichnisstruktur.md`).
+Rohdateien unter `auftraggeber/material/stationen-360-pano/flat/{slug}/raw/*360*.JPG`;
+freigegebene Exporte unter `auftraggeber/.../equirect/{slug}/export/`.
 
 Validierung läuft automatisch beim Build (`npm run validate:stations`).

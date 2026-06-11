@@ -689,6 +689,33 @@ Spezifikation: [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) · Detail:
 
 ---
 
+## #114 — 360°-Sphere-Viewer: Rollout 8 Stationen, Maskottchen-Marker, Gyro-Bugfix (Folge #113)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/114 — **geschlossen** (2026-06-11, Branch `feature/360-sphere-viewer`)
+
+**Labels:** `tech`  
+**Assignee:** Felix  
+**Milestone:** Phase 2 — Content-Struktur + UI
+
+**Ziel:** Folgearbeit zum Spike #113 abschließen — alle Panorama-Stationen auf `equirectangular` umstellen, Dialog/Maskottchen im Sphere-Viewer fertigstellen, Export-Tooling bauen und das Gyro-Panning auf echten Geräten korrigieren.
+
+**Kontext:** ADR-018 (Rollout-Nachtrag + `onHotspotCenterHit`-Entscheidung), Spike-Ergebnis [`2026-06-11-360-sphere-spike-ergebnis.md`](../projektmanagement/2026-06-11-360-sphere-spike-ergebnis.md), Plan `360-viewer_folgearbeit`.
+
+### Checkliste
+
+- [x] Export-Tooling `scripts/export-pano-equirect.mjs` (`npm run export:pano360`, 8 Slugs, sips-Optimierung)
+- [x] `validate-station-assets.mjs`: `panorama360` Existenz, JPEG, 2:1-Ratio, Größenwarnung
+- [x] Maskottchen-Marker `lib/raum-viewer/sphere-marker-html.ts` (PNG, `mascotSize`/FlipX/Speaking) + Tests
+- [x] Rollout 8 Stationen auf `equirectangular` (`klassenzimmer`, `daz`, `pc-raum`, `werken`, `turnhalle`, `speiseraum`, `lesewelt`, `musik`)
+- [x] `kunst`, `hort`, `schulsozialarbeit` bleiben Flat (kein Rohmaterial)
+- [x] Gyro-Bugfix Android: `isSupported`-Patch (wartet auf erstes Event mit gültigem `alpha`)
+- [x] Gyro-Bugfix Pitch: `VisibleRangePlugin` entfernt (kollabierte Pitch); `roll: false` begrenzt seitwärts Kippen
+- [x] Tests grün (`sphere-raum-viewer-inner.test.tsx`, `sphere-marker-html.test.ts`)
+
+**Offen:** Hotspot-yaw/pitch visuell nachjustieren; FPS/Ladezeit iPhone Safari messen.
+
+---
+
 ## #26 — WLAN-Test vor Ort vereinbaren
 
 **Labels:** `org`  
