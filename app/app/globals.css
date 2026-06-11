@@ -72,3 +72,9 @@ body {
   white-space: nowrap;
   border-width: 0;
 }
+
+@keyframes sn-swipe-hint {
+  0%, 100% { transform: translateX(0); }
+  30% { transform: translateX(-10px); }
+  70% { transform: translateX(10px); }
+}

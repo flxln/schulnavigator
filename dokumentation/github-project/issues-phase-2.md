@@ -48,6 +48,37 @@ Spezifikation: [ADR-009](../adr/009-hub-isometrisch.md) · Quelle: [`auftraggebe
 
 ---
 
+## #107 — Raum-Viewer: Einmaliges Swipe-Onboarding (Folge #56)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/107 — **offen**
+
+**Labels:** `tech`  
+**Assignee:** Felix  
+**Milestone:** Phase 2
+
+**Kontext:** Folge zu **#55** / **#56** (Tap-/Wisch-Fallback). Erstbesucher erkennen die horizontale Wisch-Geste im Panoramafoto oft nicht. Ursprünglicher Entwurf: Remote-Branch `claude/room-visit-onboarding-overlay-EY8o1`; Umsetzung auf `feature/pan-onboarding-overlay` (rebased auf `main`).
+
+**Ziel:** Beim ersten Raumbesuch kurzes Overlay („Links oder rechts wischen“), danach `localStorage`-Merker — nicht parallel zum iOS-Gyro-Permission-Overlay.
+
+### Akzeptanzkriterien
+
+- [x] `PanOnboardingOverlay` + Einbindung in `room-image-pane.tsx`
+- [x] Keyframe `sn-swipe-hint` in `globals.css`
+- [x] `skip={orientState === 'needs-gesture'}` (iOS)
+- [x] Tests `pan-onboarding-overlay.test.tsx`
+- [x] Doku: diese Datei, `lokal-testen-und-anschauen.md`, `architektur.md`
+- [ ] Review + Merge auf `main`
+
+### Technik
+
+| Aspekt | Detail |
+|--------|--------|
+| Storage | `schulnav.pan-onboarding.seen` |
+| Dauer | 3 s sichtbar, 400 ms Fade |
+| Interaktion | `pointer-events: none`, `aria-hidden` |
+
+---
+
 ## #55 — Raum-Viewer (Gyro + Hotspots)
 
 **GitHub:** https://github.com/flxln/schulnavigator/issues/55 — **geschlossen** (2026-05-21)
