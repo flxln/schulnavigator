@@ -268,6 +268,27 @@ CTA-Vereinfachung ohne Stationsnamen: Issue **#104** (Folge **#84**), [ADR-009 N
 
 ---
 
+## #105 — Stationssymbole statt Nummerierung (Hub, Liste, Raum)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/105 — **geschlossen** (2026-06-11)
+
+**Labels:** `tech`, `design`  
+**Assignee:** Felix  
+**Milestone:** Phase 2
+
+**Ziel:** Raumspezifische Lucide-Icons statt sichtbarer Ziffern 1–11; unbesucht gedämpft (`navy300`), nach Besuch in Stations-Akzentfarbe. Keine suggerierte Besuchsreihenfolge.
+
+### Akzeptanzkriterien
+
+- [x] `lib/station-icons.ts` + `StationIcon` (Lucide; `image`-Typ für spätere monochrome SVGs via CSS-Mask)
+- [x] `/stationen`, Hub-Chips, Raum-Header-Chip umgestellt; Untertitel „Station N“ entfernt
+- [x] Grau-Vokabular: unbesucht-offen vs. gesperrt (`fest`) visuell unterscheidbar
+- [x] Pre-Hydration: alle Badges muted bis `isHydrated` (kein Flackern)
+- [x] `nr` nur intern + Screenreader (`aria-label`: „Raum N von 11“)
+- [x] Tests `station-icons.test.ts`; Doku `architektur.md`, `lokal-testen-und-anschauen.md`
+
+---
+
 ## #104 — Scan-CTA vereinheitlichen, keine Stationsnamen (Folge #84)
 
 **GitHub:** https://github.com/flxln/schulnavigator/issues/104 — **geschlossen** (2026-06-11)

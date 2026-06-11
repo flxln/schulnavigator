@@ -17,6 +17,7 @@ import { openExternalLink } from '@/lib/external-link'
 import { StationMediaPanel } from '@/components/station-media-panel'
 import { StationVisitedBadge } from '@/components/station-visited-badge'
 import { DialogEmbeddedBubble } from '@/components/dialog/dialog-embedded-bubble'
+import { StationIcon } from '@/components/station/station-icon'
 import { Gs39Chip, TopBar } from '@/components/ui'
 import { useDialogAudioPlaylist } from '@/hooks/use-dialog-audio-playlist'
 import {
@@ -30,6 +31,7 @@ import {
 import type { EntryMode } from '@/lib/access-tokens'
 import { useVisitedStations } from '@/hooks/use-visited-stations'
 import { getUnlockedSlugsForMode } from '@/lib/hub-mode'
+import { GS39_BRAND_HEX } from '@/lib/gs39-brand-colors'
 import type { HubStation } from '@/lib/schoolhouse-hub-map'
 import {
   handleStationBack,
@@ -288,23 +290,31 @@ export function RaumStationClient({
           {station.bild ? (
             <Gs39Chip
               as="button"
-              aria-label={`Station ${hubStation.nr} — Raumansicht zurücksetzen`}
-              className="!text-fg-on-dark"
+              aria-label={`${station.titel}, Raum ${hubStation.nr} von ${hubStations.length} — Raumansicht zurücksetzen`}
+              className="grid place-items-center !text-fg-on-dark"
               style={{ background: hubStation.accent }}
               onClick={handleChipRecenter}
             >
-              <span className="font-display text-[28px] leading-none tracking-wide">
-                {hubStation.nr}
-              </span>
+              <StationIcon
+                slug={hubStation.slug}
+                size={28}
+                visited
+                accent={hubStation.accent}
+                iconColorOverride={GS39_BRAND_HEX.white}
+              />
             </Gs39Chip>
           ) : (
             <Gs39Chip
-              className="!text-fg-on-dark"
+              className="grid place-items-center !text-fg-on-dark"
               style={{ background: hubStation.accent }}
             >
-              <span className="font-display text-[28px] leading-none tracking-wide">
-                {hubStation.nr}
-              </span>
+              <StationIcon
+                slug={hubStation.slug}
+                size={28}
+                visited
+                accent={hubStation.accent}
+                iconColorOverride={GS39_BRAND_HEX.white}
+              />
             </Gs39Chip>
           )}
           <div className="min-w-0 flex-1">
@@ -312,7 +322,7 @@ export function RaumStationClient({
               className="t-eyebrow text-[11px]"
               style={{ color: hubStation.accent }}
             >
-              Station {hubStation.nr} / {hubStations.length}
+              Schulhaus-Rundgang
             </p>
             <h1
               id="station-titel"

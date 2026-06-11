@@ -9,6 +9,7 @@ import type { EntryMode } from '@/lib/access-tokens'
 import { useVisitedStations } from '@/hooks/use-visited-stations'
 import { getUnlockedSlugsForMode, isHubStationNavigable } from '@/lib/hub-mode'
 import type { HubStation } from '@/lib/schoolhouse-hub-map'
+import { StationIcon } from '@/components/station/station-icon'
 import { mixHex } from '@/lib/gs39-hex-blend'
 import { GS39_BRAND_HEX } from '@/lib/gs39-brand-colors'
 
@@ -83,46 +84,58 @@ export function StationenScreen({
 
         <ul className="flex flex-col gap-2.5" aria-label="Stationen">
           {hubStations.map((station) => {
-            const visited = visitedSlugs.has(station.slug)
+            const visited = isHydrated && visitedSlugs.has(station.slug)
             const locked =
               mode === 'fest' &&
               isHydrated &&
               !isHubStationNavigable(station.slug, unlockedSlugs)
             const tileBg = locked
               ? GS39_BRAND_HEX.paper50
-              : mixHex(station.accent, GS39_BRAND_HEX.paper50, 0.18)
+              : visited
+                ? mixHex(station.accent, GS39_BRAND_HEX.paper50, 0.18)
+                : GS39_BRAND_HEX.paper50
+            const statusLabel = visited ? 'besucht' : 'noch nicht besucht'
 
             return (
               <li key={station.slug}>
                 <button
                   type="button"
                   onClick={() => onStationTap(station)}
+                  aria-label={`${station.titel}, Raum ${station.nr} von ${hubStations.length}, ${statusLabel}`}
                   className={[
                     'sn-card flex w-full items-center gap-3 p-3 text-left',
                     locked ? 'sn-card--locked' : 'sn-card--interactive',
                   ].join(' ')}
                 >
                   <div
-                    className="grid h-14 w-14 shrink-0 place-items-center rounded-[var(--r-sm)] font-display text-2xl leading-none tracking-wide"
+                    className={[
+                      'grid h-14 w-14 shrink-0 place-items-center rounded-[var(--r-sm)]',
+                      isHydrated
+                        ? 'transition-[filter,opacity] duration-200'
+                        : '',
+                    ].join(' ')}
                     style={{
                       background: tileBg,
-                      color: locked ? GS39_BRAND_HEX.navy300 : station.accent,
-                      filter: locked ? 'grayscale(0.5)' : undefined,
+                      filter: locked ? 'grayscale(1)' : undefined,
+                      opacity: locked ? 0.65 : 1,
                     }}
                     aria-hidden
                   >
-                    {station.nr}
+                    <StationIcon
+                      slug={station.slug}
+                      size={28}
+                      visited={visited}
+                      locked={locked}
+                      accent={station.accent}
+                    />
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-[15px] font-extrabold text-fg-1">
                       {station.titel}
                     </p>
-                    <p className="mt-0.5 truncate text-xs text-fg-3">
-                      Station {station.nr}
-                    </p>
                   </div>
                   <div className="flex h-7 w-7 shrink-0 items-center justify-center">
-                    {visited ? (
+                    {isHydrated && visitedSlugs.has(station.slug) ? (
                       <span className="grid h-7 w-7 place-items-center rounded-full bg-brand-green text-fg-on-dark">
                         <Check size={16} aria-hidden />
                       </span>

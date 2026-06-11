@@ -43,6 +43,7 @@ _Stand: 2026-06-10 (**#93:** TextViewer + Demo `klassenzimmer`; **#18–#20:** M
 |--------|---------|
 | Komponente | `FrontSchoolhouse` — Outline `public/brand/hub/gs39-front-outline.svg`, `viewBox` 1086.5×1453.9 |
 | Zuordnung | `lib/schoolhouse-hub-map.ts`: 11 Slugs → `slotId`, Rechteck, `nr`, `accent`; Portal = klassenzimmer |
+| Stationssymbole | `lib/station-icons.ts` + `StationIcon`: Lucide pro Slug (#105); unbesucht gedämpft, besucht akzentfarbig; `nr` nur intern / SR |
 | Freischaltung | wie #21/#23 über `visitedSlugs`; `fest` = nur besuchte Slots klickbar; Stempel nur per Raum-QR (#83, [ADR-009 Nachtrag](./adr/009-hub-isometrisch.md#nachtrag-2026-05-30--fest-freischaltung-nur-per-raum-qr-83)) |
 | Touch | `expandHitRect` mit Nachbar-Klemmung (`schoolhouse-hub-hit.ts`) |
 | A11y | SVG `role="button"` + SR-Nav (`schoolhouse-sr-nav`) |
@@ -103,7 +104,7 @@ Hotspot oder Medienliste → [`StationMediaPanel`](../app/components/station-med
 ```
 
 - **`/`** — Startseite mit **Frontansicht**-Hub ([ADR-016](./adr/016-hub-frontansicht-39gs.md)); Modus aus Cookie: `heft` = alle Stationen, `fest` = nur besuchte Slots klickbar (#21). **CTAs** modusabhängig ([ADR-009 Nachtrag CTAs](./adr/009-hub-isometrisch.md#nachtrag-2026-06-01--startseite-modusabhängige-ctas), [Nachtrag #104](./adr/009-hub-isometrisch.md#nachtrag-2026-06-11--scan-cta-ohne-stationsvorschlag-104)): `fest` 0/11 = Einzel-Scan; `fest`/`heft` 1–10 = „Scanne die nächste Station!“; Fortschrittskarte → `/stationen`. Logik: `lib/home-cta.ts`, `lib/next-station.ts` (Sichtbarkeit). Wordmark/Layout: [ADR-016 Nachtrag](./adr/016-hub-frontansicht-39gs.md#nachtrag-2026-06-10--startseiten-layout--wordmark-103) (#103, Schriftgröße #104).
-- **`/stationen`** — Stationsliste (Lock im Modus `fest`) — Epic #58.
+- **`/stationen`** — Stationsliste mit Raum-Icons (#105; Lock im Modus `fest`) — Epic #58.
 - **`/eintritt`** — Entry-QR (`?t=…`) setzt Cookie und leitet auf `/` um; ohne gültigen Zugang **Hinweis-/Fehlerseite** (Willkommens-Karte verlinkt auf `/eintritt/scan`). Kein Inline-Scanner mehr (#57, #82, [ADR-008](./adr/008-eintritt-in-app-scanner.md)).
 - **`/eintritt/scan`** — Vollbild-Entry-Scanner (gleiche Shell wie `/scan`, `ScanFullscreenShell`); `QrScanner` `mode="entry"` `chrome`; ohne Cookie erreichbar (Middleware-Whitelist). `parseEntryScan` prüft nur Struktur (Origin, Pfad `/eintritt`, `t` nicht leer); Gültigkeit nur Middleware.
 - **`/scan`** — In-App-QR-Scanner für Raum-QRs (nur mit Cookie); dunkles Scan-Chrome mit gelbem Rahmen; `parseRoomScan` + Slug-Whitelist — [ADR-005](./adr/005-zugangskontrolle-token.md), [ADR-007](./adr/007-zugangskontrolle-cookie.md).
