@@ -59,7 +59,7 @@ export default async function RaumPage({ params }: PageProps) {
 
   return (
     <main
-      className="mx-auto min-h-[100dvh] max-w-lg overflow-x-hidden"
+      className="mx-auto min-h-[100svh] w-full max-w-lg overflow-x-hidden"
       data-hub-slot={slotId}
     >
       <StationVisitRecorder
