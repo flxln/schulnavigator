@@ -326,6 +326,8 @@
       "slug": "musik",
       "titel": "Musikzimmer",
       "beschreibung": "Willkommen im Musikzimmer! Hier singen wir, trommeln wir und spielen Instrumente. Manchmal klingt es wunderschön und manchmal klingt es … naja … kreativ. Aber Spaß macht es immer!",
+      "viewer": "equirectangular",
+      "panorama360": "/stations/360/musik.jpg",
       "bild": "/stations/musik.jpg",
       "medien": [
         {
@@ -354,20 +356,19 @@
           "untertitel": "Demo-Text"
         }
       ],
-      "hotspots": [
+      "hotspots360": [
         {
           "id": "hs-video",
           "label": "Video-Bereich",
-          "x": 0.32,
-          "y": 0.42,
-          "radius": 0.06,
+          "yaw": -40,
+          "pitch": -5,
           "mediumId": "demo-video"
         },
         {
           "id": "hs-audio",
           "label": "Audio-Bereich",
-          "x": 0.7,
-          "y": 0.5,
+          "yaw": 30,
+          "pitch": 0,
           "mediumId": "demo-audio"
         }
       ]

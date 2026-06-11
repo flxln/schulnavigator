@@ -7,10 +7,12 @@ import type {
   DialogRolle,
   DialogSegment,
   Hotspot,
+  Hotspot360,
   HotspotAction,
   Medium,
   Station,
   MediumTyp,
+  ViewerMode,
 } from '@/lib/types'
 import {
   MAX_BUBBLE_FONT_SIZE,
@@ -296,6 +298,129 @@ function validateHotspot(h: unknown, ctx: string): Hotspot {
   }
 }
 
+const VIEWER_MODES: readonly ViewerMode[] = ['flat', 'equirectangular']
+
+function isViewerMode(v: unknown): v is ViewerMode {
+  return typeof v === 'string' && (VIEWER_MODES as readonly string[]).includes(v)
+}
+
+function validateHotspot360(h: unknown, ctx: string): Hotspot360 {
+  assert(isRecord(h), `${ctx}: Hotspot360 ist kein Objekt`)
+  assert(
+    typeof h.id === 'string' && h.id.length > 0,
+    `${ctx}: hotspot360.id fehlt`,
+  )
+  assert(
+    h.action === undefined || isHotspotAction(h.action),
+    `${ctx}: action muss "medium" oder "dialog" sein`,
+  )
+  const action: HotspotAction =
+    h.action === undefined ? 'medium' : (h.action as HotspotAction)
+  assert(
+    typeof h.yaw === 'number' && Number.isFinite(h.yaw),
+    `${ctx}: hotspot360.yaw fehlt`,
+  )
+  assert(
+    typeof h.pitch === 'number' && Number.isFinite(h.pitch),
+    `${ctx}: hotspot360.pitch fehlt`,
+  )
+  assert(
+    h.yaw >= -180 && h.yaw <= 180,
+    `${ctx}: hotspot360.yaw muss −180 bis 180 sein`,
+  )
+  assert(
+    h.pitch >= -90 && h.pitch <= 90,
+    `${ctx}: hotspot360.pitch muss −90 bis 90 sein`,
+  )
+  if (h.label !== undefined) {
+    assert(typeof h.label === 'string', `${ctx}: label muss string sein`)
+  }
+  if (action === 'dialog') {
+    assert(
+      h.mediumId === undefined,
+      `${ctx}: dialog-Hotspot360 darf kein mediumId haben`,
+    )
+    assert(isDialogFigure(h.mascot), `${ctx}: mascot fehlt oder ungültig`)
+    if (h.mascotSize !== undefined) {
+      assert(
+        typeof h.mascotSize === 'number' && Number.isFinite(h.mascotSize),
+        `${ctx}: mascotSize muss Zahl sein`,
+      )
+      assert(
+        h.mascotSize >= MIN_MASCOT_SIZE_NORM &&
+          h.mascotSize <= MAX_MASCOT_SIZE_NORM,
+        `${ctx}: mascotSize muss ${MIN_MASCOT_SIZE_NORM}–${MAX_MASCOT_SIZE_NORM} sein`,
+      )
+    }
+    if (h.mascotFlipX !== undefined) {
+      assert(
+        typeof h.mascotFlipX === 'boolean',
+        `${ctx}: mascotFlipX muss boolean sein`,
+      )
+    }
+    assert(
+      h.icon === undefined,
+      `${ctx}: dialog-Hotspot360 darf kein icon haben`,
+    )
+    assert(
+      h.iconSize === undefined,
+      `${ctx}: dialog-Hotspot360 darf kein iconSize haben`,
+    )
+    return {
+      id: h.id as string,
+      label: h.label as string | undefined,
+      yaw: h.yaw as number,
+      pitch: h.pitch as number,
+      action: 'dialog',
+      mascot: h.mascot as DialogFigure,
+      mascotSize: h.mascotSize as number | undefined,
+      mascotFlipX: h.mascotFlipX as boolean | undefined,
+    }
+  }
+  assert(
+    typeof h.mediumId === 'string' && h.mediumId.length > 0,
+    `${ctx}: hotspot360.mediumId fehlt`,
+  )
+  assert(
+    h.mascot === undefined,
+    `${ctx}: medium-Hotspot360 darf kein mascot haben`,
+  )
+  assert(
+    h.mascotSize === undefined,
+    `${ctx}: medium-Hotspot360 darf kein mascotSize haben`,
+  )
+  assert(
+    h.mascotFlipX === undefined,
+    `${ctx}: medium-Hotspot360 darf kein mascotFlipX haben`,
+  )
+  if (h.icon !== undefined) {
+    assert(
+      typeof h.icon === 'string' && h.icon.startsWith('/'),
+      `${ctx}: icon muss string mit führendem / sein`,
+    )
+  }
+  if (h.iconSize !== undefined) {
+    assert(
+      typeof h.iconSize === 'number' && Number.isFinite(h.iconSize),
+      `${ctx}: iconSize muss Zahl sein`,
+    )
+    assert(
+      h.iconSize >= MIN_ICON_SIZE_NORM && h.iconSize <= MAX_ICON_SIZE_NORM,
+      `${ctx}: iconSize muss ${MIN_ICON_SIZE_NORM}–${MAX_ICON_SIZE_NORM} sein`,
+    )
+  }
+  return {
+    id: h.id as string,
+    label: h.label as string | undefined,
+    yaw: h.yaw as number,
+    pitch: h.pitch as number,
+    action: 'medium',
+    mediumId: h.mediumId as string,
+    icon: h.icon as string | undefined,
+    iconSize: h.iconSize as number | undefined,
+  }
+}
+
 function isDialogFigure(v: unknown): v is DialogFigure {
   return typeof v === 'string' && (DIALOG_FIGUREN as readonly string[]).includes(v)
 }
@@ -507,6 +632,36 @@ function validateStation(raw: unknown, index: number): Station {
     typeof raw.beschreibung === 'string',
     `${prefix}: beschreibung fehlt oder kein string`,
   )
+  if (raw.viewer !== undefined) {
+    assert(isViewerMode(raw.viewer), `${prefix}: viewer muss 'flat' oder 'equirectangular' sein`)
+  }
+  const viewer: ViewerMode =
+    raw.viewer === 'equirectangular' ? 'equirectangular' : 'flat'
+
+  if (viewer === 'equirectangular') {
+    assert(
+      typeof raw.panorama360 === 'string' && raw.panorama360.startsWith('/'),
+      `${prefix}: panorama360 fehlt oder muss mit / beginnen (viewer equirectangular)`,
+    )
+    assert(
+      /\.(webp|jpg|jpeg)$/i.test(raw.panorama360 as string),
+      `${prefix}: panorama360 muss .webp oder .jpg sein`,
+    )
+    assert(
+      (raw.panorama360 as string).startsWith('/stations/360/'),
+      `${prefix}: panorama360 muss unter /stations/360/ liegen`,
+    )
+    assert(
+      raw.hotspots === undefined,
+      `${prefix}: flat hotspots nicht erlaubt bei viewer 'equirectangular' — hotspots360 verwenden`,
+    )
+  } else {
+    assert(
+      raw.hotspots360 === undefined,
+      `${prefix}: hotspots360 nur bei viewer 'equirectangular' erlaubt`,
+    )
+  }
+
   if (raw.bild !== undefined) {
     assert(
       typeof raw.bild === 'string' && raw.bild.startsWith('/'),
@@ -566,13 +721,53 @@ function validateStation(raw: unknown, index: number): Station {
       )
     }
   }
+  let hotspots360: Hotspot360[] | undefined
+  if (raw.hotspots360 !== undefined) {
+    assert(Array.isArray(raw.hotspots360), `${prefix}: hotspots360 muss Array sein`)
+    hotspots360 = raw.hotspots360.map((h, i) =>
+      validateHotspot360(h, `${prefix}.hotspots360[${i}]`),
+    )
+    const hotspot360Ids = new Set<string>()
+    let mascotDialogCount360 = 0
+    for (const hs of hotspots360) {
+      assert(
+        !hotspot360Ids.has(hs.id),
+        `${prefix}: doppelte hotspot360.id "${hs.id}"`,
+      )
+      hotspot360Ids.add(hs.id)
+      if (hs.action === 'dialog') {
+        assert(
+          dialog !== undefined,
+          `${prefix}: dialog-Hotspot360 "${hs.id}" erfordert station.dialog`,
+        )
+        assert(
+          dialog!.figuren.includes(hs.mascot!),
+          `${prefix}: mascot "${hs.mascot}" fehlt in dialog.figuren`,
+        )
+        mascotDialogCount360 += 1
+      } else {
+        assert(
+          hs.mediumId !== undefined && mediumIds.has(hs.mediumId),
+          `${prefix}: hotspot360 "${hs.id}" verweist auf unbekanntes mediumId "${hs.mediumId}"`,
+        )
+      }
+    }
+    if (dialog !== undefined && mascotDialogCount360 === 1) {
+      console.warn(
+        `stations.json: ${prefix}: nur ein Maskottchen-Dialog-Hotspot360 — empfohlen: zwei (frieda + otto)`,
+      )
+    }
+  }
   return {
     slug: raw.slug,
     titel: raw.titel,
     beschreibung: raw.beschreibung,
+    viewer: viewer === 'flat' ? undefined : viewer,
     bild: raw.bild as string | undefined,
+    panorama360: raw.panorama360 as string | undefined,
     medien,
     hotspots,
+    hotspots360,
     dialog,
   }
 }

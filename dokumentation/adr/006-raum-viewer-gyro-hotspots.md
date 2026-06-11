@@ -48,6 +48,7 @@ Für das **MVP (bis 26.06.)** gilt auf allen Stationsseiten mit Raumbild:
 - **Umsetzung Pan-Achse:** Portrait nutzt `deviceorientation.alpha` (Armschwenk, zentrierter Neutral, ±`GYRO_FULL_RANGE_DEG` je Rand); Landscape nutzt `gamma` (Kippen). Kein Kompass im MVP — langsamer Drift möglich, Korrektur über „Ansicht zentrieren“.
 - **Test:** Reales iPhone (Safari) im Abschlusstest (#38)
 - **Directus (später):** Collection-Felder für Hotspots analog JSON-Schema
+- **360°-Viewer:** Koexistenz-Strategie mit `viewer: 'flat' | 'equirectangular'`-Flag — siehe [ADR-018](./018-360-sphere-viewer.md)
 
 ### Datenmodell (Auszug)
 

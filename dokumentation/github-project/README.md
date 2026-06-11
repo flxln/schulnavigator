@@ -57,4 +57,6 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issue **#109** (Delightex-Fallback Mobile, Folge #100 / ADR-017 Aufgabe 3.6) — umgesetzt 2026-06-11, Branch `feature/delightex-fallback`
 - [x] Issue **#111** (Raum-Inhaltskarte Card-Peek + iOS-Viewport-Fix, Folge #72) — umgesetzt 2026-06-11, Branch `feat/raum-card-peek-layout`
 
-Letzter dokumentierter Abgleich: **2026-06-11** (#111 Card-Peek Raumseiten; #109 Delightex-Fallback; #107 Swipe-Onboarding); zuvor **2026-06-11** (#106 Scanner-Dark-Mode; #105 Stationssymbole; #104 CTA).
+- [x] Issue **#113** (360°-Sphere-Viewer: PSV-Koexistenz, Gyro-Panning, ADR-018, Pilot Musikraum) — umgesetzt 2026-06-11, Branch `feature/360-sphere-viewer`
+
+Letzter dokumentierter Abgleich: **2026-06-11** (#113 360°-Sphere-Viewer Spike; #111 Card-Peek; #109 Delightex-Fallback; #107 Swipe-Onboarding).

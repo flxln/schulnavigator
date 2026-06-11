@@ -23,6 +23,7 @@ Jede wichtige Entscheidung wird als eigenständiger ADR (Architecture Decision R
 | [014](./adr/014-mascot-size-json.md) | Dialog-Maskottchen: `mascotSize` normiert in JSON, px-Render via `effectiveDisplayH` (ergänzt ADR-011 Pkt. 2) | entschieden | 2026-06-10 |
 | [015](./adr/015-dialog-bubble-json.md) | Dialog-Sprechblase: `dialog.bubble` (Position/Größe, `followPan`), optional `segmente[].tail` (ergänzt ADR-011/013) | entschieden | 2026-06-10 |
 | [017](./adr/017-externe-medien-hotspot-marker.md) | Externe Medien (`link`, `embed`), Hotspot-Icons; sukzessive Post-Fest-Umsetzung (Stufe 1–3) | entschieden | 2026-06-10 |
+| [018](./adr/018-360-sphere-viewer.md) | 360°-Sphere-Viewer (PSV v5) + Flat-Viewer-Koexistenz per `viewer`-Flag; Spike-first | entschieden | 2026-06-11 |
 
 ## Konventionen
 
