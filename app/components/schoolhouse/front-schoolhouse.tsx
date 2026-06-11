@@ -3,6 +3,7 @@
 import type { EntryMode } from '@/lib/access-tokens'
 import { GS39_BRAND_HEX } from '@/lib/gs39-brand-colors'
 import { expandHitRect } from '@/lib/schoolhouse-hub-hit'
+import { StationIcon } from '@/components/station/station-icon'
 import {
   HUB_VIEWBOX,
   listHubStationFrames,
@@ -17,7 +18,6 @@ const FRAME_LOCKED = 'rgba(255,255,255,.55)'
 const STATION_CHIP = {
   rLocked: 18,
   rVisited: 19,
-  fontSize: 16,
   stroke: 2,
   insetX: 8,
   insetY: 8,
@@ -46,9 +46,13 @@ function handleStationKeyDown(
   }
 }
 
-function stationAriaLabel(station: HubStation, visited: boolean) {
+function stationAriaLabel(
+  station: HubStation,
+  visited: boolean,
+  stationCount: number,
+) {
   const status = visited ? 'besucht' : 'noch nicht besucht'
-  return `${station.titel}, Station ${station.nr}, ${status}`
+  return `${station.titel}, Raum ${station.nr} von ${stationCount}, ${status}`
 }
 
 function StationChip({
@@ -97,17 +101,15 @@ function StationChip({
         stroke="rgba(8,42,80,.35)"
         strokeWidth={1.2}
       />
-      <text
-        x={cx}
-        y={cy + 5.5}
-        textAnchor="middle"
-        fontFamily="var(--font-ui)"
-        fontSize={STATION_CHIP.fontSize}
-        fontWeight={800}
-        fill={GS39_BRAND_HEX.navy}
-      >
-        {station.nr}
-      </text>
+      <StationIcon
+        slug={station.slug}
+        size={26}
+        visited={false}
+        accent={station.accent}
+        variant="svg-nested"
+        cx={cx}
+        cy={cy}
+      />
     </g>
   )
 }
@@ -117,6 +119,7 @@ type StationSlotProps = {
   visited: boolean
   highlighted: boolean
   hitRect: readonly [number, number, number, number]
+  stationCount: number
   onTap: (slug: string) => void
 }
 
@@ -125,6 +128,7 @@ function StationSlot({
   visited,
   highlighted,
   hitRect,
+  stationCount,
   onTap,
 }: StationSlotProps) {
   const [x, y, w, h] = station.frame
@@ -142,7 +146,7 @@ function StationSlot({
       style={{ cursor: 'pointer' }}
       tabIndex={0}
       role="button"
-      aria-label={stationAriaLabel(station, visited)}
+      aria-label={stationAriaLabel(station, visited, stationCount)}
       onClick={activate}
       onKeyDown={(e) => handleStationKeyDown(e, activate)}
     >
@@ -264,6 +268,7 @@ export function FrontSchoolhouse({
             visited={isVisited(station.slug)}
             highlighted={isHighlighted(station.slug)}
             hitRect={hitRect}
+            stationCount={stations.length}
             onTap={handleTap}
           />
         )

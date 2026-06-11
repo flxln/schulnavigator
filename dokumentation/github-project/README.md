@@ -51,5 +51,6 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 
 - [x] Issue **#103** (Startseite: Hub volle Breite, Wordmark Dresden-Plauen, `Gs39ChipMark`, Folge ADR-016) — umgesetzt 2026-06-10
 - [x] Issue **#104** (Scan-CTA ohne Stationsnamen, Fortschrittskarte → `/stationen`, Folge #84) — umgesetzt 2026-06-11
+- [x] Issue **#105** (Stationssymbole statt Nummerierung — Lucide, Hub/Liste/Raum) — umgesetzt 2026-06-11
 
-Letzter dokumentierter Abgleich: **2026-06-11** (#104 CTA-Vereinfachung; Epic #97: #100 offen auf Branch `feature/100-typ-embed`); zuvor **2026-06-10** (#103 Wordmark/Layout).
+Letzter dokumentierter Abgleich: **2026-06-11** (#105 Stationssymbole; #104 CTA; Epic #97: #100 auf Branch `feature/100-typ-embed`); zuvor **2026-06-10** (#103 Wordmark/Layout).

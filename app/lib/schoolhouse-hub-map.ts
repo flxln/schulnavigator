@@ -41,7 +41,7 @@ export type HubSlugMapping = {
   nr: number
 }
 
-export const HUB_SLUG_MAP: Record<string, HubSlugMapping> = {
+export const HUB_SLUG_MAP = {
   klassenzimmer: { slotId: 'portal', nr: 1 },
   musik: { slotId: 'fenster-ul-1', nr: 2 },
   daz: { slotId: 'fenster-uc-l', nr: 3 },
@@ -53,7 +53,9 @@ export const HUB_SLUG_MAP: Record<string, HubSlugMapping> = {
   hort: { slotId: 'fenster-rc', nr: 9 },
   turnhalle: { slotId: 'fenster-lr', nr: 10 },
   schulsozialarbeit: { slotId: 'fenster-ul-2', nr: 11 },
-}
+} as const satisfies Record<string, HubSlugMapping>
+
+export type HubSlug = keyof typeof HUB_SLUG_MAP
 
 export type HubStation = {
   slug: string
@@ -84,7 +86,7 @@ function buildVisuals(accent: string) {
 }
 
 export function getHubMapping(slug: string): HubSlugMapping & SlotDef {
-  const mapping = HUB_SLUG_MAP[slug]
+  const mapping = HUB_SLUG_MAP[slug as HubSlug]
   if (!mapping) {
     throw new Error(`schoolhouse-hub-map: unbekannter slug "${slug}"`)
   }

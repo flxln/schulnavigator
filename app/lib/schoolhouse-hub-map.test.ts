@@ -44,7 +44,7 @@ describe('schoolhouse-hub-map', () => {
   it('deckt alle Stations-Slugs aus stations.json ab', () => {
     const slugs = getAllStations().map((s) => s.slug)
     for (const slug of slugs) {
-      expect(HUB_SLUG_MAP[slug]).toBeDefined()
+      expect(slug in HUB_SLUG_MAP).toBe(true)
     }
   })
 

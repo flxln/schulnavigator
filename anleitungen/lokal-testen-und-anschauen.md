@@ -46,7 +46,7 @@ npm run dev
 | [https://localhost:3000/](https://localhost:3000/) | Startseite — **ohne** vorherigen Entry: Redirect zu `/eintritt` |
 | [https://localhost:3000/eintritt?t=fest-2026](https://localhost:3000/eintritt?t=fest-2026) | Entry Schulfest: Cookie + Redirect `/` → Frontansicht-Hub **gesperrt** (0/11), Slots nach Raumbesuch frei (#21) |
 | [https://localhost:3000/eintritt?t=heft-2026-27](https://localhost:3000/eintritt?t=heft-2026-27) | Entry Heft: voller Hub (alle Stationen klickbar), Fortschritt zählt trotzdem (#21) |
-| [https://localhost:3000/stationen](https://localhost:3000/stationen) | Alle 11 Stationen als Liste (Lock im Modus `fest`) — Epic #58 |
+| [https://localhost:3000/stationen](https://localhost:3000/stationen) | Alle 11 Stationen als Liste mit **Raum-Icons** (#105; Lock im Modus `fest`) — Epic #58 |
 | [https://localhost:3000/eintritt](https://localhost:3000/eintritt) | Hinweisseite (Willkommens-Karte → Link auf Scan-Route); Fehler `?reason=expired\|invalid` |
 | [https://localhost:3000/eintritt/scan](https://localhost:3000/eintritt/scan) | **Vollbild-Entry-Scanner** (#57, #82); Kamera nur auf `localhost`/HTTPS; ohne Cookie erreichbar |
 | [https://localhost:3000/robots.txt](https://localhost:3000/robots.txt) | `Disallow: /` (Issue #16) |
@@ -113,6 +113,18 @@ npm run start
 14. **`fest`/`heft` 11/11:** kein Scan-CTA unter dem Hub (Sparkle in der Fortschrittskarte optional)
 15. **Fortschrittskarte:** Tipp auf „Mein Rundgang …“ → **`/stationen`** (wie Listen-Icon oben rechts)
 16. **Kein Flash:** `fest` mit Fortschritt neu laden → vor Hydration Einzel-Scan, danach „Scanne die nächste Station!“ (Button-Text wechselt, Anzahl bleibt 1)
+
+**Stationssymbole (#105):**
+
+| Route / Aktion | Prüfen |
+| -------------- | ------ |
+| `/stationen` (Heft, 0 besucht) | Alle Kacheln: gedämpftes Lucide-Icon, **keine** Ziffern; kein Untertitel „Station N“ |
+| Raum besuchen → `/stationen` | Besuchte Kachel: Icon in Akzentfarbe + grünes Häkchen rechts |
+| `/stationen` Reload mit Fortschritt | Kurz „Fortschritt wird geladen…“, dann **ein** Reveal — kein grau→farbig pro Kachel |
+| `/` Hub (`fest`, unbesucht) | Fenster-Chips: Symbol im weißen Kreis (nicht Ziffer) |
+| Hub nach Besuch | Akzent-Chip mit Häkchen statt Symbol |
+| `/raum/klassenzimmer` | Header-Chip: weißes Symbol auf Akzent; Eyebrow „Schulhaus-Rundgang“ |
+| `/stationen` (`fest`, ungescannt) | Gesperrt: Grayscale + reduzierte Opazität + Schloss — **anders** als unbesucht-offen (Heft) |
 
 **Medien-Player (#18–#20, TextViewer #93) — nach Demo-Hotspots:**
 

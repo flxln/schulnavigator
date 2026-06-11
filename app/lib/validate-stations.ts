@@ -496,7 +496,7 @@ function validateStation(raw: unknown, index: number): Station {
     `${prefix}: slug "${raw.slug}" ist kein kebab-case`,
   )
   assert(
-    HUB_SLUG_MAP[raw.slug] !== undefined,
+    raw.slug in HUB_SLUG_MAP,
     `${prefix}: slug "${raw.slug}" hat keine Hub-Zuordnung (ADR-016)`,
   )
   assert(
