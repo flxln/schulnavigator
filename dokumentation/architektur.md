@@ -204,3 +204,14 @@ Vollständige Ablagekonventionen (Pfade, Autorenzone, Laufzeit): [`content-verze
 - Multi-stage Build empfohlen (Build-Stage + schlankes Runtime-Image)
 - Port via Umgebungsvariable konfigurierbar (`PORT`)
 - Health-Check-Endpunkt für Coolify: `/api/health`
+
+## Client-Storage-Keys
+
+Browser-seitige Persistenz (`localStorage` / `sessionStorage`) folgt einer festen Benennungskonvention:
+
+| Präfix | Typ | Zweck | Beispiel |
+|--------|-----|-------|---------|
+| `schulnav.` | `localStorage` | Dauerhaftes UI-State pro Gerät/Browser | `schulnav.pan-onboarding.seen`, `schulnav.gyro.granted` |
+| `sn_` | `localStorage` | Fachlicher Besuchsfortschritt (älterer Stil) | `sn_visited_slugs`, `sn_sparkle_done` |
+
+**Neue Keys:** immer `schulnav.<domäne>.<zustand>` (Punkt-getrennt). Das `sn_*`-Präfix bleibt für bestehende Keys, wird aber nicht mehr vergeben.

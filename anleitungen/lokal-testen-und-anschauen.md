@@ -105,10 +105,14 @@ npm run start
 
 **Swipe-Onboarding (#107):**
 
-1. DevTools → Application → Local Storage → `schulnav.pan-onboarding.seen` löschen (oder `localStorage.removeItem('schulnav.pan-onboarding.seen')` in der Konsole)
-2. `/eintritt?t=heft-2026-27` → `/raum/musik` — Overlay „Links oder rechts wischen“ ~3 s, dann Fade-out
+1. `localStorage.removeItem('schulnav.pan-onboarding.seen')` in der Konsole (oder DevTools → Application → Local Storage)
+2. `/eintritt?t=heft-2026-27` → `/raum/musik` — Overlay „Links oder rechts wischen“ erscheint, Merker **noch nicht gesetzt**; nach ~3 s Fade-out, Merker gesetzt
 3. Seite neu laden → **kein** Overlay
-4. iOS/Safari: zuerst „Orientierung aktivieren“, **danach** Onboarding (nicht beides gleichzeitig)
+4. Während Overlay sichtbar: Hotspot antippen → Tap funktioniert (`pointer-events: none` — Overlay blockiert keine Gesten)
+5. **iOS/Safari + HTTPS, erster Besuch:** zuerst „Orientierung aktivieren“ → nach Freigabe erscheint erst dann das Onboarding
+6. **iOS/Safari, cached grant:** `sessionStorage.setItem('schulnav.gyro.granted','1')` in der Konsole setzen, Merker löschen, Raum öffnen → Overlay erscheint **und verschwindet** nach ~3 s (kein Hängenbleiben)
+7. Desktop ohne Gyro → Overlay beim ersten Raumbesuch sofort sichtbar
+8. Merker löschen, ersten Raum **< 3 s** verlassen (Browser-Zurück), Raum erneut öffnen → Hinweis erscheint erneut (Merker wird erst bei Fade-Start gesetzt)
 
 **Stempel & Hub-Freischaltung (Issue #21 / ADR-009):**
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const STORAGE_KEY = 'schulnav.pan-onboarding.seen'
 const VISIBLE_MS = 3000
@@ -10,23 +10,42 @@ type Phase = 'idle' | 'visible' | 'fading' | 'done'
 
 export function PanOnboardingOverlay({ skip = false }: { skip?: boolean }) {
   const [phase, setPhase] = useState<Phase>('idle')
+  // startedRef verhindert, dass ein skip-Flip (false→true→false, iOS-Watchdog)
+  // die Anzeige ein zweites Mal triggert.
+  const startedRef = useRef(false)
+  const t1Ref = useRef<number | undefined>(undefined)
+  const t2Ref = useRef<number | undefined>(undefined)
 
+  // Startet die Anzeige genau einmal beim ersten skip=false-Moment.
+  // Die Cleanup dieses Effects löscht die Timer bewusst NICHT —
+  // ein späterer skip-Wechsel soll die laufende Anzeige nicht abreißen.
   useEffect(() => {
-    if (skip) return
+    if (skip || startedRef.current) return
     try {
       if (localStorage.getItem(STORAGE_KEY)) return
-      localStorage.setItem(STORAGE_KEY, '1')
     } catch {
       return
     }
+    startedRef.current = true
     setPhase('visible')
-    const t1 = window.setTimeout(() => setPhase('fading'), VISIBLE_MS)
-    const t2 = window.setTimeout(() => setPhase('done'), VISIBLE_MS + FADE_MS)
-    return () => {
-      window.clearTimeout(t1)
-      window.clearTimeout(t2)
-    }
+    t1Ref.current = window.setTimeout(() => {
+      try {
+        localStorage.setItem(STORAGE_KEY, '1')
+      } catch {
+        // noop — kein localStorage (z. B. private mode) ist kein Fehler
+      }
+      setPhase('fading')
+    }, VISIBLE_MS)
+    t2Ref.current = window.setTimeout(() => setPhase('done'), VISIBLE_MS + FADE_MS)
   }, [skip])
+
+  // Timer-Cleanup nur beim Unmount.
+  useEffect(() => {
+    return () => {
+      clearTimeout(t1Ref.current)
+      clearTimeout(t2Ref.current)
+    }
+  }, [])
 
   if (phase === 'idle' || phase === 'done') return null
 
