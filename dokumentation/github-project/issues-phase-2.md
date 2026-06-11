@@ -50,7 +50,7 @@ Spezifikation: [ADR-009](../adr/009-hub-isometrisch.md) · Quelle: [`auftraggebe
 
 ## #107 — Raum-Viewer: Einmaliges Swipe-Onboarding (Folge #56)
 
-**GitHub:** https://github.com/flxln/schulnavigator/issues/107 — **offen**
+**GitHub:** https://github.com/flxln/schulnavigator/issues/107 — **geschlossen** (2026-06-11)
 
 **Labels:** `tech`  
 **Assignee:** Felix  
@@ -67,7 +67,7 @@ Spezifikation: [ADR-009](../adr/009-hub-isometrisch.md) · Quelle: [`auftraggebe
 - [x] `skip={orientState === 'needs-gesture'}` (iOS)
 - [x] Tests `pan-onboarding-overlay.test.tsx`
 - [x] Doku: diese Datei, `lokal-testen-und-anschauen.md`, `architektur.md`
-- [ ] Review + Merge auf `main`
+- [x] Review + Merge auf `main`
 
 ### Technik
 
