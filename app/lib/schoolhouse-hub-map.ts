@@ -1,5 +1,5 @@
 import { GS39_BRAND_HEX, GS39_STATION_ACCENT_HEX } from '@/lib/gs39-brand-colors'
-import { mixHex } from '@/lib/gs39-hex-blend'
+import { hexToRgba, mixHex } from '@/lib/gs39-hex-blend'
 import type { Station } from '@/lib/types'
 
 /**
@@ -69,6 +69,7 @@ export type HubStation = {
 }
 
 const SKY_50 = GS39_BRAND_HEX.sky50
+const GLASS_FILL_ALPHA = 0.28
 
 function accentForSlug(slug: string): string {
   const hex = GS39_STATION_ACCENT_HEX[slug]
@@ -81,7 +82,7 @@ function accentForSlug(slug: string): string {
 function buildVisuals(accent: string) {
   return {
     accent,
-    visitedGlassFill: mixHex(accent, SKY_50, 0.36),
+    visitedGlassFill: hexToRgba(mixHex(accent, SKY_50, 0.52), GLASS_FILL_ALPHA),
   }
 }
 

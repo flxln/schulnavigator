@@ -53,4 +53,4 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issue **#104** (Scan-CTA ohne Stationsnamen, Fortschrittskarte → `/stationen`, Folge #84) — umgesetzt 2026-06-11
 - [x] Issue **#105** (Stationssymbole statt Nummerierung — Lucide, Hub/Liste/Raum) — umgesetzt 2026-06-11
 
-Letzter dokumentierter Abgleich: **2026-06-11** (Epic #97/#100 embed abgeschlossen; #105 Stationssymbole; #104 CTA); zuvor **2026-06-10** (#103 Wordmark/Layout).
+Letzter dokumentierter Abgleich: **2026-06-11** (#105 Nachtrag Hub-Glas/Chips; Epic #97/#100 embed; #104 CTA); zuvor **2026-06-10** (#103 Wordmark/Layout).

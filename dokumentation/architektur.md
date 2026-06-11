@@ -44,6 +44,8 @@ _Stand: 2026-06-10 (**#93:** TextViewer + Demo `klassenzimmer`; **#18–#20:** M
 | Komponente | `FrontSchoolhouse` — Outline `public/brand/hub/gs39-front-outline.svg`, `viewBox` 1086.5×1453.9 |
 | Zuordnung | `lib/schoolhouse-hub-map.ts`: 11 Slugs → `slotId`, Rechteck, `nr`, `accent`; Portal = klassenzimmer |
 | Stationssymbole | `lib/station-icons.ts` + `StationIcon`: Lucide pro Slug (#105); unbesucht gedämpft, besucht akzentfarbig; `nr` nur intern / SR |
+| Besuchtes Glas | `visitedGlassFill` als `rgba` (α 0,28) — Fensterfläche durchscheinend getönt, Rahmen in `accent` (#105 Nachtrag) |
+| Hub-Chips | `STATION_CHIP` in `FrontSchoolhouse`: größere Symbol-Kreise (`r` 24) und Häkchen-Chips (`r` 25) (#105 Nachtrag) |
 | Freischaltung | wie #21/#23 über `visitedSlugs`; `fest` = nur besuchte Slots klickbar; Stempel nur per Raum-QR (#83, [ADR-009 Nachtrag](./adr/009-hub-isometrisch.md#nachtrag-2026-05-30--fest-freischaltung-nur-per-raum-qr-83)) |
 | Touch | `expandHitRect` mit Nachbar-Klemmung (`schoolhouse-hub-hit.ts`) |
 | A11y | SVG `role="button"` + SR-Nav (`schoolhouse-sr-nav`) |
