@@ -39,7 +39,7 @@ npm run dev
 
 **Sinnvolle Seiten zum Durchklicken:**
 
-**Raumstationen (alle 11 Slugs):** Dieselbe Shell [`RaumStationClient`](../app/components/raum-station-client.tsx) unter `/raum/[slug]` — TopBar (Zurück, Stationsliste), Hero mit Gyro. **Stations-Chip** unter dem Hero tippen → Raumansicht zentrieren (#72, alle Stationen mit `bild`). **Nur** `daz` und `pc-raum`: Maskottchen antippen → Dialog; währenddessen **X** neben Zurück beendet die Wiedergabe.
+**Raumstationen (alle 11 Slugs):** Dieselbe Shell [`RaumStationClient`](../app/components/raum-station-client.tsx) unter `/raum/[slug]` — TopBar (Zurück, Stationsliste), Hero mit Gyro, **Card-Peek** unten (#111). **Stations-Chip** unter dem Hero tippen → Raumansicht zentrieren (#72, alle Stationen mit `bild`). **Nur** `daz` und `pc-raum`: Maskottchen antippen → Dialog; währenddessen **X** neben Zurück beendet die Wiedergabe.
 
 | Seite | Zweck |
 | ----- | ----- |
@@ -101,7 +101,17 @@ npm run start
 
 `npm run build` ruft zuvor **`npm run validate:tokens`** (Abgleich `app/gs39-tokens.css` ↔ `auftraggeber/.../colors_and_type.css`) und **`npm run validate:stations`** auf: Es muss jede in `stations.json` referenzierte Datei unter `public/` existieren (Raumbilder, Demo-Medien). Fehlt etwas, bricht der Build mit einer klaren Meldung ab. Zusätzlich gibt `validate:stations` bei riskantem Hotspot-**y** (nach Auto-Zoom unsichtbar) eine **Warnung** aus (Heuristik).
 
-**Raum-Viewer (Issue #55 / #56, #72, #96, #107):** `export const viewport` in [`app/app/layout.tsx`](../app/app/layout.tsx) — korrektes **device-width** auf dem Handy (kein „Mini-Desktop-Zoom“). **Pinch-Zoom gesperrt** projektweit ([#96](https://github.com/flxln/schulnavigator/issues/96)): Meta `userScalable: false` reicht auf iOS nicht — zusätzlich [`DisableZoom`](../app/components/ui/disable-zoom.tsx) im Root-Layout. Test: mit zwei Fingern zoomen → Seite darf **nicht** skalieren (nach Deploy ggf. Hard Reload in Safari). Hero auf allen Raumseiten `min(58vh, 400px)`. **Auto-Zoom** skaliert schmale Bilder so, dass horizontal mindestens `MIN_PAN_DISPLAY_RATIO` (2) erreicht wird — dabei kann **oben/unten beschnitten** werden; Hotspot-**y** im mittleren Drittel halten. **Gyro (Portrait):** Handy vor die Brust, **links und rechts drehen** (nicht kippen) — ca. ±60° vom Neutral zu beiden Raumrändern (`GYRO_FULL_RANGE_DEG`, Feintuning: [raum-viewer-gyro-feintuning.md](./raum-viewer-gyro-feintuning.md)); bei Drift **Stations-Chip** tippen (zentriert). **Landscape (iPad):** Kippen (`gamma`) wie bisher. **Wischen** bleibt nach Loslassen stabil. Debug: `?debug=1` — HUD mit `axis`, `α`, `γ`, `∠`, `pan`. Beliebige `/raum/…` — **iPhone nur unter HTTPS**; Portrait/Landscape-Wechsel prüfen (Neutral-Reset); Norddurchquerung (0°/360°) ohne Pan-Sprung.
+**Raum-Viewer (Issue #55 / #56, #72, #96, #107, #111):** `export const viewport` in [`app/app/layout.tsx`](../app/app/layout.tsx) — korrektes **device-width** auf dem Handy (kein „Mini-Desktop-Zoom“). **Pinch-Zoom gesperrt** projektweit ([#96](https://github.com/flxln/schulnavigator/issues/96)): Meta `userScalable: false` reicht auf iOS nicht — zusätzlich [`DisableZoom`](../app/components/ui/disable-zoom.tsx) im Root-Layout. Test: mit zwei Fingern zoomen → Seite darf **nicht** skalieren (nach Deploy ggf. Hard Reload in Safari).
+
+**Card-Peek (#111):** Raumseiten nutzen **Body-Scroll** (kein Viewport-Lock). Hero-Höhe `calc(100svh - 6.5rem)`; Inhaltskarte mit `-mt-6` überlappt den Hero — initial sichtbar: nur die **Überschriftenzeile** (Chip, „Schulhaus-Rundgang“, Titel, ChevronUp). Beschreibung, Medien und Footer erst durch **Hochwischen**. `<main>` hat `w-full max-w-lg` (verhindert iOS-Überbreite bei langen Titeln); `overflow-x: clip` auf `html`/`body`.
+
+**iOS-Breite (manuell, echtes Gerät):**
+
+- [ ] Safari: `/raum/klassenzimmer` — nichts ragt **rechts** über den Rand; Titel nicht abgeschnitten
+- [ ] Chrome iOS: gleiche Seite — **Hochscrollen** zur Medienliste funktioniert
+- [ ] Hort oder PC-Raum zum Vergleich (kurzer Titel)
+
+**Auto-Zoom** skaliert schmale Bilder so, dass horizontal mindestens `MIN_PAN_DISPLAY_RATIO` (2) erreicht wird — dabei kann **oben/unten beschnitten** werden; Hotspot-**y** im mittleren Drittel halten. **Gyro (Portrait):** Handy vor die Brust, **links und rechts drehen** (nicht kippen) — ca. ±60° vom Neutral zu beiden Raumrändern (`GYRO_FULL_RANGE_DEG`, Feintuning: [raum-viewer-gyro-feintuning.md](./raum-viewer-gyro-feintuning.md)); bei Drift **Stations-Chip** tippen (zentriert). **Landscape (iPad):** Kippen (`gamma`) wie bisher. **Wischen** bleibt nach Loslassen stabil. Debug: `?debug=1` — HUD mit `axis`, `α`, `γ`, `∠`, `pan`. Beliebige `/raum/…` — **iPhone nur unter HTTPS**; Portrait/Landscape-Wechsel prüfen (Neutral-Reset); Norddurchquerung (0°/360°) ohne Pan-Sprung.
 
 **Swipe-Onboarding (#107):**
 

@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Check, List, X } from 'lucide-react'
+import { Check, ChevronUp, List, X } from 'lucide-react'
 import type { Hotspot, Medium, Station } from '@/lib/types'
 import { MediaSlotList } from '@/components/media-slot-list'
 import {
@@ -39,8 +39,12 @@ import {
   shouldShowDialogEndIcon,
 } from '@/lib/raum-station/end-dialog-flow'
 
-/** Einheitliche Hero-Höhe für alle Raumstationen (#72, gleiche Shell). */
-const RAUM_HERO_HEIGHT_CLASS = 'h-[min(58vh,400px)]'
+/**
+ * Hero-Höhe: svh statt dvh — auf iOS passt die Seite so in den kleinsten Viewport
+ * (mit sichtbarer Adressleiste) und ragt nicht über den Telefonrand.
+ * 6.5rem ≈ 104px Peek-Streifen der Inhaltskarte (−mt-6 → ~80px sichtbare Überschrift).
+ */
+const RAUM_HERO_HEIGHT_CLASS = 'h-[calc(100svh-6.5rem)]'
 
 type RaumStationClientProps = {
   station: Station
@@ -205,7 +209,7 @@ export function RaumStationClient({
   }, [panInfo, station.dialog?.bubble, bubbleLayoutPx, bubbleOffsetX])
 
   return (
-    <div className="sn-fade-in relative min-h-[100dvh] bg-bg-1">
+    <div className="sn-fade-in relative min-h-[100svh] bg-bg-1">
       <section
         aria-labelledby="station-titel"
         className={`relative bg-brand-navy ${RAUM_HERO_HEIGHT_CLASS}`}
@@ -327,21 +331,30 @@ export function RaumStationClient({
             </p>
             <h1
               id="station-titel"
-              className="sn-brush mt-1 text-[30px] leading-none"
+              className="sn-brush mt-1 break-words text-[30px] leading-none hyphens-auto"
             >
               {station.titel}
             </h1>
           </div>
-          {visited ? (
+          <div className="flex shrink-0 flex-col items-center gap-1">
+            {visited ? (
+              <span
+                className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-brand-green text-fg-on-dark"
+                title="Besucht"
+              >
+                <Check size={18} aria-hidden />
+              </span>
+            ) : (
+              <StationVisitedBadge slug={station.slug} validSlugs={validSlugs} />
+            )}
             <span
-              className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-brand-green text-fg-on-dark"
-              title="Besucht"
+              className="grid h-7 w-7 place-items-center rounded-full bg-fg-1/8 text-fg-2"
+              aria-label="Nach oben wischen für mehr"
+              title="Nach oben wischen für mehr"
             >
-              <Check size={18} aria-hidden />
+              <ChevronUp size={16} aria-hidden />
             </span>
-          ) : (
-            <StationVisitedBadge slug={station.slug} validSlugs={validSlugs} />
-          )}
+          </div>
         </div>
 
         <p className="mt-3.5 text-[15px] leading-relaxed text-fg-2">
