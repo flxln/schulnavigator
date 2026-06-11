@@ -207,6 +207,35 @@ Zeitrahmen: frühestens Schuljahr 2026/27.
 
 ---
 
+## #111 — Raum-Inhaltskarte: Card-Peek-Layout + iOS-Viewport-Fix
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/111
+
+**Labels:** `tech` `design`  
+**Assignee:** Felix  
+**Milestone:** Phase 5 — Post-Fest  
+**Status:** geschlossen (Branch `feat/raum-card-peek-layout`, 2026-06-11)
+
+**Ziel:** Beim Öffnen einer Raumstation maximal die Überschriftenzeile der Inhaltskarte sichtbar; Beschreibung/Medien per Hochscrollen. iOS: keine horizontale Überbreite, Scroll in Chrome und Safari.
+
+**Umsetzung:**
+
+- Hero `h-[calc(100svh-6.5rem)]`, Karte `-mt-6`, permanenter ChevronUp-Hinweis
+- `<main>` `w-full max-w-lg` (Flex-Body `fit-content`-Fix)
+- `overflow-x: clip` auf `html`/`body`; Stationsname `break-words hyphens-auto`
+- Pan-Onboarding iOS: rAF-Ausblenden (Nachtrag zu #107)
+
+**Dateien:** `app/components/raum-station-client.tsx`, `app/app/raum/[slug]/page.tsx`, `app/app/globals.css`, `app/components/raum-viewer/pan-onboarding-overlay.tsx`
+
+### Akzeptanzkriterien
+
+- [x] Initial nur Header-Zeile sichtbar; Beschreibung/Medien nach Hochwischen
+- [x] `/raum/klassenzimmer` auf iPhone: kein horizontaler Überstand (Safari + Chrome)
+- [x] iOS Chrome: Body-Scroll funktioniert
+- [x] Tests + Build grün
+
+---
+
 ## #106 — Scanner: Text bei System-Dark-Mode unsichtbar
 
 **GitHub:** https://github.com/flxln/schulnavigator/issues/106

@@ -1,24 +1,29 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 const STORAGE_KEY = 'schulnav.pan-onboarding.seen'
 const VISIBLE_MS = 3000
 const FADE_MS = 400
+const TOTAL_MS = VISIBLE_MS + FADE_MS
 
-type Phase = 'idle' | 'visible' | 'fading' | 'done'
+type Phase = 'idle' | 'visible' | 'done'
 
 export function PanOnboardingOverlay({ skip = false }: { skip?: boolean }) {
   const [phase, setPhase] = useState<Phase>('idle')
+  const [opacity, setOpacity] = useState(1)
+  const dismissedRef = useRef(false)
   // startedRef verhindert, dass ein skip-Flip (false→true→false, iOS-Watchdog)
   // die Anzeige ein zweites Mal triggert.
   const startedRef = useRef(false)
-  const t1Ref = useRef<number | undefined>(undefined)
-  const t2Ref = useRef<number | undefined>(undefined)
+
+  const dismiss = useCallback(() => {
+    if (dismissedRef.current) return
+    dismissedRef.current = true
+    setPhase('done')
+  }, [])
 
   // Startet die Anzeige genau einmal beim ersten skip=false-Moment.
-  // Die Cleanup dieses Effects löscht die Timer bewusst NICHT —
-  // ein späterer skip-Wechsel soll die laufende Anzeige nicht abreißen.
   useEffect(() => {
     if (skip || startedRef.current) return
     try {
@@ -27,35 +32,59 @@ export function PanOnboardingOverlay({ skip = false }: { skip?: boolean }) {
       return
     }
     startedRef.current = true
+    dismissedRef.current = false
+    setOpacity(1)
+    try {
+      localStorage.setItem(STORAGE_KEY, '1')
+    } catch {
+      // noop — kein localStorage (z. B. private mode) ist kein Fehler
+    }
     setPhase('visible')
-    t1Ref.current = window.setTimeout(() => {
-      try {
-        localStorage.setItem(STORAGE_KEY, '1')
-      } catch {
-        // noop — kein localStorage (z. B. private mode) ist kein Fehler
-      }
-      setPhase('fading')
-    }, VISIBLE_MS)
-    t2Ref.current = window.setTimeout(() => setPhase('done'), VISIBLE_MS + FADE_MS)
   }, [skip])
 
-  // Timer-Cleanup nur beim Unmount.
+  // Ausblenden per rAF + performance.now() — iOS-sicher (kein setTimeout, kein animationend).
   useEffect(() => {
-    return () => {
-      clearTimeout(t1Ref.current)
-      clearTimeout(t2Ref.current)
+    if (phase !== 'visible') return
+
+    const t0 = performance.now()
+    let raf = 0
+
+    const tick = (now: number) => {
+      const elapsed = now - t0
+      if (elapsed >= TOTAL_MS) {
+        dismiss()
+        return
+      }
+      if (elapsed > VISIBLE_MS) {
+        setOpacity(1 - (elapsed - VISIBLE_MS) / FADE_MS)
+      }
+      raf = requestAnimationFrame(tick)
     }
-  }, [])
+
+    raf = requestAnimationFrame(tick)
+
+    const interval = window.setInterval(() => {
+      const elapsed = performance.now() - t0
+      if (elapsed >= TOTAL_MS) {
+        dismiss()
+      } else if (elapsed > VISIBLE_MS) {
+        setOpacity(1 - (elapsed - VISIBLE_MS) / FADE_MS)
+      }
+    }, 250)
+
+    return () => {
+      cancelAnimationFrame(raf)
+      clearInterval(interval)
+    }
+  }, [phase, dismiss])
 
   if (phase === 'idle' || phase === 'done') return null
 
   return (
     <div
+      data-testid="pan-onboarding-overlay"
       className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center"
-      style={{
-        opacity: phase === 'fading' ? 0 : 1,
-        transition: `opacity ${FADE_MS}ms ease-out`,
-      }}
+      style={{ opacity }}
       aria-hidden="true"
     >
       <div className="flex flex-col items-center gap-2 rounded-[var(--r-lg)] bg-black/55 px-6 py-4">

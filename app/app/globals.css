@@ -7,8 +7,18 @@
  * prefers-color-scheme wird nicht ausgewertet.
  * color-scheme: light verhindert Browser-Auto-Darkening bei OS-Dark-Mode.
  */
+/*
+ * overflow-x: clip statt hidden — `hidden` macht html zum Scroll-Container
+ * (bricht Dokument-Scroll auf iOS Chrome) und wird von iOS Safari fürs
+ * Painting ignoriert. `clip` clippt ohne Scroll-Container.
+ */
 html {
   color-scheme: light;
+  overflow-x: clip;
+}
+
+body {
+  overflow-x: clip;
 }
 
 @theme inline {
