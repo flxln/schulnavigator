@@ -41,6 +41,7 @@ import { isMascotDialogHotspot } from '@/lib/dialog-hotspot'
 import { hitTestHotspot } from '@/lib/raum-viewer/hit-test-hotspot'
 import { normalizedViewportCenter } from '@/lib/raum-viewer/viewport-center'
 import { HotspotOverlay } from '@/components/raum-viewer/hotspot-overlay'
+import { PanOnboardingOverlay } from '@/components/raum-viewer/pan-onboarding-overlay'
 import { useDeviceOrientation } from '@/components/raum-viewer/use-device-orientation'
 import type { RaumViewerLayout } from '@/components/raum-viewer/raum-viewer'
 
@@ -728,6 +729,8 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
             onError={() => setBroken(true)}
           />
         )}
+
+        <PanOnboardingOverlay skip={orientState === 'needs-gesture'} />
 
         {debugViewer ? (
           <div className="pointer-events-none absolute bottom-1 left-1 right-1 z-20 rounded bg-white/90 px-2 py-1 font-mono text-xs leading-tight text-black">

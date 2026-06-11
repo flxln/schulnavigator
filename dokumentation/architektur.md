@@ -66,6 +66,7 @@ Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/
 | TopBar (Raum) | `TopBar` mit `onBack`, optionalem `leftExtra` (z. B. Dialog-Ende **X** 38×38) und `right`; rechte Slot-Breite spiegelt links (`lib/ui/top-bar-layout.ts`) |
 | Recenter-API | `RaumViewerHandle.recenterView()` — intern `RoomImagePane`; **nicht** aus `raum-viewer/index.ts` als Pane exportiert (#72) |
 | Fallback | Wischen, Tap; Banner wenn Orientierung fehlt; `sessionStorage`-Merker iOS + 2s-Watchdog bei fehlenden Events |
+| Onboarding (#107) | Einmaliges Overlay „Links oder rechts wischen“ (`PanOnboardingOverlay`); `localStorage` `schulnav.pan-onboarding.seen`; auf iOS erst nach Gyro-Berechtigung |
 | Ohne `bild` | Statisches Layout + Medienliste ([ADR-006](./adr/006-raum-viewer-gyro-hotspots.md)) |
 | Demo | `/raum/klassenzimmer` (4 Hotspots, 4 Medientypen inkl. Markdown-Text inline, echte Dateien unter `/media/klassenzimmer/`); `/raum/musik` (2 Hotspots, 4 Medientypen, Platzhalter `/demo/`); `/raum/daz`, `/raum/pc-raum` (Maskottchen-Dialog-Hotspots, [ADR-011](./adr/011-dialog-mascot-hotspots.md), Audio [ADR-010](./adr/010-dialog-cutscene-gated-audio.md)) — Gyro/Dialog auf iPhone nur unter **HTTPS**; Eintritt zuerst `/eintritt?t=fest-2026` |
 
@@ -203,3 +204,14 @@ Vollständige Ablagekonventionen (Pfade, Autorenzone, Laufzeit): [`content-verze
 - Multi-stage Build empfohlen (Build-Stage + schlankes Runtime-Image)
 - Port via Umgebungsvariable konfigurierbar (`PORT`)
 - Health-Check-Endpunkt für Coolify: `/api/health`
+
+## Client-Storage-Keys
+
+Browser-seitige Persistenz (`localStorage` / `sessionStorage`) folgt einer festen Benennungskonvention:
+
+| Präfix | Typ | Zweck | Beispiel |
+|--------|-----|-------|---------|
+| `schulnav.` | `localStorage` | Dauerhaftes UI-State pro Gerät/Browser | `schulnav.pan-onboarding.seen`, `schulnav.gyro.granted` |
+| `sn_` | `localStorage` | Fachlicher Besuchsfortschritt (älterer Stil) | `sn_visited_slugs`, `sn_sparkle_done` |
+
+**Neue Keys:** immer `schulnav.<domäne>.<zustand>` (Punkt-getrennt). Das `sn_*`-Präfix bleibt für bestehende Keys, wird aber nicht mehr vergeben.
