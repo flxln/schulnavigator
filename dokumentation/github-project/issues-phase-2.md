@@ -660,6 +660,35 @@ Spezifikation: [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) · Detail:
 
 ---
 
+## #113 — 360°-Sphere-Viewer: PSV-Koexistenz, Gyro-Panning (Spike Musikraum)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/113 — **geschlossen** (2026-06-11, Branch `feature/360-sphere-viewer`)
+
+**Labels:** `tech`  
+**Assignee:** Felix  
+**Milestone:** Phase 2
+
+**Ziel:** 360°-Equirectangular-Viewer (Photo Sphere Viewer v5) parallel zum bestehenden Flat-Viewer einführen. Pilot: Musikraum. Gyro-Panning (PSV GyroscopePlugin) mit iOS-Permission-Overlay auf Parität zum Flat-Viewer.
+
+**Abschluss:** ADR-018, `SphereRaumViewer`, Gyro-Panning vollständig umgesetzt. Folgearbeit (Rollout weiterer Stationen, Maskottchen-Marker) in gesondertem Plan/Issue.
+
+### Checkliste
+
+- [x] ADR-018 angelegt (Koexistenz-Strategie, PSV v5, `viewer`-Flag)
+- [x] `@photo-sphere-viewer/core`, `markers-plugin`, `gyroscope-plugin` installiert
+- [x] `lib/types.ts`: `ViewerMode`, `HotspotBase`, `Hotspot360`, `StationViewerHandle`
+- [x] `lib/validate-stations.ts`: viewer-abhängige Pflichtfelder
+- [x] `components/raum-viewer/sphere-raum-viewer.tsx` + `sphere-raum-viewer-inner.tsx`
+- [x] `raum-station-client.tsx`: Verzweigung `flat` / `equirectangular`
+- [x] `pan-onboarding-overlay.tsx`: `mode="sphere"` (Text „Drehe dich um")
+- [x] `lib/dialog-hotspot.ts`: viewer-aware (`hotspots360` einbezogen)
+- [x] `stations.json`: `musik` auf `equirectangular` + `hotspots360`
+- [x] Gyro-Panning: `useDeviceOrientation` + PSV `GyroscopePlugin.start()` + iOS-Permission-Overlay
+- [x] Tests: `sphere-raum-viewer-inner.test.tsx` (11 Tests grün)
+- [x] `npm run build` grün
+
+---
+
 ## #26 — WLAN-Test vor Ort vereinbaren
 
 **Labels:** `org`  

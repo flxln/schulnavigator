@@ -47,14 +47,16 @@ export interface Dialog {
 
 export type HotspotAction = 'medium' | 'dialog'
 
-export interface Hotspot {
+/** Viewer-Modus pro Station (ADR-018). Default: 'flat'. */
+export type ViewerMode = 'flat' | 'equirectangular'
+
+/**
+ * Gemeinsame Hotspot-Felder für Flat- und Sphere-Viewer (ADR-018, Vertrag V1).
+ * Nur die Positionsfelder unterscheiden sich — sie leben in den Sub-Interfaces.
+ */
+export interface HotspotBase {
   id: string
   label?: string
-  /** 0–1: linker/rechter Rand des Quellbildes (horizontal pannbar). */
-  x: number
-  /** 0–1: oben/unten im sichtbaren vertikalen Ausschnitt (nicht volles Quellbild bei Zoom). */
-  y: number
-  radius?: number
   /** Default `medium` — verknüpft mit `medien[]`. */
   action?: HotspotAction
   /** Pflicht bei `action: 'medium'` (bzw. ohne action). */
@@ -69,6 +71,46 @@ export interface Hotspot {
   icon?: string
   /** Medien-Hotspot: Anteil effectiveDisplayH (0,05–0,25); [ADR-017]. */
   iconSize?: number
+}
+
+/** Flat-Viewer-Hotspot: Position in Bildkoordinaten (0–1). */
+export interface Hotspot extends HotspotBase {
+  /** 0–1: linker/rechter Rand des Quellbildes (horizontal pannbar). */
+  x: number
+  /** 0–1: oben/unten im sichtbaren vertikalen Ausschnitt (nicht volles Quellbild bei Zoom). */
+  y: number
+  radius?: number
+}
+
+/** Sphere-Viewer-Hotspot: Position in Kamerakoordinaten (ADR-018). */
+export interface Hotspot360 extends HotspotBase {
+  /** Horizontaler Winkel in Grad, −180 bis 180. */
+  yaw: number
+  /** Vertikaler Winkel in Grad, −90 bis 90. */
+  pitch: number
+}
+
+/**
+ * Vertrag V2 (ADR-018): Projizierte Bildschirmposition eines Hotspots.
+ * Sphere liefert via PSV `dataHelper`; Flat emuliert per Adapter aus `panInfo`.
+ */
+export interface ScreenProjection {
+  /** Pixel ab linkem Viewer-Rand. */
+  x: number
+  /** Pixel ab oberem Viewer-Rand. */
+  y: number
+  /** false = Hotspot befindet sich außerhalb des aktuellen Sichtfelds. */
+  visible: boolean
+}
+
+/**
+ * Vertrag V3 (ADR-018): Gemeinsamer Handle für Flat- und Sphere-Viewer.
+ * Ersetzt den viewer-spezifischen `RaumViewerHandle` im Client-Ref.
+ */
+export interface StationViewerHandle {
+  recenterView(): void
+  focusHotspot?(id: string): void
+  projectHotspot?(id: string): ScreenProjection | null
 }
 
 export interface Medium {
@@ -91,9 +133,17 @@ export interface Station {
   slug: string
   titel: string
   beschreibung: string
+  /** Viewer-Modus; fehlt → Default 'flat' (ADR-018). */
+  viewer?: ViewerMode
+  /** Flat-Viewer: breites Panorama (≥2,5:1). */
   bild?: string
+  /** Sphere-Viewer: equirectangular 2:1 (ADR-018); Pflicht wenn viewer === 'equirectangular'. */
+  panorama360?: string
   medien: Medium[]
+  /** Flat-Viewer-Hotspots mit x/y-Bildkoordinaten. */
   hotspots?: Hotspot[]
+  /** Sphere-Viewer-Hotspots mit yaw/pitch-Kamerakoordinaten (ADR-018). */
+  hotspots360?: Hotspot360[]
   dialog?: Dialog
 }
 
