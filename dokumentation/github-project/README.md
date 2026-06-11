@@ -47,10 +47,10 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issues **#18–#20** (Audio-/Video-Player, Foto-Viewer) — geschlossen 2026-06-09: `app/components/media/`, `MediaPlayerByTyp`, `poster?`-Schema
 - [x] Issue **#93** (TextViewer inline + Demo `klassenzimmer`) — geschlossen 2026-06-10: `TextViewer`, `public/media/klassenzimmer/`, 4 Hotspots
 
-- [ ] Epic **#97** (ADR-017) — Stufe 1–2 erledigt (#98 PR #101, #99 PR #102); #100 offen; [epic-externe-medien-hotspot-marker.md](epic-externe-medien-hotspot-marker.md)
+- [x] Epic **#97** (ADR-017) — abgeschlossen (#98 PR #101, #99 PR #102, #100 Branch `feature/100-typ-embed`); [epic-externe-medien-hotspot-marker.md](epic-externe-medien-hotspot-marker.md)
 
 - [x] Issue **#103** (Startseite: Hub volle Breite, Wordmark Dresden-Plauen, `Gs39ChipMark`, Folge ADR-016) — umgesetzt 2026-06-10
 - [x] Issue **#104** (Scan-CTA ohne Stationsnamen, Fortschrittskarte → `/stationen`, Folge #84) — umgesetzt 2026-06-11
 - [x] Issue **#105** (Stationssymbole statt Nummerierung — Lucide, Hub/Liste/Raum) — umgesetzt 2026-06-11
 
-Letzter dokumentierter Abgleich: **2026-06-11** (#105 Stationssymbole; #104 CTA; Epic #97: #100 auf Branch `feature/100-typ-embed`); zuvor **2026-06-10** (#103 Wordmark/Layout).
+Letzter dokumentierter Abgleich: **2026-06-11** (Epic #97/#100 embed abgeschlossen; #105 Stationssymbole; #104 CTA); zuvor **2026-06-10** (#103 Wordmark/Layout).

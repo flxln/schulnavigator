@@ -43,4 +43,4 @@ Der Fortschrittsbalken in GitHub ergibt sich automatisch aus den geschlossenen I
 ## Phase 5 — Post-Fest
 
 **Fällig:** 31.10.2026
-**Beschreibung:** Directus, Mehrsprachigkeit, Mandanten-Vorbereitung. **ADR-017:** Epic [#97](https://github.com/flxln/schulnavigator/issues/97) — #98/#99 erledigt, #100 (`embed`) offen. Kein harter Termin — Prioritäten nach Auswertung.
+**Beschreibung:** Directus, Mehrsprachigkeit, Mandanten-Vorbereitung. **ADR-017:** Epic [#97](https://github.com/flxln/schulnavigator/issues/97) abgeschlossen (#98–#100). Kein harter Termin — Prioritäten nach Auswertung.
