@@ -350,8 +350,6 @@ export function RaumStationClient({
           <NextStationFooter
             currentSlug={station.slug}
             hubStations={hubStations}
-            mode={mode}
-            unlockedSlugs={unlockedSlugs}
             visitedSlugs={visitedSlugs}
           />
         </div>

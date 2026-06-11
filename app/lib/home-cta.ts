@@ -1,6 +1,6 @@
 import type { EntryMode } from '@/lib/access-tokens'
 
-export type HomeFooterCta = 'fest-split' | 'fest-scan' | 'heft-suggestion' | 'none'
+export type HomeFooterCta = 'fest-scan' | 'scan-next' | 'none'
 
 export function getHomeFooterCta(
   mode: EntryMode,
@@ -16,11 +16,11 @@ export function getHomeFooterCta(
   if (mode === 'fest') {
     if (!isHydrated || visitedCount === 0) return 'fest-scan'
     if (!hasNext) return 'none'
-    return 'fest-split'
+    return 'scan-next'
   }
 
   if (mode === 'heft' && isHydrated && visitedCount > 0 && hasNext) {
-    return 'heft-suggestion'
+    return 'scan-next'
   }
 
   return 'none'

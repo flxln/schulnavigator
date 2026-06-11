@@ -8,6 +8,7 @@ export default defineConfig({
     include: [
       'lib/**/*.test.ts',
       'middleware.test.ts',
+      'next.config.test.ts',
       'components/**/*.test.tsx',
     ],
   },

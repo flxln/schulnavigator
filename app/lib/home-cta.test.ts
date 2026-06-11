@@ -11,8 +11,8 @@ describe('getHomeFooterCta', () => {
       expect(getHomeFooterCta('fest', true, 0, 11, true)).toBe('fest-scan')
     })
 
-    it('1–10 mit next → fest-split', () => {
-      expect(getHomeFooterCta('fest', true, 3, 11, true)).toBe('fest-split')
+    it('1–10 mit next → scan-next', () => {
+      expect(getHomeFooterCta('fest', true, 3, 11, true)).toBe('scan-next')
     })
 
     it('11/11 ohne next → none', () => {
@@ -33,8 +33,8 @@ describe('getHomeFooterCta', () => {
       expect(getHomeFooterCta('heft', true, 0, 11, true)).toBe('none')
     })
 
-    it('1–10 mit next → heft-suggestion', () => {
-      expect(getHomeFooterCta('heft', true, 3, 11, true)).toBe('heft-suggestion')
+    it('1–10 mit next → scan-next', () => {
+      expect(getHomeFooterCta('heft', true, 3, 11, true)).toBe('scan-next')
     })
 
     it('11/11 → none', () => {

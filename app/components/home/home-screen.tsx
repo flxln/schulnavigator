@@ -7,12 +7,12 @@ import { useRouter } from 'next/navigation'
 import { HighlightSlugSync } from '@/components/home/highlight-slug-sync'
 import { HomeFestScanCta } from '@/components/home/home-fest-scan-cta'
 import { SchoolhouseHub } from '@/components/schoolhouse/schoolhouse-hub'
-import { NextStationRow } from '@/components/raum/next-station-row'
 import {
   FestiveDecor,
   Gs39Button,
   Gs39Card,
   Gs39Chip,
+  Gs39ChipMark,
   Gs39Progress,
   SparkleBurst,
 } from '@/components/ui'
@@ -77,12 +77,10 @@ export function HomeScreen({
   const allLocked =
     isHydrated && isHubFullyLocked(mode, unlockedSlugs, hubStations.length)
 
-  const nextStation = useMemo(
-    () => getNextStation(hubStations, visitedSlugs),
+  const hasNext = useMemo(
+    () => getNextStation(hubStations, visitedSlugs) !== null,
     [hubStations, visitedSlugs],
   )
-
-  const hasNext = nextStation !== null
   const footerCta = getHomeFooterCta(
     mode,
     isHydrated,
@@ -101,14 +99,18 @@ export function HomeScreen({
       <HighlightSlugSync highlight={highlightSlug} />
 
       <div className="flex items-center gap-2.5 pt-1">
-        <Gs39Chip tone="navy" size="sm">
-          <span className="sn-brush text-lg leading-none tracking-wide">39</span>
+        <Gs39Chip
+          tone="navy"
+          size="sm"
+          className="!w-auto min-w-10 px-1.5"
+          aria-label="39. Grundschule Dresden-Plauen"
+        >
+          <Gs39ChipMark />
         </Gs39Chip>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-black leading-tight text-fg-1">
-            Schulnavigator
+          <p className="text-[19px] font-black leading-tight text-fg-1">
+            Grundschule Dresden-Plauen
           </p>
-          <p className="text-[11px] text-fg-3">{modeLabel}</p>
         </div>
         <Link
           href="/stationen"
@@ -119,7 +121,7 @@ export function HomeScreen({
         </Link>
       </div>
 
-      <div className="relative overflow-hidden rounded-[var(--r-lg)] bg-[#FBF8F0] px-4 pb-2 pt-3">
+      <div className="relative overflow-hidden rounded-[var(--r-lg)] bg-[#FBF8F0] px-4 pb-3 pt-3">
         <FestiveDecor />
         <div className="relative z-[1]">
           <h1 className="sn-brush text-[30px] leading-[0.95]">
@@ -127,28 +129,23 @@ export function HomeScreen({
             <br />
             unsere <span className="sn-brush-hl">Schule</span>
           </h1>
-          <p className="t-script mt-2 text-lg not-italic text-fg-2">
-            {mode === 'heft'
-              ? 'Tippen Sie auf einen Raum, um hineinzuschauen.'
-              : 'Scannen Sie den QR an jeder Tür — Raum für Raum.'}
-          </p>
         </div>
+      </div>
 
-        <div className="relative z-[1] mt-2">
-          {showPlaceholder ? (
-            <HubLoadingPlaceholder />
-          ) : (
-            <SchoolhouseHub
-              hubStations={hubStations}
-              unlockedSlugs={unlockedSlugs}
-              visitedSlugs={visitedSlugs}
-              mode={mode}
-              isHydrated={isHydrated}
-              highlightSlug={highlightSlug}
-              embedded
-            />
-          )}
-        </div>
+      <div className="relative w-full overflow-hidden rounded-[var(--r-lg)] bg-[#FBF8F0]">
+        {showPlaceholder ? (
+          <HubLoadingPlaceholder />
+        ) : (
+          <SchoolhouseHub
+            hubStations={hubStations}
+            unlockedSlugs={unlockedSlugs}
+            visitedSlugs={visitedSlugs}
+            mode={mode}
+            isHydrated={isHydrated}
+            highlightSlug={highlightSlug}
+            embedded
+          />
+        )}
       </div>
 
       {allLocked ? (
@@ -160,9 +157,7 @@ export function HomeScreen({
         </p>
       ) : null}
 
-      {footerCta === 'fest-split' && nextStation ? (
-        <HomeFestScanCta nextStation={nextStation} />
-      ) : null}
+      {footerCta === 'scan-next' ? <HomeFestScanCta /> : null}
 
       {footerCta === 'fest-scan' ? (
         <Gs39Button
@@ -175,7 +170,20 @@ export function HomeScreen({
         </Gs39Button>
       ) : null}
 
-      <Gs39Card className="relative p-4">
+      <Gs39Card
+        interactive
+        className="relative p-4"
+        aria-label="Alle Stationen"
+        role="link"
+        tabIndex={0}
+        onClick={() => router.push('/stationen')}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault()
+            router.push('/stationen')
+          }
+        }}
+      >
         {showSparkle ? (
           <SparkleBurst
             x="72%"
@@ -194,24 +202,16 @@ export function HomeScreen({
               ? 'Alle Stationen entdeckt!'
               : 'Stationen entdeckt'}
         </p>
-        {footerCta === 'heft-suggestion' && nextStation ? (
-          <NextStationRow
-            station={nextStation}
-            locked={false}
-            eyebrow="Vorschlag"
-            onClick={() => router.push(`/raum/${nextStation.slug}`)}
-            variant="card"
-          />
-        ) : null}
       </Gs39Card>
 
       <div className="sn-ribbon text-center text-xl">
         Gemeinsam feiern. Erinnern. Zukunft gestalten.
       </div>
 
-      <p className="pb-1 text-center text-[11px] text-fg-3">
+      <p className="text-center text-[11px] text-fg-3">
         150 Jahre 39. Grundschule · 26.06.2026
       </p>
+      <p className="pb-1 text-center text-[11px] text-fg-3">{modeLabel}</p>
     </div>
   )
 }

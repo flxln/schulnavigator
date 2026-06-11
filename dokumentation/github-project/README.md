@@ -49,4 +49,7 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 
 - [ ] Epic **#97** (ADR-017) — Stufe 1–2 erledigt (#98 PR #101, #99 PR #102); #100 offen; [epic-externe-medien-hotspot-marker.md](epic-externe-medien-hotspot-marker.md)
 
-Letzter dokumentierter Abgleich: **2026-06-10** (Epic #97: #98/#99 abgeschlossen, #100 offen); zuvor **2026-06-10** (#93 TextViewer + Klassenzimmer-Demo).
+- [x] Issue **#103** (Startseite: Hub volle Breite, Wordmark Dresden-Plauen, `Gs39ChipMark`, Folge ADR-016) — umgesetzt 2026-06-10
+- [x] Issue **#104** (Scan-CTA ohne Stationsnamen, Fortschrittskarte → `/stationen`, Folge #84) — umgesetzt 2026-06-11
+
+Letzter dokumentierter Abgleich: **2026-06-11** (#104 CTA-Vereinfachung; Epic #97: #100 offen auf Branch `feature/100-typ-embed`); zuvor **2026-06-10** (#103 Wordmark/Layout).

@@ -44,7 +44,7 @@ npm run dev
 | Seite | Zweck |
 | ----- | ----- |
 | [https://localhost:3000/](https://localhost:3000/) | Startseite — **ohne** vorherigen Entry: Redirect zu `/eintritt` |
-| [https://localhost:3000/eintritt?t=fest-2026](https://localhost:3000/eintritt?t=fest-2026) | Entry Schulfest: Cookie + Redirect `/` → isometrischer Hub **gesperrt** (0/11), Fenster nach Raumbesuch frei (#21) |
+| [https://localhost:3000/eintritt?t=fest-2026](https://localhost:3000/eintritt?t=fest-2026) | Entry Schulfest: Cookie + Redirect `/` → Frontansicht-Hub **gesperrt** (0/11), Slots nach Raumbesuch frei (#21) |
 | [https://localhost:3000/eintritt?t=heft-2026-27](https://localhost:3000/eintritt?t=heft-2026-27) | Entry Heft: voller Hub (alle Stationen klickbar), Fortschritt zählt trotzdem (#21) |
 | [https://localhost:3000/stationen](https://localhost:3000/stationen) | Alle 11 Stationen als Liste (Lock im Modus `fest`) — Epic #58 |
 | [https://localhost:3000/eintritt](https://localhost:3000/eintritt) | Hinweisseite (Willkommens-Karte → Link auf Scan-Route); Fehler `?reason=expired\|invalid` |
@@ -107,12 +107,12 @@ npm run start
 8. Zwei Tabs (`/` + `/scan`): im zweiten Tab scannen → erster Tab aktualisiert bei Fokus
 9. Alle 11 Stationen besucht → `SparkleBurst` auf `/` **einmalig**; `localStorage` `sn_sparkle_done` verhindert Wiederholung
 10. `curl -sI https://localhost:3000/stationen` ohne Cookie → `307` nach `/eintritt`
-11. **Regression #83 (`fest`):** Einen Raum per QR freischalten → in Raum „Nächste Station“ (Schloss) → Scanner ohne Scan schließen → geteilter CTA **über** der Fortschrittskarte (Schloss + „Beliebiger QR“) öffnet **`/scan`**, nicht den Raum; `sn_visited_slugs` enthält **nicht** die ungescannte Station
-12. **`fest` 1–10:** **über** der Fortschrittskarte **ein** geteilter Primär-Button (Nächste Station | Beliebiger QR), **kein** zweiter Scan-Button
-13. **`fest` 0/11:** nur ein Scan-Button „QR an der Tür scannen“ **über** der Fortschrittskarte
-14. **`fest` 11/11:** kein Scan-CTA (Sparkle in der Fortschrittskarte optional)
-15. **`heft` mit Fortschritt:** Vorschlag **in** der Fortschrittskarte → Raum; **kein** Scan-Button auf `/`
-16. **Kein Flash:** `fest` mit Fortschritt neu laden → vor Hydration Einzel-Scan, danach geteilter Button (kein Layout-Sprung der Button-Anzahl prüfen)
+11. **Regression #83 (`fest`):** Raum per QR freischalten → Raum-Footer „Scanne die nächste Station!“ → **`/scan`**; ohne Scan schließen → `sn_visited_slugs` enthält **nicht** die ungescannte Station
+12. **`fest`/`heft` 1–10:** **über** der Fortschrittskarte **ein** Button „Scanne die nächste Station!“ — **kein** Stationsname, **kein** geteilter Button
+13. **`fest` 0/11:** nur „QR an der Tür scannen“ **über** der Fortschrittskarte
+14. **`fest`/`heft` 11/11:** kein Scan-CTA unter dem Hub (Sparkle in der Fortschrittskarte optional)
+15. **Fortschrittskarte:** Tipp auf „Mein Rundgang …“ → **`/stationen`** (wie Listen-Icon oben rechts)
+16. **Kein Flash:** `fest` mit Fortschritt neu laden → vor Hydration Einzel-Scan, danach „Scanne die nächste Station!“ (Button-Text wechselt, Anzahl bleibt 1)
 
 **Medien-Player (#18–#20, TextViewer #93) — nach Demo-Hotspots:**
 
@@ -151,6 +151,19 @@ Live nach erstem LFS-Push: `curl -sI https://schulnavigator.mpz.schule/stations/
 | Android Chrome (Phone) | Gyro unter HTTPS |
 | Desktop Chrome | keine Crashes, ggf. Banner „Orientierung nicht verfügbar“ |
 | Samsung Internet / Firefox Mobile | best-effort |
+
+**Delightex-Embed (`typ: embed`, #100):**
+
+Voraussetzung lokal: `NEXT_PUBLIC_EMBED_ENABLED=true` in `app/.env.local` (siehe `.env.example`), Dev-Server neu starten.
+
+| Route / Aktion | Prüfen |
+| -------------- | ------ |
+| `/raum/pc-raum` → Hotspot „3D-Welt“ | Panel mit iframe; Button „Im Browser öffnen“ immer sichtbar |
+| Delightex-Interaktion | 3D-Welt drehen/schwenken, Klicks auf Objekte — nicht nur „Seite lädt“ |
+| iPhone Safari | iframe sichtbar oder Vollbild-Button; Fallback Browser-Tab |
+| `NEXT_PUBLIC_EMBED_ENABLED=false` | Kein iframe, Hinweis + Browser-Button |
+
+Echte Embed-URL in `stations.json` (`pc-delightex.quelle`) muss öffentlich einbettbar sein (kein `X-Frame-Options: DENY`).
 
 **Design-Tokens:** Farben und Typo folgen [`auftraggeber/material/UI-Vorschläge/colors_and_type.css`](../auftraggeber/material/UI-Vorschläge/colors_and_type.css) (Kopie in `app/app/gs39-tokens.css`). **Dark Mode** der App ist bewusst deaktiviert (Papier-Look).
 

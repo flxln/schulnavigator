@@ -4,6 +4,8 @@ import dynamic from 'next/dynamic'
 import type { Medium } from '@/lib/types'
 import { AudioPlayer } from '@/components/media/audio-player'
 import { VideoPlayer } from '@/components/media/video-player'
+import { EmbedViewer } from '@/components/media/embed-viewer'
+import { resolveEmbedAllowlist } from '@/lib/embed-allowlist'
 import { LinkViewer } from '@/components/media/link-viewer'
 import { PhotoViewer } from '@/components/media/photo-viewer'
 
@@ -29,6 +31,14 @@ export function MediaPlayerByTyp({ medium }: MediaPlayerByTypProps) {
     case 'link':
       return (
         <LinkViewer url={medium.quelle} label={medium.untertitel} />
+      )
+    case 'embed':
+      return (
+        <EmbedViewer
+          url={medium.quelle}
+          allowlist={resolveEmbedAllowlist(medium)}
+          label={medium.untertitel}
+        />
       )
     default:
       return null
