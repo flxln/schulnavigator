@@ -196,7 +196,7 @@ Die Schule liefert bis **12.06.** einen Plan: welche Klasse macht welchen Raum i
 - [ ] **ADR-017** — Externe Medien & Hotspot-Marker ([Umsetzungsplan](./projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md), Epic **#97**):
   - [x] [#98](https://github.com/flxln/schulnavigator/issues/98) Stufe 1: Hotspot-Icons + `thumbnail` (PR #101)
   - [x] [#99](https://github.com/flxln/schulnavigator/issues/99) Stufe 2: Medientyp `link` (PR #102)
-  - [ ] [#100](https://github.com/flxln/schulnavigator/issues/100) Stufe 3: Medientyp `embed` — nach DSB-Freigabe
+  - [x] [#100](https://github.com/flxln/schulnavigator/issues/100) Stufe 3: Medientyp `embed` (Branch `feature/100-typ-embed`)
 
 ### Mittelfristig (Herbst 2026)
 

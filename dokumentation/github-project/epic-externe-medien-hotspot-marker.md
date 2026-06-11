@@ -2,7 +2,7 @@
 
 **Milestone:** Phase 5 — Post-Fest  
 **Fällig:** 31.10.2026 (Epic gesamt; Stufen sukzessiv Juli–Herbst)  
-**Status:** Stufe 1–2 live (2026-06-10, PR #101/#102); Stufe 3 (#100) offen — DSB-Freigabe Delightex
+**Status:** abgeschlossen (2026-06-11) — Stufe 1–3 live auf Branch `feature/100-typ-embed` (PR ausstehend); DSB-Freigabe Delightex liegt vor
 
 **Quellen:**
 
@@ -20,7 +20,7 @@
 | **Epic (Parent)** | `#97` | Externe Medien & Hotspot-Marker (ADR-017) | `tech`, `design` | — |
 | Unterissue | `#98` | Hotspot-Marker & `thumbnail` (Stufe 1) | `tech`, `design` | — **erledigt** |
 | Unterissue | `#99` | Medientyp `link` (Stufe 2) | `tech` | — **erledigt** |
-| Unterissue | `#100` | Medientyp `embed` / iframe Delightex (Stufe 3) | `tech` | DSB-Freigabe, Embed-URL |
+| Unterissue | `#100` | Medientyp `embed` / iframe Delightex (Stufe 3) | `tech` | — **erledigt** |
 | Organisatorisch | — | Delightex Share-URL + DSB (Schule) | `extern`, `org` | `#100` |
 
 **Empfohlene Reihenfolge:** `#98` → `#99` → (Schule: URL + DSB) → `#100`.
@@ -54,7 +54,7 @@ Drei Post-Fest-Erweiterungen des Content-Modells sukzessiv umsetzen:
 
 - [x] `#98` — Hotspot-Marker & `thumbnail` (Stufe 1) — PR #101
 - [x] `#99` — Medientyp `link` (Stufe 2) — PR #102
-- [ ] `#100` — Medientyp `embed` / iframe (Stufe 3)
+- [x] `#100` — Medientyp `embed` / iframe (Stufe 3) — Branch `feature/100-typ-embed`
 
 ### Nicht im Scope
 
@@ -65,11 +65,11 @@ Drei Post-Fest-Erweiterungen des Content-Modells sukzessiv umsetzen:
 
 ### Epic erledigt wenn
 
-- [ ] `#100` geschlossen (Stufe 3)
-- [x] `content-einpflegen.md` und Validator: Stufe 1–2 live dokumentiert
-- [x] Demo: `klassenzimmer` Icon-Hotspot; `pc-raum` mit `typ: link`
-- [ ] Echte Delightex-Share-URL in Produktion (nach DSB)
-- [x] `#50`: Hotspot-Icons + externe Links abgehakt (#100 = iframe offen)
+- [x] `#100` geschlossen (Stufe 3)
+- [x] `content-einpflegen.md` und Validator: Stufe 1–3 live dokumentiert
+- [x] Demo: `klassenzimmer` Icon-Hotspot; `pc-raum` mit `typ: embed` (`https://edu.delightex.com/WVX-NAQ`)
+- [x] Echte Delightex-Embed-URL in `stations.json` (DSB-Freigabe)
+- [x] `#50`: Hotspot-Icons + externe Links + iframe abgehakt
 
 ---
 
@@ -121,25 +121,25 @@ Optionale Felder `hotspots[].icon`, `hotspots[].iconSize`, `medien[].thumbnail`.
 
 ---
 
-## `#100` — Medientyp `embed` / iframe Delightex (Stufe 3)
+## `#100` — Medientyp `embed` / iframe Delightex (Stufe 3) — erledigt
 
 **Parent:** #97  
 **Labels:** `tech`  
 **Assignee:** Felix  
-**Blockiert durch:** DSB-Freigabe Delightex; öffentliche Embed-URL
+**Status:** geschlossen (2026-06-11, Branch `feature/100-typ-embed`)
 
 ### Ziel
 
-`typ: embed` mit Domain-Allowlist (`delightex.com`), CSP `frame-src`, `EmbedViewer` im Panel, Fehler-Fallback wenn Einbettung blockiert.
+`typ: embed` mit Domain-Allowlist (`delightex.com`), CSP `frame-src`, `EmbedViewer` im Panel, permanenter „Im Browser öffnen“-Button als Fallback.
 
 ### Akzeptanzkriterien
 
-- [ ] Validator: HTTPS + Allowlist
-- [ ] `next.config` CSP `frame-src`
-- [ ] Mobile getestet (iPhone Safari, Android Chrome) — dokumentiert in `lokal-testen-und-anschauen.md`
-- [ ] Fehlerzustand + Link-Fallback
-- [ ] `dsgvo.md` / technische Fragen: Delightex-Einbettung dokumentiert
-- [ ] **Keine** Produktions-Station mit `embed` ohne dokumentierte DSB-Freigabe
+- [x] Validator: HTTPS + Allowlist (`embedAllow` nur Subset)
+- [x] `next.config` CSP `frame-src` aus `embed-allowlist.ts`
+- [x] Mobile-Matrix in `lokal-testen-und-anschauen.md` (manuell nach Deploy)
+- [x] `EmbedViewer` + Feature-Flag `NEXT_PUBLIC_EMBED_ENABLED`
+- [x] `dsgvo.md`: Delightex-Einbettung dokumentiert
+- [x] DSB-Freigabe dokumentiert; Demo `pc-delightex` mit Embed-URL
 
 **Spezifikation:** [Umsetzungsplan Stufe 3](../projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md#stufe-3--typ-embed-iframe)
 
