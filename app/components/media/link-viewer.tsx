@@ -4,6 +4,8 @@ import {
   externalLinkHostname,
   openExternalLink,
 } from '@/lib/external-link'
+import { isDelightexUrl } from '@/lib/delightex-fallback'
+import { DelightexFallbackPanel } from '@/components/media/delightex-fallback-panel'
 
 export type LinkViewerProps = {
   url: string
@@ -11,6 +13,10 @@ export type LinkViewerProps = {
 }
 
 export function LinkViewer({ url, label }: LinkViewerProps) {
+  if (isDelightexUrl(url)) {
+    return <DelightexFallbackPanel url={url} label={label} variant="link" />
+  }
+
   const host = externalLinkHostname(url)
 
   return (

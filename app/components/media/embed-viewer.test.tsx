@@ -9,6 +9,8 @@ const allowlist = ['delightex.com']
 beforeEach(() => {
   vi.stubEnv('NEXT_PUBLIC_EMBED_ENABLED', 'true')
   vi.stubGlobal('open', mockOpen)
+  // Standard: Desktop (pointer: fine) — kein Skip
+  vi.stubGlobal('matchMedia', () => ({ matches: false }))
 })
 
 afterEach(() => {
@@ -18,7 +20,7 @@ afterEach(() => {
   vi.unstubAllGlobals()
 })
 
-describe('EmbedViewer', () => {
+describe('EmbedViewer — Desktop (nicht-Mobile)', () => {
   it('rendert iframe bei gültiger Delightex-URL', () => {
     render(
       <EmbedViewer
@@ -32,6 +34,17 @@ describe('EmbedViewer', () => {
       'https://edu.delightex.com/share/demo',
     )
     expect(screen.getByText('3D-Welt')).toBeTruthy()
+  })
+
+  it('zeigt Delightex-Fallback-Panel unter dem iframe', () => {
+    render(
+      <EmbedViewer
+        url="https://edu.delightex.com/share/demo"
+        allowlist={allowlist}
+      />,
+    )
+    expect(document.querySelector('iframe')).not.toBeNull()
+    expect(screen.getByText(/Im Browser öffnen/i)).toBeTruthy()
   })
 
   it('zeigt kein iframe bei blockierter URL', () => {
@@ -66,5 +79,39 @@ describe('EmbedViewer', () => {
     )
     expect(document.querySelector('iframe')).toBeNull()
     expect(screen.getByText(/vorübergehend deaktiviert/i)).toBeTruthy()
+  })
+})
+
+describe('EmbedViewer — Mobile (pointer: coarse)', () => {
+  beforeEach(() => {
+    // Simuliert Touch-Gerät
+    vi.stubGlobal('matchMedia', (query: string) => ({
+      matches: query === '(pointer: coarse)',
+    }))
+  })
+
+  it('rendert kein iframe auf Mobile bei Delightex-URL', () => {
+    render(
+      <EmbedViewer
+        url="https://edu.delightex.com/WVX-NAQ"
+        allowlist={allowlist}
+        label="3D-Welt"
+      />,
+    )
+    expect(document.querySelector('iframe')).toBeNull()
+    expect(screen.getByText(/Die 3D-Welt braucht WebGL/i)).toBeTruthy()
+    expect(screen.getByRole('button', { name: /Im Browser öffnen/i })).toBeTruthy()
+  })
+
+  it('zeigt App-Store-Buttons auf Mobile', () => {
+    // Simuliert Android
+    vi.stubGlobal('navigator', { userAgent: 'Mozilla/5.0 (Linux; Android 13)' })
+    render(
+      <EmbedViewer
+        url="https://edu.delightex.com/WVX-NAQ"
+        allowlist={allowlist}
+      />,
+    )
+    expect(screen.getByRole('button', { name: /Delightex-App installieren/i })).toBeTruthy()
   })
 })
