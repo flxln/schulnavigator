@@ -121,8 +121,8 @@ npm run start
 | `/stationen` (Heft, 0 besucht) | Alle Kacheln: gedämpftes Lucide-Icon, **keine** Ziffern; kein Untertitel „Station N“ |
 | Raum besuchen → `/stationen` | Besuchte Kachel: Icon in Akzentfarbe + grünes Häkchen rechts |
 | `/stationen` Reload mit Fortschritt | Kurz „Fortschritt wird geladen…“, dann **ein** Reveal — kein grau→farbig pro Kachel |
-| `/` Hub (`fest`, unbesucht) | Fenster-Chips: Symbol im weißen Kreis (nicht Ziffer) |
-| Hub nach Besuch | Akzent-Chip mit Häkchen statt Symbol |
+| `/` Hub (`fest`, unbesucht) | Fenster-Chips: Symbol im **größeren** weißen Kreis (nicht Ziffer) |
+| Hub nach Besuch | Fensterfläche **transparent** akzentgetönt (nicht opak); Akzent-Chip mit Häkchen statt Symbol |
 | `/raum/klassenzimmer` | Header-Chip: weißes Symbol auf Akzent; Eyebrow „Schulhaus-Rundgang“ |
 | `/stationen` (`fest`, ungescannt) | Gesperrt: Grayscale + reduzierte Opazität + Schloss — **anders** als unbesucht-offen (Heft) |
 

@@ -37,7 +37,9 @@ describe('schoolhouse-hub-map', () => {
     const hub = buildHubStations(getAllStations())
     for (const s of hub) {
       expect(s.accent).toMatch(/^#[0-9a-f]{6}$/i)
-      expect(s.visitedGlassFill).toMatch(/^#[0-9a-f]{6}$/i)
+      expect(s.visitedGlassFill).toMatch(
+        /^rgba\(\d{1,3}, \d{1,3}, \d{1,3}, 0\.28\)$/,
+      )
     }
   })
 

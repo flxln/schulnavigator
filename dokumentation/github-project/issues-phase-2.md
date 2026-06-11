@@ -287,6 +287,14 @@ CTA-Vereinfachung ohne Stationsnamen: Issue **#104** (Folge **#84**), [ADR-009 N
 - [x] `nr` nur intern + Screenreader (`aria-label`: „Raum N von 11“)
 - [x] Tests `station-icons.test.ts`; Doku `architektur.md`, `lokal-testen-und-anschauen.md`
 
+### Nachtrag 2026-06-11 — Hub-Glas & Chip-Größe (Folge #105)
+
+UX-Feedback nach #105: besuchte Fenster/Portale wirkten opak; Symbole-Chips zu klein.
+
+- [x] `visitedGlassFill`: transparentes `rgba` (α 0,28, Akzentmischung 52 %) statt deckendem Hex — gleiche Glaslogik wie gesperrte Slots
+- [x] Hub-`StationChip`: größerer Kreis (`r` 24/25) und Icon (`34`); Häkchen proportional
+- [x] Hilfsfunktion `hexToRgba` in `gs39-hex-blend.ts`; Test `schoolhouse-hub-map.test.ts`
+
 ---
 
 ## #104 — Scan-CTA vereinheitlichen, keine Stationsnamen (Folge #84)

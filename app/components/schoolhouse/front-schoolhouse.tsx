@@ -16,13 +16,14 @@ const LOCKED_GLASS = 'rgba(20, 30, 50, 0.18)'
 const FRAME_LOCKED = 'rgba(255,255,255,.55)'
 
 const STATION_CHIP = {
-  rLocked: 18,
-  rVisited: 19,
+  rLocked: 24,
+  rVisited: 25,
   stroke: 2,
   insetX: 8,
   insetY: 8,
   offsetX: 3,
   offsetY: -3,
+  iconSize: 34,
 } as const
 
 type FrontSchoolhouseProps = {
@@ -81,10 +82,10 @@ function StationChip({
           strokeWidth={STATION_CHIP.stroke}
         />
         <path
-          d={`M ${cx - 7} ${cy} L ${cx - 2} ${cy + 6} L ${cx + 7} ${cy - 6}`}
+          d={`M ${cx - 10} ${cy} L ${cx - 3} ${cy + 9} L ${cx + 10} ${cy - 9}`}
           fill="none"
           stroke="#fff"
-          strokeWidth={2.6}
+          strokeWidth={3.2}
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -103,7 +104,7 @@ function StationChip({
       />
       <StationIcon
         slug={station.slug}
-        size={26}
+        size={STATION_CHIP.iconSize}
         visited={false}
         accent={station.accent}
         variant="svg-nested"
