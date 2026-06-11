@@ -157,7 +157,7 @@ export function QrScanner(props: QrScannerProps) {
     : 'min-h-11 rounded-[var(--r-md)] border border-border-1 bg-bg-2 px-4 py-2 text-sm font-medium text-fg-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
 
   const statusClass = chrome
-    ? 'rounded-[var(--r-md)] bg-white/10 px-3 py-2 text-center text-sm text-white'
+    ? 'rounded-[var(--r-md)] bg-white/10 px-3 py-2 text-center text-sm text-white/90'
     : 'rounded-[var(--r-md)] bg-bg-3 px-3 py-2 text-sm text-fg-1'
 
   const cameraMount = showCameraRegion ? (
@@ -193,7 +193,7 @@ export function QrScanner(props: QrScannerProps) {
 
       {state === 'pending' ? (
         <p
-          className={chrome ? 'text-sm text-white/80' : 'text-sm text-fg-2'}
+          className={chrome ? 'text-sm text-white' : 'text-sm text-fg-2'}
           role="status"
           aria-live="polite"
         >
@@ -209,7 +209,7 @@ export function QrScanner(props: QrScannerProps) {
         </button>
       ) : state === 'starting' ? (
         <p
-          className={chrome ? 'text-sm text-white/80' : 'text-sm text-fg-2'}
+          className={chrome ? 'text-sm text-white' : 'text-sm text-fg-2'}
           role="status"
           aria-live="polite"
         >

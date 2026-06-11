@@ -5,7 +5,11 @@
 /*
  * Dark Mode: bewusst nicht unterstützt — GS39 ist paper-first (warmes Papier, Navy-Tinte).
  * prefers-color-scheme wird nicht ausgewertet.
+ * color-scheme: light verhindert Browser-Auto-Darkening bei OS-Dark-Mode.
  */
+html {
+  color-scheme: light;
+}
 
 @theme inline {
   --font-sans: var(--font-ui);

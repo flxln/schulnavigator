@@ -20,7 +20,7 @@ export function TopBar({
   tight = false,
 }: TopBarProps) {
   const pad = tight ? 'py-1.5' : 'py-2.5'
-  const textColor = dark ? 'text-fg-on-dark' : 'text-fg-1'
+  const textColor = dark ? 'text-white' : 'text-fg-1'
   const btnBg = dark ? 'bg-white/15' : 'bg-brand-navy/10'
   const sideWidth = topBarMirrorWidthClass(Boolean(leftExtra))
 
