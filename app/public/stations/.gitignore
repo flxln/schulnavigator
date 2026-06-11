@@ -1,6 +1,10 @@
 # Keine Originalaufnahmen — nur optimierte Exporte (≤ 500 KB, Kleinbuchstaben .jpg)
 # Rohdateien gehören nach: auftraggeber/material/stationen-360-pano/flat/{slug}/raw/
 *.JPG
+# Equirectangular-Exporte (Sphere-Viewer, bis 4 MB) — ! wegen core.ignorecase (*.JPG trifft sonst .jpg)
+!360/
+!360/*.jpg
+!360/*.webp
 *.JPEG
 *.CR2
 *.CR3
