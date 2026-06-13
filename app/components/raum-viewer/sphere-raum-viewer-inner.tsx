@@ -23,6 +23,8 @@ import type {
 import {
   ROOM_VIEWER_HEIGHT_CSS,
   SPHERE_GYRO_ROLL_ENABLED,
+  SPHERE_LOCKED_FOV_DEG,
+  SPHERE_LOCKED_FOV_EPSILON_DEG,
 } from '@/lib/raum-viewer/constants'
 import type { RaumViewerLayout } from '@/components/raum-viewer/raum-viewer'
 import { PanOnboardingOverlay } from '@/components/raum-viewer/pan-onboarding-overlay'
@@ -152,6 +154,13 @@ export const SphereRaumViewerInner = forwardRef<
       container: el,
       caption: alt,
       navbar: false,
+      // Zoom gesperrt: festes FOV. Epsilon-Spanne statt min===max, sonst 0/0=NaN in
+      // PSV fovToZoomLevel → Bubble-Projektion bricht. Zoom wieder entsperren? Dann
+      // zoom-updated-Listener für Bubble-Projektion UND FOV-abhängige Markergröße nötig (ADR-018).
+      minFov: SPHERE_LOCKED_FOV_DEG - SPHERE_LOCKED_FOV_EPSILON_DEG,
+      maxFov: SPHERE_LOCKED_FOV_DEG,
+      defaultZoomLvl: 0,
+      mousewheel: false,
       plugins: [
         [
           MarkersPlugin,

@@ -22,7 +22,7 @@ describe('buildSphereMarkerHtml', () => {
     })
     expect(html).toContain('/brand/mascots/frieda.png')
     expect(html).toContain('sn-dialog-mascot__img')
-    expect(html).toContain('height:200px')
+    expect(html).toMatch(/height:133\.33\d*px/)
   })
 
   it('rendert Icon-Bild für Medien-Hotspots mit icon', () => {
