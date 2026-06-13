@@ -38,6 +38,8 @@ vi.mock('@photo-sphere-viewer/core', async () => {
     addEventListener: vi.fn(),
     clearMarkers: vi.fn(),
     addMarker: vi.fn(),
+    updateMarker: vi.fn(),
+    removeMarker: vi.fn(),
   }
   const mockGyroPlugin = {
     start: mocks.gyroStart,
@@ -91,6 +93,24 @@ import {
   SPHERE_LOCKED_FOV_DEG,
   SPHERE_LOCKED_FOV_EPSILON_DEG,
 } from '@/lib/raum-viewer/constants'
+import type { Hotspot360 } from '@/lib/types'
+
+const HOTSPOTS: Hotspot360[] = [
+  {
+    id: 'hs-frieda',
+    yaw: 0,
+    pitch: -20,
+    action: 'dialog',
+    mascot: 'frieda',
+  },
+  {
+    id: 'hs-icon',
+    yaw: 10,
+    pitch: 0,
+    mediumId: 'm1',
+    icon: '/icon.svg',
+  },
+]
 
 const DEFAULT_PROPS = {
   panorama: '/stations/360/musik.jpg',
@@ -199,5 +219,38 @@ describe('PanOnboardingOverlay', () => {
     mocks.setOrientState('needs-gesture')
     render(<SphereRaumViewerInner {...DEFAULT_PROPS} />)
     expect(screen.getByTestId('pan-onboarding').dataset.skip).toBe('true')
+  })
+})
+
+describe('Sphere-Marker (Layer + Lifecycle)', () => {
+  it('nutzt imageLayer für Medien und element für Maskottchen', async () => {
+    const { Viewer } = await import('@photo-sphere-viewer/core')
+    const viewerInstance = vi.mocked(Viewer).mock.results.at(-1)?.value as {
+      getPlugin: ReturnType<typeof vi.fn>
+    }
+    const plugin = viewerInstance.getPlugin.mock.results[0]?.value as {
+      addMarker: ReturnType<typeof vi.fn>
+      updateMarker: ReturnType<typeof vi.fn>
+      removeMarker: ReturnType<typeof vi.fn>
+    }
+
+    render(
+      <SphereRaumViewerInner
+        {...DEFAULT_PROPS}
+        hotspots360={HOTSPOTS}
+        medien={[]}
+        activeHotspotId="hs-frieda"
+      />,
+    )
+    await act(async () => {
+      mocks.fireViewerReady()
+    })
+
+    expect(plugin.addMarker).toHaveBeenCalledTimes(2)
+    const configs = plugin.addMarker.mock.calls.map((c) => c[0])
+    expect(configs.some((c) => c.imageLayer === '/icon.svg')).toBe(true)
+    expect(configs.some((c) => c.element instanceof HTMLElement)).toBe(true)
+    expect(plugin.clearMarkers).not.toHaveBeenCalled()
+    expect(plugin.updateMarker).toHaveBeenCalled()
   })
 })

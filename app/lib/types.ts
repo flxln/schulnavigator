@@ -88,6 +88,11 @@ export interface Hotspot360 extends HotspotBase {
   yaw: number
   /** Vertikaler Winkel in Grad, −90 bis 90. */
   pitch: number
+  /**
+   * Zusätzlicher Pitch (Grad) für Dialog-Bubble-Projektion nach oben.
+   * Marker-Anker (yaw/pitch) ≠ Kopfposition; Default in sphere-marker-conventions.
+   */
+  bubblePitchOffset?: number
 }
 
 /**

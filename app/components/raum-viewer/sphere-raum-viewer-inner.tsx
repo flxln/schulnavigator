@@ -28,9 +28,18 @@ import {
 } from '@/lib/raum-viewer/constants'
 import type { RaumViewerLayout } from '@/components/raum-viewer/raum-viewer'
 import { PanOnboardingOverlay } from '@/components/raum-viewer/pan-onboarding-overlay'
+import { SphereHotspotCalibOverlay } from '@/components/raum-viewer/sphere-hotspot-calib-overlay'
 import { useDeviceOrientation } from '@/components/raum-viewer/use-device-orientation'
-import { buildSphereMarkerHtml } from '@/lib/raum-viewer/sphere-marker-html'
-import { isMascotDialogHotspot } from '@/lib/dialog-hotspot'
+import {
+  applyMascotElementState,
+  buildSphereMarkerConfig,
+  buildSphereMarkerVisualUpdate,
+  type SphereMarkerKind,
+} from '@/lib/raum-viewer/sphere-marker-factory'
+import {
+  resolveBubbleProjectionPitchDeg,
+  yawPitchToRadians,
+} from '@/lib/raum-viewer/sphere-marker-conventions'
 
 export type SphereRaumViewerInnerProps = {
   panorama: string
@@ -48,6 +57,12 @@ export type SphereRaumViewerInnerProps = {
 
 const VIEWER_HEIGHT_STYLE_DEFAULT = {
   height: ROOM_VIEWER_HEIGHT_CSS,
+}
+
+function isHotspotCalibEnabled(): boolean {
+  if (process.env.NODE_ENV !== 'development') return false
+  if (typeof window === 'undefined') return false
+  return new URLSearchParams(window.location.search).get('hotspot-calib') === '1'
 }
 
 export const SphereRaumViewerInner = forwardRef<
@@ -80,7 +95,16 @@ export const SphereRaumViewerInner = forwardRef<
   const loadedPanoramaRef = useRef<string | null>(null)
   const orientStateRef = useRef<string>('active')
   const startGyroRef = useRef<() => Promise<void>>(async () => {})
+  const markerKindsRef = useRef<Map<string, SphereMarkerKind>>(new Map())
+  const mascotElementsRef = useRef<Map<string, HTMLElement>>(new Map())
   const [ready, setReady] = useState(false)
+  const [calibEnabled] = useState(isHotspotCalibEnabled)
+  const [calibClick, setCalibClick] = useState<{
+    yaw: number
+    pitch: number
+    textureX?: number
+    textureY?: number
+  } | null>(null)
 
   const { state: orientState, requestAccess } = useDeviceOrientation(orientationEnabled)
 
@@ -107,7 +131,6 @@ export const SphereRaumViewerInner = forwardRef<
 
   useEffect(() => { startGyroRef.current = startGyroIfPossible }, [startGyroIfPossible])
 
-  // Auto-start on Android / non-iOS (no permission dialog needed)
   useEffect(() => {
     if (!ready || orientState !== 'active') return
     void startGyroIfPossible()
@@ -132,10 +155,10 @@ export const SphereRaumViewerInner = forwardRef<
       const hs = hotspots360Ref.current?.find((h) => h.id === id)
       if (!viewer || !hs) return null
       try {
-        const pos = viewer.dataHelper.sphericalCoordsToViewerCoords({
-          yaw: hs.yaw * (Math.PI / 180),
-          pitch: hs.pitch * (Math.PI / 180),
-        })
+        const bubblePitchDeg = resolveBubbleProjectionPitchDeg(hs)
+        const pos = viewer.dataHelper.sphericalCoordsToViewerCoords(
+          yawPitchToRadians(hs.yaw, bubblePitchDeg),
+        )
         const container = viewer.getSize()
         const visible =
           pos.x >= 0 &&
@@ -153,16 +176,10 @@ export const SphereRaumViewerInner = forwardRef<
     const el = containerRef.current
     if (!el) return
 
-    // Panorama bewusst NICHT im Konstruktor — React StrictMode zerstört den ersten
-    // Viewer während THREE.FileLoader noch lädt (globales Dedup-Register). Erst nach
-    // dem Mount per rAF laden, damit nur der überlebende Viewer fetcht.
     const viewer = new Viewer({
       container: el,
       caption: alt,
       navbar: false,
-      // Zoom gesperrt: festes FOV. Epsilon-Spanne statt min===max, sonst 0/0=NaN in
-      // PSV fovToZoomLevel → Bubble-Projektion bricht. Zoom wieder entsperren? Dann
-      // zoom-updated-Listener für Bubble-Projektion UND FOV-abhängige Markergröße nötig (ADR-018).
       minFov: SPHERE_LOCKED_FOV_DEG - SPHERE_LOCKED_FOV_EPSILON_DEG,
       maxFov: SPHERE_LOCKED_FOV_DEG,
       defaultZoomLvl: 0,
@@ -196,8 +213,6 @@ export const SphereRaumViewerInner = forwardRef<
       : null
     gyroPluginRef.current = gyroPlugin
 
-    // Zwei-Finger-Pinch ruft PSV stopAll() auf → Gyro stoppt. Capture-Phase merkt den
-    // Zustand vor PSV; nach touchend Gyro wieder starten.
     let pinchGyroResumePending = false
     const onTouchStart = (evt: TouchEvent) => {
       if (evt.touches.length >= 2 && gyroPlugin?.isEnabled()) {
@@ -213,9 +228,6 @@ export const SphereRaumViewerInner = forwardRef<
     el.addEventListener('touchstart', onTouchStart, { capture: true, passive: true })
     el.addEventListener('touchend', onTouchEnd, { passive: true })
 
-    // PSV's __checkSupport() resolves on the very first 'deviceorientation' event,
-    // which may carry alpha=null on Android during sensor calibration. Replace the
-    // isSupported promise so it waits for the first event with a valid alpha value.
     if (
       gyroPlugin &&
       typeof (window as unknown as { DeviceOrientationEvent?: { requestPermission?: unknown } })
@@ -251,6 +263,17 @@ export const SphereRaumViewerInner = forwardRef<
       onViewChangeRef.current?.(yawDeg, pitchDeg)
     })
 
+    if (calibEnabled) {
+      viewer.addEventListener('click', (e) => {
+        setCalibClick({
+          yaw: e.data.yaw,
+          pitch: e.data.pitch,
+          textureX: e.data.textureX,
+          textureY: e.data.textureY,
+        })
+      })
+    }
+
     const markersPlugin = markersPluginRef.current
     if (markersPlugin) {
       markersPlugin.addEventListener('select-marker', (e) => {
@@ -279,6 +302,8 @@ export const SphereRaumViewerInner = forwardRef<
       el.removeEventListener('touchstart', onTouchStart, { capture: true })
       el.removeEventListener('touchend', onTouchEnd)
       loadedPanoramaRef.current = null
+      markerKindsRef.current.clear()
+      mascotElementsRef.current.clear()
       viewer.destroy()
       viewerRef.current = null
       markersPluginRef.current = null
@@ -286,7 +311,7 @@ export const SphereRaumViewerInner = forwardRef<
       setReady(false)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [alt, orientationEnabled])
+  }, [alt, orientationEnabled, calibEnabled])
 
   useEffect(() => {
     const viewer = viewerRef.current
@@ -296,33 +321,78 @@ export const SphereRaumViewerInner = forwardRef<
     void viewer.setPanorama(panorama).catch(() => {})
   }, [panorama, ready])
 
+  // Marker-Struktur: einmal anlegen/entfernen bei Hotspot- oder Medien-Änderung
   useEffect(() => {
     const plugin = markersPluginRef.current
     if (!plugin || !ready) return
 
-    plugin.clearMarkers()
-    if (!hotspots360?.length) return
+    const list = hotspots360 ?? []
+    const nextIds = new Set(list.map((h) => h.id))
+    const containerHeight = viewerRef.current?.getSize().height ?? 400
+
+    for (const id of [...markerKindsRef.current.keys()]) {
+      if (!nextIds.has(id)) {
+        plugin.removeMarker(id)
+        markerKindsRef.current.delete(id)
+        mascotElementsRef.current.delete(id)
+      }
+    }
+
+    for (const hs of list) {
+      if (markerKindsRef.current.has(hs.id)) continue
+      const built = buildSphereMarkerConfig({
+        hs,
+        medien,
+        containerHeight,
+        isActive: false,
+        speakingRolle: null,
+      })
+      markerKindsRef.current.set(hs.id, built.kind)
+      if (built.mascotElement) {
+        mascotElementsRef.current.set(hs.id, built.mascotElement)
+      }
+      plugin.addMarker(built.config as Parameters<MarkersPlugin['addMarker']>[0])
+    }
+  }, [hotspots360, medien, ready])
+
+  // Visueller Zustand: updateMarker / DOM-Mutation ohne Rebuild
+  useEffect(() => {
+    const plugin = markersPluginRef.current
+    if (!plugin || !ready || !hotspots360?.length) return
 
     const containerHeight = viewerRef.current?.getSize().height ?? 400
 
     for (const hs of hotspots360) {
-      const isActive = hs.id === activeHotspotId
-      plugin.addMarker({
-        id: hs.id,
-        position: {
-          yaw: hs.yaw * (Math.PI / 180),
-          pitch: hs.pitch * (Math.PI / 180),
-        },
-        html: buildSphereMarkerHtml({
-          hs,
-          medien,
-          containerHeight,
-          isActive,
-          speakingRolle,
-        }),
-        anchor: isMascotDialogHotspot(hs) ? 'bottom center' : 'center center',
-        tooltip: hs.label ?? undefined,
-      })
+      const kind = markerKindsRef.current.get(hs.id)
+      if (!kind) continue
+
+      const options = {
+        hs,
+        medien,
+        containerHeight,
+        isActive: hs.id === activeHotspotId,
+        speakingRolle,
+      }
+
+      if (kind === 'htmlMascot') {
+        const el = mascotElementsRef.current.get(hs.id)
+        if (el) {
+          applyMascotElementState(
+            el,
+            hs,
+            containerHeight,
+            hs.id === activeHotspotId,
+            speakingRolle,
+          )
+        }
+        continue
+      }
+
+      plugin.updateMarker(
+        buildSphereMarkerVisualUpdate(options, kind) as Parameters<
+          MarkersPlugin['updateMarker']
+        >[0],
+      )
     }
   }, [hotspots360, medien, activeHotspotId, speakingRolle, ready])
 
@@ -334,6 +404,12 @@ export const SphereRaumViewerInner = forwardRef<
     >
       <div ref={containerRef} className="h-full w-full" />
       <PanOnboardingOverlay mode="sphere" skip={orientState === 'needs-gesture'} />
+      {calibEnabled ? (
+        <SphereHotspotCalibOverlay
+          hotspots360={hotspots360}
+          lastClick={calibClick}
+        />
+      ) : null}
       {isHero && orientState === 'needs-gesture' ? (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-black/50 px-6">
           <p className="text-center text-sm text-fg-on-dark">
