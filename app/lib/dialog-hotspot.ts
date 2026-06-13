@@ -2,6 +2,8 @@ import {
   DEFAULT_MASCOT_SIZE_NORM,
   MAX_MASCOT_SIZE_NORM,
   MIN_MASCOT_SIZE_NORM,
+  SPHERE_LOCKED_FOV_DEG,
+  SPHERE_REFERENCE_FOV_DEG,
   clamp,
 } from '@/lib/raum-viewer/constants'
 import type { DialogFigure, Hotspot, HotspotBase, Station } from '@/lib/types'
@@ -32,12 +34,28 @@ export function resolveMascotSizeNorm(hs: HotspotBase): number {
   return clamp(v, MIN_MASCOT_SIZE_NORM, MAX_MASCOT_SIZE_NORM)
 }
 
+export function resolveMascotSizeNormForSphere(hs: HotspotBase): number {
+  const flatNorm = resolveMascotSizeNorm(hs)
+  return (
+    flatNorm *
+    (SPHERE_REFERENCE_FOV_DEG / SPHERE_LOCKED_FOV_DEG)
+  )
+}
+
 export function resolveMascotHeightPx(
   hs: HotspotBase,
   containerHeight: number,
 ): number {
   if (containerHeight <= 0) return 0
   return resolveMascotSizeNorm(hs) * containerHeight
+}
+
+export function resolveMascotHeightPxForSphere(
+  hs: HotspotBase,
+  containerHeight: number,
+): number {
+  if (containerHeight <= 0) return 0
+  return resolveMascotSizeNormForSphere(hs) * containerHeight
 }
 
 /** Typ-Guard: ist der Hotspot ein Flat-Hotspot mit x/y-Koordinaten? */

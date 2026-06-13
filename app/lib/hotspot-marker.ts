@@ -3,6 +3,8 @@ import {
   DEFAULT_ICON_SIZE_NORM,
   MAX_ICON_SIZE_NORM,
   MIN_ICON_SIZE_NORM,
+  SPHERE_LOCKED_FOV_DEG,
+  SPHERE_REFERENCE_FOV_DEG,
   clamp,
 } from '@/lib/raum-viewer/constants'
 
@@ -22,6 +24,13 @@ const PRESET_ICON: Record<MediumTyp, string> = {
 export function resolveIconSizeNorm(hs: Pick<HotspotBase, 'iconSize'>): number {
   const v = hs.iconSize ?? DEFAULT_ICON_SIZE_NORM
   return clamp(v, MIN_ICON_SIZE_NORM, MAX_ICON_SIZE_NORM)
+}
+
+export function resolveIconSizeNormForSphere(
+  hs: Pick<HotspotBase, 'iconSize'>,
+): number {
+  const flatNorm = resolveIconSizeNorm(hs)
+  return flatNorm * (SPHERE_REFERENCE_FOV_DEG / SPHERE_LOCKED_FOV_DEG)
 }
 
 export function presetIconForMediumTyp(typ: MediumTyp): string {
