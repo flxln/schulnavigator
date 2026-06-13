@@ -23,6 +23,8 @@ import type {
 import {
   ROOM_VIEWER_HEIGHT_CSS,
   SPHERE_GYRO_ROLL_ENABLED,
+  SPHERE_LOCKED_FOV_DEG,
+  SPHERE_LOCKED_FOV_EPSILON_DEG,
 } from '@/lib/raum-viewer/constants'
 import type { RaumViewerLayout } from '@/components/raum-viewer/raum-viewer'
 import { PanOnboardingOverlay } from '@/components/raum-viewer/pan-onboarding-overlay'
@@ -76,9 +78,13 @@ export const SphereRaumViewerInner = forwardRef<
   const onContainerReadyRef = useRef(onContainerReady)
   const hotspots360Ref = useRef(hotspots360)
   const loadedPanoramaRef = useRef<string | null>(null)
+  const orientStateRef = useRef<string>('active')
+  const startGyroRef = useRef<() => Promise<void>>(async () => {})
   const [ready, setReady] = useState(false)
 
   const { state: orientState, requestAccess } = useDeviceOrientation(orientationEnabled)
+
+  useEffect(() => { orientStateRef.current = orientState }, [orientState])
 
   useEffect(() => { onViewChangeRef.current = onViewChange }, [onViewChange])
   useEffect(() => { onHotspotTapRef.current = onHotspotTap }, [onHotspotTap])
@@ -98,6 +104,8 @@ export const SphereRaumViewerInner = forwardRef<
       // Gyroskop nicht verfügbar oder verweigert — stiller Fallback auf Touch-Steuerung
     }
   }, [orientationEnabled])
+
+  useEffect(() => { startGyroRef.current = startGyroIfPossible }, [startGyroIfPossible])
 
   // Auto-start on Android / non-iOS (no permission dialog needed)
   useEffect(() => {
@@ -152,6 +160,13 @@ export const SphereRaumViewerInner = forwardRef<
       container: el,
       caption: alt,
       navbar: false,
+      // Zoom gesperrt: festes FOV. Epsilon-Spanne statt min===max, sonst 0/0=NaN in
+      // PSV fovToZoomLevel → Bubble-Projektion bricht. Zoom wieder entsperren? Dann
+      // zoom-updated-Listener für Bubble-Projektion UND FOV-abhängige Markergröße nötig (ADR-018).
+      minFov: SPHERE_LOCKED_FOV_DEG - SPHERE_LOCKED_FOV_EPSILON_DEG,
+      maxFov: SPHERE_LOCKED_FOV_DEG,
+      defaultZoomLvl: 0,
+      mousewheel: false,
       plugins: [
         [
           MarkersPlugin,
@@ -180,6 +195,23 @@ export const SphereRaumViewerInner = forwardRef<
       ? (viewer.getPlugin(GyroscopePlugin) as GyroscopePlugin)
       : null
     gyroPluginRef.current = gyroPlugin
+
+    // Zwei-Finger-Pinch ruft PSV stopAll() auf → Gyro stoppt. Capture-Phase merkt den
+    // Zustand vor PSV; nach touchend Gyro wieder starten.
+    let pinchGyroResumePending = false
+    const onTouchStart = (evt: TouchEvent) => {
+      if (evt.touches.length >= 2 && gyroPlugin?.isEnabled()) {
+        pinchGyroResumePending = true
+      }
+    }
+    const onTouchEnd = (evt: TouchEvent) => {
+      if (evt.touches.length !== 0 || !pinchGyroResumePending) return
+      pinchGyroResumePending = false
+      if (!orientationEnabled || orientStateRef.current !== 'active') return
+      void startGyroRef.current()
+    }
+    el.addEventListener('touchstart', onTouchStart, { capture: true, passive: true })
+    el.addEventListener('touchend', onTouchEnd, { passive: true })
 
     // PSV's __checkSupport() resolves on the very first 'deviceorientation' event,
     // which may carry alpha=null on Android during sensor calibration. Replace the
@@ -244,6 +276,8 @@ export const SphereRaumViewerInner = forwardRef<
     return () => {
       destroyed = true
       cancelAnimationFrame(rafId)
+      el.removeEventListener('touchstart', onTouchStart, { capture: true })
+      el.removeEventListener('touchend', onTouchEnd)
       loadedPanoramaRef.current = null
       viewer.destroy()
       viewerRef.current = null

@@ -51,6 +51,22 @@ export const RECOMMENDED_SOURCE_ASPECT_MIN = 2.5
 /** Sphere-Viewer (PSV): Gyro-Roll (Seitwärts-Kippen des Bildes) — `GyroscopePlugin.roll`. */
 export const SPHERE_GYRO_ROLL_ENABLED = false
 
+/** Sphere-Viewer (PSV): festes FOV — Zoom gesperrt, Dialog-Marker stabil (ADR-018). */
+export const SPHERE_LOCKED_FOV_DEG = 90
+/** Untere FOV-Grenze knapp unter {@link SPHERE_LOCKED_FOV_DEG} — vermeidet 0/0-NaN in PSV `fovToZoomLevel`. */
+export const SPHERE_LOCKED_FOV_EPSILON_DEG = 0.02
+/**
+ * PSV-Default bei zoomLevel 50 (vor Zoom-Sperre). Skalierungsbasis für Sphere-Marker @ 90° FOV.
+ * `zoomLevelToFov(50) = (maxFov + minFov) / 2` mit Defaults 30/90 → 60°.
+ */
+export const SPHERE_REFERENCE_FOV_DEG = 60
+/** Maskottchen @ 90° FOV: DEFAULT_MASCOT_SIZE_NORM × (60°/90°). */
+export const SPHERE_MASCOT_SIZE_NORM =
+  DEFAULT_MASCOT_SIZE_NORM * (SPHERE_REFERENCE_FOV_DEG / SPHERE_LOCKED_FOV_DEG)
+/** Medien-Icon @ 90° FOV: DEFAULT_ICON_SIZE_NORM × (60°/90°). */
+export const SPHERE_ICON_SIZE_NORM =
+  DEFAULT_ICON_SIZE_NORM * (SPHERE_REFERENCE_FOV_DEG / SPHERE_LOCKED_FOV_DEG)
+
 export function clamp(n: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, n))
 }

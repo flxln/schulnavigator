@@ -2,12 +2,12 @@ import type { DialogFigure, DialogRolle, Hotspot360, Medium } from '@/lib/types'
 import {
   isMascotDialogHotspot,
   mascotFromHotspot,
-  resolveMascotHeightPx,
+  resolveMascotHeightPxForSphere,
 } from '@/lib/dialog-hotspot'
 import { isMascotSpeaking } from '@/lib/dialog-display'
 import {
   presetIconForMediumTyp,
-  resolveIconSizeNorm,
+  resolveIconSizeNormForSphere,
 } from '@/lib/hotspot-marker'
 
 const MASCOT_SRC: Record<DialogFigure, string> = {
@@ -29,7 +29,7 @@ function resolveMarkerImage(
   containerHeight: number,
 ): { kind: 'dot' } | { kind: 'image'; src: string; heightPx: number } {
   const heightPx =
-    containerHeight > 0 ? resolveIconSizeNorm(hs) * containerHeight : 32
+    containerHeight > 0 ? resolveIconSizeNormForSphere(hs) * containerHeight : 32
   if (hs.icon) {
     return { kind: 'image', src: hs.icon, heightPx }
   }
@@ -68,7 +68,7 @@ export function buildSphereMarkerHtml({
       ? isMascotSpeaking(speakingRolle, mascot)
       : isActive
     const dimmed = Boolean(speakingRolle && !speaking)
-    const mascPx = resolveMascotHeightPx(hs, containerHeight)
+    const mascPx = resolveMascotHeightPxForSphere(hs, containerHeight)
     const flipClass = hs.mascotFlipX ? ' sn-dialog-mascot__img--flip-x' : ''
     const speakClass = speaking ? ' sn-dialog-mascot__img--speaking' : ''
     const opacity = dimmed ? '0.45' : '1'
