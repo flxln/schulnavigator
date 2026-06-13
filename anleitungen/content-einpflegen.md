@@ -215,6 +215,21 @@ Orientierung: Eintrag `klassenzimmer` in `stations.json` (Issue **#93**).
 
 **Dialog-Stationen** (`daz`, `pc-raum`): Audio läuft über `dialog.segmente[]` und `/api/dialog/…` — nicht über `typ: audio` in `medien[]`. Dort Hotspots mit `action: "dialog"`, `mascot: "frieda"` \| `"otto"` und optional `mascotSize` (Default im Code: `0.22`) sowie `mascotFlipX`.
 
+### `hotspots360[]` (nur `viewer: "equirectangular"`, ADR-018)
+
+Statt `x`/`y` gelten **Kugelkoordinaten** aus dem Equirectangular-Panorama:
+
+| Feld | Pflicht | Werte / Hinweis |
+|------|---------|-----------------|
+| `id` | ja | Eindeutig pro Station |
+| `yaw`, `pitch` | ja | Grad (−180…180 / −90…90); Ankerpunkt im Panorama |
+| `mediumId` | bei Medien-Hotspot | Wie bei Flat |
+| `action`, `mascot`, `mascotSize`, `mascotFlipX` | Dialog | Wie bei Flat |
+| `bubblePitchOffset` | nein | Zusätzlicher Pitch (Grad) für Dialog-Bubble nach oben; nur Dialog |
+| `icon`, `iconSize` | Medien | Wie bei Flat |
+
+**Kalibrierung (Dev):** `npm run dev` → `/raum/{slug}?hotspot-calib=1` → auf Ankerpunkt klicken → JSON-Snippet kopieren. Maskottchen: **Fuß** anklicken; Medien: **Icon-Mitte**. Abnahme-Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/projektmanagement/2026-06-13-sphere-hotspot-acceptance.md).
+
 ### `dialog` — Sprecherwechsel und Text (**heute pflegbar**)
 
 Block `station.dialog` neben `hotspots[]` (Beispiel: `daz` in `stations.json`).
