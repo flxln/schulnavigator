@@ -9,6 +9,7 @@ const mocks = vi.hoisted(() => {
   const gyroIsEnabled = vi.fn().mockReturnValue(false)
   let _orientState = 'active'
   let _readyCb: (() => void) | null = null
+  let _viewerConfig: Record<string, unknown> | null = null
   return {
     requestAccess,
     gyroStart,
@@ -17,6 +18,8 @@ const mocks = vi.hoisted(() => {
     setOrientState: (s: string) => { _orientState = s },
     fireViewerReady: () => { _readyCb?.() },
     storeReadyCb: (fn: () => void) => { _readyCb = fn },
+    getViewerConfig: () => _viewerConfig,
+    storeViewerConfig: (config: Record<string, unknown>) => { _viewerConfig = config },
   }
 })
 
@@ -43,7 +46,9 @@ vi.mock('@photo-sphere-viewer/core', async () => {
     state: { isSupported: Promise.resolve(true) },
   }
   return {
-    Viewer: vi.fn().mockImplementation(() => ({
+    Viewer: vi.fn().mockImplementation((config: Record<string, unknown>) => {
+      mocks.storeViewerConfig(config)
+      return {
       addEventListener: vi.fn((event: string, handler: () => void) => {
         if (event === 'ready') mocks.storeReadyCb(handler)
       }),
@@ -57,7 +62,8 @@ vi.mock('@photo-sphere-viewer/core', async () => {
       animate: vi.fn(),
       destroy: vi.fn(),
       dataHelper: { sphericalCoordsToViewerCoords: vi.fn(() => ({ x: 100, y: 100 })) },
-    })),
+      }
+    }),
   }
 })
 
@@ -81,6 +87,10 @@ vi.mock('@/components/raum-viewer/pan-onboarding-overlay', () => ({
 }))
 
 import { SphereRaumViewerInner } from '@/components/raum-viewer/sphere-raum-viewer-inner'
+import {
+  SPHERE_LOCKED_FOV_DEG,
+  SPHERE_LOCKED_FOV_EPSILON_DEG,
+} from '@/lib/raum-viewer/constants'
 
 const DEFAULT_PROPS = {
   panorama: '/stations/360/musik.jpg',
@@ -96,6 +106,20 @@ beforeEach(() => {
   mocks.requestAccess.mockClear()
   mocks.gyroStart.mockClear()
   mocks.gyroIsEnabled.mockReturnValue(false)
+  mocks.storeViewerConfig({})
+})
+
+describe('Config-Smoke-Test (Zoom-Sperre)', () => {
+  it('übergibt festes FOV und deaktiviertes Mausrad an PSV Viewer', () => {
+    render(<SphereRaumViewerInner {...DEFAULT_PROPS} />)
+    const config = mocks.getViewerConfig()
+    expect(config).not.toBeNull()
+    expect(config!.minFov).toBe(SPHERE_LOCKED_FOV_DEG - SPHERE_LOCKED_FOV_EPSILON_DEG)
+    expect(config!.maxFov).toBe(SPHERE_LOCKED_FOV_DEG)
+    expect(config!.minFov).toBeLessThan(config!.maxFov as number)
+    expect(config!.defaultZoomLvl).toBe(0)
+    expect(config!.mousewheel).toBe(false)
+  })
 })
 
 describe('Gyro-Auto-Start', () => {
