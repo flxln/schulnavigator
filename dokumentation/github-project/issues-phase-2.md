@@ -716,6 +716,29 @@ Spezifikation: [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) · Detail:
 
 ---
 
+## #116 — Sphere-Viewer: Zoom-Sperre + Gyro-Neustart nach Pinch (Folge #114)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/116 — **geschlossen** (2026-06-11, Branch `feature/sphere-zoom-sperre`)
+
+**Labels:** `tech`  
+**Assignee:** Felix  
+**Milestone:** Phase 2 — Content-Struktur + UI
+
+**Ziel:** Pinch-/Mausrad-Zoom im Sphere-Viewer deaktivieren (festes FOV 90°), Dialog-Bubble stabil halten, Marker für 90° nachkalibrieren; Gyro nach Zwei-Finger-Pinch wieder aktivieren.
+
+**Kontext:** ADR-018 (Zoom-Sperre + Gyro-Neustart), Folge #114.
+
+### Checkliste
+
+- [x] `SPHERE_LOCKED_FOV_DEG` + Epsilon-Spanne in `constants.ts`
+- [x] PSV-Config: `minFov`/`maxFov`/`defaultZoomLvl`/`mousewheel` in `sphere-raum-viewer-inner.tsx`
+- [x] Sphere-Marker-Normen (`resolveMascotSizeNormForSphere`, `resolveIconSizeNormForSphere`)
+- [x] Config-Smoke-Test `sphere-raum-viewer-inner.test.tsx`
+- [x] Gyro-Neustart nach Pinch (`touchstart` Capture + `touchend`)
+- [x] ADR-018 Konsequenzen ergänzt
+
+---
+
 ## #26 — WLAN-Test vor Ort vereinbaren
 
 **Labels:** `org`  
