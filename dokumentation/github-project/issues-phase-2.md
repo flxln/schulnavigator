@@ -846,7 +846,7 @@ Spezifikation: [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) · Detail:
 
 ## #124 — Hub: Wegweiser-Slots für Schulhof und Turnhalle (ADR-020)
 
-**GitHub:** https://github.com/flxln/schulnavigator/issues/124 — **geschlossen** (2026-06-14, Branch `feature/hub-wegweiser` → `main`)
+**GitHub:** https://github.com/flxln/schulnavigator/issues/124 — **geschlossen** (2026-06-14, [PR #125](https://github.com/flxln/schulnavigator/pull/125) → `main`)
 
 **Labels:** `tech`, `design`  
 **Assignee:** Felix  
