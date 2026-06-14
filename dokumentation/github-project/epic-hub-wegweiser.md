@@ -1,7 +1,7 @@
 # Epic: Hub Wegweiser — Außen-Stationen (ADR-020)
 
 **Milestone:** Phase 2 — Content-Struktur + UI  
-**Status:** abgeschlossen (Branch `feature/hub-wegweiser` → `main`)
+**Status:** abgeschlossen ([PR #125](https://github.com/flxln/schulnavigator/pull/125) → `main`)
 
 ## Übersicht
 
