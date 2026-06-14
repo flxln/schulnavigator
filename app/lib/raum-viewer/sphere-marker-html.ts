@@ -6,6 +6,7 @@ import {
 } from '@/lib/dialog-hotspot'
 import { isMascotSpeaking } from '@/lib/dialog-display'
 import {
+  mediaIconSizingReferenceHeight,
   presetIconForMediumTyp,
   resolveIconSizeNormForSphere,
 } from '@/lib/hotspot-marker'
@@ -27,9 +28,14 @@ function resolveMarkerImage(
   hs: Hotspot360,
   medium: Medium | undefined,
   containerHeight: number,
+  layoutViewportWidth?: number,
 ): { kind: 'dot' } | { kind: 'image'; src: string; heightPx: number } {
+  const refH = mediaIconSizingReferenceHeight(
+    containerHeight,
+    layoutViewportWidth,
+  )
   const heightPx =
-    containerHeight > 0 ? resolveIconSizeNormForSphere(hs) * containerHeight : 32
+    refH > 0 ? resolveIconSizeNormForSphere(hs) * refH : 32
   if (hs.icon) {
     return { kind: 'image', src: hs.icon, heightPx }
   }
@@ -46,6 +52,7 @@ export type BuildSphereMarkerHtmlOptions = {
   hs: Hotspot360
   medien: Medium[]
   containerHeight: number
+  layoutViewportWidth?: number
   isActive: boolean
   speakingRolle?: DialogRolle | null
 }
@@ -54,6 +61,7 @@ export function buildSphereMarkerHtml({
   hs,
   medien,
   containerHeight,
+  layoutViewportWidth,
   isActive,
   speakingRolle = null,
 }: BuildSphereMarkerHtmlOptions): string {
@@ -80,7 +88,7 @@ export function buildSphereMarkerHtml({
   const medium = hs.mediumId
     ? medien.find((x) => x.id === hs.mediumId)
     : undefined
-  const marker = resolveMarkerImage(hs, medium, containerHeight)
+  const marker = resolveMarkerImage(hs, medium, containerHeight, layoutViewportWidth)
 
   if (marker.kind === 'image') {
     const ringClass = isActive

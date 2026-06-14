@@ -7,7 +7,9 @@ import {
   resolveMascotHeightPx,
 } from '@/lib/dialog-hotspot'
 import { isMascotSpeaking } from '@/lib/dialog-display'
-import { resolveHotspotMarker } from '@/lib/hotspot-marker'
+import {
+  resolveHotspotMarker,
+} from '@/lib/hotspot-marker'
 import {
   hotspotImageY,
   type HotspotYBand,
@@ -32,6 +34,8 @@ export type HotspotOverlayProps = {
   medien: Medium[]
   /** Panorama-Anzeigehöhe in px (= effectiveDisplayH). */
   containerHeight: number
+  /** Viewer-Breite in px — Tablet-Erkennung für Medien-Icon-Skalierung (≥520, typ. md:max-w-2xl). */
+  layoutViewportWidth?: number
   /** Sichtbarer y-Bereich auf dem Bild-Layer (für viewport-relative JSON-y). */
   yBand: HotspotYBand
   activeHotspotId?: string | null
@@ -57,6 +61,7 @@ export function HotspotOverlay({
   hotspots,
   medien,
   containerHeight,
+  layoutViewportWidth,
   yBand,
   activeHotspotId = null,
   speakingRolle = null,
@@ -130,7 +135,12 @@ export function HotspotOverlay({
         const medium = hs.mediumId
           ? medien.find((x) => x.id === hs.mediumId)
           : undefined
-        const marker = resolveHotspotMarker(hs, medium, containerHeight)
+        const marker = resolveHotspotMarker(
+          hs,
+          medium,
+          containerHeight,
+          layoutViewportWidth,
+        )
         const ringClass = isActive
           ? 'ring-4 ring-accent/40'
           : 'ring-2 ring-bg-dark/25'

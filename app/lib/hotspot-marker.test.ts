@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  mediaIconSizingReferenceHeight,
   presetIconForMediumTyp,
   resolveHotspotMarker,
   resolveIconSizeNorm,
@@ -28,6 +29,21 @@ describe('resolveIconSizeNorm', () => {
   it('clampt iconSize auf MIN/MAX', () => {
     expect(resolveIconSizeNorm(mediaHotspot({ iconSize: 0.01 }))).toBe(0.05)
     expect(resolveIconSizeNorm(mediaHotspot({ iconSize: 0.9 }))).toBe(0.25)
+  })
+})
+
+describe('mediaIconSizingReferenceHeight', () => {
+  it('lässt Phone-Hero unverändert', () => {
+    expect(mediaIconSizingReferenceHeight(563, 375)).toBe(563)
+  })
+
+  it('deckelt große Phones unter 520px containerW auf Pro-Max-Referenz', () => {
+    expect(mediaIconSizingReferenceHeight(828, 430)).toBe(828)
+  })
+
+  it('nutzt Phone-QA-Referenz auf Tablet (containerW ≥520 px)', () => {
+    expect(mediaIconSizingReferenceHeight(920, 520)).toBe(563)
+    expect(mediaIconSizingReferenceHeight(920, 672)).toBe(563)
   })
 })
 
@@ -64,6 +80,20 @@ describe('resolveHotspotMarker', () => {
       kind: 'image',
       src: presetIconForMediumTyp('video'),
       heightPx: 30,
+    })
+  })
+
+  it('deckelt Icon-Höhe auf Tablet-Viewern (containerW 672 px)', () => {
+    const marker = resolveHotspotMarker(
+      mediaHotspot({ iconSize: 0.2 }),
+      videoMedium,
+      920,
+      672,
+    )
+    expect(marker).toEqual({
+      kind: 'image',
+      src: presetIconForMediumTyp('video'),
+      heightPx: 0.2 * 563,
     })
   })
 

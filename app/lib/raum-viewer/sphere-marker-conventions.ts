@@ -10,7 +10,10 @@
  */
 
 import { resolveMascotSizeNorm } from '@/lib/dialog-hotspot'
-import { resolveIconSizeNorm } from '@/lib/hotspot-marker'
+import {
+  mediaIconSizingReferenceHeight,
+  resolveIconSizeNorm,
+} from '@/lib/hotspot-marker'
 import type { Hotspot360 } from '@/lib/types'
 
 /** PSV imageLayer: mesh.scale = size / 100 — Referenzhöhe für Norm→Pixel. */
@@ -44,8 +47,13 @@ export function resolveImageLayerSize(
   hs: Hotspot360,
   kind: 'icon' | 'mascot',
   containerHeight: number,
+  layoutViewportWidth?: number,
 ): { width: number; height: number } {
-  const refH = containerHeight > 0 ? containerHeight : SPHERE_LAYER_REF_VIEWER_HEIGHT
+  const rawH = containerHeight > 0 ? containerHeight : SPHERE_LAYER_REF_VIEWER_HEIGHT
+  const refH =
+    kind === 'icon'
+      ? mediaIconSizingReferenceHeight(rawH, layoutViewportWidth)
+      : rawH
   const norm =
     kind === 'icon' ? resolveIconSizeNorm(hs) : resolveMascotSizeNorm(hs)
   const height = Math.max(16, Math.round(norm * refH * SPHERE_LAYER_SIZE_SCALE))

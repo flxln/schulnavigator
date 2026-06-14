@@ -657,6 +657,7 @@ Spezifikation: [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) · Detail:
 - [x] #78 — Dialog-/Medien-Polish (Bubble, Maskottchen-Schatten, Video `aspect-video` im Modal)
 - [x] `anleitungen/lokal-testen-und-anschauen.md` — Tablet-Viewports (768, 1024, 834)
 - [x] `architektur.md` — Abschnitt Responsive/Tablet
+- [x] Medien-Hotspot-Icons: Tablet-Skalierung (`mediaIconSizingReferenceHeight`, `layoutViewportWidth ≥ 520 px` → Phone-QA-Referenz; Folge #74 QA)
 
 ---
 

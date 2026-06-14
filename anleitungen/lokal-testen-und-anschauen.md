@@ -110,7 +110,7 @@ npm run start
 | Viewport | Routen | Prüfen |
 |----------|--------|--------|
 | 375×667 | `/`, `/raum/musik` | Phone-Baseline unverändert |
-| 768×1024 | `/`, `/raum/musik`, `/raum/daz`, `/scan` | Breitere Spalte (~672 px), größerer Hero, Scan-Vollfläche, Medien-Modal zentriert |
+| 768×1024 | `/`, `/raum/musik`, `/raum/daz`, `/scan` | Breitere Spalte (~672 px), größerer Hero, Scan-Vollfläche, Medien-Modal zentriert; **Medien-Hotspots** etwa wie am Phone (nicht überproportional groß) |
 | 1024×768 | `/raum/musik` | Gyro γ, Rotation ohne Pan-Sprung |
 | 834×1194 | `/raum/daz` | Dialog-Gruppe (Bubble + Maskottchen) |
 | 1024×1366 | `/`, `/raum/musik` | `lg:max-w-3xl`-Cap, Leerraum links/rechts gewollt |

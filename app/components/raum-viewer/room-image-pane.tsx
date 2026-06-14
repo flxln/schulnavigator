@@ -731,6 +731,7 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
               hotspots={hotspots}
               medien={medien}
               containerHeight={effectiveDisplayH}
+              layoutViewportWidth={containerW}
               yBand={yBand}
               activeHotspotId={activeHotspotId}
               speakingRolle={speakingRolle}
