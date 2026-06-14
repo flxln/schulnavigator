@@ -51,7 +51,7 @@
           "pitch": 0,
           "mediumId": "demo-video",
           "icon": "/media/klassenzimmer/icons/play.svg",
-          "iconSize": 0.1
+          "iconSize": 0.2
         },
         {
           "id": "hs-audio",
@@ -218,7 +218,7 @@
           "pitch": 2,
           "mediumId": "pc-delightex",
           "icon": "/media/pc-raum/icons/delightex.svg",
-          "iconSize": 0.1
+          "iconSize": 0.2
         }
       ],
       "dialog": {
@@ -343,26 +343,30 @@
           "id": "demo-audio",
           "typ": "audio",
           "quelle": "/demo/ton.wav",
-          "untertitel": "Demo-Audio (Platzhalter)"
+          "untertitel": "Demo-Audio (Platzhalter)",
+          "iconSize": 0.2
         },
         {
           "id": "demo-video",
           "typ": "video",
           "videoSource": "upload",
           "quelle": "/demo/video-plakat.jpg",
-          "untertitel": "Video folgt — Demo-Poster"
+          "untertitel": "Video folgt — Demo-Poster",
+          "iconSize": 0.2
         },
         {
           "id": "demo-foto",
           "typ": "foto",
           "quelle": "/demo/foto.jpg",
-          "untertitel": "Demo-Foto"
+          "untertitel": "Demo-Foto",
+          "iconSize": 0.2
         },
         {
           "id": "demo-text",
           "typ": "text",
           "quelle": "/demo/musik-info.txt",
-          "untertitel": "Demo-Text"
+          "untertitel": "Demo-Text",
+          "iconSize": 0.2
         }
       ],
       "hotspots360": [
@@ -371,14 +375,16 @@
           "label": "Video-Bereich",
           "yaw": -28,
           "pitch": -12,
-          "mediumId": "demo-video"
+          "mediumId": "demo-video",
+          "iconSize": 0.2
         },
         {
           "id": "hs-audio",
           "label": "Audio-Bereich",
           "yaw": 22,
           "pitch": -10,
-          "mediumId": "demo-audio"
+          "mediumId": "demo-audio",
+          "iconSize": 0.2
         }
       ]
     },
