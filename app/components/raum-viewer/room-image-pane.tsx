@@ -21,8 +21,6 @@ import {
   PAN_SMOOTHING,
   PORTRAIT_GAMMA_FALLBACK_ENABLED,
   RECOMMENDED_SOURCE_ASPECT_MIN,
-  ROOM_VIEWER_HEIGHT_CSS,
-  ROOM_VIEWER_MAX_HEIGHT_PX,
   maxPanPx,
 } from '@/lib/raum-viewer/constants'
 import { visibleYNormalRange } from '@/lib/raum-viewer/clip-zone'
@@ -136,7 +134,7 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
   const [naturalW, setNaturalW] = useState(0)
   const [naturalH, setNaturalH] = useState(0)
   const [containerW, setContainerW] = useState(0)
-  const [containerH, setContainerH] = useState(ROOM_VIEWER_MAX_HEIGHT_PX)
+  const [containerH, setContainerH] = useState(0)
   const [panPx, setPanPx] = useState(0)
   const [neutralEpoch, setNeutralEpoch] = useState(0)
 
@@ -646,15 +644,12 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
     )
   }
 
-  const viewerHeightStyle = isHero
-    ? { height: '100%' as const }
-    : { height: ROOM_VIEWER_HEIGHT_CSS }
+  const viewerHeightClass = isHero ? 'h-full' : 'sn-viewer-fallback-height'
 
   if (broken) {
     return (
       <div
-        className={`flex w-full items-center justify-center bg-brand-sky-50 px-4 text-center text-sm font-medium text-fg-1 ${isHero ? 'h-full' : 'rounded-[var(--r-md)]'}`}
-        style={viewerHeightStyle}
+        className={`flex w-full items-center justify-center bg-brand-sky-50 px-4 text-center text-sm font-medium text-fg-1 ${isHero ? 'h-full' : `rounded-[var(--r-md)] ${viewerHeightClass}`}`}
       >
         Raumbild konnte nicht geladen werden.
       </div>
@@ -697,9 +692,8 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
     <div className={isHero ? 'h-full' : 'flex flex-col gap-2'}>
       <div
         ref={containerRef}
-        className={`relative w-full overflow-hidden bg-bg-dark ${isHero ? 'h-full' : 'rounded-[var(--r-md)]'}`}
+        className={`relative w-full overflow-hidden bg-bg-dark ${isHero ? 'h-full' : `rounded-[var(--r-md)] ${viewerHeightClass}`}`}
         style={{
-          ...viewerHeightStyle,
           touchAction: 'none',
           contain: 'layout paint style',
         }}

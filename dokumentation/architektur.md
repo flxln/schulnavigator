@@ -18,13 +18,38 @@ _Stand: 2026-06-11 (**#111:** Card-Peek Raumseiten + iOS-Breitenfix; **#107:** S
 | Raum-Viewer         | Gyro-Pan, Hotspots, Tap-Fallback; normales Foto   | gleich                           | [006](./adr/006-raum-viewer-gyro-hotspots.md) |
 | UI / Schul-Theme    | GS39-Tokens + Jubiläums-UI (Epic #58)             | pro Schule eigenes Token-Sheet   | [ADR-009](./adr/009-hub-isometrisch.md), Auftraggeber-CSS |
 | Startseite-Hub      | Frontansicht GS39 (SVG-Outline, Slot-Map)         | gleich                           | [ADR-016](./adr/016-hub-frontansicht-39gs.md) |
-| Responsive / Tablet | Phone `max-w-lg`; Tablet-Skalierung geplant       | Breakpoints `md`/`lg`            | [ADR-012](./adr/012-tablet-ipad-responsive-layout.md), Epic [#74–#78](./github-project/epic-tablet-ipad-layout.md) |
+| Responsive / Tablet | `.sn-page-container` (`max-w-lg` → `md:2xl` → `lg:3xl`) | gleich                           | [ADR-012](./adr/012-tablet-ipad-responsive-layout.md), Epic [#74–#78](./github-project/epic-tablet-ipad-layout.md) |
 
-## Responsive Layout (ADR-012, geplant)
+## Responsive & Tablet (ADR-012, umgesetzt 2026-06-14)
 
-**Ist-Zustand:** Mobile-first — Haupt-Routen `mx-auto w-full max-w-lg` (≈ 512 px); Raumseiten `/raum/[slug]`: Hero `calc(100svh - 6.5rem)` (#111 Card-Peek), Inhaltskarte mit `-mt-6` — initial nur Überschriftenzeile sichtbar, Rest per **Body-Scroll**; `overflow-x: clip` auf `html`/`body` (iOS Safari/Chrome). Viewer-Konstante `min(50vh, 360px)` für Nicht-Hero-Layouts ([`constants.ts`](../app/lib/raum-viewer/constants.ts)). **Pinch-Zoom gesperrt** projektweit ([#96](https://github.com/flxln/schulnavigator/issues/96), Folge zu [#56](./github-project/issues-phase-2.md)): Viewport `userScalable: false` + Client-Komponente [`DisableZoom`](../app/components/ui/disable-zoom.tsx) (iOS Safari ignoriert Meta-Tag); OS-Schriftgröße und Desktop-Browser-Zoom bleiben möglich.
+### Breakpoints
 
-**Ziel (Epic #74):** Ab `md` (768 px) breitere Content-Spalte und höherer Hero — **kein** CSS-`zoom`. Phone-Baseline unter `md` unverändert. Unterissues: Container (#75) → Raum-Hero (#76) → Hub (#77) → Dialog/Panel optional (#78). Spezifikation: [`github-project/epic-tablet-ipad-layout.md`](./github-project/epic-tablet-ipad-layout.md).
+| Klasse | min-Breite | Content-Breite | Zielgerät |
+|--------|------------|----------------|-----------|
+| (default) | 0 | `max-w-lg` (~512 px) | Phone Portrait (Baseline: 375 px) |
+| `md:` | 768 px | `max-w-2xl` (~672 px) | iPad Mini Portrait |
+| `lg:` | 1024 px | `max-w-3xl` (768 px) | iPad Landscape / iPad Pro |
+
+Utility: `.sn-page-container` in [`globals.css`](../app/app/globals.css). Scan-Routen (`/scan`, `/eintritt/scan`): `w-full max-w-none` (schwarze Vollfläche).
+
+### Hero-Strategie
+
+| Element | Phone + Tablet |
+|---------|----------------|
+| `RAUM_HERO_HEIGHT_CLASS` | `h-[calc(100svh-6.5rem)]` — **kein** `md:`-Cap (Card-Peek, weniger vertikaler Crop als Hero-Deckelung) |
+| TopBar `/raum/[slug]` | `fixed inset-x-0` — viewport-breit, außerhalb `overflow-x-hidden` |
+| Nicht-Hero-Viewer | `.sn-viewer-fallback-height` / `.sn-viewer-fallback-min-height` — Phone `min(50vh,360px)`, Tablet `min(50vh,460px)` |
+
+### Medien-Panel
+
+- Phone: Bottom-Sheet (`fixed inset-x-0 bottom-0`)
+- `md:` und darüber: zentriertes Modal (`max-w-2xl`), ESC + Fokus auf ×
+
+### Hub-Touch-Targets
+
+`expandHitRect` in [`schoolhouse-hub-hit.ts`](../app/lib/schoolhouse-hub-hit.ts) garantiert **44 CSS-px** (Frontansicht-Hub, ADR-016).
+
+**Pinch-Zoom gesperrt** projektweit ([#96](https://github.com/flxln/schulnavigator/issues/96)): Viewport `userScalable: false` + [`DisableZoom`](../app/components/ui/disable-zoom.tsx).
 
 ## UI & Theme (GS39, Issue #55 / Epic #58)
 

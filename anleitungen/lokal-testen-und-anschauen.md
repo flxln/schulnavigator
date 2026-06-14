@@ -103,7 +103,19 @@ npm run start
 
 **Raum-Viewer (Issue #55 / #56, #72, #96, #107, #111):** `export const viewport` in [`app/app/layout.tsx`](../app/app/layout.tsx) — korrektes **device-width** auf dem Handy (kein „Mini-Desktop-Zoom“). **Pinch-Zoom gesperrt** projektweit ([#96](https://github.com/flxln/schulnavigator/issues/96)): Meta `userScalable: false` reicht auf iOS nicht — zusätzlich [`DisableZoom`](../app/components/ui/disable-zoom.tsx) im Root-Layout. Test: mit zwei Fingern zoomen → Seite darf **nicht** skalieren (nach Deploy ggf. Hard Reload in Safari).
 
-**Card-Peek (#111):** Raumseiten nutzen **Body-Scroll** (kein Viewport-Lock). Hero-Höhe `calc(100svh - 6.5rem)`; Inhaltskarte mit `-mt-6` überlappt den Hero — initial sichtbar: nur die **Überschriftenzeile** (Chip, „Schulhaus-Rundgang“, Titel, ChevronUp). Beschreibung, Medien und Footer erst durch **Hochwischen**. `<main>` hat `w-full max-w-lg` (verhindert iOS-Überbreite bei langen Titeln); `overflow-x: clip` auf `html`/`body`.
+**Card-Peek (#111):** Raumseiten nutzen **Body-Scroll** (kein Viewport-Lock). Hero-Höhe `calc(100svh - 6.5rem)`; Inhaltskarte mit `-mt-6` überlappt den Hero — initial sichtbar: nur die **Überschriftenzeile** (Chip, „Schulhaus-Rundgang“, Titel, ChevronUp). Beschreibung, Medien und Footer erst durch **Hochwischen**. `<main>` nutzt `.sn-page-container` (Phone `max-w-lg`, Tablet breiter — siehe unten); `overflow-x: clip` auf `html`/`body`.
+
+**Tablet / iPad (Epic #74, ADR-012):** DevTools-Presets zum Layout-Check:
+
+| Viewport | Routen | Prüfen |
+|----------|--------|--------|
+| 375×667 | `/`, `/raum/musik` | Phone-Baseline unverändert |
+| 768×1024 | `/`, `/raum/musik`, `/raum/daz`, `/scan` | Breitere Spalte (~672 px), größerer Hero, Scan-Vollfläche, Medien-Modal zentriert |
+| 1024×768 | `/raum/musik` | Gyro γ, Rotation ohne Pan-Sprung |
+| 834×1194 | `/raum/daz` | Dialog-Gruppe (Bubble + Maskottchen) |
+| 1024×1366 | `/`, `/raum/musik` | `lg:max-w-3xl`-Cap, Leerraum links/rechts gewollt |
+
+TopBar auf Raumseiten: **viewport-breit** (`fixed`), nicht auf Content-Spalte begrenzt. Gyro auf echtem iPad nur unter HTTPS.
 
 **iOS-Breite (manuell, echtes Gerät):**
 

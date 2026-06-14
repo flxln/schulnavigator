@@ -278,7 +278,7 @@ export function RaumStationClient({
   }, [panInfo, station.dialog?.bubble, bubbleLayoutPx, bubbleOffsetX])
 
   return (
-    <div className="sn-fade-in relative min-h-[100svh] bg-bg-1">
+    <div className="sn-fade-in relative min-h-[100svh] overflow-x-hidden bg-bg-1">
       <section
         aria-labelledby="station-titel"
         className={`relative bg-brand-navy ${RAUM_HERO_HEIGHT_CLASS}`}
@@ -334,7 +334,7 @@ export function RaumStationClient({
           aria-hidden
         />
 
-        <div className="absolute left-0 right-0 top-0 z-10">
+        <div className="absolute inset-x-0 top-0 z-[30] pt-[max(0px,env(safe-area-inset-top))]">
           <TopBar
             dark
             title=""

@@ -16,7 +16,7 @@ export default async function EintrittScanPage() {
   const trustedOrigins = getTrustedScanOrigins()
 
   return (
-    <main className="mx-auto min-h-[100dvh] max-w-lg overflow-x-hidden">
+    <main className="w-full max-w-none overflow-x-hidden">
       <EintrittScanScreen origin={origin} trustedOrigins={trustedOrigins} />
     </main>
   )
