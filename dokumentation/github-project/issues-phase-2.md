@@ -820,6 +820,7 @@ Spezifikation: [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) · Detail:
 - [x] `MascotPeekOverlay`, `CoachNudgeLayer`, `use-coach-nudge`
 - [x] Hub + Raum-Integration, Sparkle-Orchestrierung
 - [x] Portal-Fix iOS (viewport-fix)
+- [x] Coach-Inhalt an `.sn-page-container` gebunden (Backdrop fullscreen; Folge #74 Tablet-QA)
 - [ ] Copy MPZ, PR merge
 
 ---
