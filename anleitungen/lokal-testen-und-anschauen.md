@@ -165,6 +165,8 @@ Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/projektma
 8. Heft: `welcome-hub` gesehen → Fest-Cookie → `welcome-hub` erscheint im Fest erneut (modus-getrennt)
 9. Medienpanel im Raum öffnen → kein Coach darüber; nach Schließen ggf. Room-Coach
 10. `prefers-reduced-motion`: kein Slide, Text sichtbar
+11. **Overlay-Priorität (iOS):** `schulnav.pan-onboarding.seen` + Coach-Keys leeren → Raum mit Room-Coach (`klassenzimmer`/`musik`/`hort`) → nur Gyro-Dialog (kein Coach-Flackern) → nach Freigabe nur Pan-Hinweis → danach Room-Coach
+12. **Desktop (gyrolos):** gleicher Raum, Coach-Keys leer → kein Gyro/Pan, Room-Coach erscheint direkt
 
 **Stationssymbole (#105):**
 

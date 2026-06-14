@@ -38,28 +38,31 @@ export function useCoachNudge(options: UseCoachNudgeOptions) {
   const [activeMessage, setActiveMessage] = useState<CoachMessage | null>(null)
   const [evaluated, setEvaluated] = useState(false)
   const sessionShownRef = useRef(new Set<string>())
+  const pendingMarkRef = useRef<{
+    messageId: string
+    supersededIds: readonly string[]
+  } | null>(null)
+
+  const blocked = options.blocked ?? false
+  const mode = options.mode
+  const surface = options.surface
+  const isHydrated =
+    surface === 'hub' ? options.isHydrated : (options.isHydrated ?? true)
+  const visitedCount = surface === 'hub' ? options.visitedCount : 0
+  const totalStations = surface === 'hub' ? options.totalStations : 0
+  const slug = surface === 'room' ? options.slug : ''
 
   const tryShow = useCallback(() => {
-    const hydrated =
-      options.surface === 'hub'
-        ? options.isHydrated
-        : (options.isHydrated ?? true)
-
-    if (!hydrated || options.blocked) {
-      setEvaluated(hydrated)
+    if (!isHydrated || blocked) {
+      setEvaluated(isHydrated)
       return
     }
 
-    const state = readCoachSeenState(options.mode)
+    const state = readCoachSeenState(mode)
     const resolved =
-      options.surface === 'hub'
-        ? resolveHubCoachMessage(
-            options.visitedCount,
-            options.totalStations,
-            options.mode,
-            state,
-          )
-        : resolveRoomCoachMessage(options.slug, options.mode, state)
+      surface === 'hub'
+        ? resolveHubCoachMessage(visitedCount, totalStations, mode, state)
+        : resolveRoomCoachMessage(slug, mode, state)
 
     setEvaluated(true)
 
@@ -73,12 +76,20 @@ export function useCoachNudge(options: UseCoachNudgeOptions) {
     }
 
     sessionShownRef.current.add(message.id)
-    markCoachSeen(message.id, options.mode)
-    if (supersededIds.length > 0) {
-      markCoachSuperseded(supersededIds, options.mode)
+    pendingMarkRef.current = {
+      messageId: message.id,
+      supersededIds,
     }
     setActiveMessage(message)
-  }, [options])
+  }, [
+    blocked,
+    isHydrated,
+    mode,
+    surface,
+    slug,
+    totalStations,
+    visitedCount,
+  ])
 
   useEffect(() => {
     if (activeMessage !== null) {
@@ -86,6 +97,31 @@ export function useCoachNudge(options: UseCoachNudgeOptions) {
     }
     tryShow()
   }, [activeMessage, tryShow])
+
+  useEffect(() => {
+    if (!activeMessage || !pendingMarkRef.current) {
+      return
+    }
+    if (pendingMarkRef.current.messageId !== activeMessage.id) {
+      return
+    }
+    markCoachSeen(activeMessage.id, mode)
+    if (pendingMarkRef.current.supersededIds.length > 0) {
+      markCoachSuperseded(pendingMarkRef.current.supersededIds, mode)
+    }
+    pendingMarkRef.current = null
+  }, [activeMessage, mode])
+
+  useEffect(() => {
+    if (!blocked || !activeMessage) {
+      return
+    }
+    if (pendingMarkRef.current?.messageId === activeMessage.id) {
+      sessionShownRef.current.delete(activeMessage.id)
+      pendingMarkRef.current = null
+    }
+    setActiveMessage(null)
+  }, [blocked, activeMessage])
 
   const dismiss = useCallback(() => {
     if (!activeMessage) {

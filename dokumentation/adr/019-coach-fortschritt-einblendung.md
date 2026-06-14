@@ -42,12 +42,16 @@ Eigenes Content- und Storage-Modell, getrennt vom Dialog (ADR-010/011). Sieben F
 | Ebene | z-index | Regel |
 |-------|---------|-------|
 | Raum-TopBar | 10 | bleibt sichtbar (Coach unten/seitlich verankert) |
+| Gyro-Berechtigung | 10 | Coach blockiert während `checking` / `needs-gesture` (Viewer-Gate) |
+| Pan-Onboarding | 20 | Coach blockiert, solange Pan-Hinweis sichtbar |
 | Dialog-Bubble | 1–2 | Coach blockiert, solange `dialogUiActive` |
 | Medienpanel | 35/40 | Coach blockiert, solange `panelOpen` |
 | Coach-Overlay | 50 | nur wenn keine andere modale UI offen |
 | Sparkle | Card-Kontext | nach Coach-`complete` (sequenziell) |
 
-`useCoachNudge`-Prop `blocked` deckt **jede** modale UI ab (Dialog + Medienpanel). Künftige Layer (Toast `fest-locked-tap`) werden hier ergänzt, statt z-index hochzuschrauben.
+**Raum-Priorität:** Gyro-Dialog → Pan-Onboarding → Room-Coach (gleicher Besuch). Terminales `unsupported` (kein Sensor, z. B. Desktop) blockiert den Coach nicht.
+
+`useCoachNudge`-Prop `blocked` deckt Dialog, Medienpanel und den Viewer-Gate (`onViewerCoachGateChange`) ab. Künftige Layer (Toast `fest-locked-tap`) werden hier ergänzt, statt z-index hochzuschrauben.
 
 ## Begründung
 
@@ -72,7 +76,7 @@ Eigenes Content- und Storage-Modell, getrennt vom Dialog (ADR-010/011). Sieben F
 ## Konsequenzen
 
 - **Neue Dateien:** `app/content/coach-messages.json`; `app/lib/coach-seen.ts`, `app/lib/coach-triggers.ts` (+ Vitest); `app/scripts/validate-coach-messages.mjs`; `app/components/coach/mascot-peek-overlay.tsx`, `app/components/coach/coach-nudge-layer.tsx`; `app/hooks/use-coach-nudge.ts`.
-- **Geändert:** `app/lib/types.ts` (Coach-Message-Typen); `app/app/sn-theme.css` (Keyframes `bottom`/`left`/`right`, `duo-split`, `prefers-reduced-motion`); `app/components/home/home-screen.tsx` (Hub-Coach + Sparkle-Orchestrierung); `app/components/raum-station-client.tsx` (Room-Coach, `blocked: dialogUiActive || panelOpen`); `app/package.json` (`validate:coach` vor `build`).
+- **Geändert:** `app/lib/types.ts` (Coach-Message-Typen); `app/app/sn-theme.css` (Keyframes `bottom`/`left`/`right`, `duo-split`, `prefers-reduced-motion`); `app/components/home/home-screen.tsx` (Hub-Coach + Sparkle-Orchestrierung); `app/components/raum-station-client.tsx` (Room-Coach, `blocked` inkl. Viewer-Gate); `app/lib/raum-viewer/viewer-coach-gate.ts`; `app/package.json` (`validate:coach` vor `build`).
 - **Validator-Regeln:** IDs eindeutig; Room-Slugs in `stations.json`; genau **eine** `hub-complete`-Message; höchste `hub-milestone` < Stationszahl; `placement` ∈ `bottom`/`left`/`right`; `mascot: "duo"` ⇔ `placement: "duo-split"`.
 - **Storage-Keys:** `sn_coach_seen_fest`, `sn_coach_seen_heft` (`{version, seen, suppressed}`); bestehender `sn_sparkle_done` bleibt unverändert.
 - **Seed-Räume (MVP):** `klassenzimmer`, `musik`, `hort` (kurze Orientierungstexte, mit MPZ nachziehbar); **keine** `daz`/`pc-raum` (Dialog-Hotspots).

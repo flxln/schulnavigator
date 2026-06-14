@@ -11,6 +11,7 @@ Dieser Ordner ist die **führende Spezifikation** für Milestones und Issues in 
 | [issues-schulfest-gs39-nachtrag.md](issues-schulfest-gs39-nachtrag.md) | Epic **#86** (Vorlage): GS39-Nachtrag Schulfest/Hof-QR/Content — Unterissues #87–#91, Anpassung #39 |
 | [epic-tablet-ipad-layout.md](epic-tablet-ipad-layout.md) | Epic **#74** (geplant): Tablet/iPad-Layout — Parent + Unterissues #75–#78, Issue-Bodies für GitHub |
 | [epic-externe-medien-hotspot-marker.md](epic-externe-medien-hotspot-marker.md) | Epic **#97**: ADR-017 — Hotspot-Marker, `link`, `embed` — Unterissues #98–#100 |
+| [epic-coach-fortschritt.md](epic-coach-fortschritt.md) | Epic **#121**: ADR-019 — Coach Fortschritts-Einblendungen — Unterissue #122 (Raum-Overlay-Priorität) |
 | [labels.md](labels.md) | Label-Konventionen |
 
 Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) und [entscheidungen.md](../entscheidungen.md).
@@ -62,5 +63,6 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issue **#116** (Sphere-Viewer: Zoom-Sperre + Gyro-Neustart nach Pinch, Folge #114) — umgesetzt 2026-06-11, Branch `feature/sphere-zoom-sperre`
 - [x] Issue **#119** (Sphere-Hotspots: sphärisches Mapping, Layer-Marker, Kalibrier-Helfer, Folge #114) — geschlossen 2026-06-14, PR [#118](https://github.com/flxln/schulnavigator/pull/118) → `main`
 - [x] Issue **#120** (Sphere-Marker: PSV-Tooltips entfernen, Kalibrier-Yaw normalisieren, Folge #119) — geschlossen 2026-06-14, `main`
+- [ ] Epic **#121** (Coach Fortschritts-Einblendungen, ADR-019) + **#122** (Raum-Overlay-Priorität) — umgesetzt auf Branch `feature/coach-sparkle-mvp`, PR ausstehend; [epic-coach-fortschritt.md](epic-coach-fortschritt.md)
 
-Letzter dokumentierter Abgleich: **2026-06-14** (#120: keine PSV-Tooltip-Labels; `normalizeYawDeg` im Kalibrier-Helfer; DaZ `hotspots360` nachkalibriert).
+Letzter dokumentierter Abgleich: **2026-06-14** (ADR-019 Coach + Raum-Overlay-Priorität auf `feature/coach-sparkle-mvp`; GitHub #121/#122).

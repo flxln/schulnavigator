@@ -30,6 +30,7 @@ import type { RaumViewerLayout } from '@/components/raum-viewer/raum-viewer'
 import { PanOnboardingOverlay } from '@/components/raum-viewer/pan-onboarding-overlay'
 import { SphereHotspotCalibOverlay } from '@/components/raum-viewer/sphere-hotspot-calib-overlay'
 import { useDeviceOrientation } from '@/components/raum-viewer/use-device-orientation'
+import { computeViewerBlocksCoach } from '@/lib/raum-viewer/viewer-coach-gate'
 import {
   applyMascotElementState,
   buildSphereMarkerConfig,
@@ -53,6 +54,7 @@ export type SphereRaumViewerInnerProps = {
   onContainerReady?: (width: number, height: number) => void
   layout?: RaumViewerLayout
   orientationEnabled?: boolean
+  onViewerCoachGateChange?: (blocksCoach: boolean) => void
 }
 
 const VIEWER_HEIGHT_STYLE_DEFAULT = {
@@ -81,6 +83,7 @@ export const SphereRaumViewerInner = forwardRef<
     onContainerReady,
     layout = 'default',
     orientationEnabled = true,
+    onViewerCoachGateChange,
   },
   ref,
 ) {
@@ -93,11 +96,12 @@ export const SphereRaumViewerInner = forwardRef<
   const onContainerReadyRef = useRef(onContainerReady)
   const hotspots360Ref = useRef(hotspots360)
   const loadedPanoramaRef = useRef<string | null>(null)
-  const orientStateRef = useRef<string>('active')
+  const orientStateRef = useRef<string>('checking')
   const startGyroRef = useRef<() => Promise<void>>(async () => {})
   const markerKindsRef = useRef<Map<string, SphereMarkerKind>>(new Map())
   const mascotElementsRef = useRef<Map<string, HTMLElement>>(new Map())
   const [ready, setReady] = useState(false)
+  const [panOnboardingActive, setPanOnboardingActive] = useState(false)
   const [calibEnabled] = useState(isHotspotCalibEnabled)
   const [calibClick, setCalibClick] = useState<{
     yaw: number
@@ -107,6 +111,28 @@ export const SphereRaumViewerInner = forwardRef<
   } | null>(null)
 
   const { state: orientState, requestAccess } = useDeviceOrientation(orientationEnabled)
+
+  const handlePanOnboardingActiveChange = useCallback((active: boolean) => {
+    setPanOnboardingActive(active)
+  }, [])
+
+  useEffect(() => {
+    onViewerCoachGateChange?.(
+      computeViewerBlocksCoach(
+        orientationEnabled,
+        orientState,
+        panOnboardingActive,
+      ),
+    )
+  }, [
+    orientationEnabled,
+    orientState,
+    panOnboardingActive,
+    onViewerCoachGateChange,
+  ])
+
+  const panOnboardingSkip =
+    orientState === 'needs-gesture' || orientState === 'checking'
 
   useEffect(() => { orientStateRef.current = orientState }, [orientState])
 
@@ -403,7 +429,11 @@ export const SphereRaumViewerInner = forwardRef<
       aria-label={alt}
     >
       <div ref={containerRef} className="h-full w-full" />
-      <PanOnboardingOverlay mode="sphere" skip={orientState === 'needs-gesture'} />
+      <PanOnboardingOverlay
+        mode="sphere"
+        skip={panOnboardingSkip}
+        onActiveChange={handlePanOnboardingActiveChange}
+      />
       {calibEnabled ? (
         <SphereHotspotCalibOverlay
           hotspots360={hotspots360}

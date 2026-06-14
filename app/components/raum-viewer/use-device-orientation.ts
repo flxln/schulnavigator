@@ -9,6 +9,7 @@ import {
 } from '@/lib/raum-viewer/pan-from-orientation'
 
 export type OrientationAuthState =
+  | 'checking'
   | 'unsupported'
   | 'needs-gesture'
   | 'denied'
@@ -32,7 +33,7 @@ function isIosOrientationPermissionModel(): boolean {
 }
 
 export function useDeviceOrientation(enabled: boolean) {
-  const [state, setState] = useState<OrientationAuthState>('unsupported')
+  const [state, setState] = useState<OrientationAuthState>('checking')
   const [alpha, setAlpha] = useState<number | null>(null)
   const [beta, setBeta] = useState<number | null>(null)
   const [gamma, setGamma] = useState<number | null>(null)

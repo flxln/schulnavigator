@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Check, ChevronUp, List, X } from 'lucide-react'
 import type {
@@ -99,6 +99,20 @@ export function RaumStationClient({
     tail,
   } = useDialogAudioPlaylist(station.dialog)
 
+  const hasViewer = Boolean(
+    (isSphere && station.panorama360) || station.bild,
+  )
+  const [viewerBlocksCoach, setViewerBlocksCoach] = useState(hasViewer)
+  const prevSlugRef = useRef(station.slug)
+
+  useEffect(() => {
+    if (prevSlugRef.current === station.slug) {
+      return
+    }
+    prevSlugRef.current = station.slug
+    setViewerBlocksCoach(hasViewer)
+  }, [station.slug, hasViewer])
+
   const {
     activeMessage: coachMessage,
     dismiss: dismissCoach,
@@ -106,7 +120,7 @@ export function RaumStationClient({
     surface: 'room',
     slug: station.slug,
     mode,
-    blocked: dialogUiActive || panelOpen,
+    blocked: dialogUiActive || panelOpen || viewerBlocksCoach,
   })
 
   const { visitedSlugs } = useVisitedStations(validSlugs)
@@ -284,6 +298,7 @@ export function RaumStationClient({
               onContainerReady={handleSphereContainerReady}
               layout="hero"
               orientationEnabled
+              onViewerCoachGateChange={setViewerBlocksCoach}
             />
           ) : station.bild ? (
             <RaumViewer
@@ -301,6 +316,7 @@ export function RaumStationClient({
               onPanChange={handlePanChange}
               layout="hero"
               orientationEnabled
+              onViewerCoachGateChange={setViewerBlocksCoach}
             />
           ) : (
             <div className="flex h-full items-center justify-center px-4">
