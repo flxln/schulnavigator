@@ -841,3 +841,26 @@ Spezifikation: [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) · Detail:
 - [x] `use-coach-nudge`: Seen-Timing, blocked blendet aus
 - [x] Tests + Build grün
 - [ ] Manueller iOS-Test
+
+---
+
+## #124 — Hub: Wegweiser-Slots für Schulhof und Turnhalle (ADR-020)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/124 — **geschlossen** (2026-06-14, Branch `feature/hub-wegweiser` → `main`)
+
+**Labels:** `tech`, `design`  
+**Assignee:** Felix  
+**Milestone:** Phase 2 — Content-Struktur + UI
+
+**Ziel:** Wegweiser-Slots für `turnhalle` (oben) und `schulhof` (unten); 12. Station; `fenster-lr` → Deko; Slot-Vertrag mit `hitFrame`/`chipAnchor`/`rotation`.
+
+**Kontext:** ADR-020, [epic-hub-wegweiser.md](epic-hub-wegweiser.md). Schulhof-Content nachgelagert.
+
+### Checkliste
+
+- [x] `schoolhouse-hub-map.ts`, `front-schoolhouse.tsx`
+- [x] `stations.json`, Panorama `schulhof`, QR-Manifest
+- [x] Tests + Build grün
+- [x] ADR-020 + Doku
+- [ ] Schulhof-Hotspots (Content)
+- [ ] Manueller Hub-Check

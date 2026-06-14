@@ -21,6 +21,7 @@ Equirectangular-Panoramen für den Sphere-Viewer (ADR-018). Eine Datei pro Stati
 | `speiseraum` | Equirectangular 5376×2688 |
 | `lesewelt` | Equirectangular 5376×2688 |
 | `musik` | Equirectangular 5376×2688 (Medien-Hotspots) |
+| `schulhof` | Equirectangular 5376×2688 |
 
 Export: `node scripts/export-pano-equirect.mjs` (aus `app/`, macOS `sips`).
 

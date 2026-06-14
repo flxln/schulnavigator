@@ -6,27 +6,35 @@ import {
   HUB_SLOTS,
   HUB_SLUG_MAP,
   HUB_VIEWBOX,
-  listHubStationFrames,
+  listHubStationHitFrames,
 } from '@/lib/schoolhouse-hub-map'
 import { getAllStations } from '@/lib/stations'
 
 describe('schoolhouse-hub-map', () => {
-  it('mappt 11 Slugs auf 11 eindeutige Slots inkl. Portal=klassenzimmer', () => {
+  it('mappt 12 Slugs auf 12 eindeutige Slots inkl. Portal=klassenzimmer', () => {
     const hub = buildHubStations(getAllStations())
-    expect(hub).toHaveLength(11)
+    expect(hub).toHaveLength(12)
 
     const portal = hub.find((s) => s.slug === 'klassenzimmer')
     expect(portal?.slotId).toBe('portal')
     expect(portal?.kind).toBe('portal')
     expect(portal?.nr).toBe(1)
 
+    const turnhalle = hub.find((s) => s.slug === 'turnhalle')
+    expect(turnhalle?.slotId).toBe('wegweiser-oben')
+    expect(turnhalle?.kind).toBe('wegweiser')
+
+    const schulhof = hub.find((s) => s.slug === 'schulhof')
+    expect(schulhof?.slotId).toBe('wegweiser-unten')
+    expect(schulhof?.kind).toBe('wegweiser')
+
     const slotIds = new Set(hub.map((s) => s.slotId))
-    expect(slotIds.size).toBe(11)
+    expect(slotIds.size).toBe(12)
   })
 
-  it('definiert 4 Deko-Slots ohne Slug-Zuordnung', () => {
+  it('definiert 5 Deko-Slots ohne Slug-Zuordnung', () => {
     const deko = Object.entries(HUB_SLOTS).filter(([, s]) => s.kind === 'deko')
-    expect(deko).toHaveLength(4)
+    expect(deko).toHaveLength(5)
     const usedDeko = Object.values(HUB_SLUG_MAP).map((m) => m.slotId)
     for (const [id] of deko) {
       expect(usedDeko).not.toContain(id)
@@ -53,16 +61,40 @@ describe('schoolhouse-hub-map', () => {
   it('wirft bei unbekanntem slug', () => {
     expect(() => getHubMapping('unbekannt')).toThrow()
   })
+
+  it('snapshot Wegweiser-Geometrie (frame/hitFrame/rotation)', () => {
+    const oben = HUB_SLOTS['wegweiser-oben']
+    const unten = HUB_SLOTS['wegweiser-unten']
+    expect(oben).toMatchObject({
+      frame: [278.53, 1010.53, 142.1, 79.66],
+      hitFrame: [299.84, 1022.48, 99.47, 55.76],
+      rotation: -9.85,
+    })
+    expect(unten).toMatchObject({
+      frame: [250.83, 1080.3, 138.71, 68.93],
+      hitFrame: [271.64, 1090.64, 97.1, 48.25],
+      rotation: 4.96,
+    })
+  })
+
+  it('Wegweiser-hitFrames überlappen Portal und einander nicht', () => {
+    const portal = HUB_SLOTS.portal.frame
+    const obenHit = HUB_SLOTS['wegweiser-oben'].hitFrame!
+    const untenHit = HUB_SLOTS['wegweiser-unten'].hitFrame!
+    expect(hitRectsOverlap(obenHit, portal)).toBe(false)
+    expect(hitRectsOverlap(untenHit, portal)).toBe(false)
+    expect(hitRectsOverlap(obenHit, untenHit)).toBe(false)
+  })
 })
 
 describe('expandHitRect', () => {
   it('erzeugt bei 320px Viewport keine überlappenden Trefferflächen', () => {
     const hub = buildHubStations(getAllStations())
-    const frames = listHubStationFrames(hub)
+    const frames = listHubStationHitFrames(hub)
     const pxPerUnit = 320 / HUB_VIEWBOX.w
     const hits = hub.map((station, i) => {
       const neighbors = frames.filter((_, j) => j !== i)
-      return expandHitRect(station.frame, neighbors, pxPerUnit)
+      return expandHitRect(station.hitFrame, neighbors, pxPerUnit)
     })
 
     for (let i = 0; i < hits.length; i += 1) {

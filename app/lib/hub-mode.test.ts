@@ -46,14 +46,14 @@ describe('isHubStationNavigable', () => {
 
 describe('isHubFullyLocked', () => {
   it('fest ohne Freischaltung: gesperrt', () => {
-    expect(isHubFullyLocked('fest', new Set(), 11)).toBe(true)
+    expect(isHubFullyLocked('fest', new Set(), 12)).toBe(true)
   })
 
   it('fest mit mindestens einer Station: nicht voll gesperrt', () => {
-    expect(isHubFullyLocked('fest', new Set(['musik']), 11)).toBe(false)
+    expect(isHubFullyLocked('fest', new Set(['musik']), 12)).toBe(false)
   })
 
   it('heft: nie voll gesperrt', () => {
-    expect(isHubFullyLocked('heft', new Set(), 11)).toBe(false)
+    expect(isHubFullyLocked('heft', new Set(), 12)).toBe(false)
   })
 })

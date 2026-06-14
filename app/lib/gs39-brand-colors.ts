@@ -35,4 +35,5 @@ export const GS39_STATION_ACCENT_HEX: Record<string, string> = {
   hort: GS39_BRAND_HEX.red,
   musik: GS39_BRAND_HEX.red,
   schulsozialarbeit: GS39_BRAND_HEX.green,
+  schulhof: GS39_BRAND_HEX.green,
 }
