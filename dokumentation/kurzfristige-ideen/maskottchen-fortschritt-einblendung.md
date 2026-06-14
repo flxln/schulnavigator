@@ -170,16 +170,17 @@ Ein **Provider** oben in der jeweiligen Shell verhindert doppelte Logik.
 
 ## Checkliste (später abarbeiten)
 
-- [ ] Produkt: Trigger-Liste und Copy mit MPZ abstimmen
-- [ ] Entscheidung Sparkle vs. Coach bei 11/11
-- [ ] Optional: ADR anlegen
-- [ ] `coach-messages.json` + Validator
-- [ ] `coach-seen.ts` + Tests
-- [ ] `MascotPeekOverlay` + `use-coach-nudge`
-- [ ] Integration `HomeScreen` (MVP)
-- [ ] Dialog-Guard: kein Coach bei aktivem Dialog
-- [ ] `lokal-testen-und-anschauen.md` + Demo-Meeting ergänzen
-- [ ] `prefers-reduced-motion` manuell prüfen
+- [x] Produkt: Trigger-Liste und Copy (MVP-Platzhalter in `coach-messages.json`)
+- [x] Entscheidung Sparkle vs. Coach bei 11/11 (sequenziell, ADR-019)
+- [x] ADR-019 angelegt
+- [x] `coach-messages.json` + Validator
+- [x] `coach-seen.ts` + Tests
+- [x] `MascotPeekOverlay` + `use-coach-nudge`
+- [x] Integration `HomeScreen` (MVP)
+- [x] Dialog-/Panel-Guard: kein Coach bei aktiver modaler UI
+- [x] `lokal-testen-und-anschauen.md` ergänzt
+- [ ] Copy mit MPZ final abstimmen
+- [ ] `prefers-reduced-motion` manuell am Gerät prüfen
 
 ---
 

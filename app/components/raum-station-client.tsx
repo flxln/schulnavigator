@@ -13,6 +13,7 @@ import type {
   Station,
   StationViewerHandle,
 } from '@/lib/types'
+import { CoachNudgeLayer } from '@/components/coach/coach-nudge-layer'
 import { MediaSlotList } from '@/components/media-slot-list'
 import {
   RaumViewer,
@@ -29,6 +30,7 @@ import { DialogEmbeddedBubble } from '@/components/dialog/dialog-embedded-bubble
 import { StationIcon } from '@/components/station/station-icon'
 import { Gs39Chip, TopBar } from '@/components/ui'
 import { useDialogAudioPlaylist } from '@/hooks/use-dialog-audio-playlist'
+import { useCoachNudge } from '@/hooks/use-coach-nudge'
 import {
   clampBubbleOffsetX,
   resolveBubbleLayoutPx,
@@ -96,6 +98,16 @@ export function RaumStationClient({
     displayText,
     tail,
   } = useDialogAudioPlaylist(station.dialog)
+
+  const {
+    activeMessage: coachMessage,
+    dismiss: dismissCoach,
+  } = useCoachNudge({
+    surface: 'room',
+    slug: station.slug,
+    mode,
+    blocked: dialogUiActive || panelOpen,
+  })
 
   const { visitedSlugs } = useVisitedStations(validSlugs)
   const stationSlugs = useMemo(
@@ -444,6 +456,12 @@ export function RaumStationClient({
         open={panelOpen}
         medium={selectedMedium}
         onClose={closePanel}
+      />
+
+      <CoachNudgeLayer
+        message={coachMessage}
+        accent={hubStation.accent}
+        onDismiss={dismissCoach}
       />
     </div>
   )
