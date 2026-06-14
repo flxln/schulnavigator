@@ -11,7 +11,7 @@ describe('gs39-brand-colors', () => {
 
   it('defines accent for every station slug', () => {
     const stations = getAllStations()
-    expect(stations.length).toBe(11)
+    expect(stations.length).toBe(12)
     for (const s of stations) {
       expect(GS39_STATION_ACCENT_HEX[s.slug]).toMatch(/^#[0-9a-f]{6}$/i)
     }

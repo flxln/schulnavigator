@@ -5,18 +5,24 @@ import type { Station } from '@/lib/types'
 /**
  * Slot-frame-Koordinaten gültig nur für viewBox-Revision `0 0 1086.5 1453.9`
  * (siehe `scripts/prepare-hub-outline.mjs`). Bei Asset-Re-Export Frames neu vermessen.
- * Zuordnung Vorschlag 2026-06-10 — Portal = klassenzimmer.
+ * Portal = klassenzimmer; Wegweiser = Außen-Stationen (ADR-020).
  */
 
-export type HubSlotKind = 'fenster' | 'portal' | 'deko'
+export type HubSlotKind = 'fenster' | 'portal' | 'deko' | 'wegweiser'
 export type HubFrame = readonly [x: number, y: number, w: number, h: number]
-
-export const HUB_VIEWBOX = { w: 1086.5, h: 1453.9 } as const
+export type HubPoint = readonly [x: number, y: number]
 
 type SlotDef = {
   frame: HubFrame
   kind: HubSlotKind
+  hitFrame?: HubFrame
+  chipAnchor?: HubPoint
+  rotation?: number
+  overlayFrame?: HubFrame
+  overlayTranslate?: HubPoint
 }
+
+export const HUB_VIEWBOX = { w: 1086.5, h: 1453.9 } as const
 
 export const HUB_SLOTS: Record<string, SlotDef> = {
   portal: { kind: 'portal', frame: [469.65, 909.13, 156.42, 191.06] },
@@ -29,7 +35,25 @@ export const HUB_SLOTS: Record<string, SlotDef> = {
   'fenster-ll': { kind: 'fenster', frame: [298.15, 554.08, 54.47, 144.09] },
   'fenster-lc': { kind: 'fenster', frame: [484.53, 555.58, 54.47, 144.09] },
   'fenster-rc': { kind: 'fenster', frame: [554.99, 555.58, 54.47, 144.09] },
-  'fenster-lr': { kind: 'fenster', frame: [741.6, 565.08, 54.47, 144.09] },
+  'fenster-lr': { kind: 'deko', frame: [741.6, 565.08, 54.47, 144.09] },
+  'wegweiser-oben': {
+    kind: 'wegweiser',
+    frame: [278.53, 1010.53, 142.1, 79.66],
+    hitFrame: [299.84, 1022.48, 99.47, 55.76],
+    chipAnchor: [349.58, 1050.36],
+    rotation: -9.85,
+    overlayFrame: [267.63, 993.54, 134.24, 57.54],
+    overlayTranslate: [-170.01, 72.37],
+  },
+  'wegweiser-unten': {
+    kind: 'wegweiser',
+    frame: [250.83, 1080.3, 138.71, 68.93],
+    hitFrame: [271.64, 1090.64, 97.1, 48.25],
+    chipAnchor: [320.19, 1114.77],
+    rotation: 4.96,
+    overlayFrame: [251.45, 1077.53, 134.24, 57.54],
+    overlayTranslate: [96.8, -23.39],
+  },
   'deko-dach': { kind: 'deko', frame: [218.62, 207.78, 654.08, 71.27] },
   'deko-vestibuel': { kind: 'deko', frame: [433.13, 765.98, 223.18, 118.52] },
   'deko-fluegel-l': { kind: 'deko', frame: [12.25, 341.17, 55.88, 118.08] },
@@ -51,8 +75,9 @@ export const HUB_SLUG_MAP = {
   werken: { slotId: 'fenster-ll', nr: 7 },
   speiseraum: { slotId: 'fenster-lc', nr: 8 },
   hort: { slotId: 'fenster-rc', nr: 9 },
-  turnhalle: { slotId: 'fenster-lr', nr: 10 },
+  turnhalle: { slotId: 'wegweiser-oben', nr: 10 },
   schulsozialarbeit: { slotId: 'fenster-ul-2', nr: 11 },
+  schulhof: { slotId: 'wegweiser-unten', nr: 12 },
 } as const satisfies Record<string, HubSlugMapping>
 
 export type HubSlug = keyof typeof HUB_SLUG_MAP
@@ -64,6 +89,11 @@ export type HubStation = {
   slotId: string
   kind: HubSlotKind
   frame: HubFrame
+  hitFrame: HubFrame
+  chipAnchor?: HubPoint
+  rotation?: number
+  overlayFrame?: HubFrame
+  overlayTranslate?: HubPoint
   accent: string
   visitedGlassFill: string
 }
@@ -84,6 +114,10 @@ function buildVisuals(accent: string) {
     accent,
     visitedGlassFill: hexToRgba(mixHex(accent, SKY_50, 0.52), GLASS_FILL_ALPHA),
   }
+}
+
+function resolveHitFrame(slot: SlotDef): HubFrame {
+  return slot.hitFrame ?? slot.frame
 }
 
 export function getHubMapping(slug: string): HubSlugMapping & SlotDef {
@@ -111,7 +145,9 @@ export function buildHubStations(
   const out: HubStation[] = []
 
   for (const station of stations) {
-    const { slotId, nr, frame, kind } = getHubMapping(station.slug)
+    const mapping = getHubMapping(station.slug)
+    const { slotId, nr, frame, kind, hitFrame, chipAnchor, rotation, overlayFrame, overlayTranslate } =
+      mapping
     if (slotIds.has(slotId)) {
       throw new Error(
         `schoolhouse-hub-map: doppelter slotId "${slotId}" für slug "${station.slug}"`,
@@ -125,6 +161,11 @@ export function buildHubStations(
       slotId,
       kind,
       frame,
+      hitFrame: resolveHitFrame(mapping),
+      chipAnchor,
+      rotation,
+      overlayFrame,
+      overlayTranslate,
       ...buildVisuals(accentForSlug(station.slug)),
     })
   }
@@ -133,8 +174,15 @@ export function buildHubStations(
   return out
 }
 
+export function listHubStationHitFrames(
+  hubStations: readonly HubStation[],
+): HubFrame[] {
+  return hubStations.map((s) => s.hitFrame)
+}
+
+/** @deprecated Nutze listHubStationHitFrames für Kollisions-Tests */
 export function listHubStationFrames(
   hubStations: readonly HubStation[],
 ): HubFrame[] {
-  return hubStations.map((s) => s.frame)
+  return listHubStationHitFrames(hubStations)
 }

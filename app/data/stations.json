@@ -393,6 +393,14 @@
           "quelle": "/demo/ssa-hinweis.txt"
         }
       ]
+    },
+    {
+      "slug": "schulhof",
+      "titel": "Schulhof",
+      "beschreibung": "Willkommen auf unserem Schulhof! Hier wird in der Pause gespielt, getobt und gelacht. Schau dich um — bald gibt es hier noch mehr zu entdecken.",
+      "viewer": "equirectangular",
+      "panorama360": "/stations/360/schulhof.jpg",
+      "medien": []
     }
   ]
 }

@@ -9,6 +9,7 @@ import {
   Music,
   Palette,
   PersonStanding,
+  Trees,
   UtensilsCrossed,
   type LucideIcon,
 } from 'lucide-react'
@@ -31,6 +32,7 @@ export const STATION_ICON_BY_SLUG: Record<HubSlug, StationIconDef> = {
   hort: { type: 'lucide', Icon: Home },
   turnhalle: { type: 'lucide', Icon: PersonStanding },
   schulsozialarbeit: { type: 'lucide', Icon: HeartHandshake },
+  schulhof: { type: 'lucide', Icon: Trees },
 }
 
 export type StationBadgeStyleInput = {

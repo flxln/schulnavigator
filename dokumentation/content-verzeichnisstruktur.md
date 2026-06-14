@@ -23,6 +23,7 @@ Slugs sind durch gedruckte QR-Codes physisch fixiert. Keine Umbenennung ohne neu
 | 9 | `hort` | Hortzimmer | `002.jpeg` | ✅ |
 | 10 | `musik` | Musikzimmer | `001.jpeg` | ✅ |
 | 11 | `schulsozialarbeit` | Schulsozialarbeiterzimmer | — | ❌ Foto fehlt |
+| 12 | `schulhof` | Schulhof | `017-360-Schulhof.JPG` | ✅ 360° (Minimalstation, ADR-020) |
 
 Vollständige Zuordnung Slug ↔ Rohfoto ↔ HTML-Referenz: [`auftraggeber/material/stationen/zuordnung-stationen-bilder.md`](../auftraggeber/material/stationen/zuordnung-stationen-bilder.md).
 
