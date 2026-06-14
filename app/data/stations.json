@@ -40,15 +40,15 @@
         {
           "id": "hs-text",
           "label": "Korkpinnwand",
-          "yaw": -28,
-          "pitch": 2,
+          "yaw": -32,
+          "pitch": -4,
           "mediumId": "demo-text"
         },
         {
           "id": "hs-video",
           "label": "Tafel",
-          "yaw": -15,
-          "pitch": 6,
+          "yaw": -18,
+          "pitch": 0,
           "mediumId": "demo-video",
           "icon": "/media/klassenzimmer/icons/play.svg",
           "iconSize": 0.1
@@ -56,15 +56,15 @@
         {
           "id": "hs-audio",
           "label": "Klassentische",
-          "yaw": 2,
-          "pitch": -2,
+          "yaw": 4,
+          "pitch": -8,
           "mediumId": "demo-audio"
         },
         {
           "id": "hs-foto",
           "label": "Fensterseite",
-          "yaw": 25,
-          "pitch": 5,
+          "yaw": 28,
+          "pitch": -2,
           "mediumId": "demo-foto"
         }
       ]
@@ -81,22 +81,24 @@
         {
           "id": "hs-frieda",
           "label": "Frieda",
-          "yaw": 8,
-          "pitch": -25,
+          "yaw": 6,
+          "pitch": -30,
           "action": "dialog",
           "mascot": "frieda",
-          "mascotSize": 0.7,
-          "mascotFlipX": false
+          "mascotSize": 0.55,
+          "mascotFlipX": false,
+          "bubblePitchOffset": 14
         },
         {
           "id": "hs-otto",
           "label": "Otto",
-          "yaw": -12,
-          "pitch": -10,
+          "yaw": -14,
+          "pitch": -28,
           "action": "dialog",
           "mascot": "otto",
-          "mascotSize": 0.44,
-          "mascotFlipX": true
+          "mascotSize": 0.4,
+          "mascotFlipX": true,
+          "bubblePitchOffset": 14
         }
       ],
       "dialog": {
@@ -190,27 +192,29 @@
         {
           "id": "hs-frieda",
           "label": "Frieda",
-          "yaw": -18,
-          "pitch": -14,
+          "yaw": -20,
+          "pitch": -20,
           "action": "dialog",
           "mascot": "frieda",
-          "mascotSize": 0.22,
-          "mascotFlipX": false
+          "mascotSize": 0.28,
+          "mascotFlipX": false,
+          "bubblePitchOffset": 12
         },
         {
           "id": "hs-otto",
           "label": "Otto",
           "yaw": 18,
-          "pitch": -14,
+          "pitch": -20,
           "action": "dialog",
           "mascot": "otto",
-          "mascotSize": 0.22,
-          "mascotFlipX": false
+          "mascotSize": 0.28,
+          "mascotFlipX": false,
+          "bubblePitchOffset": 12
         },
         {
           "id": "hs-delightex",
           "label": "3D-Welt",
-          "yaw": 0,
+          "yaw": -2,
           "pitch": 2,
           "mediumId": "pc-delightex",
           "icon": "/media/pc-raum/icons/delightex.svg",
@@ -365,15 +369,15 @@
         {
           "id": "hs-video",
           "label": "Video-Bereich",
-          "yaw": -25,
-          "pitch": -8,
+          "yaw": -28,
+          "pitch": -12,
           "mediumId": "demo-video"
         },
         {
           "id": "hs-audio",
           "label": "Audio-Bereich",
-          "yaw": 18,
-          "pitch": -5,
+          "yaw": 22,
+          "pitch": -10,
           "mediumId": "demo-audio"
         }
       ]
