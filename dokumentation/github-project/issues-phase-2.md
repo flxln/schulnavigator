@@ -712,7 +712,35 @@ Spezifikation: [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) · Detail:
 - [x] Gyro-Bugfix Pitch: `VisibleRangePlugin` entfernt (kollabierte Pitch); `roll: false` begrenzt seitwärts Kippen
 - [x] Tests grün (`sphere-raum-viewer-inner.test.tsx`, `sphere-marker-html.test.ts`)
 
-**Offen:** Hotspot-yaw/pitch visuell nachjustieren; FPS/Ladezeit iPhone Safari messen.
+**Offen:** FPS/Ladezeit iPhone Safari messen. Hotspot-yaw/pitch → [#119](#119--sphere-hotspots-sphärisches-mapping-layer-marker-kalibrier-helfer-folge-114).
+
+---
+
+## #119 — Sphere-Hotspots: sphärisches Mapping (Layer-Marker, Kalibrier-Helfer, Folge #114)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/119 — **offen** (PR [#118](https://github.com/flxln/schulnavigator/pull/118), Branch `feature/sphere-hotspot-mapping`)
+
+**Labels:** `tech`  
+**Assignee:** Felix  
+**Milestone:** Phase 2 — Content-Struktur + UI
+
+**Ziel:** Maskottchen und Medien-Icons im Sphere-Viewer sphärisch auf der Kugel platzieren (PSV Layer-Marker statt flacher HTML-Billboards); Dev-Kalibrier-Workflow für `hotspots360`.
+
+**Kontext:** ADR-018 (Layer-Marker-Nachtrag 2026-06-13), Folge #114/#116. Spike: [`2026-06-13-sphere-hotspot-layer-spike.md`](../projektmanagement/2026-06-13-sphere-hotspot-layer-spike.md). Abnahme: [`2026-06-13-sphere-hotspot-acceptance.md`](../projektmanagement/2026-06-13-sphere-hotspot-acceptance.md).
+
+### Checkliste
+
+- [x] Medien-Hotspots als PSV `imageLayer` (`sphere-marker-factory.ts`, `resolveImageLayerSize`)
+- [x] Maskottchen als `element`-Billboard mit Fuß-Anker; `bubblePitchOffset` für Dialog-Bubble
+- [x] Dot-Fallback über `sphere-marker-html.ts`
+- [x] Marker-Lifecycle: `updateMarker`/DOM statt `clearMarkers`-Rebuild
+- [x] Dev-Overlay `?hotspot-calib=1` (`sphere-hotspot-calib-overlay.tsx`)
+- [x] `hotspots360` für `daz`, `pc-raum`, `klassenzimmer`, `musik` nachkalibriert
+- [x] Types/Validator: `bubblePitchOffset` in `Hotspot360`
+- [x] Tests: `sphere-marker-conventions`, `sphere-marker-factory`, `sphere-hotspot-calibration`
+- [x] Flat-Viewer unverändert
+
+**Offen:** PR #118 mergen; Feintuning der Koordinaten auf echten Geräten.
 
 ---
 
