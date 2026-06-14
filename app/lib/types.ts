@@ -1,3 +1,5 @@
+import type { EntryMode } from '@/lib/access-tokens'
+
 export type MediumTyp = 'audio' | 'video' | 'foto' | 'text' | 'link' | 'embed'
 
 export type LinkOpenIn = 'external'
@@ -154,4 +156,34 @@ export interface Station {
 
 export interface StationsFile {
   stations: Station[]
+}
+
+export type CoachMascot = 'frieda' | 'otto' | 'duo'
+
+export type CoachPlacement = 'bottom' | 'left' | 'right' | 'duo-split'
+
+export type CoachTrigger = 'hub-milestone' | 'hub-complete' | 'room-first'
+
+export interface CoachMessage {
+  id: string
+  trigger: CoachTrigger
+  mascot: CoachMascot
+  placement: CoachPlacement
+  text: string
+  /** Nur bei `hub-milestone`: Schwellwert für visitedCount. */
+  milestone?: number
+  /** Nur bei `room-first`. */
+  slug?: string
+  /** Fehlt → gilt für fest und heft. */
+  modes?: readonly EntryMode[]
+}
+
+export interface CoachMessagesFile {
+  messages: CoachMessage[]
+}
+
+export type CoachSeenState = {
+  version: 1
+  seen: string[]
+  suppressed: string[]
 }

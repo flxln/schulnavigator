@@ -9,6 +9,8 @@ const mocks = vi.hoisted(() => ({
   stopDialog: vi.fn(),
   routerPush: vi.fn(),
   dialogUiActive: true,
+  coachBlocked: false,
+  viewerGateBlocks: true,
 }))
 
 vi.mock('next/navigation', () => ({
@@ -46,10 +48,28 @@ vi.mock('@/hooks/use-visited-stations', () => ({
   useVisitedStations: () => ({ visitedSlugs: new Set<string>() }),
 }))
 
+vi.mock('@/hooks/use-coach-nudge', () => ({
+  useCoachNudge: (opts: { blocked?: boolean }) => {
+    mocks.coachBlocked = opts.blocked ?? false
+    return {
+      activeMessage: null,
+      dismiss: vi.fn(),
+      evaluated: true,
+      coachOverlayOpen: false,
+    }
+  },
+}))
+
 vi.mock('@/components/raum-viewer', () => {
   const React = require('react') as typeof import('react')
   const RaumViewer = React.forwardRef(
-    (_props: unknown, ref: React.Ref<{ recenterView: () => void }>) => {
+    (
+      props: { onViewerCoachGateChange?: (blocks: boolean) => void },
+      ref: React.Ref<{ recenterView: () => void }>,
+    ) => {
+      React.useEffect(() => {
+        props.onViewerCoachGateChange?.(mocks.viewerGateBlocks)
+      }, [props.onViewerCoachGateChange])
       React.useImperativeHandle(ref, () => ({
         recenterView: vi.fn(),
       }))
@@ -58,7 +78,13 @@ vi.mock('@/components/raum-viewer', () => {
   )
   RaumViewer.displayName = 'RaumViewer'
   const SphereRaumViewer = React.forwardRef(
-    (_props: unknown, ref: React.Ref<{ recenterView: () => void }>) => {
+    (
+      props: { onViewerCoachGateChange?: (blocks: boolean) => void },
+      ref: React.Ref<{ recenterView: () => void }>,
+    ) => {
+      React.useEffect(() => {
+        props.onViewerCoachGateChange?.(mocks.viewerGateBlocks)
+      }, [props.onViewerCoachGateChange])
       React.useImperativeHandle(ref, () => ({
         recenterView: vi.fn(),
         projectHotspot: vi.fn(() => null),
@@ -184,5 +210,51 @@ describe('RaumStationClient card peek (body scroll)', () => {
     )
     expect(screen.getByRole('heading', { name: /PC-RAUM/i })).toBeTruthy()
     expect(screen.getByText(station.beschreibung)).toBeTruthy()
+  })
+})
+
+describe('RaumStationClient Coach-Gate', () => {
+  beforeEach(() => {
+    stubBrowserLayoutApis()
+    mocks.dialogUiActive = false
+    mocks.viewerGateBlocks = true
+    mocks.coachBlocked = false
+  })
+
+  afterEach(() => {
+    cleanup()
+    vi.unstubAllGlobals()
+  })
+
+  function renderKlassenzimmer() {
+    const station = getStationBySlug('klassenzimmer')
+    if (!station) throw new Error('klassenzimmer missing')
+    const hubStations = buildHubStations(getAllStations())
+    const hubStation = hubStations.find((s) => s.slug === 'klassenzimmer')!
+    return render(
+      <RaumStationClient
+        station={station}
+        validSlugs={getAllStations().map((s) => s.slug)}
+        hubStation={hubStation}
+        hubStations={hubStations}
+        mode="heft"
+      />,
+    )
+  }
+
+  it('blockiert Coach solange Viewer-Gate aktiv ist', async () => {
+    mocks.viewerGateBlocks = true
+    renderKlassenzimmer()
+    await vi.waitFor(() => {
+      expect(mocks.coachBlocked).toBe(true)
+    })
+  })
+
+  it('gibt Coach frei wenn Viewer-Gate false meldet', async () => {
+    mocks.viewerGateBlocks = false
+    renderKlassenzimmer()
+    await vi.waitFor(() => {
+      expect(mocks.coachBlocked).toBe(false)
+    })
   })
 })

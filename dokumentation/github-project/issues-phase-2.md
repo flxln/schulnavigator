@@ -795,3 +795,49 @@ Spezifikation: [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) · Detail:
 - Abdeckung an **allen 11** Stationspunkten prüfen
 - Kritisch: Turnhalle, Außenbereich A–N-Haus
 - Mobilfunk = primär; WLAN = Bonus ([ADR-004](../adr/004-video-hosting-mpz.md): Videos vom MPZ-Server)
+
+---
+
+## #121 — Coach: Fortschritts-Maskottchen-Einblendungen (ADR-019)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/121 — **offen** (umgesetzt auf Branch `feature/coach-sparkle-mvp`, PR ausstehend)
+
+**Labels:** `tech`, `design`  
+**Assignee:** Felix  
+**Milestone:** Phase 2 — Content-Struktur + UI
+
+**Ziel:** Fortschritts-getriggerte Coach-Einblendungen (Frieda/Otto) getrennt vom Dialog: Hub-Meilensteine, Room-first, modus-getrennter Seen-State, sequenzielle 11/11-Sequenz vor `SparkleBurst`.
+
+**Kontext:** ADR-019, [epic-coach-fortschritt.md](epic-coach-fortschritt.md). Folge-Issue: [#122](#122--raum-overlay-priorität-gyro--pan-onboarding--coach-folge-121).
+
+### Checkliste
+
+- [x] ADR-019, `coach-messages.json`, `validate:coach`
+- [x] `coach-seen`, `coach-triggers`, Vitest
+- [x] `MascotPeekOverlay`, `CoachNudgeLayer`, `use-coach-nudge`
+- [x] Hub + Raum-Integration, Sparkle-Orchestrierung
+- [x] Portal-Fix iOS (viewport-fix)
+- [ ] Copy MPZ, PR merge
+
+---
+
+## #122 — Raum-Overlay-Priorität: Gyro → Pan-Onboarding → Coach (Folge #121)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/122 — **offen** (umgesetzt auf Branch `feature/coach-sparkle-mvp`)
+
+**Labels:** `tech`  
+**Assignee:** Felix  
+**Milestone:** Phase 2 — Content-Struktur + UI
+
+**Ziel:** Gyro-Berechtigung, Pan-Onboarding und Room-Coach nicht gleichzeitig; Reihenfolge Gyro → Pan → Coach im gleichen Besuch.
+
+**Kontext:** ADR-019 Layer-Matrix, Parent #121. `checking`-State, `viewer-coach-gate.ts`, `onViewerCoachGateChange`.
+
+### Checkliste
+
+- [x] `useDeviceOrientation`: `checking` vs. terminal `unsupported`
+- [x] `PanOnboardingOverlay`: Skip, sofort dismiss, `onActiveChange`
+- [x] Viewer-Gate in Flat/Sphere + `raum-station-client`
+- [x] `use-coach-nudge`: Seen-Timing, blocked blendet aus
+- [x] Tests + Build grün
+- [ ] Manueller iOS-Test
