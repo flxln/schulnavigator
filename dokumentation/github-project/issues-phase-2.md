@@ -718,7 +718,7 @@ Spezifikation: [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) · Detail:
 
 ## #119 — Sphere-Hotspots: sphärisches Mapping (Layer-Marker, Kalibrier-Helfer, Folge #114)
 
-**GitHub:** https://github.com/flxln/schulnavigator/issues/119 — **offen** (PR [#118](https://github.com/flxln/schulnavigator/pull/118), Branch `feature/sphere-hotspot-mapping`)
+**GitHub:** https://github.com/flxln/schulnavigator/issues/119 — **geschlossen** (2026-06-14, PR [#118](https://github.com/flxln/schulnavigator/pull/118) → `main` @ `006ff72`)
 
 **Labels:** `tech`  
 **Assignee:** Felix  
@@ -739,8 +739,6 @@ Spezifikation: [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) · Detail:
 - [x] Types/Validator: `bubblePitchOffset` in `Hotspot360`
 - [x] Tests: `sphere-marker-conventions`, `sphere-marker-factory`, `sphere-hotspot-calibration`
 - [x] Flat-Viewer unverändert
-
-**Offen:** PR #118 mergen; Feintuning der Koordinaten auf echten Geräten.
 
 ---
 
