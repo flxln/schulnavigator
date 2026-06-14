@@ -46,6 +46,8 @@ vi.mock('@photo-sphere-viewer/core', async () => {
     isEnabled: mocks.gyroIsEnabled,
     isSupported: vi.fn().mockResolvedValue(true),
     state: { isSupported: Promise.resolve(true) },
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
   }
   return {
     Viewer: vi.fn().mockImplementation((config: Record<string, unknown>) => {
@@ -172,6 +174,30 @@ describe('Gyro-Auto-Start', () => {
     render(<SphereRaumViewerInner {...DEFAULT_PROPS} />)
     // ready not fired
     expect(mocks.gyroStart).not.toHaveBeenCalled()
+  })
+
+  it('startet Gyro nach Ein-Finger-Wisch neu wenn vorher aktiv', async () => {
+    mocks.gyroIsEnabled.mockReturnValue(true)
+    render(<SphereRaumViewerInner {...DEFAULT_PROPS} />)
+    await act(async () => {
+      mocks.fireViewerReady()
+    })
+    mocks.gyroStart.mockClear()
+
+    const touchTarget = screen
+      .getByLabelText('Raumansicht Musikzimmer')
+      .querySelector('.h-full') as HTMLElement
+    expect(touchTarget).toBeTruthy()
+
+    await act(async () => {
+      fireEvent.touchStart(touchTarget, {
+        touches: [{ clientX: 100, clientY: 100 }],
+      })
+      mocks.gyroIsEnabled.mockReturnValue(false)
+      fireEvent.touchEnd(touchTarget, { touches: [] })
+    })
+
+    expect(mocks.gyroStart).toHaveBeenCalledOnce()
   })
 })
 

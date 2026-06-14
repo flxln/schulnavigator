@@ -167,7 +167,7 @@ export function QrScanner(props: QrScannerProps) {
       className={
         chrome
           ? 'sn-scan-camera-mount'
-          : 'min-h-[240px] w-full overflow-hidden rounded-[var(--r-md)] bg-bg-dark'
+          : 'aspect-square md:aspect-[4/3] min-h-[240px] w-full overflow-hidden rounded-[var(--r-md)] bg-bg-dark'
       }
       aria-hidden={state === 'idle'}
     />

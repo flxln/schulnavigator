@@ -97,42 +97,44 @@ export function MascotPeekOverlay({
         aria-label="Hinweis schließen"
         onClick={handleBackdropClick}
       />
-      <div
-        className={`sn-coach-peek sn-coach-peek--${message.placement}`}
-      >
-        <button
-          type="button"
-          className="sn-coach-peek__close"
-          aria-label="Schließen"
-          onClick={onDismiss}
+      <div className="sn-coach-peek-layer__column sn-page-container">
+        <div
+          className={`sn-coach-peek sn-coach-peek--${message.placement}`}
         >
-          <X size={22} aria-hidden />
-        </button>
+          <button
+            type="button"
+            className="sn-coach-peek__close"
+            aria-label="Schließen"
+            onClick={onDismiss}
+          >
+            <X size={22} aria-hidden />
+          </button>
 
-        {isDuo ? (
-          <div className="sn-coach-peek__duo-row">
-            <MascotFigure mascot="frieda" side="left" />
-            <MascotFigure mascot="otto" side="right" />
-          </div>
-        ) : message.placement === 'bottom' ? (
-          <MascotFigure
-            mascot={message.mascot === 'otto' ? 'otto' : 'frieda'}
-            side="bottom"
-          />
-        ) : message.placement === 'left' || message.placement === 'right' ? (
-          <MascotFigure
-            mascot={message.mascot === 'otto' ? 'otto' : 'frieda'}
-            side={message.placement}
-          />
-        ) : null}
+          {isDuo ? (
+            <div className="sn-coach-peek__duo-row">
+              <MascotFigure mascot="frieda" side="left" />
+              <MascotFigure mascot="otto" side="right" />
+            </div>
+          ) : message.placement === 'bottom' ? (
+            <MascotFigure
+              mascot={message.mascot === 'otto' ? 'otto' : 'frieda'}
+              side="bottom"
+            />
+          ) : message.placement === 'left' || message.placement === 'right' ? (
+            <MascotFigure
+              mascot={message.mascot === 'otto' ? 'otto' : 'frieda'}
+              side={message.placement}
+            />
+          ) : null}
 
-        <p
-          id="coach-peek-text"
-          className={`sn-dialog-bubble sn-dialog-bubble--tail-${tail} sn-coach-peek__bubble`}
-          style={{ borderColor: `${accent}33` }}
-        >
-          {message.text}
-        </p>
+          <p
+            id="coach-peek-text"
+            className={`sn-dialog-bubble sn-dialog-bubble--tail-${tail} sn-coach-peek__bubble`}
+            style={{ borderColor: `${accent}33` }}
+          >
+            {message.text}
+          </p>
+        </div>
       </div>
     </div>
   )

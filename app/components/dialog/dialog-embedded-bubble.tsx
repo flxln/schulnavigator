@@ -30,7 +30,7 @@ export function DialogEmbeddedBubble({
 
   return (
     <div
-      className="pointer-events-none absolute inset-x-0 z-[20] flex flex-col items-center gap-2 px-3"
+      className="pointer-events-none absolute inset-x-0 z-[20] flex flex-col items-center gap-2 px-3 md:gap-3"
       style={{
         top: usePxLayout
           ? `max(${layoutPx.topPx}px, calc(env(safe-area-inset-top) + 2.5rem))`
@@ -43,7 +43,7 @@ export function DialogEmbeddedBubble({
         className={
           usePxLayout
             ? `sn-dialog-bubble sn-dialog-bubble--tail-${tail} rounded-[var(--r-lg)] border border-border-1 bg-bg-2 px-4 py-3 text-center leading-relaxed text-fg-1 shadow-gs39-lg`
-            : `sn-dialog-bubble sn-dialog-bubble--tail-${tail} max-w-md rounded-[var(--r-lg)] border border-border-1 bg-bg-2 px-4 py-3 text-center text-[15px] leading-relaxed text-fg-1 shadow-gs39-lg`
+            : `sn-dialog-bubble sn-dialog-bubble--tail-${tail} max-w-md md:max-w-lg rounded-[var(--r-lg)] border border-border-1 bg-bg-2 px-4 py-3 text-center text-[15px] leading-relaxed text-fg-1 shadow-gs39-lg`
         }
         style={{
           borderColor: `${accent}33`,

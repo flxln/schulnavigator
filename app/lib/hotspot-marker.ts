@@ -1,5 +1,10 @@
 import type { Hotspot, HotspotBase, Medium, MediumTyp } from '@/lib/types'
 import {
+  CARD_PEEK_OFFSET_PX,
+  VIEWPORT_PRESETS,
+  cardPeekHeroHeight,
+} from '@/lib/raum-viewer/container-geometry'
+import {
   DEFAULT_ICON_SIZE_NORM,
   MAX_ICON_SIZE_NORM,
   MIN_ICON_SIZE_NORM,
@@ -19,6 +24,33 @@ const PRESET_ICON: Record<MediumTyp, string> = {
   text: '/brand/hotspot-icons/text.svg',
   link: '/brand/hotspot-icons/link.svg',
   embed: '/brand/hotspot-icons/embed.svg',
+}
+
+/** Größter Phone-Hero (Pro Max ~932 svh); große Phones unter `md` wachsen nicht darüber hinaus. */
+export const MEDIA_ICON_SIZING_HEIGHT_MAX =
+  932 - CARD_PEEK_OFFSET_PX
+
+/** Erkennungsgrenze Tablet-Container-Breite — oberhalb aller Phones (≤430 px), unterhalb md:max-w-2xl (672 px). */
+export const MEDIA_ICON_TABLET_BREAKPOINT_PX = 520
+
+/** Phone-QA-Viewport (375×667): Zielgröße für Tablet-Medien-Hotspots. */
+export const MEDIA_ICON_PHONE_SIZING_REF_HEIGHT = cardPeekHeroHeight(
+  VIEWPORT_PRESETS.phone.h,
+)
+
+/** Referenzhöhe für Medien-Icon-px — Phone unverändert, Tablet auf QA-Phone gekappt. */
+export function mediaIconSizingReferenceHeight(
+  containerHeight: number,
+  layoutViewportWidth?: number,
+): number {
+  if (containerHeight <= 0) return 0
+  const isTabletLayout =
+    layoutViewportWidth !== undefined &&
+    layoutViewportWidth >= MEDIA_ICON_TABLET_BREAKPOINT_PX
+  if (isTabletLayout) {
+    return Math.min(containerHeight, MEDIA_ICON_PHONE_SIZING_REF_HEIGHT)
+  }
+  return Math.min(containerHeight, MEDIA_ICON_SIZING_HEIGHT_MAX)
 }
 
 export function resolveIconSizeNorm(hs: Pick<HotspotBase, 'iconSize'>): number {
@@ -41,9 +73,13 @@ export function resolveHotspotMarker(
   hs: Hotspot,
   medium: Medium | undefined,
   containerHeight: number,
+  layoutViewportWidth?: number,
 ): HotspotMarker {
-  const heightPx =
-    containerHeight > 0 ? resolveIconSizeNorm(hs) * containerHeight : 0
+  const refH = mediaIconSizingReferenceHeight(
+    containerHeight,
+    layoutViewportWidth,
+  )
+  const heightPx = refH > 0 ? resolveIconSizeNorm(hs) * refH : 0
 
   if (hs.icon) {
     return { kind: 'image', src: hs.icon, heightPx }

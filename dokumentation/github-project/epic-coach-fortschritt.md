@@ -34,6 +34,7 @@ Fortschritts-getriggerte Maskottchen-Einblendungen (Frieda/Otto) getrennt vom Di
 - [x] Hub: Meilensteine + Sparkle-Orchestrierung (`home-screen.tsx`)
 - [x] Raum: Room-first-Coach, Dialog-/Panel-Guard
 - [x] iOS: Coach-Overlay via Portal (`document.body`)
+- [x] Tablet-QA (Folge #74): Coach-Inhalt in `.sn-page-container`, Backdrop fullscreen
 - [x] Raum-Overlay-Priorität (#122): `checking`-State, Viewer-Gate, Pan-Onboarding-Härtung
 - [x] PR merge → `main` ([PR #123](https://github.com/flxln/schulnavigator/pull/123))
 - [ ] Copy mit MPZ final abstimmen

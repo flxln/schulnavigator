@@ -58,10 +58,7 @@ export default async function RaumPage({ params }: PageProps) {
   const { slotId } = getHubMapping(slug)
 
   return (
-    <main
-      className="mx-auto min-h-[100svh] w-full max-w-lg overflow-x-hidden"
-      data-hub-slot={slotId}
-    >
+    <main className="sn-page-container min-h-[100svh]" data-hub-slot={slotId}>
       <StationVisitRecorder
         slug={slug}
         validSlugs={validSlugs}

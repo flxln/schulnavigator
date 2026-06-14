@@ -21,7 +21,6 @@ import type {
   StationViewerHandle,
 } from '@/lib/types'
 import {
-  ROOM_VIEWER_HEIGHT_CSS,
   SPHERE_GYRO_ROLL_ENABLED,
   SPHERE_LOCKED_FOV_DEG,
   SPHERE_LOCKED_FOV_EPSILON_DEG,
@@ -39,6 +38,7 @@ import {
 } from '@/lib/raum-viewer/sphere-marker-factory'
 import {
   resolveBubbleProjectionPitchDeg,
+  resolveImageLayerSize,
   yawPitchToRadians,
 } from '@/lib/raum-viewer/sphere-marker-conventions'
 
@@ -57,9 +57,7 @@ export type SphereRaumViewerInnerProps = {
   onViewerCoachGateChange?: (blocksCoach: boolean) => void
 }
 
-const VIEWER_HEIGHT_STYLE_DEFAULT = {
-  height: ROOM_VIEWER_HEIGHT_CSS,
-}
+const VIEWER_HEIGHT_CLASS_DEFAULT = 'sn-viewer-fallback-height'
 
 function isHotspotCalibEnabled(): boolean {
   if (process.env.NODE_ENV !== 'development') return false
@@ -240,14 +238,25 @@ export const SphereRaumViewerInner = forwardRef<
     gyroPluginRef.current = gyroPlugin
 
     let pinchGyroResumePending = false
+    let gyroWasEnabledBeforeTouch = false
     const onTouchStart = (evt: TouchEvent) => {
+      if (gyroPlugin?.isEnabled()) {
+        gyroWasEnabledBeforeTouch = true
+      }
       if (evt.touches.length >= 2 && gyroPlugin?.isEnabled()) {
         pinchGyroResumePending = true
       }
     }
     const onTouchEnd = (evt: TouchEvent) => {
-      if (evt.touches.length !== 0 || !pinchGyroResumePending) return
+      const resumeAfterTouch =
+        evt.touches.length === 0 &&
+        (pinchGyroResumePending || gyroWasEnabledBeforeTouch) &&
+        gyroPlugin &&
+        !gyroPlugin.isEnabled()
+      if (evt.touches.length !== 0) return
       pinchGyroResumePending = false
+      gyroWasEnabledBeforeTouch = false
+      if (!resumeAfterTouch) return
       if (!orientationEnabled || orientStateRef.current !== 'active') return
       void startGyroRef.current()
     }
@@ -354,7 +363,9 @@ export const SphereRaumViewerInner = forwardRef<
 
     const list = hotspots360 ?? []
     const nextIds = new Set(list.map((h) => h.id))
-    const containerHeight = viewerRef.current?.getSize().height ?? 400
+    const viewerSize = viewerRef.current?.getSize()
+    const containerHeight = viewerSize?.height ?? 400
+    const layoutViewportWidth = viewerSize?.width
 
     for (const id of [...markerKindsRef.current.keys()]) {
       if (!nextIds.has(id)) {
@@ -370,6 +381,7 @@ export const SphereRaumViewerInner = forwardRef<
         hs,
         medien,
         containerHeight,
+        layoutViewportWidth,
         isActive: false,
         speakingRolle: null,
       })
@@ -386,7 +398,9 @@ export const SphereRaumViewerInner = forwardRef<
     const plugin = markersPluginRef.current
     if (!plugin || !ready || !hotspots360?.length) return
 
-    const containerHeight = viewerRef.current?.getSize().height ?? 400
+    const viewerSize = viewerRef.current?.getSize()
+    const containerHeight = viewerSize?.height ?? 400
+    const layoutViewportWidth = viewerSize?.width
 
     for (const hs of hotspots360) {
       const kind = markerKindsRef.current.get(hs.id)
@@ -396,6 +410,7 @@ export const SphereRaumViewerInner = forwardRef<
         hs,
         medien,
         containerHeight,
+        layoutViewportWidth,
         isActive: hs.id === activeHotspotId,
         speakingRolle,
       }
@@ -424,8 +439,7 @@ export const SphereRaumViewerInner = forwardRef<
 
   return (
     <div
-      className={`relative w-full overflow-hidden bg-bg-dark ${isHero ? 'h-full' : 'rounded-[var(--r-md)]'}`}
-      style={isHero ? undefined : VIEWER_HEIGHT_STYLE_DEFAULT}
+      className={`relative w-full overflow-hidden bg-bg-dark ${isHero ? 'h-full' : `rounded-[var(--r-md)] ${VIEWER_HEIGHT_CLASS_DEFAULT}`}`}
       aria-label={alt}
     >
       <div ref={containerRef} className="h-full w-full" />

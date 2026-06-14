@@ -88,3 +88,27 @@ body {
   30% { transform: translateX(-10px); }
   70% { transform: translateX(10px); }
 }
+
+@layer components {
+  .sn-page-container {
+    @apply mx-auto w-full max-w-lg md:max-w-2xl lg:max-w-3xl;
+  }
+
+  .sn-viewer-fallback-height {
+    height: min(50vh, 360px);
+  }
+
+  .sn-viewer-fallback-min-height {
+    min-height: min(50vh, 360px);
+  }
+}
+
+@media (min-width: 768px) {
+  .sn-viewer-fallback-height {
+    height: min(50vh, 460px);
+  }
+
+  .sn-viewer-fallback-min-height {
+    min-height: min(50vh, 460px);
+  }
+}

@@ -9,7 +9,7 @@ Dieser Ordner ist die **führende Spezifikation** für Milestones und Issues in 
 | [milestones.md](milestones.md) | Beschreibungstexte und Fälligkeiten der Phasen-Milestones (1:1 für GitHub nutzbar) |
 | [issues-phase-0.md](issues-phase-0.md) … [issues-phase-5.md](issues-phase-5.md) | Issues pro Phase inkl. Labels, Assignees, Akzeptanzkriterien |
 | [issues-schulfest-gs39-nachtrag.md](issues-schulfest-gs39-nachtrag.md) | Epic **#86** (Vorlage): GS39-Nachtrag Schulfest/Hof-QR/Content — Unterissues #87–#91, Anpassung #39 |
-| [epic-tablet-ipad-layout.md](epic-tablet-ipad-layout.md) | Epic **#74** (geplant): Tablet/iPad-Layout — Parent + Unterissues #75–#78, Issue-Bodies für GitHub |
+| [epic-tablet-ipad-layout.md](epic-tablet-ipad-layout.md) | Epic **#74** (umgesetzt 2026-06-14): Tablet/iPad-Layout — Parent + Unterissues #75–#78 |
 | [epic-externe-medien-hotspot-marker.md](epic-externe-medien-hotspot-marker.md) | Epic **#97**: ADR-017 — Hotspot-Marker, `link`, `embed` — Unterissues #98–#100 |
 | [epic-coach-fortschritt.md](epic-coach-fortschritt.md) | Epic **#121**: ADR-019 — Coach Fortschritts-Einblendungen — Unterissue #122 (Raum-Overlay-Priorität) |
 | [epic-hub-wegweiser.md](epic-hub-wegweiser.md) | Epic **#124**: ADR-020 — Hub Wegweiser Schulhof/Turnhalle, 12 Stationen |
@@ -43,7 +43,7 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issue **#71** (Maskottchen-Hotspots UI, ADR-011) — geschlossen (2026-05-28, `main` @ `14cb740`)
 - [x] Issue **#72** (Raum-UI TopBar/Chip, Follow-up #71) — geschlossen (2026-05-28, [PR #73](https://github.com/flxln/schulnavigator/pull/73) → `main` @ `7fc23c6`)
 - [x] Issue **#81** (Scan-Chrome: Kamerabild füllt Rahmen, Folge #62) — geschlossen (2026-05-30, Sub-Issue von #62)
-- [ ] Epic **#74** (Tablet/iPad Layout) + **#75–#78** — angelegt 2026-05-28; Spezifikation [epic-tablet-ipad-layout.md](epic-tablet-ipad-layout.md), [ADR-012](../adr/012-tablet-ipad-responsive-layout.md)
+- [x] Epic **#74** (Tablet/iPad Layout) + **#75–#78** — geschlossen 2026-06-14, Branch `feat/tablet-ipad-layout`; [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) entschieden
 - [x] Issue **#27** (Raumfotos einpflegen) — geschlossen 2026-06-08: 8× Panorama in `public/stations/`, LFS, `export-pano.mjs`
 - [ ] Issue **#17** (Raumfotos liefern, extern) — Teillieferung 8/11; offen: `kunst`, `hort`, `schulsozialarbeit`
 - [x] Issues **#18–#20** (Audio-/Video-Player, Foto-Viewer) — geschlossen 2026-06-09: `app/components/media/`, `MediaPlayerByTyp`, `poster?`-Schema
@@ -68,4 +68,4 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 
 - [x] Epic **#124** (Hub Wegweiser Schulhof/Turnhalle, ADR-020) — geschlossen 2026-06-14, [PR #125](https://github.com/flxln/schulnavigator/pull/125) → `main`; [epic-hub-wegweiser.md](epic-hub-wegweiser.md)
 
-Letzter dokumentierter Abgleich: **2026-06-14** (#124 Hub-Wegweiser via PR #125 auf `main`).
+Letzter dokumentierter Abgleich: **2026-06-14** (Epic #74 Branch `feat/tablet-ipad-layout`: Coach-Spaltenbreite + Tablet-QA, PR-Vorbereitung).
