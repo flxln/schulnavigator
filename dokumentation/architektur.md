@@ -41,6 +41,7 @@ Utility: `.sn-page-container` in [`globals.css`](../app/app/globals.css). Scan-R
 | Nicht-Hero-Viewer | `.sn-viewer-fallback-height` / `.sn-viewer-fallback-min-height` — Phone `min(50vh,360px)`, Tablet `min(50vh,460px)` |
 | Medien-Hotspot-Icons | `iconSize × effectiveDisplayH`, auf Tablet (`layoutViewportWidth ≥ 520 px`) Referenzhöhe = Phone-QA-Hero (~563 px); Flat + Sphere via `mediaIconSizingReferenceHeight()` in [`hotspot-marker.ts`](../app/lib/hotspot-marker.ts) |
 | Gyro nach Wischen | Sphere: PSV-Gyro nach Ein-Finger-Pan neu starten (Folge #116/#74); Flat: nur-Höhe-Resize debounced (200 ms), damit Card-Peek-`svh` die Neutral-Kalibrierung nicht dauerhaft zurücksetzt |
+| Coach-Overlay (ADR-019) | Portal an `body`, Backdrop fullscreen; Inhalt in `.sn-page-container` (gleiche Spalte wie Seite; Folge #74) |
 
 ### Medien-Panel
 

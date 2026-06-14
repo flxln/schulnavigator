@@ -3,7 +3,7 @@
 **Milestone:** Phase 2  
 **ADR:** [ADR-012](../adr/012-tablet-ipad-responsive-layout.md)  
 **Status:** abgeschlossen — Issues #74–#78 geschlossen (2026-06-14, Branch `feat/tablet-ipad-layout`)  
-**QA-Nachtrag (2026-06-14):** Medien-Hotspot-Skalierung auf Tablet (`mediaIconSizingReferenceHeight`); Gyro-Neustart nach Ein-Finger-Wischen (Sphere, Folge #116); Flat-Resize-Debounce bei Card-Peek-`svh`
+**QA-Nachtrag (2026-06-14):** Medien-Hotspot-Skalierung auf Tablet (`mediaIconSizingReferenceHeight`); Gyro-Neustart nach Ein-Finger-Wischen (Sphere, Folge #116); Flat-Resize-Debounce bei Card-Peek-`svh`; Coach-Overlay-Inhalt an `.sn-page-container` (Folge #121)
 **Abhängigkeit:** [#72](https://github.com/flxln/schulnavigator/issues/72) erledigt; nicht parallel im selben PR vermischen
 
 ## Übersicht

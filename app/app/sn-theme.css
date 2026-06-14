@@ -724,6 +724,12 @@
   cursor: pointer;
 }
 
+.sn-coach-peek-layer__column {
+  position: relative;
+  height: 100%;
+  pointer-events: none;
+}
+
 .sn-coach-peek {
   position: absolute;
   inset: 0;
@@ -778,7 +784,7 @@
   position: relative;
   display: flex;
   width: 100%;
-  max-width: 28rem;
+  max-width: min(100%, 28rem);
   align-items: flex-end;
   justify-content: space-between;
   gap: 0.5rem;
@@ -794,7 +800,7 @@
   display: block;
   height: min(42vh, 260px);
   width: auto;
-  max-width: min(46vw, 200px);
+  max-width: min(45%, 200px);
   object-fit: contain;
   filter: drop-shadow(0 8px 16px rgb(0 0 0 / 0.18));
 }
@@ -815,7 +821,7 @@
   position: relative;
   z-index: 1;
   margin-top: 0.75rem;
-  max-width: min(92vw, 22rem);
+  max-width: min(100%, 22rem);
   border: 1px solid var(--border-1);
   border-radius: var(--r-lg);
   background: var(--bg-2);
