@@ -60,6 +60,6 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issue **#113** (360°-Sphere-Viewer: PSV-Koexistenz, Gyro-Panning, ADR-018, Pilot Musikraum) — umgesetzt 2026-06-11, Branch `feature/360-sphere-viewer`
 - [x] Issue **#114** (360°-Sphere-Viewer: Rollout 8 Stationen, Maskottchen-Marker, Gyro-Bugfix, Folge #113) — umgesetzt 2026-06-11, Branch `feature/360-sphere-viewer`
 - [x] Issue **#116** (Sphere-Viewer: Zoom-Sperre + Gyro-Neustart nach Pinch, Folge #114) — umgesetzt 2026-06-11, Branch `feature/sphere-zoom-sperre`
-- [x] Issue **#119** (Sphere-Hotspots: sphärisches Mapping, Layer-Marker, Kalibrier-Helfer, Folge #114) — umgesetzt 2026-06-13, PR [#118](https://github.com/flxln/schulnavigator/pull/118), Branch `feature/sphere-hotspot-mapping`
+- [x] Issue **#119** (Sphere-Hotspots: sphärisches Mapping, Layer-Marker, Kalibrier-Helfer, Folge #114) — geschlossen 2026-06-14, PR [#118](https://github.com/flxln/schulnavigator/pull/118) → `main`
 
-Letzter dokumentierter Abgleich: **2026-06-13** (#119 Sphere-Hotspot-Layer-Mapping; PR #118 offen).
+Letzter dokumentierter Abgleich: **2026-06-14** (#119 gemergt PR #118; Sphere-Hotspot-Layer-Mapping live nach Coolify-Deploy).
