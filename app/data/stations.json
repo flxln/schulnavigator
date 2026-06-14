@@ -81,22 +81,22 @@
         {
           "id": "hs-frieda",
           "label": "Frieda",
-          "yaw": 6,
-          "pitch": -30,
+          "yaw": 21.1,
+          "pitch": -30.7,
           "action": "dialog",
           "mascot": "frieda",
-          "mascotSize": 0.55,
+          "mascotSize": 0.3,
           "mascotFlipX": false,
           "bubblePitchOffset": 14
         },
         {
           "id": "hs-otto",
           "label": "Otto",
-          "yaw": -14,
-          "pitch": -28,
+          "yaw": -18.7,
+          "pitch": -27.7,
           "action": "dialog",
           "mascot": "otto",
-          "mascotSize": 0.4,
+          "mascotSize": 0.2,
           "mascotFlipX": true,
           "bubblePitchOffset": 14
         }

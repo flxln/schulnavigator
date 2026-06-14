@@ -742,6 +742,28 @@ Spezifikation: [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) · Detail:
 
 ---
 
+## #120 — Sphere-Marker: PSV-Tooltips entfernen, Kalibrier-Yaw normalisieren (Folge #119)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/120 — **geschlossen** (2026-06-14, `main`)
+
+**Labels:** `tech`  
+**Assignee:** Felix  
+**Milestone:** Phase 2 — Content-Struktur + UI
+
+**Ziel:** Unerwünschte PSV-Tooltip-Labels über Maskottchen/Medien-Icons entfernen; Kalibrier-Helfer liefert `yaw` im Validator-Format (−180…180°).
+
+**Kontext:** Folge #119. `label` in `hotspots360` bleibt für `aria-label`/Content-Pflege; keine sichtbaren Sprechblasen mehr.
+
+### Checkliste
+
+- [x] `tooltip` aus `buildSphereMarkerConfig` entfernt (`sphere-marker-factory.ts`)
+- [x] `normalizeYawDeg` in `sphere-marker-conventions.ts` + Kalibrier-Snippet
+- [x] DaZ `hotspots360` nachkalibriert (`stations.json`)
+- [x] Tests: `sphere-hotspot-calibration.test.ts`
+- [x] Abnahme-Referenz + `content-einpflegen.md` aktualisiert
+
+---
+
 ## #116 — Sphere-Viewer: Zoom-Sperre + Gyro-Neustart nach Pinch (Folge #114)
 
 **GitHub:** https://github.com/flxln/schulnavigator/issues/116 — **geschlossen** (2026-06-11, Branch `feature/sphere-zoom-sperre`)

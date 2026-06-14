@@ -108,7 +108,6 @@ export function buildSphereMarkerConfig(
   const base = {
     id: hs.id,
     position,
-    tooltip: hs.label ?? undefined,
   }
 
   if (isMascotDialogHotspot(hs)) {
