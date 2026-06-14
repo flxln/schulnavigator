@@ -12,10 +12,12 @@ type Phase = 'idle' | 'visible' | 'done'
 export function PanOnboardingOverlay({
   skip = false,
   mode = 'flat',
+  onActiveChange,
 }: {
   skip?: boolean
   /** 'sphere' zeigt „Drehe dich um" statt „Links oder rechts wischen". */
   mode?: 'flat' | 'sphere'
+  onActiveChange?: (active: boolean) => void
 }) {
   const [phase, setPhase] = useState<Phase>('idle')
   const [opacity, setOpacity] = useState(1)
@@ -29,6 +31,12 @@ export function PanOnboardingOverlay({
     dismissedRef.current = true
     setPhase('done')
   }, [])
+
+  useEffect(() => {
+    if (skip && phase === 'visible') {
+      dismiss()
+    }
+  }, [skip, phase, dismiss])
 
   // Startet die Anzeige genau einmal beim ersten skip=false-Moment.
   useEffect(() => {
@@ -48,6 +56,14 @@ export function PanOnboardingOverlay({
     }
     setPhase('visible')
   }, [skip])
+
+  useEffect(() => {
+    const active = phase === 'visible'
+    onActiveChange?.(active)
+    return () => {
+      onActiveChange?.(false)
+    }
+  }, [phase, onActiveChange])
 
   // Ausblenden per rAF + performance.now() — iOS-sicher (kein setTimeout, kein animationend).
   useEffect(() => {

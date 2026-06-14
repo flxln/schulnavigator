@@ -43,6 +43,7 @@ import { normalizedViewportCenter } from '@/lib/raum-viewer/viewport-center'
 import { HotspotOverlay } from '@/components/raum-viewer/hotspot-overlay'
 import { PanOnboardingOverlay } from '@/components/raum-viewer/pan-onboarding-overlay'
 import { useDeviceOrientation } from '@/components/raum-viewer/use-device-orientation'
+import { computeViewerBlocksCoach } from '@/lib/raum-viewer/viewer-coach-gate'
 import type { RaumViewerLayout } from '@/components/raum-viewer/raum-viewer'
 
 export type RoomImagePaneProps = {
@@ -62,6 +63,7 @@ export type RoomImagePaneProps = {
   ) => void
   layout?: RaumViewerLayout
   orientationEnabled?: boolean
+  onViewerCoachGateChange?: (blocksCoach: boolean) => void
 }
 
 export type RoomImagePaneHandle = {
@@ -106,11 +108,17 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
       onPanChange,
       layout = 'default',
       orientationEnabled = true,
+      onViewerCoachGateChange,
     },
     ref,
   ) {
   const isHero = layout === 'hero'
   const [debugViewer, setDebugViewer] = useState(false)
+  const [panOnboardingActive, setPanOnboardingActive] = useState(false)
+
+  const handlePanOnboardingActiveChange = useCallback((active: boolean) => {
+    setPanOnboardingActive(active)
+  }, [])
 
   useEffect(() => {
     const check = () => {
@@ -165,6 +173,24 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
     axisEpoch,
     requestAccess,
   } = useDeviceOrientation(orientationEnabled)
+
+  useEffect(() => {
+    onViewerCoachGateChange?.(
+      computeViewerBlocksCoach(
+        orientationEnabled,
+        orientState,
+        panOnboardingActive,
+      ),
+    )
+  }, [
+    orientationEnabled,
+    orientState,
+    panOnboardingActive,
+    onViewerCoachGateChange,
+  ])
+
+  const panOnboardingSkip =
+    orientState === 'needs-gesture' || orientState === 'checking'
 
   const panMode = panMappingForAxis(panAxis)
   const useCircularDelta = false
@@ -602,7 +628,11 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
   useImperativeHandle(ref, () => ({ recenterView }), [recenterView])
 
   const orientationBanner = () => {
-    if (orientState === 'active' || orientState === 'needs-gesture') {
+    if (
+      orientState === 'active' ||
+      orientState === 'needs-gesture' ||
+      orientState === 'checking'
+    ) {
       return null
     }
     const text =
@@ -730,7 +760,10 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
           />
         )}
 
-        <PanOnboardingOverlay skip={orientState === 'needs-gesture'} />
+        <PanOnboardingOverlay
+          skip={panOnboardingSkip}
+          onActiveChange={handlePanOnboardingActiveChange}
+        />
 
         {debugViewer ? (
           <div className="pointer-events-none absolute bottom-1 left-1 right-1 z-20 rounded bg-white/90 px-2 py-1 font-mono text-xs leading-tight text-black">

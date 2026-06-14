@@ -177,7 +177,7 @@ Ein **Provider** oben in der jeweiligen Shell verhindert doppelte Logik.
 - [x] `coach-seen.ts` + Tests
 - [x] `MascotPeekOverlay` + `use-coach-nudge`
 - [x] Integration `HomeScreen` (MVP)
-- [x] Dialog-/Panel-Guard: kein Coach bei aktiver modaler UI
+- [x] Dialog-/Panel-/Viewer-Gate: kein Coach bei aktiver modaler UI (Gyro, Pan, Dialog, Panel)
 - [x] `lokal-testen-und-anschauen.md` ergänzt
 - [ ] Copy mit MPZ final abstimmen
 - [ ] `prefers-reduced-motion` manuell am Gerät prüfen

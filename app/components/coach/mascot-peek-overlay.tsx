@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Image from 'next/image'
 import { X } from 'lucide-react'
@@ -11,73 +11,6 @@ const MASCOT_SRC = {
   frieda: '/brand/mascots/frieda.png',
   otto: '/brand/mascots/otto.png',
 } as const
-
-function scanAncestorContainingBlocks(el: HTMLElement | null) {
-  const hits: Array<{ tag: string; cls: string; transform: string; overflow: string; position: string }> = []
-  let node: HTMLElement | null = el?.parentElement ?? null
-  while (node && node !== document.body) {
-    const cs = getComputedStyle(node)
-    const transform = cs.transform
-    const filter = cs.filter
-    const perspective = cs.perspective
-    const willChange = cs.willChange
-    if (
-      (transform && transform !== 'none') ||
-      (filter && filter !== 'none') ||
-      (perspective && perspective !== 'none') ||
-      willChange.includes('transform')
-    ) {
-      hits.push({
-        tag: node.tagName,
-        cls: node.className?.toString?.().slice(0, 80) ?? '',
-        transform,
-        overflow: cs.overflow,
-        position: cs.position,
-      })
-    }
-    node = node.parentElement
-  }
-  return hits
-}
-
-function debugCoachOverlay(layerEl: HTMLElement, placement: string) {
-  const cs = getComputedStyle(layerEl)
-  const rect = layerEl.getBoundingClientRect()
-  const ancestors = scanAncestorContainingBlocks(layerEl)
-  const payload = {
-    placement,
-    portaled: layerEl.parentElement === document.body,
-    parentTag: layerEl.parentElement?.tagName ?? null,
-    layerPosition: cs.position,
-    layerZIndex: cs.zIndex,
-    layerRect: { top: rect.top, left: rect.left, width: rect.width, height: rect.height },
-    viewport: { w: window.innerWidth, h: window.innerHeight },
-    offsetParent: layerEl.offsetParent?.tagName ?? null,
-    ancestorTransforms: ancestors,
-    ua: navigator.userAgent.slice(0, 120),
-  }
-  // #region agent log
-  try {
-    sessionStorage.setItem('sn_debug_coach_70672c', JSON.stringify(payload))
-  } catch {
-    /* ignore */
-  }
-  fetch('http://127.0.0.1:7812/ingest/450accf7-28ed-44f9-aee9-40c757f74622', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '70672c' },
-    body: JSON.stringify({
-      sessionId: '70672c',
-      runId: 'post-fix',
-      location: 'mascot-peek-overlay.tsx:debugCoachOverlay',
-      message: 'coach overlay mount metrics',
-      data: payload,
-      timestamp: Date.now(),
-      hypothesisId: 'A-B-C',
-    }),
-  }).catch(() => {})
-  // #endregion
-  return payload
-}
 
 type MascotPeekOverlayProps = {
   message: CoachMessage
@@ -129,21 +62,11 @@ export function MascotPeekOverlay({
   onDismiss,
 }: MascotPeekOverlayProps) {
   const tail = tailForPlacement(message.placement)
-  const layerRef = useRef<HTMLDivElement>(null)
   const [portalReady, setPortalReady] = useState(false)
 
   useEffect(() => {
     setPortalReady(true)
   }, [])
-
-  useEffect(() => {
-    const el = layerRef.current
-    if (!el) return
-    const run = () => debugCoachOverlay(el, message.placement)
-    run()
-    const t = window.requestAnimationFrame(run)
-    return () => window.cancelAnimationFrame(t)
-  }, [message.placement])
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -163,7 +86,6 @@ export function MascotPeekOverlay({
 
   const overlay = (
     <div
-      ref={layerRef}
       className="sn-coach-peek-layer"
       role="dialog"
       aria-modal="true"

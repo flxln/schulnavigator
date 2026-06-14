@@ -220,6 +220,49 @@ describe('PanOnboardingOverlay', () => {
     render(<SphereRaumViewerInner {...DEFAULT_PROPS} />)
     expect(screen.getByTestId('pan-onboarding').dataset.skip).toBe('true')
   })
+
+  it('skip=true wenn orientState checking', () => {
+    mocks.setOrientState('checking')
+    render(<SphereRaumViewerInner {...DEFAULT_PROPS} />)
+    expect(screen.getByTestId('pan-onboarding').dataset.skip).toBe('true')
+  })
+})
+
+describe('ViewerCoachGate', () => {
+  it('meldet onViewerCoachGateChange(true) bei needs-gesture', () => {
+    const onGate = vi.fn()
+    mocks.setOrientState('needs-gesture')
+    render(
+      <SphereRaumViewerInner
+        {...DEFAULT_PROPS}
+        onViewerCoachGateChange={onGate}
+      />,
+    )
+    expect(onGate).toHaveBeenCalledWith(true)
+  })
+
+  it('meldet onViewerCoachGateChange(false) bei active ohne Pan', () => {
+    const onGate = vi.fn()
+    render(
+      <SphereRaumViewerInner
+        {...DEFAULT_PROPS}
+        onViewerCoachGateChange={onGate}
+      />,
+    )
+    expect(onGate).toHaveBeenCalledWith(false)
+  })
+
+  it('meldet onViewerCoachGateChange(false) bei unsupported', () => {
+    const onGate = vi.fn()
+    mocks.setOrientState('unsupported')
+    render(
+      <SphereRaumViewerInner
+        {...DEFAULT_PROPS}
+        onViewerCoachGateChange={onGate}
+      />,
+    )
+    expect(onGate).toHaveBeenCalledWith(false)
+  })
 })
 
 describe('Sphere-Marker (Layer + Lifecycle)', () => {
