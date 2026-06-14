@@ -21,8 +21,6 @@ import {
   PAN_SMOOTHING,
   PORTRAIT_GAMMA_FALLBACK_ENABLED,
   RECOMMENDED_SOURCE_ASPECT_MIN,
-  ROOM_VIEWER_HEIGHT_CSS,
-  ROOM_VIEWER_MAX_HEIGHT_PX,
   maxPanPx,
 } from '@/lib/raum-viewer/constants'
 import { visibleYNormalRange } from '@/lib/raum-viewer/clip-zone'
@@ -72,6 +70,8 @@ export type RoomImagePaneHandle = {
 
 const NEUTRAL_CALIB_MS = 500
 const RESIZE_RESET_PX = 5
+/** Nur-Höhe-Änderungen (iOS svh beim Scroll) — debounced, sonst blockiert Gyro-Kalibrierung. */
+const RESIZE_HEIGHT_DEBOUNCE_MS = 200
 const GAMMA_SAMPLE_MAX_ABS = 90
 
 const GAMMA_FALLBACK_OPTS: PanMappingOpts = {
@@ -136,7 +136,7 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
   const [naturalW, setNaturalW] = useState(0)
   const [naturalH, setNaturalH] = useState(0)
   const [containerW, setContainerW] = useState(0)
-  const [containerH, setContainerH] = useState(ROOM_VIEWER_MAX_HEIGHT_PX)
+  const [containerH, setContainerH] = useState(0)
   const [panPx, setPanPx] = useState(0)
   const [neutralEpoch, setNeutralEpoch] = useState(0)
 
@@ -154,6 +154,7 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
   const needsReanchorGamma = useRef(false)
   const panPxRef = useRef(0)
   const prevContainer = useRef({ w: 0, h: 0 })
+  const heightResizeDebounce = useRef<number | null>(null)
   const centerDebounce = useRef<number | null>(null)
   const centerDwell = useRef<number | null>(null)
   const pendingCenterHit = useRef<Hotspot | null>(null)
@@ -254,32 +255,50 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
     if (!el || typeof ResizeObserver === 'undefined') {
       return
     }
+    const applyResizeNeutralReset = () => {
+      neutralAlpha.current = null
+      neutralGamma.current = null
+      neutralCalibrated.current = false
+      alphaSamples.current = []
+      gammaSamples.current = []
+      betaSamples.current = []
+      lockedRef.current = false
+      needsReanchorGamma.current = false
+      setNeutralEpoch((e) => e + 1)
+    }
     const ro = new ResizeObserver((entries) => {
       const cr = entries[0]?.contentRect
       if (!cr) return
       const pw = prevContainer.current.w
       const ph = prevContainer.current.h
-      if (
-        pw > 0 &&
-        (Math.abs(cr.width - pw) > RESIZE_RESET_PX ||
-          Math.abs(cr.height - ph) > RESIZE_RESET_PX)
-      ) {
-        neutralAlpha.current = null
-        neutralGamma.current = null
-        neutralCalibrated.current = false
-        alphaSamples.current = []
-        gammaSamples.current = []
-        betaSamples.current = []
-        lockedRef.current = false
-        needsReanchorGamma.current = false
-        setNeutralEpoch((e) => e + 1)
+      const widthChanged = pw > 0 && Math.abs(cr.width - pw) > RESIZE_RESET_PX
+      const heightChanged = ph > 0 && Math.abs(cr.height - ph) > RESIZE_RESET_PX
+      if (widthChanged) {
+        if (heightResizeDebounce.current !== null) {
+          window.clearTimeout(heightResizeDebounce.current)
+          heightResizeDebounce.current = null
+        }
+        applyResizeNeutralReset()
+      } else if (heightChanged) {
+        if (heightResizeDebounce.current !== null) {
+          window.clearTimeout(heightResizeDebounce.current)
+        }
+        heightResizeDebounce.current = window.setTimeout(() => {
+          heightResizeDebounce.current = null
+          applyResizeNeutralReset()
+        }, RESIZE_HEIGHT_DEBOUNCE_MS)
       }
       prevContainer.current = { w: cr.width, h: cr.height }
       setContainerW(cr.width)
       setContainerH(cr.height)
     })
     ro.observe(el)
-    return () => ro.disconnect()
+    return () => {
+      if (heightResizeDebounce.current !== null) {
+        window.clearTimeout(heightResizeDebounce.current)
+      }
+      ro.disconnect()
+    }
   }, [])
 
   useEffect(() => {
@@ -646,15 +665,12 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
     )
   }
 
-  const viewerHeightStyle = isHero
-    ? { height: '100%' as const }
-    : { height: ROOM_VIEWER_HEIGHT_CSS }
+  const viewerHeightClass = isHero ? 'h-full' : 'sn-viewer-fallback-height'
 
   if (broken) {
     return (
       <div
-        className={`flex w-full items-center justify-center bg-brand-sky-50 px-4 text-center text-sm font-medium text-fg-1 ${isHero ? 'h-full' : 'rounded-[var(--r-md)]'}`}
-        style={viewerHeightStyle}
+        className={`flex w-full items-center justify-center bg-brand-sky-50 px-4 text-center text-sm font-medium text-fg-1 ${isHero ? 'h-full' : `rounded-[var(--r-md)] ${viewerHeightClass}`}`}
       >
         Raumbild konnte nicht geladen werden.
       </div>
@@ -697,9 +713,8 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
     <div className={isHero ? 'h-full' : 'flex flex-col gap-2'}>
       <div
         ref={containerRef}
-        className={`relative w-full overflow-hidden bg-bg-dark ${isHero ? 'h-full' : 'rounded-[var(--r-md)]'}`}
+        className={`relative w-full overflow-hidden bg-bg-dark ${isHero ? 'h-full' : `rounded-[var(--r-md)] ${viewerHeightClass}`}`}
         style={{
-          ...viewerHeightStyle,
           touchAction: 'none',
           contain: 'layout paint style',
         }}
@@ -737,6 +752,7 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
               hotspots={hotspots}
               medien={medien}
               containerHeight={effectiveDisplayH}
+              layoutViewportWidth={containerW}
               yBand={yBand}
               activeHotspotId={activeHotspotId}
               speakingRolle={speakingRolle}

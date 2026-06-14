@@ -40,9 +40,12 @@ export const PAN_SMOOTHING = 0.22
 /** Viewport-Mitte im Hotspot: nur Marker hervorheben, nicht Medien öffnen. */
 export const HOTSPOT_CENTER_DWELL_MS = 450
 export const HOTSPOT_DEBOUNCE_MS = 280
-/** Sichtbare Viewer-Höhe (höhenbasierte Bildskalierung, Gyro-Pan). */
-export const ROOM_VIEWER_HEIGHT_CSS = 'min(50vh,360px)'
+/** Sichtbare Viewer-Höhe (Nicht-Hero). Rendern nur via `.sn-viewer-fallback-height` in globals.css. */
 export const ROOM_VIEWER_MAX_HEIGHT_PX = 360
+/** Tablet-Rechendefault (≥768 px) — nicht als style-Prop nutzen. */
+export const ROOM_VIEWER_MAX_HEIGHT_PX_TABLET = 460
+/** @deprecated Nur noch für Tests/Legacy-Referenz — Komponenten nutzen CSS-Klassen. */
+export const ROOM_VIEWER_HEIGHT_CSS = 'min(50vh,360px)'
 /** Warnung in Dev, wenn Anzeige-Breite / Viewport-Breite darunter liegt (kaum Gyro-Wirkung). */
 export const MIN_PAN_DISPLAY_RATIO = 2
 /** Empfohlenes Seitenverhältnis Breite:Höhe der Quelldatei (Panorama, z. B. 2500×1000). */

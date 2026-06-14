@@ -103,7 +103,19 @@ npm run start
 
 **Raum-Viewer (Issue #55 / #56, #72, #96, #107, #111):** `export const viewport` in [`app/app/layout.tsx`](../app/app/layout.tsx) — korrektes **device-width** auf dem Handy (kein „Mini-Desktop-Zoom“). **Pinch-Zoom gesperrt** projektweit ([#96](https://github.com/flxln/schulnavigator/issues/96)): Meta `userScalable: false` reicht auf iOS nicht — zusätzlich [`DisableZoom`](../app/components/ui/disable-zoom.tsx) im Root-Layout. Test: mit zwei Fingern zoomen → Seite darf **nicht** skalieren (nach Deploy ggf. Hard Reload in Safari).
 
-**Card-Peek (#111):** Raumseiten nutzen **Body-Scroll** (kein Viewport-Lock). Hero-Höhe `calc(100svh - 6.5rem)`; Inhaltskarte mit `-mt-6` überlappt den Hero — initial sichtbar: nur die **Überschriftenzeile** (Chip, „Schulhaus-Rundgang“, Titel, ChevronUp). Beschreibung, Medien und Footer erst durch **Hochwischen**. `<main>` hat `w-full max-w-lg` (verhindert iOS-Überbreite bei langen Titeln); `overflow-x: clip` auf `html`/`body`.
+**Card-Peek (#111):** Raumseiten nutzen **Body-Scroll** (kein Viewport-Lock). Hero-Höhe `calc(100svh - 6.5rem)`; Inhaltskarte mit `-mt-6` überlappt den Hero — initial sichtbar: nur die **Überschriftenzeile** (Chip, „Schulhaus-Rundgang“, Titel, ChevronUp). Beschreibung, Medien und Footer erst durch **Hochwischen**. `<main>` nutzt `.sn-page-container` (Phone `max-w-lg`, Tablet breiter — siehe unten); `overflow-x: clip` auf `html`/`body`.
+
+**Tablet / iPad (Epic #74, ADR-012):** DevTools-Presets zum Layout-Check:
+
+| Viewport | Routen | Prüfen |
+|----------|--------|--------|
+| 375×667 | `/`, `/raum/musik` | Phone-Baseline unverändert |
+| 768×1024 | `/`, `/raum/musik`, `/raum/daz`, `/scan` | Breitere Spalte (~672 px), größerer Hero, Scan-Vollfläche, Medien-Modal zentriert; **Medien-Hotspots** etwa wie am Phone (nicht überproportional groß) |
+| 1024×768 | `/raum/musik` | Gyro γ, Rotation ohne Pan-Sprung |
+| 834×1194 | `/raum/daz` | Dialog-Gruppe (Bubble + Maskottchen) |
+| 1024×1366 | `/`, `/raum/musik` | `lg:max-w-3xl`-Cap, Leerraum links/rechts gewollt |
+
+TopBar auf Raumseiten: **viewport-breit** (`fixed`), nicht auf Content-Spalte begrenzt. Gyro auf echtem iPad nur unter HTTPS.
 
 **iOS-Breite (manuell, echtes Gerät):**
 
@@ -111,7 +123,7 @@ npm run start
 - [ ] Chrome iOS: gleiche Seite — **Hochscrollen** zur Medienliste funktioniert
 - [ ] Hort oder PC-Raum zum Vergleich (kurzer Titel)
 
-**Auto-Zoom** skaliert schmale Bilder so, dass horizontal mindestens `MIN_PAN_DISPLAY_RATIO` (2) erreicht wird — dabei kann **oben/unten beschnitten** werden; Hotspot-**y** im mittleren Drittel halten. **Gyro (Portrait):** Handy vor die Brust, **links und rechts drehen** (nicht kippen) — ca. ±60° vom Neutral zu beiden Raumrändern (`GYRO_FULL_RANGE_DEG`, Feintuning: [raum-viewer-gyro-feintuning.md](./raum-viewer-gyro-feintuning.md)); bei Drift **Stations-Chip** tippen (zentriert). **Landscape (iPad):** Kippen (`gamma`) wie bisher. **Wischen** bleibt nach Loslassen stabil. Debug: `?debug=1` — HUD mit `axis`, `α`, `γ`, `∠`, `pan`. Beliebige `/raum/…` — **iPhone nur unter HTTPS**; Portrait/Landscape-Wechsel prüfen (Neutral-Reset); Norddurchquerung (0°/360°) ohne Pan-Sprung.
+**Auto-Zoom** skaliert schmale Bilder so, dass horizontal mindestens `MIN_PAN_DISPLAY_RATIO` (2) erreicht wird — dabei kann **oben/unten beschnitten** werden; Hotspot-**y** im mittleren Drittel halten. **Gyro (Portrait):** Handy vor die Brust, **links und rechts drehen** (nicht kippen) — ca. ±60° vom Neutral zu beiden Raumrändern (`GYRO_FULL_RANGE_DEG`, Feintuning: [raum-viewer-gyro-feintuning.md](./raum-viewer-gyro-feintuning.md)); bei Drift **Stations-Chip** tippen (zentriert). **Landscape (iPad):** Kippen (`gamma`) wie bisher. **Wischen** bleibt nach Loslassen stabil (Sphere: Gyro-Neustart in `sphere-raum-viewer-inner`; Flat: debounced Resize bei `svh`-Änderung). Debug: `?debug=1` — HUD mit `axis`, `α`, `γ`, `∠`, `pan`. Beliebige `/raum/…` — **iPhone nur unter HTTPS**; Portrait/Landscape-Wechsel prüfen (Neutral-Reset); Norddurchquerung (0°/360°) ohne Pan-Sprung.
 
 **Sphere-Viewer (360°, ADR-018):**
 
@@ -167,6 +179,7 @@ Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/projektma
 10. `prefers-reduced-motion`: kein Slide, Text sichtbar
 11. **Overlay-Priorität (iOS):** `schulnav.pan-onboarding.seen` + Coach-Keys leeren → Raum mit Room-Coach (`klassenzimmer`/`musik`/`hort`) → nur Gyro-Dialog (kein Coach-Flackern) → nach Freigabe nur Pan-Hinweis → danach Room-Coach
 12. **Desktop (gyrolos):** gleicher Raum, Coach-Keys leer → kein Gyro/Pan, Room-Coach erscheint direkt
+13. **Tablet-Spalte (Folge #74):** DevTools 768×1024 und 1024×768 — Backdrop fullscreen; Figuren, Blase und Schließen-Button innerhalb `.sn-page-container` (nicht am Viewport-Rand); `duo-split` auf `/` bei 11/11
 
 **Stationssymbole (#105):**
 

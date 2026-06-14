@@ -2,7 +2,8 @@
 
 **Milestone:** Phase 2  
 **ADR:** [ADR-012](../adr/012-tablet-ipad-responsive-layout.md)  
-**Status:** geplant — Issues angelegt (#74–#78, 2026-05-28)  
+**Status:** abgeschlossen — Issues #74–#78 geschlossen (2026-06-14, Branch `feat/tablet-ipad-layout`)  
+**QA-Nachtrag (2026-06-14):** Medien-Hotspot-Skalierung auf Tablet (`mediaIconSizingReferenceHeight`); Gyro-Neustart nach Ein-Finger-Wischen (Sphere, Folge #116); Flat-Resize-Debounce bei Card-Peek-`svh`; Coach-Overlay-Inhalt an `.sn-page-container` (Folge #121)
 **Abhängigkeit:** [#72](https://github.com/flxln/schulnavigator/issues/72) erledigt; nicht parallel im selben PR vermischen
 
 ## Übersicht
@@ -29,7 +30,7 @@
 
 1. ~~Issues auf GitHub anlegen~~ — erledigt 2026-05-28.
 2. ~~Platzhalter ersetzen~~ — erledigt, echte Nummern #74–#78 eingetragen.
-3. Epic-Parent (#74) bei Abschluss aller Unterissues schließen.
+3. ~~Epic-Parent (#74) bei Abschluss aller Unterissues schließen.~~ — erledigt 2026-06-14.
 
 ---
 

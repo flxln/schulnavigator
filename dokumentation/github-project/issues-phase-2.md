@@ -631,7 +631,7 @@ Follow-up zu **#71** / [ADR-011](../adr/011-dialog-mascot-hotspots.md). Kein ADR
 **Labels:** `design`, `tech`  
 **Assignee:** Felix  
 **Milestone:** Phase 2  
-**GitHub:** https://github.com/flxln/schulnavigator/issues/74 — **offen** (angelegt 2026-05-28)
+**GitHub:** https://github.com/flxln/schulnavigator/issues/74 — **geschlossen** (2026-06-14, Branch `feat/tablet-ipad-layout`)
 
 Spezifikation: [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) · Detail: [epic-tablet-ipad-layout.md](./epic-tablet-ipad-layout.md)
 
@@ -651,12 +651,14 @@ Spezifikation: [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) · Detail:
 ### Epic-Checkliste
 
 - [x] GitHub: Parent #74 + Unterissues #75–#78 angelegt (2026-05-28); URLs in dieser Datei und in `epic-tablet-ipad-layout.md`
-- [ ] #75 — `max-w-lg` → responsive auf `/`, `/raum`, `/eintritt`, `/scan`, `/stationen`, Medien-Panel
-- [ ] #76 — Hero/`ROOM_VIEWER_*` tablet-aware; Gyro-Matrix iPad
-- [ ] #77 — Hub/Startseite nutzt breitere Spalte
-- [ ] #78 — Dialog/Maskottchen + Panel (oder nach Schulfest verschoben)
-- [ ] `anleitungen/lokal-testen-und-anschauen.md` — Tablet-Viewports (768, 1024, 834)
-- [ ] `architektur.md` — Abschnitt Responsive/Tablet
+- [x] #75 — `max-w-lg` → `.sn-page-container` auf Haupt-Routen; Medien-Modal ab `md:`; TopBar im Hero (`absolute z-[30]`, Safe-Area)
+- [x] #76 — Nicht-Hero-Viewer CSS-Klassen; Card-Peek ohne Hero-Cap; `containerH`-Init 0; Tests
+- [x] #77 — Hub nutzt breitere Spalte (Frontansicht skaliert mit); Touch-Targets bereits CSS-px
+- [x] #78 — Dialog-/Medien-Polish (Bubble, Maskottchen-Schatten, Video `aspect-video` im Modal)
+- [x] `anleitungen/lokal-testen-und-anschauen.md` — Tablet-Viewports (768, 1024, 834)
+- [x] `architektur.md` — Abschnitt Responsive/Tablet
+- [x] Medien-Hotspot-Icons: Tablet-Skalierung (`mediaIconSizingReferenceHeight`, `layoutViewportWidth ≥ 520 px` → Phone-QA-Referenz; Folge #74 QA)
+- [x] Gyro nach Wischen (Folge #74 QA): Sphere — Neustart nach Ein-Finger-Pan (`gyroWasEnabledBeforeTouch`, erweitert #116); Flat — Höhen-Resize debounced (200 ms, iOS `svh` beim Card-Peek-Scroll)
 
 ---
 
@@ -783,6 +785,7 @@ Spezifikation: [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) · Detail:
 - [x] Sphere-Marker-Normen (`resolveMascotSizeNormForSphere`, `resolveIconSizeNormForSphere`)
 - [x] Config-Smoke-Test `sphere-raum-viewer-inner.test.tsx`
 - [x] Gyro-Neustart nach Pinch (`touchstart` Capture + `touchend`)
+- [x] Gyro-Neustart nach Ein-Finger-Pan (Folge #74 QA, 2026-06-14): `gyroWasEnabledBeforeTouch` in `onTouchEnd` — PSV `stopAll()` nach Wischen
 - [x] ADR-018 Konsequenzen ergänzt
 
 ---
@@ -817,6 +820,7 @@ Spezifikation: [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) · Detail:
 - [x] `MascotPeekOverlay`, `CoachNudgeLayer`, `use-coach-nudge`
 - [x] Hub + Raum-Integration, Sparkle-Orchestrierung
 - [x] Portal-Fix iOS (viewport-fix)
+- [x] Coach-Inhalt an `.sn-page-container` gebunden (Backdrop fullscreen; Folge #74 Tablet-QA)
 - [ ] Copy MPZ, PR merge
 
 ---
