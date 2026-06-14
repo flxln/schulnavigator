@@ -12,6 +12,7 @@ Dieser Ordner ist die **führende Spezifikation** für Milestones und Issues in 
 | [epic-tablet-ipad-layout.md](epic-tablet-ipad-layout.md) | Epic **#74** (geplant): Tablet/iPad-Layout — Parent + Unterissues #75–#78, Issue-Bodies für GitHub |
 | [epic-externe-medien-hotspot-marker.md](epic-externe-medien-hotspot-marker.md) | Epic **#97**: ADR-017 — Hotspot-Marker, `link`, `embed` — Unterissues #98–#100 |
 | [epic-coach-fortschritt.md](epic-coach-fortschritt.md) | Epic **#121**: ADR-019 — Coach Fortschritts-Einblendungen — Unterissue #122 (Raum-Overlay-Priorität) |
+| [epic-hub-wegweiser.md](epic-hub-wegweiser.md) | Epic **#124**: ADR-020 — Hub Wegweiser Schulhof/Turnhalle, 12 Stationen |
 | [labels.md](labels.md) | Label-Konventionen |
 
 Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) und [entscheidungen.md](../entscheidungen.md).
@@ -65,4 +66,6 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issue **#120** (Sphere-Marker: PSV-Tooltips entfernen, Kalibrier-Yaw normalisieren, Folge #119) — geschlossen 2026-06-14, `main`
 - [x] Epic **#121** (Coach Fortschritts-Einblendungen, ADR-019) + **#122** (Raum-Overlay-Priorität) — geschlossen 2026-06-14, [PR #123](https://github.com/flxln/schulnavigator/pull/123) → `main`; [epic-coach-fortschritt.md](epic-coach-fortschritt.md)
 
-Letzter dokumentierter Abgleich: **2026-06-14** (#121/#122 geschlossen via PR #123; Coach + Overlay-Priorität auf `main`).
+- [x] Epic **#124** (Hub Wegweiser Schulhof/Turnhalle, ADR-020) — geschlossen 2026-06-14, `feature/hub-wegweiser` → `main`; [epic-hub-wegweiser.md](epic-hub-wegweiser.md)
+
+Letzter dokumentierter Abgleich: **2026-06-14** (#124 Hub-Wegweiser ADR-020; #121/#122 via PR #123).

@@ -6,7 +6,7 @@
       "milestone": 0,
       "mascot": "frieda",
       "placement": "left",
-      "text": "Willkommen beim Schulrundgang! Tippe auf ein Gebäude im Schulhaus oder scanne den QR-Code an der Raumtür.",
+      "text": "Willkommen beim Schulrundgang! Tippe auf ein Fenster, den Wegweiser für Hof und Turnhalle oder scanne den QR-Code an der Raumtür.",
       "modes": ["fest", "heft"]
     },
     {

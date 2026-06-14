@@ -4,19 +4,19 @@ import { getHomeFooterCta } from '@/lib/home-cta'
 describe('getHomeFooterCta', () => {
   describe('fest', () => {
     it('pre-hydration → fest-scan', () => {
-      expect(getHomeFooterCta('fest', false, 5, 11, true)).toBe('fest-scan')
+      expect(getHomeFooterCta('fest', false, 5, 12, true)).toBe('fest-scan')
     })
 
     it('0 besucht → fest-scan', () => {
-      expect(getHomeFooterCta('fest', true, 0, 11, true)).toBe('fest-scan')
+      expect(getHomeFooterCta('fest', true, 0, 12, true)).toBe('fest-scan')
     })
 
-    it('1–10 mit next → scan-next', () => {
-      expect(getHomeFooterCta('fest', true, 3, 11, true)).toBe('scan-next')
+    it('1–11 mit next → scan-next', () => {
+      expect(getHomeFooterCta('fest', true, 3, 12, true)).toBe('scan-next')
     })
 
-    it('11/11 ohne next → none', () => {
-      expect(getHomeFooterCta('fest', true, 11, 11, false)).toBe('none')
+    it('12/12 ohne next → none', () => {
+      expect(getHomeFooterCta('fest', true, 12, 12, false)).toBe('none')
     })
 
     it('total 0 → fest-scan', () => {
@@ -26,19 +26,19 @@ describe('getHomeFooterCta', () => {
 
   describe('heft', () => {
     it('pre-hydration → none', () => {
-      expect(getHomeFooterCta('heft', false, 2, 11, true)).toBe('none')
+      expect(getHomeFooterCta('heft', false, 2, 12, true)).toBe('none')
     })
 
     it('0 besucht → none', () => {
-      expect(getHomeFooterCta('heft', true, 0, 11, true)).toBe('none')
+      expect(getHomeFooterCta('heft', true, 0, 12, true)).toBe('none')
     })
 
-    it('1–10 mit next → scan-next', () => {
-      expect(getHomeFooterCta('heft', true, 3, 11, true)).toBe('scan-next')
+    it('1–11 mit next → scan-next', () => {
+      expect(getHomeFooterCta('heft', true, 3, 12, true)).toBe('scan-next')
     })
 
-    it('11/11 → none', () => {
-      expect(getHomeFooterCta('heft', true, 11, 11, false)).toBe('none')
+    it('12/12 → none', () => {
+      expect(getHomeFooterCta('heft', true, 12, 12, false)).toBe('none')
     })
 
     it('total 0 → none', () => {
