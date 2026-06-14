@@ -28,6 +28,7 @@ export type RaumViewerProps = {
   ) => void
   layout?: RaumViewerLayout
   orientationEnabled?: boolean
+  onViewerCoachGateChange?: (blocksCoach: boolean) => void
 }
 
 export const RaumViewer = forwardRef<RaumViewerHandle, RaumViewerProps>(
@@ -44,6 +45,7 @@ export const RaumViewer = forwardRef<RaumViewerHandle, RaumViewerProps>(
       onPanChange,
       layout = 'default',
       orientationEnabled = true,
+      onViewerCoachGateChange,
     },
     ref,
   ) {
@@ -73,6 +75,7 @@ export const RaumViewer = forwardRef<RaumViewerHandle, RaumViewerProps>(
           onPanChange={onPanChange}
           layout={layout}
           orientationEnabled={orientationEnabled}
+          onViewerCoachGateChange={onViewerCoachGateChange}
         />
         {!isHero && !hotspots?.length ? (
           <p className="text-center text-xs text-fg-3">

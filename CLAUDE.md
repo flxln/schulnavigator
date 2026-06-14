@@ -75,6 +75,7 @@ schulnavigator/
 | [008](./dokumentation/adr/008-eintritt-in-app-scanner.md)   | Eintritt: In-App-Scanner auf `/eintritt/scan` (ergänzt ADR-005; Shell mit `/scan`) | entschieden |
 | [017](./dokumentation/adr/017-externe-medien-hotspot-marker.md) | Post-Fest: `link`/`embed`, Hotspot-Icons ([Umsetzungsplan](./dokumentation/projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md)) | entschieden |
 | [018](./dokumentation/adr/018-360-sphere-viewer.md)             | 360°-Sphere-Viewer (PSV v5) + Flat-Koexistenz per `viewer`-Flag; Gyro-Plugin; Spike Musikraum | entschieden |
+| [019](./dokumentation/adr/019-coach-fortschritt-einblendung.md) | Coach-Einblendungen (fortschritts-getriggert, getrennt vom Dialog); Schwellwert-Trigger, `duo-split`, modus-getrennter Seen-State, Layer-Vertrag ([Plan](./.cursor/plans/coach_sparkle_mvp_d9e82ce2.plan.md)) | entschieden |
 
 Vollständiger ADR-Index: [`dokumentation/entscheidungen.md`](./dokumentation/entscheidungen.md)
 

@@ -74,6 +74,12 @@ describe('PanOnboardingOverlay', () => {
     expect(localStorage.getItem(STORAGE_KEY)).toBeNull()
   })
 
+  it('startet nicht bei skip=true während checking', () => {
+    render(<PanOnboardingOverlay skip />)
+    expect(screen.queryByText('Links oder rechts wischen')).toBeNull()
+    expect(localStorage.getItem(STORAGE_KEY)).toBeNull()
+  })
+
   it('startet nach skip true→false (iOS cached grant)', async () => {
     const { rerender } = render(<PanOnboardingOverlay skip />)
     expect(screen.queryByText('Links oder rechts wischen')).toBeNull()
@@ -88,16 +94,22 @@ describe('PanOnboardingOverlay', () => {
     expect(screen.queryByText('Links oder rechts wischen')).toBeNull()
   })
 
-  it('blendet ordentlich aus wenn skip mitten in der Anzeige auf true wechselt (iOS Watchdog-Reset)', async () => {
+  it('blendet sofort aus wenn skip mitten in der Anzeige auf true wechselt', async () => {
     const { rerender } = render(<PanOnboardingOverlay skip={false} />)
     expect(screen.getByText('Links oder rechts wischen')).toBeTruthy()
 
     rerender(<PanOnboardingOverlay skip />)
-    expect(screen.getByText('Links oder rechts wischen')).toBeTruthy()
-
-    await act(async () => {
-      await advanceToDismiss()
-    })
     expect(screen.queryByText('Links oder rechts wischen')).toBeNull()
+  })
+
+  it('meldet onActiveChange und false beim Unmount', () => {
+    const onActiveChange = vi.fn()
+    const { unmount } = render(
+      <PanOnboardingOverlay onActiveChange={onActiveChange} />,
+    )
+    expect(onActiveChange).toHaveBeenCalledWith(true)
+
+    unmount()
+    expect(onActiveChange).toHaveBeenCalledWith(false)
   })
 })

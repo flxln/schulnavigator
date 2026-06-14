@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Check, ChevronUp, List, X } from 'lucide-react'
 import type {
@@ -13,6 +13,7 @@ import type {
   Station,
   StationViewerHandle,
 } from '@/lib/types'
+import { CoachNudgeLayer } from '@/components/coach/coach-nudge-layer'
 import { MediaSlotList } from '@/components/media-slot-list'
 import {
   RaumViewer,
@@ -29,6 +30,7 @@ import { DialogEmbeddedBubble } from '@/components/dialog/dialog-embedded-bubble
 import { StationIcon } from '@/components/station/station-icon'
 import { Gs39Chip, TopBar } from '@/components/ui'
 import { useDialogAudioPlaylist } from '@/hooks/use-dialog-audio-playlist'
+import { useCoachNudge } from '@/hooks/use-coach-nudge'
 import {
   clampBubbleOffsetX,
   resolveBubbleLayoutPx,
@@ -96,6 +98,30 @@ export function RaumStationClient({
     displayText,
     tail,
   } = useDialogAudioPlaylist(station.dialog)
+
+  const hasViewer = Boolean(
+    (isSphere && station.panorama360) || station.bild,
+  )
+  const [viewerBlocksCoach, setViewerBlocksCoach] = useState(hasViewer)
+  const prevSlugRef = useRef(station.slug)
+
+  useEffect(() => {
+    if (prevSlugRef.current === station.slug) {
+      return
+    }
+    prevSlugRef.current = station.slug
+    setViewerBlocksCoach(hasViewer)
+  }, [station.slug, hasViewer])
+
+  const {
+    activeMessage: coachMessage,
+    dismiss: dismissCoach,
+  } = useCoachNudge({
+    surface: 'room',
+    slug: station.slug,
+    mode,
+    blocked: dialogUiActive || panelOpen || viewerBlocksCoach,
+  })
 
   const { visitedSlugs } = useVisitedStations(validSlugs)
   const stationSlugs = useMemo(
@@ -272,6 +298,7 @@ export function RaumStationClient({
               onContainerReady={handleSphereContainerReady}
               layout="hero"
               orientationEnabled
+              onViewerCoachGateChange={setViewerBlocksCoach}
             />
           ) : station.bild ? (
             <RaumViewer
@@ -289,6 +316,7 @@ export function RaumStationClient({
               onPanChange={handlePanChange}
               layout="hero"
               orientationEnabled
+              onViewerCoachGateChange={setViewerBlocksCoach}
             />
           ) : (
             <div className="flex h-full items-center justify-center px-4">
@@ -444,6 +472,12 @@ export function RaumStationClient({
         open={panelOpen}
         medium={selectedMedium}
         onClose={closePanel}
+      />
+
+      <CoachNudgeLayer
+        message={coachMessage}
+        accent={hubStation.accent}
+        onDismiss={dismissCoach}
       />
     </div>
   )

@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import { HighlightSlugSync } from '@/components/home/highlight-slug-sync'
 import { HomeFestScanCta } from '@/components/home/home-fest-scan-cta'
 import { SchoolhouseHub } from '@/components/schoolhouse/schoolhouse-hub'
+import { CoachNudgeLayer } from '@/components/coach/coach-nudge-layer'
 import {
   FestiveDecor,
   Gs39Button,
@@ -16,6 +17,8 @@ import {
   Gs39Progress,
   SparkleBurst,
 } from '@/components/ui'
+import { useCoachNudge } from '@/hooks/use-coach-nudge'
+import { isCoachSeen, readCoachSeenState } from '@/lib/coach-seen'
 import { isSparkleDone, markSparkleDone } from '@/lib/sparkle-done'
 import type { EntryMode } from '@/lib/access-tokens'
 import { useVisitedStations } from '@/hooks/use-visited-stations'
@@ -56,12 +59,38 @@ export function HomeScreen({
   const [sparkleSuppressed, setSparkleSuppressed] = useState(() =>
     typeof window !== 'undefined' ? isSparkleDone() : true,
   )
+  const [coachCompleteDismissed, setCoachCompleteDismissed] = useState(false)
+
+  const {
+    activeMessage: coachMessage,
+    evaluated: coachEvaluated,
+    dismiss: dismissCoach,
+    coachOverlayOpen,
+  } = useCoachNudge({
+    surface: 'hub',
+    mode,
+    visitedCount,
+    totalStations: hubStations.length,
+    isHydrated,
+    onDismiss: (message) => {
+      if (message.trigger === 'hub-complete') {
+        setCoachCompleteDismissed(true)
+      }
+    },
+  })
+
+  const completeCoachSeen =
+    isHydrated &&
+    isCoachSeen('complete', readCoachSeenState(mode))
 
   const showSparkle =
+    coachEvaluated &&
+    !coachOverlayOpen &&
     isHydrated &&
     !sparkleSuppressed &&
     hubStations.length > 0 &&
-    visitedCount === hubStations.length
+    visitedCount === hubStations.length &&
+    (coachCompleteDismissed || completeCoachSeen)
 
   const stationSlugs = useMemo(
     () => hubStations.map((s) => s.slug),
@@ -212,6 +241,8 @@ export function HomeScreen({
         150 Jahre 39. Grundschule · 26.06.2026
       </p>
       <p className="pb-1 text-center text-[11px] text-fg-3">{modeLabel}</p>
+
+      <CoachNudgeLayer message={coachMessage} onDismiss={dismissCoach} />
     </div>
   )
 }
