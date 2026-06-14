@@ -24,6 +24,7 @@ Jede wichtige Entscheidung wird als eigenständiger ADR (Architecture Decision R
 | [015](./adr/015-dialog-bubble-json.md) | Dialog-Sprechblase: `dialog.bubble` (Position/Größe, `followPan`), optional `segmente[].tail` (ergänzt ADR-011/013) | entschieden | 2026-06-10 |
 | [017](./adr/017-externe-medien-hotspot-marker.md) | Externe Medien (`link`, `embed`), Hotspot-Icons; sukzessive Post-Fest-Umsetzung (Stufe 1–3) | entschieden | 2026-06-10 |
 | [018](./adr/018-360-sphere-viewer.md) | 360°-Sphere-Viewer (PSV v5) + Flat-Viewer-Koexistenz per `viewer`-Flag; Spike-first | entschieden | 2026-06-11 |
+| [019](./adr/019-coach-fortschritt-einblendung.md) | Coach: fortschritts-getriggerte Maskottchen-Einblendungen (getrennt vom Dialog); Schwellwert-Trigger, `duo-split`, modus-getrennter Seen-State, Layer-Vertrag; keine Migration | entschieden | 2026-06-14 |
 
 ## Konventionen
 

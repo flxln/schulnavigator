@@ -1,19 +1,11 @@
-# App-Content außerhalb `public/`
+# Coach-Messages
 
-Dateien hier werden **nicht** direkt von Next.js ausgeliefert, sondern über Route-Handler (zugangsgeschütztes Dialog-Audio, Cookie-Prüfung).
+Fortschritts-getriggerte Maskottchen-Texte (ADR-019). Getrennt von `stations.json` → `dialog`.
 
-| Ordner | Inhalt |
-|--------|--------|
-| `dialog-audio/{slug}/` | WAV-Clips pro Station — Auslieferung: `GET /api/dialog/{slug}/{clip}` (403 ohne Cookie, Range/206 für iOS) |
+| Datei | Rolle |
+| ----- | ----- |
+| `coach-messages.json` | Trigger, Placement, Copy |
+| `../lib/coach-triggers.ts` | Auflösung Hub/Raum |
+| `../scripts/validate-coach-messages.mjs` | Build-Check (`npm run validate:coach`) |
 
-**Dateinamen-Konvention:** `{nn}-{sprecher}.wav` — nn zweistellig (01–99), sprecher: `frieda`, `otto` oder `beide`.  
-Beispiel: `01-frieda.wav`, `02-otto.wav`, `09-beide.wav`
-
-**Docker:** `COPY content/ ./content/` im [`Dockerfile`](../Dockerfile) (Standalone-Image übernimmt `content/` nicht automatisch).
-
-**Quelle (Kopie):** `auftraggeber/material/stationen/transkripte/{slug}/`
-
-**Öffentliche Medien** (ohne Cookie-Schutz) gehören nach [`public/media/`](../public/media/) — nicht hierher.
-
-Vollständige Content-Architektur: [`dokumentation/content-verzeichnisstruktur.md`](../../dokumentation/content-verzeichnisstruktur.md)  
-ADR: [ADR-010](../../dokumentation/adr/010-dialog-cutscene-gated-audio.md)
+Placement: `bottom`, `left`, `right`, `duo-split` (nur mit `mascot: "duo"`).

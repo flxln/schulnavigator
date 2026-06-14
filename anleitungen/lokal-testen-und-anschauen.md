@@ -144,7 +144,7 @@ Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/projektma
 6. Mit Cookie direkt `/raum/musik` → nach Reload `/` ist Fenster frei (`fest`)
 7. `fest` mit bereits besuchten Stationen: Hub neu laden → kurzer Lade-Platzhalter, kein „alles gesperrt“-Flash
 8. Zwei Tabs (`/` + `/scan`): im zweiten Tab scannen → erster Tab aktualisiert bei Fokus
-9. Alle 11 Stationen besucht → `SparkleBurst` auf `/` **einmalig**; `localStorage` `sn_sparkle_done` verhindert Wiederholung
+9. Alle 11 Stationen besucht → auf `/` zuerst **Coach** (`complete`, Frieda + Otto), nach Schließen **SparkleBurst** auf der Fortschrittskarte; `sn_sparkle_done` verhindert Sparkle-Wiederholung; Coach-Keys `sn_coach_seen_fest` / `sn_coach_seen_heft` (modus-getrennt)
 10. `curl -sI https://localhost:3000/stationen` ohne Cookie → `307` nach `/eintritt`
 11. **Regression #83 (`fest`):** Raum per QR freischalten → Raum-Footer „Scanne die nächste Station!“ → **`/scan`**; ohne Scan schließen → `sn_visited_slugs` enthält **nicht** die ungescannte Station
 12. **`fest`/`heft` 1–10:** **über** der Fortschrittskarte **ein** Button „Scanne die nächste Station!“ — **kein** Stationsname, **kein** geteilter Button
@@ -152,6 +152,19 @@ Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/projektma
 14. **`fest`/`heft` 11/11:** kein Scan-CTA unter dem Hub (Sparkle in der Fortschrittskarte optional)
 15. **Fortschrittskarte:** Tipp auf „Mein Rundgang …“ → **`/stationen`** (wie Listen-Icon oben rechts)
 16. **Kein Flash:** `fest` mit Fortschritt neu laden → vor Hydration Einzel-Scan, danach „Scanne die nächste Station!“ (Button-Text wechselt, Anzahl bleibt 1)
+
+**Coach-Einblendungen (ADR-019):**
+
+1. `localStorage` leeren (`sn_coach_seen_heft`, `sn_coach_seen_fest`, `sn_visited_slugs`, `sn_sparkle_done`) → `/` mit Heft-Cookie: `welcome-hub` (Frieda von links), einmalig
+2. Einen Raum besuchen → zurück `/`: `first-visit` (Otto von rechts)
+3. `/raum/klassenzimmer`, `/raum/musik`, `/raum/hort` je einmalig: `room-first-*` (von links/rechts laut JSON)
+4. `/raum/daz`: **kein** Room-Coach; Dialog-Hotspot unverändert; während Dialog **kein** Coach
+5. Fortschritt auf 6/11 → Hub: `halfway`; von 5/11 direkt auf 7/11 springen → beim nächsten `/` erscheint `halfway` trotzdem (Schwellwert-Nachholen)
+6. 11/11 → Coach `complete` (`duo-split`) → schließen → Sparkle auf Fortschrittskarte → erneut `/` → weder Coach noch Sparkle
+7. Room-Coach erscheint, ohne X wegtippen (zurück) → Raum erneut öffnen → Coach **nicht** wieder (Seen beim Anzeigen)
+8. Heft: `welcome-hub` gesehen → Fest-Cookie → `welcome-hub` erscheint im Fest erneut (modus-getrennt)
+9. Medienpanel im Raum öffnen → kein Coach darüber; nach Schließen ggf. Room-Coach
+10. `prefers-reduced-motion`: kein Slide, Text sichtbar
 
 **Stationssymbole (#105):**
 
