@@ -358,6 +358,17 @@ function validateHotspot360(h: unknown, ctx: string): Hotspot360 {
         `${ctx}: mascotFlipX muss boolean sein`,
       )
     }
+    if (h.bubblePitchOffset !== undefined) {
+      assert(
+        typeof h.bubblePitchOffset === 'number' &&
+          Number.isFinite(h.bubblePitchOffset),
+        `${ctx}: bubblePitchOffset muss Zahl sein`,
+      )
+      assert(
+        h.bubblePitchOffset >= -45 && h.bubblePitchOffset <= 45,
+        `${ctx}: bubblePitchOffset muss −45 bis 45 sein`,
+      )
+    }
     assert(
       h.icon === undefined,
       `${ctx}: dialog-Hotspot360 darf kein icon haben`,
@@ -375,6 +386,7 @@ function validateHotspot360(h: unknown, ctx: string): Hotspot360 {
       mascot: h.mascot as DialogFigure,
       mascotSize: h.mascotSize as number | undefined,
       mascotFlipX: h.mascotFlipX as boolean | undefined,
+      bubblePitchOffset: h.bubblePitchOffset as number | undefined,
     }
   }
   assert(
@@ -392,6 +404,10 @@ function validateHotspot360(h: unknown, ctx: string): Hotspot360 {
   assert(
     h.mascotFlipX === undefined,
     `${ctx}: medium-Hotspot360 darf kein mascotFlipX haben`,
+  )
+  assert(
+    h.bubblePitchOffset === undefined,
+    `${ctx}: medium-Hotspot360 darf kein bubblePitchOffset haben`,
   )
   if (h.icon !== undefined) {
     assert(

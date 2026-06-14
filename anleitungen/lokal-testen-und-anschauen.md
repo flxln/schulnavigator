@@ -113,6 +113,16 @@ npm run start
 
 **Auto-Zoom** skaliert schmale Bilder so, dass horizontal mindestens `MIN_PAN_DISPLAY_RATIO` (2) erreicht wird — dabei kann **oben/unten beschnitten** werden; Hotspot-**y** im mittleren Drittel halten. **Gyro (Portrait):** Handy vor die Brust, **links und rechts drehen** (nicht kippen) — ca. ±60° vom Neutral zu beiden Raumrändern (`GYRO_FULL_RANGE_DEG`, Feintuning: [raum-viewer-gyro-feintuning.md](./raum-viewer-gyro-feintuning.md)); bei Drift **Stations-Chip** tippen (zentriert). **Landscape (iPad):** Kippen (`gamma`) wie bisher. **Wischen** bleibt nach Loslassen stabil. Debug: `?debug=1` — HUD mit `axis`, `α`, `γ`, `∠`, `pan`. Beliebige `/raum/…` — **iPhone nur unter HTTPS**; Portrait/Landscape-Wechsel prüfen (Neutral-Reset); Norddurchquerung (0°/360°) ohne Pan-Sprung.
 
+**Sphere-Viewer (360°, ADR-018):**
+
+1. `/raum/daz` — Maskottchen auf Boden, Dialog-Bubble am Kopf, Sprecherwechsel ohne Flackern
+2. `/raum/pc-raum` — Maskottchen + Delightex-Icon (`imageLayer`)
+3. `/raum/klassenzimmer`, `/raum/musik` — Medien-Icons in der Szene
+4. `/raum/kunst` (Flat) — Regression: Gyro-Pan unverändert
+5. Dev-Kalibrierung: `/raum/daz?hotspot-calib=1` — Klick liefert `yaw`/`pitch`-Snippet
+
+Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/projektmanagement/2026-06-13-sphere-hotspot-acceptance.md).
+
 **Swipe-Onboarding (#107):**
 
 1. `localStorage.removeItem('schulnav.pan-onboarding.seen')` in der Konsole (oder DevTools → Application → Local Storage)
