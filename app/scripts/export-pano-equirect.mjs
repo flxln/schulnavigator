@@ -36,6 +36,7 @@ const EXPORTS = [
   { slug: 'speiseraum', src: 'flat/speiseraum/raw/014-360-Cafeteria.JPG' },
   { slug: 'lesewelt', src: 'flat/lesewelt/raw/011-360-Lesewelt.JPG' },
   { slug: 'musik', src: 'flat/musik/raw/009-360-Musikraum.JPG' },
+  { slug: 'schulhof', src: 'flat/schulhof/raw/017-360-Schulhof.JPG' },
 ]
 
 function jpegDimensions(fsPath) {

@@ -6,7 +6,7 @@ Erwartete Dateien laut Design-Prototyp [`screens.jsx`](../../../../auftraggeber/
 |-------|------------|
 | `bunting.png` | Wimpelkette (Home, Eintritt) |
 | `balloons.png` | Ballons (Home, Eintritt) |
-| `heart-sparkles.png` | Abschluss 11/11 Stationen |
+| `heart-sparkles.png` | Abschluss 12/12 Stationen |
 
 ## Status
 

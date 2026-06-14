@@ -6,7 +6,7 @@ import { expandHitRect } from '@/lib/schoolhouse-hub-hit'
 import { StationIcon } from '@/components/station/station-icon'
 import {
   HUB_VIEWBOX,
-  listHubStationFrames,
+  listHubStationHitFrames,
   type HubStation,
 } from '@/lib/schoolhouse-hub-map'
 import { useRouter } from 'next/navigation'
@@ -61,14 +61,16 @@ function StationChip({
   y,
   station,
   visited,
+  center,
 }: {
   x: number
   y: number
   station: HubStation
   visited: boolean
+  center?: { cx: number; cy: number }
 }) {
-  const cx = x + STATION_CHIP.offsetX
-  const cy = y + STATION_CHIP.offsetY
+  const cx = center?.cx ?? x + STATION_CHIP.offsetX
+  const cy = center?.cy ?? y + STATION_CHIP.offsetY
 
   if (visited) {
     return (
@@ -115,6 +117,17 @@ function StationChip({
   )
 }
 
+function wegweiserOverlayTransform(station: HubStation): string | undefined {
+  if (
+    station.overlayTranslate === undefined ||
+    station.rotation === undefined
+  ) {
+    return undefined
+  }
+  const [tx, ty] = station.overlayTranslate
+  return `translate(${tx} ${ty}) rotate(${station.rotation})`
+}
+
 type StationSlotProps = {
   station: HubStation
   visited: boolean
@@ -135,11 +148,19 @@ function StationSlot({
   const [x, y, w, h] = station.frame
   const [hx, hy, hw, hh] = hitRect
   const isPortal = station.kind === 'portal'
+  const isWegweiser = station.kind === 'wegweiser'
   const glassFill = visited ? station.visitedGlassFill : LOCKED_GLASS
   const frameStroke = visited ? station.accent : FRAME_LOCKED
   const chipX = x + w - STATION_CHIP.insetX
   const chipY = y + STATION_CHIP.insetY
+  const chipCenter = station.chipAnchor
+    ? { cx: station.chipAnchor[0], cy: station.chipAnchor[1] }
+    : undefined
   const activate = () => onTap(station.slug)
+  const overlayTransform = isWegweiser
+    ? wegweiserOverlayTransform(station)
+    : undefined
+  const [ox, oy, ow, oh] = station.overlayFrame ?? station.frame
 
   return (
     <g
@@ -152,16 +173,31 @@ function StationSlot({
       onKeyDown={(e) => handleStationKeyDown(e, activate)}
     >
       <rect x={hx} y={hy} width={hw} height={hh} fill="transparent" />
-      <rect
-        x={x}
-        y={y}
-        width={w}
-        height={h}
-        fill={glassFill}
-        stroke={frameStroke}
-        strokeWidth={isPortal ? 3.5 : 2.5}
-        rx={isPortal ? 4 : 2}
-      />
+      {isWegweiser ? (
+        <g transform={overlayTransform}>
+          <rect
+            x={ox}
+            y={oy}
+            width={ow}
+            height={oh}
+            fill={glassFill}
+            stroke={frameStroke}
+            strokeWidth={2.5}
+            rx={2}
+          />
+        </g>
+      ) : (
+        <rect
+          x={x}
+          y={y}
+          width={w}
+          height={h}
+          fill={glassFill}
+          stroke={frameStroke}
+          strokeWidth={isPortal ? 3.5 : 2.5}
+          rx={isPortal ? 4 : 2}
+        />
+      )}
       {station.kind === 'fenster' ? (
         <>
           <line
@@ -182,13 +218,19 @@ function StationSlot({
           />
         </>
       ) : null}
-      {visited ? (
+      {visited && !isWegweiser ? (
         <polygon
           points={`${x + 6},${y + 6} ${x + w / 2 - 4},${y + 6} ${x + w / 2 - 4},${y + 14} ${x + 20},${y + h / 2 - 4} ${x + 6},${y + h / 2 - 4}`}
           fill="rgba(255,255,255,.45)"
         />
       ) : null}
-      <StationChip x={chipX} y={chipY} station={station} visited={visited} />
+      <StationChip
+        x={chipX}
+        y={chipY}
+        station={station}
+        visited={visited}
+        center={chipCenter}
+      />
     </g>
   )
 }
@@ -234,7 +276,7 @@ export function FrontSchoolhouse({
     return () => ro.disconnect()
   }, [])
 
-  const allFrames = listHubStationFrames(stations)
+  const allHitFrames = listHubStationHitFrames(stations)
   const isVisited = (slug: string) => effectiveVisited.has(slug)
   const isHighlighted = (slug: string) => highlightSlug === slug
 
@@ -260,8 +302,8 @@ export function FrontSchoolhouse({
         preserveAspectRatio="xMidYMid meet"
       />
       {stations.map((station, index) => {
-        const neighbors = allFrames.filter((_, j) => j !== index)
-        const hitRect = expandHitRect(station.frame, neighbors, pxPerUnit)
+        const neighbors = allHitFrames.filter((_, j) => j !== index)
+        const hitRect = expandHitRect(station.hitFrame, neighbors, pxPerUnit)
         return (
           <StationSlot
             key={station.slug}

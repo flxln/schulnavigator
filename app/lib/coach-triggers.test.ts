@@ -10,7 +10,7 @@ const empty = EMPTY_COACH_SEEN_STATE
 
 describe('resolveHubCoachMessage', () => {
   it('liefert welcome-hub bei 0 besucht', () => {
-    const result = resolveHubCoachMessage(0, 11, 'heft', empty)
+    const result = resolveHubCoachMessage(0, 12, 'heft', empty)
     expect(result?.message.id).toBe('welcome-hub')
   })
 
@@ -20,7 +20,7 @@ describe('resolveHubCoachMessage', () => {
       seen: ['welcome-hub', 'first-visit'],
       suppressed: [],
     }
-    const result = resolveHubCoachMessage(7, 11, 'heft', state)
+    const result = resolveHubCoachMessage(7, 12, 'heft', state)
     expect(result?.message.id).toBe('halfway')
   })
 
@@ -30,14 +30,14 @@ describe('resolveHubCoachMessage', () => {
       seen: ['welcome-hub', 'first-visit', 'halfway'],
       suppressed: [],
     }
-    const result = resolveHubCoachMessage(11, 11, 'heft', state)
+    const result = resolveHubCoachMessage(12, 12, 'heft', state)
     expect(result?.message.id).toBe('complete')
     expect(result?.message.trigger).toBe('hub-complete')
     expect(result?.supersededIds).toEqual([])
   })
 
   it('supersededIds für niedrigere Meilensteine beim Gewinner', () => {
-    const result = resolveHubCoachMessage(6, 11, 'heft', empty)
+    const result = resolveHubCoachMessage(6, 12, 'heft', empty)
     expect(result?.message.id).toBe('halfway')
     expect(result?.supersededIds).toContain('welcome-hub')
     expect(result?.supersededIds).toContain('first-visit')
@@ -49,7 +49,7 @@ describe('resolveHubCoachMessage', () => {
       seen: ['welcome-hub', 'first-visit', 'halfway', 'complete'],
       suppressed: [],
     }
-    expect(resolveHubCoachMessage(11, 11, 'heft', state)).toBeNull()
+    expect(resolveHubCoachMessage(12, 12, 'heft', state)).toBeNull()
   })
 })
 

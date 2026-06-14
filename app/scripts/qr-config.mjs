@@ -1,6 +1,6 @@
 /** @typedef {'fest' | 'heft'} EntryMode */
 
-export const EXPECTED_STATION_COUNT = 11
+export const EXPECTED_STATION_COUNT = 12
 
 /** Schwellwert für warnIfUrlTooLong (Zeichen) */
 export const URL_LENGTH_WARN = 120

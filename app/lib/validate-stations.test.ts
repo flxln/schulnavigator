@@ -5,7 +5,7 @@ import { validateStationsFile } from '@/lib/validate-stations'
 describe('validateStationsFile Hub (ADR-016)', () => {
   it('akzeptiert gültige stations.json', () => {
     const stations = validateStationsFile(raw)
-    expect(stations).toHaveLength(11)
+    expect(stations).toHaveLength(12)
     expect(stations.some((s) => s.slug === 'musik')).toBe(true)
     const musik = stations.find((s) => s.slug === 'musik')
     expect(musik?.viewer).toBe('equirectangular')

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-07T09:36:41.772Z",
+  "generatedAt": "2026-06-14T16:10:31.526Z",
   "baseUrl": "https://schulnavigator.mpz.schule",
   "entries": [
     {
@@ -81,6 +81,12 @@
       "url": "https://schulnavigator.mpz.schule/raum/schulsozialarbeit",
       "slug": "schulsozialarbeit",
       "titel": "Schulsozialarbeiterzimmer"
+    },
+    {
+      "file": "raum-schulhof.png",
+      "url": "https://schulnavigator.mpz.schule/raum/schulhof",
+      "slug": "schulhof",
+      "titel": "Schulhof"
     }
   ]
 }

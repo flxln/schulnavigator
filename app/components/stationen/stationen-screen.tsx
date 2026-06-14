@@ -73,7 +73,7 @@ export function StationenScreen({
         <header className="px-1 pb-3 pt-1">
           <p className="t-eyebrow text-[11px]">Schulhaus-Übersicht</p>
           <h1 className="sn-brush mt-1 text-[28px] leading-none">
-            11 Stationen <span className="sn-brush-hl">entdecken</span>
+            {hubStations.length} Stationen <span className="sn-brush-hl">entdecken</span>
           </h1>
           <p className="mt-2 text-sm text-fg-3">
             {isHydrated
