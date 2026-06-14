@@ -19,7 +19,7 @@ export default async function ScanPage() {
   const slugs = getAllStations().map((s) => s.slug)
 
   return (
-    <main className="mx-auto min-h-[100dvh] max-w-lg overflow-x-hidden">
+    <main className="w-full max-w-none overflow-x-hidden">
       <ScanScreen slugs={slugs} origin={origin} trustedOrigins={trustedOrigins} />
     </main>
   )

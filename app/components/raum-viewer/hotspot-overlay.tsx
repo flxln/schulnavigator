@@ -103,7 +103,7 @@ export function HotspotOverlay({
             : isActive
           const dimmed = Boolean(speakingRolle && !speaking)
           const mascPx = resolveMascotHeightPx(hs, containerHeight)
-          const mascotImgClass = `sn-dialog-mascot__img object-contain drop-shadow-lg ${speaking ? 'sn-dialog-mascot__img--speaking' : ''}`
+          const mascotImgClass = `sn-dialog-mascot__img object-contain drop-shadow-lg md:drop-shadow-2xl ${speaking ? 'sn-dialog-mascot__img--speaking' : ''}`
           return (
             <li key={hs.id} style={footAnchorStyle}>
               <button

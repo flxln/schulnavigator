@@ -81,6 +81,21 @@ describe('imageDisplayWidth / maxPanPx', () => {
       MIN_PAN_DISPLAY_RATIO - 0.001,
     )
   })
+
+  it('Tablet Card-Peek (672×920): Panorama 2.5:1 erfüllt MIN_PAN_DISPLAY_RATIO', () => {
+    const containerW = 672
+    const containerH = 920
+    const { effectiveDisplayW } = roomPanZoom(
+      2500,
+      1000,
+      containerW,
+      containerH,
+      MIN_PAN_DISPLAY_RATIO,
+    )
+    expect(effectiveDisplayW / containerW).toBeGreaterThanOrEqual(
+      MIN_PAN_DISPLAY_RATIO,
+    )
+  })
 })
 
 describe('visibleYNormalRange', () => {

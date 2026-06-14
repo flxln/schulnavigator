@@ -21,7 +21,6 @@ import type {
   StationViewerHandle,
 } from '@/lib/types'
 import {
-  ROOM_VIEWER_HEIGHT_CSS,
   SPHERE_GYRO_ROLL_ENABLED,
   SPHERE_LOCKED_FOV_DEG,
   SPHERE_LOCKED_FOV_EPSILON_DEG,
@@ -57,9 +56,7 @@ export type SphereRaumViewerInnerProps = {
   onViewerCoachGateChange?: (blocksCoach: boolean) => void
 }
 
-const VIEWER_HEIGHT_STYLE_DEFAULT = {
-  height: ROOM_VIEWER_HEIGHT_CSS,
-}
+const VIEWER_HEIGHT_CLASS_DEFAULT = 'sn-viewer-fallback-height'
 
 function isHotspotCalibEnabled(): boolean {
   if (process.env.NODE_ENV !== 'development') return false
@@ -424,8 +421,7 @@ export const SphereRaumViewerInner = forwardRef<
 
   return (
     <div
-      className={`relative w-full overflow-hidden bg-bg-dark ${isHero ? 'h-full' : 'rounded-[var(--r-md)]'}`}
-      style={isHero ? undefined : VIEWER_HEIGHT_STYLE_DEFAULT}
+      className={`relative w-full overflow-hidden bg-bg-dark ${isHero ? 'h-full' : `rounded-[var(--r-md)] ${VIEWER_HEIGHT_CLASS_DEFAULT}`}`}
       aria-label={alt}
     >
       <div ref={containerRef} className="h-full w-full" />
