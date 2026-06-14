@@ -1,7 +1,7 @@
 # Epic: Coach — Fortschritts-Maskottchen (ADR-019)
 
 **Milestone:** Phase 2 — Content-Struktur + UI  
-**Status:** umgesetzt auf Branch `feature/coach-sparkle-mvp` (PR ausstehend)
+**Status:** abgeschlossen (PR [#123](https://github.com/flxln/schulnavigator/pull/123) → `main` @ `f8ccb97`)
 
 ## Übersicht
 
@@ -35,5 +35,6 @@ Fortschritts-getriggerte Maskottchen-Einblendungen (Frieda/Otto) getrennt vom Di
 - [x] Raum: Room-first-Coach, Dialog-/Panel-Guard
 - [x] iOS: Coach-Overlay via Portal (`document.body`)
 - [x] Raum-Overlay-Priorität (#122): `checking`-State, Viewer-Gate, Pan-Onboarding-Härtung
+- [x] PR merge → `main` ([PR #123](https://github.com/flxln/schulnavigator/pull/123))
 - [ ] Copy mit MPZ final abstimmen
-- [ ] PR merge → `main`, manueller iOS-Test vor Schulfest
+- [ ] Manueller iOS-Test vor Schulfest

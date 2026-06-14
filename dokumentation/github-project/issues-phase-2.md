@@ -800,7 +800,7 @@ Spezifikation: [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) · Detail:
 
 ## #121 — Coach: Fortschritts-Maskottchen-Einblendungen (ADR-019)
 
-**GitHub:** https://github.com/flxln/schulnavigator/issues/121 — **offen** (umgesetzt auf Branch `feature/coach-sparkle-mvp`, PR ausstehend)
+**GitHub:** https://github.com/flxln/schulnavigator/issues/121 — **geschlossen** (2026-06-14, [PR #123](https://github.com/flxln/schulnavigator/pull/123) → `main`)
 
 **Labels:** `tech`, `design`  
 **Assignee:** Felix  
@@ -823,7 +823,7 @@ Spezifikation: [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) · Detail:
 
 ## #122 — Raum-Overlay-Priorität: Gyro → Pan-Onboarding → Coach (Folge #121)
 
-**GitHub:** https://github.com/flxln/schulnavigator/issues/122 — **offen** (umgesetzt auf Branch `feature/coach-sparkle-mvp`)
+**GitHub:** https://github.com/flxln/schulnavigator/issues/122 — **geschlossen** (2026-06-14, [PR #123](https://github.com/flxln/schulnavigator/pull/123))
 
 **Labels:** `tech`  
 **Assignee:** Felix  

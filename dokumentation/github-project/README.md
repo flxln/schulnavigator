@@ -63,6 +63,6 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issue **#116** (Sphere-Viewer: Zoom-Sperre + Gyro-Neustart nach Pinch, Folge #114) — umgesetzt 2026-06-11, Branch `feature/sphere-zoom-sperre`
 - [x] Issue **#119** (Sphere-Hotspots: sphärisches Mapping, Layer-Marker, Kalibrier-Helfer, Folge #114) — geschlossen 2026-06-14, PR [#118](https://github.com/flxln/schulnavigator/pull/118) → `main`
 - [x] Issue **#120** (Sphere-Marker: PSV-Tooltips entfernen, Kalibrier-Yaw normalisieren, Folge #119) — geschlossen 2026-06-14, `main`
-- [ ] Epic **#121** (Coach Fortschritts-Einblendungen, ADR-019) + **#122** (Raum-Overlay-Priorität) — umgesetzt auf Branch `feature/coach-sparkle-mvp`, PR ausstehend; [epic-coach-fortschritt.md](epic-coach-fortschritt.md)
+- [x] Epic **#121** (Coach Fortschritts-Einblendungen, ADR-019) + **#122** (Raum-Overlay-Priorität) — geschlossen 2026-06-14, [PR #123](https://github.com/flxln/schulnavigator/pull/123) → `main`; [epic-coach-fortschritt.md](epic-coach-fortschritt.md)
 
-Letzter dokumentierter Abgleich: **2026-06-14** (ADR-019 Coach + Raum-Overlay-Priorität auf `feature/coach-sparkle-mvp`; GitHub #121/#122).
+Letzter dokumentierter Abgleich: **2026-06-14** (#121/#122 geschlossen via PR #123; Coach + Overlay-Priorität auf `main`).
