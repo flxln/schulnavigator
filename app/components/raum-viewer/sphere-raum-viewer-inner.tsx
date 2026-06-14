@@ -238,14 +238,25 @@ export const SphereRaumViewerInner = forwardRef<
     gyroPluginRef.current = gyroPlugin
 
     let pinchGyroResumePending = false
+    let gyroWasEnabledBeforeTouch = false
     const onTouchStart = (evt: TouchEvent) => {
+      if (gyroPlugin?.isEnabled()) {
+        gyroWasEnabledBeforeTouch = true
+      }
       if (evt.touches.length >= 2 && gyroPlugin?.isEnabled()) {
         pinchGyroResumePending = true
       }
     }
     const onTouchEnd = (evt: TouchEvent) => {
-      if (evt.touches.length !== 0 || !pinchGyroResumePending) return
+      const resumeAfterTouch =
+        evt.touches.length === 0 &&
+        (pinchGyroResumePending || gyroWasEnabledBeforeTouch) &&
+        gyroPlugin &&
+        !gyroPlugin.isEnabled()
+      if (evt.touches.length !== 0) return
       pinchGyroResumePending = false
+      gyroWasEnabledBeforeTouch = false
+      if (!resumeAfterTouch) return
       if (!orientationEnabled || orientStateRef.current !== 'active') return
       void startGyroRef.current()
     }

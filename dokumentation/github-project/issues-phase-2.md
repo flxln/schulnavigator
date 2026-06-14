@@ -658,6 +658,7 @@ Spezifikation: [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) · Detail:
 - [x] `anleitungen/lokal-testen-und-anschauen.md` — Tablet-Viewports (768, 1024, 834)
 - [x] `architektur.md` — Abschnitt Responsive/Tablet
 - [x] Medien-Hotspot-Icons: Tablet-Skalierung (`mediaIconSizingReferenceHeight`, `layoutViewportWidth ≥ 520 px` → Phone-QA-Referenz; Folge #74 QA)
+- [x] Gyro nach Wischen (Folge #74 QA): Sphere — Neustart nach Ein-Finger-Pan (`gyroWasEnabledBeforeTouch`, erweitert #116); Flat — Höhen-Resize debounced (200 ms, iOS `svh` beim Card-Peek-Scroll)
 
 ---
 
@@ -784,6 +785,7 @@ Spezifikation: [ADR-012](../adr/012-tablet-ipad-responsive-layout.md) · Detail:
 - [x] Sphere-Marker-Normen (`resolveMascotSizeNormForSphere`, `resolveIconSizeNormForSphere`)
 - [x] Config-Smoke-Test `sphere-raum-viewer-inner.test.tsx`
 - [x] Gyro-Neustart nach Pinch (`touchstart` Capture + `touchend`)
+- [x] Gyro-Neustart nach Ein-Finger-Pan (Folge #74 QA, 2026-06-14): `gyroWasEnabledBeforeTouch` in `onTouchEnd` — PSV `stopAll()` nach Wischen
 - [x] ADR-018 Konsequenzen ergänzt
 
 ---
