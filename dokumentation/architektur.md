@@ -37,8 +37,9 @@ Utility: `.sn-page-container` in [`globals.css`](../app/app/globals.css). Scan-R
 | Element | Phone + Tablet |
 |---------|----------------|
 | `RAUM_HERO_HEIGHT_CLASS` | `h-[calc(100svh-6.5rem)]` — **kein** `md:`-Cap (Card-Peek, weniger vertikaler Crop als Hero-Deckelung) |
-| TopBar `/raum/[slug]` | `fixed inset-x-0` — viewport-breit, außerhalb `overflow-x-hidden` |
+| TopBar `/raum/[slug]` | `absolute inset-x-0 top-0 z-[30]` im Hero, Safe-Area-Padding |
 | Nicht-Hero-Viewer | `.sn-viewer-fallback-height` / `.sn-viewer-fallback-min-height` — Phone `min(50vh,360px)`, Tablet `min(50vh,460px)` |
+| Medien-Hotspot-Icons | `iconSize × effectiveDisplayH`, auf Tablet (`layoutViewportWidth ≥ 520 px`) Referenzhöhe = Phone-QA-Hero (~563 px); Flat + Sphere via `mediaIconSizingReferenceHeight()` in [`hotspot-marker.ts`](../app/lib/hotspot-marker.ts) |
 
 ### Medien-Panel
 
@@ -159,7 +160,7 @@ interface Hotspot {
   action?: "medium" | "dialog"; // default medium
   mediumId?: string; // bei medium
   icon?: string; // /public/…; Medien-Hotspot; [ADR-017]
-  iconSize?: number; // 0.05–0.25, Anteil effectiveDisplayH; [ADR-017]
+  iconSize?: number; // 0.05–0.25, Anteil Referenzhöhe (Phone: effectiveDisplayH; Tablet: gekappt, siehe Responsive/Tablet)
   mascot?: "frieda" | "otto"; // bei dialog
   mascotSize?: number; // 0.05–1, Anteil effectiveDisplayH; [ADR-014]
   mascotFlipX?: boolean; // horizontal spiegeln; [ADR-014]

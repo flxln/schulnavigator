@@ -38,6 +38,7 @@ import {
 } from '@/lib/raum-viewer/sphere-marker-factory'
 import {
   resolveBubbleProjectionPitchDeg,
+  resolveImageLayerSize,
   yawPitchToRadians,
 } from '@/lib/raum-viewer/sphere-marker-conventions'
 
@@ -351,7 +352,9 @@ export const SphereRaumViewerInner = forwardRef<
 
     const list = hotspots360 ?? []
     const nextIds = new Set(list.map((h) => h.id))
-    const containerHeight = viewerRef.current?.getSize().height ?? 400
+    const viewerSize = viewerRef.current?.getSize()
+    const containerHeight = viewerSize?.height ?? 400
+    const layoutViewportWidth = viewerSize?.width
 
     for (const id of [...markerKindsRef.current.keys()]) {
       if (!nextIds.has(id)) {
@@ -367,6 +370,7 @@ export const SphereRaumViewerInner = forwardRef<
         hs,
         medien,
         containerHeight,
+        layoutViewportWidth,
         isActive: false,
         speakingRolle: null,
       })
@@ -383,7 +387,9 @@ export const SphereRaumViewerInner = forwardRef<
     const plugin = markersPluginRef.current
     if (!plugin || !ready || !hotspots360?.length) return
 
-    const containerHeight = viewerRef.current?.getSize().height ?? 400
+    const viewerSize = viewerRef.current?.getSize()
+    const containerHeight = viewerSize?.height ?? 400
+    const layoutViewportWidth = viewerSize?.width
 
     for (const hs of hotspots360) {
       const kind = markerKindsRef.current.get(hs.id)
@@ -393,6 +399,7 @@ export const SphereRaumViewerInner = forwardRef<
         hs,
         medien,
         containerHeight,
+        layoutViewportWidth,
         isActive: hs.id === activeHotspotId,
         speakingRolle,
       }

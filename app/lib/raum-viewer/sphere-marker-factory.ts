@@ -28,6 +28,7 @@ export type BuildSphereMarkerOptions = {
   hs: Hotspot360
   medien: Medium[]
   containerHeight: number
+  layoutViewportWidth?: number
   isActive: boolean
   speakingRolle?: DialogRolle | null
 }
@@ -102,7 +103,7 @@ export function applyMascotElementState(
 export function buildSphereMarkerConfig(
   options: BuildSphereMarkerOptions,
 ): SphereMarkerBuildResult {
-  const { hs, medien, containerHeight, isActive, speakingRolle = null } =
+  const { hs, medien, containerHeight, layoutViewportWidth, isActive, speakingRolle = null } =
     options
   const position = yawPitchToRadians(hs.yaw, hs.pitch)
   const base = {
@@ -136,6 +137,7 @@ export function buildSphereMarkerConfig(
           hs,
           medien,
           containerHeight,
+          layoutViewportWidth,
           isActive,
           speakingRolle,
         }),
@@ -150,7 +152,12 @@ export function buildSphereMarkerConfig(
   const src = resolveMediaImageSrc(hs, medium)
 
   if (src) {
-    const size = resolveImageLayerSize(hs, 'icon', containerHeight)
+    const size = resolveImageLayerSize(
+      hs,
+      'icon',
+      containerHeight,
+      layoutViewportWidth,
+    )
     return {
       kind: 'imageLayer',
       config: {
@@ -171,6 +178,7 @@ export function buildSphereMarkerConfig(
         hs,
         medien,
         containerHeight,
+        layoutViewportWidth,
         isActive,
         speakingRolle,
       }),
@@ -183,7 +191,7 @@ export function buildSphereMarkerVisualUpdate(
   options: BuildSphereMarkerOptions,
   kind: SphereMarkerKind,
 ): Record<string, unknown> {
-  const { hs, medien, containerHeight, isActive, speakingRolle = null } =
+  const { hs, medien, containerHeight, layoutViewportWidth, isActive, speakingRolle = null } =
     options
 
   if (kind === 'imageLayer') {
@@ -200,6 +208,7 @@ export function buildSphereMarkerVisualUpdate(
       hs,
       medien,
       containerHeight,
+      layoutViewportWidth,
       isActive,
       speakingRolle,
     }),

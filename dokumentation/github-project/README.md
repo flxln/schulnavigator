@@ -68,4 +68,4 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 
 - [x] Epic **#124** (Hub Wegweiser Schulhof/Turnhalle, ADR-020) — geschlossen 2026-06-14, [PR #125](https://github.com/flxln/schulnavigator/pull/125) → `main`; [epic-hub-wegweiser.md](epic-hub-wegweiser.md)
 
-Letzter dokumentierter Abgleich: **2026-06-14** (Epic #74 Tablet/iPad-Layout #75–#78 geschlossen, Branch `feat/tablet-ipad-layout`).
+Letzter dokumentierter Abgleich: **2026-06-14** (Epic #74 Branch `feat/tablet-ipad-layout`: Tablet-Medien-Hotspot-Skalierung + PR-Vorbereitung).
