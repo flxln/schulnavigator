@@ -42,7 +42,8 @@
           "label": "Korkpinnwand",
           "yaw": -32,
           "pitch": -4,
-          "mediumId": "demo-text"
+          "mediumId": "demo-text",
+          "iconSize": 0.2
         },
         {
           "id": "hs-video",
@@ -58,14 +59,16 @@
           "label": "Klassentische",
           "yaw": 4,
           "pitch": -8,
-          "mediumId": "demo-audio"
+          "mediumId": "demo-audio",
+          "iconSize": 0.2
         },
         {
           "id": "hs-foto",
           "label": "Fensterseite",
           "yaw": 28,
           "pitch": -2,
-          "mediumId": "demo-foto"
+          "mediumId": "demo-foto",
+          "iconSize": 0.2
         }
       ]
     },
@@ -338,55 +341,8 @@
       "viewer": "equirectangular",
       "panorama360": "/stations/360/musik.jpg",
       "bild": "/stations/musik.jpg",
-      "medien": [
-        {
-          "id": "demo-audio",
-          "typ": "audio",
-          "quelle": "/demo/ton.wav",
-          "untertitel": "Demo-Audio (Platzhalter)",
-          "iconSize": 0.2
-        },
-        {
-          "id": "demo-video",
-          "typ": "video",
-          "videoSource": "upload",
-          "quelle": "/demo/video-plakat.jpg",
-          "untertitel": "Video folgt — Demo-Poster",
-          "iconSize": 0.2
-        },
-        {
-          "id": "demo-foto",
-          "typ": "foto",
-          "quelle": "/demo/foto.jpg",
-          "untertitel": "Demo-Foto",
-          "iconSize": 0.2
-        },
-        {
-          "id": "demo-text",
-          "typ": "text",
-          "quelle": "/demo/musik-info.txt",
-          "untertitel": "Demo-Text",
-          "iconSize": 0.2
-        }
-      ],
-      "hotspots360": [
-        {
-          "id": "hs-video",
-          "label": "Video-Bereich",
-          "yaw": -28,
-          "pitch": -12,
-          "mediumId": "demo-video",
-          "iconSize": 0.2
-        },
-        {
-          "id": "hs-audio",
-          "label": "Audio-Bereich",
-          "yaw": 22,
-          "pitch": -10,
-          "mediumId": "demo-audio",
-          "iconSize": 0.2
-        }
-      ]
+      "medien": [],
+      "hotspots360": []
     },
     {
       "slug": "schulsozialarbeit",
