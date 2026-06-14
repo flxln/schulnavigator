@@ -67,3 +67,10 @@ export function radiansToDegrees(yaw: number, pitch: number): {
 export function roundDeg(deg: number): number {
   return Math.round(deg * 10) / 10
 }
+
+/** Winkel auf −180…180° für JSON/Validator (PSV-Klicks können 0…360° liefern). */
+export function normalizeYawDeg(deg: number): number {
+  const wrapped = ((deg % 360) + 360) % 360
+  const normalized = wrapped > 180 ? wrapped - 360 : wrapped
+  return roundDeg(normalized)
+}

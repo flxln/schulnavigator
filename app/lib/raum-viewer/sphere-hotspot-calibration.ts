@@ -1,4 +1,7 @@
-import { roundDeg } from '@/lib/raum-viewer/sphere-marker-conventions'
+import {
+  normalizeYawDeg,
+  roundDeg,
+} from '@/lib/raum-viewer/sphere-marker-conventions'
 
 export type SphereCalibClick = {
   yaw: number
@@ -19,7 +22,8 @@ export function sphereCalibFromClick(
   click: SphereCalibClick,
   hotspotId?: string,
 ): SphereCalibSnippet {
-  const yawDeg = roundDeg(click.yaw * (180 / Math.PI))
+  const rawYawDeg = roundDeg(click.yaw * (180 / Math.PI))
+  const yawDeg = normalizeYawDeg(rawYawDeg)
   const pitchDeg = roundDeg(click.pitch * (180 / Math.PI))
   const fields: string[] = [
     `  "yaw": ${yawDeg}`,

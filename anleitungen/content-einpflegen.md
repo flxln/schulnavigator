@@ -228,7 +228,7 @@ Statt `x`/`y` gelten **Kugelkoordinaten** aus dem Equirectangular-Panorama:
 | `bubblePitchOffset` | nein | Zusätzlicher Pitch (Grad) für Dialog-Bubble nach oben; nur Dialog |
 | `icon`, `iconSize` | Medien | Wie bei Flat |
 
-**Kalibrierung (Dev):** `npm run dev` → `/raum/{slug}?hotspot-calib=1` → auf Ankerpunkt klicken → JSON-Snippet kopieren. Maskottchen: **Fuß** anklicken; Medien: **Icon-Mitte**. Abnahme-Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/projektmanagement/2026-06-13-sphere-hotspot-acceptance.md).
+**Kalibrierung (Dev):** `npm run dev` → `/raum/{slug}?hotspot-calib=1` → auf Ankerpunkt klicken → JSON-Snippet kopieren (`yaw` wird auf −180…180° normalisiert). Maskottchen: **Fuß** anklicken; Medien: **Icon-Mitte**. Abnahme-Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/projektmanagement/2026-06-13-sphere-hotspot-acceptance.md).
 
 ### `dialog` — Sprecherwechsel und Text (**heute pflegbar**)
 

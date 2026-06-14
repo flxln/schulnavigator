@@ -31,4 +31,16 @@ describe('sphere-hotspot-calibration', () => {
     expect(SPHERE_CALIB_REFERENCE_CENTER.yawDeg).toBe(0)
     expect(SPHERE_CALIB_REFERENCE_CENTER.pitchDeg).toBe(0)
   })
+
+  it('normalisiert PSV-yaw > 180° auf −180…180 für stations.json', () => {
+    const yawRad = (323.5 * Math.PI) / 180
+    const snippet = sphereCalibFromClick(
+      { yaw: yawRad, pitch: -0.4607670455558127 },
+      'hs-otto',
+    )
+    expect(snippet.yawDeg).toBe(-36.5)
+    expect(snippet.json).toContain('"yaw": -36.5')
+    expect(snippet.yawDeg).toBeGreaterThanOrEqual(-180)
+    expect(snippet.yawDeg).toBeLessThanOrEqual(180)
+  })
 })

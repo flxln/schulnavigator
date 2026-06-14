@@ -1,7 +1,9 @@
 # Sphere-Hotspot — Soll-Abnahme (Referenz)
 
-**Stand:** 2026-06-13  
+**Stand:** 2026-06-14  
 **Zweck:** Reproduzierbare Vergleichspunkte nach CSS-/PSV-/Größen-Änderungen.
+
+**Hinweis:** Sphere-Marker zeigen **keine** PSV-Tooltip-Labels (`label` nur `aria-label`). Kalibrier-Tool normalisiert `yaw` auf −180…180°.
 
 ## Ablauf pro Station
 
@@ -16,8 +18,8 @@
 
 | id | yaw | pitch | bubblePitchOffset | Erwartung |
 |----|-----|-------|-------------------|-----------|
-| hs-frieda | 6 | −30 | 14 | Fuß auf Boden vor Sitzgruppe |
-| hs-otto | −14 | −28 | 14 | Fuß auf Boden, gespiegelt |
+| hs-frieda | 21.1 | −30.7 | 14 | Fuß auf Boden vor Sitzgruppe |
+| hs-otto | −18.7 | −27.7 | 14 | Fuß auf Boden, gespiegelt |
 
 Route: `/raum/daz`
 
@@ -57,4 +59,4 @@ Route: `/raum/musik`
 
 ## Kalibrier-Tool
 
-`/raum/daz?hotspot-calib=1` — Klick liefert `yaw`/`pitch` + `textureX`/`textureY`; JSON-Snippet kopieren.
+`/raum/daz?hotspot-calib=1` — Klick liefert `yaw`/`pitch` + `textureX`/`textureY`; JSON-Snippet kopieren (`yaw` wird auf −180…180° normalisiert).
