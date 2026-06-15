@@ -12,7 +12,7 @@
 
 ---
 
-## Schritt 1: QR-PNGs erzeugen
+## Schritt 1: QR-PNGs und Druck-PDFs erzeugen
 
 Im Verzeichnis `app/`:
 
@@ -30,6 +30,9 @@ Erzeugt unter `app/public/qr/`:
 
 - zwei **Entry-QRs** (`entry-fest.png`, `entry-heft.png`) mit `/eintritt?t=…`
 - je einen **Raum-QR** pro Eintrag in `data/stations.json` (`raum-{slug}.png`) mit `/raum/{slug}` **ohne** Token
+- zwei **Druck-PDFs** unter `app/public/qr/pdf/`:
+  - `qr-a5-2up.pdf` — A4 mit zwei beschrifteten QR-Zonen (halbiert = A5-Kärtchen)
+  - `qr-a4-grid-3cm.pdf` — A4-Raster mit QR **3×3 cm** und Slug/Titel pro Zelle
 
 Optional: größere Pixelmatrix für dichtere URLs: `--size=640` oder `QR_PRINT_WIDTH_PX` in `.env.local`.
 
@@ -42,7 +45,7 @@ npm run generate:qr -- --preset=schulfest --dry-run
 npm run generate:qr -- --preset=schulfest
 ```
 
-Erzeugt **1× Entry** (`entry-fest.png`) + **7× Raum-QR** (Vorschlagsliste in `app/scripts/qr-config.mjs`) und `manifest-schulfest.json`.
+Erzeugt **1× Entry** (`entry-fest.png`) + **12× Raum-QR** (alle Stationen in `app/scripts/qr-config.mjs`), `manifest-schulfest.json` und `qr-schulfest-a5-2up.pdf` / `qr-schulfest-a4-grid-3cm.pdf`.
 
 Eigene Slug-Liste:
 
@@ -60,8 +63,16 @@ npm run generate:qr -- --only=turnhalle,speiseraum,werken,lesewelt,musik,daz
 
 ## Schritt 2: Druckvorlage
 
+**Variante A — PDFs (empfohlen):**
+
+- `app/public/qr/pdf/qr-a5-2up.pdf` auf **A4** drucken, in der Mitte halbieren → zwei beschriftete A5-Kärtchen pro Blatt
+- `app/public/qr/pdf/qr-a4-grid-3cm.pdf` für kleine Aufkleber/Einzel-QRs (3 cm Kantenlänge, 5×6 pro Seite)
+
+**Variante B — Einzel-PNGs:**
+
 - PNGs aus `app/public/qr/` in die gewünschte Layout-Software legen (z. B. ein QR pro A6-Kärtchen).
-- `manifest.json` im gleichen Ordner listet Dateiname und Ziel-URL (Hilfe für Abnahme und [#36](../dokumentation/github-project/issues-phase-3.md)).
+
+`manifest.json` im gleichen Ordner listet Dateiname und Ziel-URL (Hilfe für Abnahme und [#36](../dokumentation/github-project/issues-phase-3.md)).
 
 ---
 
@@ -77,7 +88,7 @@ npm run generate:qr -- --only=turnhalle,speiseraum,werken,lesewelt,musik,daz
 
 - Laminieren für Langlebigkeit
 - A5 oder A6 Format ist gut lesbar
-- PNGs sind standardmäßig **nicht** versioniert (`public/qr/*.png` in `.gitignore`); bewusst committen: `git add -f app/public/qr/…`
+- PNGs und PDFs sind standardmäßig **nicht** versioniert (`public/qr/*.png`, `public/qr/pdf/*.pdf` in `.gitignore`); bewusst committen: `git add -f app/public/qr/…`
 
 ---
 

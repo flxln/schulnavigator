@@ -75,7 +75,7 @@ Verbindliches **Schulfest-Playbook** + abgestimmtes **QR-Drucksubset** + **Conte
 ## Epic erledigt wenn
 
 - [ ] Playbook von Schule **schriftlich** bestätigt (Kommentar in `#90` oder Protokoll-PDF)
-- [ ] Druckliste: Entry `fest` + **≤7** Raum-QRs (5 offen + 2–4 Hof-Virtualisierung) — Manifest geprüft
+- [ ] Druckliste: Entry `fest` + **12** Raum-QRs (alle Stationen generiert; physische Platzierung Tür vs. Hof laut Playbook) — `manifest-schulfest.json` geprüft
 - [ ] [#39](https://github.com/flxln/schulnavigator/issues/39) Body/Checkliste an Nachtrag angepasst
 - [ ] Mobilfunk-Test (#91) dokumentiert (Datum, Ort, Gerät, Ergebnis)
 ```
@@ -210,14 +210,15 @@ Council/Research: Outdoor **Error Correction Level H**, **≥3–5 cm** (besser 
 
 ## Ziel
 
-1. **Drucksubset** definieren (nur Slugs aus Playbook #87) — kein blindes `generate:qr` für alle 11 Räume wenn nicht genutzt.
+1. **Druckset** für Schulfest: alle **12** Slugs in `SCHULFEST_QR_SLUGS` (Räume auch ohne vollständigen Content nutzbar); physische Platzierung (Tür vs. Hof) unabhängig im Playbook #87.
 2. **Outdoor-Abschnitt** in `qr-codes-drucken.md` oder Playbook #87.
 
 ## Technische Aufgaben
 
-- [ ] Liste `SCHULFEST_QR_SLUGS` (oder Kommentar-Manifest) in Repo dokumentieren — abgestimmt mit #87
-- [ ] Optional (Nice-to-have): `npm run generate:qr -- --only=slug1,slug2` — nur wenn Subset ohne manuelles Löschen nötig
-- [ ] `manifest.json` nach Generate: nur Schulfest-Set zur Abnahme (#36)
+- [x] Liste `SCHULFEST_QR_SLUGS` in `app/scripts/qr-config.mjs` — alle 12 Räume (2026-06-15)
+- [x] `npm run generate:qr -- --only=slug1,slug2` — Subset bei Bedarf
+- [x] `manifest-schulfest.json` nach `generate:qr --preset=schulfest`
+- [x] Druck-PDFs mit Label/Subtitle (`qr-schulfest-a5-2up.pdf`, `qr-schulfest-a4-grid-3cm.pdf`) — Issue **#130**
 
 ## Druck-Spezifikation (Outdoor)
 

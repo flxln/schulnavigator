@@ -19,23 +19,30 @@ Verwandt: [qr-codes-drucken.md](./qr-codes-drucken.md) · [content-einpflegen.md
 
 ---
 
-## 2. QR-Drucksubset (Vorschlag bis Freigabe Schule)
+## 2. QR-Druckset (alle 12 Räume)
 
-Nicht alle 12 Stationen drucken — Ziel **≤7 Raum-QRs + 1 Entry** ([Council-Empfehlung](../protokolle/analyse-schulnavigator-gs39-nachtrag.md)).
+**Alle 12 Stationen** werden für das Schulfest generiert (`SCHULFEST_QR_SLUGS` in `app/scripts/qr-config.mjs`). Auch ohne vollständigen Raum-Content sind die Stationen in der App nutzbar — der Hub schaltet beim Scan frei.
 
-| Slug | Raum | Rolle am Schulfest | QR-Platzierung (Vorschlag) |
-|------|------|--------------------|----------------------------|
-| `turnhalle` | Turnhalle | physisch offen | Im Raum / Eingang Turnhalle |
-| `speiseraum` | Speiseraum | physisch offen | Speiseraum |
-| `werken` | Werkenzimmer | physisch offen | Werken |
-| `lesewelt` | Lesewelt (Mediathek) | physisch offen | Mediathek |
-| `klassenzimmer` | Klassenzimmer | physisch offen (optional) | Klassenzimmer / Portal |
-| `musik` | Musikzimmer | Hof-Virtualisierung | Schulhof-Schild |
-| `daz` | DaZ-Zimmer | Hof-Virtualisierung | Schulhof-Schild |
+**Physische Platzierung** (wo der QR hängt) ist unabhängig vom Druckset:
 
-**Nicht im Schulfest-Subset (Vorschlag):** `pc-raum`, `kunst`, `hort`, `schulsozialarbeit`, `schulhof` — nur Hub oder Tag der offenen Tür.
+| Slug | Raum | Platzierung (Vorschlag) |
+|------|------|-------------------------|
+| `turnhalle` | Turnhalle | Im Raum / Eingang Turnhalle |
+| `speiseraum` | Speiseraum | Speiseraum |
+| `werken` | Werkenzimmer | Werken |
+| `lesewelt` | Lesewelt (Mediathek) | Mediathek |
+| `klassenzimmer` | Klassenzimmer | Klassenzimmer / Portal |
+| `musik` | Musikzimmer | Raum oder Hof-Schild (Virtualisierung) |
+| `daz` | DaZ-Zimmer | Raum oder Hof-Schild |
+| `pc-raum` | PC-Raum | Raum oder Hof-Schild |
+| `kunst` | Kunstzimmer | Raum oder Hof-Schild |
+| `hort` | Hortzimmer | Raum oder Hof-Schild |
+| `schulsozialarbeit` | Schulsozialarbeit | Raum oder Hof-Schild |
+| `schulhof` | Schulhof | Schulhof-Schild |
 
-> **Freigabe:** Tabelle mit Sten/Tina anpassen (#90). Slugs im Code: `app/scripts/qr-config.mjs` → `SCHULFEST_QR_SLUGS`.
+Geschlossene Räume: QR **nicht** an der Klassentür, sondern ggf. als **Hof-Virtualisierung** (gleicher Slug).
+
+> **Anpassung:** Tabelle mit Sten/Tina (#90). Kleineres Druckset: `--only=slug1,slug2` — Slugs im Code: `qr-config.mjs` → `SCHULFEST_QR_SLUGS`.
 
 ---
 
@@ -45,13 +52,13 @@ Nicht alle 12 Stationen drucken — Ziel **≤7 Raum-QRs + 1 Entry** ([Council-E
 cd app
 # Vorschau
 npm run generate:qr -- --preset=schulfest --dry-run
-# PNGs + manifest-schulfest.json
+# PNGs, PDFs + manifest-schulfest.json
 npm run generate:qr -- --preset=schulfest
 ```
 
-**Ausgabe:** `public/qr/entry-fest.png` + 7× `raum-{slug}.png` + `manifest-schulfest.json`
+**Ausgabe:** `public/qr/entry-fest.png` + **12×** `raum-{slug}.png` + `manifest-schulfest.json` + `public/qr/pdf/qr-schulfest-a5-2up.pdf` und `qr-schulfest-a4-grid-3cm.pdf` (beschriftet mit Slug und Raumtitel — siehe [qr-codes-drucken.md](./qr-codes-drucken.md))
 
-**Abweichende Slug-Liste** (nach Schul-Freigabe):
+**Kleineres Set** (nur ausgewählte Räume drucken/aushängen):
 
 ```bash
 npm run generate:qr -- --only=turnhalle,speiseraum,werken,lesewelt,musik,daz
@@ -100,7 +107,7 @@ Sonnentest protokollieren (Datum, Scan ja/nein) — Zeile in [Abschlusstest](../
 ## 7. Checkliste am 26.06.
 
 - [ ] Entry-QR `fest` am Eingang sichtbar
-- [ ] Nur Schulfest-Subset ausgehängt (keine 12× Tür-QR)
+- [ ] Raum-QRs nach Platzierungstabelle ausgehängt (Tür oder Hof — nicht jeder QR muss an der Tür hängen)
 - [ ] Hof-Schilder beschriftet und wetterfest
 - [ ] Tablet-Fallback geladen (`/eintritt?t=fest-2026`)
 - [ ] MPZ erreichbar (Felix/Julia)

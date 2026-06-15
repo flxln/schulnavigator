@@ -14,20 +14,25 @@ export const ENTRY_QRS = [
 ]
 
 /**
- * Schulfest-Drucksubset (Vorschlag bis Freigabe Schule, Epic #86 / Playbook).
- * ≤7 Raum-QRs + Entry `fest` — siehe anleitungen/schulfest-gs39-playbook.md
+ * Schulfest-Druckset: alle 12 Räume + Entry `fest`.
+ * Räume sind auch ohne vollständigen Content nutzbar (Hub-Freischaltung, Platzhalter).
+ * Physische Platzierung (Tür vs. Hof) siehe anleitungen/schulfest-gs39-playbook.md.
  *
- * physisch offen (~5): turnhalle, speiseraum, werken, lesewelt, klassenzimmer
- * Hof-Virtualisierung (~2): musik, daz
+ * Kleineres Set bei Bedarf: `npm run generate:qr -- --only=slug1,slug2`
  */
 export const SCHULFEST_QR_SLUGS = [
+  'klassenzimmer',
+  'daz',
+  'pc-raum',
+  'werken',
   'turnhalle',
   'speiseraum',
-  'werken',
+  'kunst',
   'lesewelt',
-  'klassenzimmer',
+  'hort',
   'musik',
-  'daz',
+  'schulsozialarbeit',
+  'schulhof',
 ]
 
 /** Entry-QRs für Schulfest-Druckpack (nur fest). */
