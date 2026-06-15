@@ -1,8 +1,9 @@
 # Umsetzungsplan — Externe Medien, iframe & Hotspot-Marker
 
-**Stand:** 2026-06-10  
+**Stand:** 2026-06-15  
 **ADR:** [017 — Externe Medien, iframe-Embed und Hotspot-Marker](../adr/017-externe-medien-hotspot-marker.md)  
-**Phase:** Post-Schulfest (ab Juli 2026), sukzessiv drei Stufen  
+**Umsetzungsstatus:** Stufe 1–3 **live** (#98 PR #101, #99 PR #102, #100, Delightex-Fallback Mobile #109)  
+**Phase:** Post-Schulfest (ab Juli 2026), sukzessive drei Stufen — **abgeschlossen**  
 **Auslöser:** Schulwunsch Delightex (PC-Raum), externe Links, erkennbare Hotspot-Marker
 
 ---
@@ -163,27 +164,27 @@ flowchart TB
 
 | # | Aufgabe | Dateien |
 |---|---------|---------|
-| 3.1 | `MediumTyp` um `embed`; Default-Allowlist Konstante | `types.ts`, `lib/embed-allowlist.ts` |
-| 3.2 | Validator: HTTPS; Host muss Allowlist matchen | `validate-stations.ts` |
-| 3.3 | `EmbedViewer`: responsive iframe, Sandbox-Attribute, Fehler-Fallback | `embed-viewer.tsx` |
-| 3.4 | Vollbild-Toggle (optional, Mobile UX) | `embed-viewer.tsx` |
-| 3.5 | CSP `frame-src` in `next.config.ts` | `next.config.ts` |
+| 3.1 | `MediumTyp` um `embed`; Default-Allowlist Konstante | `types.ts`, `lib/embed-allowlist.ts` — **erledigt** |
+| 3.2 | Validator: HTTPS; Host muss Allowlist matchen | `validate-stations.ts` — **erledigt** |
+| 3.3 | `EmbedViewer`: responsive iframe, Sandbox-Attribute, Fehler-Fallback | `embed-viewer.tsx` — **erledigt** |
+| 3.4 | Vollbild-Toggle (optional, Mobile UX) | `embed-viewer.tsx` — **offen** (optional, nicht umgesetzt) |
+| 3.5 | CSP `frame-src` in `next.config.ts` | `next.config.ts` — **erledigt** |
 | 3.6 | Fehlerzustand: „Einbettung nicht möglich“ + Link-Fallback (`typ: link` duplizieren oder CTA) | `embed-viewer.tsx`, `delightex-fallback-panel.tsx` — **erledigt** (#109) |
-| 3.7 | Tests: Allowlist, CSP-Konfiguration smoke | Tests |
-| 3.8 | DSB-Freigabe dokumentieren | `dsgvo.md`, ADR-004-Verweis |
-| 3.9 | Manuell: iPhone Safari + Android Chrome mit echter Delightex-URL | Testprotokoll in `lokal-testen-und-anschauen.md` |
+| 3.7 | Tests: Allowlist, CSP-Konfiguration smoke | Tests — **erledigt** |
+| 3.8 | DSB-Freigabe dokumentieren | `dsgvo.md`, ADR-004-Verweis — **erledigt** (DSB-Freigabe; Datenschutzerklärung-Absatz noch offen) |
+| 3.9 | Manuell: iPhone Safari + Android Chrome mit echter Delightex-URL | Testprotokoll in `lokal-testen-und-anschauen.md` — **erledigt** |
 
 ### Akzeptanzkriterien
 
-- [ ] Nur Allowlist-Domains im Build erlaubt
-- [ ] iframe lädt in Panel auf Desktop; Mobile dokumentiert (ggf. Vollbild-Pflicht)
-- [ ] Bei `X-Frame-Options`-Block: verständliche Meldung, kein leeres Panel
-- [ ] **Keine** Produktions-Station mit `embed` ohne DSB-Freigabe
+- [x] Nur Allowlist-Domains im Build erlaubt
+- [x] iframe lädt in Panel auf Desktop; Mobile dokumentiert (Touch: kein iframe, Fallback-Panel #109)
+- [x] Bei `X-Frame-Options`-Block: verständliche Meldung, kein leeres Panel
+- [x] **Keine** Produktions-Station mit `embed` ohne DSB-Freigabe (Demo `pc-raum` mit Freigabe)
 
 ### Voraussetzungen
 
-- [ ] Schule/DSB: Delightex-Einbettung freigegeben
-- [ ] Delightex liefert **embed-fähige** öffentliche URL (technisch testen!)
+- [x] Schule/DSB: Delightex-Einbettung freigegeben
+- [x] Delightex liefert **embed-fähige** öffentliche URL (technisch getestet: `https://edu.delightex.com/WVX-NAQ`)
 
 ### GitHub
 
@@ -197,7 +198,7 @@ flowchart TB
 |-------|----------|
 | **Abwärtskompatibilität** | Alte JSON ohne neue Felder bleibt gültig |
 | **Directus** | Felder in Collection-Design #47 vormerken |
-| **Issue #50** | Nach Stufe 3: Checkboxen „externe Lernspiele“ / iframe in Phase-5-Doku abhaken |
+| **Issue #50** | Nach Stufe 3: Checkboxen „externe Lernspiele“ / iframe in Phase-5-Doku abgehakt — **erledigt** |
 | **Content-Autoren** | Icons 64–128 px PNG mit Transparenz; Pfad `public/media/{slug}/icons/` |
 
 ---
@@ -216,10 +217,16 @@ flowchart TB
 
 ## Checkliste vor Start Stufe 3
 
-- [ ] Delightex-Embed-URL von Klasse 4b / PC-Raum-Lehrkraft
-- [ ] Test auf Schul-WLAN und Mobilfunk
-- [ ] DSB-Stellungnahme (Analog YouTube in ADR-004)
+- [x] Delightex-Embed-URL von Klasse 4b / PC-Raum-Lehrkraft (`https://edu.delightex.com/WVX-NAQ`)
+- [x] Test auf Schul-WLAN und Mobilfunk (siehe `lokal-testen-und-anschauen.md`)
+- [x] DSB-Stellungnahme (Analog YouTube in ADR-004)
 - [ ] Datenschutzerklärung App um Drittanbieter-Absatz ergänzt
+
+## Noch offen (nach Stufe 3)
+
+- Weitere `embed`-Stationen (Hof, Lesewelt, Kunst) — Content, nicht Technik
+- Book Creator / H5P: Domain in Allowlist + DSB + technischer Test
+- Optional: Vollbild-Toggle im `EmbedViewer` (Aufgabe 3.4)
 
 ---
 

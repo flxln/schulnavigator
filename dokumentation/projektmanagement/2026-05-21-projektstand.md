@@ -114,7 +114,7 @@ ADRs: [001](../adr/001-hosting-coolify.md) · [002](../adr/002-frontend-nextjs.m
 
 Token in **`localStorage`** (tabübergreifend). Raum-QRs = Navigation, kein Freischalten pro Raum.
 
-**Offen (Recht):** YouTube-Embed nach DSB-Klärung (ADR-004).
+**Offen (Recht):** YouTube-Embed nach DSB-Klärung (ADR-004). Delightex-Embed technisch live (ADR-017 Stufe 3); Datenschutzerklärung um Drittanbieter-Absatz noch offen.
 
 ---
 

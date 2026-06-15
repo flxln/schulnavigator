@@ -193,17 +193,18 @@ Die Schule liefert bis **12.06.** einen Plan: welche Klasse macht welchen Raum i
 - [ ] Auswertung: Was hat funktioniert, was nicht? (Sten/Tina befragen)
 - [ ] Bekannte Bugs und UX-Probleme dokumentieren
 - [ ] Directus-Anforderungen aus MVP-Erfahrung festhalten (Collections, Rollen)
-- [ ] **ADR-017** — Externe Medien & Hotspot-Marker ([Umsetzungsplan](./projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md), Epic **#97**):
+- [x] **ADR-017** — Externe Medien & Hotspot-Marker ([Umsetzungsplan](./projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md), Epic **#97**):
   - [x] [#98](https://github.com/flxln/schulnavigator/issues/98) Stufe 1: Hotspot-Icons + `thumbnail` (PR #101)
   - [x] [#99](https://github.com/flxln/schulnavigator/issues/99) Stufe 2: Medientyp `link` (PR #102)
-  - [x] [#100](https://github.com/flxln/schulnavigator/issues/100) Stufe 3: Medientyp `embed` (Branch `feature/100-typ-embed`)
+  - [x] [#100](https://github.com/flxln/schulnavigator/issues/100) Stufe 3: Medientyp `embed` (gemergt)
+  - [x] [#109](https://github.com/flxln/schulnavigator/issues/109) Delightex-Fallback Mobile
 
 ### Mittelfristig (Herbst 2026)
 
 - [ ] **Directus** deployen (Coolify), JSON-Content migrieren
 - [ ] Lehrkräfte-Onboarding (Directus-Admin, keine Custom-UI)
 - [ ] Englisch-Menü aktivieren
-- [ ] Weitere Stationen nachrüsten (Phase-2-Features der Wunschliste; ADR-017 Stufen 1–2)
+- [ ] Weitere Stationen nachrüsten (Phase-2-Features der Wunschliste; weitere Embed-Content z. B. Book Creator, Lesewelt)
 
 ### Langfristig (2027+)
 
