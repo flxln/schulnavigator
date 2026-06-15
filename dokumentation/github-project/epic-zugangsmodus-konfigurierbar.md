@@ -1,7 +1,8 @@
 # Epic: Zugangsmodus konfigurierbar (ADR-021)
 
 **Milestone:** Phase 5 — Post-Fest  
-**Status:** offen — Branch `feat/adr-021-zugangsmodus`  
+**Status:** umgesetzt — [PR #140](https://github.com/flxln/schulnavigator/pull/140) offen; Dev-Deploy mit `SN_ACCESS_TOKENS` verifiziert  
+**Branch:** `feat/adr-021-zugangsmodus`  
 **Folge zu:** #23 (ADR-007), #57/#82 (ADR-008) — erweitert Zugangskontrolle um konfigurierbare Durchsetzung
 
 **Quellen:**
@@ -60,13 +61,13 @@ Pilot `schulnavigator.mpz.schule` bleibt `gated` — nur `SN_ACCESS_TOKENS` erg�
 
 ### Unterissues
 
-- [ ] `#133` — access-config + access-tokens
-- [ ] `#134` — Middleware + Dialog-API
-- [ ] `#135` — CSP frame-ancestors
-- [ ] `#136` — Build-/Runtime-Validierung + Docker-Entrypoint
-- [ ] `#137` — Token-Rotation + QR-Sync
-- [ ] `#138` — Tests
-- [ ] `#139` — Entwickler-Doku
+- [x] `#133` — access-config + access-tokens — [PR #140](https://github.com/flxln/schulnavigator/pull/140)
+- [x] `#134` — Middleware + Dialog-API
+- [x] `#135` — CSP frame-ancestors
+- [x] `#136` — Build-/Runtime-Validierung + Docker-Entrypoint
+- [x] `#137` — Token-Rotation + QR-Sync
+- [x] `#138` — Tests
+- [x] `#139` — Entwickler-Doku
 
 ### Nicht im Scope
 
@@ -78,11 +79,12 @@ Pilot `schulnavigator.mpz.schule` bleibt `gated` — nur `SN_ACCESS_TOKENS` erg�
 
 ### Epic erledigt wenn
 
-- [ ] Alle Unterissues geschlossen
-- [ ] `npm run test` + `npm run build` grün
-- [ ] Coolify Prod/Dev: `SN_ACCESS_TOKENS` gesetzt, Pilot weiterhin `gated`
-- [ ] Neue Entry-QRs gedruckt (alte `fest-2026`/`heft-2026-27` verbrannt)
-- [ ] ADR-021 in `entscheidungen.md` verlinkt; `fuer-entwickler.md` aktualisiert
+- [x] Alle Unterissues geschlossen
+- [x] `npm run test` + `npm run build` grün
+- [x] Coolify Dev: `SN_ACCESS_TOKENS` gesetzt, Deploy verifiziert
+- [ ] Coolify Prod: `SN_ACCESS_TOKENS` vor Merge/Deploy setzen
+- [x] Entry-QR-Manifeste mit rotierten Tokens (`manifest.json`, `manifest-schulfest.json`)
+- [x] ADR-021 in `entscheidungen.md` verlinkt; `fuer-entwickler.md` aktualisiert
 
 ---
 
