@@ -117,6 +117,21 @@ Spezifikation: [ADR-006](../adr/006-raum-viewer-gyro-hotspots.md)
 
 ---
 
+## #85 — Portrait Gimbal-Lock: gamma-Fallback + Post-Settle Re-Anchor (Folge zu #56)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/85 — **geschlossen** (Umsetzung `e59cd1e`)
+
+**Labels:** `tech`  
+**Assignee:** Felix
+
+- [x] **Post-Settle Re-Anchor:** `neutralGamma` erst 150 ms nach Eintritt in Gimbal-Zone (iOS-Euler-Rearrangement abgewartet)
+- [x] **Asymmetrisches Freeze:** Pause nur alpha → gamma; gamma → alpha sofortiger Re-Anchor von `neutralAlpha`
+- [x] **`needsReanchorGamma`-Flag** — Reset bei Gyro-Deaktivierung, Resize, Zentrieren
+- [x] Konstanten: `GIMBAL_LOCK_ENTER_DEG` (10), `GIMBAL_LOCK_EXIT_DEG` (15), `GYRO_GAMMA_PAN_SIGN` (-1, iPhone verifiziert)
+- [x] Tests in `raum-viewer-math.test.ts`; Doku `anleitungen/raum-viewer-gyro-feintuning.md`
+
+---
+
 ## #96 — Pinch-Zoom projektweit sperren (Folge zu #56)
 
 **GitHub:** https://github.com/flxln/schulnavigator/issues/96 — **geschlossen** (Umsetzung `6bea507`)

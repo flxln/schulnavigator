@@ -80,7 +80,7 @@ Phase 5 │ Post-Fest / Admin-Interface    │ ab Juli
 - [x] `RaumViewer`: Gyro-Pan (Standard), Hotspot-Overlay, Medien-Panel bei Treffer/Tap — GitHub **#55** (inkl. GS39-Theme, `validate:tokens`)
 - [x] Tap-Fallback + optional Wischen; iOS-Orientierung nach Nutzer-Geste
 - [x] Mobil-Härtung: `viewport`, Auto-Zoom, Gyro-Neutral, `touch-action`/Containment, Hotspot-**y**-Warnung — GitHub **#56**; Pinch-Zoom-Sperre (iOS) — **#96**
-- [x] Gyro-Pan Portrait: `alpha` (Armschwenk, zweiseitig, zentrierter Neutral) — `pan-from-orientation.ts`; Landscape: `gamma`
+- [x] Gyro-Pan Portrait: `alpha` (Armschwenk, zweiseitig, zentrierter Neutral) — `pan-from-orientation.ts`; Landscape: `gamma`; Gimbal-Zone (β≈90°): gamma-Fallback, Post-Settle Re-Anchor — **#85**
 - [x] Ohne `bild`: statische Ansicht + Medienliste
 
 **Medien**

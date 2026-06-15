@@ -29,6 +29,7 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Offene Issue-Titel und Bodies zu „11 Stationen“, Directus (#46/#47) und Raum-Viewer (#55/#56) geprüft — #55/#56 in [issues-phase-2.md](issues-phase-2.md) abgehakt, Code umgesetzt.
 - [x] Issue **#55** (Raum-Viewer Gyro + Hotspots) — existiert, umgesetzt und auf GitHub geschlossen.
 - [x] Issue **#56** (Raum-Viewer Mobil-Härtung) — dokumentiert, Code umgesetzt (GitHub-Status bei Bedarf mit Issue-Body abgleichen).
+- [x] Issue **#85** (Portrait Gimbal-Lock: gamma-Fallback + Post-Settle Re-Anchor, Folge #56) — geschlossen (`e59cd1e`, Doku `raum-viewer-gyro-feintuning.md`)
 - [x] Issue **#23** (Zugangskontrolle Cookie/Middleware/Scanner) — umgesetzt, ADR-007
 - [x] Issue **#57** (Eintritt In-App-Scanner auf `/eintritt`) — umgesetzt, ADR-008
 - [x] Issue **#82** (Eintritt-Scan Route `/eintritt/scan` + Shell, Folge #57) — umgesetzt 2026-05-30, ADR-008 Nachtrag
