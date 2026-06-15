@@ -70,5 +70,6 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Epic **#124** (Hub Wegweiser Schulhof/Turnhalle, ADR-020) — geschlossen 2026-06-14, [PR #125](https://github.com/flxln/schulnavigator/pull/125) → `main`; [epic-hub-wegweiser.md](epic-hub-wegweiser.md)
 
 - [x] Issue **#128** (Book Creator Embed Lesewelt, ADR-017) — geschlossen 2026-06-15, Branch `feature/bookcreator-lesewelt`
+- [x] Issue **#130** (QR-Druck-PDFs: A4 2up + Grid 3 cm, Label/Subtitle, Schulfest 12 Räume) — umgesetzt 2026-06-15, Branch `feature/qr-pdf-drucklayouts`
 
-Letzter dokumentierter Abgleich: **2026-06-15** (Issue #128 Book Creator Lesewelt; Content-Pflege-Doku `content-pflege-uebersicht.md` + interaktive HTML).
+Letzter dokumentierter Abgleich: **2026-06-15** (QR-Druck-PDFs #130; Schulfest-Druckset alle 12 Räume; `generate:qr --preset=schulfest`).

@@ -134,6 +134,8 @@ _Nicht in Phase 1:_ voller klickbarer Hub für `fest` (widerspricht Schulfest-Ko
 
 **GitHub:** geschlossen (2026-05-21) — `npm run generate:qr`, `lib/qr-urls.ts`, `scripts/generate-qr-codes.ts`, `scripts/qr-config.mjs`, `scripts/load-env-local.mjs`; Ausgabe `public/qr/*.png` (gitignored) + `manifest.json`; `--dry-run`, `--size` / `QR_PRINT_WIDTH_PX`
 
+**Erweiterung #130** (geschlossen 2026-06-15): Druck-PDFs `public/qr/pdf/` (`qr-a5-2up.pdf`, `qr-a4-grid-3cm.pdf`; Schulfest: `qr-schulfest-*.pdf`) mit Label + Subtitle; `pdf-lib`, `qr-print-items.ts`, `qr-pdf-layouts.ts`; `--preset=schulfest` = 12 Räume + Entry `fest` — https://github.com/flxln/schulnavigator/issues/130
+
 **Labels:** `tech`  
 **Assignee:** Felix
 

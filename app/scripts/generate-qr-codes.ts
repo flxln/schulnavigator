@@ -18,13 +18,29 @@ import {
 import {
   ENTRY_QRS,
   EXPECTED_STATION_COUNT,
+  SCHULFEST_ENTRY_FILES,
+  SCHULFEST_QR_SLUGS,
   URL_LENGTH_WARN,
 } from './qr-config.mjs'
+import {
+  buildA4GridPdf,
+  buildA4TwoUpPdf,
+  GRID_ITEMS_PER_PAGE,
+  pageCountForItems,
+  TWO_UP_ITEMS_PER_PAGE,
+  TWO_UP_QR_MM,
+} from './qr-pdf-layouts'
+import {
+  toPrintItems,
+  qrWidthPxForMm,
+  type QrPrintItem,
+} from './qr-print-items'
 import { loadEnvLocal } from './load-env-local.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const appRoot = join(__dirname, '..')
 const qrDir = join(appRoot, 'public', 'qr')
+const pdfDir = join(qrDir, 'pdf')
 
 interface ManifestEntry {
   file: string
@@ -50,6 +66,8 @@ interface Manifest {
 function parseArgs(argv: string[]) {
   let dryRun = false
   let size: number | undefined
+  let preset: 'all' | 'schulfest' = 'all'
+  let onlySlugs: string[] | undefined
   for (const arg of argv) {
     if (arg === '--dry-run') {
       dryRun = true
@@ -60,8 +78,18 @@ function parseArgs(argv: string[]) {
         size = Math.floor(n)
       }
     }
+    if (arg === '--preset=schulfest') {
+      preset = 'schulfest'
+    }
+    if (arg.startsWith('--only=')) {
+      onlySlugs = arg
+        .slice('--only='.length)
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean)
+    }
   }
-  return { dryRun, size }
+  return { dryRun, size, preset, onlySlugs }
 }
 
 function parseSizeFromEnv(): number | undefined {
@@ -87,8 +115,101 @@ function cleanPngOutput() {
   }
 }
 
+function cleanPdfOutput() {
+  let entries
+  try {
+    entries = readdirSync(pdfDir, { withFileTypes: true })
+  } catch {
+    return
+  }
+  for (const ent of entries) {
+    if (ent.isFile() && ent.name.endsWith('.pdf')) {
+      unlinkSync(join(pdfDir, ent.name))
+    }
+  }
+}
+
+function pdfNamePrefix(preset: 'all' | 'schulfest'): string {
+  return preset === 'schulfest' ? 'qr-schulfest' : 'qr'
+}
+
+async function buildQrBuffers(
+  items: QrPrintItem[],
+): Promise<Map<string, Uint8Array>> {
+  const pdfQrWidth = qrWidthPxForMm(TWO_UP_QR_MM)
+  const buffers = new Map<string, Uint8Array>()
+  for (const item of items) {
+    const buf = await QRCode.toBuffer(item.url, {
+      type: 'png',
+      width: pdfQrWidth,
+      errorCorrectionLevel: 'H',
+      margin: 2,
+      color: { dark: '#000000', light: '#ffffff' },
+    })
+    buffers.set(item.id, new Uint8Array(buf))
+  }
+  return buffers
+}
+
+function printDryRunPreview(
+  printItems: QrPrintItem[],
+  width: number,
+  pdfPrefix: string,
+) {
+  const twoUpPages = pageCountForItems(
+    printItems.length,
+    TWO_UP_ITEMS_PER_PAGE,
+  )
+  const gridPages = pageCountForItems(printItems.length, GRID_ITEMS_PER_PAGE)
+  console.log('\n[QR] Print-Items (Entry zuerst, Räume alphabetisch):')
+  for (const item of printItems) {
+    console.log(`  ${item.label}\t${item.subtitle}\t${item.url}`)
+  }
+  console.log(`\n[QR] Würde ${printItems.length} PNG-Dateien schreiben (width=${width}).`)
+  console.log(
+    `[QR] PDF-Vorschau: ${pdfPrefix}-a5-2up.pdf (${twoUpPages} Seite(n)), ${pdfPrefix}-a4-grid-3cm.pdf (${gridPages} Seite(n)).`,
+  )
+}
+
+function resolveRoomSlugs(
+  stations: Station[],
+  preset: 'all' | 'schulfest',
+  onlySlugs: string[] | undefined,
+): string[] {
+  const allSlugs = stations.map((s) => s.slug)
+  const slugSet = new Set(allSlugs)
+
+  let target: string[]
+  if (onlySlugs?.length) {
+    target = onlySlugs
+  } else if (preset === 'schulfest') {
+    target = [...SCHULFEST_QR_SLUGS]
+  } else {
+    return allSlugs
+  }
+
+  const missing = target.filter((slug) => !slugSet.has(slug))
+  if (missing.length > 0) {
+    console.error(
+      `[QR] Unbekannte Slug(s) in Subset: ${missing.join(', ')} — prüfe stations.json / qr-config.mjs`,
+    )
+    process.exit(1)
+  }
+  return target
+}
+
+function resolveEntryQrs(preset: 'all' | 'schulfest') {
+  if (preset === 'schulfest') {
+    const festSet = new Set(SCHULFEST_ENTRY_FILES)
+    return ENTRY_QRS.filter((e) => festSet.has(e.file))
+  }
+  return ENTRY_QRS
+}
+
 async function main() {
-  const { dryRun, size: sizeArg } = parseArgs(process.argv.slice(2))
+  const { dryRun, size: sizeArg, preset, onlySlugs } = parseArgs(
+    process.argv.slice(2),
+  )
   loadEnvLocal(appRoot)
 
   let baseUrl: string
@@ -138,7 +259,19 @@ async function main() {
     rooms: [],
   }
 
-  for (const entry of ENTRY_QRS) {
+  const entryQrs = resolveEntryQrs(preset)
+  const roomSlugs = resolveRoomSlugs(stations as Station[], preset, onlySlugs)
+  const stationBySlug = new Map(
+    (stations as Station[]).map((s) => [s.slug, s] as const),
+  )
+
+  if (preset === 'schulfest' || onlySlugs) {
+    console.log(
+      `[QR] Subset-Modus: ${entryQrs.length} Entry + ${roomSlugs.length} Raum-QR`,
+    )
+  }
+
+  for (const entry of entryQrs) {
     const url = buildEntryUrl(baseUrl, entry.token)
     warnIfUrlTooLong(url, entry.file, URL_LENGTH_WARN)
     manifest.entries.push({
@@ -149,7 +282,11 @@ async function main() {
     })
   }
 
-  for (const s of stations as Station[]) {
+  for (const slug of roomSlugs) {
+    const s = stationBySlug.get(slug)
+    if (!s) {
+      continue
+    }
     const url = buildRoomUrl(baseUrl, s.slug)
     warnIfUrlTooLong(url, `raum-${s.slug}`, URL_LENGTH_WARN)
     manifest.rooms.push({
@@ -162,15 +299,19 @@ async function main() {
 
   if (dryRun) {
     console.log(
-      '[QR] Dry-Run — keine PNGs, kein Löschen, kein manifest.json.\n',
+      '[QR] Dry-Run — keine PNGs/PDFs, kein Löschen, kein manifest.json.\n',
     )
     console.log(JSON.stringify(manifest, null, 2))
-    const nPng = manifest.entries.length + manifest.rooms.length
-    console.log(`\n[QR] Würde ${nPng} PNG-Dateien schreiben (width=${width}).`)
+    const printItems = toPrintItems(manifest)
+    printDryRunPreview(printItems, width, pdfNamePrefix(preset))
     return
   }
 
   cleanPngOutput()
+  cleanPdfOutput()
+  mkdirSync(pdfDir, { recursive: true })
+
+  const printItems = toPrintItems(manifest)
 
   const qrOptions = {
     type: 'png' as const,
@@ -190,8 +331,21 @@ async function main() {
     await QRCode.toFile(out, room.url, qrOptions)
   }
 
+  const qrBuffers = await buildQrBuffers(printItems)
+  const pdfPrefix = pdfNamePrefix(preset)
+  const twoUpName = `${pdfPrefix}-a5-2up.pdf`
+  const gridName = `${pdfPrefix}-a4-grid-3cm.pdf`
+  const twoUpPdf = await buildA4TwoUpPdf(printItems, qrBuffers)
+  const gridPdf = await buildA4GridPdf(printItems, qrBuffers)
+  writeFileSync(join(pdfDir, twoUpName), twoUpPdf)
+  writeFileSync(join(pdfDir, gridName), gridPdf)
+
+  const manifestName =
+    preset === 'schulfest' && !onlySlugs
+      ? 'manifest-schulfest.json'
+      : 'manifest.json'
   writeFileSync(
-    join(qrDir, 'manifest.json'),
+    join(qrDir, manifestName),
     `${JSON.stringify(manifest, null, 2)}\n`,
     'utf8',
   )
@@ -200,7 +354,10 @@ async function main() {
   console.log(
     `[QR] ${total} PNG-Dateien geschrieben nach public/qr/ (width=${width}).`,
   )
-  console.log('[QR] manifest.json aktualisiert.\n')
+  console.log(
+    `[QR] 2 PDF-Dateien geschrieben nach public/qr/pdf/ (${twoUpName}, ${gridName}).`,
+  )
+  console.log(`[QR] ${manifestName} aktualisiert.\n`)
   for (const e of manifest.entries) {
     console.log(`  ${e.file}\t${e.url}`)
   }
