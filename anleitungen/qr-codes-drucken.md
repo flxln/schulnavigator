@@ -10,7 +10,7 @@
 - **Produktions-Domain** nach Deploy (#16) in `app/.env.local` als `NEXT_PUBLIC_BASE_URL` (ohne trailing slash) — Vorlage: [`app/.env.example`](../app/.env.example)
 - Technische Details und Entwickler-Workflow: [`fuer-entwickler.md`](./fuer-entwickler.md), Ordner-Hinweise: [`app/public/qr/README.md`](../app/public/qr/README.md)
 
-**Entry-Token rotieren (neue `fest-`/`heft-` URLs):** Geplant als `npm run rotate:access-tokens` (Issue #141) — erzeugt neue Tokens, aktualisiert Manifeste und beide PDF-Sets. Bis dahin manuell: [`fuer-entwickler.md` — Token rotieren](./fuer-entwickler.md#token-pflegen--rotieren). Nach jeder Rotation: Coolify `SN_ACCESS_TOKENS` (Prod + Dev) **vor** Deploy setzen.
+**Entry-Token rotieren (neue `fest-`/`heft-` URLs):** `npm run rotate:access-tokens` ([#141](https://github.com/flxln/schulnavigator/issues/141)) — erzeugt neue Tokens, aktualisiert Manifeste und beide PDF-Sets. Details: [`fuer-entwickler.md` — Token rotieren](./fuer-entwickler.md#token-pflegen--rotieren). Nach jeder Rotation: Coolify `SN_ACCESS_TOKENS` (Prod + Dev) **vor** Deploy setzen.
 
 ---
 

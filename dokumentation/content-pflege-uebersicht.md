@@ -188,7 +188,7 @@ README: [`app/public/brand/README.md`](../app/public/brand/README.md)
 | Was | Wo ändern |
 |-----|-----------|
 | Eintritts-Token | `app/lib/access-token-constants.mjs` (Single Source); Production: Coolify `SN_ACCESS_TOKENS` |
-| Token rotieren | Geplant: `npm run rotate:access-tokens` (#141); manuell: [fuer-entwickler.md](../anleitungen/fuer-entwickler.md#token-pflegen--rotieren) |
+| Token rotieren | `npm run rotate:access-tokens` (#141) |
 | QR-PNGs | `npm run generate:qr` → `app/public/qr/` |
 | Basis-URL in QRs | `NEXT_PUBLIC_BASE_URL` in `.env.local` |
 

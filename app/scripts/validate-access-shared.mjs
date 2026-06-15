@@ -60,8 +60,8 @@ export function parseEmbedAncestors(raw) {
   return [...new Set(normalized)].sort()
 }
 
-export function assertEntryQrSync(tokens) {
-  for (const spec of ENTRY_QR_SPECS) {
+export function assertEntryQrSync(tokens, specs = ENTRY_QR_SPECS) {
+  for (const spec of specs) {
     const hit = tokens.find((t) => t.token === spec.token)
     if (!hit) {
       throw new Error(

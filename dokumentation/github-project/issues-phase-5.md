@@ -327,6 +327,6 @@ Orchestriert Entry-Token-Rotation: Zufallstokens, `access-token-constants.mjs`, 
 
 ### Akzeptanzkriterien
 
-- [ ] `npm run rotate:access-tokens` (+ `--dry-run`, `--fest-only`, …)
-- [ ] Beide PDF-Sets (`qr-*` + `qr-schulfest-*`) nach Lauf vorhanden
-- [ ] Doku und Vitest für Token-Gen/Template
+- [x] `npm run rotate:access-tokens` (+ `--dry-run`, `--fest-only`, …)
+- [x] Beide PDF-Sets (`qr-*` + `qr-schulfest-*`) nach Lauf vorhanden (PDF-Cleanup preset-spezifisch)
+- [x] Doku und Vitest für Token-Gen/Template (`rotate-access-token-utils.test.ts`)

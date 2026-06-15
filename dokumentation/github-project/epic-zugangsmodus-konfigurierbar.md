@@ -88,7 +88,7 @@ Pilot `schulnavigator.mpz.schule` bleibt `gated` — nur `SN_ACCESS_TOKENS` erg�
 
 ### Folge-Issue
 
-- [ ] **#141** — CLI `rotate:access-tokens` (Token-Rotation orchestrieren) — Branch `feat/rotate-access-tokens`; Plan [token-rotation-skript](../../.cursor/plans/token-rotation-skript_acd7d0d2.plan.md)
+- [ ] **#141** — CLI `rotate:access-tokens` — umgesetzt, Branch `feat/rotate-access-tokens`
 
 ---
 

@@ -11,7 +11,7 @@ _Stand: 2026-06-11 (**#111:** Card-Peek Raumseiten + iOS-Breitenfix; **#107:** S
 | Hosting             | MPZ-Hetzner via Coolify                           | gleich                           | [001](./adr/001-hosting-coolify.md)           |
 | Containerisierung   | Docker                                            | gleich                           | [001](./adr/001-hosting-coolify.md)           |
 | Custom-Admin        | —                                                 | **verworfen** (Directus)         | [003](./adr/003-content-mvp-json-directus.md) |
-| QR-Code-Generierung | `npm run generate:qr`, `lib/qr-urls.ts`; Token-Rotation `rotate:access-tokens` *(#141)* | gleich | — |
+| QR-Code-Generierung | `npm run generate:qr`, `rotate:access-tokens` (#141) | gleich | — |
 | Video-Hosting       | MPZ-Server (Upload)                               | YouTube-Embed nach Rechtsklärung | [004](./adr/004-video-hosting-mpz.md)         |
 | Zugangskontrolle    | Entry-Token, Cookie `sn_access` + Middleware, Modi `fest`/`heft` | gleich                           | [005](./adr/005-zugangskontrolle-token.md), [007](./adr/007-zugangskontrolle-cookie.md) |
 | Navigation          | In-App-Scanner Entry (`/eintritt/scan`) + Räume (`/scan`) | gleich                      | [005](./adr/005-zugangskontrolle-token.md), [008](./adr/008-eintritt-in-app-scanner.md) |
