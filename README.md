@@ -69,6 +69,17 @@ Stand lokal im Browser prüfen: [`anleitungen/lokal-testen-und-anschauen.md`](./
 
 Das Projekt ist in 6 Phasen aufgeteilt — von Architektur-Entscheidungen bis zum Live-Betrieb und der Erweiterung auf weitere Schulen. Details im [GitHub Project](https://github.com/flxln/schulnavigator/projects) und in [`dokumentation/projektplan.md`](./dokumentation/projektplan.md).
 
+## Öffentliche Doku (GitHub Pages)
+
+Statische Projektunterlagen unter [`docs/`](./docs/) — nach Push auf `main` erreichbar unter **https://flxln.github.io/schulnavigator/**
+
+| Seite | Inhalt |
+| ----- | ------ |
+| [Projektstatistik](https://flxln.github.io/schulnavigator/projektstatistik.html) | Arbeitszeit, Code, Issues, KI-Vergleich |
+| [Content pflegen](https://flxln.github.io/schulnavigator/content-pflege.html) | Interaktive Anleitung für `stations.json` |
+
+Quelle Content-Pflege: [`dokumentation/content-pflege-interaktiv.html`](./dokumentation/content-pflege-interaktiv.html) (bei Änderungen nach `docs/content-pflege.html` kopieren).
+
 ## Datenschutz
 
 Die App wird als Auftragsverarbeitungsverhältnis betrieben. Alle Daten verbleiben auf Servern in Deutschland. Schülerinhalte werden nur mit entsprechender Einverständniserklärung verwendet und können nicht heruntergeladen werden. Details: [`dokumentation/dsgvo.md`](./dokumentation/dsgvo.md).

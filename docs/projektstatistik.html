@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Projektstatistik Schulnavigator — Arbeitszeit, Code, GitHub, KI-Vergleich." />
+  <title>Schulnavigator — Projektstatistik</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
+  <style>
+    :root {
+      --navy: #082a50;
+      --navy-700: #0b3565;
+      --navy-300: #6b89b4;
+      --green: #4b9a23;
+      --blue: #1f6abb;
+      --sun: #fbbb24;
+      --red: #ef3a37;
+      --paper: #fcfbf7;
+      --paper-50: #f5f2ea;
+      --white: #ffffff;
+      --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --radius: 12px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--paper);
+      color: var(--navy);
+      line-height: 1.5;
+    }
+    .topbar {
+      background: var(--navy);
+      color: var(--white);
+      padding: 1.25rem 1.5rem 1rem;
+      border-bottom: 4px solid var(--green);
+    }
+    .topbar h1 { margin: 0 0 0.35rem; font-size: clamp(1.2rem, 3vw, 1.65rem); }
+    .topbar .meta { margin: 0; opacity: 0.9; font-size: 0.92rem; }
+    .topbar a { color: #b8d4f0; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 1.25rem 1rem 2.5rem; }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .kpi {
+      background: var(--white);
+      border: 1px solid var(--paper-50);
+      border-radius: var(--radius);
+      padding: 0.85rem 1rem;
+    }
+    .kpi .val {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--navy-700);
+      line-height: 1.2;
+    }
+    .kpi .val.accent { color: var(--blue); }
+    .kpi .val.ok { color: var(--green); }
+    .kpi .lbl { font-size: 0.72rem; color: var(--navy-300); margin-top: 0.25rem; }
+    h2 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--navy-300);
+      margin: 1.75rem 0 0.75rem;
+      font-weight: 600;
+    }
+    .grid-2 {
+      display: grid;
+      gap: 1rem;
+    }
+    @media (min-width: 800px) {
+      .grid-2 { grid-template-columns: 1fr 1fr; }
+      .grid-2.wide-left { grid-template-columns: 1.5fr 1fr; }
+    }
+    .panel {
+      background: var(--white);
+      border: 1px solid var(--paper-50);
+      border-radius: var(--radius);
+      padding: 1rem 1rem 0.75rem;
+    }
+    .panel h3 {
+      margin: 0 0 0.75rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .chart-box { position: relative; height: 240px; }
+    .chart-box.tall { height: 280px; }
+    .caption {
+      font-size: 0.72rem;
+      color: var(--navy-300);
+      margin: 0.5rem 0 0;
+    }
+    .bar-meter {
+      height: 10px;
+      border-radius: 999px;
+      background: var(--paper-50);
+      overflow: hidden;
+      display: flex;
+      margin: 0.5rem 0;
+    }
+    .bar-meter span { display: block; height: 100%; }
+    .bar-meter .fill { background: var(--green); }
+    .bar-meter .rest { background: #d0d8e4; flex: 1; }
+    .bar-meter.blue .fill { background: var(--blue); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.45rem 0.5rem;
+      border-bottom: 1px solid var(--paper-50);
+    }
+    th { color: var(--navy-300); font-weight: 600; font-size: 0.75rem; }
+    td.num { text-align: right; font-variant-numeric: tabular-nums; }
+    .callout {
+      background: #e8f2fa;
+      border-left: 4px solid var(--blue);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 0.85rem 1rem;
+      font-size: 0.88rem;
+      margin-top: 1.25rem;
+    }
+    .callout strong { display: block; margin-bottom: 0.35rem; }
+    .pill {
+      display: inline-block;
+      font-size: 0.72rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      background: var(--paper-50);
+      border: 1px solid var(--paper-50);
+    }
+    footer {
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      color: var(--navy-300);
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <h1>Schulnavigator — Projektstatistik</h1>
+    <p class="meta" id="meta-line"></p>
+    <p class="meta"><a href="index.html">← Zurück zur Doku-Übersicht</a></p>
+  </header>
+
+  <div class="wrap">
+    <div class="kpi-grid" id="kpi-grid"></div>
+
+    <h2>Zeit &amp; Aktivität</h2>
+    <div class="grid-2 wide-left">
+      <div class="panel">
+        <h3>Arbeitszeit pro Tag (geschätzt)</h3>
+        <div class="chart-box tall"><canvas id="chart-hours"></canvas></div>
+        <p class="caption">Quelle: Git-Commit-Zeiten + Cursor-Sessions · Achse: Stunden</p>
+      </div>
+      <div class="panel">
+        <h3>Stunden nach Projektphase</h3>
+        <div class="chart-box"><canvas id="chart-phases"></canvas></div>
+        <p class="caption">Summe der Tages-Schätzungen nach Projektplan</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <h3>Kumulative Arbeitszeit</h3>
+        <div class="chart-box"><canvas id="chart-cumulative"></canvas></div>
+      </div>
+      <div class="panel">
+        <h3>Commits &amp; Cursor-Sessions pro Tag</h3>
+        <div class="chart-box"><canvas id="chart-activity"></canvas></div>
+      </div>
+    </div>
+
+    <h2>Fortschritt</h2>
+    <div class="panel" id="progress-panel"></div>
+
+    <h2>Codebase (app/)</h2>
+    <div class="kpi-grid" id="code-kpi"></div>
+    <div class="grid-2 wide-left">
+      <div class="panel">
+        <h3>Zeilen nach Verzeichnis</h3>
+        <div class="chart-box tall"><canvas id="chart-dirs"></canvas></div>
+      </div>
+      <div class="panel">
+        <h3>Dateitypen</h3>
+        <div class="chart-box"><canvas id="chart-langs"></canvas></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="panel">
+        <h3>Größte Komponenten-Bereiche</h3>
+        <div class="chart-box"><canvas id="chart-components"></canvas></div>
+      </div>
+      <div class="panel">
+        <h3>Content &amp; Architektur</h3>
+        <table id="content-table"></table>
+      </div>
+    </div>
+
+    <h2>KI vs. Solo-Entwickler</h2>
+    <div class="kpi-grid" id="solo-kpi"></div>
+    <div class="grid-2 wide-left">
+      <div class="panel">
+        <h3>Stunden pro Phase — gleicher Lieferumfang</h3>
+        <div class="chart-box tall"><canvas id="chart-solo"></canvas></div>
+      </div>
+      <div class="panel" id="solo-scope"></div>
+    </div>
+    <div class="panel">
+      <h3>Liefergegenstände — heute vs. Solo-Schätzung</h3>
+      <table id="feature-table"></table>
+    </div>
+
+    <div class="callout">
+      <strong>Methodik</strong>
+      Stunden sind eine Rekonstruktion aus Commit-Zeiten, Chat-Sessions und Komplexitäts-Heuristiken —
+      keine Zeiterfassung (±20–25 %). Der Solo-Vergleich basiert auf Bottom-up-Schätzung für einen
+      erfahrenen Einzelentwickler ohne KI-Copilot. Nicht erfasst: Schul-Termine, AVV/DSB, Content der Schule.
+    </div>
+
+    <footer id="footer-line"></footer>
+  </div>
+
+  <script id="stats-data" type="application/json">
+{
+  "meta": {
+    "stand": "15. Juni 2026",
+    "zeitraum": "7. Mai – 15. Juni 2026",
+    "schulfest": "26. Juni 2026",
+    "tageBisSchulfest": 11
+  },
+  "kpi": {
+    "stundenMitte": 107,
+    "stundenMin": 90,
+    "stundenMax": 125,
+    "aktiveTage": 24,
+    "kalendertage": 39,
+    "commits": 169,
+    "chatSessions": 102,
+    "issuesGesamt": 106,
+    "issuesGeschlossen": 69,
+    "prsMerged": 22,
+    "adrs": 21,
+    "zeilenPlus": 52672
+  },
+  "tage": [
+    {"label":"7.5.","commits":0,"chats":1,"stunden":1.9},
+    {"label":"8.5.","commits":1,"chats":3,"stunden":2.2},
+    {"label":"9.5.","commits":6,"chats":3,"stunden":2.2},
+    {"label":"20.5.","commits":2,"chats":1,"stunden":2.6},
+    {"label":"21.5.","commits":17,"chats":13,"stunden":9.4},
+    {"label":"22.5.","commits":14,"chats":6,"stunden":8.4},
+    {"label":"25.5.","commits":2,"chats":1,"stunden":1.5},
+    {"label":"26.5.","commits":4,"chats":2,"stunden":1.9},
+    {"label":"27.5.","commits":13,"chats":4,"stunden":7.9},
+    {"label":"28.5.","commits":12,"chats":10,"stunden":9.0},
+    {"label":"30.5.","commits":2,"chats":5,"stunden":3.0},
+    {"label":"1.6.","commits":7,"chats":4,"stunden":5.1},
+    {"label":"2.6.","commits":1,"chats":1,"stunden":1.5},
+    {"label":"3.6.","commits":1,"chats":2,"stunden":1.9},
+    {"label":"5.6.","commits":2,"chats":3,"stunden":7.0},
+    {"label":"6.6.","commits":1,"chats":1,"stunden":1.5},
+    {"label":"7.6.","commits":6,"chats":0,"stunden":2.0},
+    {"label":"8.6.","commits":6,"chats":2,"stunden":1.9},
+    {"label":"9.6.","commits":1,"chats":0,"stunden":1.2},
+    {"label":"10.6.","commits":20,"chats":9,"stunden":8.8},
+    {"label":"11.6.","commits":19,"chats":15,"stunden":9.5},
+    {"label":"13.6.","commits":4,"chats":1,"stunden":4.9},
+    {"label":"14.6.","commits":22,"chats":12,"stunden":9.3},
+    {"label":"15.6.","commits":5,"chats":3,"stunden":2.2}
+  ],
+  "phasen": [
+    {"label":"Konzeption","h":6},
+    {"label":"Foundation","h":24},
+    {"label":"UI & Viewer","h":39},
+    {"label":"Medien & Polish","h":21},
+    {"label":"Content","h":17}
+  ],
+  "code": {
+    "prodZeilen": 11159,
+    "prodDateien": 122,
+    "testsGesamt": 353,
+    "testQuote": 40,
+    "komponenten": 68,
+    "libModule": 76,
+    "stationen": 12,
+    "medien": 7,
+    "routen": 8
+  },
+  "verzeichnisse": [
+    {"label":"components","z":8029},
+    {"label":"lib","z":6154},
+    {"label":"app","z":1878},
+    {"label":"scripts","z":1324},
+    {"label":"hooks","z":513},
+    {"label":"data","z":385},
+    {"label":"middleware","z":115}
+  ],
+  "sprachen": [
+    {"label":"TSX","z":7920},
+    {"label":"TypeScript","z":7708},
+    {"label":"CSS","z":1697},
+    {"label":"MJS","z":948},
+    {"label":"JSON","z":573}
+  ],
+  "komponenten": [
+    {"label":"raum-viewer","z":2663},
+    {"label":"media","z":1157},
+    {"label":"root","z":1142},
+    {"label":"schoolhouse","z":542},
+    {"label":"ui","z":473},
+    {"label":"dialog","z":332}
+  ],
+  "solo": {
+    "faktor": 2.6,
+    "stundenMitte": 278,
+    "stundenMin": 240,
+    "stundenMax": 320,
+    "scopeProzent": 35,
+    "wochenMitKi": 7,
+    "wochenOhneKi": 17,
+    "kategorien": ["Konzeption","Foundation","UI & Viewer","Medien","Content"],
+    "mitKi": [6,24,39,21,17],
+    "ohneKi": [16,58,100,55,49]
+  },
+  "features": [
+    ["Live-Deploy (Coolify, HTTPS)","Ja","Wahrscheinlich"],
+    ["Gyro-Raum-Viewer + Hotspots","Ja","Nein (Stub)"],
+    ["GS39-UI (Hub, Tokens, Chrome)","Ja","Teilweise"],
+    ["Medien-Player (4 Typen)","Ja","Nein"],
+    ["Dialog / Maskottchen","Ja","Nein"],
+    ["Coach-Overlay / Content-Pflege","Ja","Nein"],
+    ["Scanner + Zugang","Ja","Basis"],
+    ["Unit-Tests","353","~50–70"],
+    ["ADRs / Doku","21","4–6"],
+    ["GitHub Issues / PRs","106 / 22","~30 / 4"]
+  ],
+  "topTage": [
+    ["21.5.","9.4 h",17,13,"Foundation"],
+    ["11.6.","9.5 h",19,15,"Medien"],
+    ["14.6.","9.3 h",22,12,"Content"],
+    ["28.5.","9.0 h",12,10,"UI"],
+    ["22.5.","8.4 h",14,6,"Foundation"],
+    ["10.6.","8.8 h",20,9,"Medien"]
+  ]
+}
+  </script>
+
+  <script>
+    const S = JSON.parse(document.getElementById("stats-data").textContent);
+    const C = {
+      navy: "#082a50",
+      green: "#4b9a23",
+      blue: "#1f6abb",
+      sun: "#fbbb24",
+      red: "#ef3a37",
+      gray: "#9aa8b8",
+      palette: ["#1f6abb", "#4b9a23", "#fbbb24", "#6b89b4", "#ef3a37", "#082a50"]
+    };
+
+    Chart.defaults.font.family = '"Segoe UI", system-ui, sans-serif';
+    Chart.defaults.color = "#6b89b4";
+
+    document.getElementById("meta-line").textContent =
+      `Stand ${S.meta.stand} · ${S.meta.zeitraum} · Schulfest in ${S.meta.tageBisSchulfest} Tagen (${S.meta.schulfest})`;
+
+    function kpiCard(val, lbl, cls = "") {
+      return `<div class="kpi"><div class="val ${cls}">${val}</div><div class="lbl">${lbl}</div></div>`;
+    }
+
+    document.getElementById("kpi-grid").innerHTML = [
+      kpiCard(`~${S.kpi.stundenMitte} h`, `Arbeitszeit (${S.kpi.stundenMin}–${S.kpi.stundenMax} h)`, "accent"),
+      kpiCard(S.kpi.aktiveTage, "Aktive Tage"),
+      kpiCard(S.kpi.commits, "Commits", "ok"),
+      kpiCard(S.kpi.chatSessions, "Cursor-Sessions"),
+      kpiCard(`${S.kpi.issuesGeschlossen}/${S.kpi.issuesGesamt}`, "Issues", "ok"),
+      kpiCard(S.kpi.prsMerged, "PRs gemergt"),
+      kpiCard(S.kpi.adrs, "ADRs"),
+      kpiCard(`${Math.round(S.kpi.issuesGeschlossen / S.kpi.issuesGesamt * 100)}%`, "Issues erledigt")
+    ].join("");
+
+    const labels = S.tage.map((d) => d.label);
+    const hours = S.tage.map((d) => d.stunden);
+    let cum = 0;
+    const cumulative = hours.map((h) => { cum += h; return Math.round(cum * 10) / 10; });
+
+    new Chart(document.getElementById("chart-hours"), {
+      type: "bar",
+      data: {
+        labels,
+        datasets: [{
+          label: "Stunden",
+          data: hours,
+          backgroundColor: C.blue,
+          borderRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, title: { display: true, text: "h" } } }
+      }
+    });
+
+    new Chart(document.getElementById("chart-phases"), {
+      type: "doughnut",
+      data: {
+        labels: S.phasen.map((p) => p.label),
+        datasets: [{
+          data: S.phasen.map((p) => p.h),
+          backgroundColor: C.palette
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "bottom" } } }
+    });
+
+    new Chart(document.getElementById("chart-cumulative"), {
+      type: "line",
+      data: {
+        labels,
+        datasets: [{
+          label: "Kumuliert (h)",
+          data: cumulative,
+          borderColor: C.blue,
+          backgroundColor: "rgba(31,106,187,0.12)",
+          fill: true,
+          tension: 0.2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, title: { display: true, text: "h" } } }
+      }
+    });
+
+    const actDays = S.tage.filter((d) => d.commits > 0 || d.chats > 0);
+    new Chart(document.getElementById("chart-activity"), {
+      type: "bar",
+      data: {
+        labels: actDays.map((d) => d.label),
+        datasets: [
+          { label: "Commits", data: actDays.map((d) => d.commits), backgroundColor: C.green, borderRadius: 3 },
+          { label: "Sessions", data: actDays.map((d) => d.chats), backgroundColor: C.blue, borderRadius: 3 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+      }
+    });
+
+    const issuePct = Math.round(S.kpi.issuesGeschlossen / S.kpi.issuesGesamt * 100);
+    const dayPct = Math.round(S.kpi.aktiveTage / S.kpi.kalendertage * 100);
+    document.getElementById("progress-panel").innerHTML = `
+      <h3>Projektfortschritt bis Schulfest</h3>
+      <p style="margin:0 0 0.25rem;font-size:0.82rem">${issuePct}% Issues erledigt (${S.kpi.issuesGeschlossen}/${S.kpi.issuesGesamt})</p>
+      <div class="bar-meter"><span class="fill" style="width:${issuePct}%"></span><span class="rest"></span></div>
+      <p style="margin:1rem 0 0.25rem;font-size:0.82rem">${S.kpi.aktiveTage} aktive von ${S.kpi.kalendertage} Kalendertagen</p>
+      <div class="bar-meter blue"><span class="fill" style="width:${dayPct}%"></span><span class="rest"></span></div>
+      <p class="caption">Git-Zeilen eingefügt (geschätzt): ${S.kpi.zeilenPlus.toLocaleString("de-DE")}</p>
+    `;
+
+    document.getElementById("code-kpi").innerHTML = [
+      kpiCard(S.code.prodZeilen.toLocaleString("de-DE"), "Prod-Zeilen TS/TSX", "accent"),
+      kpiCard(S.code.prodDateien, "Prod-Dateien"),
+      kpiCard(S.code.testsGesamt, "Unit-Tests", "ok"),
+      kpiCard(`${S.code.testQuote}%`, "Test-Anteil", "ok"),
+      kpiCard(S.code.komponenten, "Komponenten"),
+      kpiCard(S.code.libModule, "Lib-Module")
+    ].join("");
+
+    new Chart(document.getElementById("chart-dirs"), {
+      type: "bar",
+      data: {
+        labels: S.verzeichnisse.map((d) => d.label),
+        datasets: [{ label: "Zeilen", data: S.verzeichnisse.map((d) => d.z), backgroundColor: C.blue, borderRadius: 4 }]
+      },
+      options: {
+        indexAxis: "y",
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } }
+      }
+    });
+
+    new Chart(document.getElementById("chart-langs"), {
+      type: "pie",
+      data: {
+        labels: S.sprachen.map((l) => l.label),
+        datasets: [{ data: S.sprachen.map((l) => l.z), backgroundColor: C.palette }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "bottom" } } }
+    });
+
+    new Chart(document.getElementById("chart-components"), {
+      type: "bar",
+      data: {
+        labels: S.komponenten.map((c) => c.label),
+        datasets: [{ label: "Zeilen", data: S.komponenten.map((c) => c.z), backgroundColor: C.green, borderRadius: 4 }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+
+    document.getElementById("content-table").innerHTML = `
+      <tr><th>Metrik</th><th class="num">Wert</th></tr>
+      <tr><td>Stationen</td><td class="num">${S.code.stationen}</td></tr>
+      <tr><td>Medien-Slots</td><td class="num">${S.code.medien}</td></tr>
+      <tr><td>App-Routen</td><td class="num">${S.code.routen}</td></tr>
+      <tr><td>Größtes Modul</td><td class="num">raum-viewer (2.663 Z.)</td></tr>
+      <tr><td>Deploy</td><td class="num">Docker Multi-Stage</td></tr>
+    `;
+
+    const solo = S.solo;
+    document.getElementById("solo-kpi").innerHTML = [
+      kpiCard(`×${solo.faktor}`, "Produktivitätsfaktor", "accent"),
+      kpiCard(`~${solo.stundenMitte} h`, `Scope ohne KI (${solo.stundenMin}–${solo.stundenMax} h)`),
+      kpiCard(`${solo.wochenMitKi} vs. ${solo.wochenOhneKi}`, "Wochen à 16 h"),
+      kpiCard(`${solo.scopeProzent}%`, `Scope in ${S.kpi.stundenMitte} h solo`)
+    ].join("");
+
+    new Chart(document.getElementById("chart-solo"), {
+      type: "bar",
+      data: {
+        labels: solo.kategorien,
+        datasets: [
+          { label: "Mit KI", data: solo.mitKi, backgroundColor: C.blue, borderRadius: 3 },
+          { label: "Solo ohne KI", data: solo.ohneKi, backgroundColor: C.gray, borderRadius: 3 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: { y: { beginAtZero: true, title: { display: true, text: "h" } } }
+      }
+    });
+
+    document.getElementById("solo-scope").innerHTML = `
+      <h3>Was ${S.kpi.stundenMitte} h ohne KI vermutlich abdecken</h3>
+      <p style="margin:0 0 0.25rem;font-size:0.82rem">~${solo.scopeProzent}% des heutigen Stands</p>
+      <div class="bar-meter blue"><span class="fill" style="width:${solo.scopeProzent}%"></span><span class="rest"></span></div>
+      <p style="font-size:0.85rem;margin-top:1rem;color:#6b89b4">
+        Realistisch solo: Next.js-Grundgerüst, Deploy, JSON-Modell, einfache Raumseiten, wenige Tests.<br>
+        Unwahrscheinlich: Gyro-Viewer, GS39-UI, ${S.code.testsGesamt} Tests, Coach-Overlay, Content-Tools.
+      </p>
+    `;
+
+    document.getElementById("feature-table").innerHTML =
+      `<tr><th>Bereich</th><th>Mit KI</th><th>Solo in ${S.kpi.stundenMitte} h</th></tr>` +
+      S.features.map(([a, b, c]) => `<tr><td>${a}</td><td>${b}</td><td>${c}</td></tr>`).join("");
+
+    document.getElementById("footer-line").textContent =
+      `Quellen: Git, Cursor-Chats, GitHub, app/-Scan · Stand ${S.meta.stand}`;
+  </script>
+</body>
+</html>

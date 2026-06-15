@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Öffentliche Dokumentation zum Schulnavigator-Projekt — Statistik, Content-Pflege." />
+  <title>Schulnavigator — Doku</title>
+  <style>
+    :root {
+      --navy: #082a50;
+      --navy-700: #0b3565;
+      --green: #4b9a23;
+      --paper: #fcfbf7;
+      --white: #ffffff;
+      --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--paper);
+      color: var(--navy);
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+    header {
+      background: var(--navy);
+      color: var(--white);
+      padding: 2rem 1.5rem;
+      border-bottom: 4px solid var(--green);
+    }
+    header h1 { margin: 0 0 0.5rem; font-size: clamp(1.4rem, 4vw, 2rem); }
+    header p { margin: 0; opacity: 0.92; max-width: 40rem; }
+    main {
+      max-width: 52rem;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 3rem;
+    }
+    .cards {
+      display: grid;
+      gap: 1rem;
+    }
+    @media (min-width: 560px) {
+      .cards { grid-template-columns: 1fr 1fr; }
+    }
+    a.card {
+      display: block;
+      background: var(--white);
+      border: 1px solid rgba(8, 42, 80, 0.12);
+      border-radius: 12px;
+      padding: 1.25rem 1.35rem;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    a.card:hover {
+      border-color: var(--green);
+      transform: translateY(-2px);
+    }
+    a.card h2 {
+      margin: 0 0 0.35rem;
+      font-size: 1.1rem;
+      color: var(--navy-700);
+    }
+    a.card p {
+      margin: 0;
+      font-size: 0.92rem;
+      opacity: 0.85;
+    }
+    .tag {
+      display: inline-block;
+      margin-top: 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    footer {
+      margin-top: 2.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(8, 42, 80, 0.1);
+      font-size: 0.85rem;
+      opacity: 0.75;
+    }
+    footer a { color: var(--navy-700); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Schulnavigator — Dokumentation</h1>
+    <p>Öffentliche Projektunterlagen: Statistik, Aufwandseinordnung und interaktive Content-Hilfe.</p>
+  </header>
+  <main>
+    <div class="cards">
+      <a class="card" href="projektstatistik.html">
+        <h2>Projektstatistik</h2>
+        <p>Arbeitszeit, Commits, Codebase, GitHub-Issues und KI-vs.-Solo-Vergleich — mit Diagrammen.</p>
+        <span class="tag">Dashboard</span>
+      </a>
+      <a class="card" href="content-pflege.html">
+        <h2>Content pflegen (interaktiv)</h2>
+        <p>Schritt-für-Schritt-Anleitung für stations.json, Medien und Hotspots — zum Durchklicken.</p>
+        <span class="tag">Anleitung</span>
+      </a>
+    </div>
+    <footer>
+      <p>
+        Live-App: <a href="https://schulnavigator.mpz.schule" rel="noopener">schulnavigator.mpz.schule</a>
+        · Quellcode: <a href="https://github.com/flxln/schulnavigator" rel="noopener">github.com/flxln/schulnavigator</a>
+      </p>
+    </footer>
+  </main>
+</body>
+</html>
