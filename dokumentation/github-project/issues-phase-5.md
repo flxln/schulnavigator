@@ -280,3 +280,32 @@ Zeitrahmen: frühestens Schuljahr 2026/27.
 
 - [x] TopBar, Hinweise, Buttons und Status auf `/scan` und `/eintritt/scan` bei OS-Dark-Mode lesbar (hell auf schwarz)
 - [x] Rest der App bleibt Papier-Look ohne unerwartetes Auto-Darkening
+
+---
+
+## Epic #132 — Zugangsmodus konfigurierbar (ADR-021)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/132  
+**Epic-Doku:** [epic-zugangsmodus-konfigurierbar.md](epic-zugangsmodus-konfigurierbar.md)  
+**Plan:** [`.cursor/plans/adr-021_zugangsmodus_c30df8a5.plan.md`](../../.cursor/plans/adr-021_zugangsmodus_c30df8a5.plan.md)  
+**Branch:** `feat/adr-021-zugangsmodus`  
+**PR:** [#140](https://github.com/flxln/schulnavigator/pull/140) — umgesetzt, offen
+
+**Labels:** `tech`  
+**Assignee:** Felix  
+**Milestone:** Phase 5 — Post-Fest  
+**Folge zu:** #23 (ADR-007)
+
+Konfigurierbarer Zugangsmodus (`SN_ACCESS_MODE`: `gated`|`open`), Tokens aus ENV (`SN_ACCESS_TOKENS`), CSP `frame-ancestors` für Website-Einbettung (`SN_EMBED_ANCESTORS`). Pilot bleibt `gated`.
+
+### Unterissues (alle umgesetzt in PR #140)
+
+| Nr. | Titel | GitHub |
+|-----|-------|--------|
+| #133 | access-config + access-tokens | https://github.com/flxln/schulnavigator/issues/133 |
+| #134 | Middleware + Dialog-API | https://github.com/flxln/schulnavigator/issues/134 |
+| #135 | CSP frame-ancestors | https://github.com/flxln/schulnavigator/issues/135 |
+| #136 | Build-/Runtime-Validierung + Docker-Entrypoint | https://github.com/flxln/schulnavigator/issues/136 |
+| #137 | Token-Rotation + QR-Sync | https://github.com/flxln/schulnavigator/issues/137 |
+| #138 | Tests ADR-021 | https://github.com/flxln/schulnavigator/issues/138 |
+| #139 | Entwickler-Doku | https://github.com/flxln/schulnavigator/issues/139 |

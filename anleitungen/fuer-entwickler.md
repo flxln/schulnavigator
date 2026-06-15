@@ -199,10 +199,10 @@ cd app && node scripts/export-pano.mjs
 
 ### Lokal testen (Zugang)
 
-1. `npm run dev` — einmal Entry scannen: `http://localhost:3000/eintritt?t=fest-2026` (Cookie persistiert; `Secure` ist in Dev aus).
+1. `npm run dev` — einmal Entry scannen: `http://localhost:3000/eintritt?t=<fest-token>` (Wert aus `app/lib/access-token-constants.mjs`; Cookie persistiert; `Secure` ist in Dev aus).
 2. Ohne Cookie: `/` → Redirect `/eintritt`.
 3. Cross-Tab: nach Entry neuen Tab mit `/raum/musik` öffnen — sollte erreichbar sein.
-4. Modus-Wechsel: `/eintritt?t=heft-2026-27` überschreibt Cookie → voller Hub.
+4. Modus-Wechsel: `/eintritt?t=<heft-token>` überschreibt Cookie → voller Hub.
 
 **Cookie zurücksetzen:** DevTools → Application → Cookies löschen, oder privates Fenster.
 
@@ -259,7 +259,7 @@ Lokal entspricht Variante 1: `cd app && docker build -t schulnavigator-app .`
 | **Domain** | `schulnavigator.mpz.schule` |
 | **HTTPS** | aktiviert (Let's Encrypt; Wildcard-DNS `*.mpz.schule` muss auf den VPS zeigen) |
 
-5. **Umgebungsvariablen:** `PORT=3000`, optional `NODE_ENV=production`.
+5. **Umgebungsvariablen:** `PORT=3000`, optional `NODE_ENV=production`. Für Zugangskontrolle (ADR-021) siehe Abschnitt [Zugang & Embedding](#zugang--embedding-adr-021) — **vor erstem Deploy nach ADR-021** `SN_ACCESS_TOKENS` in Coolify setzen.
 
 6. **Health Check** (Coolify UI, bei Application-Typ): Pfad `/api/health`, erwarteter Status **200**. Zusätzlich enthält das Image einen Docker-`HEALTHCHECK` auf dieselbe URL.
 
@@ -277,6 +277,35 @@ Lokal entspricht Variante 1: `cd app && docker build -t schulnavigator-app .`
 
 **Alternativen:** dieselbe **GitHub-App** (oder Deploy-Key) auch auf die Repos `schulnavigator-auftraggeber` und `schulnavigator-protokolle` mit Leserechten installieren; oder Submodule-URLs in `.gitmodules` auf **SSH/relative Pfade** umstellen (Coolify-Doku / GitHub-Org gleicher Owner).
 
+### Zugang & Embedding (ADR-021)
+
+| Variable | Default | Bedeutung |
+|----------|---------|-----------|
+| `SN_ACCESS_MODE` | `gated` | `gated` = Entry-Token + Middleware wie bisher; `open` = alle App-Routen ohne Token |
+| `SN_ACCESS_TOKENS` | — (Dev: Fallback in Code) | JSON-Array: `[{ "token", "mode": "fest"\|"heft", "expiresAt": "YYYY-MM-DD" }]` — **Runtime-Secret in Coolify**, nicht im Docker-Build |
+| `SN_EMBED_ANCESTORS` | leer → kein Framing | Kommagetrennte `https://`-Origins für CSP `frame-ancestors` |
+
+**Pilot (`schulnavigator.mpz.schule`):** `SN_ACCESS_MODE` weglassen oder `gated`; `SN_ACCESS_TOKENS` mit aktuellen Entry-Tokens setzen (Werte aus `app/lib/access-token-constants.mjs` bzw. nach `npm run generate:qr` in `public/qr/manifest.json`). Alte Tokens `fest-2026` / `heft-2026-27` sind ungültig.
+
+**Deploy-Reihenfolge (gated):**
+
+1. `SN_ACCESS_TOKENS` in Coolify Prod **und** Dev setzen (gleiche Werte wie gedruckte Entry-QRs).
+2. Code deployen — Container startet nur, wenn Runtime-Validierung (`scripts/validate-runtime.mjs`) grün ist.
+3. Neue Entry-QRs drucken, falls Token rotiert wurden.
+
+**`open` + Einbettung (separates Deployment):** `SN_ACCESS_MODE=open`, `SN_EMBED_ANCESTORS=https://…` (Schulwebsite-Origin). Vor Go-Live: `curl -sSI https://… \| grep -iE 'content-security-policy|x-frame-options'` — kein widersprüchliches `X-Frame-Options` vom Proxy.
+
+Beispiel `SN_ACCESS_TOKENS` (Platzhalter — echte Werte nur in Coolify):
+
+```json
+[
+  {"token":"fest-…","mode":"fest","expiresAt":"2026-07-31"},
+  {"token":"heft-…","mode":"heft","expiresAt":"2027-07-31"}
+]
+```
+
+Vollständig: [ADR-021](../dokumentation/adr/021-zugangsmodus-konfigurierbar.md), [`app/.env.example`](../app/.env.example).
+
 ### Smoke-Tests (nach Deploy)
 
 Ersetze die Domain, falls abweichend.
@@ -293,14 +322,15 @@ curl -sSI https://schulnavigator.mpz.schule/
 
 curl -sSI https://schulnavigator.mpz.schule/raum/musik
 curl -sSI https://schulnavigator.mpz.schule/scan
-curl -sSI 'https://schulnavigator.mpz.schule/eintritt?t=fest-2026'
+# FEST_TOKEN aus SN_ACCESS_TOKENS / manifest.json ersetzen:
+curl -sSI 'https://schulnavigator.mpz.schule/eintritt?t=FEST_TOKEN'
 # Erwartung: Set-Cookie sn_access=… + Redirect /
 
 curl -sS https://schulnavigator.mpz.schule/robots.txt
 # Erwartung: Disallow: /
 ```
 
-**Browser:** Entry `?t=fest-2026` → Puzzle-Hub gesperrt + `/scan`; `?t=heft-2026-27` → voller Hub; `/eintritt` ohne Cookie = Hinweis.
+**Browser:** Entry `?t=<fest-token>` → Puzzle-Hub gesperrt + `/scan`; `?t=<heft-token>` → voller Hub; `/eintritt` ohne Cookie = Hinweis.
 
 **Troubleshooting:** Antwort **`503`** / Text **`no available server`** → Proxy (Traefik) ist erreichbar, aber **kein laufender App-Container** hinter der Domain (Coolify-Application noch nicht deployed, Build fehlgeschlagen oder Container crashed) — in Coolify **Logs** und **Deployments** prüfen. **`curl: (60) SSL certificate problem`** → Zertifikatskette oder lokales Trust-Store; zur Abgrenzung im **Browser** öffnen oder Let's-Encrypt-Erneuerung in Coolify prüfen.
 
@@ -323,7 +353,7 @@ Zweite Application für Tests vor Prod — **manuell** angelegt (Coolify erlaubt
 
 Build-Einstellungen wie Prod: Base **`/app`**, Dockerfile **`/Dockerfile`**, Port **`3000`**, Env `PORT=3000`, `NODE_ENV=production`.
 
-**Feature-QA auf Dev:** Coolify → Application Dev → **Source → Branch** auf den PR-Branch stellen → **Redeploy**. Dialog-Test: `https://schulnavigator-dev.mpz.schule/eintritt?t=fest-2026`, dann `/raum/daz` (X neben Zurück, Chip zentriert). Siehe [`lokal-testen-und-anschauen.md`](lokal-testen-und-anschauen.md).
+**Feature-QA auf Dev:** Coolify → Application Dev → **Source → Branch** auf den PR-Branch stellen → **Redeploy**. Dialog-Test: Entry-URL aus `manifest.json`, dann `/raum/daz` (X neben Zurück, Chip zentriert). Siehe [`lokal-testen-und-anschauen.md`](lokal-testen-und-anschauen.md).
 
 **Pflicht bei jeder neuen Application:** unter **Advanced** / **Build** → **Git Submodules deaktivieren** (sonst schlägt der Clone wegen privater Submodule in [`.gitmodules`](../.gitmodules) fehl — siehe Abschnitt unten).
 

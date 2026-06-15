@@ -15,11 +15,14 @@
 
 ## Zugriffsschutz (Besucher)
 
-Entscheidung: [ADR-005](./adr/005-zugangskontrolle-token.md)
+Entscheidung: [ADR-005](./adr/005-zugangskontrolle-token.md), Speicher/Durchsetzung [ADR-007](./adr/007-zugangskontrolle-cookie.md), konfigurierbar [ADR-021](./adr/021-zugangsmodus-konfigurierbar.md)
 
 - Kein öffentliches Login; Zugang über **Entry-QR** (Einladungslink-Charakter, kein starkes Auth-Verfahren)
-- Token im Browser (`localStorage`), Ablaufdatum je Profil (Schulfest vs. Schuljahr)
+- HttpOnly-Cookie `sn_access` (ADR-007), Ablaufdatum je Profil (Schulfest vs. Schuljahr)
+- Production: Token-Liste aus `SN_ACCESS_TOKENS` (nicht im Quellcode); Default-Modus `gated`
 - Keine Besucher-Accounts; Stempel-Fortschritt nur lokal auf dem Gerät
+- **`SN_ACCESS_MODE=open`:** Kein Zugangs-Gate — nur für bewusst offene Deployments (z. B. Website-Einbettung); DSB-Einordnung vor Aktivierung klären
+- **Einbettung der App** (`SN_EMBED_ANCESTORS`, CSP `frame-ancestors`): Parent-Seite kann Nutzungskontext ändern — Datenschutzerklärung und Verantwortlichkeit der einbettenden Schulwebsite prüfen
 
 ## Hosting & Datenspeicherung
 
@@ -40,5 +43,6 @@ Entscheidung: [ADR-005](./adr/005-zugangskontrolle-token.md)
 
 - [ ] AVV von der Schule unterschrieben zurück
 - [ ] Datenschutzerklärung für die Website erstellen (inkl. Absatz Delightex/Book Creator bei `typ: embed`)
+- [ ] Bei `open` + Website-Einbettung (ADR-021): DSB-Einordnung Parent-Seite / eingebettete App
 - [ ] Einwilligungen einholen (Projekttag 24./25.06.)
 - [ ] Schulleitung / Datenschutzbeauftragten informieren
