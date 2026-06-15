@@ -306,6 +306,27 @@ describe('validateStationsFile Hub (ADR-016)', () => {
     expect(m?.typ).toBe('embed')
   })
 
+  it('akzeptiert typ embed mit Book-Creator-URL', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const lesewelt = data.stations.find(
+      (s) => s.slug === 'lesewelt',
+    ) as Record<string, unknown>
+    lesewelt.medien = [
+      {
+        id: 'lesewelt-beruehmte-personen',
+        typ: 'embed',
+        quelle:
+          'https://read.bookcreator.com/2MfAUZf5kWdGbFsdRTyW50qOUeT2/4GMz8K3eSy2Sv6RbTbo6_A',
+        untertitel: 'Berühmte Personen',
+      },
+    ]
+    const stations = validateStationsFile(data as unknown)
+    const m = stations
+      .find((s) => s.slug === 'lesewelt')
+      ?.medien.find((x) => x.id === 'lesewelt-beruehmte-personen')
+    expect(m?.typ).toBe('embed')
+  })
+
   it('wirft bei embed mit fremder Domain', () => {
     const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
     const pcRaum = data.stations.find(

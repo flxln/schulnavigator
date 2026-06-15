@@ -68,4 +68,6 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 
 - [x] Epic **#124** (Hub Wegweiser Schulhof/Turnhalle, ADR-020) — geschlossen 2026-06-14, [PR #125](https://github.com/flxln/schulnavigator/pull/125) → `main`; [epic-hub-wegweiser.md](epic-hub-wegweiser.md)
 
-Letzter dokumentierter Abgleich: **2026-06-14** (Epic #74 Branch `feat/tablet-ipad-layout`: Coach-Spaltenbreite + Tablet-QA, PR-Vorbereitung).
+- [x] Issue **#128** (Book Creator Embed Lesewelt, ADR-017) — geschlossen 2026-06-15, Branch `feature/bookcreator-lesewelt`
+
+Letzter dokumentierter Abgleich: **2026-06-15** (Issue #128 Book Creator Lesewelt, Branch `feature/bookcreator-lesewelt`).
