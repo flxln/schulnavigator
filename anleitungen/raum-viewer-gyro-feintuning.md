@@ -1,6 +1,6 @@
 # Raum-Viewer: Gyro-Feintuning
 
-Anleitung zum Kalibrieren des Gyro-Pans (Issue **#55** / **#56**). Architektur: [ADR-006](../dokumentation/adr/006-raum-viewer-gyro-hotspots.md).
+Anleitung zum Kalibrieren des Gyro-Pans (Issues **#55** / **#56** / **#85**). Architektur: [ADR-006](../dokumentation/adr/006-raum-viewer-gyro-hotspots.md). Gimbal-Lock-Fix (#85): Commit `e59cd1e`.
 
 **Demo:** `/raum/musik` -- auf dem iPhone nur unter **HTTPS** (lokal z. B. Tunnel oder Deploy). Debug-HUD: `?debug=1`.
 
