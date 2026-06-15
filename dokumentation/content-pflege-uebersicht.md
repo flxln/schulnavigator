@@ -187,7 +187,8 @@ README: [`app/public/brand/README.md`](../app/public/brand/README.md)
 
 | Was | Wo ändern |
 |-----|-----------|
-| Eintritts-Token (`fest-2026`, `heft-2026-27`) | `app/lib/access-tokens.ts` **und** `app/scripts/qr-config.mjs` (müssen synchron sein) |
+| Eintritts-Token | `app/lib/access-token-constants.mjs` (Single Source); Production: Coolify `SN_ACCESS_TOKENS` |
+| Token rotieren | `npm run rotate:access-tokens` (#141) |
 | QR-PNGs | `npm run generate:qr` → `app/public/qr/` |
 | Basis-URL in QRs | `NEXT_PUBLIC_BASE_URL` in `.env.local` |
 

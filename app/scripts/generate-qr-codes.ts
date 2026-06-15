@@ -115,7 +115,7 @@ function cleanPngOutput() {
   }
 }
 
-function cleanPdfOutput() {
+function cleanPdfOutput(preset: 'all' | 'schulfest') {
   let entries
   try {
     entries = readdirSync(pdfDir, { withFileTypes: true })
@@ -123,8 +123,16 @@ function cleanPdfOutput() {
     return
   }
   for (const ent of entries) {
-    if (ent.isFile() && ent.name.endsWith('.pdf')) {
-      unlinkSync(join(pdfDir, ent.name))
+    if (!ent.isFile() || !ent.name.endsWith('.pdf')) {
+      continue
+    }
+    const name = ent.name
+    const remove =
+      preset === 'schulfest'
+        ? name.startsWith('qr-schulfest-')
+        : name.startsWith('qr-') && !name.startsWith('qr-schulfest-')
+    if (remove) {
+      unlinkSync(join(pdfDir, name))
     }
   }
 }
@@ -308,7 +316,7 @@ async function main() {
   }
 
   cleanPngOutput()
-  cleanPdfOutput()
+  cleanPdfOutput(preset)
   mkdirSync(pdfDir, { recursive: true })
 
   const printItems = toPrintItems(manifest)

@@ -289,7 +289,8 @@ Zeitrahmen: frühestens Schuljahr 2026/27.
 **Epic-Doku:** [epic-zugangsmodus-konfigurierbar.md](epic-zugangsmodus-konfigurierbar.md)  
 **Plan:** [`.cursor/plans/adr-021_zugangsmodus_c30df8a5.plan.md`](../../.cursor/plans/adr-021_zugangsmodus_c30df8a5.plan.md)  
 **Branch:** `feat/adr-021-zugangsmodus`  
-**PR:** [#140](https://github.com/flxln/schulnavigator/pull/140) — umgesetzt, offen
+**PR:** [#140](https://github.com/flxln/schulnavigator/pull/140) — gemerged  
+**Folge:** [#141](https://github.com/flxln/schulnavigator/issues/141) (`rotate:access-tokens`)
 
 **Labels:** `tech`  
 **Assignee:** Felix  
@@ -309,3 +310,23 @@ Konfigurierbarer Zugangsmodus (`SN_ACCESS_MODE`: `gated`|`open`), Tokens aus ENV
 | #137 | Token-Rotation + QR-Sync | https://github.com/flxln/schulnavigator/issues/137 |
 | #138 | Tests ADR-021 | https://github.com/flxln/schulnavigator/issues/138 |
 | #139 | Entwickler-Doku | https://github.com/flxln/schulnavigator/issues/139 |
+
+---
+
+## Issue #141 — CLI rotate:access-tokens (ADR-021 Folge)
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/141  
+**Plan:** [`.cursor/plans/token-rotation-skript_acd7d0d2.plan.md`](../../.cursor/plans/token-rotation-skript_acd7d0d2.plan.md)  
+**Branch:** `feat/rotate-access-tokens`  
+**Folge zu:** Epic #132 / ADR-021
+
+Orchestriert Entry-Token-Rotation: Zufallstokens, `access-token-constants.mjs`, `SN_ACCESS_TOKENS`-JSON für Coolify, Tests, `generate:qr` (volles Set + Schulfest). Fix: PDF-Cleanup in `generate-qr-codes.ts` preset-spezifisch.
+
+**Labels:** `tech`  
+**Milestone:** Phase 5 — Post-Fest
+
+### Akzeptanzkriterien
+
+- [x] `npm run rotate:access-tokens` (+ `--dry-run`, `--fest-only`, …)
+- [x] Beide PDF-Sets (`qr-*` + `qr-schulfest-*`) nach Lauf vorhanden (PDF-Cleanup preset-spezifisch)
+- [x] Doku und Vitest für Token-Gen/Template (`rotate-access-token-utils.test.ts`)
