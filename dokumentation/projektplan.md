@@ -197,14 +197,14 @@ Die Schule liefert bis **12.06.** einen Plan: welche Klasse macht welchen Raum i
   - [x] [#98](https://github.com/flxln/schulnavigator/issues/98) Stufe 1: Hotspot-Icons + `thumbnail` (PR #101)
   - [x] [#99](https://github.com/flxln/schulnavigator/issues/99) Stufe 2: Medientyp `link` (PR #102)
   - [x] [#100](https://github.com/flxln/schulnavigator/issues/100) Stufe 3: Medientyp `embed` (gemergt)
-  - [x] [#109](https://github.com/flxln/schulnavigator/issues/109) Delightex-Fallback Mobile
+  - [x] [#128](https://github.com/flxln/schulnavigator/issues/128) Book Creator Embed Lesewelt („Berühmte Personen“)
 
 ### Mittelfristig (Herbst 2026)
 
 - [ ] **Directus** deployen (Coolify), JSON-Content migrieren
 - [ ] Lehrkräfte-Onboarding (Directus-Admin, keine Custom-UI)
 - [ ] Englisch-Menü aktivieren
-- [ ] Weitere Stationen nachrüsten (Phase-2-Features der Wunschliste; weitere Embed-Content z. B. Book Creator, Lesewelt)
+- [ ] Weitere Stationen nachrüsten (Phase-2-Features der Wunschliste; weitere Embed-Content z. B. Kunst, H5P)
 
 ### Langfristig (2027+)
 

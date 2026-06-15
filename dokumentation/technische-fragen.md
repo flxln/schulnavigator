@@ -41,7 +41,8 @@ Sie werden **nicht** in Auftraggebergesprächen thematisiert.
 - ✅ **Video-Hosting vorerst:** Upload auf MPZ-Server — [ADR-004](./adr/004-video-hosting-mpz.md)
 - 🟡 **YouTube-Embed:** Option für später, wenn Schule/DSB rechtlich freigibt; `videoSource: 'youtube'` zeigt nur Hinweistext (Stub), kein iframe — [ADR-004](./adr/004-video-hosting-mpz.md)
 - ✅ **Delightex / iframe-Embed:** `typ: embed` live ([ADR-017](./adr/017-externe-medien-hotspot-marker.md) Stufe 3, #100); Allowlist `delightex.com`, Demo `pc-raum`; DSB-Freigabe liegt vor
-- 🟡 **Weitere Embed-Anbieter** (Book Creator, H5P): nicht in Allowlist; Domain + DSB + technischer Test nötig; Workaround: `typ: link`
+- ✅ **Book Creator / iframe-Embed:** `typ: embed` live; Allowlist `bookcreator.com`, Demo `lesewelt` („Berühmte Personen“); nur `read.bookcreator.com`-URLs; DSB/Datenschutzerklärung noch offen
+- 🟡 **Weitere Embed-Anbieter** (H5P): nicht in Allowlist; Domain + DSB + technischer Test nötig; Workaround: `typ: link`
 - Offen: Maximale Dateigröße / Kompression beim Upload
 - Offen: Object Storage vs. `public/`-Ordner im Container
 

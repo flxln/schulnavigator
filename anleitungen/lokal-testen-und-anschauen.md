@@ -257,6 +257,17 @@ Auf Touch-Geräten wird kein iframe gerendert — stattdessen erscheint direkt d
 
 DevTools: Mobilgerät simulieren (Geräte-Modus, pointer: coarse) — reicht für grundlegenden Check. Echtes Gerät vor Merge empfohlen.
 
+**Book-Creator-Embed (`typ: embed`, Lesewelt):**
+
+| Route / Aktion | Prüfen |
+| -------------- | ------ |
+| `/raum/lesewelt` → Hotspot „Berühmte Personen“ | Panel mit iframe; Buch lädt auf `read.bookcreator.com` |
+| Umblättern / „Read to me“ | Interaktion im iframe |
+| iPad / Touch | iframe sichtbar (kein Delightex-Skip) |
+| Button „Im Browser öffnen“ | öffnet Buch im Tab |
+
+Embed-URL in `stations.json` (`lesewelt-beruehmte-personen.quelle`) muss eine veröffentlichte `read.bookcreator.com`-URL sein. Hotspot-Koordinaten ggf. mit `?hotspot-calib=1` nachjustieren.
+
 **Design-Tokens:** Farben und Typo folgen [`auftraggeber/material/UI-Vorschläge/colors_and_type.css`](../auftraggeber/material/UI-Vorschläge/colors_and_type.css) (Kopie in `app/app/gs39-tokens.css`). **Dark Mode** der App ist bewusst deaktiviert (Papier-Look).
 
 ---

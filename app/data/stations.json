@@ -325,7 +325,24 @@
       "viewer": "equirectangular",
       "panorama360": "/stations/360/lesewelt.jpg",
       "bild": "/stations/lesewelt.jpg",
-      "medien": []
+      "medien": [
+        {
+          "id": "lesewelt-beruehmte-personen",
+          "typ": "embed",
+          "quelle": "https://read.bookcreator.com/2MfAUZf5kWdGbFsdRTyW50qOUeT2/4GMz8K3eSy2Sv6RbTbo6_A",
+          "untertitel": "Berühmte Personen"
+        }
+      ],
+      "hotspots360": [
+        {
+          "id": "hs-beruehmte-personen",
+          "label": "Berühmte Personen",
+          "yaw": 0,
+          "pitch": 0,
+          "mediumId": "lesewelt-beruehmte-personen",
+          "iconSize": 0.2
+        }
+      ]
     },
     {
       "slug": "hort",
