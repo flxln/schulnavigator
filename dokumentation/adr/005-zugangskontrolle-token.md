@@ -1,7 +1,7 @@
 # ADR-005 — Zugangskontrolle: Entry-Token, Nutzungsmodi, In-App-Scanner
 
 **Datum:** 2026-05-21  
-**Status:** entschieden (Speicher/Durchsetzung: [ADR-007](./007-zugangskontrolle-cookie.md); Entry-In-App-Scanner: [ADR-008](./008-eintritt-in-app-scanner.md))
+**Status:** entschieden (Speicher/Durchsetzung: [ADR-007](./007-zugangskontrolle-cookie.md); Entry-In-App-Scanner: [ADR-008](./008-eintritt-in-app-scanner.md); Durchsetzung konfigurierbar `open`/`gated` + Tokens aus ENV: [ADR-021](./021-zugangsmodus-konfigurierbar.md))
 
 ## Kontext
 
