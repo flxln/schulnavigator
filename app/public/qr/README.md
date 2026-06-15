@@ -2,6 +2,8 @@
 
 PNG-Dateien und **Druck-PDFs** werden mit `npm run generate:qr` erzeugt (Issue #15). Sie sind in `.gitignore` (`public/qr/*.png`, `public/qr/pdf/*.pdf`), damit keine localhost-URLs versehentlich committed werden. Bewusst einchecken: `git add -f public/qr/entry-fest.png` usw.
 
+**Entry-Token rotieren:** Geplant `npm run rotate:access-tokens` (Issue #141) — rotiert Tokens in `lib/access-token-constants.mjs`, regeneriert Manifeste und beide QR-/PDF-Sets. Manuell bleiben: Coolify `SN_ACCESS_TOKENS`, Deploy, Druck. Siehe [`anleitungen/fuer-entwickler.md`](../../../anleitungen/fuer-entwickler.md#token-pflegen--rotieren).
+
 ## Voraussetzung
 
 In `app/.env.local` (Vorlage: `.env.example`) **`NEXT_PUBLIC_BASE_URL`** setzen — ohne trailing slash, für Druck die **Produktions-Domain** nach Deploy (#16).
@@ -23,6 +25,7 @@ Optional: Pixelbreite `--size=512` oder Umgebungsvariable `QR_PRINT_WIDTH_PX`.
 | `generate:qr` | 2 Entry + 12 Raum → `manifest.json` + PDFs unter `pdf/` |
 | `generate:qr -- --preset=schulfest` | 1 Entry (`fest`) + 12 Raum → `manifest-schulfest.json` + `qr-schulfest-*.pdf` |
 | `generate:qr -- --only=slug1,slug2` | Subset nach Slug-Liste |
+| `rotate:access-tokens` *(#141, geplant)* | Neue Entry-Tokens + beide QR-Sets + Coolify-JSON |
 
 ## Druck-PDFs (`public/qr/pdf/`)
 

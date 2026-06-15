@@ -51,6 +51,7 @@ Alle Befehle im Verzeichnis `app/` ausführen.
 | `npm run validate:tokens` | Prüft `app/gs39-tokens.css` gegen `auftraggeber/.../colors_and_type.css` (lokal) bzw. `app/scripts/reference/colors_and_type.css` (Docker, nur `app/` als Kontext) — wird von `build` mitaufgerufen |
 | `npm run validate:stations` | Prüft `bild`- und `quelle`-Pfade unter `public/`; warnt bei extremem Hotspot-**y** (Heuristik, sichtbarer Ausschnitt nach Auto-Zoom) — wird von `build` mitaufgerufen |
 | `npm run generate:qr`  | QR-PNGs + Druck-PDFs + `manifest.json` unter `public/qr/` (Issue #15, PDF-Erweiterung #130); `--preset=schulfest` für Schulfest-Set (12 Räume + Entry fest) — [schulfest-gs39-playbook.md](./schulfest-gs39-playbook.md) |
+| `npm run rotate:access-tokens` | **Geplant (#141):** Entry-Token rotieren, `access-token-constants.mjs` + Manifeste + beide QR-Sets; Coolify-JSON auf stdout — siehe [Token rotieren](#token-pflegen--rotieren) |
 
 ---
 
@@ -192,10 +193,28 @@ cd app && node scripts/export-pano.mjs
 
 ### Token pflegen / rotieren
 
-1. `expiresAt` und ggf. neue Token-Strings in **`access-tokens.ts`** und **`qr-config.mjs`** eintragen (gleiche Strings).
+**Geplant (Issue #141):** Ein Befehl orchestriert den Workflow bis auf Druck und Coolify:
+
+```bash
+cd app
+npm run rotate:access-tokens -- --dry-run   # Vorschau
+npm run rotate:access-tokens                # Tokens + QR-Sets + Test
+```
+
+Das Skript erzeugt Zufallstokens (`fest-…` / `heft-…`), schreibt [`app/lib/access-token-constants.mjs`](../app/lib/access-token-constants.mjs), gibt `SN_ACCESS_TOKENS`-JSON für Coolify aus, führt `npm run test` und `generate:qr` (volles Set + `--preset=schulfest`) aus. Plan: [`.cursor/plans/token-rotation-skript_acd7d0d2.plan.md`](../.cursor/plans/token-rotation-skript_acd7d0d2.plan.md).
+
+**Manuell nach Rotation:**
+
+1. `SN_ACCESS_TOKENS` in Coolify **Prod und Dev** setzen (**vor** Deploy — Fail-closed in `validate-runtime.mjs`).
+2. `git add` `access-token-constants.mjs`, `public/qr/manifest.json`, `manifest-schulfest.json` → Commit, Push, Deploy.
+3. Entry-QRs aus `public/qr/pdf/` drucken; alte gedruckte QRs sind ungültig.
+
+**Bis #141 umgesetzt ist — manuell:**
+
+1. Neue Token-Strings + `expiresAt` in **`access-token-constants.mjs`** (Single Source; `qr-config.mjs` importiert daraus).
 2. `npm run test` (Sync-Guard) und `npm run build`.
-3. `npm run generate:qr` mit korrekter `NEXT_PUBLIC_BASE_URL` → neue Entry-PNGs.
-4. Deploy; alte Entry-QRs werden ungültig.
+3. `NEXT_PUBLIC_BASE_URL=https://schulnavigator.mpz.schule npm run generate:qr` und ggf. `--preset=schulfest`.
+4. Coolify ENV + Deploy; alte Entry-QRs verbrannt.
 
 ### Lokal testen (Zugang)
 

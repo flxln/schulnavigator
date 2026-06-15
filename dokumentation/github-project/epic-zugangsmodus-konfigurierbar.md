@@ -82,9 +82,13 @@ Pilot `schulnavigator.mpz.schule` bleibt `gated` — nur `SN_ACCESS_TOKENS` erg�
 - [x] Alle Unterissues geschlossen
 - [x] `npm run test` + `npm run build` grün
 - [x] Coolify Dev: `SN_ACCESS_TOKENS` gesetzt, Deploy verifiziert
-- [ ] Coolify Prod: `SN_ACCESS_TOKENS` vor Merge/Deploy setzen
+- [x] Coolify Prod: `SN_ACCESS_TOKENS` gesetzt
 - [x] Entry-QR-Manifeste mit rotierten Tokens (`manifest.json`, `manifest-schulfest.json`)
 - [x] ADR-021 in `entscheidungen.md` verlinkt; `fuer-entwickler.md` aktualisiert
+
+### Folge-Issue
+
+- [ ] **#141** — CLI `rotate:access-tokens` (Token-Rotation orchestrieren) — Branch `feat/rotate-access-tokens`; Plan [token-rotation-skript](../../.cursor/plans/token-rotation-skript_acd7d0d2.plan.md)
 
 ---
 
