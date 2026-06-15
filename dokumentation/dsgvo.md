@@ -1,6 +1,6 @@
 # Schulnavigator — Datenschutzkonzept
 
-*Status: Entwurf | Stand: 2026-05-21*
+*Status: Entwurf | Stand: 2026-06-15*
 
 ## Personenbezogene Daten
 
@@ -26,7 +26,7 @@ Entscheidung: [ADR-005](./adr/005-zugangskontrolle-token.md)
 - Serverstandort: Deutschland (MPZ-Hetzner, siehe ADR-001)
 - Drittanbieter (Video-Hosting, Analytics, …): Video vorerst MPZ; YouTube nur nach Klärung (ADR-004)
 - Externe Links (`typ: link`, ADR-017): Die App lädt keine Drittanbieter-Inhalte ein; erst ein expliziter Nutzer-Tap öffnet die HTTPS-Zielseite in einem neuen Tab.
-- Delightex-Einbettung (`typ: embed`, ADR-017 Stufe 3): Beim Öffnen eines Embed-Mediums lädt die App Inhalte von Delightex in einem iframe (nur Allowlist-Domain). DSB-Freigabe liegt vor; Datenschutzerklärung um Drittanbieter-Absatz ergänzen (analog YouTube, ADR-004).
+- Delightex-Einbettung (`typ: embed`, ADR-017 Stufe 3): Beim Öffnen eines Embed-Mediums lädt die App Inhalte von Delightex in einem iframe (nur Allowlist-Domain `delightex.com`). DSB-Freigabe liegt vor; **Datenschutzerklärung** um Drittanbieter-Absatz ergänzen (analog YouTube, ADR-004) — noch offen.
 
 ## Auftragsverarbeitung (AVV)
 
@@ -38,6 +38,6 @@ Entscheidung: [ADR-005](./adr/005-zugangskontrolle-token.md)
 ## Offene Punkte
 
 - [ ] AVV von der Schule unterschrieben zurück
-- [ ] Datenschutzerklärung für die Website erstellen
+- [ ] Datenschutzerklärung für die Website erstellen (inkl. Absatz Delightex/Drittanbieter bei `typ: embed`)
 - [ ] Einwilligungen einholen (Projekttag 24./25.06.)
 - [ ] Schulleitung / Datenschutzbeauftragten informieren

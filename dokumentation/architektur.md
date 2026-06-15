@@ -102,7 +102,7 @@ Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/
 
 ## Medien-Player (Issues #18–#20, umgesetzt)
 
-Hotspot oder Medienliste → [`StationMediaPanel`](../app/components/station-media-panel.tsx) → [`MediaPlayerByTyp`](../app/components/media-player-by-typ.tsx) (dünner Router). **Live (ADR-017):** Hotspot-Icons, `typ: link` (externer Tab). **Geplant:** `typ: embed` (iframe, Delightex) — [ADR-017](./adr/017-externe-medien-hotspot-marker.md).
+Hotspot oder Medienliste → [`StationMediaPanel`](../app/components/station-media-panel.tsx) → [`MediaPlayerByTyp`](../app/components/media-player-by-typ.tsx) (dünner Router). **Live (ADR-017):** Hotspot-Icons, `typ: link` (externer Tab), `typ: embed` (iframe Delightex, Allowlist + CSP; auf Touch kein iframe → Fallback-Panel #109) — [ADR-017](./adr/017-externe-medien-hotspot-marker.md).
 
 | `typ` | Komponente | Verhalten |
 | ----- | ---------- | --------- |
@@ -111,6 +111,7 @@ Hotspot oder Medienliste → [`StationMediaPanel`](../app/components/station-med
 | `foto` | [`PhotoViewer`](../app/components/media/photo-viewer.tsx) | Inline `<img>` (bewusst kein `next/image` — dynamische JSON-URLs); Expand-in-place-Vollbild innerhalb des Panels; kein Swipe-Set (Phase 3) |
 | `text` | [`TextViewer`](../app/components/media/text-viewer.tsx) (lazy via `dynamic()`) | `fetch` same-origin `.md`/`.txt`; Markdown (`react-markdown` + `remark-gfm`) oder Plaintext (`pre-wrap`); Redirect-/Content-Type-Guard; GS39 `.sn-media-text*` |
 | `link` | [`LinkViewer`](../app/components/media/link-viewer.tsx) | Hinweis „App verlassen“; synchrones `window.open` bei Tap; Button „Im Browser öffnen“ ([ADR-017](./adr/017-externe-medien-hotspot-marker.md) Stufe 2) |
+| `embed` | [`EmbedViewer`](../app/components/media/embed-viewer.tsx) | iframe im Panel (Desktop); Delightex-Fallback auf Touch; Feature-Flag `NEXT_PUBLIC_EMBED_ENABLED`; Allowlist `delightex.com` ([ADR-017](./adr/017-externe-medien-hotspot-marker.md) Stufe 3) |
 
 **Video-Datenvertrag** (`videoSource` führend, Endung nur Fallback bei `upload`):
 
@@ -170,7 +171,7 @@ interface Hotspot {
 
 interface Medium {
   id: string;
-  typ: "audio" | "video" | "foto" | "text" | "link" | "embed"; // link/embed Post-Fest [ADR-017]
+  typ: "audio" | "video" | "foto" | "text" | "link" | "embed"; // link/embed live [ADR-017]
   quelle: string; // /public/… oder https:// bei link/embed
   videoSource?: "upload" | "youtube";
   poster?: string; // nur typ === "video" (upload); optional Vorschaubild

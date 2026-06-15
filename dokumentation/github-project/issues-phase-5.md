@@ -102,7 +102,7 @@ Nach der Auswertung entscheiden, welche davon umgesetzt werden:
 - [ ] Mini-Spiel "Schulranzen packen"
 - [ ] Kind-gezeichnete interaktive Schulhaus-Karte
 - [x] Verlinkung zu externen Lernspielen — [#99](https://github.com/flxln/schulnavigator/issues/99) erledigt (PR #102)
-- [x] iframe-Einbettung (Delightex) — [#100](https://github.com/flxln/schulnavigator/issues/100) erledigt (Branch `feature/100-typ-embed`)
+- [x] iframe-Einbettung (Delightex) — [#100](https://github.com/flxln/schulnavigator/issues/100) erledigt (gemergt)
 - [x] Hotspot-Icons statt gelber Punkt — [#98](https://github.com/flxln/schulnavigator/issues/98) erledigt (PR #101)
 
 **Umsetzungsplan:** [`projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md`](../projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md) · **Epic-Spezifikation:** [epic-externe-medien-hotspot-marker.md](./epic-externe-medien-hotspot-marker.md)
@@ -124,7 +124,7 @@ Sukzessive Post-Fest-Erweiterung: Hotspot-Marker → externe Links → iframe (D
 
 - [x] [#98](https://github.com/flxln/schulnavigator/issues/98) — Hotspot-Marker & `thumbnail` (Stufe 1) — PR #101
 - [x] [#99](https://github.com/flxln/schulnavigator/issues/99) — Medientyp `link` (Stufe 2) — PR #102
-- [x] [#100](https://github.com/flxln/schulnavigator/issues/100) — Medientyp `embed` / iframe (Stufe 3) — Branch `feature/100-typ-embed`
+- [x] [#100](https://github.com/flxln/schulnavigator/issues/100) — Medientyp `embed` / iframe (Stufe 3) — gemergt
 
 ### Epic erledigt wenn
 
@@ -164,7 +164,7 @@ Sukzessive Post-Fest-Erweiterung: Hotspot-Marker → externe Links → iframe (D
 **Parent:** #97  
 **Labels:** `tech`  
 **Assignee:** Felix  
-**Status:** geschlossen (2026-06-11, Branch `feature/100-typ-embed`)
+**Status:** geschlossen (2026-06-11, gemergt #100)
 
 `typ: embed`, CSP `frame-src`, Allowlist `delightex.com`, `EmbedViewer`, Demo `pc-delightex` mit `https://edu.delightex.com/WVX-NAQ`.
 

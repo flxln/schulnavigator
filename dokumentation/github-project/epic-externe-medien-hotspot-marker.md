@@ -2,7 +2,7 @@
 
 **Milestone:** Phase 5 — Post-Fest  
 **Fällig:** 31.10.2026 (Epic gesamt; Stufen sukzessiv Juli–Herbst)  
-**Status:** abgeschlossen (2026-06-11) — Stufe 1–3 live auf Branch `feature/100-typ-embed` (PR ausstehend); DSB-Freigabe Delightex liegt vor
+**Status:** abgeschlossen (2026-06-11) — Stufe 1–3 live auf `main` (#98 PR #101, #99 PR #102, #100, Delightex-Fallback #109); DSB-Freigabe Delightex liegt vor
 
 **Quellen:**
 
@@ -54,7 +54,7 @@ Drei Post-Fest-Erweiterungen des Content-Modells sukzessiv umsetzen:
 
 - [x] `#98` — Hotspot-Marker & `thumbnail` (Stufe 1) — PR #101
 - [x] `#99` — Medientyp `link` (Stufe 2) — PR #102
-- [x] `#100` — Medientyp `embed` / iframe (Stufe 3) — Branch `feature/100-typ-embed`
+- [x] `#100` — Medientyp `embed` / iframe (Stufe 3) — gemergt (#100)
 
 ### Nicht im Scope
 
@@ -126,7 +126,7 @@ Optionale Felder `hotspots[].icon`, `hotspots[].iconSize`, `medien[].thumbnail`.
 **Parent:** #97  
 **Labels:** `tech`  
 **Assignee:** Felix  
-**Status:** geschlossen (2026-06-11, Branch `feature/100-typ-embed`)
+**Status:** geschlossen (2026-06-11, gemergt #100)
 
 ### Ziel
 

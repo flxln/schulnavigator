@@ -73,7 +73,7 @@ schulnavigator/
 | [006](./dokumentation/adr/006-raum-viewer-gyro-hotspots.md) | Raum-Viewer: Gyro (Standard), Hotspots, Tap-Fallback   | entschieden |
 | [007](./dokumentation/adr/007-zugangskontrolle-cookie.md)   | Zugang: HttpOnly-Cookie + Middleware (ergänzt ADR-005) | entschieden |
 | [008](./dokumentation/adr/008-eintritt-in-app-scanner.md)   | Eintritt: In-App-Scanner auf `/eintritt/scan` (ergänzt ADR-005; Shell mit `/scan`) | entschieden |
-| [017](./dokumentation/adr/017-externe-medien-hotspot-marker.md) | Post-Fest: `link`/`embed`, Hotspot-Icons ([Umsetzungsplan](./dokumentation/projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md)) | entschieden |
+| [017](./dokumentation/adr/017-externe-medien-hotspot-marker.md) | Externe Medien (`link`, `embed`), Hotspot-Icons — Stufe 1–3 live (#98–#100, #109) ([Umsetzungsplan](./dokumentation/projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md)) | entschieden |
 | [018](./dokumentation/adr/018-360-sphere-viewer.md)             | 360°-Sphere-Viewer (PSV v5) + Flat-Koexistenz per `viewer`-Flag; Gyro-Plugin; Spike Musikraum | entschieden |
 | [019](./dokumentation/adr/019-coach-fortschritt-einblendung.md) | Coach-Einblendungen (fortschritts-getriggert, getrennt vom Dialog); Schwellwert-Trigger, `duo-split`, modus-getrennter Seen-State, Layer-Vertrag ([Plan](./.cursor/plans/coach_sparkle_mvp_d9e82ce2.plan.md)) | entschieden |
 
@@ -109,6 +109,7 @@ Details: [`dokumentation/architektur.md`](./dokumentation/architektur.md) (Absch
 Alle noch offenen technischen Fragen stehen in [`dokumentation/technische-fragen.md`](./dokumentation/technische-fragen.md). Die wichtigsten:
 
 - YouTube-Freigabe (Recht/DSB) — vor Nutzung von Embed, siehe ADR-004
+- Weitere Embed-Anbieter (Book Creator, H5P) — Domain + DSB; Workaround: `typ: link`
 - Directus-Rollen und Mandantenfähigkeit (bei Skalierung auf weitere Schulen)
 
 ---
