@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Schulnavigator — Content pflegen (interaktiv)</title>
+  <style>
+    :root {
+      --navy: #082a50;
+      --navy-700: #0b3565;
+      --navy-300: #6b89b4;
+      --green: #4b9a23;
+      --green-700: #3d7e1b;
+      --red: #ef3a37;
+      --sun: #fbbb24;
+      --blue: #1f6abb;
+      --sky-50: #e4f3fc;
+      --paper: #fcfbf7;
+      --paper-50: #f5f2ea;
+      --white: #ffffff;
+      --shadow: 0 2px 12px rgba(8, 42, 80, 0.08);
+      --radius: 12px;
+      --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --mono: ui-monospace, "Cascadia Code", "SF Mono", monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--paper);
+      color: var(--navy);
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-700) 100%);
+      color: var(--white);
+      padding: 1.25rem 1.5rem 1rem;
+      border-bottom: 4px solid var(--green);
+    }
+
+    .topbar h1 {
+      margin: 0 0 0.35rem;
+      font-size: clamp(1.25rem, 3vw, 1.65rem);
+      font-weight: 700;
+    }
+
+    .topbar p {
+      margin: 0;
+      opacity: 0.9;
+      font-size: 0.95rem;
+      max-width: 52rem;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(280px, 340px) 1fr;
+      gap: 0;
+      min-height: calc(100vh - 5.5rem);
+    }
+
+    @media (max-width: 860px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { border-right: none; border-bottom: 1px solid var(--paper-50); max-height: none; }
+    }
+
+    .sidebar {
+      background: var(--white);
+      border-right: 1px solid var(--paper-50);
+      padding: 1rem;
+      overflow-y: auto;
+      max-height: calc(100vh - 5.5rem);
+      position: sticky;
+      top: 0;
+    }
+
+    .search {
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      border: 1px solid var(--navy-300);
+      border-radius: 8px;
+      font: inherit;
+      margin-bottom: 0.75rem;
+      background: var(--paper);
+    }
+
+    .search:focus {
+      outline: 2px solid var(--blue);
+      outline-offset: 1px;
+    }
+
+    .cat-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 1rem;
+    }
+
+    .cat-btn {
+      border: 1px solid var(--navy-300);
+      background: var(--paper);
+      color: var(--navy);
+      border-radius: 999px;
+      padding: 0.25rem 0.65rem;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .cat-btn:hover { background: var(--sky-50); }
+
+    .cat-btn.active {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: var(--white);
+    }
+
+    .type-list { list-style: none; margin: 0; padding: 0; }
+
+    .type-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      border: none;
+      background: transparent;
+      padding: 0.65rem 0.75rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font: inherit;
+      color: var(--navy);
+      border-left: 3px solid transparent;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .type-btn:hover { background: var(--sky-50); }
+
+    .type-btn.active {
+      background: var(--sky-50);
+      border-left-color: var(--green);
+      font-weight: 600;
+    }
+
+    .type-btn .label { display: block; font-size: 0.92rem; }
+    .type-btn .meta {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--navy-300);
+      margin-top: 0.15rem;
+    }
+
+    .type-btn.hidden { display: none; }
+
+    .main {
+      padding: 1.25rem 1.5rem 2.5rem;
+      overflow-y: auto;
+    }
+
+    .welcome {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      max-width: 48rem;
+    }
+
+    .welcome h2 { margin-top: 0; color: var(--navy); }
+
+    .zone-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+
+    .zone-card {
+      background: var(--paper-50);
+      border-radius: 8px;
+      padding: 0.85rem;
+      font-size: 0.88rem;
+    }
+
+    .zone-card strong { display: block; margin-bottom: 0.25rem; }
+
+    .detail { display: none; max-width: 52rem; }
+    .detail.visible { display: block; }
+
+    .detail-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .detail-header h2 {
+      margin: 0;
+      flex: 1 1 12rem;
+      font-size: 1.45rem;
+      color: var(--navy);
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      background: var(--paper-50);
+      color: var(--navy-700);
+    }
+
+    .badge.mpz { background: #e8f4e0; color: var(--green-700); }
+    .badge.dev { background: #fde8e8; color: #b91c1c; }
+
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.25rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow);
+    }
+
+    .card h3 {
+      margin: 0 0 0.65rem;
+      font-size: 1rem;
+      color: var(--blue);
+    }
+
+    .card ul, .card ol { margin: 0.35rem 0 0; padding-left: 1.25rem; }
+    .card li + li { margin-top: 0.35rem; }
+
+    .path-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.88rem;
+    }
+
+    .path-row dt {
+      font-weight: 600;
+      min-width: 5.5rem;
+      color: var(--navy-300);
+    }
+
+    .path-row dd { margin: 0; flex: 1; }
+
+    code, .path {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      background: var(--paper-50);
+      padding: 0.1rem 0.35rem;
+      border-radius: 4px;
+      word-break: break-all;
+    }
+
+    pre {
+      background: var(--navy);
+      color: #e8f0f8;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      line-height: 1.45;
+      margin: 0.5rem 0 0;
+    }
+
+    .links a {
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .links a:hover { text-decoration: underline; }
+
+    .links li + li { margin-top: 0.35rem; }
+
+    .pitfall {
+      border-left: 3px solid var(--sun);
+      padding-left: 0.75rem;
+      margin: 0.5rem 0;
+      font-size: 0.9rem;
+    }
+
+    .pitfall strong { color: var(--navy-700); }
+
+    .test-route {
+      display: inline-block;
+      background: var(--sky-50);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+    }
+
+    .cmd {
+      background: var(--paper-50);
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      white-space: pre-wrap;
+      margin-top: 0.5rem;
+    }
+
+    .footer-note {
+      margin-top: 2rem;
+      font-size: 0.82rem;
+      color: var(--navy-300);
+    }
+
+    .footer-note a { color: var(--blue); }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <h1>Content pflegen — interaktive Übersicht</h1>
+    <p>Content-Typ wählen → gefilterte Anleitung mit Pfaden, Schritten und Prüfkommandos. MVP: JSON + Dateien im Repo.</p>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" aria-label="Content-Typen">
+      <input type="search" class="search" id="search" placeholder="Suchen …" autocomplete="off" />
+      <div class="cat-filters" id="cat-filters" role="group" aria-label="Kategorien"></div>
+      <ul class="type-list" id="type-list"></ul>
+    </aside>
+
+    <main class="main">
+      <section class="welcome" id="welcome">
+        <h2>Willkommen</h2>
+        <p>Wähle links einen <strong>Content-Typ</strong> oder filtere nach Kategorie. Die Anleitung rechts zeigt nur die Schritte, die für diesen Typ relevant sind.</p>
+        <div class="zone-grid">
+          <div class="zone-card">
+            <strong>Autorenzone</strong>
+            <code>auftraggeber/material/</code><br />Rohmaterial — nicht im Docker-Image
+          </div>
+          <div class="zone-card">
+            <strong>Laufzeitzone</strong>
+            <code>app/data/</code>, <code>app/public/</code>, <code>app/content/</code><br />Deploybar
+          </div>
+        </div>
+        <p>Workflow: Material sammeln → nach Freigabe <strong>kopieren</strong> nach <code>app/</code> → validieren → deployen.</p>
+        <p class="footer-note">Statische Markdown-Referenz: <a href="content-pflege-uebersicht.md">content-pflege-uebersicht.md</a></p>
+      </section>
+      <article class="detail" id="detail" aria-live="polite"></article>
+    </main>
+  </div>
+
+  <script>
+    const CATEGORIES = [
+      { id: 'all', label: 'Alle' },
+      { id: 'station', label: 'Station' },
+      { id: 'medien', label: 'Medien' },
+      { id: 'raumbild', label: 'Raumbild' },
+      { id: 'hotspot', label: 'Hotspot' },
+      { id: 'dialog', label: 'Dialog' },
+      { id: 'coach', label: 'Coach' },
+      { id: 'brand', label: 'Brand' },
+      { id: 'zugang', label: 'Zugang' },
+      { id: 'dev', label: 'Dev' },
+      { id: 'workflow', label: 'Workflow' },
+    ];
+
+    const TYPES = [
+      {
+        id: 'station-meta',
+        category: 'station',
+        label: 'Stammdaten (Titel, Beschreibung)',
+        short: 'slug, titel, beschreibung',
+        role: 'mpz',
+        summary: 'Basis-Metadaten einer Station in stations.json — sichtbar auf Stationsseite, Hub und Liste.',
+        paths: [
+          { label: 'JSON', value: 'app/data/stations.json' },
+          { label: 'Felder', value: 'slug, titel, beschreibung' },
+        ],
+        steps: [
+          'Slug aus der kanonischen Liste wählen — nicht umbenennen (QR-Codes gedruckt).',
+          'Im Array stations das passende Objekt finden oder anlegen.',
+          'titel und beschreibung anpassen; beschreibung erscheint in der Card unter dem Raumbild.',
+        ],
+        json: `{
+  "slug": "werken",
+  "titel": "Werkenzimmer",
+  "beschreibung": "Kurzer Willkommenstext für die Stationsseite.",
+  "medien": []
+}`,
+        test: ['/eintritt?t=heft-2026-27', '/raum/werken', '/stationen'],
+        links: [
+          ['Slug-Liste', 'content-verzeichnisstruktur.md'],
+          ['Einpflegen', '../anleitungen/content-einpflegen.md'],
+        ],
+      },
+      {
+        id: 'audio',
+        category: 'medien',
+        label: 'Audio',
+        short: 'typ: audio',
+        role: 'mpz',
+        summary: 'MP3/WAV unter public/media — Wiedergabe im Medien-Panel, optional per Hotspot.',
+        paths: [
+          { label: 'Dateien', value: 'app/public/media/{slug}/audio/' },
+          { label: 'JSON', value: 'stations.json → medien[].typ: "audio"' },
+          { label: 'Rohquelle', value: 'auftraggeber/material/medien/{slug}/audio/' },
+        ],
+        steps: [
+          'Audio-Datei nach app/public/media/{slug}/audio/ legen.',
+          'In medien[] eintragen: id (eindeutig pro Station), typ: "audio", quelle mit / beginnend.',
+          'Optional untertitel für Medienliste; optional Hotspot mit mediumId.',
+          'npm run validate:stations — Pfad muss existieren.',
+        ],
+        json: `{
+  "id": "werken-audio",
+  "typ": "audio",
+  "quelle": "/media/werken/audio/willkommen.mp3",
+  "untertitel": "Willkommen im Werken"
+}`,
+        test: ['/raum/{slug} — Medienliste', 'Hotspot-Tipp öffnet dasselbe Panel'],
+        pitfalls: [
+          ['Dialog-Stationen', 'Bei daz/pc-raum läuft Audio über dialog.segmente[], nicht typ: audio.'],
+        ],
+        links: [
+          ['media/README', '../app/public/media/README.md'],
+          ['Referenz klassenzimmer', '../app/data/stations.json'],
+        ],
+      },
+      {
+        id: 'video',
+        category: 'medien',
+        label: 'Video',
+        short: 'typ: video, upload',
+        role: 'mpz',
+        summary: 'MP4-Upload oder Poster-only (noch kein Film). YouTube im MVP inaktiv.',
+        paths: [
+          { label: 'Dateien', value: 'app/public/media/{slug}/video/' },
+          { label: 'JSON', value: 'videoSource: "upload", optional poster' },
+        ],
+        steps: [
+          'MP4 nach app/public/media/{slug}/video/ legen (ADR-004: MPZ-Server).',
+          'videoSource: "upload" setzen; quelle auf .mp4 zeigen.',
+          'Optional poster: Vorschaubild (nur bei typ: video erlaubt).',
+          'Poster-only: quelle auf JPG in fotos/ — zeigt Plakat bis MP4 da ist.',
+        ],
+        json: `{
+  "id": "demo-video",
+  "typ": "video",
+  "videoSource": "upload",
+  "quelle": "/media/klassenzimmer/video/grundschule_demo.mp4",
+  "poster": "/media/klassenzimmer/fotos/grundschule_demo.jpg",
+  "untertitel": "Mein Schultag (Video)"
+}`,
+        pitfalls: [
+          ['Nur Bild sichtbar', 'quelle zeigt auf JPG statt MP4 — Poster-only oder Pfad korrigieren.'],
+          ['Validator', 'poster nur bei typ: video setzen.'],
+        ],
+        links: [['ADR-004 Video', 'adr/004-video-hosting-mpz.md']],
+      },
+      {
+        id: 'foto',
+        category: 'medien',
+        label: 'Foto',
+        short: 'typ: foto',
+        role: 'mpz',
+        summary: 'JPG/WebP — Anzeige im Medien-Panel oder als Video-Poster.',
+        paths: [
+          { label: 'Dateien', value: 'app/public/media/{slug}/fotos/' },
+        ],
+        steps: [
+          'Bild nach app/public/media/{slug}/fotos/ kopieren.',
+          'medien[]-Eintrag mit typ: "foto" und quelle-Pfad anlegen.',
+          'Optional Hotspot und thumbnail für Medienliste.',
+        ],
+        json: `{
+  "id": "demo-foto",
+  "typ": "foto",
+  "quelle": "/media/klassenzimmer/fotos/grundschule_demo.jpg",
+  "untertitel": "Schulfoto"
+}`,
+        links: [['Referenz', '../anleitungen/content-einpflegen.md#schritt-1--dateien-ablegen']],
+      },
+      {
+        id: 'text',
+        category: 'medien',
+        label: 'Text (Markdown/TXT)',
+        short: 'typ: text, TextViewer',
+        role: 'mpz',
+        summary: 'Inline-Anzeige im Medien-Panel — .md mit Markdown oder .txt als Plaintext.',
+        paths: [
+          { label: 'Dateien', value: 'app/public/media/{slug}/texte/' },
+        ],
+        steps: [
+          'Textdatei (.md oder .txt) unter texte/ ablegen.',
+          'typ: "text" in medien[]; quelle auf /media/{slug}/texte/….',
+          'Demo-Pfade /demo/… schrittweise durch /media/{slug}/… ersetzen.',
+        ],
+        json: `{
+  "id": "werken-info",
+  "typ": "text",
+  "quelle": "/media/werken/texte/willkommen.md",
+  "untertitel": "Über unser Werken"
+}`,
+        test: ['/raum/{slug} — Text im Panel, nicht externer Link'],
+        links: [['TextViewer', '../dokumentation/architektur.md']],
+      },
+      {
+        id: 'link',
+        category: 'medien',
+        label: 'Externer Link',
+        short: 'typ: link',
+        role: 'mpz',
+        summary: 'Öffnet externen Tab — quelle ist https://…',
+        paths: [
+          { label: 'JSON', value: 'medien[].typ: "link", quelle: URL' },
+          { label: 'Optional', value: 'thumbnail, Hotspot icon' },
+        ],
+        steps: [
+          'medien[]-Eintrag mit typ: "link" und vollständiger HTTPS-URL.',
+          'Optional thumbnail unter /public/… für Medienliste.',
+          'Optional icon am Hotspot statt gelbem Punkt (ADR-017).',
+        ],
+        json: `{
+  "id": "extern-link",
+  "typ": "link",
+  "quelle": "https://beispiel.schule/infos",
+  "untertitel": "Mehr auf unserer Website"
+}`,
+        links: [['ADR-017', 'adr/017-externe-medien-hotspot-marker.md']],
+      },
+      {
+        id: 'embed',
+        category: 'medien',
+        label: 'Embed (Delightex, Book Creator)',
+        short: 'typ: embed, iframe',
+        role: 'mpz',
+        summary: 'Drittanbieter im Medien-Panel. Allowlist: delightex.com, bookcreator.com. DSB-Freigabe nötig.',
+        paths: [
+          { label: 'JSON', value: 'typ: "embed", quelle: Embed-URL' },
+          { label: 'Env', value: 'NEXT_PUBLIC_EMBED_ENABLED=true' },
+        ],
+        steps: [
+          'Öffentliche Embed-URL von Delightex oder Book Creator (read.bookcreator.com) eintragen.',
+          'typ: "embed" in medien[]; embedAllow optional verengen (keine neuen Domains).',
+          'NEXT_PUBLIC_EMBED_ENABLED=true in .env.local / Production.',
+          'Delightex: auf Touch-Geräten automatisch Fallback-Karte statt iframe.',
+        ],
+        json: `{
+  "id": "pc-delightex",
+  "typ": "embed",
+  "quelle": "https://…delightex.com/…",
+  "untertitel": "3D-Welt erkunden"
+}`,
+        links: [
+          ['ADR-017', 'adr/017-externe-medien-hotspot-marker.md'],
+          ['Beispiel pc-raum', '../app/data/stations.json'],
+        ],
+      },
+      {
+        id: 'raumbild-flat',
+        category: 'raumbild',
+        label: 'Raumbild Flat (Gyro)',
+        short: 'bild, /stations/',
+        role: 'mpz',
+        summary: 'Breites Panorama für den Flat-Gyro-Viewer — viewer fehlt oder flat.',
+        paths: [
+          { label: 'Laufzeit', value: 'app/public/stations/{slug}.jpg' },
+          { label: 'JSON', value: '"bild": "/stations/{slug}.jpg"' },
+          { label: 'Export', value: 'cd app && node scripts/export-pano.mjs' },
+        ],
+        steps: [
+          'Rohfoto in auftraggeber/.../stationen-360-pano/flat/{slug}/raw/.',
+          'Export: ≤ 500 KB, ≥ 2400 px Breite, Ratio ≥ 2,5:1.',
+          'Datei als {slug}.jpg nach public/stations/ — Git LFS beachten.',
+          'In stations.json bild setzen; ohne bild → statische Ansicht + Medienliste.',
+        ],
+        cmd: 'cd app && node scripts/export-pano.mjs',
+        pitfalls: [
+          ['LFS-Pointer', 'git lfs pull lokal; Coolify LFS aktiv — sonst Build-Fehler.'],
+        ],
+        links: [
+          ['stations/README', '../app/public/stations/README.md'],
+          ['Entwickler Raumbilder', '../anleitungen/fuer-entwickler.md'],
+        ],
+      },
+      {
+        id: 'raumbild-360',
+        category: 'raumbild',
+        label: '360°-Kugel (Sphere)',
+        short: 'equirectangular, panorama360',
+        role: 'mpz',
+        summary: 'Equirectangular 2:1 für Photo Sphere Viewer (ADR-018).',
+        paths: [
+          { label: 'Laufzeit', value: 'app/public/stations/360/{slug}.webp' },
+          { label: 'JSON', value: 'viewer: "equirectangular", panorama360' },
+          { label: 'Export', value: 'npm run export:pano360' },
+        ],
+        steps: [
+          'Panorama exportieren (max. 4 MB, 2:1).',
+          '"viewer": "equirectangular" und panorama360-Pfad in stations.json.',
+          'Hotspots in hotspots360[] mit yaw/pitch (nicht x/y).',
+          'Kalibrierung: /raum/{slug}?hotspot-calib=1',
+        ],
+        cmd: 'cd app && npm run export:pano360',
+        links: [
+          ['ADR-018', 'adr/018-360-sphere-viewer.md'],
+          ['360/README', '../app/public/stations/360/README.md'],
+        ],
+      },
+      {
+        id: 'hotspot-flat',
+        category: 'hotspot',
+        label: 'Hotspots Flat',
+        short: 'hotspots[], x/y',
+        role: 'mpz',
+        summary: 'Gelbe Punkte oder Icons im Flat-Panorama — verknüpft mit medien[] oder Dialog.',
+        paths: [
+          { label: 'JSON', value: 'stations.json → hotspots[]' },
+        ],
+        steps: [
+          'mediumId muss zu medien[].id passen (Medien-Hotspot).',
+          'x: 0–1 horizontal (Quellbild); y: 0–1 sichtbarer Ausschnitt (nicht volles Bild).',
+          'Methode A: Schätzen, dev-Server, nachjustieren.',
+          'Methode B: Konsole-Snippet — Klick auf Raumbild (siehe content-einpflegen.md).',
+          'Methode C: Erst ohne Hotspots — nur Medienliste testen.',
+          'Optional: icon, iconSize, radius, label.',
+        ],
+        json: `{
+  "id": "hs-text",
+  "label": "Korkpinnwand",
+  "x": 0.22,
+  "y": 0.45,
+  "radius": 0.06,
+  "mediumId": "demo-text"
+}`,
+        test: ['?debug=1 — Gyro-HUD', '/raum/{slug} auf Handy'],
+        links: [['Hotspot-Kapitel', '../anleitungen/content-einpflegen.md#schritt-3--hotspots-platzieren']],
+      },
+      {
+        id: 'hotspot-sphere',
+        category: 'hotspot',
+        label: 'Hotspots Sphere',
+        short: 'hotspots360[], yaw/pitch',
+        role: 'mpz',
+        summary: 'Kugelkoordinaten nur bei viewer: equirectangular.',
+        paths: [
+          { label: 'JSON', value: 'hotspots360[]' },
+          { label: 'Kalibrierung', value: '/raum/{slug}?hotspot-calib=1' },
+        ],
+        steps: [
+          'yaw (−180…180°) und pitch (−90…90°) statt x/y.',
+          'Dev-Server starten, Kalibrierungs-URL öffnen.',
+          'Auf Anker klicken → JSON-Snippet kopieren.',
+          'Maskottchen: Fuß anklicken; Medien: Icon-Mitte.',
+          'Dialog: bubblePitchOffset optional.',
+        ],
+        json: `{
+  "id": "hs-sphere-1",
+  "yaw": 42.5,
+  "pitch": -8.2,
+  "mediumId": "demo-audio",
+  "icon": "/media/musik/icons/play.svg"
+}`,
+        links: [['ADR-018', 'adr/018-360-sphere-viewer.md']],
+      },
+      {
+        id: 'hotspot-dialog',
+        category: 'hotspot',
+        label: 'Dialog-Hotspot (Maskottchen)',
+        short: 'action: dialog, mascot',
+        role: 'mpz',
+        summary: 'Frieda/Otto im Raumbild — nur daz und pc-raum.',
+        paths: [
+          { label: 'JSON', value: 'hotspots[] oder hotspots360[]' },
+          { label: 'Assets', value: 'public/brand/mascots/' },
+        ],
+        steps: [
+          'action: "dialog", mascot: "frieda" | "otto".',
+          'Optional mascotSize (Default ~0.22), mascotFlipX.',
+          'Audio kommt aus dialog.segmente[], nicht aus medien[].',
+          'Fußpunkt auf (x,y) bzw. yaw/pitch kalibrieren.',
+        ],
+        json: `{
+  "id": "hs-frieda",
+  "action": "dialog",
+  "mascot": "frieda",
+  "mascotSize": 0.22,
+  "x": 0.35,
+  "y": 0.88
+}`,
+        links: [
+          ['ADR-011', 'adr/011-dialog-mascot-hotspots.md'],
+          ['ADR-014 mascotSize', 'adr/014-mascot-size-json.md'],
+        ],
+      },
+      {
+        id: 'dialog-text',
+        category: 'dialog',
+        label: 'Dialog-Texte',
+        short: 'dialog.segmente[]',
+        role: 'mpz',
+        summary: 'Sprechblasen-Texte und Sprecherwechsel in stations.json.',
+        paths: [
+          { label: 'JSON', value: 'station.dialog' },
+          { label: 'Stationen', value: 'daz, pc-raum' },
+        ],
+        steps: [
+          'dialog.figuren: ["frieda", "otto"].',
+          'Pro Clip ein segment: id, rolle, text, quelle (API-Pfad).',
+          'rolle steuert Highlight und Blasenschwanz (links/rechts/mitte).',
+          'gruppen[] für mehrere Clips mit einer Blase.',
+        ],
+        json: `{
+  "dialog": {
+    "figuren": ["frieda", "otto"],
+    "segmente": [{
+      "id": "seg-01",
+      "rolle": "frieda",
+      "text": "Willkommen im DaZ-Zimmer!",
+      "quelle": "/api/dialog/daz/01-frieda.wav"
+    }]
+  }
+}`,
+        links: [['ADR-010', 'adr/010-dialog-cutscene-gated-audio.md']],
+      },
+      {
+        id: 'dialog-audio',
+        category: 'dialog',
+        label: 'Dialog-Audio',
+        short: 'content/dialog-audio/',
+        role: 'mpz',
+        summary: 'WAV-Clips — cookie-geschützt, nicht unter public/.',
+        paths: [
+          { label: 'Dateien', value: 'app/content/dialog-audio/{slug}/' },
+          { label: 'API', value: 'GET /api/dialog/{slug}/{nn}-{sprecher}.wav' },
+          { label: 'Rohquelle', value: 'auftraggeber/.../transkripte/' },
+        ],
+        steps: [
+          'Dateiname: 01-frieda.wav, 09-beide.wav (zweistellig, Sprecher-Suffix).',
+          'Nach app/content/dialog-audio/{slug}/ kopieren.',
+          'In dialog.segmente[].quelle: /api/dialog/{slug}/01-frieda.wav.',
+          'Rohmaterial aus transkripte/010-PC-Raum/ etc. — Ordner nach Slug umbenennen.',
+        ],
+        test: ['/eintritt?t=heft-2026-27', '/raum/daz — Dialog abspielen'],
+        links: [['Entwickler Setup', '../anleitungen/fuer-entwickler.md']],
+      },
+      {
+        id: 'dialog-bubble',
+        category: 'dialog',
+        label: 'Sprechblasen-Layout',
+        short: 'dialog.bubble',
+        role: 'mpz',
+        summary: 'Position und Größe der Dialog-Blase (ADR-015).',
+        paths: [
+          { label: 'JSON', value: 'dialog.bubble' },
+        ],
+        steps: [
+          'Optionaler Block — fehlt er, gelten Code-Defaults.',
+          'bubble.y, maxWidth, fontSize als Anteil der Hero-Box.',
+          'bubble.x + followPan: Pan statt Maskottchen-Mitpan.',
+          'Nach Änderung Seite neu laden.',
+        ],
+        json: `"bubble": {
+  "y": 0.12,
+  "maxWidth": 0.88,
+  "fontSize": 0.0375,
+  "followPan": true
+}`,
+        links: [['ADR-015', 'adr/015-dialog-bubble-json.md']],
+      },
+      {
+        id: 'coach',
+        category: 'coach',
+        label: 'Coach-Einblendungen',
+        short: 'coach-messages.json',
+        role: 'mpz',
+        summary: 'Fortschritts-Texte auf Hub und beim ersten Raumbesuch (ADR-019).',
+        paths: [
+          { label: 'JSON', value: 'app/content/coach-messages.json' },
+        ],
+        steps: [
+          'Neuen Eintrag in messages[] anlegen: id, trigger, mascot, placement, text.',
+          'hub-milestone + milestone (Anzahl besuchter Stationen).',
+          'hub-complete für alle Stationen; room-first + slug für Erstbesuch.',
+          'modes: ["fest", "heft"] optional einschränken.',
+          'npm run validate:coach vor Build.',
+        ],
+        json: `{
+  "id": "room-first-musik",
+  "trigger": "room-first",
+  "slug": "musik",
+  "mascot": "frieda",
+  "placement": "right",
+  "text": "Willkommen im Musikraum!"
+}`,
+        links: [
+          ['ADR-019', 'adr/019-coach-fortschritt-einblendung.md'],
+          ['content/README', '../app/content/README.md'],
+        ],
+      },
+      {
+        id: 'brand-assets',
+        category: 'brand',
+        label: 'Logos & Maskottchen',
+        short: 'public/brand/',
+        role: 'mpz',
+        summary: 'Marken-Dateien für Hub, Dialog und UI.',
+        paths: [
+          { label: 'Logos', value: 'public/brand/logos/' },
+          { label: 'Maskottchen', value: 'public/brand/mascots/' },
+          { label: 'Quelle', value: 'auftraggeber/Virtueller Schulrundgang/assets/' },
+        ],
+        steps: [
+          'Dateien aus Auftraggeber-Paket nach public/brand/ kopieren.',
+          'Commit im Hauptrepo — Submodule allein reicht nicht für Production.',
+          'Maskottchen: frieda.png, otto.png für Dialog-Hotspots.',
+        ],
+        links: [['brand/README', '../app/public/brand/README.md']],
+      },
+      {
+        id: 'brand-tokens',
+        category: 'brand',
+        label: 'Farben & Typo',
+        short: 'gs39-tokens.css',
+        role: 'dev',
+        summary: 'Design-Tokens — semantische Tailwind-Klassen in der App.',
+        paths: [
+          { label: 'App', value: 'app/app/gs39-tokens.css' },
+          { label: 'Referenz', value: 'app/scripts/reference/colors_and_type.css' },
+          { label: 'TS', value: 'app/lib/gs39-brand-colors.ts' },
+        ],
+        steps: [
+          'Auftraggeber-CSS ändern → gs39-tokens.css synchronisieren.',
+          'Referenzkopie für Docker-Build mitpflegen.',
+          'gs39-brand-colors.ts bei Hex-Änderungen anpassen.',
+          'npm run validate:tokens',
+        ],
+        links: [['Build-Regeln', 'build-kontext-submodule-regeln.md']],
+      },
+      {
+        id: 'hub-dev',
+        category: 'dev',
+        label: 'Hub-Layout & Icons',
+        short: 'TypeScript, nicht JSON',
+        role: 'dev',
+        summary: 'Slot-Zuordnung und Icons — nur mit Code-Änderung.',
+        paths: [
+          { label: 'Hub-Map', value: 'app/lib/schoolhouse-hub-map.ts' },
+          { label: 'Icons', value: 'app/lib/station-icons.ts' },
+          { label: 'SVG', value: 'public/brand/hub/ — npm run prepare:hub-outline' },
+        ],
+        steps: [
+          'HUB_SLUG_MAP: welcher Slug an welchem Fenster/Wegweiser.',
+          'STATION_ICON_BY_SLUG: Lucide-Icons pro Station.',
+          'Bei SVG-Wechsel: viewBox 1086.5×1453.9 und Slot-Koordinaten prüfen.',
+        ],
+        links: [
+          ['ADR-016', 'adr/016-hub-frontansicht-39gs.md'],
+          ['ADR-020 Wegweiser', 'adr/020-hub-wegweiser-aussen-stationen.md'],
+        ],
+      },
+      {
+        id: 'qr-zugang',
+        category: 'zugang',
+        label: 'QR-Codes & Eintritt',
+        short: 'Token, generate:qr',
+        role: 'dev',
+        summary: 'Eintritts-QRs und Raum-QRs — physisch gedruckt.',
+        paths: [
+          { label: 'Token', value: 'app/lib/access-tokens.ts + scripts/qr-config.mjs' },
+          { label: 'QR-PNGs', value: 'npm run generate:qr → public/qr/' },
+          { label: 'URL', value: 'NEXT_PUBLIC_BASE_URL' },
+        ],
+        steps: [
+          'Token in access-tokens.ts und qr-config.mjs synchron halten.',
+          'NEXT_PUBLIC_BASE_URL auf Live-Domain setzen.',
+          'npm run generate:qr (ohne --dry-run).',
+          'Entry: /eintritt?t=… — Raum: /raum/{slug} aus stations.json.',
+        ],
+        cmd: 'cd app && npm run generate:qr',
+        links: [['QR drucken', '../anleitungen/qr-codes-drucken.md']],
+      },
+      {
+        id: 'migration-demo',
+        category: 'workflow',
+        label: 'Demo → echter Content',
+        short: '/demo/ → /media/',
+        role: 'mpz',
+        summary: 'Platzhalter-Medien durch Schul-Content ersetzen.',
+        paths: [
+          { label: 'Demo', value: 'app/public/demo/' },
+          { label: 'Ziel', value: 'app/public/media/{slug}/' },
+        ],
+        steps: [
+          'Echte Dateien nach public/media/{slug}/ legen.',
+          'In stations.json Pfade von /demo/… auf /media/{slug}/… ändern.',
+          'npm run validate:stations + manueller Test.',
+          'Demo-Dateien erst löschen, wenn keine Referenz mehr existiert.',
+        ],
+        links: [['musik, schulsozialarbeit', 'content-verzeichnisstruktur.md']],
+      },
+      {
+        id: 'validate-deploy',
+        category: 'workflow',
+        label: 'Prüfen & Deploy',
+        short: 'validate, build, Coolify',
+        role: 'mpz',
+        summary: 'Standard-Workflow nach jeder Content-Änderung.',
+        paths: [
+          { label: 'Arbeitsordner', value: 'app/' },
+        ],
+        steps: [
+          'npm run validate:stations — Pfade, Schema, LFS, Hotspot-Heuristik.',
+          'npm run validate:coach — falls Coach geändert.',
+          'npm run test && npm run build.',
+          'Manuell: /eintritt?t=heft-2026-27, /raum/{slug}, Handy + Gyro.',
+          'git commit + push → Coolify-Deploy.',
+        ],
+        cmd: `cd app
+npm run validate:stations
+npm run validate:coach
+npm run test
+npm run build`,
+        test: [
+          '/eintritt?t=heft-2026-27',
+          '/raum/klassenzimmer',
+          'Handy: Gyro + Hotspots',
+        ],
+        links: [
+          ['Lokal testen', '../anleitungen/lokal-testen-und-anschauen.md'],
+          ['Deploy', '../anleitungen/fuer-entwickler.md'],
+        ],
+      },
+      {
+        id: 'autorenzone',
+        category: 'workflow',
+        label: 'Autorenzone (Vorbereitung)',
+        short: 'auftraggeber/material/',
+        role: 'mpz',
+        summary: 'Rohmaterial der Schule — wird nicht deployed.',
+        paths: [
+          { label: 'Medien', value: 'auftraggeber/material/medien/{slug}/' },
+          { label: 'Panos', value: 'auftraggeber/material/stationen-360-pano/' },
+          { label: 'Dialog', value: 'auftraggeber/material/stationen/transkripte/' },
+        ],
+        steps: [
+          'Schule liefert Dateien in die Autorenzone.',
+          'Nach Freigabe: optimieren und nach app/ kopieren (nicht verlinken).',
+          'Zuordnung Slug ↔ Foto in zuordnung-stationen-bilder.md.',
+        ],
+        links: [
+          ['medien/README', '../auftraggeber/material/medien/README.md'],
+          ['Zonen-Übersicht', 'content-verzeichnisstruktur.md'],
+        ],
+      },
+    ];
+
+    let activeCategory = 'all';
+    let activeTypeId = null;
+
+    const catFiltersEl = document.getElementById('cat-filters');
+    const typeListEl = document.getElementById('type-list');
+    const detailEl = document.getElementById('detail');
+    const welcomeEl = document.getElementById('welcome');
+    const searchEl = document.getElementById('search');
+
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function renderCategories() {
+      catFiltersEl.innerHTML = CATEGORIES.map(
+        (c) =>
+          `<button type="button" class="cat-btn${c.id === activeCategory ? ' active' : ''}" data-cat="${c.id}">${escapeHtml(c.label)}</button>`,
+      ).join('');
+      catFiltersEl.querySelectorAll('.cat-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          activeCategory = btn.dataset.cat;
+          renderCategories();
+          renderTypeList();
+        });
+      });
+    }
+
+    function matchesFilter(type) {
+      const q = searchEl.value.trim().toLowerCase();
+      const catOk = activeCategory === 'all' || type.category === activeCategory;
+      if (!catOk) return false;
+      if (!q) return true;
+      const hay = `${type.label} ${type.short} ${type.summary}`.toLowerCase();
+      return hay.includes(q);
+    }
+
+    function renderTypeList() {
+      typeListEl.innerHTML = TYPES.map((t) => {
+        const hidden = !matchesFilter(t) ? ' hidden' : '';
+        const active = t.id === activeTypeId ? ' active' : '';
+        return `<li><button type="button" class="type-btn${active}${hidden}" data-id="${t.id}">
+          <span class="label">${escapeHtml(t.label)}</span>
+          <span class="meta">${escapeHtml(t.short)} · ${t.role === 'dev' ? 'Dev' : 'MPZ'}</span>
+        </button></li>`;
+      }).join('');
+      typeListEl.querySelectorAll('.type-btn').forEach((btn) => {
+        btn.addEventListener('click', () => selectType(btn.dataset.id));
+      });
+    }
+
+    function renderDetail(type) {
+      const roleLabel = type.role === 'dev' ? 'Entwickler' : 'MPZ';
+      const roleClass = type.role === 'dev' ? 'dev' : 'mpz';
+
+      let html = `<div class="detail-header">
+        <h2>${escapeHtml(type.label)}</h2>
+        <span class="badge ${roleClass}">${roleLabel}</span>
+        <span class="badge">${escapeHtml(CATEGORIES.find((c) => c.id === type.category)?.label || '')}</span>
+      </div>
+      <p>${escapeHtml(type.summary)}</p>`;
+
+      if (type.paths?.length) {
+        html += `<section class="card"><h3>Pfade &amp; Felder</h3>`;
+        type.paths.forEach((p) => {
+          html += `<dl class="path-row"><dt>${escapeHtml(p.label)}</dt><dd><code>${escapeHtml(p.value)}</code></dd></dl>`;
+        });
+        html += `</section>`;
+      }
+
+      if (type.steps?.length) {
+        html += `<section class="card"><h3>Schritte</h3><ol>`;
+        type.steps.forEach((s) => { html += `<li>${escapeHtml(s)}</li>`; });
+        html += `</ol></section>`;
+      }
+
+      if (type.json) {
+        html += `<section class="card"><h3>JSON-Beispiel</h3><pre>${escapeHtml(type.json)}</pre></section>`;
+      }
+
+      if (type.cmd) {
+        html += `<section class="card"><h3>Befehle</h3><div class="cmd">${escapeHtml(type.cmd)}</div></section>`;
+      }
+
+      if (type.test?.length) {
+        html += `<section class="card"><h3>Manuell testen</h3><ul>`;
+        type.test.forEach((r) => {
+          html += `<li><span class="test-route">${escapeHtml(r)}</span></li>`;
+        });
+        html += `</ul></section>`;
+      }
+
+      if (type.pitfalls?.length) {
+        html += `<section class="card"><h3>Häufige Fehler</h3>`;
+        type.pitfalls.forEach(([title, text]) => {
+          html += `<div class="pitfall"><strong>${escapeHtml(title)}:</strong> ${escapeHtml(text)}</div>`;
+        });
+        html += `</section>`;
+      }
+
+      if (type.links?.length) {
+        html += `<section class="card links"><h3>Weiterführend</h3><ul>`;
+        type.links.forEach(([label, href]) => {
+          html += `<li><a href="${escapeHtml(href)}">${escapeHtml(label)}</a></li>`;
+        });
+        html += `</ul></section>`;
+      }
+
+      html += `<p class="footer-note">Ausführliche Anleitung: <a href="../anleitungen/content-einpflegen.md">content-einpflegen.md</a></p>`;
+
+      detailEl.innerHTML = html;
+    }
+
+    function selectType(id) {
+      activeTypeId = id;
+      const type = TYPES.find((t) => t.id === id);
+      if (!type) return;
+      welcomeEl.style.display = 'none';
+      detailEl.classList.add('visible');
+      renderTypeList();
+      renderDetail(type);
+      history.replaceState(null, '', `#${id}`);
+      detailEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function initFromHash() {
+      const hash = location.hash.replace(/^#/, '');
+      if (hash && TYPES.some((t) => t.id === hash)) {
+        selectType(hash);
+      }
+    }
+
+    searchEl.addEventListener('input', () => {
+      renderTypeList();
+    });
+
+    renderCategories();
+    renderTypeList();
+    initFromHash();
+
+    window.addEventListener('hashchange', initFromHash);
+  </script>
+</body>
+</html>
