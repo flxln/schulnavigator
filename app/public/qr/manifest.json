@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-06-14T16:10:31.526Z",
+  "generatedAt": "2026-06-15T20:08:01.701Z",
   "baseUrl": "https://schulnavigator.mpz.schule",
   "entries": [
     {
       "file": "entry-fest.png",
-      "url": "https://schulnavigator.mpz.schule/eintritt?t=fest-2026",
-      "token": "fest-2026",
+      "url": "https://schulnavigator.mpz.schule/eintritt?t=fest-vkc2AuKW0S7QGHDT",
+      "token": "fest-vkc2AuKW0S7QGHDT",
       "mode": "fest"
     },
     {
       "file": "entry-heft.png",
-      "url": "https://schulnavigator.mpz.schule/eintritt?t=heft-2026-27",
-      "token": "heft-2026-27",
+      "url": "https://schulnavigator.mpz.schule/eintritt?t=heft-ImulQPDmydy7VCVj",
+      "token": "heft-ImulQPDmydy7VCVj",
       "mode": "heft"
     }
   ],

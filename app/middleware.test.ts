@@ -1,6 +1,12 @@
 import { NextRequest } from 'next/server'
-import { afterEach, describe, expect, it, vi } from 'vitest'
-import { ACCESS_COOKIE } from '@/lib/access-tokens'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { resetAccessConfigCacheForTests } from '@/lib/access-config'
+import {
+  ACCESS_COOKIE,
+  FEST_DEV_TOKEN,
+  HEFT_DEV_TOKEN,
+  resetAccessTokensCacheForTests,
+} from '@/lib/access-tokens'
 import { middleware, ACCESS_PROTECTED_MATCHER } from './middleware'
 
 const BASE = 'http://localhost:3000'
@@ -30,6 +36,8 @@ describe('middleware', () => {
   afterEach(() => {
     vi.useRealTimers()
     process.env = { ...envSnapshot }
+    resetAccessConfigCacheForTests()
+    resetAccessTokensCacheForTests()
   })
 
   it('leitet ohne Cookie von / nach /eintritt um', () => {
@@ -47,7 +55,7 @@ describe('middleware', () => {
   it('lässt gültiges Cookie auf / durch', () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date('2026-06-01'))
-    const res = middleware(req('/', 'fest-2026'))
+    const res = middleware(req('/', FEST_DEV_TOKEN))
     expect(res.status).toBe(200)
     expect(res.headers.get('location')).toBeNull()
   })
@@ -55,11 +63,11 @@ describe('middleware', () => {
   it('setzt Cookie bei gültigem ?t= und leitet nach / um', () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date('2026-06-01'))
-    const res = middleware(req('/eintritt?t=fest-2026'))
+    const res = middleware(req(`/eintritt?t=${FEST_DEV_TOKEN}`))
     expect(res.status).toBe(307)
     expect(res.headers.get('location')).toBe(`${BASE}/`)
     const setCookie = res.headers.get('set-cookie') ?? ''
-    expect(setCookie).toContain(`${ACCESS_COOKIE}=fest-2026`)
+    expect(setCookie).toContain(`${ACCESS_COOKIE}=${FEST_DEV_TOKEN}`)
     expect(setCookie).toContain('HttpOnly')
   })
 
@@ -78,7 +86,7 @@ describe('middleware', () => {
   it('leitet abgelaufenes Cookie mit reason=expired um', () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date('2026-08-01'))
-    const res = middleware(req('/', 'fest-2026'))
+    const res = middleware(req('/', FEST_DEV_TOKEN))
     expect(res.status).toBe(307)
     expect(res.headers.get('location')).toBe(`${BASE}/eintritt?reason=expired`)
   })
@@ -104,11 +112,11 @@ describe('middleware', () => {
   it('setzt Cookie bei gültigem ?t= auf /eintritt/scan und leitet nach / um', () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date('2026-06-01'))
-    const res = middleware(req('/eintritt/scan?t=fest-2026'))
+    const res = middleware(req(`/eintritt/scan?t=${FEST_DEV_TOKEN}`))
     expect(res.status).toBe(307)
     expect(res.headers.get('location')).toBe(`${BASE}/`)
     const setCookie = res.headers.get('set-cookie') ?? ''
-    expect(setCookie).toContain(`${ACCESS_COOKIE}=fest-2026`)
+    expect(setCookie).toContain(`${ACCESS_COOKIE}=${FEST_DEV_TOKEN}`)
   })
 
   it('leitet /eintritt/foo ohne Cookie nach /eintritt um (nicht in Whitelist)', () => {
@@ -126,7 +134,7 @@ describe('middleware', () => {
     const res = middleware(req('/'))
     expect(res.status).toBe(200)
     const setCookie = res.headers.get('set-cookie') ?? ''
-    expect(setCookie).toContain(`${ACCESS_COOKIE}=heft-2026-27`)
+    expect(setCookie).toContain(`${ACCESS_COOKIE}=${HEFT_DEV_TOKEN}`)
   })
 
   it('DEV_UNLOCK_ALL: hebt fest-Cookie auf Heft an', () => {
@@ -135,21 +143,57 @@ describe('middleware', () => {
     process.env.DEV_UNLOCK_ALL = 'true'
     process.env.NODE_ENV = 'development'
 
-    const res = middleware(req('/', 'fest-2026'))
+    const res = middleware(req('/', FEST_DEV_TOKEN))
     expect(res.status).toBe(200)
     const setCookie = res.headers.get('set-cookie') ?? ''
-    expect(setCookie).toContain(`${ACCESS_COOKIE}=heft-2026-27`)
+    expect(setCookie).toContain(`${ACCESS_COOKIE}=${HEFT_DEV_TOKEN}`)
   })
 
   it('Drift-Guard: middlewareRunsFor deckt ACCESS_PROTECTED_MATCHER ab', () => {
-    // Stellt sicher, dass Matcher-Konstante, config.matcher und die gespiegelte
-    // Test-Funktion nicht auseinanderlaufen, wenn neue Routen hinzukommen.
     const staticRoutes = ACCESS_PROTECTED_MATCHER.filter((p) => !p.includes(':'))
     for (const route of staticRoutes) {
       expect(middlewareRunsFor(route)).toBe(true)
     }
-    // Wildcards manuell mit konkreten Beispielpfaden prüfen
     expect(middlewareRunsFor('/raum/pc-raum')).toBe(true)
     expect(middlewareRunsFor('/eintritt/scan')).toBe(true)
+  })
+
+  describe('SN_ACCESS_MODE=open', () => {
+    beforeEach(() => {
+      process.env.SN_ACCESS_MODE = 'open'
+      resetAccessConfigCacheForTests()
+    })
+
+    it('lässt / ohne Cookie durch', () => {
+      const res = middleware(req('/'))
+      expect(res.status).toBe(200)
+      expect(res.headers.get('location')).toBeNull()
+    })
+
+    it('lässt /stationen ohne Cookie durch', () => {
+      const res = middleware(req('/stationen'))
+      expect(res.status).toBe(200)
+    })
+
+    it('lässt /raum/pc-raum ohne Cookie durch', () => {
+      const res = middleware(req('/raum/pc-raum'))
+      expect(res.status).toBe(200)
+    })
+
+    it('setzt fest-Cookie bei gültigem ?t= und leitet um', () => {
+      vi.useFakeTimers()
+      vi.setSystemTime(new Date('2026-06-01'))
+      const res = middleware(req(`/?t=${FEST_DEV_TOKEN}`))
+      expect(res.status).toBe(307)
+      expect(res.headers.get('location')).toBe(`${BASE}/`)
+      const setCookie = res.headers.get('set-cookie') ?? ''
+      expect(setCookie).toContain(`${ACCESS_COOKIE}=${FEST_DEV_TOKEN}`)
+    })
+
+    it('lässt ungültiges ?t= ohne Redirect durch', () => {
+      const res = middleware(req('/?t=quatsch'))
+      expect(res.status).toBe(200)
+      expect(res.headers.get('location')).toBeNull()
+    })
   })
 })

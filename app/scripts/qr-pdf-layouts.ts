@@ -222,6 +222,9 @@ export async function buildA4GridPdf(
 
     for (let i = 0; i < pageItems.length; i++) {
       const item = pageItems[i]
+      if (!item) {
+        continue
+      }
       const col = i % GRID_COLS
       const row = Math.floor(i / GRID_COLS)
       const cellLeft = margin + col * cellW

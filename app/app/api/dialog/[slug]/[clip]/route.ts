@@ -1,6 +1,7 @@
 import { createReadStream, statSync } from 'node:fs'
 import { Readable } from 'node:stream'
 import { cookies } from 'next/headers'
+import { isAccessGated } from '@/lib/access-config'
 import { ACCESS_COOKIE, validateToken } from '@/lib/access-tokens'
 import { DIALOG_CLIP_RE, dialogAudioFilePath } from '@/lib/dialog-audio'
 import { getAllSlugs } from '@/lib/stations'
@@ -22,7 +23,7 @@ export async function GET(request: Request, { params }: RouteParams) {
 
   const cookieStore = await cookies()
   const token = cookieStore.get(ACCESS_COOKIE)?.value
-  if (!validateToken(token)) {
+  if (isAccessGated() && !validateToken(token)) {
     return new Response(null, { status: 403 })
   }
 

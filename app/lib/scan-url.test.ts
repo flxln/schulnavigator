@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { FEST_DEV_TOKEN, HEFT_DEV_TOKEN } from '@/lib/access-tokens'
 import { parseEntryScan, parseRoomScan } from '@/lib/scan-url'
 
 const ORIGIN = 'https://schulnavigator.mpz.schule'
@@ -45,13 +46,13 @@ describe('parseRoomScan', () => {
 describe('parseEntryScan', () => {
   it('akzeptiert volle Entry-URL', () => {
     expect(
-      parseEntryScan(`${ORIGIN}/eintritt?t=fest-2026`, ORIGIN),
-    ).toBe('fest-2026')
+      parseEntryScan(`${ORIGIN}/eintritt?t=${FEST_DEV_TOKEN}`, ORIGIN),
+    ).toBe(FEST_DEV_TOKEN)
   })
 
   it('akzeptiert relativen Pfad', () => {
-    expect(parseEntryScan('/eintritt?t=heft-2026-27', ORIGIN)).toBe(
-      'heft-2026-27',
+    expect(parseEntryScan(`/eintritt?t=${HEFT_DEV_TOKEN}`, ORIGIN)).toBe(
+      HEFT_DEV_TOKEN,
     )
   })
 
@@ -63,24 +64,24 @@ describe('parseEntryScan', () => {
 
   it('ignoriert Fragment und Extra-Query-Params', () => {
     expect(
-      parseEntryScan(`${ORIGIN}/eintritt?t=fest-2026#x`, ORIGIN),
-    ).toBe('fest-2026')
+      parseEntryScan(`${ORIGIN}/eintritt?t=${FEST_DEV_TOKEN}#x`, ORIGIN),
+    ).toBe(FEST_DEV_TOKEN)
     expect(
-      parseEntryScan(`${ORIGIN}/eintritt?t=fest-2026&reason=invalid`, ORIGIN),
-    ).toBe('fest-2026')
+      parseEntryScan(`${ORIGIN}/eintritt?t=${FEST_DEV_TOKEN}&reason=invalid`, ORIGIN),
+    ).toBe(FEST_DEV_TOKEN)
   })
 
   it('lehnt Fremd-Origin ab', () => {
     expect(
-      parseEntryScan('https://evil.example/eintritt?t=fest-2026', ORIGIN),
+      parseEntryScan(`https://evil.example/eintritt?t=${FEST_DEV_TOKEN}`, ORIGIN),
     ).toBeNull()
   })
 
   it('akzeptiert gedruckte Produktions-Origin als trusted origin', () => {
     const devOrigin = 'https://192.168.0.136:3000'
     expect(
-      parseEntryScan(`${ORIGIN}/eintritt?t=fest-2026`, devOrigin, [ORIGIN]),
-    ).toBe('fest-2026')
+      parseEntryScan(`${ORIGIN}/eintritt?t=${FEST_DEV_TOKEN}`, devOrigin, [ORIGIN]),
+    ).toBe(FEST_DEV_TOKEN)
   })
 
   it('lehnt Raum-URL ab', () => {
