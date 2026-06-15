@@ -18,6 +18,8 @@ import {
 import {
   ENTRY_QRS,
   EXPECTED_STATION_COUNT,
+  SCHULFEST_ENTRY_FILES,
+  SCHULFEST_QR_SLUGS,
   URL_LENGTH_WARN,
 } from './qr-config.mjs'
 import { loadEnvLocal } from './load-env-local.mjs'
@@ -50,6 +52,8 @@ interface Manifest {
 function parseArgs(argv: string[]) {
   let dryRun = false
   let size: number | undefined
+  let preset: 'all' | 'schulfest' = 'all'
+  let onlySlugs: string[] | undefined
   for (const arg of argv) {
     if (arg === '--dry-run') {
       dryRun = true
@@ -60,8 +64,18 @@ function parseArgs(argv: string[]) {
         size = Math.floor(n)
       }
     }
+    if (arg === '--preset=schulfest') {
+      preset = 'schulfest'
+    }
+    if (arg.startsWith('--only=')) {
+      onlySlugs = arg
+        .slice('--only='.length)
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean)
+    }
   }
-  return { dryRun, size }
+  return { dryRun, size, preset, onlySlugs }
 }
 
 function parseSizeFromEnv(): number | undefined {
@@ -87,8 +101,45 @@ function cleanPngOutput() {
   }
 }
 
+function resolveRoomSlugs(
+  stations: Station[],
+  preset: 'all' | 'schulfest',
+  onlySlugs: string[] | undefined,
+): string[] {
+  const allSlugs = stations.map((s) => s.slug)
+  const slugSet = new Set(allSlugs)
+
+  let target: string[]
+  if (onlySlugs?.length) {
+    target = onlySlugs
+  } else if (preset === 'schulfest') {
+    target = [...SCHULFEST_QR_SLUGS]
+  } else {
+    return allSlugs
+  }
+
+  const missing = target.filter((slug) => !slugSet.has(slug))
+  if (missing.length > 0) {
+    console.error(
+      `[QR] Unbekannte Slug(s) in Subset: ${missing.join(', ')} — prüfe stations.json / qr-config.mjs`,
+    )
+    process.exit(1)
+  }
+  return target
+}
+
+function resolveEntryQrs(preset: 'all' | 'schulfest') {
+  if (preset === 'schulfest') {
+    const festSet = new Set(SCHULFEST_ENTRY_FILES)
+    return ENTRY_QRS.filter((e) => festSet.has(e.file))
+  }
+  return ENTRY_QRS
+}
+
 async function main() {
-  const { dryRun, size: sizeArg } = parseArgs(process.argv.slice(2))
+  const { dryRun, size: sizeArg, preset, onlySlugs } = parseArgs(
+    process.argv.slice(2),
+  )
   loadEnvLocal(appRoot)
 
   let baseUrl: string
@@ -138,7 +189,19 @@ async function main() {
     rooms: [],
   }
 
-  for (const entry of ENTRY_QRS) {
+  const entryQrs = resolveEntryQrs(preset)
+  const roomSlugs = resolveRoomSlugs(stations as Station[], preset, onlySlugs)
+  const stationBySlug = new Map(
+    (stations as Station[]).map((s) => [s.slug, s] as const),
+  )
+
+  if (preset === 'schulfest' || onlySlugs) {
+    console.log(
+      `[QR] Subset-Modus: ${entryQrs.length} Entry + ${roomSlugs.length} Raum-QR`,
+    )
+  }
+
+  for (const entry of entryQrs) {
     const url = buildEntryUrl(baseUrl, entry.token)
     warnIfUrlTooLong(url, entry.file, URL_LENGTH_WARN)
     manifest.entries.push({
@@ -149,7 +212,11 @@ async function main() {
     })
   }
 
-  for (const s of stations as Station[]) {
+  for (const slug of roomSlugs) {
+    const s = stationBySlug.get(slug)
+    if (!s) {
+      continue
+    }
     const url = buildRoomUrl(baseUrl, s.slug)
     warnIfUrlTooLong(url, `raum-${s.slug}`, URL_LENGTH_WARN)
     manifest.rooms.push({
@@ -190,8 +257,12 @@ async function main() {
     await QRCode.toFile(out, room.url, qrOptions)
   }
 
+  const manifestName =
+    preset === 'schulfest' && !onlySlugs
+      ? 'manifest-schulfest.json'
+      : 'manifest.json'
   writeFileSync(
-    join(qrDir, 'manifest.json'),
+    join(qrDir, manifestName),
     `${JSON.stringify(manifest, null, 2)}\n`,
     'utf8',
   )
@@ -200,7 +271,7 @@ async function main() {
   console.log(
     `[QR] ${total} PNG-Dateien geschrieben nach public/qr/ (width=${width}).`,
   )
-  console.log('[QR] manifest.json aktualisiert.\n')
+  console.log(`[QR] ${manifestName} aktualisiert.\n`)
   for (const e of manifest.entries) {
     console.log(`  ${e.file}\t${e.url}`)
   }
