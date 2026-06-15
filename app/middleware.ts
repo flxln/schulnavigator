@@ -1,7 +1,8 @@
 import { NextResponse, type NextRequest } from 'next/server'
+import { isAccessGated } from '@/lib/access-config'
 import {
   ACCESS_COOKIE,
-  ACCESS_TOKENS,
+  getAccessTokens,
   maxAgeSeconds,
   validateToken,
   type AccessToken,
@@ -70,7 +71,13 @@ export function middleware(req: NextRequest) {
       setAccessCookie(res, valid)
       return res
     }
-    return redirectToHint(url, 'invalid')
+    if (isAccessGated()) {
+      return redirectToHint(url, 'invalid')
+    }
+  }
+
+  if (!isAccessGated()) {
+    return NextResponse.next()
   }
 
   const cookie = req.cookies.get(ACCESS_COOKIE)?.value
@@ -88,7 +95,7 @@ export function middleware(req: NextRequest) {
   }
 
   const wasKnown =
-    !!cookie && ACCESS_TOKENS.some((x) => x.token === cookie)
+    !!cookie && getAccessTokens().some((x) => x.token === cookie)
   return redirectToHint(url, wasKnown ? 'expired' : undefined)
 }
 

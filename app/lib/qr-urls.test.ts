@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { FEST_DEV_TOKEN } from '@/lib/access-tokens'
 import {
   buildEntryUrl,
   buildRoomUrl,
@@ -40,8 +41,8 @@ describe('buildRoomUrl', () => {
 
 describe('buildEntryUrl', () => {
   it('setzt Query-Parameter t', () => {
-    expect(buildEntryUrl('https://schule.example.de', 'fest-2026')).toBe(
-      'https://schule.example.de/eintritt?t=fest-2026',
+    expect(buildEntryUrl('https://schule.example.de', FEST_DEV_TOKEN)).toBe(
+      `https://schule.example.de/eintritt?t=${FEST_DEV_TOKEN}`,
     )
   })
 })

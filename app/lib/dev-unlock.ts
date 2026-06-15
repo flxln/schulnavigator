@@ -1,5 +1,7 @@
+import { HEFT_DEV_TOKEN } from '@/lib/access-tokens'
+
 /** Heft-Token für DEV_UNLOCK_ALL — alle Hub-Fenster klickbar (ADR-009). */
-export const DEV_UNLOCK_HEFT_TOKEN = 'heft-2026-27' as const
+export const DEV_UNLOCK_HEFT_TOKEN = HEFT_DEV_TOKEN
 
 export function isDevUnlockAll(): boolean {
   return (
