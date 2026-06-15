@@ -1,8 +1,11 @@
-import { isValidHttpsUrl } from './external-link'
+import { externalLinkHostname, isValidHttpsUrl } from './external-link'
 import type { Medium } from '@/lib/types'
 
 /** Single Source of Truth — App-Allowlist, Validator-Subset und CSP frame-src. */
-export const DEFAULT_EMBED_ALLOW_SUFFIXES = ['delightex.com'] as const
+export const DEFAULT_EMBED_ALLOW_SUFFIXES = [
+  'delightex.com',
+  'bookcreator.com',
+] as const
 
 export type EmbedAllowSuffix = (typeof DEFAULT_EMBED_ALLOW_SUFFIXES)[number]
 
@@ -63,4 +66,9 @@ export const DEFAULT_EMBED_SANDBOX =
 
 export function isEmbedEnabled(): boolean {
   return process.env.NEXT_PUBLIC_EMBED_ENABLED === 'true'
+}
+
+export function isBookCreatorUrl(url: string): boolean {
+  const host = externalLinkHostname(url)
+  return host !== null && hostMatchesEmbedAllowlist(host, ['bookcreator.com'])
 }

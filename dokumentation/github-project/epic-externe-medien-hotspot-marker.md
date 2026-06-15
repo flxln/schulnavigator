@@ -21,6 +21,7 @@
 | Unterissue | `#98` | Hotspot-Marker & `thumbnail` (Stufe 1) | `tech`, `design` | — **erledigt** |
 | Unterissue | `#99` | Medientyp `link` (Stufe 2) | `tech` | — **erledigt** |
 | Unterissue | `#100` | Medientyp `embed` / iframe Delightex (Stufe 3) | `tech` | — **erledigt** |
+| Unterissue | `#128` | Book Creator Embed Lesewelt | `tech`, `content` | — **erledigt** |
 | Organisatorisch | — | Delightex Share-URL + DSB (Schule) | `extern`, `org` | `#100` |
 
 **Empfohlene Reihenfolge:** `#98` → `#99` → (Schule: URL + DSB) → `#100`.
@@ -33,6 +34,7 @@
 | #98 (Stufe 1) | https://github.com/flxln/schulnavigator/issues/98 |
 | #99 (Stufe 2) | https://github.com/flxln/schulnavigator/issues/99 |
 | #100 (Stufe 3) | https://github.com/flxln/schulnavigator/issues/100 |
+| #128 (Book Creator Lesewelt) | https://github.com/flxln/schulnavigator/issues/128 |
 
 ---
 
@@ -55,6 +57,7 @@ Drei Post-Fest-Erweiterungen des Content-Modells sukzessiv umsetzen:
 - [x] `#98` — Hotspot-Marker & `thumbnail` (Stufe 1) — PR #101
 - [x] `#99` — Medientyp `link` (Stufe 2) — PR #102
 - [x] `#100` — Medientyp `embed` / iframe (Stufe 3) — gemergt (#100)
+- [x] `#128` — Book Creator Embed Lesewelt — Branch `feature/bookcreator-lesewelt`
 
 ### Nicht im Scope
 

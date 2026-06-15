@@ -109,7 +109,7 @@ Details: [`dokumentation/architektur.md`](./dokumentation/architektur.md) (Absch
 Alle noch offenen technischen Fragen stehen in [`dokumentation/technische-fragen.md`](./dokumentation/technische-fragen.md). Die wichtigsten:
 
 - YouTube-Freigabe (Recht/DSB) — vor Nutzung von Embed, siehe ADR-004
-- Weitere Embed-Anbieter (Book Creator, H5P) — Domain + DSB; Workaround: `typ: link`
+- Weitere Embed-Anbieter (Book Creator, H5P) — Domain + DSB; Workaround: `typ: link` (Book Creator Lesewelt: #128 erledigt)
 - Directus-Rollen und Mandantenfähigkeit (bei Skalierung auf weitere Schulen)
 
 ---

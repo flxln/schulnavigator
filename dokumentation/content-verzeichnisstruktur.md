@@ -166,6 +166,8 @@ Details: [ADR-010](./adr/010-dialog-cutscene-gated-audio.md).
 
 Schritt-für-Schritt für MPZ/Lehrkräfte: [`anleitungen/content-einpflegen.md`](../anleitungen/content-einpflegen.md) (Dateien, `stations.json`, Hotspots, Prüfcommands).
 
+Gesamtübersicht: [`content-pflege-uebersicht.md`](./content-pflege-uebersicht.md). Interaktiv (HTML): [`content-pflege-interaktiv.html`](./content-pflege-interaktiv.html).
+
 ---
 
 ## Demo → Media Migration

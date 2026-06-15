@@ -8,6 +8,8 @@ _Anleitung für MPZ/Lehrkräfte (MVP): Medien und Hotspots ohne Admin-Oberfläch
 
 Verwandte Dokumente:
 
+- [content-pflege-uebersicht.md](../dokumentation/content-pflege-uebersicht.md) — alle Pflegeorte und -wege (Übersicht)
+- [content-pflege-interaktiv.html](../dokumentation/content-pflege-interaktiv.html) — interaktive Übersicht nach Content-Typ
 - [content-verzeichnisstruktur.md](../dokumentation/content-verzeichnisstruktur.md) — Slugs, Zonen, Pfadkonventionen
 - [public/media/README.md](../app/public/media/README.md) — Kurzreferenz Ordnerstruktur
 - [lokal-testen-und-anschauen.md](./lokal-testen-und-anschauen.md) — Test-Routen, Build-Check
@@ -187,7 +189,7 @@ Orientierung: Eintrag `klassenzimmer` in `stations.json` (Issue **#93**).
 | `thumbnail` | nein | Vorschaubild unter `/public/…` — Medienliste und Hotspot-Fallback ([ADR-017](../dokumentation/adr/017-externe-medien-hotspot-marker.md) Stufe 1) |
 | `videoSource` | bei Video | `upload` (Standard) oder `youtube` (MVP: nur Hinweistext, kein Embed) |
 | `poster` | nein | Nur bei `typ: video` — Vorschaubild-Pfad |
-| `embedAllow` | bei `embed` | Optional; nur Subset von `delightex.com` (Code-Default) — verengen erlaubt, keine neuen Domains |
+| `embedAllow` | bei `embed` | Optional; nur Subset von `delightex.com`, `bookcreator.com` (Code-Default) — verengen erlaubt, keine neuen Domains |
 
 ### Video-Modi (`videoSource`)
 
@@ -382,21 +384,26 @@ Station: _____________  Slug: _____________
 
 ---
 
-## Hotspot-Icons, Links und Delightex-Embed (ADR-017, live)
+## Hotspot-Icons, Links und Embed (ADR-017, live)
 
 **Stufe 1:** Medien-Hotspots zeigen `icon` → `thumbnail` → Typ-Preset → gelber Punkt.
 
 **Stufe 2:** `typ: link` — öffnet externen Tab.
 
-**Stufe 3:** `typ: embed` — Delightex im Medien-Panel (`iframe`). Beispiel: `pc-raum` / `pc-delightex`. Öffentliche Embed-URL von Delightex; Button „Im Browser öffnen“ ist immer verfügbar.
+**Stufe 3:** `typ: embed` — Drittanbieter im Medien-Panel (`iframe`). Beispiele:
 
-**Delightex-Fallback (automatisch):** Bei `delightex.com`-URLs erkennt die App das Gerät automatisch. Auf Smartphones und Tablets wird kein iframe angezeigt — stattdessen erscheint eine Fallback-Karte mit „Im Browser öffnen“ und einem Link zur Delightex-App (App Store / Play Store). Auf dem Desktop bleibt das iframe erhalten. Keine Redaktionsänderung nötig — die Share-URL aus Delightex reicht.
+- **Delightex:** `pc-raum` / `pc-delightex` — `https://…` auf `delightex.com`
+- **Book Creator:** `lesewelt` / `lesewelt-beruehmte-personen` — `https://read.bookcreator.com/…` (nur veröffentlichte Bücher, nicht `app.bookcreator.com`)
+
+Button „Im Browser öffnen“ ist immer verfügbar.
+
+**Delightex-Fallback (automatisch):** Bei `delightex.com`-URLs erkennt die App das Gerät automatisch. Auf Smartphones und Tablets wird kein iframe angezeigt — stattdessen erscheint eine Fallback-Karte mit „Im Browser öffnen“ und einem Link zur Delightex-App (App Store / Play Store). Auf dem Desktop bleibt das iframe erhalten. Book Creator nutzt auf Touch-Geräten weiterhin das iframe.
 
 | Stufe | Inhalt | Redaktion |
 |-------|--------|-----------|
 | 1 | Icons statt gelber Punkt | **live** |
 | 2 | `typ: link` | **live** |
-| 3 | `typ: embed` | **live** — `https://…` auf `delightex.com`; DSB-Freigabe vorausgesetzt |
+| 3 | `typ: embed` | **live** — Allowlist `delightex.com`, `bookcreator.com`; DSB-Freigabe vorausgesetzt |
 
 Umsetzungsplan: [`dokumentation/projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md`](../dokumentation/projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md)
 
