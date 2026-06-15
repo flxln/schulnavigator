@@ -10,7 +10,9 @@ Milestone: **Phase 4** | Fällig: 26.06.2026
 
 ## #39 — QR-Codes an Räumen befestigen
 
-**Labels:** `org`  
+**GitHub:** https://github.com/flxln/schulnavigator/issues/39 — Body-Sync **2026-06-15** (Nachtrag #86)
+
+**Labels:** `org`, `extern`  
 **Assignee:** Sten / Tina
 
 > **Scope Nachtrag 2026-06-03:** Nicht mehr pauschal „11× an Türen“. Schulfest: nur **offene Räume** + **Hof-Virtualisierungen** laut Playbook — siehe [issues-schulfest-gs39-nachtrag.md](./issues-schulfest-gs39-nachtrag.md) (Epic **#86**, Issues **#87–#91**). Tag der offenen Tür: Tür-QRs separat planen.

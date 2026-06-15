@@ -2,7 +2,7 @@
 
 **Milestone:** Phase 3 (Vorbereitung) + Phase 4 (Live)  
 **Fällig:** 26.06.2026 (Schulfest)  
-**Status:** Vorlagen — Issues **noch nicht** auf GitHub angelegt (vorgeschlagene Nummern **#86–#91**)
+**Status:** Auf GitHub angelegt (**#86–#91**); Stand-Sync **2026-06-15** (Playbook #87, QR-Druck #89/#130, 12-Raum-Set)
 
 **Quellen:**
 
@@ -18,14 +18,15 @@
 
 ## Übersicht
 
-| Rolle | Vorgeschl. Nr. | Titel (kurz) | Labels | Blockiert |
-|-------|----------------|--------------|--------|-----------|
-| **Epic (Parent)** | `#86` | GS39 Schulfest: QR-Strategie & Playbook (Nachtrag) | `org`, `blocker` | #39, #40 (Scope) |
-| Unterissue | `#87` | Schulfest-Playbook dokumentieren | `org`, `content` | #88, #89 |
-| Unterissue | `#88` | Content-Checkliste: Idee steht → MPZ | `content`, `extern` | #28–#37 |
-| Unterissue | `#89` | Outdoor-QR: Drucksubset + Spezifikation | `org`, `tech` | #39 |
-| Unterissue | `#90` | Abstimmung Schule: Playbook freigeben | `org`, `extern` | #87 |
-| Unterissue | `#91` | Mobilfunk-/WLAN-Test Schulhof | `org`, `tech` | Phase-4-Go-Live |
+| Rolle | Nr. | Titel (kurz) | Labels | Status (2026-06-15) |
+|-------|-----|--------------|--------|---------------------|
+| **Epic (Parent)** | `#86` | GS39 Schulfest: QR-Strategie & Playbook (Nachtrag) | `org` | offen (#90, #91) |
+| Unterissue | `#87` | Schulfest-Playbook dokumentieren | `org`, `content` | **geschlossen** |
+| Unterissue | `#88` | Content-Checkliste: Idee steht → MPZ | `content`, `extern` | offen |
+| Unterissue | `#89` | Outdoor-QR: Drucksubset + Spezifikation | `org`, `tech` | offen (Sonnentest) |
+| Unterissue | `#90` | Abstimmung Schule: Playbook freigeben | `org`, `extern` | offen |
+| Unterissue | `#91` | Mobilfunk-/WLAN-Test Schulhof | `org`, `tech` | offen |
+| Erweiterung | `#130` | QR-Druck-PDFs (A4 2up + Grid 3 cm) | `tech` | **geschlossen** (PR #131) |
 
 **Empfohlene Reihenfolge:** `#90` (Klärung) → `#87` (Playbook) → `#88` (Content-Status) → `#89` (Druck) → `#39`/`#40` anbringen → `#91` (Test).
 
@@ -83,6 +84,8 @@ Verbindliches **Schulfest-Playbook** + abgestimmtes **QR-Drucksubset** + **Conte
 ---
 
 ## `#87` — Schulfest-Playbook dokumentieren
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/87 — **geschlossen** (2026-06-15, PR #131)
 
 **Labels:** `org`, `content`  
 **Parent:** `#86`  
@@ -194,6 +197,8 @@ Engpass ist **Schule**, nicht URL-Logik (Council-Analyst). Ohne Ideen: leere Sta
 
 ## `#89` — Outdoor-QR: Drucksubset & Spezifikation
 
+**GitHub:** https://github.com/flxln/schulnavigator/issues/89 — offen (nur Sonnentest ausstehend)
+
 **Labels:** `org`, `tech`  
 **Parent:** `#86`  
 **Assignee:** Felix / Sten  
@@ -232,9 +237,9 @@ Council/Research: Outdoor **Error Correction Level H**, **≥3–5 cm** (besser 
 
 ## Akzeptanzkriterien
 
-- [ ] PNGs nur für Subset erzeugt; Rest **nicht** am 26.06. ausgehängt
+- [x] Druckset generiert (`generate:qr --preset=schulfest`: 12 Raum + Entry `fest`, PDFs #130)
 - [ ] Sonnentest protokolliert (Datum, Foto optional, Scan ja/nein)
-- [ ] [#39](https://github.com/flxln/schulnavigator/issues/39) referenziert Outdoor-Spec
+- [x] [#39](https://github.com/flxln/schulnavigator/issues/39) / Playbook referenzieren Outdoor-Spec (Abschnitt 4)
 
 ## Abhängigkeit
 
@@ -330,10 +335,10 @@ Gast-WLAN der Schule (falls vorhanden): SSID, Passwort, max. gleichzeitige Nutze
 
 **Ersetzen** in `issues-phase-4.md` und auf GitHub:
 
-| Alt (vor Nachtrag) | Neu (nach Nachtrag) |
-|--------------------|---------------------|
-| 11 Raum-QRs an **Türen** | Nur Slugs aus Playbook #87: **offene Räume** (Tür/Innen) + **Hof-Stationen** (Outdoor-Spec #89) |
-| Alle 11 gleich behandeln | Übrige Slugs: **nicht** ausdrucken/aushängen am Schulfest |
+| Alt (vor Nachtrag) | Neu (nach Nachtrag, 2026-06-15) |
+|--------------------|-----------------------------------|
+| 11 Raum-QRs an **Türen** | **12** Raum-QRs generiert; **physische** Platzierung laut Playbook (Tür/Innen oder Hof) |
+| Alle 11 gleich behandeln | Geschlossene Räume: QR **nicht** an Klassentür, ggf. Hof-Virtualisierung (gleicher Slug) |
 
 **Zusatz-Checkliste #39:**
 
@@ -349,8 +354,8 @@ Unverändert in der Idee; Hinweistext an Schulfest-Playbook #87 koppeln („dana
 
 ## Sync-Regel
 
-1. Issues **#86–#91** auf GitHub anlegen (`gh issue create`), Milestone Phase 3 bzw. 4 setzen.
-2. Epic #86 als Parent verknüpfen (GitHub Sub-issues oder „Parent: #86“ im Body).
-3. **#39** per `gh issue edit` Body aktualisieren; Verweis auf diese Datei.
-4. Zeile **GitHub:** unter jedem Abschnitt oben ergänzen, sobald angelegt.
+1. ~~Issues **#86–#91** auf GitHub anlegen~~ — erledigt.
+2. Epic #86 als Parent im Body der Unterissues (`Parent: #86`).
+3. **#39** Body an Nachtrag angepasst (2026-06-15).
+4. Zeile **GitHub:** unter Abschnitten pflegen (siehe #87, #89).
 5. [`README.md`](./README.md) Checkliste aktualisieren.
