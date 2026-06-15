@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Projektstatistik Schulnavigator — Arbeitszeit, Code, GitHub, KI-Vergleich." />
   <title>Schulnavigator — Projektstatistik</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
   <style>
     :root {
       --navy: #082a50;
@@ -352,7 +351,19 @@
 }
   </script>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script>
+    (function initProjektstatistik() {
+      if (typeof Chart === "undefined") {
+        const err = document.createElement("p");
+        err.className = "callout";
+        err.style.background = "#fde8e8";
+        err.style.borderLeftColor = "#ef3a37";
+        err.textContent = "Diagramme konnten nicht geladen werden (Chart.js). Bitte Seite neu laden oder Adblocker prüfen.";
+        document.querySelector(".wrap")?.prepend(err);
+        return;
+      }
+
     const S = JSON.parse(document.getElementById("stats-data").textContent);
     const C = {
       navy: "#082a50",
@@ -565,6 +576,7 @@
 
     document.getElementById("footer-line").textContent =
       `Quellen: Git, Cursor-Chats, GitHub, app/-Scan · Stand ${S.meta.stand}`;
+    })();
   </script>
 </body>
 </html>
