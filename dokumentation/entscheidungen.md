@@ -26,6 +26,7 @@ Jede wichtige Entscheidung wird als eigenständiger ADR (Architecture Decision R
 | [018](./adr/018-360-sphere-viewer.md) | 360°-Sphere-Viewer (PSV v5) + Flat-Viewer-Koexistenz per `viewer`-Flag; Spike-first | entschieden | 2026-06-11 |
 | [019](./adr/019-coach-fortschritt-einblendung.md) | Coach: fortschritts-getriggerte Maskottchen-Einblendungen (getrennt vom Dialog); Schwellwert-Trigger, `duo-split`, modus-getrennter Seen-State, Layer-Vertrag; keine Migration | entschieden | 2026-06-14 |
 | [020](./adr/020-hub-wegweiser-aussen-stationen.md) | Hub: Wegweiser-Slots für Schulhof + Turnhalle; 12 Stationen; Slot-Vertrag frame/hitFrame/chipAnchor/rotation | entschieden | 2026-06-14 |
+| [021](./adr/021-zugangsmodus-konfigurierbar.md) | Zugang: Modus `open`/`gated` konfigurierbar, Tokens aus ENV, Embedding/CSP (ergänzt ADR-005/007) | entschieden | 2026-06-15 |
 
 ## Konventionen
 

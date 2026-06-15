@@ -1,7 +1,7 @@
 # ADR-007 — Zugangskontrolle: HttpOnly-Cookie + Middleware
 
 **Datum:** 2026-05-22  
-**Status:** entschieden
+**Status:** entschieden (Durchsetzung konfigurierbar `open`/`gated`, Tokens aus ENV: [ADR-021](./021-zugangsmodus-konfigurierbar.md))
 
 ## Kontext
 
