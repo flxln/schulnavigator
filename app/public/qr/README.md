@@ -12,9 +12,17 @@ In `app/.env.local` (Vorlage: `.env.example`) **`NEXT_PUBLIC_BASE_URL`** setzen 
 cd app
 npm run generate:qr -- --dry-run
 npm run generate:qr
+# Schulfest (7 Räume + Entry fest): siehe anleitungen/schulfest-gs39-playbook.md
+npm run generate:qr -- --preset=schulfest
 ```
 
 Optional: Pixelbreite `--size=512` oder Umgebungsvariable `QR_PRINT_WIDTH_PX`.
+
+| Befehl | Ausgabe |
+|--------|---------|
+| `generate:qr` | 2 Entry + 12 Raum → `manifest.json` |
+| `generate:qr -- --preset=schulfest` | 1 Entry (`fest`) + 7 Raum → `manifest-schulfest.json` |
+| `generate:qr -- --only=slug1,slug2` | Subset nach Slug-Liste |
 
 ## `manifest.json`
 

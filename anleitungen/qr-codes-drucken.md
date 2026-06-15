@@ -33,6 +33,25 @@ Erzeugt unter `app/public/qr/`:
 
 Optional: größere Pixelmatrix für dichtere URLs: `--size=640` oder `QR_PRINT_WIDTH_PX` in `.env.local`.
 
+### Schulfest-Subset (26.06., Modus `fest`)
+
+Nicht alle 12 Räume drucken — siehe [schulfest-gs39-playbook.md](./schulfest-gs39-playbook.md).
+
+```bash
+npm run generate:qr -- --preset=schulfest --dry-run
+npm run generate:qr -- --preset=schulfest
+```
+
+Erzeugt **1× Entry** (`entry-fest.png`) + **7× Raum-QR** (Vorschlagsliste in `app/scripts/qr-config.mjs`) und `manifest-schulfest.json`.
+
+Eigene Slug-Liste:
+
+```bash
+npm run generate:qr -- --only=turnhalle,speiseraum,werken,lesewelt,musik,daz
+```
+
+**Outdoor (Schulhof):** mind. **5 × 5 cm**, matt laminiert, Sonnentest — Spezifikation im Playbook.
+
 **Hinweis:** Route `/eintritt` und Token-Prüfung kommen in Phase 2 (#23). Entry-QRs können bis dahin im Browser eine Fehlerseite zeigen — die **URL-Form** ist bereits festgelegt.
 
 **Warnung „URL zu lang“:** Bei kleinem Druck (3 cm) lieber 4 cm wählen oder `--size` erhöhen.

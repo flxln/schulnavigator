@@ -50,7 +50,7 @@ Alle Befehle im Verzeichnis `app/` ausführen.
 | `npm run test`         | Vitest (u. a. Merge Schulhaus ↔ `stations.json`, Issue #14)   |
 | `npm run validate:tokens` | Prüft `app/gs39-tokens.css` gegen `auftraggeber/.../colors_and_type.css` (lokal) bzw. `app/scripts/reference/colors_and_type.css` (Docker, nur `app/` als Kontext) — wird von `build` mitaufgerufen |
 | `npm run validate:stations` | Prüft `bild`- und `quelle`-Pfade unter `public/`; warnt bei extremem Hotspot-**y** (Heuristik, sichtbarer Ausschnitt nach Auto-Zoom) — wird von `build` mitaufgerufen |
-| `npm run generate:qr`  | QR-PNGs + `manifest.json` unter `public/qr/` (Issue #15); liest `.env` / `.env.local` wie dokumentiert in `scripts/load-env-local.mjs` |
+| `npm run generate:qr`  | QR-PNGs + `manifest.json` unter `public/qr/` (Issue #15); `--preset=schulfest` für Schulfest-Subset — [schulfest-gs39-playbook.md](./schulfest-gs39-playbook.md) |
 
 ---
 

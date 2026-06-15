@@ -1,0 +1,56 @@
+{
+  "generatedAt": "2026-06-15T16:14:22.944Z",
+  "baseUrl": "https://schulnavigator.mpz.schule",
+  "entries": [
+    {
+      "file": "entry-fest.png",
+      "url": "https://schulnavigator.mpz.schule/eintritt?t=fest-2026",
+      "token": "fest-2026",
+      "mode": "fest"
+    }
+  ],
+  "rooms": [
+    {
+      "file": "raum-turnhalle.png",
+      "url": "https://schulnavigator.mpz.schule/raum/turnhalle",
+      "slug": "turnhalle",
+      "titel": "Turnhalle"
+    },
+    {
+      "file": "raum-speiseraum.png",
+      "url": "https://schulnavigator.mpz.schule/raum/speiseraum",
+      "slug": "speiseraum",
+      "titel": "Speiseraum"
+    },
+    {
+      "file": "raum-werken.png",
+      "url": "https://schulnavigator.mpz.schule/raum/werken",
+      "slug": "werken",
+      "titel": "Werkenzimmer"
+    },
+    {
+      "file": "raum-lesewelt.png",
+      "url": "https://schulnavigator.mpz.schule/raum/lesewelt",
+      "slug": "lesewelt",
+      "titel": "Lesewelt"
+    },
+    {
+      "file": "raum-klassenzimmer.png",
+      "url": "https://schulnavigator.mpz.schule/raum/klassenzimmer",
+      "slug": "klassenzimmer",
+      "titel": "Klassenzimmer"
+    },
+    {
+      "file": "raum-musik.png",
+      "url": "https://schulnavigator.mpz.schule/raum/musik",
+      "slug": "musik",
+      "titel": "Musikzimmer"
+    },
+    {
+      "file": "raum-daz.png",
+      "url": "https://schulnavigator.mpz.schule/raum/daz",
+      "slug": "daz",
+      "titel": "DaZ-Zimmer"
+    }
+  ]
+}

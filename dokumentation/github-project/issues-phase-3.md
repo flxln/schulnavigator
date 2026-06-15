@@ -190,14 +190,16 @@ Milestone: **Phase 3** | Fällig: 24.06.2026
 **Labels:** `tech` `org`  
 **Assignee:** Felix
 
-**11 Stationen** + Entry-Flow (`fest`-Token):
+**Status (2026-06-15):** Geräte-QA auf Produktion durchgeführt — Protokoll [`2026-06-15-abschlusstest-geraete.md`](../projektmanagement/2026-06-15-abschlusstest-geraete.md). Offen: Mobilfunk am Schulgelände (#91), finales 12/12-Abschluss optional.
+
+**12 Stationen** + Entry-Flow (`fest`-Token):
 
 - [ ] Entry per System-Kamera → Puzzle-Startseite
 - [ ] In-App-Scan pro Raum → Stempel + Segment frei
 - [ ] Gesperrtes Puzzle-Segment nicht klickbar
 - [ ] Medien (inkl. Video vom MPZ-Server) laden unter Mobilfunk
 - [ ] Gyro-Viewer + Hotspot (Portrait: Armschwenk/drehen; Tap für Medien) auf iPhone Safari getestet
-- [ ] 11/11 → Abschluss-Animation
+- [ ] 12/12 → Abschluss-Animation
 - [ ] Raum-QR per Kamera in neuem Tab (localStorage-Token)
 
 Test-Protokoll dokumentieren.
