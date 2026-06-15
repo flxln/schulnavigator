@@ -28,7 +28,7 @@ if (mode === 'open') {
 const tokensRaw = process.env.SN_ACCESS_TOKENS?.trim()
 if (!tokensRaw) {
   fail(
-    'SN_ACCESS_MODE=gated erfordert SN_ACCESS_TOKENS in Production — Fail-closed (ADR-021)',
+    'SN_ACCESS_MODE=gated erfordert SN_ACCESS_TOKENS in Production — Fail-closed (ADR-021). Coolify: Variable als Runtime (nicht nur Buildtime) setzen.',
   )
 }
 
