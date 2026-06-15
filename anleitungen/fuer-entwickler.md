@@ -50,7 +50,7 @@ Alle Befehle im Verzeichnis `app/` ausführen.
 | `npm run test`         | Vitest (u. a. Merge Schulhaus ↔ `stations.json`, Issue #14)   |
 | `npm run validate:tokens` | Prüft `app/gs39-tokens.css` gegen `auftraggeber/.../colors_and_type.css` (lokal) bzw. `app/scripts/reference/colors_and_type.css` (Docker, nur `app/` als Kontext) — wird von `build` mitaufgerufen |
 | `npm run validate:stations` | Prüft `bild`- und `quelle`-Pfade unter `public/`; warnt bei extremem Hotspot-**y** (Heuristik, sichtbarer Ausschnitt nach Auto-Zoom) — wird von `build` mitaufgerufen |
-| `npm run generate:qr`  | QR-PNGs + `manifest.json` unter `public/qr/` (Issue #15); `--preset=schulfest` für Schulfest-Subset — [schulfest-gs39-playbook.md](./schulfest-gs39-playbook.md) |
+| `npm run generate:qr`  | QR-PNGs + Druck-PDFs + `manifest.json` unter `public/qr/` (Issue #15, PDF-Erweiterung #130); `--preset=schulfest` für Schulfest-Set (12 Räume + Entry fest) — [schulfest-gs39-playbook.md](./schulfest-gs39-playbook.md) |
 
 ---
 
@@ -66,7 +66,7 @@ Alle Befehle im Verzeichnis `app/` ausführen.
 | `public/stations/` | Raumbilder (`{slug}.jpg`, ≤ 500 KB) — Gyro-Viewer (ADR-006); Slug-Liste + Anforderungen: [`dokumentation/content-verzeichnisstruktur.md`](../dokumentation/content-verzeichnisstruktur.md) |
 | `public/media/`    | Öffentliche Stations-Medien (`{slug}/audio/`, `/video/`, `/fotos/`, `/texte/`) — statisch ausgeliefert; wird befüllt wenn echte Inhalte vorliegen (bis dahin `/demo/`) |
 | `content/`         | Dialog-Audio WAV-Clips (`dialog-audio/{slug}/{nn}-{sprecher}.wav`) — Cookie-geschützt via `GET /api/dialog/…` (ADR-010); `COPY content/ ./content/` im Dockerfile |
-| `public/qr/`       | generierte QR-PNGs + `manifest.json` (Issue #15; PNGs gitignored) |
+| `public/qr/`       | generierte QR-PNGs + Druck-PDFs (`pdf/`) + `manifest.json` (Issue #15, #130; PNGs/PDFs gitignored) |
 
 Dateinamen für Nicht-Komponenten: `kebab-case` (siehe [`CLAUDE.md`](../CLAUDE.md)).
 

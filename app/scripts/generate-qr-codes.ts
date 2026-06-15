@@ -22,11 +22,25 @@ import {
   SCHULFEST_QR_SLUGS,
   URL_LENGTH_WARN,
 } from './qr-config.mjs'
+import {
+  buildA4GridPdf,
+  buildA4TwoUpPdf,
+  GRID_ITEMS_PER_PAGE,
+  pageCountForItems,
+  TWO_UP_ITEMS_PER_PAGE,
+  TWO_UP_QR_MM,
+} from './qr-pdf-layouts'
+import {
+  toPrintItems,
+  qrWidthPxForMm,
+  type QrPrintItem,
+} from './qr-print-items'
 import { loadEnvLocal } from './load-env-local.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const appRoot = join(__dirname, '..')
 const qrDir = join(appRoot, 'public', 'qr')
+const pdfDir = join(qrDir, 'pdf')
 
 interface ManifestEntry {
   file: string
@@ -99,6 +113,62 @@ function cleanPngOutput() {
       unlinkSync(join(qrDir, ent.name))
     }
   }
+}
+
+function cleanPdfOutput() {
+  let entries
+  try {
+    entries = readdirSync(pdfDir, { withFileTypes: true })
+  } catch {
+    return
+  }
+  for (const ent of entries) {
+    if (ent.isFile() && ent.name.endsWith('.pdf')) {
+      unlinkSync(join(pdfDir, ent.name))
+    }
+  }
+}
+
+function pdfNamePrefix(preset: 'all' | 'schulfest'): string {
+  return preset === 'schulfest' ? 'qr-schulfest' : 'qr'
+}
+
+async function buildQrBuffers(
+  items: QrPrintItem[],
+): Promise<Map<string, Uint8Array>> {
+  const pdfQrWidth = qrWidthPxForMm(TWO_UP_QR_MM)
+  const buffers = new Map<string, Uint8Array>()
+  for (const item of items) {
+    const buf = await QRCode.toBuffer(item.url, {
+      type: 'png',
+      width: pdfQrWidth,
+      errorCorrectionLevel: 'H',
+      margin: 2,
+      color: { dark: '#000000', light: '#ffffff' },
+    })
+    buffers.set(item.id, new Uint8Array(buf))
+  }
+  return buffers
+}
+
+function printDryRunPreview(
+  printItems: QrPrintItem[],
+  width: number,
+  pdfPrefix: string,
+) {
+  const twoUpPages = pageCountForItems(
+    printItems.length,
+    TWO_UP_ITEMS_PER_PAGE,
+  )
+  const gridPages = pageCountForItems(printItems.length, GRID_ITEMS_PER_PAGE)
+  console.log('\n[QR] Print-Items (Entry zuerst, Räume alphabetisch):')
+  for (const item of printItems) {
+    console.log(`  ${item.label}\t${item.subtitle}\t${item.url}`)
+  }
+  console.log(`\n[QR] Würde ${printItems.length} PNG-Dateien schreiben (width=${width}).`)
+  console.log(
+    `[QR] PDF-Vorschau: ${pdfPrefix}-a5-2up.pdf (${twoUpPages} Seite(n)), ${pdfPrefix}-a4-grid-3cm.pdf (${gridPages} Seite(n)).`,
+  )
 }
 
 function resolveRoomSlugs(
@@ -229,15 +299,19 @@ async function main() {
 
   if (dryRun) {
     console.log(
-      '[QR] Dry-Run — keine PNGs, kein Löschen, kein manifest.json.\n',
+      '[QR] Dry-Run — keine PNGs/PDFs, kein Löschen, kein manifest.json.\n',
     )
     console.log(JSON.stringify(manifest, null, 2))
-    const nPng = manifest.entries.length + manifest.rooms.length
-    console.log(`\n[QR] Würde ${nPng} PNG-Dateien schreiben (width=${width}).`)
+    const printItems = toPrintItems(manifest)
+    printDryRunPreview(printItems, width, pdfNamePrefix(preset))
     return
   }
 
   cleanPngOutput()
+  cleanPdfOutput()
+  mkdirSync(pdfDir, { recursive: true })
+
+  const printItems = toPrintItems(manifest)
 
   const qrOptions = {
     type: 'png' as const,
@@ -257,6 +331,15 @@ async function main() {
     await QRCode.toFile(out, room.url, qrOptions)
   }
 
+  const qrBuffers = await buildQrBuffers(printItems)
+  const pdfPrefix = pdfNamePrefix(preset)
+  const twoUpName = `${pdfPrefix}-a5-2up.pdf`
+  const gridName = `${pdfPrefix}-a4-grid-3cm.pdf`
+  const twoUpPdf = await buildA4TwoUpPdf(printItems, qrBuffers)
+  const gridPdf = await buildA4GridPdf(printItems, qrBuffers)
+  writeFileSync(join(pdfDir, twoUpName), twoUpPdf)
+  writeFileSync(join(pdfDir, gridName), gridPdf)
+
   const manifestName =
     preset === 'schulfest' && !onlySlugs
       ? 'manifest-schulfest.json'
@@ -270,6 +353,9 @@ async function main() {
   const total = manifest.entries.length + manifest.rooms.length
   console.log(
     `[QR] ${total} PNG-Dateien geschrieben nach public/qr/ (width=${width}).`,
+  )
+  console.log(
+    `[QR] 2 PDF-Dateien geschrieben nach public/qr/pdf/ (${twoUpName}, ${gridName}).`,
   )
   console.log(`[QR] ${manifestName} aktualisiert.\n`)
   for (const e of manifest.entries) {

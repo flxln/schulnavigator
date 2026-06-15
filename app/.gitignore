@@ -42,5 +42,6 @@ yarn-error.log*
 
 # QR-Code-PNGs (lokal generiert; bei Bedarf: git add -f public/qr/…)
 public/qr/*.png
+public/qr/pdf/*.pdf
 
 certificates
