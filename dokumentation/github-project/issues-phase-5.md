@@ -192,6 +192,27 @@ Delightex-Embed auf Touch-Geräten ohne iframe; `DelightexFallbackPanel` mit Bro
 
 ---
 
+## #128 — Book Creator Embed Lesewelt (ADR-017) — erledigt
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/128  
+**Parent:** #97  
+**Labels:** `tech`, `content`  
+**Assignee:** Felix  
+**Milestone:** Phase 5 — Post-Fest  
+**Status:** geschlossen (2026-06-15, Branch `feature/bookcreator-lesewelt`)
+
+Allowlist `bookcreator.com`, Demo `lesewelt` / `lesewelt-beruehmte-personen` („Berühmte Personen“), `EmbedViewer` mit Book-Creator-Höhe und schlanker Quellenzeile unten.
+
+### Akzeptanzkriterien
+
+- [x] Allowlist + CSP
+- [x] `stations.json` Lesewelt + Hotspot (Platzhalter-Koordinaten)
+- [x] Tests + Doku
+
+**Offen:** Hotspot-Kalibrierung; DSB/Datenschutzerklärung Book Creator
+
+---
+
 ## #51 — Mandantenfähigkeit: andere Schulen vorbereiten
 
 **Labels:** `tech`

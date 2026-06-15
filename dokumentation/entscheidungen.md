@@ -48,4 +48,4 @@ Station: /raum/[slug] → Gyro-Viewer + Hotspots (Tap-Fallback); normales Querfo
 /stationen → Stationsliste (ADR-016, Epic #58)
 ```
 
-Offen: YouTube-Freigabe (Recht, siehe ADR-004); weitere Embed-Anbieter (Book Creator, H5P — Domain + DSB); Datenschutzerklärung um Drittanbieter-Absatz (Delightex); Mandanten-Modell für weitere Schulen. Echtes Kamera-AR: Post-Fest (nicht ADR-006). ADR-017 Stufe 1–3 live (#98–#100, Delightex-Fallback Mobile #109); Demo `pc-raum`.
+Offen: YouTube-Freigabe (Recht, siehe ADR-004); H5P (Domain + DSB); Datenschutzerklärung um Drittanbieter-Absatz (Delightex, Book Creator); Mandanten-Modell für weitere Schulen. Echtes Kamera-AR: Post-Fest (nicht ADR-006). ADR-017 Stufe 1–3 live; Book Creator Lesewelt (#128); Delightex Demo `pc-raum`.
