@@ -67,6 +67,7 @@ Neue Umgebungsvariable `SN_ACCESS_MODE` mit zwei Werten:
 - **Tests:** Middleware-Tests um beide Modi erweitern; ENV-Token-Laden mit Fail-closed-Fall abdecken. (Heutige Lücke laut SE-05: dünne Integrationstests des Token-Flows.)
 - **Doku:** ADR-005/007 erhalten bei Annahme einen Status-Nachtrag („Durchsetzung konfigurierbar: ADR-021"); `anleitungen/fuer-entwickler.md` um die neuen ENV-Variablen ergänzen; DSGVO-Konzept prüfen, ob `open`-Modus + Einbettung eine eigene Einordnung braucht.
 - **Folge-Härtung (optional, `gated`-Kunden mit echtem Schutzbedarf):** lange Zufallstokens + Rate-Limiting auf der Token-Validierung — separater Schritt (Agent-Stack `fsp-08`/`fsp-09`), nicht Teil dieses ADR.
+- **Folge-Tooling:** Issue [#141](https://github.com/flxln/schulnavigator/issues/141) — CLI `rotate:access-tokens` orchestriert manuelle Token-Rotation (Constants, QR-Sets, Coolify-JSON).
 
 ### Festgelegte Sub-Entscheidungen (2026-06-15)
 

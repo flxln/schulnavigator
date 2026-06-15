@@ -11,7 +11,7 @@ _Stand: 2026-06-11 (**#111:** Card-Peek Raumseiten + iOS-Breitenfix; **#107:** S
 | Hosting             | MPZ-Hetzner via Coolify                           | gleich                           | [001](./adr/001-hosting-coolify.md)           |
 | Containerisierung   | Docker                                            | gleich                           | [001](./adr/001-hosting-coolify.md)           |
 | Custom-Admin        | —                                                 | **verworfen** (Directus)         | [003](./adr/003-content-mvp-json-directus.md) |
-| QR-Code-Generierung | Script `npm run generate:qr`, `lib/qr-urls.ts` (URLs) | gleich                           | —                                             |
+| QR-Code-Generierung | `npm run generate:qr`, `lib/qr-urls.ts`; Token-Rotation `rotate:access-tokens` *(#141)* | gleich | — |
 | Video-Hosting       | MPZ-Server (Upload)                               | YouTube-Embed nach Rechtsklärung | [004](./adr/004-video-hosting-mpz.md)         |
 | Zugangskontrolle    | Entry-Token, Cookie `sn_access` + Middleware, Modi `fest`/`heft` | gleich                           | [005](./adr/005-zugangskontrolle-token.md), [007](./adr/007-zugangskontrolle-cookie.md) |
 | Navigation          | In-App-Scanner Entry (`/eintritt/scan`) + Räume (`/scan`) | gleich                      | [005](./adr/005-zugangskontrolle-token.md), [008](./adr/008-eintritt-in-app-scanner.md) |
@@ -143,7 +143,7 @@ Hotspot oder Medienliste → [`StationMediaPanel`](../app/components/station-med
 - **Fortschritt 11/11:** `SparkleBurst` auf der Startseite einmalig (`sn_sparkle_done` in `localStorage`, L6).
 - **`/api/dialog/[slug]/[clip]`** — Dialog-Audio aus `content/dialog-audio/`; **403** ohne Cookie; **206** Range ([ADR-010](./adr/010-dialog-cutscene-gated-audio.md), #69).
 
-**Zugang (Issue #23, Entry-Scanner #57, Route #82):** Token-Liste [`app/lib/access-tokens.ts`](../app/lib/access-tokens.ts) (sync mit [`app/scripts/qr-config.mjs`](../app/scripts/qr-config.mjs)); Middleware [`app/middleware.ts`](../app/middleware.ts) setzt/prüft Cookie `sn_access`. Entry-Treffer im Scanner: `location.replace` zu `/eintritt?t=…` (kein Token im Client-Bundle). Cookie-frei ohne `?t=`: explizite Whitelist `/eintritt`, `/eintritt/scan` (kein `startsWith` — siehe ADR-008 Nachtrag). Weitere Ausnahmen: `/api/health`, `/_next/*`, `favicon.ico`, `robots.txt`.
+**Zugang (Issue #23, Entry-Scanner #57, Route #82):** Token-Liste Production aus `SN_ACCESS_TOKENS` (ENV), Dev-Fallback [`app/lib/access-token-constants.mjs`](../app/lib/access-token-constants.mjs) (re-export via [`app/scripts/qr-config.mjs`](../app/scripts/qr-config.mjs)); Runtime [`app/lib/access-tokens.ts`](../app/lib/access-tokens.ts). Rotation: Issue #141 (`rotate:access-tokens`). Middleware [`app/middleware.ts`](../app/middleware.ts) setzt/prüft Cookie `sn_access`.
 
 Sprechende Raum-Slugs (z. B. `/raum/musik`) — siehe [ADR-002](./adr/002-frontend-nextjs.md).
 

@@ -21,7 +21,7 @@ Besucher scannen QR-Codes, die an Türen und Räumen angebracht sind, und sehen 
 | -------------- | ----------------------------------------------------- |
 | Frontend       | Next.js (App Router), TypeScript strict, Tailwind CSS |
 | Hosting        | Docker (Multi-stage Build), Coolify                   |
-| QR-Export      | `npm run generate:qr` (PNG + `manifest.json`, Issue #15) — [Anleitung](anleitungen/qr-codes-drucken.md) |
+| QR-Export      | `npm run generate:qr` (PNG + `manifest.json`, #15); Token-Rotation: `rotate:access-tokens` *(#141, geplant)* — [Anleitung](anleitungen/qr-codes-drucken.md) |
 | Content (MVP)  | JSON im Repo                                          |
 | Content (Ziel) | Directus (self-hosted)                                |
 | Sprache        | Deutsch / Englisch                                    |
