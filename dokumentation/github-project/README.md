@@ -13,6 +13,7 @@ Dieser Ordner ist die **führende Spezifikation** für Milestones und Issues in 
 | [epic-externe-medien-hotspot-marker.md](epic-externe-medien-hotspot-marker.md) | Epic **#97**: ADR-017 — Hotspot-Marker, `link`, `embed` — Unterissues #98–#100 |
 | [epic-coach-fortschritt.md](epic-coach-fortschritt.md) | Epic **#121**: ADR-019 — Coach Fortschritts-Einblendungen — Unterissue #122 (Raum-Overlay-Priorität) |
 | [epic-hub-wegweiser.md](epic-hub-wegweiser.md) | Epic **#124**: ADR-020 — Hub Wegweiser Schulhof/Turnhalle, 12 Stationen |
+| [epic-zugangsmodus-konfigurierbar.md](epic-zugangsmodus-konfigurierbar.md) | Epic **#132**: ADR-021 — Zugangsmodus `open`/`gated`, Tokens ENV, Embedding/CSP — Unterissues #133–#139 |
 | [labels.md](labels.md) | Label-Konventionen |
 
 Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) und [entscheidungen.md](../entscheidungen.md).
@@ -75,4 +76,6 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [ ] Epic **#86** — offen bis #90/#91; Druckset 12 Räume erledigt
 - [ ] Issue **#89** — technisch erledigt; Sonnentest offen
 
-Letzter dokumentierter Abgleich: **2026-06-15** (Issue-Sync Schulfest-Epic #86–#91, #130, #39-Body).
+- [ ] Epic **#132** (ADR-021 Zugangsmodus konfigurierbar) + **#133–#139** — offen, Branch `feat/adr-021-zugangsmodus`; [epic-zugangsmodus-konfigurierbar.md](epic-zugangsmodus-konfigurierbar.md)
+
+Letzter dokumentierter Abgleich: **2026-06-15** (Epic #132 ADR-021, Issue-Sync Schulfest-Epic #86–#91, #130, #39-Body).
