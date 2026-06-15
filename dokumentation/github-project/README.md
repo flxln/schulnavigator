@@ -78,4 +78,6 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 
 - [x] Epic **#132** (ADR-021 Zugangsmodus konfigurierbar) + **#133–#139** — umgesetzt, [PR #140](https://github.com/flxln/schulnavigator/pull/140); [epic-zugangsmodus-konfigurierbar.md](epic-zugangsmodus-konfigurierbar.md)
 
-Letzter dokumentierter Abgleich: **2026-06-15** (Epic #132 ADR-021 umgesetzt/PR #140, Manifeste rotierte Entry-Tokens).
+- [ ] Issue **#141** (`rotate:access-tokens`) — umgesetzt auf Branch `feat/rotate-access-tokens`, PR ausstehend
+
+Letzter dokumentierter Abgleich: **2026-06-15** (Issue #141 Token-Rotations-CLI spezifiziert, Doku-Sync).
