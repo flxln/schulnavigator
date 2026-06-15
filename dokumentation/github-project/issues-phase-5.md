@@ -315,9 +315,9 @@ Konfigurierbarer Zugangsmodus (`SN_ACCESS_MODE`: `gated`|`open`), Tokens aus ENV
 
 ## Issue #141 — CLI rotate:access-tokens (ADR-021 Folge)
 
-**GitHub:** https://github.com/flxln/schulnavigator/issues/141  
+**GitHub:** https://github.com/flxln/schulnavigator/issues/141 — **geschlossen**  
+**PR:** [#142](https://github.com/flxln/schulnavigator/pull/142) → `main`  
 **Plan:** [`.cursor/plans/token-rotation-skript_acd7d0d2.plan.md`](../../.cursor/plans/token-rotation-skript_acd7d0d2.plan.md)  
-**Branch:** `main` (gemerged [PR #142](https://github.com/flxln/schulnavigator/pull/142))  
 **Folge zu:** Epic #132 / ADR-021
 
 Orchestriert Entry-Token-Rotation: Zufallstokens, `access-token-constants.mjs`, `SN_ACCESS_TOKENS`-JSON für Coolify, Tests, `generate:qr` (volles Set + Schulfest). Fix: PDF-Cleanup in `generate-qr-codes.ts` preset-spezifisch.

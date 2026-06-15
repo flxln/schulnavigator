@@ -80,4 +80,4 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 
 - [x] Issue **#141** (`rotate:access-tokens`) — geschlossen 2026-06-15, [PR #142](https://github.com/flxln/schulnavigator/pull/142) → `main`
 
-Letzter dokumentierter Abgleich: **2026-06-15** (Issue #141 Token-Rotations-CLI spezifiziert, Doku-Sync).
+Letzter dokumentierter Abgleich: **2026-06-15** (#141 geschlossen, PR #142 → `main`, `rotate:access-tokens` live).
