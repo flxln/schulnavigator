@@ -8,6 +8,8 @@ _Anleitung für MPZ/Lehrkräfte (MVP): Medien und Hotspots ohne Admin-Oberfläch
 
 Verwandte Dokumente:
 
+- [content-pflege-uebersicht.md](../dokumentation/content-pflege-uebersicht.md) — alle Pflegeorte und -wege (Übersicht)
+- [content-pflege-interaktiv.html](../dokumentation/content-pflege-interaktiv.html) — interaktive Übersicht nach Content-Typ
 - [content-verzeichnisstruktur.md](../dokumentation/content-verzeichnisstruktur.md) — Slugs, Zonen, Pfadkonventionen
 - [public/media/README.md](../app/public/media/README.md) — Kurzreferenz Ordnerstruktur
 - [lokal-testen-und-anschauen.md](./lokal-testen-und-anschauen.md) — Test-Routen, Build-Check

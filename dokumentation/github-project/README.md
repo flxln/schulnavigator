@@ -70,4 +70,4 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 
 - [x] Issue **#128** (Book Creator Embed Lesewelt, ADR-017) — geschlossen 2026-06-15, Branch `feature/bookcreator-lesewelt`
 
-Letzter dokumentierter Abgleich: **2026-06-15** (Issue #128 Book Creator Lesewelt, Branch `feature/bookcreator-lesewelt`).
+Letzter dokumentierter Abgleich: **2026-06-15** (Issue #128 Book Creator Lesewelt; Content-Pflege-Doku `content-pflege-uebersicht.md` + interaktive HTML).
