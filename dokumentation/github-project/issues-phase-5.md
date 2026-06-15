@@ -288,7 +288,8 @@ Zeitrahmen: frühestens Schuljahr 2026/27.
 **GitHub:** https://github.com/flxln/schulnavigator/issues/132  
 **Epic-Doku:** [epic-zugangsmodus-konfigurierbar.md](epic-zugangsmodus-konfigurierbar.md)  
 **Plan:** [`.cursor/plans/adr-021_zugangsmodus_c30df8a5.plan.md`](../../.cursor/plans/adr-021_zugangsmodus_c30df8a5.plan.md)  
-**Branch:** `feat/adr-021-zugangsmodus`
+**Branch:** `feat/adr-021-zugangsmodus`  
+**PR:** [#140](https://github.com/flxln/schulnavigator/pull/140) — umgesetzt, offen
 
 **Labels:** `tech`  
 **Assignee:** Felix  
@@ -297,7 +298,7 @@ Zeitrahmen: frühestens Schuljahr 2026/27.
 
 Konfigurierbarer Zugangsmodus (`SN_ACCESS_MODE`: `gated`|`open`), Tokens aus ENV (`SN_ACCESS_TOKENS`), CSP `frame-ancestors` für Website-Einbettung (`SN_EMBED_ANCESTORS`). Pilot bleibt `gated`.
 
-### Unterissues
+### Unterissues (alle umgesetzt in PR #140)
 
 | Nr. | Titel | GitHub |
 |-----|-------|--------|
