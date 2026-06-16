@@ -45,7 +45,7 @@ Nach Sparring (Zeitdruck 8 Tage, Single-Point-of-Failure): **Plan A ist der krit
 | Anleitung | [anleitungen/projekttag-content-ingest.md](../../anleitungen/projekttag-content-ingest.md) |
 | JSON-Schema | [app/data/stations.schema.json](../../app/data/stations.schema.json) |
 | Snippets | [.vscode/schulnavigator-content.code-snippets](../../.vscode/schulnavigator-content.code-snippets) |
-| CLI | `npm run content:ingest` → [app/scripts/content-ingest.mjs](../../app/scripts/content-ingest.mjs) |
+| CLI | `npm run content:ingest` → [app/scripts/content-ingest.ts](../../app/scripts/content-ingest.ts) (IO via [lib/mpz-content-io.ts](../../app/lib/mpz-content-io.ts)) |
 
 **Plan B — Scope (nur wenn bis ~22.06. stabil):** Medien-Upload mit korrekten Pfaden, Hotspot-Rückschreibung (Flat + Sphere). Kein Coach, Brand, Hub, Deploy-Tab vor dem 26.06.
 
@@ -299,7 +299,7 @@ Abgeleitet aus zwei unabhängigen Plan-Reviews (SE-15: Codex, GLM-5.1). v0 ist *
 
 - [ ] `writeStations()` schreibt **atomar**: temp-Datei → `fs.rename`, vorher `stations.json.bak` aktualisieren; deterministische Key-Reihenfolge / pretty-print.
 - [ ] **Rollback:** Schlägt die Validierung nach dem Save fehl, wird die vorige Version wiederhergestellt (`.bak` bzw. nicht-comitteter Stand) — keine kaputte `stations.json` bleibt liegen.
-- [ ] `lib/mpz-content-io` wird **vor** dem ersten UI-Edit-Feld gebaut und mit Unit-Tests abgesichert; die bestehende CLI (`content-ingest.mjs`) nutzt denselben Layer (DRY) — kein verteilter `node:fs`-Zugriff in UI-Code (T2).
+- [x] `lib/mpz-content-io` wird **vor** dem ersten UI-Edit-Feld gebaut und mit Unit-Tests abgesichert; die bestehende CLI (`content-ingest.ts`) nutzt denselben Layer (DRY) — kein verteilter `node:fs`-Zugriff in UI-Code (T2). Umgesetzt #146 (2026-06-16).
 
 **Upload-Regeln (Befund 5)**
 
