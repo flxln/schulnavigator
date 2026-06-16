@@ -3,50 +3,28 @@
  * Medien-Datei ins richtige public/media/{slug}/-Verzeichnis kopieren;
  * optional medien[]-Eintrag in stations.json anhängen.
  *
+ * Dünne CLI über den gemeinsamen Ingest-Layer `lib/mpz-medium-ingest.ts` (#147, DRY).
+ * Neue Validierung gegenüber #146: Magic-Bytes + Größenlimit je Typ. Bei
+ * id-/Datei-Kollision bricht die CLI weiterhin hart ab (`collision: 'reject'`,
+ * Pre-Mortem-Befund #5 — kein stilles Rename wie bei API/UI).
+ *
  * @example
  * npm run content:ingest -- --slug werken --typ audio --file ~/Downloads/clip.m4a --untertitel "Unser Werken"
  * npm run content:ingest -- --slug werken --typ foto --file ./foto.jpg --dry-run
  */
 
-import { copyFileSync, existsSync, mkdirSync } from 'node:fs'
-import { basename, dirname, extname, join, resolve } from 'node:path'
-import { fileURLToPath } from 'node:url'
-import { readStations, writeStations, MpzContentIoError } from '@/lib/mpz-content-io'
-import type { Medium } from '@/lib/types'
+import { existsSync, statSync } from 'node:fs'
+import { resolve } from 'node:path'
+import {
+  ingestMediumFile,
+  MpzUploadError,
+  type UploadTyp,
+} from '@/lib/mpz-medium-ingest'
+import { MpzContentIoError } from '@/lib/mpz-content-io'
+import { isUploadTyp, UPLOAD_RULES } from '@/lib/mpz-upload-rules'
+import { HUB_SLUG_MAP } from '@/lib/schoolhouse-hub-map'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const publicDir = join(__dirname, '..', 'public')
-
-const HUB_SLUGS = [
-  'klassenzimmer',
-  'musik',
-  'daz',
-  'kunst',
-  'pc-raum',
-  'lesewelt',
-  'werken',
-  'speiseraum',
-  'hort',
-  'turnhalle',
-  'schulsozialarbeit',
-  'schulhof',
-] as const
-
-const TYP_TO_FOLDER = {
-  audio: 'audio',
-  video: 'video',
-  foto: 'fotos',
-  text: 'texte',
-} as const
-
-const TYP_DEFAULT_EXT = {
-  audio: '.mp3',
-  video: '.mp4',
-  foto: '.jpg',
-  text: '.md',
-} as const
-
-type IngestTyp = keyof typeof TYP_TO_FOLDER
+const HUB_SLUGS = Object.keys(HUB_SLUG_MAP)
 
 interface IngestOptions {
   slug?: string
@@ -120,23 +98,6 @@ function parseArgs(argv: string[]): IngestOptions {
   return opts
 }
 
-function slugifyId(value: string): string {
-  return value
-    .normalize('NFKD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 48)
-}
-
-function sanitizeFilename(name: string): string {
-  const base = basename(name)
-  const ext = extname(base).toLowerCase()
-  const stem = slugifyId(base.slice(0, base.length - ext.length) || 'datei')
-  return `${stem || 'datei'}${ext || ''}`
-}
-
 async function main(): Promise<void> {
   const opts = parseArgs(process.argv.slice(2))
 
@@ -145,22 +106,19 @@ async function main(): Promise<void> {
     usage()
   }
 
-  if (!HUB_SLUGS.includes(opts.slug as (typeof HUB_SLUGS)[number])) {
-    console.error(
-      `Unbekannter slug "${opts.slug}". Erlaubt: ${HUB_SLUGS.join(', ')}`,
-    )
+  if (!HUB_SLUGS.includes(opts.slug)) {
+    console.error(`Unbekannter slug "${opts.slug}". Erlaubt: ${HUB_SLUGS.join(', ')}`)
     process.exit(1)
   }
 
-  const typ = opts.typ as IngestTyp
-  const folder = TYP_TO_FOLDER[typ]
-  if (!folder) {
+  if (!isUploadTyp(opts.typ)) {
     console.error(
-      `typ "${opts.typ}" nicht unterstützt. Nutze: ${Object.keys(TYP_TO_FOLDER).join(', ')}`,
+      `typ "${opts.typ}" nicht unterstützt. Nutze: ${Object.keys(UPLOAD_RULES).join(', ')}`,
     )
     console.error('Für link/embed: Snippet in stations.json (sn-medium-link / sn-medium-embed).')
     process.exit(1)
   }
+  const typ: UploadTyp = opts.typ
 
   const sourcePath = resolve(opts.file)
   if (!existsSync(sourcePath)) {
@@ -168,90 +126,48 @@ async function main(): Promise<void> {
     process.exit(1)
   }
 
-  let filename = sanitizeFilename(sourcePath)
-  const ext = extname(filename)
-  if (!ext && TYP_DEFAULT_EXT[typ]) {
-    filename = `${filename}${TYP_DEFAULT_EXT[typ]}`
-  }
-
-  const destDir = join(publicDir, 'media', opts.slug, folder)
-  const destPath = join(destDir, filename)
-  const quelle = `/media/${opts.slug}/${folder}/${filename}`
-
-  const mediumId =
-    opts.id?.trim() ||
-    slugifyId(`${opts.slug}-${basename(filename, extname(filename))}`)
-
   console.log('content:ingest')
   console.log(`  slug:    ${opts.slug}`)
-  console.log(`  typ:     ${opts.typ}`)
-  console.log(`  quelle:  ${quelle}`)
-  console.log(`  ziel:    ${destPath}`)
+  console.log(`  typ:     ${typ}`)
+  console.log(`  quelle:  ${sourcePath}`)
   if (opts.append) {
-    console.log(`  medium:  id="${mediumId}"`)
+    console.log(`  append:  ja`)
   }
 
   if (opts.dryRun) {
-    console.log('\n(dry-run — keine Änderungen)')
+    console.log('\n(dry-run — Datei wird validiert, aber nichts geschrieben)')
+    // Dry-Run: nur Existenz/Größe melden; volle Validierung läuft im echten Lauf.
+    const { size } = statSync(sourcePath)
+    console.log(`  größe:   ${Math.round(size / 1024)} KB`)
     return
   }
-
-  mkdirSync(destDir, { recursive: true })
-  copyFileSync(sourcePath, destPath)
-  console.log('\nDatei kopiert.')
-
-  if (!opts.append) {
-    console.log('JSON unverändert (--no-append).')
-    return
-  }
-
-  const stationsFile = await readStations()
-  const station = stationsFile.stations.find((s) => s.slug === opts.slug)
-  if (!station) {
-    console.error(`Station "${opts.slug}" nicht in stations.json gefunden.`)
-    process.exit(1)
-  }
-
-  if (!Array.isArray(station.medien)) {
-    station.medien = []
-  }
-
-  if (station.medien.some((m) => m.id === mediumId)) {
-    console.error(`medium.id "${mediumId}" existiert bereits in Station "${opts.slug}".`)
-    process.exit(1)
-  }
-
-  const medium: Medium = {
-    id: mediumId,
-    typ,
-    quelle,
-  }
-  if (opts.untertitel?.trim()) {
-    medium.untertitel = opts.untertitel.trim()
-  }
-  if (typ === 'video') {
-    medium.videoSource = 'upload'
-  }
-
-  station.medien.push(medium)
 
   try {
-    await writeStations(stationsFile, {
-      strict: true,
-      validateAssets: true,
-      canonicalize: false,
-      makeBackup: true,
+    const result = await ingestMediumFile({
+      slug: opts.slug,
+      typ,
+      source: { sourcePath },
+      originalName: sourcePath,
+      id: opts.id,
+      untertitel: opts.untertitel,
+      collision: 'reject',
+      skipJson: !opts.append,
     })
+    console.log(`\nDatei kopiert: ${result.quelle}`)
+    if (result.jsonWritten) {
+      console.log(`medium: id="${result.medium.id}"`)
+      console.log('stations.json aktualisiert (Backup: stations.json.bak).')
+    } else {
+      console.log('JSON unverändert (--no-append).')
+    }
+    console.log('\ncontent:ingest OK.')
   } catch (err) {
-    if (err instanceof MpzContentIoError) {
+    if (err instanceof MpzUploadError || err instanceof MpzContentIoError) {
       console.error(`\n${err.message}`)
       process.exit(1)
     }
     throw err
   }
-
-  console.log('stations.json aktualisiert (Backup: stations.json.bak).')
-  console.log('\ncontent:ingest OK.')
 }
 
 main().catch((err) => {

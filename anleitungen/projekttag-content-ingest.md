@@ -88,6 +88,8 @@ npm run content:ingest -- --slug werken --typ foto --file ./bild.jpg --no-append
 
 Nach dem Lauf: Struktur- und Asset-Validierung laufen **vor** dem Schreiben über [`lib/mpz-content-io`](../app/lib/mpz-content-io.ts) (Pre-Validate, dann atomarer Write; Backup `app/data/stations.json.bak`). Bei Fehler bleibt `stations.json` unverändert.
 
+**Plan-B-Alternative (#147):** Derselbe Pfad/JSON-Effekt steht auch als lokales Studio-Upload-UI unter `/mpz/studio/ingest` bereit (nur `npm run dev`) — gemeinsamer Ingest-Layer mit der CLI, aber mit automatischem Umbenennen bei Kollision statt Abbruch.
+
 **Nicht unterstützt:** `link`, `embed` — URLs per Snippet in JSON eintragen.
 
 ---

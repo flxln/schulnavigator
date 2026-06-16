@@ -51,12 +51,16 @@ Schmales, **MPZ-internes** Pflege-UI als optionaler **Plan B** zum bereits umges
 
 **Draußen (Post-Fest v1/v2):** Coach, Embed-Allowlist-Extraktion, Brand, Hub-Slug-Map, Station-Icons, GS39-Tokens, Deploy-Tab, Config-Extraktion nach JSON.
 
+## Risiken / Folge-Tasks
+
+- **Orphan-Files (Folge-Task zu #147, Pre-Mortem Gemini #3):** Der Ingest kompensiert bei JSON-Fehler (`unlink`), aber ein Prozessabsturz **zwischen** Datei-Write und JSON-Write kann verwaiste Dateien in `public/media/` hinterlassen, die langfristig die Kollisions-Logik (`-2`, `-3`) verschmutzen. Geplant, **nicht in #147 gebaut:** kleines `clean-orphans`-CLI-Skript, das `public/media/`-Dateien gegen `data/stations.json` abgleicht und nicht referenzierte Dateien meldet/löscht. Single-Operator (ADR-022) macht das v0 unkritisch.
+
 ## Checkliste (Epic)
 
 - [x] Claude Design v0 (SE 13) — Prototyp in `dokumentation/design/mpz-studio-claude-design/version_1/mpz-studio-prototype/` (2026-06-16)
 - [x] #145 Guard + Route-Skeleton (Dev-only, 401/ok/404 getestet)
 - [x] #146 `lib/mpz-content-io` (atomar, `.bak`, Pre-Validate, Tests, CLI-DRY)
-- [ ] #147 Medien-Ingest + Upload-Regeln (MIME/Magic-Byte/Größe/Normalisierung/Kollision)
+- [x] #147 Medien-Ingest + Upload-Regeln (Magic-Byte via `file-type`/Größe/Normalisierung/Kollision; `lib/mpz-upload-rules.ts` + `lib/mpz-medium-ingest.ts`, API `POST /api/mpz/media/ingest`, Mini-UI `/mpz/studio/ingest`, CLI-DRY)
 - [ ] #148 Dialog-Audio-Ingest
 - [ ] #149 Flat-Kalibrier-Route + 360°-Rückschreibung
 - [ ] #150 Validierungs-Vertrag (Struktur + Asset; `validate:tokens` raus; debounced)
