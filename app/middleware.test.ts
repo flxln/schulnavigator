@@ -7,9 +7,11 @@ import {
   HEFT_DEV_TOKEN,
   resetAccessTokensCacheForTests,
 } from '@/lib/access-tokens'
+import { MPZ_STUDIO_COOKIE } from '@/lib/mpz-studio-guard'
 import { middleware, ACCESS_PROTECTED_MATCHER } from './middleware'
 
 const BASE = 'http://localhost:3000'
+const MPZ_SECRET = 'mpz-test-secret'
 
 /** Gespiegelte Matcher-Logik — muss mit ACCESS_PROTECTED_MATCHER und config.matcher übereinstimmen. */
 function middlewareRunsFor(pathname: string): boolean {
@@ -19,14 +21,14 @@ function middlewareRunsFor(pathname: string): boolean {
     pathname === '/eintritt' ||
     pathname.startsWith('/eintritt/') ||
     pathname === '/stationen' ||
-    pathname.startsWith('/raum/')
+    pathname.startsWith('/raum/') ||
+    pathname === '/mpz' ||
+    pathname.startsWith('/mpz/')
   )
 }
 
 function req(path: string, cookie?: string): NextRequest {
-  const headers = cookie
-    ? { cookie: `${ACCESS_COOKIE}=${cookie}` }
-    : undefined
+  const headers = cookie ? { cookie } : undefined
   return new NextRequest(new URL(path, BASE), { headers })
 }
 
@@ -55,7 +57,7 @@ describe('middleware', () => {
   it('lässt gültiges Cookie auf / durch', () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date('2026-06-01'))
-    const res = middleware(req('/', FEST_DEV_TOKEN))
+    const res = middleware(req('/', `${ACCESS_COOKIE}=${FEST_DEV_TOKEN}`))
     expect(res.status).toBe(200)
     expect(res.headers.get('location')).toBeNull()
   })
@@ -86,7 +88,7 @@ describe('middleware', () => {
   it('leitet abgelaufenes Cookie mit reason=expired um', () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date('2026-08-01'))
-    const res = middleware(req('/', FEST_DEV_TOKEN))
+    const res = middleware(req('/', `${ACCESS_COOKIE}=${FEST_DEV_TOKEN}`))
     expect(res.status).toBe(307)
     expect(res.headers.get('location')).toBe(`${BASE}/eintritt?reason=expired`)
   })
@@ -143,10 +145,45 @@ describe('middleware', () => {
     process.env.DEV_UNLOCK_ALL = 'true'
     process.env.NODE_ENV = 'development'
 
-    const res = middleware(req('/', FEST_DEV_TOKEN))
+    const res = middleware(req('/', `${ACCESS_COOKIE}=${FEST_DEV_TOKEN}`))
     expect(res.status).toBe(200)
     const setCookie = res.headers.get('set-cookie') ?? ''
     expect(setCookie).toContain(`${ACCESS_COOKIE}=${HEFT_DEV_TOKEN}`)
+  })
+
+  describe('MPZ Studio (/mpz/*)', () => {
+    beforeEach(() => {
+      vi.stubEnv('SN_MPZ_STUDIO_SECRET', MPZ_SECRET)
+    })
+
+    afterEach(() => {
+      vi.unstubAllEnvs()
+    })
+
+    it('/mpz/studio in production → 404', () => {
+      vi.stubEnv('NODE_ENV', 'production')
+      const res = middleware(req('/mpz/studio'))
+      expect(res.status).toBe(404)
+    })
+
+    it('/mpz in production → 404 (kein /eintritt-Redirect)', () => {
+      vi.stubEnv('NODE_ENV', 'production')
+      const res = middleware(req('/mpz'))
+      expect(res.status).toBe(404)
+      expect(res.headers.get('location')).toBeNull()
+    })
+
+    it('/mpz/studio in development ohne Auth → 401', () => {
+      vi.stubEnv('NODE_ENV', 'development')
+      const res = middleware(req('/mpz/studio'))
+      expect(res.status).toBe(401)
+    })
+
+    it('/mpz/studio in development mit Studio-Cookie → durch', () => {
+      vi.stubEnv('NODE_ENV', 'development')
+      const res = middleware(req('/mpz/studio', `${MPZ_STUDIO_COOKIE}=${MPZ_SECRET}`))
+      expect(res.status).toBe(200)
+    })
   })
 
   it('Drift-Guard: middlewareRunsFor deckt ACCESS_PROTECTED_MATCHER ab', () => {
@@ -156,6 +193,8 @@ describe('middleware', () => {
     }
     expect(middlewareRunsFor('/raum/pc-raum')).toBe(true)
     expect(middlewareRunsFor('/eintritt/scan')).toBe(true)
+    expect(middlewareRunsFor('/mpz')).toBe(true)
+    expect(middlewareRunsFor('/mpz/studio')).toBe(true)
   })
 
   describe('SN_ACCESS_MODE=open', () => {

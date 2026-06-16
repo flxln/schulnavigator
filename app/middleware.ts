@@ -8,6 +8,7 @@ import {
   type AccessToken,
 } from '@/lib/access-tokens'
 import { DEV_UNLOCK_HEFT_TOKEN, isDevUnlockAll } from '@/lib/dev-unlock'
+import { mpzStudioPageGuard } from '@/lib/mpz-studio-guard'
 
 const IS_PROD = process.env.NODE_ENV === 'production'
 
@@ -49,6 +50,10 @@ function isPublicAssetPath(pathname: string): boolean {
 
 export function middleware(req: NextRequest) {
   const url = req.nextUrl
+  if (url.pathname === '/mpz' || url.pathname.startsWith('/mpz/')) {
+    return mpzStudioPageGuard(req)
+  }
+
   if (isPublicAssetPath(url.pathname)) {
     return NextResponse.next()
   }
@@ -114,9 +119,20 @@ export const ACCESS_PROTECTED_MATCHER = [
   '/eintritt',
   '/eintritt/:path*',
   '/stationen',
+  '/mpz',
+  '/mpz/:path*',
 ] as const
 
 // Next.js erfordert statisch parsebare matcher-Literale (kein Spread aus Konstante).
 export const config = {
-  matcher: ['/', '/raum/:path*', '/scan', '/eintritt', '/eintritt/:path*', '/stationen'],
+  matcher: [
+    '/',
+    '/raum/:path*',
+    '/scan',
+    '/eintritt',
+    '/eintritt/:path*',
+    '/stationen',
+    '/mpz',
+    '/mpz/:path*',
+  ],
 }
