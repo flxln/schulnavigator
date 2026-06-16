@@ -61,7 +61,7 @@ Schmales, **MPZ-internes** Pflege-UI als optionaler **Plan B** zum bereits umges
 - [x] #145 Guard + Route-Skeleton (Dev-only, 401/ok/404 getestet)
 - [x] #146 `lib/mpz-content-io` (atomar, `.bak`, Pre-Validate, Tests, CLI-DRY)
 - [x] #147 Medien-Ingest + Upload-Regeln (Magic-Byte via `file-type`/Größe/Normalisierung/Kollision; `lib/mpz-upload-rules.ts` + `lib/mpz-medium-ingest.ts`, API `POST /api/mpz/media/ingest`, Mini-UI `/mpz/studio/ingest`, CLI-DRY)
-- [ ] #148 Dialog-Audio-Ingest
+- [x] #148 Dialog-Audio-Ingest (WAV-Konvention, Segment-Verknüpfung, Audit; `lib/mpz-dialog-audio-ingest`, API ingest/status, Mini-UI `/mpz/studio/dialog-audio`, CLI `content:ingest-dialog`)
 - [ ] #149 Flat-Kalibrier-Route + 360°-Rückschreibung
 - [ ] #150 Validierungs-Vertrag (Struktur + Asset; `validate:tokens` raus; debounced)
 - [ ] #151 Dashboard/Liste/Vorschau + Doku in `fuer-entwickler.md`
