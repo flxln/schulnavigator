@@ -173,10 +173,13 @@ describe('middleware', () => {
       expect(res.headers.get('location')).toBeNull()
     })
 
-    it('/mpz/studio in development ohne Auth → 401', () => {
+    it('/mpz/studio in development ohne Auth → Redirect /mpz/unlock', () => {
       vi.stubEnv('NODE_ENV', 'development')
       const res = middleware(req('/mpz/studio'))
-      expect(res.status).toBe(401)
+      expect(res.status).toBe(307)
+      expect(res.headers.get('location')).toBe(
+        `${BASE}/mpz/unlock?next=%2Fmpz%2Fstudio`,
+      )
     })
 
     it('/mpz/studio in development mit Studio-Cookie → durch', () => {
