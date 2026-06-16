@@ -81,4 +81,6 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 
 - [x] Issue **#141** (`rotate:access-tokens`) — geschlossen 2026-06-15, [PR #142](https://github.com/flxln/schulnavigator/pull/142) → `main`
 
-Letzter dokumentierter Abgleich: **2026-06-15** (#141 geschlossen, PR #142 → `main`, `rotate:access-tokens` live).
+- [x] Epic **#144** (MPZ Studio v0, ADR-022) — Spezifikation + Plan A (CLI) + Claude Design v1 (SE 13); Implementierung #145–#151 offen; [epic-mpz-studio.md](epic-mpz-studio.md)
+
+Letzter dokumentierter Abgleich: **2026-06-16** (MPZ Studio: Claude Design v1 Prototyp versioniert, Epic #144 kommentiert).

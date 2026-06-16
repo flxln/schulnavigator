@@ -2,8 +2,6 @@
 
 Bundle für **Schritt 2b (SE 13)** — UI-Konzept und Mockups in Claude Design.
 
-**Claude Design Export v1:** [`version_1/mpz-studio-prototype/`](./version_1/README.md) — `MPZ Studio.html`
-
 **GitHub-Meilenstein:** MPZ Studio (Plan B, v0 optional bis ~22.06.2026)
 
 ---
@@ -77,5 +75,4 @@ Nach Änderungen an der Spec: Snapshot `01` neu kopieren.
 
 - Spezifikation: [2026-06-16-mpz-studio-spezifikation.md](../../projektmanagement/2026-06-16-mpz-studio-spezifikation.md)
 - ADR: [022-mpz-studio-internes-ingest-tool.md](../../adr/022-mpz-studio-internes-ingest-tool.md)
-- **Claude Design Export v1:** [version_1/README.md](./version_1/README.md) → `mpz-studio-prototype/MPZ Studio.html`
 - Nächster Schritt nach Design: SE 03 Feature-Implementierung (v0)
