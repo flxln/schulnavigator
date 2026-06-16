@@ -64,6 +64,15 @@ npm run dev
 | [https://localhost:3000/raum/schulsozialarbeit](https://localhost:3000/raum/schulsozialarbeit) | Standard-Raum-Chrome; ein Text-Medium |
 | [https://localhost:3000/raum/gibts-nicht](https://localhost:3000/raum/gibts-nicht) | **404** (nur im Dev-Server; unbekannte Slugs sind zur Build-Zeit fest) |
 
+### MPZ Studio (nur `npm run dev`, ADR-022, Issue #145)
+
+Internes Dev-only-Ingest-Tool — **nie** auf Coolify, in Production 404.
+
+1. In `app/.env.local`: `SN_MPZ_STUDIO_SECRET=…` setzen (Vorlage: `app/.env.example`).
+2. Dev-Server neu starten (Env wird beim Start geladen).
+3. [https://localhost:3000/mpz/studio](https://localhost:3000/mpz/studio) öffnen → Redirect zu `/mpz/unlock`, Secret eintragen → Cookie-Session → Skeleton-UI.
+4. API-Check (optional): `curl -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET" http://localhost:3000/api/mpz/health`
+
 **Hinweis zu 404:** Die Routen kommen aus `data/stations.json` (`generateStaticParams`). Ein Slug, der **nicht** in der JSON-Datei steht, liefert in der **Produktion** nach `npm run build` eine 404-Seite. Unter `npm run dev` zeigt Next.js oft eine dynamische 404 — zum Verhalten wie online unbedingt **Abschnitt 3** ausführen.
 
 ### Scanner bei System-Dark-Mode

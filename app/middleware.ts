@@ -8,7 +8,7 @@ import {
   type AccessToken,
 } from '@/lib/access-tokens'
 import { DEV_UNLOCK_HEFT_TOKEN, isDevUnlockAll } from '@/lib/dev-unlock'
-import { mpzStudioPageGuard } from '@/lib/mpz-studio-guard'
+import { mpzStudioPageGuard, MPZ_STUDIO_UNLOCK_PATH, isMpzStudioEnabled } from '@/lib/mpz-studio-guard'
 
 const IS_PROD = process.env.NODE_ENV === 'production'
 
@@ -51,7 +51,20 @@ function isPublicAssetPath(pathname: string): boolean {
 export function middleware(req: NextRequest) {
   const url = req.nextUrl
   if (url.pathname === '/mpz' || url.pathname.startsWith('/mpz/')) {
-    return mpzStudioPageGuard(req)
+    if (url.pathname === MPZ_STUDIO_UNLOCK_PATH) {
+      if (!isMpzStudioEnabled()) {
+        return new NextResponse(null, { status: 404 })
+      }
+      return NextResponse.next()
+    }
+    const guard = mpzStudioPageGuard(req)
+    if (guard.status === 401 && url.pathname !== MPZ_STUDIO_UNLOCK_PATH) {
+      const unlock = new URL(url)
+      unlock.pathname = MPZ_STUDIO_UNLOCK_PATH
+      unlock.searchParams.set('next', url.pathname)
+      return NextResponse.redirect(unlock)
+    }
+    return guard
   }
 
   if (isPublicAssetPath(url.pathname)) {

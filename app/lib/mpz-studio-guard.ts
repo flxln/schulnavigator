@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 export const MPZ_STUDIO_HEADER = 'x-mpz-studio-key'
 export const MPZ_STUDIO_COOKIE = 'sn-mpz-studio'
+export const MPZ_STUDIO_UNLOCK_PATH = '/mpz/unlock'
 export const MPZ_STUDIO_COOKIE_MAX_AGE = 8 * 60 * 60
 
 export function isMpzStudioEnabled(): boolean {
