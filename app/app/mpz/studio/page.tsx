@@ -18,6 +18,18 @@ export default function MpzStudioPage() {
 
       <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5 shadow-gs39-sm">
         <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-fg-3">
+          Werkzeuge
+        </h2>
+        <Link
+          href="/mpz/studio/ingest"
+          className="text-sm font-semibold text-accent underline-offset-2 hover:underline"
+        >
+          Medien hochladen (Test)
+        </Link>
+      </section>
+
+      <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5 shadow-gs39-sm">
+        <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-fg-3">
           Plan A (Fallback)
         </h2>
         <p className="mb-4 text-fg-2">

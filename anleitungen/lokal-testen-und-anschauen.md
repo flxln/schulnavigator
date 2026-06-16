@@ -75,6 +75,18 @@ Internes Dev-only-Ingest-Tool — **nie** auf Coolify, in Production 404.
 3. [https://localhost:3000/mpz/studio](https://localhost:3000/mpz/studio) öffnen → Redirect zu `/mpz/unlock`, Secret eintragen → Cookie-Session → Skeleton-UI.
 4. API-Check (optional): `curl -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET" http://localhost:3000/api/mpz/health`
 
+**Medien hochladen (Issue #147).** Im Studio „Medien hochladen (Test)“ oder direkt
+[/mpz/studio/ingest](https://localhost:3000/mpz/studio/ingest): Station + Typ + Datei wählen → Upload. Die Datei landet unter `public/media/{slug}/{ordner}/` und der `medien[]`-Eintrag wird in `data/stations.json` ergänzt (gleicher Pfad wie die CLI). Regeln: Magic-Byte- und Größenprüfung je Typ (audio 25 MB, video 150 MB, foto 8 MB, text 512 KB); HEIC wird abgelehnt — bitte als JPG exportieren. Bei Dateinamen-/`id`-Kollision benennt die API automatisch um (`-2`, `-3`, …).
+
+curl-Beispiel (multipart, Cookie- oder Header-Auth):
+
+```bash
+curl -X POST http://localhost:3000/api/mpz/media/ingest \
+  -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET" \
+  -F "slug=werken" -F "typ=foto" -F "untertitel=Unser Werken" \
+  -F "file=@./foto.jpg"
+```
+
 **Hinweis zu 404:** Die Routen kommen aus `data/stations.json` (`generateStaticParams`). Ein Slug, der **nicht** in der JSON-Datei steht, liefert in der **Produktion** nach `npm run build` eine 404-Seite. Unter `npm run dev` zeigt Next.js oft eine dynamische 404 — zum Verhalten wie online unbedingt **Abschnitt 3** ausführen.
 
 ### Scanner bei System-Dark-Mode
