@@ -81,6 +81,6 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 
 - [x] Issue **#141** (`rotate:access-tokens`) — geschlossen 2026-06-15, [PR #142](https://github.com/flxln/schulnavigator/pull/142) → `main`
 
-- [x] Epic **#144** (MPZ Studio v0, ADR-022) — #145 Guard, #146 `mpz-content-io`; #147–#151 offen; [epic-mpz-studio.md](epic-mpz-studio.md)
+- [x] Epic **#144** (MPZ Studio v0, ADR-022) — #145 Guard, #146 `mpz-content-io`, #147 Medien-Ingest; #148–#151 offen; [epic-mpz-studio.md](epic-mpz-studio.md)
 
-Letzter dokumentierter Abgleich: **2026-06-16** (#146 `lib/mpz-content-io`, Branch `feature/mpz-studio`).
+Letzter dokumentierter Abgleich: **2026-06-16** (#147 Medien-Ingest + Upload-Regeln, Branch `feature/mpz-studio`).
