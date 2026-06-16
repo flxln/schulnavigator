@@ -96,9 +96,11 @@ Nach dem Lauf: Struktur- und Asset-Validierung laufen **vor** dem Schreiben übe
 
 ## Dialog-Audio
 
-1. WAV nach `app/content/dialog-audio/{slug}/` — Namen: `01-frieda.wav`, `02-otto.wav`, …
+1. WAV nach `app/content/dialog-audio/{slug}/` — Namen: `01-frieda.wav`, `02-otto.wav`, … (Index in `segmente[]` + `rolle`)
 2. In `stations.json`: Snippet `sn-dialog-segment` oder Referenz `daz` / `pc-raum`
 3. `validate:stations` + Test mit Zugang (`/eintritt?t=heft-…`)
+
+**Plan-B (#148):** `npm run content:ingest-dialog -- --slug daz --segment 0 --file ./clip.wav` oder Studio unter `/mpz/studio/dialog-audio` (setzt `quelle` automatisch).
 
 ---
 

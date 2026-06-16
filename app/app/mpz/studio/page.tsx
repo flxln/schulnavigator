@@ -22,9 +22,15 @@ export default function MpzStudioPage() {
         </h2>
         <Link
           href="/mpz/studio/ingest"
-          className="text-sm font-semibold text-accent underline-offset-2 hover:underline"
+          className="block text-sm font-semibold text-accent underline-offset-2 hover:underline"
         >
           Medien hochladen (Test)
+        </Link>
+        <Link
+          href="/mpz/studio/dialog-audio"
+          className="mt-2 block text-sm font-semibold text-accent underline-offset-2 hover:underline"
+        >
+          Dialog-Audio (Test)
         </Link>
       </section>
 

@@ -87,6 +87,16 @@ curl -X POST http://localhost:3000/api/mpz/media/ingest \
   -F "file=@./foto.jpg"
 ```
 
+**Dialog-Audio (Issue #148).** Im Studio „Dialog-Audio (Test)“ oder
+[/mpz/studio/dialog-audio](https://localhost:3000/mpz/studio/dialog-audio): Station `daz` oder `pc-raum` wählen → Segment-Tabelle zeigt fehlende Clips → WAV hochladen. Datei landet unter `content/dialog-audio/{slug}/NN-rolle.wav`; `dialog.segmente[i].quelle` wird auf `/api/dialog/{slug}/…` gesetzt. Nur echte WAV (max. 15 MB); Reihenfolge der `dialog.segmente[]` ist immutabel (siehe [content-einpflegen.md](./content-einpflegen.md)).
+
+```bash
+curl -X POST "http://localhost:3000/api/mpz/dialog-audio/ingest" \
+  -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET" \
+  -F "slug=daz" -F "segmentIndex=0" -F "collision=replace" \
+  -F "file=@./01-frieda.wav"
+```
+
 **Hinweis zu 404:** Die Routen kommen aus `data/stations.json` (`generateStaticParams`). Ein Slug, der **nicht** in der JSON-Datei steht, liefert in der **Produktion** nach `npm run build` eine 404-Seite. Unter `npm run dev` zeigt Next.js oft eine dynamische 404 — zum Verhalten wie online unbedingt **Abschnitt 3** ausführen.
 
 ### Scanner bei System-Dark-Mode

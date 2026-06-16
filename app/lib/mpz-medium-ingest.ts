@@ -57,7 +57,7 @@ export interface IngestMediumResult {
 
 const HUB_SLUGS = new Set(Object.keys(HUB_SLUG_MAP))
 
-async function readHeaderSlice(source: IngestSource): Promise<{
+export async function readHeaderSlice(source: IngestSource): Promise<{
   headerSlice: Buffer
   byteLength: number
 }> {
@@ -79,7 +79,7 @@ async function readHeaderSlice(source: IngestSource): Promise<{
   }
 }
 
-async function persistFile(source: IngestSource, destPath: string): Promise<void> {
+export async function persistFile(source: IngestSource, destPath: string): Promise<void> {
   if ('buffer' in source) {
     await writeFile(destPath, source.buffer)
     return
