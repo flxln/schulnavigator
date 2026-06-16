@@ -57,8 +57,6 @@ npm run generate:qr -- --only=turnhalle,speiseraum,werken,lesewelt,musik,daz
 
 **Outdoor (Schulhof):** mind. **5 × 5 cm**, matt laminiert, Sonnentest — Spezifikation im Playbook.
 
-**Hinweis:** Route `/eintritt` und Token-Prüfung kommen in Phase 2 (#23). Entry-QRs können bis dahin im Browser eine Fehlerseite zeigen — die **URL-Form** ist bereits festgelegt.
-
 **Warnung „URL zu lang“:** Bei kleinem Druck (3 cm) lieber 4 cm wählen oder `--size` erhöhen.
 
 ---
@@ -99,4 +97,4 @@ npm run generate:qr -- --only=turnhalle,speiseraum,werken,lesewelt,musik,daz
 - [ ] `NEXT_PUBLIC_BASE_URL` zeigt auf die **live** Domain (HTTPS)
 - [ ] `npm run generate:qr` ohne `--dry-run` ausgeführt, `manifest.json` geprüft
 - [ ] Stichprobe: Raum-QR und Entry-QR mit Handy gescannt
-- [ ] Physische Verteilung mit der Schule geklärt (11 Räume + Eingang/Heft)
+- [ ] Physische Verteilung mit der Schule geklärt (12 Räume + Eingang/Heft)

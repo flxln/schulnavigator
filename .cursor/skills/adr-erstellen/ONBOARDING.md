@@ -1,5 +1,7 @@
 # Projektspezifischen Cursor-Skill für ADR-Dokumentation erstellen
 
+_Der Skill `adr-erstellen` ist bereits unter `.cursor/skills/adr-erstellen/SKILL.md` vorhanden. Diese Datei dient als Onboarding, falls der Skill neu aufgebaut oder erweitert werden soll._
+
 Diese Anleitung erklärt, wie ein maßgeschneiderter Cursor-Skill erstellt wird,
 der den ADR-Prozess (Architecture Decision Records) des Schulnavigator-Projekts
 kennt und Coding-Agenten automatisch bei der ADR-Erstellung unterstützt.

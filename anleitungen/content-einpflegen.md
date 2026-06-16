@@ -46,7 +46,7 @@ flowchart LR
 
 - Terminal im Ordner **`app/`** (alle `npm`-Befehle dort)
 - Slug der Station aus der [kanonischen Liste](../dokumentation/content-verzeichnisstruktur.md) — **nicht umbenennen** (QR-Codes sind gedruckt)
-- Lokal testen: `npm run dev` → zuerst `/eintritt?t=heft-2026-27` (alle Räume sofort klickbar)
+- Lokal testen: `npm run dev` → zuerst `/eintritt?t=<heft-token>` (Wert aus [`app/lib/access-token-constants.mjs`](../app/lib/access-token-constants.mjs); alle Räume sofort klickbar)
 
 ---
 
@@ -343,7 +343,7 @@ npm run build
 
 | Route | Prüfen |
 |-------|--------|
-| `/eintritt?t=heft-2026-27` | Cookie setzen |
+| `/eintritt?t=<heft-token>` | Cookie setzen (Token: `access-token-constants.mjs`) |
 | `/raum/{slug}` | Medienliste: alle Typen abspielbar |
 | `/raum/{slug}` | Hotspots: Tipp öffnet dasselbe Panel |
 | Handy + HTTPS | Gyro, Hotspot erreichbar nach Wischen |

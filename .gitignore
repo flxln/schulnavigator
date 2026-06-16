@@ -3,8 +3,9 @@
 
 # Auftraggeber und Protokolle werden als private Submodule verwaltet
 
-# Cursor: lokale Pläne und IDE-Artefakte nicht versionieren (.cursor/rules/ versioniert)
+# Cursor: lokale Pläne und IDE-Artefakte nicht versionieren (.cursor/rules/ und .cursor/skills/ versioniert)
 .cursor/*
 !.cursor/rules/
+!.cursor/skills/
 
 .DS_Store

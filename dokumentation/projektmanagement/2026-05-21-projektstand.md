@@ -141,7 +141,7 @@ Kamera-AR/WebXR, 360°-Panorama, Lego-Trigger, **Directus** (erst nach Schulfest
 
 ## Aufgaben — bis 10.06.2026 (Meeting)
 
-- [x] Demo der App-Shell vorbereitet — Hub, Scan, `/raum/musik` (4 Medientypen), `/raum/daz` + `/raum/pc-raum` (Dialog); Ablauf [`anleitungen/demo-meeting-2026-06-10.md`](../../anleitungen/demo-meeting-2026-06-10.md)
+- [x] Demo der App-Shell vorbereitet — Hub, Scan, `/raum/musik` (4 Medientypen), `/raum/daz` + `/raum/pc-raum` (Dialog); Ablauf [`2026-06-10-mpz-demo-meeting.md`](../projektmanagement/2026-06-10-mpz-demo-meeting.md)
 - [ ] Content-Lieferplan von Schule einfordern: Raum → Medientyp → Klasse → Verantwortlich
 - [ ] WLAN/Mobilfunk: Testplan für Turnhalle und Außenbereich vereinbaren
 

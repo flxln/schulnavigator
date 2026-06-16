@@ -1,19 +1,21 @@
 # Demo MPZ-Meeting — 10.06.2026
 
+_Archiv — Meeting abgeschlossen. Aktuelle Demo-Routen und QA-Checkliste: [`anleitungen/lokal-testen-und-anschauen.md`](../../anleitungen/lokal-testen-und-anschauen.md)._
+
 Kurzablauf für Sten/Tina auf echtem Gerät (**HTTPS**, z. B. `https://schulnavigator.mpz.schule`).
 
-**Gesamtfahrplan inkl. Abstimmung Content & Schulfest:** [`meeting-fahrplan-2026-06-10.md`](./meeting-fahrplan-2026-06-10.md)
+**Gesamtfahrplan inkl. Abstimmung Content & Schulfest:** [`2026-06-10-mpz-meeting-fahrplan.md`](./2026-06-10-mpz-meeting-fahrplan.md)
 
 ## Vorbereitung
 
-- Entry-QR oder Link: `/eintritt?t=fest-2026` (Schulfest-Modus)
-- Optional: `heft-2026-27` zum Gegenüberstellen (alle Räume sofort klickbar)
+- Entry-QR oder Link: `/eintritt?t=<fest-token>` (Wert aus [`app/lib/access-token-constants.mjs`](../../app/lib/access-token-constants.mjs))
+- Optional: Heft-Token zum Gegenüberstellen (alle Räume sofort klickbar)
 - iPhone: Lautstärke an, nicht stumm
 
 ## Ablauf (ca. 10–15 Min.)
 
 1. **Eintritt & Hub**  
-   `/eintritt?t=fest-2026` → Startseite. Hub zeigt isometrisches Schulhaus; im Modus `fest` sind Räume noch gesperrt („0 von 11“).
+   Entry mit Fest-Token → Startseite. Hub zeigt isometrisches Schulhaus; im Modus `fest` sind Räume noch gesperrt („0 von 12“).
 
 2. **Scan & Freischaltung**  
    `/scan` → Raum-QR scannen (z. B. `musik`). Zurück zur Startseite: Fenster freigeschaltet, Fortschritt sichtbar.
@@ -33,7 +35,7 @@ Kurzablauf für Sten/Tina auf echtem Gerät (**HTTPS**, z. B. `https://schulnavi
 7. **Weitere Räume ohne Content** (z. B. `werken`, `turnhalle`)  
    Gleiche Raum-Shell: TopBar, Gyro, **Chip zentriert** — leere Medien-Slots („Hier kommen später Audio/Video der Kinder“).
 
-8. **Optional: 11/11 & Sparkle**  
+8. **Optional: 12/12 & Sparkle**  
    Weitere Räume scannen bis `SparkleBurst` auf `/` (einmalig).
 
 ## Mündliche Botschaft
@@ -56,4 +58,4 @@ npm run build
 - Mit Cookie (nach Eintritt): gleiche URL → **200** oder **206** (Range)
 - `clip=../x` → **400**
 
-Siehe auch [`lokal-testen-und-anschauen.md`](./lokal-testen-und-anschauen.md).
+Siehe auch [`lokal-testen-und-anschauen.md`](../../anleitungen/lokal-testen-und-anschauen.md).
