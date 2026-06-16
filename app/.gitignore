@@ -45,3 +45,6 @@ public/qr/*.png
 public/qr/pdf/*.pdf
 
 certificates
+
+# MPZ Studio / content:ingest — lokale Backup-Datei nicht versionieren
+data/stations.json.bak
