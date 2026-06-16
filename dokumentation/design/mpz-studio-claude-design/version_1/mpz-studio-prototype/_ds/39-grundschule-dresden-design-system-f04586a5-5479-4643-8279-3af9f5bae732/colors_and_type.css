@@ -1,0 +1,184 @@
+/* =============================================================
+   39. Grundschule Dresden — Design System Tokens
+   Sourced from the 150-jähriges Jubiläum invitation artwork.
+   ============================================================= */
+
+/* ------------------ FONTS (Google substitutes) ---------------- */
+@import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Caveat:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  /* ---------- BRAND CORE ---------- */
+  --brand-navy:        #082A50;   /* display titles, ribbon, body ink */
+  --brand-navy-700:    #0B3565;   /* darker navy for press states */
+  --brand-navy-300:    #6B89B4;   /* muted navy for support text */
+  --brand-green:       #4B9A23;   /* JUBILÄUM brush, map-pin chip */
+  --brand-green-700:   #3D7E1B;
+  --brand-green-300:   #A6D08A;
+
+  /* ---------- PLAYGROUND ACCENTS (bunting, balloons, hearts) --- */
+  --brand-red:         #EF3A37;
+  --brand-sun:         #FBBB24;   /* yellow */
+  --brand-blue:        #1F6ABB;   /* bunting + calendar chip */
+  --brand-sky:         #9EDAFE;   /* watercolor wash */
+  --brand-sky-50:      #E4F3FC;   /* tint surface */
+
+  /* ---------- SURFACES ---------- */
+  --paper:             #FCFBF7;   /* warm white — default page */
+  --paper-50:          #F5F2EA;   /* second-step warm surface */
+  --white:             #FFFFFF;
+
+  /* ---------- INK (text / hairline scale) ---------- */
+  --ink:               #082A50;   /* alias of brand-navy for body */
+  --ink-80:            rgba(8, 42, 80, .80);
+  --ink-60:            rgba(8, 42, 80, .60);
+  --ink-40:            rgba(8, 42, 80, .40);
+  --ink-20:            rgba(8, 42, 80, .20);
+  --ink-10:            rgba(8, 42, 80, .10);
+  --ink-05:            rgba(8, 42, 80, .05);
+
+  /* ---------- SEMANTIC ROLES ---------- */
+  --fg-1:              var(--brand-navy);   /* primary text */
+  --fg-2:              var(--ink-80);       /* secondary text */
+  --fg-3:              var(--ink-60);       /* tertiary / captions */
+  --fg-on-dark:        var(--white);
+
+  --bg-1:              var(--paper);        /* page */
+  --bg-2:              var(--white);        /* surface (card) */
+  --bg-3:              var(--paper-50);     /* recessed */
+  --bg-dark:           var(--brand-navy);   /* ribbon / footer */
+
+  --border-1:          var(--ink-10);
+  --border-2:          var(--ink-20);
+
+  --accent:            var(--brand-green);  /* primary call-to-action */
+  --accent-alt:        var(--brand-blue);   /* secondary actions */
+  --warn:              var(--brand-sun);
+  --error:             var(--brand-red);
+
+  /* ---------- TYPE — FAMILIES ---------- */
+  --font-display:      'Caveat Brush', 'Permanent Marker', system-ui, sans-serif;
+  --font-script:       'Caveat', 'Bradley Hand', cursive;
+  --font-ui:           'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:         ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* ---------- TYPE — SIZE / LINE / WEIGHT SCALE ---------- */
+  --t-display-xl:      96px;   /* the "150-JÄHRIGEN" wall */
+  --t-display-l:       72px;
+  --t-display-m:       56px;
+  --t-h1:              40px;
+  --t-h2:              30px;
+  --t-h3:              22px;
+  --t-h4:              18px;
+  --t-body:            16px;
+  --t-small:           14px;
+  --t-tiny:            12px;
+
+  --lh-tight:          1.05;
+  --lh-snug:           1.20;
+  --lh-normal:         1.45;
+  --lh-loose:          1.65;
+
+  --w-regular:         400;
+  --w-medium:          500;
+  --w-semibold:        600;
+  --w-bold:            700;
+  --w-black:           900;
+
+  /* ---------- SPACING ---------- */
+  --s-0:    0;
+  --s-1:    4px;
+  --s-2:    8px;
+  --s-3:    12px;
+  --s-4:    16px;
+  --s-5:    24px;
+  --s-6:    32px;
+  --s-7:    48px;
+  --s-8:    64px;
+  --s-9:    96px;
+  --s-10:   128px;
+
+  /* ---------- RADII ---------- */
+  --r-sm:    6px;
+  --r-md:    12px;
+  --r-lg:    20px;
+  --r-xl:    28px;
+  --r-pill:  999px;
+
+  /* ---------- SHADOWS (tinted navy) ---------- */
+  --shadow-sm:  0 1px 2px rgba(8, 42, 80, .08);
+  --shadow-md:  0 6px 20px rgba(8, 42, 80, .10);
+  --shadow-lg:  0 18px 40px rgba(8, 42, 80, .14);
+  --shadow-inset-line: inset 0 -1px 0 var(--ink-10);
+
+  /* ---------- ELEVATION CHIPS (icon chip dimensions) ---------- */
+  --chip-sm:  40px;
+  --chip-md:  56px;
+  --chip-lg:  80px;
+
+  /* ---------- LAYOUT ---------- */
+  --max-content: 1120px;
+  --max-hero:    1280px;
+  --gutter:      24px;
+
+  /* ---------- MOTION ---------- */
+  --ease-out:   cubic-bezier(.2, .8, .2, 1);
+  --t-fast:     120ms;
+  --t-base:     220ms;
+  --t-slow:     400ms;
+}
+
+/* =============================================================
+   SEMANTIC TYPOGRAPHY ROLES
+   Use these as classes on your elements — never style ad-hoc.
+   ============================================================= */
+.t-display-xl, .t-display-l, .t-display-m,
+.t-jubilaeum {
+  font-family: var(--font-display);
+  font-weight: var(--w-regular);
+  line-height: var(--lh-tight);
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--brand-navy);
+}
+.t-display-xl  { font-size: var(--t-display-xl); }
+.t-display-l   { font-size: var(--t-display-l); }
+.t-display-m   { font-size: var(--t-display-m); }
+
+/* The signature handwritten tagline */
+.t-script {
+  font-family: var(--font-script);
+  font-weight: var(--w-medium);
+  font-style: italic;
+  font-size: 36px;
+  line-height: var(--lh-snug);
+  color: var(--white);
+}
+
+.t-h1 { font-family: var(--font-ui); font-weight: var(--w-black);    font-size: var(--t-h1); line-height: var(--lh-tight);  color: var(--fg-1); letter-spacing: -.01em; }
+.t-h2 { font-family: var(--font-ui); font-weight: var(--w-bold);     font-size: var(--t-h2); line-height: var(--lh-snug);   color: var(--fg-1); }
+.t-h3 { font-family: var(--font-ui); font-weight: var(--w-bold);     font-size: var(--t-h3); line-height: var(--lh-snug);   color: var(--fg-1); }
+.t-h4 { font-family: var(--font-ui); font-weight: var(--w-semibold); font-size: var(--t-h4); line-height: var(--lh-normal); color: var(--fg-1); }
+
+.t-body   { font-family: var(--font-ui); font-weight: var(--w-regular);  font-size: var(--t-body);  line-height: var(--lh-normal); color: var(--fg-1); }
+.t-body-strong { font-family: var(--font-ui); font-weight: var(--w-bold); font-size: var(--t-body); line-height: var(--lh-normal); color: var(--fg-1); }
+.t-small  { font-family: var(--font-ui); font-weight: var(--w-medium); font-size: var(--t-small); line-height: var(--lh-normal); color: var(--fg-2); }
+.t-tiny   { font-family: var(--font-ui); font-weight: var(--w-semibold); font-size: var(--t-tiny); line-height: var(--lh-normal); color: var(--fg-3); text-transform: uppercase; letter-spacing: .08em; }
+
+.t-eyebrow { font-family: var(--font-ui); font-weight: var(--w-black); font-size: 14px; letter-spacing: .14em; text-transform: uppercase; color: var(--brand-navy); }
+.t-link    { color: var(--brand-blue); text-decoration: none; }
+.t-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+.t-mono    { font-family: var(--font-mono); font-size: 14px; color: var(--fg-2); }
+
+/* =============================================================
+   PAGE DEFAULTS
+   ============================================================= */
+html, body {
+  background: var(--bg-1);
+  color: var(--fg-1);
+  font-family: var(--font-ui);
+  font-size: var(--t-body);
+  line-height: var(--lh-normal);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+* { box-sizing: border-box; }

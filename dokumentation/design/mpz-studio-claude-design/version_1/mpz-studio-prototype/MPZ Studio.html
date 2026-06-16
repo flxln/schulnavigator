@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MPZ Studio v0 — 39. Grundschule Dresden</title>
+  <link rel="stylesheet" href="_ds/39-grundschule-dresden-design-system-f04586a5-5479-4643-8279-3af9f5bae732/colors_and_type.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; height: 100%;
+      font-family: var(--font-ui);
+      font-size: var(--t-body);
+      color: var(--fg-1);
+      background: var(--paper);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    #root { height: 100vh; display: flex; overflow: hidden; }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(8,42,80,.18); border-radius: 3px; }
+
+    /* Focus ring */
+    *:focus-visible { outline: 2px solid var(--brand-green); outline-offset: 2px; }
+
+    /* Baseline resets for buttons/inputs */
+    button, input, select, textarea { font-family: var(--font-ui); }
+    input, textarea, select { background: var(--white); }
+
+    /* Prevent text selection during drag */
+    .no-select { user-select: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React 18 + Babel (pinned + integrity-verified) -->
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js"
+    integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"
+    integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"
+    integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y"
+    crossorigin="anonymous"></script>
+
+  <!-- Load order: tweaks → atoms → shell → screens → app -->
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="studio-components.jsx"></script>
+  <script type="text/babel" src="studio-shell.jsx"></script>
+  <script type="text/babel" src="studio-dashboard.jsx"></script>
+  <script type="text/babel" src="studio-stationen.jsx"></script>
+  <script type="text/babel" src="studio-calib.jsx"></script>
+  <script type="text/babel" src="studio-app.jsx"></script>
+</body>
+</html>

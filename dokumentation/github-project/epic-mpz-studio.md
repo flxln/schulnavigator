@@ -37,6 +37,7 @@ Schmales, **MPZ-internes** Pflege-UI als optionaler **Plan B** zum bereits umges
 
 - ADR: [022-mpz-studio-internes-ingest-tool.md](../adr/022-mpz-studio-internes-ingest-tool.md) (ergänzt ADR-003 „kein Custom-Admin")
 - Spec + v0-DoD: [2026-06-16-mpz-studio-spezifikation.md](../projektmanagement/2026-06-16-mpz-studio-spezifikation.md)
+- **Claude Design v1 (SE 13):** [mpz-studio-claude-design/version_1/mpz-studio-prototype/](../design/mpz-studio-claude-design/version_1/README.md) — interaktiver Prototyp `MPZ Studio.html`
 - DoD abgeleitet aus zwei SE-15-Plan-Reviews (Codex + GLM-5.1)
 
 ## Leitplanken
@@ -52,6 +53,7 @@ Schmales, **MPZ-internes** Pflege-UI als optionaler **Plan B** zum bereits umges
 
 ## Checkliste (Epic)
 
+- [x] Claude Design v0 (SE 13) — Prototyp in `dokumentation/design/mpz-studio-claude-design/version_1/mpz-studio-prototype/` (2026-06-16)
 - [ ] #145 Guard + Route-Skeleton (Dev-only, 401/ok/404 getestet)
 - [ ] #146 `lib/mpz-content-io` (atomar, `.bak`, Rollback, Tests, CLI-DRY)
 - [ ] #147 Medien-Ingest + Upload-Regeln (MIME/Magic-Byte/Größe/Normalisierung/Kollision)
