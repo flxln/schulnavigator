@@ -5,6 +5,8 @@
 | Datei | Inhalt |
 |---|---|
 | [2026-05-21-projektstand.md](./2026-05-21-projektstand.md) | Aktueller Projektstand, Material, Risiken, nächste Schritte |
+| [2026-06-16-mpz-studio-spezifikation.md](./2026-06-16-mpz-studio-spezifikation.md) | MPZ Studio — internes Content-Ingest-Tool (Spezifikation, Zwischenergebnis) |
+| [../../anleitungen/projekttag-content-ingest.md](../../anleitungen/projekttag-content-ingest.md) | Projekttag Plan A — CLI, JSON-Schema, Snippets (umgesetzt) |
 
 **Architektur (festgelegt):** MVP = Next.js + JSON · Directus langfrist · Zugang ADR-005 (fest/heft, In-App-Scanner) · [Index](../entscheidungen.md)
 

@@ -4,6 +4,8 @@ _Anleitung für MPZ/Lehrkräfte (MVP): Medien und Hotspots ohne Admin-Oberfläch
 
 **Langfristig:** Directus (ADR-003, Phase 5). **Jetzt:** Dateien unter `app/public/` + Einträge in `app/data/stations.json`.
 
+**Projekttag (24./25.06.):** Schnellpfad mit CLI, JSON-Schema und Snippets — [projekttag-content-ingest.md](./projekttag-content-ingest.md).
+
 **Referenz-Station im Repo:** `klassenzimmer` — vier Medientypen, vier Hotspots, echte Dateien unter `app/public/media/klassenzimmer/`.
 
 Verwandte Dokumente:
