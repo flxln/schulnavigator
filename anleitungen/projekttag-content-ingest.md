@@ -86,7 +86,7 @@ npm run content:ingest -- --slug werken --typ audio --file ~/Downloads/aufnahme.
 npm run content:ingest -- --slug werken --typ foto --file ./bild.jpg --no-append
 ```
 
-Nach dem Lauf: `validate:stations` (wird bei `--append` automatisch aufgerufen). Backup: `app/data/stations.json.bak`.
+Nach dem Lauf: Struktur- und Asset-Validierung laufen **vor** dem Schreiben über [`lib/mpz-content-io`](../app/lib/mpz-content-io.ts) (Pre-Validate, dann atomarer Write; Backup `app/data/stations.json.bak`). Bei Fehler bleibt `stations.json` unverändert.
 
 **Nicht unterstützt:** `link`, `embed` — URLs per Snippet in JSON eintragen.
 

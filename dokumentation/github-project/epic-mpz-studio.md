@@ -55,7 +55,7 @@ Schmales, **MPZ-internes** Pflege-UI als optionaler **Plan B** zum bereits umges
 
 - [x] Claude Design v0 (SE 13) — Prototyp in `dokumentation/design/mpz-studio-claude-design/version_1/mpz-studio-prototype/` (2026-06-16)
 - [x] #145 Guard + Route-Skeleton (Dev-only, 401/ok/404 getestet)
-- [ ] #146 `lib/mpz-content-io` (atomar, `.bak`, Rollback, Tests, CLI-DRY)
+- [x] #146 `lib/mpz-content-io` (atomar, `.bak`, Pre-Validate, Tests, CLI-DRY)
 - [ ] #147 Medien-Ingest + Upload-Regeln (MIME/Magic-Byte/Größe/Normalisierung/Kollision)
 - [ ] #148 Dialog-Audio-Ingest
 - [ ] #149 Flat-Kalibrier-Route + 360°-Rückschreibung
