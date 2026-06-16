@@ -34,7 +34,7 @@ Allgemeine Content-Regeln: [content-einpflegen.md](./content-einpflegen.md)
 3. **Ingest** — CLI (siehe unten) oder manuell kopieren + Snippet in `stations.json`
 4. **Hotspots** — Sphere: `/raum/{slug}?hotspot-calib=1`; Flat: Koordinaten schätzen oder Konsole ([content-einpflegen.md](./content-einpflegen.md))
 5. **Validieren** — `cd app && npm run validate:stations`
-6. **Vorschau** — `npm run dev` → `/eintritt?t=heft-2026-27` → `/raum/{slug}`
+6. **Vorschau** — `npm run dev` → `/eintritt?t=<heft-token>` (aus `access-token-constants.mjs`) → `/raum/{slug}`
 7. **Commit** — eine Station pro Commit (Rollback möglich)
 8. **Deploy** — push → Coolify; Handy unter Mobilfunk testen
 

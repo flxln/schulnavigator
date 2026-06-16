@@ -135,6 +135,7 @@ Beschreibung besser zur Anfrage passt.
 | Skill | Auslöser |
 |-------|---------|
 | `adr-erstellen` | „ADR erstellen", „Architekturentscheidung dokumentieren", „neuen ADR anlegen" |
+| `schritt-abschliessen` | „Schritt abschließen", Issue schließen, PR-Checkliste nach Feature |
 
 Globale Skills (unter `~/.cursor/skills/`) sind in den Cursor-Einstellungen
 unter **Rules** ebenfalls sichtbar.
@@ -166,7 +167,8 @@ und diesen in der Anfrage verwenden.
 | Datei | Zweck |
 |-------|-------|
 | `.cursor/skills/adr-erstellen/SKILL.md` | ADR-Erstellung und -Pflege |
-| `anleitungen/cursor-skill-adr-erstellen.md` | Anleitung: Neuen Skill anlegen |
+| `.cursor/skills/adr-erstellen/ONBOARDING.md` | Skill neu aufsetzen oder erweitern |
+| `.cursor/skills/schritt-abschliessen/SKILL.md` | Feature-Schritt abschließen |
 | `anleitungen/cursor-skills-verwenden.md` | Diese Datei |
 
 Weitere Infos zum Skill-Format: [cursor.com/docs/skills](https://cursor.com/docs/skills)
