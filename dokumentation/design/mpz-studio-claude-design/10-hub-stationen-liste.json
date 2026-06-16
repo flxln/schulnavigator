@@ -1,0 +1,17 @@
+{
+  "description": "12 kanonische Stationen für die Studio-Übersicht (Hub-Nr aus schoolhouse-hub-map.ts)",
+  "stations": [
+    { "slug": "klassenzimmer", "hubNr": 1, "titel": "Klassenzimmer" },
+    { "slug": "musik", "hubNr": 2, "titel": "Musik" },
+    { "slug": "daz", "hubNr": 3, "titel": "DaZ-Zimmer" },
+    { "slug": "kunst", "hubNr": 4, "titel": "Kunst" },
+    { "slug": "pc-raum", "hubNr": 5, "titel": "PC-Raum" },
+    { "slug": "lesewelt", "hubNr": 6, "titel": "Lesewelt" },
+    { "slug": "werken", "hubNr": 7, "titel": "Werken" },
+    { "slug": "speiseraum", "hubNr": 8, "titel": "Speiseraum" },
+    { "slug": "hort", "hubNr": 9, "titel": "Hort" },
+    { "slug": "turnhalle", "hubNr": 10, "titel": "Turnhalle" },
+    { "slug": "schulsozialarbeit", "hubNr": 11, "titel": "Schulsozialarbeit" },
+    { "slug": "schulhof", "hubNr": 12, "titel": "Schulhof" }
+  ]
+}

@@ -27,6 +27,7 @@ Jede wichtige Entscheidung wird als eigenständiger ADR (Architecture Decision R
 | [019](./adr/019-coach-fortschritt-einblendung.md) | Coach: fortschritts-getriggerte Maskottchen-Einblendungen (getrennt vom Dialog); Schwellwert-Trigger, `duo-split`, modus-getrennter Seen-State, Layer-Vertrag; keine Migration | entschieden | 2026-06-14 |
 | [020](./adr/020-hub-wegweiser-aussen-stationen.md) | Hub: Wegweiser-Slots für Schulhof + Turnhalle; 12 Stationen; Slot-Vertrag frame/hitFrame/chipAnchor/rotation | entschieden | 2026-06-14 |
 | [021](./adr/021-zugangsmodus-konfigurierbar.md) | Zugang: Modus `open`/`gated` konfigurierbar, Tokens aus ENV, Embedding/CSP (ergänzt ADR-005/007) | entschieden | 2026-06-15 |
+| [022](./adr/022-mpz-studio-internes-ingest-tool.md) | MPZ Studio: internes Ingest-/Pflege-Werkzeug, Dev-only, Secret-Header (Ausnahme/ergänzt ADR-003 „kein Custom-Admin"; nur MPZ, nicht Lehrkräfte) | entschieden | 2026-06-16 |
 
 ## Konventionen
 

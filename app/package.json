@@ -8,6 +8,7 @@
     "dev:http": "next dev --hostname 0.0.0.0",
     "generate:qr": "tsx scripts/generate-qr-codes.ts",
     "rotate:access-tokens": "node scripts/rotate-access-tokens.mjs",
+    "content:ingest": "node scripts/content-ingest.mjs",
     "validate:stations": "node scripts/validate-station-assets.mjs",
     "validate:coach": "node scripts/validate-coach-messages.mjs",
     "export:pano360": "node scripts/export-pano-equirect.mjs",

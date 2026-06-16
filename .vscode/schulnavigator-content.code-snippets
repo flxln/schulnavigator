@@ -1,0 +1,145 @@
+{
+  "Medium Audio": {
+    "prefix": "sn-medium-audio",
+    "description": "Medien-Eintrag: audio",
+    "body": [
+      "{",
+      "  \"id\": \"${1:slug}-audio\",",
+      "  \"typ\": \"audio\",",
+      "  \"quelle\": \"/media/${2:slug}/audio/${3:datei}.mp3\",",
+      "  \"untertitel\": \"${4:Untertitel}\"",
+      "}"
+    ]
+  },
+  "Medium Video (Upload)": {
+    "prefix": "sn-medium-video",
+    "description": "Medien-Eintrag: video (upload)",
+    "body": [
+      "{",
+      "  \"id\": \"${1:slug}-video\",",
+      "  \"typ\": \"video\",",
+      "  \"videoSource\": \"upload\",",
+      "  \"quelle\": \"/media/${2:slug}/video/${3:datei}.mp4\",",
+      "  \"untertitel\": \"${4:Untertitel}\"",
+      "}"
+    ]
+  },
+  "Medium Foto": {
+    "prefix": "sn-medium-foto",
+    "description": "Medien-Eintrag: foto",
+    "body": [
+      "{",
+      "  \"id\": \"${1:slug}-foto\",",
+      "  \"typ\": \"foto\",",
+      "  \"quelle\": \"/media/${2:slug}/fotos/${3:datei}.jpg\",",
+      "  \"untertitel\": \"${4:Untertitel}\"",
+      "}"
+    ]
+  },
+  "Medium Text": {
+    "prefix": "sn-medium-text",
+    "description": "Medien-Eintrag: text (Markdown)",
+    "body": [
+      "{",
+      "  \"id\": \"${1:slug}-text\",",
+      "  \"typ\": \"text\",",
+      "  \"quelle\": \"/media/${2:slug}/texte/${3:datei}.md\",",
+      "  \"untertitel\": \"${4:Untertitel}\"",
+      "}"
+    ]
+  },
+  "Medium Link": {
+    "prefix": "sn-medium-link",
+    "description": "Medien-Eintrag: link (extern)",
+    "body": [
+      "{",
+      "  \"id\": \"${1:slug}-link\",",
+      "  \"typ\": \"link\",",
+      "  \"quelle\": \"https://${2:example.com}\",",
+      "  \"openIn\": \"external\",",
+      "  \"untertitel\": \"${3:Untertitel}\"",
+      "}"
+    ]
+  },
+  "Medium Embed": {
+    "prefix": "sn-medium-embed",
+    "description": "Medien-Eintrag: embed (Delightex/Book Creator)",
+    "body": [
+      "{",
+      "  \"id\": \"${1:slug}-embed\",",
+      "  \"typ\": \"embed\",",
+      "  \"quelle\": \"https://${2:edu.delightex.com/…}\",",
+      "  \"untertitel\": \"${3:Untertitel}\"",
+      "}"
+    ]
+  },
+  "Hotspot Flat (Medium)": {
+    "prefix": "sn-hotspot-flat",
+    "description": "Flat-Hotspot für Medien",
+    "body": [
+      "{",
+      "  \"id\": \"hs-${1:id}\",",
+      "  \"label\": \"${2:Label}\",",
+      "  \"x\": ${3:0.5},",
+      "  \"y\": ${4:0.5},",
+      "  \"mediumId\": \"${5:medium-id}\"",
+      "}"
+    ]
+  },
+  "Hotspot 360 (Medium)": {
+    "prefix": "sn-hotspot360-medium",
+    "description": "Sphere-Hotspot für Medien",
+    "body": [
+      "{",
+      "  \"id\": \"hs-${1:id}\",",
+      "  \"label\": \"${2:Label}\",",
+      "  \"yaw\": ${3:0},",
+      "  \"pitch\": ${4:0},",
+      "  \"mediumId\": \"${5:medium-id}\"",
+      "}"
+    ]
+  },
+  "Hotspot 360 (Dialog)": {
+    "prefix": "sn-hotspot360-dialog",
+    "description": "Sphere-Hotspot für Maskottchen-Dialog",
+    "body": [
+      "{",
+      "  \"id\": \"hs-${1:frieda}\",",
+      "  \"label\": \"${2:Frieda}\",",
+      "  \"yaw\": ${3:0},",
+      "  \"pitch\": ${4:-20},",
+      "  \"action\": \"dialog\",",
+      "  \"mascot\": \"${5|frieda,otto|}\",",
+      "  \"mascotSize\": ${6:0.28},",
+      "  \"mascotFlipX\": false,",
+      "  \"bubblePitchOffset\": ${7:12}",
+      "}"
+    ]
+  },
+  "Dialog-Segment": {
+    "prefix": "sn-dialog-segment",
+    "description": "Dialog-Segment mit API-Audio-Pfad",
+    "body": [
+      "{",
+      "  \"id\": \"${1:d1}\",",
+      "  \"rolle\": \"${2|frieda,otto,beide|}\",",
+      "  \"quelle\": \"/api/dialog/${3:slug}/${4:01-frieda}.wav\",",
+      "  \"text\": \"${5:Sprechblasentext}\"",
+      "}"
+    ]
+  },
+  "Coach room-first": {
+    "prefix": "sn-coach-room-first",
+    "description": "Coach-Nachricht: erster Raumbesuch",
+    "body": [
+      "{",
+      "  \"id\": \"room-first-${1:slug}\",",
+      "  \"trigger\": \"room-first\",",
+      "  \"slug\": \"${1:slug}\",",
+      "  \"mascot\": \"${2|frieda,otto|}\",",
+      "  \"placement\": \"${3|left,right|}\",",
+      "  \"text\": \"${4:Text}\"",
+      "}"
+    ]
+  }
+}
