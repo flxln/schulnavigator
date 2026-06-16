@@ -284,7 +284,7 @@ Abgeleitet aus zwei unabhängigen Plan-Reviews (SE-15: Codex, GLM-5.1). v0 ist *
 
 **Funktional**
 
-- [ ] Lokale Medien-Uploads der 4 Projekttag-Typen (`audio`, `video`, `foto`, `text`) erzeugen den korrekten Pfad unter `app/public/media/{slug}/…` **und** den passenden `medien[]`-Eintrag in `stations.json`.
+- [x] Lokale Medien-Uploads der 4 Projekttag-Typen (`audio`, `video`, `foto`, `text`) erzeugen den korrekten Pfad unter `app/public/media/{slug}/…` **und** den passenden `medien[]`-Eintrag in `stations.json`. Umgesetzt #147 (`lib/mpz-medium-ingest`, API, Mini-UI `/mpz/studio/ingest`).
 - [ ] Dialog-Audio-Upload benennt die Datei nach Konvention (`01-frieda.wav`, `DIALOG_CLIP_RE`) und verknüpft das Segment (`quelle: "/api/dialog/{slug}/…"`).
 - [ ] Hotspots (Flat `x`/`y` ∈ [0,1]; 360° `yaw` ∈ [-180,180], `pitch` ∈ [-90,90]) werden **schema-konform** in `stations.json` zurückgeschrieben.
 - [ ] Pro Station existiert ein Vorschau-Link (`/raum/{slug}`).
@@ -303,7 +303,7 @@ Abgeleitet aus zwei unabhängigen Plan-Reviews (SE-15: Codex, GLM-5.1). v0 ist *
 
 **Upload-Regeln (Befund 5)**
 
-- [ ] Pro Typ erlaubte Extensions + MIME-/Magic-Byte-Prüfung; Größenlimit; Dateinamen-Normalisierung (slug-safe); definierte Kollisionsregel (Replace vs. neuer Name). AirDrop-Dateinamen werden nie ungeprüft übernommen.
+- [x] Pro Typ erlaubte Extensions + MIME-/Magic-Byte-Prüfung; Größenlimit; Dateinamen-Normalisierung (slug-safe); definierte Kollisionsregel (Replace vs. neuer Name). AirDrop-Dateinamen werden nie ungeprüft übernommen. Umgesetzt #147 (`lib/mpz-upload-rules.ts`, `file-type`-Sniffing).
 
 **Validierungs-Vertrag (Befund 3)**
 
