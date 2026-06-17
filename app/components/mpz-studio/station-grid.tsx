@@ -111,7 +111,9 @@ export function StationGrid() {
                       href={calib}
                       className="font-semibold text-accent underline-offset-2 hover:underline"
                     >
-                      Hotspot kalibrieren
+                      {st.viewer === 'equirectangular'
+                        ? 'Kalibrieren (Hotspots + Startblick)'
+                        : 'Hotspot kalibrieren'}
                     </Link>
                   )}
                   <Link
