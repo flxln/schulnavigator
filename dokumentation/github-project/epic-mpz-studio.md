@@ -1,7 +1,7 @@
 # Epic: MPZ Studio v0 — internes Dev-only-Ingest-Tool (ADR-022)
 
 **Milestone:** MPZ Studio v0 (fällig 22.06.2026)
-**Status:** in Arbeit (#145–#151, #155, #153 erledigt; Prod-Verifikation offen)
+**Status:** abgeschlossen (v0-DoD erfüllt, 2026-06-17; Prod-Guard per Unit-Tests + `npm run build`)
 
 ## Übersicht
 
@@ -71,4 +71,4 @@ Schmales, **MPZ-internes** Pflege-UI als optionaler **Plan B** zum bereits umges
 - [x] #155 IO-Härtung validate-before-rename + Write-Lock Medien-Ingest + inline-Report
 - [x] #151 Dashboard/Liste/Vorschau + Doku in `fuer-entwickler.md`
 - [x] #153 MPZ: Sphere-Startblick kalibrieren ([ADR-023](../adr/023-sphere-startblick.md); `057ca71`, #152 erledigt)
-- [ ] Prod-Build verifiziert: 404 auf `/mpz/*` + `/api/mpz/*`, Build grün ohne `any`
+- [x] Prod-Build verifiziert: 404 auf `/mpz/*` + `/api/mpz/*` (Guard-Tests, Route-Tests, Middleware); `npm run build` grün

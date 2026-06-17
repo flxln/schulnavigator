@@ -1,7 +1,7 @@
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import raw from '@/data/stations.json'
 import { createMpzContentIo } from '@/lib/mpz-content-io'
 import {
@@ -12,6 +12,7 @@ import {
   validateDialogWavUpload,
 } from '@/lib/mpz-dialog-audio-ingest'
 import { MpzUploadError } from '@/lib/mpz-upload-rules'
+import * as mpzStationsValidation from '@/lib/mpz-stations-validation'
 import type { StationsFile } from '@/lib/types'
 
 const fixture = raw as StationsFile
@@ -88,6 +89,15 @@ describe('mpz-dialog-audio-ingest · validateDialogWavUpload', () => {
 
 describe('mpz-dialog-audio-ingest · ingestDialogClip', () => {
   let root: string
+
+  beforeEach(() => {
+    vi.spyOn(mpzStationsValidation, 'validateStationsContent').mockReturnValue({
+      structureErrors: [],
+      assetErrors: [],
+      warnings: [],
+      bySlug: {},
+    })
+  })
 
   afterEach(() => {
     resetDialogIngestLockForTests()
