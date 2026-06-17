@@ -125,6 +125,31 @@ describe('StationDetailShell', () => {
     ).toBe('/mpz/studio/stationen/klassenzimmer?tab=hotspots')
   })
 
+  it('Medien-Tab zeigt Tabelle für klassenzimmer', () => {
+    mocks.searchParams = new URLSearchParams('tab=medien')
+    setReport('klassenzimmer', false)
+    const station = getStationBySlug('klassenzimmer')!
+
+    render(
+      <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} />,
+    )
+
+    expect(screen.getByRole('link', { name: 'Medien hinzufügen' })).toBeTruthy()
+    expect(screen.getByText('demo-audio')).toBeTruthy()
+    expect(screen.getByText('demo-video')).toBeTruthy()
+  })
+
+  it('Medien-Tab Empty-State für hort', () => {
+    mocks.searchParams = new URLSearchParams('tab=medien')
+    setReport('hort', false)
+    const station = getStationBySlug('hort')!
+
+    render(<StationDetailShell station={station} slug="hort" hubNr={9} />)
+
+    expect(screen.getByText('Noch keine Medien')).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Erstes Medium hinzufügen' })).toBeTruthy()
+  })
+
   it('Breadcrumb verlinkt auf Stations-Grid', () => {
     mocks.searchParams = new URLSearchParams()
     setReport('klassenzimmer', false)

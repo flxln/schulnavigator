@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
 import { StationStammdatenForm } from '@/components/mpz-studio/station-stammdaten-form'
+import { StationMedienTable } from '@/components/mpz-studio/station-medien-table'
 import type { Station, ViewerMode } from '@/lib/types'
 
 const VALID_TABS = ['stammdaten', 'medien', 'hotspots', 'dialog-audio'] as const
@@ -161,14 +162,8 @@ export function StationDetailShell({
       )}
 
       {activeTab === 'medien' && (
-        <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5 text-sm text-fg-2">
-          <p className="mb-4">Medien-Tabelle folgt in #161.</p>
-          <Link
-            href={`/mpz/studio/ingest?slug=${encodeURIComponent(slug)}`}
-            className="font-semibold text-accent underline-offset-2 hover:underline"
-          >
-            Medien hochladen
-          </Link>
+        <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5">
+          <StationMedienTable slug={slug} station={station} />
         </section>
       )}
 
