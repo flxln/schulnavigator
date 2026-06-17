@@ -23,11 +23,11 @@
 
 **Akzeptanz:**
 
-- [ ] `Station`: optionale Felder `startYaw`, `startPitch`; Validator (−180…180 / −90…90); nur bei `viewer: 'equirectangular'`
-- [ ] `stations.schema.json`, `types.ts`, Snippet in `.vscode/schulnavigator-content.code-snippets`
-- [ ] `SphereRaumViewerInner`: nach Panorama-Load Kamera auf Startblick; `recenterView()` → Startblick
-- [ ] Unit-Tests Validator + ggf. Viewer-Init
-- [ ] Doku: `content-einpflegen.md` (bereits ADR-Verweis), `architektur.md`
+- [x] `Station`: optionale Felder `startYaw`, `startPitch`; Validator (−180…180 / −90…90); nur bei `viewer: 'equirectangular'`
+- [x] `stations.schema.json`, `types.ts`, Snippet in `.vscode/schulnavigator-content.code-snippets`
+- [x] `SphereRaumViewerInner`: nach Panorama-Load Kamera auf Startblick; `recenterView()` → Startblick
+- [x] Unit-Tests Validator + ggf. Viewer-Init
+- [x] Doku: `content-einpflegen.md` (bereits ADR-Verweis), `architektur.md`
 
 **Nicht im Scope:** MPZ-UI (#153), Flat (#154).
 

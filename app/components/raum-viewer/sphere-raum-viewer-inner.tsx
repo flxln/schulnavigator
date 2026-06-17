@@ -40,6 +40,7 @@ import {
 import {
   resolveBubbleProjectionPitchDeg,
   resolveImageLayerSize,
+  resolveSphereStartView,
   yawPitchToRadians,
 } from '@/lib/raum-viewer/sphere-marker-conventions'
 
@@ -47,6 +48,9 @@ export type SphereRaumViewerInnerProps = {
   stationSlug?: string
   panorama: string
   alt: string
+  /** Optionaler Startblick in Grad (ADR-023). */
+  startYaw?: number
+  startPitch?: number
   hotspots360?: Hotspot360[]
   medien: Medium[]
   activeHotspotId?: string | null
@@ -60,6 +64,16 @@ export type SphereRaumViewerInnerProps = {
 }
 
 const VIEWER_HEIGHT_CLASS_DEFAULT = 'sn-viewer-fallback-height'
+
+function applySphereStartView(
+  viewer: Viewer,
+  startYaw?: number,
+  startPitch?: number,
+): void {
+  const { yawDeg, pitchDeg } = resolveSphereStartView(startYaw, startPitch)
+  const { yaw, pitch } = yawPitchToRadians(yawDeg, pitchDeg)
+  viewer.rotate({ yaw, pitch })
+}
 
 function hotspotCalibFromSearchParams(
   searchParams: ReturnType<typeof useSearchParams>,
@@ -76,6 +90,8 @@ export const SphereRaumViewerInner = forwardRef<
     stationSlug,
     panorama,
     alt,
+    startYaw,
+    startPitch,
     hotspots360,
     medien,
     activeHotspotId,
@@ -99,6 +115,8 @@ export const SphereRaumViewerInner = forwardRef<
   const onHotspotTapRef = useRef(onHotspotTap)
   const onContainerReadyRef = useRef(onContainerReady)
   const hotspots360Ref = useRef(hotspots360)
+  const startYawRef = useRef(startYaw)
+  const startPitchRef = useRef(startPitch)
   const loadedPanoramaRef = useRef<string | null>(null)
   const orientStateRef = useRef<string>('checking')
   const startGyroRef = useRef<() => Promise<void>>(async () => {})
@@ -143,6 +161,10 @@ export const SphereRaumViewerInner = forwardRef<
   useEffect(() => { onHotspotTapRef.current = onHotspotTap }, [onHotspotTap])
   useEffect(() => { onContainerReadyRef.current = onContainerReady }, [onContainerReady])
   useEffect(() => { hotspots360Ref.current = hotspots360 }, [hotspots360])
+  useEffect(() => {
+    startYawRef.current = startYaw
+    startPitchRef.current = startPitch
+  }, [startYaw, startPitch])
 
   const isHero = layout === 'hero'
 
@@ -167,7 +189,14 @@ export const SphereRaumViewerInner = forwardRef<
 
   useImperativeHandle(ref, () => ({
     recenterView() {
-      viewerRef.current?.animate({ yaw: 0, pitch: 0, speed: '3rpm' })
+      const viewer = viewerRef.current
+      if (!viewer) return
+      const { yawDeg, pitchDeg } = resolveSphereStartView(
+        startYawRef.current,
+        startPitchRef.current,
+      )
+      const { yaw, pitch } = yawPitchToRadians(yawDeg, pitchDeg)
+      viewer.animate({ yaw, pitch, speed: '3rpm' })
     },
     focusHotspot(id: string) {
       const hs = hotspots360Ref.current?.find((h) => h.id === id)
@@ -333,7 +362,17 @@ export const SphereRaumViewerInner = forwardRef<
     const rafId = requestAnimationFrame(() => {
       if (destroyed) return
       loadedPanoramaRef.current = panorama
-      void viewer.setPanorama(panorama).catch(() => {})
+      void viewer
+        .setPanorama(panorama)
+        .then(() => {
+          if (destroyed) return
+          applySphereStartView(
+            viewer,
+            startYawRef.current,
+            startPitchRef.current,
+          )
+        })
+        .catch(() => {})
     })
 
     return () => {
@@ -358,8 +397,19 @@ export const SphereRaumViewerInner = forwardRef<
     if (!viewer || !ready) return
     if (loadedPanoramaRef.current === panorama) return
     loadedPanoramaRef.current = panorama
-    void viewer.setPanorama(panorama).catch(() => {})
+    void viewer
+      .setPanorama(panorama)
+      .then(() => {
+        applySphereStartView(viewer, startYawRef.current, startPitchRef.current)
+      })
+      .catch(() => {})
   }, [panorama, ready])
+
+  useEffect(() => {
+    const viewer = viewerRef.current
+    if (!viewer || !ready) return
+    applySphereStartView(viewer, startYaw, startPitch)
+  }, [startYaw, startPitch, ready])
 
   // Marker-Struktur: einmal anlegen/entfernen bei Hotspot- oder Medien-Änderung
   useEffect(() => {
