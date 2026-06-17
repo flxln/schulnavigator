@@ -82,7 +82,7 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 
 - [x] Issue **#141** (`rotate:access-tokens`) — geschlossen 2026-06-15, [PR #142](https://github.com/flxln/schulnavigator/pull/142) → `main`
 
-- [x] Epic **#144** (MPZ Studio v0, ADR-022) — #145–#151, #150 erledigt; #153 offen; [epic-mpz-studio.md](epic-mpz-studio.md)
+- [x] Epic **#144** (MPZ Studio v0, ADR-022) — #145–#151, #155 erledigt; #153 + Prod-Build offen; [epic-mpz-studio.md](epic-mpz-studio.md)
 - [ ] **#152–#154** Startblick/Startpan (ADR-023/024) — [issues-startblick.md](issues-startblick.md)
 
 Letzter dokumentierter Abgleich: **2026-06-17** (#155 IO-Härtung; #153 offen).
