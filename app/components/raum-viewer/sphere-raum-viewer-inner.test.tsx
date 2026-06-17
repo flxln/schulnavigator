@@ -1,5 +1,6 @@
 /** @vitest-environment jsdom */
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { createRef } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Shared state between mock factories and tests — must be hoisted before imports.
@@ -10,6 +11,13 @@ const mocks = vi.hoisted(() => {
   let _orientState = 'active'
   let _readyCb: (() => void) | null = null
   let _viewerConfig: Record<string, unknown> | null = null
+  let _viewerInstance: {
+    rotate: ReturnType<typeof vi.fn>
+    animate: ReturnType<typeof vi.fn>
+    setPanorama: ReturnType<typeof vi.fn>
+  } | null = null
+  let _deferPanorama = false
+  let _panoramaResolve: (() => void) | null = null
   return {
     requestAccess,
     gyroStart,
@@ -20,11 +28,30 @@ const mocks = vi.hoisted(() => {
     storeReadyCb: (fn: () => void) => { _readyCb = fn },
     getViewerConfig: () => _viewerConfig,
     storeViewerConfig: (config: Record<string, unknown>) => { _viewerConfig = config },
+    getViewerInstance: () => _viewerInstance,
+    storeViewerInstance: (instance: typeof _viewerInstance) => { _viewerInstance = instance },
+    setDeferPanorama: (defer: boolean) => {
+      _deferPanorama = defer
+      if (!defer) _panoramaResolve = null
+    },
+    getDeferPanorama: () => _deferPanorama,
+    storePanoramaResolve: (resolve: () => void) => {
+      _panoramaResolve = resolve
+    },
+    firePanoramaLoaded: () => {
+      _panoramaResolve?.()
+      _panoramaResolve = null
+    },
+    searchParams: new URLSearchParams() as URLSearchParams,
   }
 })
 
 vi.mock('@photo-sphere-viewer/markers-plugin', () => ({
   MarkersPlugin: class MockMarkersPlugin {},
+}))
+
+vi.mock('next/navigation', () => ({
+  useSearchParams: () => mocks.searchParams,
 }))
 
 vi.mock('@photo-sphere-viewer/gyroscope-plugin', () => ({
@@ -52,7 +79,17 @@ vi.mock('@photo-sphere-viewer/core', async () => {
   return {
     Viewer: vi.fn().mockImplementation((config: Record<string, unknown>) => {
       mocks.storeViewerConfig(config)
-      return {
+      const rotate = vi.fn()
+      const animate = vi.fn()
+      const setPanorama = vi.fn().mockImplementation(() => {
+        if (!mocks.getDeferPanorama()) {
+          return Promise.resolve()
+        }
+        return new Promise<void>((resolve) => {
+          mocks.storePanoramaResolve(resolve)
+        })
+      })
+      const instance = {
       addEventListener: vi.fn((event: string, handler: () => void) => {
         if (event === 'ready') mocks.storeReadyCb(handler)
       }),
@@ -62,11 +99,14 @@ vi.mock('@photo-sphere-viewer/core', async () => {
         return null
       }),
       getSize: vi.fn(() => ({ width: 800, height: 400 })),
-      setPanorama: vi.fn().mockResolvedValue(undefined),
-      animate: vi.fn(),
+      setPanorama,
+      rotate,
+      animate,
       destroy: vi.fn(),
       dataHelper: { sphericalCoordsToViewerCoords: vi.fn(() => ({ x: 100, y: 100 })) },
       }
+      mocks.storeViewerInstance(instance)
+      return instance
     }),
   }
 })
@@ -95,7 +135,7 @@ import {
   SPHERE_LOCKED_FOV_DEG,
   SPHERE_LOCKED_FOV_EPSILON_DEG,
 } from '@/lib/raum-viewer/constants'
-import type { Hotspot360 } from '@/lib/types'
+import type { Hotspot360, StationViewerHandle } from '@/lib/types'
 
 const HOTSPOTS: Hotspot360[] = [
   {
@@ -129,6 +169,9 @@ beforeEach(() => {
   mocks.gyroStart.mockClear()
   mocks.gyroIsEnabled.mockReturnValue(false)
   mocks.storeViewerConfig({})
+  mocks.storeViewerInstance(null)
+  mocks.setDeferPanorama(false)
+  mocks.searchParams = new URLSearchParams()
 })
 
 describe('Config-Smoke-Test (Zoom-Sperre)', () => {
@@ -321,5 +364,187 @@ describe('Sphere-Marker (Layer + Lifecycle)', () => {
     expect(configs.some((c) => c.element instanceof HTMLElement)).toBe(true)
     expect(plugin.clearMarkers).not.toHaveBeenCalled()
     expect(plugin.updateMarker).toHaveBeenCalled()
+  })
+})
+
+describe('Hotspot-Kalibrierung (Query-Parameter)', () => {
+  it('zeigt Overlay bei ?hotspot-calib=1 und stationSlug in development', () => {
+    vi.stubEnv('NODE_ENV', 'development')
+    mocks.searchParams = new URLSearchParams('hotspot-calib=1')
+    render(
+      <SphereRaumViewerInner {...DEFAULT_PROPS} stationSlug="klassenzimmer" />,
+    )
+    expect(screen.getByText('Hotspot-Kalibrierung (Dev)')).toBeTruthy()
+    vi.unstubAllEnvs()
+  })
+
+  it('zeigt kein Overlay ohne hotspot-calib Query-Parameter', () => {
+    vi.stubEnv('NODE_ENV', 'development')
+    mocks.searchParams = new URLSearchParams()
+    render(
+      <SphereRaumViewerInner {...DEFAULT_PROPS} stationSlug="klassenzimmer" />,
+    )
+    expect(screen.queryByText('Hotspot-Kalibrierung (Dev)')).toBeNull()
+    vi.unstubAllEnvs()
+  })
+
+  it('reagiert auf geänderte Search-Params (Navigation-Simulation)', () => {
+    vi.stubEnv('NODE_ENV', 'development')
+    mocks.searchParams = new URLSearchParams()
+    const { rerender } = render(
+      <SphereRaumViewerInner {...DEFAULT_PROPS} stationSlug="klassenzimmer" />,
+    )
+    expect(screen.queryByText('Hotspot-Kalibrierung (Dev)')).toBeNull()
+
+    mocks.searchParams = new URLSearchParams('hotspot-calib=1')
+    rerender(
+      <SphereRaumViewerInner {...DEFAULT_PROPS} stationSlug="klassenzimmer" />,
+    )
+    expect(screen.getByText('Hotspot-Kalibrierung (Dev)')).toBeTruthy()
+    vi.unstubAllEnvs()
+  })
+})
+
+describe('Sphere-Startblick (ADR-023)', () => {
+  beforeEach(() => {
+    mocks.setDeferPanorama(true)
+  })
+
+  afterEach(() => {
+    mocks.setDeferPanorama(false)
+  })
+
+  async function flushPanoramaRaf() {
+    await act(async () => {
+      await new Promise<void>((resolve) => {
+        requestAnimationFrame(() => resolve())
+      })
+    })
+  }
+
+  async function flushPanoramaLoad() {
+    await flushPanoramaRaf()
+    await act(async () => {
+      mocks.firePanoramaLoaded()
+      await Promise.resolve()
+    })
+  }
+
+  it('ruft rotate erst nach setPanorama-Resolve auf', async () => {
+    render(
+      <SphereRaumViewerInner {...DEFAULT_PROPS} startYaw={30} startPitch={-5} />,
+    )
+    await flushPanoramaRaf()
+    const viewer = mocks.getViewerInstance()
+    expect(viewer?.setPanorama).toHaveBeenCalledWith(DEFAULT_PROPS.panorama)
+    expect(viewer?.rotate).not.toHaveBeenCalled()
+    expect(mocks.gyroStart).not.toHaveBeenCalled()
+
+    await act(async () => {
+      mocks.firePanoramaLoaded()
+      await Promise.resolve()
+    })
+
+    expect(viewer?.rotate).toHaveBeenCalledWith({
+      yaw: expect.closeTo((30 * Math.PI) / 180, 4),
+      pitch: expect.closeTo((-5 * Math.PI) / 180, 4),
+    })
+  })
+
+  it('ruft rotate nach setPanorama mit startYaw/startPitch auf', async () => {
+    render(
+      <SphereRaumViewerInner {...DEFAULT_PROPS} startYaw={30} startPitch={-5} />,
+    )
+    await flushPanoramaLoad()
+    const viewer = mocks.getViewerInstance()
+    expect(viewer?.setPanorama).toHaveBeenCalledWith(DEFAULT_PROPS.panorama)
+    expect(viewer?.rotate).toHaveBeenCalledWith({
+      yaw: expect.closeTo((30 * Math.PI) / 180, 4),
+      pitch: expect.closeTo((-5 * Math.PI) / 180, 4),
+    })
+  })
+
+  it('recenterView animiert zum Startblick statt 0/0', async () => {
+    const ref = createRef<StationViewerHandle>()
+    render(
+      <SphereRaumViewerInner
+        {...DEFAULT_PROPS}
+        ref={ref}
+        startYaw={45}
+        startPitch={-10}
+      />,
+    )
+    await act(async () => {
+      mocks.fireViewerReady()
+      await Promise.resolve()
+    })
+    const viewer = mocks.getViewerInstance()
+    viewer?.animate.mockClear()
+    act(() => {
+      ref.current?.recenterView()
+    })
+    expect(viewer?.animate).toHaveBeenCalledWith({
+      yaw: expect.closeTo((45 * Math.PI) / 180, 4),
+      pitch: expect.closeTo((-10 * Math.PI) / 180, 4),
+      speed: '3rpm',
+    })
+  })
+
+  it('recenterView ohne Startblick bleibt bei 0/0', async () => {
+    const ref = createRef<StationViewerHandle>()
+    render(<SphereRaumViewerInner {...DEFAULT_PROPS} ref={ref} />)
+    await act(async () => {
+      mocks.fireViewerReady()
+      await Promise.resolve()
+    })
+    const viewer = mocks.getViewerInstance()
+    viewer?.animate.mockClear()
+    act(() => {
+      ref.current?.recenterView()
+    })
+    expect(viewer?.animate).toHaveBeenCalledWith({
+      yaw: 0,
+      pitch: 0,
+      speed: '3rpm',
+    })
+  })
+
+  it('recenterView nach Prop-Änderung nutzt neuen startYaw', async () => {
+    const ref = createRef<StationViewerHandle>()
+    const { rerender } = render(
+      <SphereRaumViewerInner
+        {...DEFAULT_PROPS}
+        ref={ref}
+        startYaw={10}
+        startPitch={0}
+      />,
+    )
+    await act(async () => {
+      mocks.fireViewerReady()
+      await flushPanoramaLoad()
+    })
+
+    rerender(
+      <SphereRaumViewerInner
+        {...DEFAULT_PROPS}
+        ref={ref}
+        startYaw={80}
+        startPitch={0}
+      />,
+    )
+    await act(async () => {
+      await Promise.resolve()
+    })
+
+    const viewer = mocks.getViewerInstance()
+    viewer?.animate.mockClear()
+    act(() => {
+      ref.current?.recenterView()
+    })
+    expect(viewer?.animate).toHaveBeenCalledWith({
+      yaw: expect.closeTo((80 * Math.PI) / 180, 4),
+      pitch: 0,
+      speed: '3rpm',
+    })
   })
 })

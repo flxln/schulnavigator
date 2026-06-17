@@ -82,3 +82,14 @@ export function normalizeYawDeg(deg: number): number {
   const normalized = wrapped > 180 ? wrapped - 360 : wrapped
   return roundDeg(normalized)
 }
+
+/** Startblick für Sphere-Viewer (ADR-023); fehlende Felder → 0/0. */
+export function resolveSphereStartView(
+  startYaw?: number,
+  startPitch?: number,
+): { yawDeg: number; pitchDeg: number } {
+  return {
+    yawDeg: normalizeYawDeg(startYaw ?? 0),
+    pitchDeg: roundDeg(Math.min(90, Math.max(-90, startPitch ?? 0))),
+  }
+}

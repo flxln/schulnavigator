@@ -8,6 +8,7 @@ import {
   useRef,
   useState,
 } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { Viewer } from '@photo-sphere-viewer/core'
 import { MarkersPlugin } from '@photo-sphere-viewer/markers-plugin'
 import { GyroscopePlugin } from '@photo-sphere-viewer/gyroscope-plugin'
@@ -37,14 +38,20 @@ import {
   type SphereMarkerKind,
 } from '@/lib/raum-viewer/sphere-marker-factory'
 import {
+  normalizeYawDeg,
   resolveBubbleProjectionPitchDeg,
   resolveImageLayerSize,
+  resolveSphereStartView,
   yawPitchToRadians,
 } from '@/lib/raum-viewer/sphere-marker-conventions'
 
 export type SphereRaumViewerInnerProps = {
+  stationSlug?: string
   panorama: string
   alt: string
+  /** Optionaler Startblick in Grad (ADR-023). */
+  startYaw?: number
+  startPitch?: number
   hotspots360?: Hotspot360[]
   medien: Medium[]
   activeHotspotId?: string | null
@@ -59,10 +66,21 @@ export type SphereRaumViewerInnerProps = {
 
 const VIEWER_HEIGHT_CLASS_DEFAULT = 'sn-viewer-fallback-height'
 
-function isHotspotCalibEnabled(): boolean {
+function applySphereStartView(
+  viewer: Viewer,
+  startYaw?: number,
+  startPitch?: number,
+): void {
+  const { yawDeg, pitchDeg } = resolveSphereStartView(startYaw, startPitch)
+  const { yaw, pitch } = yawPitchToRadians(yawDeg, pitchDeg)
+  viewer.rotate({ yaw, pitch })
+}
+
+function hotspotCalibFromSearchParams(
+  searchParams: ReturnType<typeof useSearchParams>,
+): boolean {
   if (process.env.NODE_ENV !== 'development') return false
-  if (typeof window === 'undefined') return false
-  return new URLSearchParams(window.location.search).get('hotspot-calib') === '1'
+  return searchParams.get('hotspot-calib') === '1'
 }
 
 export const SphereRaumViewerInner = forwardRef<
@@ -70,8 +88,11 @@ export const SphereRaumViewerInner = forwardRef<
   SphereRaumViewerInnerProps
 >(function SphereRaumViewerInner(
   {
+    stationSlug,
     panorama,
     alt,
+    startYaw,
+    startPitch,
     hotspots360,
     medien,
     activeHotspotId,
@@ -85,6 +106,8 @@ export const SphereRaumViewerInner = forwardRef<
   },
   ref,
 ) {
+  const searchParams = useSearchParams()
+  const calibEnabled = hotspotCalibFromSearchParams(searchParams)
   const containerRef = useRef<HTMLDivElement>(null)
   const viewerRef = useRef<Viewer | null>(null)
   const markersPluginRef = useRef<MarkersPlugin | null>(null)
@@ -93,6 +116,11 @@ export const SphereRaumViewerInner = forwardRef<
   const onHotspotTapRef = useRef(onHotspotTap)
   const onContainerReadyRef = useRef(onContainerReady)
   const hotspots360Ref = useRef(hotspots360)
+  const startYawRef = useRef(startYaw)
+  const startPitchRef = useRef(startPitch)
+  const calibViewRef = useRef<{ yawDeg: number; pitchDeg: number } | null>(null)
+  const calibEnabledRef = useRef(calibEnabled)
+  const [startViewApplied, setStartViewApplied] = useState(false)
   const loadedPanoramaRef = useRef<string | null>(null)
   const orientStateRef = useRef<string>('checking')
   const startGyroRef = useRef<() => Promise<void>>(async () => {})
@@ -100,7 +128,6 @@ export const SphereRaumViewerInner = forwardRef<
   const mascotElementsRef = useRef<Map<string, HTMLElement>>(new Map())
   const [ready, setReady] = useState(false)
   const [panOnboardingActive, setPanOnboardingActive] = useState(false)
-  const [calibEnabled] = useState(isHotspotCalibEnabled)
   const [calibClick, setCalibClick] = useState<{
     yaw: number
     pitch: number
@@ -138,6 +165,18 @@ export const SphereRaumViewerInner = forwardRef<
   useEffect(() => { onHotspotTapRef.current = onHotspotTap }, [onHotspotTap])
   useEffect(() => { onContainerReadyRef.current = onContainerReady }, [onContainerReady])
   useEffect(() => { hotspots360Ref.current = hotspots360 }, [hotspots360])
+  useEffect(() => {
+    startYawRef.current = startYaw
+    startPitchRef.current = startPitch
+  }, [startYaw, startPitch])
+  useEffect(() => {
+    calibEnabledRef.current = calibEnabled
+  }, [calibEnabled])
+
+  const getCurrentCalibView = useCallback(
+    () => calibViewRef.current,
+    [],
+  )
 
   const isHero = layout === 'hero'
 
@@ -153,16 +192,36 @@ export const SphereRaumViewerInner = forwardRef<
     }
   }, [orientationEnabled])
 
+  const finishStartView = useCallback(
+    (viewer: Viewer, yaw?: number, pitch?: number) => {
+      applySphereStartView(viewer, yaw, pitch)
+      setStartViewApplied(true)
+    },
+    [],
+  )
+
+  const finishStartViewRef = useRef(finishStartView)
+  useEffect(() => {
+    finishStartViewRef.current = finishStartView
+  }, [finishStartView])
+
   useEffect(() => { startGyroRef.current = startGyroIfPossible }, [startGyroIfPossible])
 
   useEffect(() => {
-    if (!ready || orientState !== 'active') return
+    if (!ready || orientState !== 'active' || !startViewApplied) return
     void startGyroIfPossible()
-  }, [ready, orientState, startGyroIfPossible])
+  }, [ready, orientState, startViewApplied, startGyroIfPossible])
 
   useImperativeHandle(ref, () => ({
     recenterView() {
-      viewerRef.current?.animate({ yaw: 0, pitch: 0, speed: '3rpm' })
+      const viewer = viewerRef.current
+      if (!viewer) return
+      const { yawDeg, pitchDeg } = resolveSphereStartView(
+        startYawRef.current,
+        startPitchRef.current,
+      )
+      const { yaw, pitch } = yawPitchToRadians(yawDeg, pitchDeg)
+      viewer.animate({ yaw, pitch, speed: '3rpm' })
     },
     focusHotspot(id: string) {
       const hs = hotspots360Ref.current?.find((h) => h.id === id)
@@ -296,6 +355,12 @@ export const SphereRaumViewerInner = forwardRef<
       const yawDeg = e.position.yaw * (180 / Math.PI)
       const pitchDeg = e.position.pitch * (180 / Math.PI)
       onViewChangeRef.current?.(yawDeg, pitchDeg)
+      if (calibEnabledRef.current) {
+        calibViewRef.current = {
+          yawDeg: normalizeYawDeg(yawDeg),
+          pitchDeg,
+        }
+      }
     })
 
     if (calibEnabled) {
@@ -328,11 +393,23 @@ export const SphereRaumViewerInner = forwardRef<
     const rafId = requestAnimationFrame(() => {
       if (destroyed) return
       loadedPanoramaRef.current = panorama
-      void viewer.setPanorama(panorama).catch(() => {})
+      setStartViewApplied(false)
+      void viewer
+        .setPanorama(panorama)
+        .then(() => {
+          if (destroyed) return
+          finishStartViewRef.current(
+            viewer,
+            startYawRef.current,
+            startPitchRef.current,
+          )
+        })
+        .catch(() => {})
     })
 
     return () => {
       destroyed = true
+      setStartViewApplied(false)
       cancelAnimationFrame(rafId)
       el.removeEventListener('touchstart', onTouchStart, { capture: true })
       el.removeEventListener('touchend', onTouchEnd)
@@ -353,8 +430,24 @@ export const SphereRaumViewerInner = forwardRef<
     if (!viewer || !ready) return
     if (loadedPanoramaRef.current === panorama) return
     loadedPanoramaRef.current = panorama
-    void viewer.setPanorama(panorama).catch(() => {})
+    setStartViewApplied(false)
+    void viewer
+      .setPanorama(panorama)
+      .then(() => {
+        finishStartViewRef.current(
+          viewer,
+          startYawRef.current,
+          startPitchRef.current,
+        )
+      })
+      .catch(() => {})
   }, [panorama, ready])
+
+  useEffect(() => {
+    const viewer = viewerRef.current
+    if (!viewer || !ready) return
+    finishStartView(viewer, startYaw, startPitch)
+  }, [startYaw, startPitch, ready, finishStartView])
 
   // Marker-Struktur: einmal anlegen/entfernen bei Hotspot- oder Medien-Änderung
   useEffect(() => {
@@ -448,10 +541,17 @@ export const SphereRaumViewerInner = forwardRef<
         skip={panOnboardingSkip}
         onActiveChange={handlePanOnboardingActiveChange}
       />
-      {calibEnabled ? (
+      {calibEnabled && stationSlug ? (
         <SphereHotspotCalibOverlay
+          stationSlug={stationSlug}
           hotspots360={hotspots360}
           lastClick={calibClick}
+          getCurrentView={getCurrentCalibView}
+          savedStartView={
+            startYaw !== undefined && startPitch !== undefined
+              ? { startYaw, startPitch }
+              : undefined
+          }
         />
       ) : null}
       {isHero && orientState === 'needs-gesture' ? (

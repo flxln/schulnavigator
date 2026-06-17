@@ -1,6 +1,6 @@
 # Schulfest GS39 — Playbook (26.06.2026)
 
-Operative Anleitung für Team und Schule am Schulfest. Technik: Modus **`fest`**, Entry `fest-2026`, Raum-QRs → `/raum/{slug}` ([ADR-005](../dokumentation/adr/005-zugangskontrolle-token.md)).
+Operative Anleitung für Team und Schule am Schulfest. Technik: Modus **`fest`**, Entry-Token aus [`app/lib/access-token-constants.mjs`](../app/lib/access-token-constants.mjs) bzw. `public/qr/manifest-schulfest.json`, Raum-QRs → `/raum/{slug}` ([ADR-005](../dokumentation/adr/005-zugangskontrolle-token.md)).
 
 **Quelle Strategie:** [issues-schulfest-gs39-nachtrag.md](../dokumentation/github-project/issues-schulfest-gs39-nachtrag.md) (Epic #86)
 
@@ -10,7 +10,7 @@ Verwandt: [qr-codes-drucken.md](./qr-codes-drucken.md) · [content-einpflegen.md
 
 ## 1. Ablauf für Besucher (Modus `fest`)
 
-1. **Entry-QR** am Schuleingang scannen → `/eintritt?t=fest-2026` → Cookie → Startseite (Hub gesperrt, 0/12).
+1. **Entry-QR** am Schuleingang scannen → `/eintritt?t=<fest-token>` → Cookie → Startseite (Hub gesperrt, 0/12).
 2. **Raum-QR** scannen (In-App-Scanner `/scan` oder System-Kamera) → Station öffnet sich, Hub-Slot wird freigeschaltet.
 3. Inhalt im Raum ansehen (Gyro, Hotspots, Medienliste).
 4. Nächsten Raum-QR scannen — bis alle besuchten Stationen im Hub sichtbar sind.
@@ -89,7 +89,7 @@ Sonnentest protokollieren (Datum, Scan ja/nein) — Zeile in [Abschlusstest](../
 ## 5. Tag der offenen Tür (separat)
 
 - Menschen in (fast) allen Räumen; App **ergänzt** Live-Gespräche.
-- Modus **`heft`** im Schulstartheft (`heft-2026-27`) — alle Stationen sofort im Hub.
+- Modus **`heft`** im Schulstartheft (Heft-Token aus `manifest.json`) — alle Stationen sofort im Hub.
 - Raum-QRs eher **an der Tür**; ggf. volles Set `npm run generate:qr` (alle 12 + 2 Entry).
 
 ---
@@ -109,6 +109,6 @@ Sonnentest protokollieren (Datum, Scan ja/nein) — Zeile in [Abschlusstest](../
 - [ ] Entry-QR `fest` am Eingang sichtbar
 - [ ] Raum-QRs nach Platzierungstabelle ausgehängt (Tür oder Hof — nicht jeder QR muss an der Tür hängen)
 - [ ] Hof-Schilder beschriftet und wetterfest
-- [ ] Tablet-Fallback geladen (`/eintritt?t=fest-2026`)
+- [ ] Tablet-Fallback geladen (Entry-URL aus `manifest-schulfest.json` oder gedrucktem Entry-QR)
 - [ ] MPZ erreichbar (Felix/Julia)
 - [ ] Mobilfunk am Hof getestet ([#91](../dokumentation/github-project/issues-schulfest-gs39-nachtrag.md))

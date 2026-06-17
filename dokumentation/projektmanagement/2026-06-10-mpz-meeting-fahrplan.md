@@ -1,5 +1,7 @@
 # Meeting-Fahrplan — 10.06.2026
 
+_Archiv — Meeting abgeschlossen. Aktuelle Demo-Routen: [`anleitungen/lokal-testen-und-anschauen.md`](../../anleitungen/lokal-testen-und-anschauen.md)._
+
 **Anlass:** MPZ × Schule (Sten/Tina) — Demo der App-Shell + Abstimmung Content & Schulfest  
 **Issue:** [#25](https://github.com/flxln/schulnavigator/issues/25)  
 **Ziel:** Verbindlichen **Content-Lieferplan** und Klarheit zum **Schulfest-Setup** (26.06.) — ohne beides startet Phase 3 nicht.
@@ -8,7 +10,7 @@
 **Dauer:** ca. 45–60 Min. (Demo ~15 Min., Abstimmung ~30 Min., Puffer)  
 **Technik:** iPhone mit Mobilfunk, Lautstärke an; App unter `https://schulnavigator.mpz.schule` (HTTPS)
 
-**Demo-Ablauf (Detail):** [`demo-meeting-2026-06-10.md`](./demo-meeting-2026-06-10.md)
+**Demo-Ablauf (Detail):** [`2026-06-10-mpz-demo-meeting.md`](./2026-06-10-mpz-demo-meeting.md)
 
 ---
 
@@ -101,7 +103,7 @@ Pro Zeile festhalten:
 - Reicht Material vom **Projekttag 24./25.06.**, oder brauchen wir Vorab-Lieferung?
 - Braucht der Raum **Hotspots** im Bild (empfohlen: 1–4 Stück)?
 
-**Referenz-Workflow:** [`klassenzimmer`](../app/data/stations.json) — Medien unter `public/media/klassenzimmer/`, Hotspots in JSON. Anleitung: [`content-einpflegen.md`](./content-einpflegen.md).
+**Referenz-Workflow:** [`klassenzimmer`](../../app/data/stations.json) — Medien unter `public/media/klassenzimmer/`, Hotspots in JSON. Anleitung: [`content-einpflegen.md`](../../anleitungen/content-einpflegen.md).
 
 ---
 
@@ -183,7 +185,7 @@ flowchart LR
 ## Checkliste Felix (vor dem Termin)
 
 - [ ] `npm run build` auf Prod-Stand geprüft (Coolify nach letztem Push)
-- [ ] Demo-Routen auf dem eigenen Handy durchgetestet ([`demo-meeting-2026-06-10.md`](./demo-meeting-2026-06-10.md))
+- [ ] Demo-Routen auf dem eigenen Handy durchgetestet ([`2026-06-10-mpz-demo-meeting.md`](./2026-06-10-mpz-demo-meeting.md))
 - [ ] Ausdruck oder Bildschirm: **leere Content-Lieferplan-Tabelle** (Block 3) zum Ausfüllen
 - [ ] QR `fest-2026` oder Link bereit
 - [ ] Optional: Ausdruck Raum-QR `musik` oder `klassenzimmer` zum Live-Scan

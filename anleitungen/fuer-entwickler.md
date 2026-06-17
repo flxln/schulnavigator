@@ -25,6 +25,29 @@ Die App läuft unter [http://localhost:3000](http://localhost:3000).
 
 **Content einpflegen (JSON + Dateien, Hotspots):** [content-einpflegen.md](./content-einpflegen.md).
 
+**MPZ Studio (optional, nur `development`):** [ADR-022](../dokumentation/adr/022-mpz-studio-internes-ingest-tool.md) — internes Ingest-Tool unter `/mpz/studio` (Dashboard, Stationen-Liste, Medien, Dialog-Audio, Hotspot-Kalibrierung). Siehe Abschnitt [MPZ Studio](#mpz-studio-lokal-adr-022) unten.
+
+---
+
+## MPZ Studio (lokal, ADR-022)
+
+Nur bei `NODE_ENV=development` erreichbar; in Production liefern `/mpz/*` und `/api/mpz/*` **404**. Nicht auf Coolify deployen oder Secrets in Prod setzen.
+
+1. In `app/.env.local`: `SN_MPZ_STUDIO_SECRET` setzen (siehe `.env.example`).
+2. Dev-Server starten: `npm run dev`.
+3. Browser: [`/mpz/unlock`](http://localhost:3000/mpz/unlock) — Secret eingeben → Session-Cookie.
+4. [`/mpz/studio`](http://localhost:3000/mpz/studio) — Dashboard mit Validierungsstatus und Links zu allen 12 Stationen.
+
+**Validierung (#150, #155):** Nach jedem Studio-Write läuft Post-Validate (`validateStationsFile` + `validateStationAssets` importiert). Bei Fehlern im Scope der geänderten Station wird **kein rename** ausgeführt (`stations.json` bleibt unverändert). Medien-Ingest läuft in `withMpzWriteLock`. Ingest-APIs liefern `validation` + `mtime` inline.
+
+**Grenzen:** Schreibt nur lokale Dateien (`data/stations.json`, `public/media/`, `content/dialog-audio/`). Kein Git-Commit aus dem Studio — nach Änderungen manuell `git commit`, Deploy (Build führt `validate:stations` ohnehin aus).
+
+**Plan A (Pflicht + Fallback):** CLI und manuelles JSON ([content-einpflegen.md](./content-einpflegen.md)) bleiben für den Projekttag maßgeblich.
+
+**API (Auswahl):** `POST /api/mpz/view/sphere` — Body `{ slug, startYaw, startPitch }` schreibt den Sphere-Startblick in `stations.json` (#153, ADR-023). Guard wie alle `/api/mpz/*`-Routen.
+
+Details und Testrouten: [lokal-testen-und-anschauen.md](./lokal-testen-und-anschauen.md) (Abschnitt MPZ Studio).
+
 ---
 
 ## Umgebungsvariablen
@@ -50,6 +73,8 @@ Alle Befehle im Verzeichnis `app/` ausführen.
 | `npm run test`         | Vitest (u. a. Merge Schulhaus ↔ `stations.json`, Issue #14)   |
 | `npm run validate:tokens` | Prüft `app/gs39-tokens.css` gegen `auftraggeber/.../colors_and_type.css` (lokal) bzw. `app/scripts/reference/colors_and_type.css` (Docker, nur `app/` als Kontext) — wird von `build` mitaufgerufen |
 | `npm run validate:stations` | Prüft `bild`- und `quelle`-Pfade unter `public/`; warnt bei extremem Hotspot-**y** (Heuristik, sichtbarer Ausschnitt nach Auto-Zoom) — wird von `build` mitaufgerufen |
+| `npm run validate:coach` | Prüft Coach-JSON gegen Schema und `stations.json` — wird von `build` mitaufgerufen |
+| `npm run validate:access-config` | Prüft Token-Konfiguration (Sync mit QR-Specs) — wird von `build` mitaufgerufen |
 | `npm run generate:qr`  | QR-PNGs + Druck-PDFs + `manifest.json` unter `public/qr/` (Issue #15, PDF-Erweiterung #130); `--preset=schulfest` für Schulfest-Set (12 Räume + Entry fest) — [schulfest-gs39-playbook.md](./schulfest-gs39-playbook.md) |
 | `npm run rotate:access-tokens` | Entry-Token rotieren, `access-token-constants.mjs` + Manifeste + beide QR-Sets; Coolify-JSON auf stdout — [#141](https://github.com/flxln/schulnavigator/issues/141), siehe [Token rotieren](#token-pflegen--rotieren) |
 
@@ -152,7 +177,7 @@ PORT=3007 HOSTNAME=127.0.0.1 node server.js
 
 ## Deployment (Überblick)
 
-Produktion: Multi-Stage-Image wie in [`app/Dockerfile`](../app/Dockerfile), Health-Check `GET /api/health`. Ziel-Hosting: **MPZ-Hetzner / Coolify** ([ADR-001](../dokumentation/adr/001-hosting-coolify.md)). Geplante öffentliche URL: **`https://schulnavigator.mpz.schule`**.
+Produktion: Multi-Stage-Image wie in [`app/Dockerfile`](../app/Dockerfile), Health-Check `GET /api/health`. Ziel-Hosting: **MPZ-Hetzner / Coolify** ([ADR-001](../dokumentation/adr/001-hosting-coolify.md)). **Live-URL:** **`https://schulnavigator.mpz.schule`**.
 
 Die App setzt **`robots.txt`** (`Disallow: /`) und **`noindex`** im Root-Layout (Phase 1, Issue #16), damit die Subdomain nicht in Suchmaschinen indexiert wird.
 

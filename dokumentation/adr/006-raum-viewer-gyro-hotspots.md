@@ -49,6 +49,7 @@ Für das **MVP (bis 26.06.)** gilt auf allen Stationsseiten mit Raumbild:
 - **Test:** Reales iPhone (Safari) im Abschlusstest (#38)
 - **Directus (später):** Collection-Felder für Hotspots analog JSON-Schema
 - **360°-Viewer:** Koexistenz-Strategie mit `viewer: 'flat' | 'equirectangular'`-Flag — siehe [ADR-018](./018-360-sphere-viewer.md)
+- **Startausschnitt (2026-06-16):** Optional `startPanX` (0–1, horizontale Viewport-Mitte auf Quellbild) — [ADR-024](./024-flat-startpan.md); Runtime #154.
 
 ### Datenmodell (Auszug)
 

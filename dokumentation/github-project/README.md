@@ -14,7 +14,8 @@ Dieser Ordner ist die **führende Spezifikation** für Milestones und Issues in 
 | [epic-coach-fortschritt.md](epic-coach-fortschritt.md) | Epic **#121**: ADR-019 — Coach Fortschritts-Einblendungen — Unterissue #122 (Raum-Overlay-Priorität) |
 | [epic-hub-wegweiser.md](epic-hub-wegweiser.md) | Epic **#124**: ADR-020 — Hub Wegweiser Schulhof/Turnhalle, 12 Stationen |
 | [epic-zugangsmodus-konfigurierbar.md](epic-zugangsmodus-konfigurierbar.md) | Epic **#132**: ADR-021 — Zugangsmodus `open`/`gated`, Tokens ENV, Embedding/CSP — Unterissues #133–#139 |
-| [epic-mpz-studio.md](epic-mpz-studio.md) | Epic **#144**: ADR-022 — MPZ Studio v0 (internes Dev-only-Ingest-Tool) — Unterissues #145–#151 · eigener Milestone „MPZ Studio v0" |
+| [epic-mpz-studio.md](epic-mpz-studio.md) | Epic **#144**: ADR-022 — MPZ Studio v0 (internes Dev-only-Ingest-Tool) — Unterissues #145–#151, #153 · eigener Milestone „MPZ Studio v0" |
+| [issues-startblick.md](issues-startblick.md) | Startblick Sphere (#152, #153) und Flat-Startpan (#154) — ADR-023/024 |
 | [labels.md](labels.md) | Label-Konventionen |
 
 Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) und [entscheidungen.md](../entscheidungen.md).
@@ -81,6 +82,9 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 
 - [x] Issue **#141** (`rotate:access-tokens`) — geschlossen 2026-06-15, [PR #142](https://github.com/flxln/schulnavigator/pull/142) → `main`
 
-- [x] Epic **#144** (MPZ Studio v0, ADR-022) — Spezifikation + Plan A (CLI) + Claude Design v1 (SE 13); Implementierung #145–#151 offen; [epic-mpz-studio.md](epic-mpz-studio.md)
+- [x] Epic **#144** (MPZ Studio v0, ADR-022) — abgeschlossen (#145–#151, #153, #155); PR `feature/mpz-studio` → `main`; [epic-mpz-studio.md](epic-mpz-studio.md)
+- [x] Issue **#152** (Sphere-Startblick Runtime + Pre-Mortem Gyro-Gating, ADR-023) — umgesetzt 2026-06-17 (`a1b272d`, `4a59010`), Branch `feature/mpz-studio`
+- [x] Issue **#153** (MPZ Sphere-Startblick persistieren, ADR-023) — umgesetzt 2026-06-17 (`057ca71`), Branch `feature/mpz-studio`, Issue geschlossen
+- [ ] **#154** Flat-Startpan (ADR-024) — [issues-startblick.md](issues-startblick.md)
 
-Letzter dokumentierter Abgleich: **2026-06-16** (MPZ Studio: Claude Design v1 Prototyp versioniert, Epic #144 kommentiert).
+Letzter dokumentierter Abgleich: **2026-06-17** (Epic #144 MPZ Studio v0 abgeschlossen; #154 Flat-Startpan offen).

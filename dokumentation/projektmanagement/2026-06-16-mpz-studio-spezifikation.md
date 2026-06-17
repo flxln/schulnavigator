@@ -45,7 +45,7 @@ Nach Sparring (Zeitdruck 8 Tage, Single-Point-of-Failure): **Plan A ist der krit
 | Anleitung | [anleitungen/projekttag-content-ingest.md](../../anleitungen/projekttag-content-ingest.md) |
 | JSON-Schema | [app/data/stations.schema.json](../../app/data/stations.schema.json) |
 | Snippets | [.vscode/schulnavigator-content.code-snippets](../../.vscode/schulnavigator-content.code-snippets) |
-| CLI | `npm run content:ingest` → [app/scripts/content-ingest.mjs](../../app/scripts/content-ingest.mjs) |
+| CLI | `npm run content:ingest` → [app/scripts/content-ingest.ts](../../app/scripts/content-ingest.ts) (IO via [lib/mpz-content-io.ts](../../app/lib/mpz-content-io.ts)) |
 
 **Plan B — Scope (nur wenn bis ~22.06. stabil):** Medien-Upload mit korrekten Pfaden, Hotspot-Rückschreibung (Flat + Sphere). Kein Coach, Brand, Hub, Deploy-Tab vor dem 26.06.
 
@@ -284,37 +284,37 @@ Abgeleitet aus zwei unabhängigen Plan-Reviews (SE-15: Codex, GLM-5.1). v0 ist *
 
 **Funktional**
 
-- [ ] Lokale Medien-Uploads der 4 Projekttag-Typen (`audio`, `video`, `foto`, `text`) erzeugen den korrekten Pfad unter `app/public/media/{slug}/…` **und** den passenden `medien[]`-Eintrag in `stations.json`.
-- [ ] Dialog-Audio-Upload benennt die Datei nach Konvention (`01-frieda.wav`, `DIALOG_CLIP_RE`) und verknüpft das Segment (`quelle: "/api/dialog/{slug}/…"`).
-- [ ] Hotspots (Flat `x`/`y` ∈ [0,1]; 360° `yaw` ∈ [-180,180], `pitch` ∈ [-90,90]) werden **schema-konform** in `stations.json` zurückgeschrieben.
-- [ ] Pro Station existiert ein Vorschau-Link (`/raum/{slug}`).
+- [x] Lokale Medien-Uploads der 4 Projekttag-Typen (`audio`, `video`, `foto`, `text`) erzeugen den korrekten Pfad unter `app/public/media/{slug}/…` **und** den passenden `medien[]`-Eintrag in `stations.json`. Umgesetzt #147 (`lib/mpz-medium-ingest`, API, Mini-UI `/mpz/studio/ingest`).
+- [x] Dialog-Audio-Upload benennt die Datei nach Konvention (`01-frieda.wav`, `DIALOG_CLIP_RE`) und verknüpft das Segment (`quelle: "/api/dialog/{slug}/…"`). Umgesetzt #148 (`lib/mpz-dialog-audio-ingest`, API, Mini-UI `/mpz/studio/dialog-audio`).
+- [x] Hotspots (Flat `x`/`y` ∈ [0,1]; 360° `yaw` ∈ [-180,180], `pitch` ∈ [-90,90]) werden **schema-konform** in `stations.json` zurückgeschrieben.
+- [x] Pro Station existiert ein Vorschau-Link (`/raum/{slug}`). Umgesetzt #151 (Stationen-Grid).
 
 **Security (Befund 2 / L4)**
 
-- [ ] Ein zentraler Helper `assertMpzStudioAccess(request)` (in `lib/mpz-content-io` oder eigenem Modul) wird in **jeder** `/api/mpz/*`-Route aufgerufen — die Edge-Middleware deckt `/api/*` nicht ab.
-- [ ] Guard-Verhalten getestet: `development` ohne Secret → 401, `development` mit gültigem Secret → ok, `production` → 404 auf `/mpz/*` **und** `/api/mpz/*`.
-- [ ] `SN_MPZ_STUDIO_SECRET` nur in `.env.local`, dokumentiert in `.env.example`; **nicht** in Prod-/Coolify-Env.
+- [x] Ein zentraler Helper `assertMpzStudioAccess(request)` (in `lib/mpz-studio-guard`) wird in **jeder** `/api/mpz/*`-Route aufgerufen — die Edge-Middleware deckt `/api/*` nicht ab.
+- [x] Guard-Verhalten getestet: `development` ohne Secret → 401, `development` mit gültigem Secret → ok, `production` → 404 auf `/mpz/*` **und** `/api/mpz/*`.
+- [x] `SN_MPZ_STUDIO_SECRET` nur in `.env.local`, dokumentiert in `.env.example`; **nicht** in Prod-/Coolify-Env.
 
 **IO-Kontrakt (Befund 4)**
 
-- [ ] `writeStations()` schreibt **atomar**: temp-Datei → `fs.rename`, vorher `stations.json.bak` aktualisieren; deterministische Key-Reihenfolge / pretty-print.
-- [ ] **Rollback:** Schlägt die Validierung nach dem Save fehl, wird die vorige Version wiederhergestellt (`.bak` bzw. nicht-comitteter Stand) — keine kaputte `stations.json` bleibt liegen.
-- [ ] `lib/mpz-content-io` wird **vor** dem ersten UI-Edit-Feld gebaut und mit Unit-Tests abgesichert; die bestehende CLI (`content-ingest.mjs`) nutzt denselben Layer (DRY) — kein verteilter `node:fs`-Zugriff in UI-Code (T2).
+- [x] `writeStations()` schreibt **atomar**: temp-Datei → `fs.rename`, vorher `stations.json.bak` aktualisieren; deterministische Key-Reihenfolge / pretty-print.
+- [x] **Rollback:** Schlägt die Validierung nach dem Save fehl, wird die vorige Version wiederhergestellt (`.bak` bzw. nicht-comitteter Stand) — keine kaputte `stations.json` bleibt liegen. Umgesetzt #150 (`postValidate` in `lib/mpz-content-io`, Scope per `touchedSlug`).
+- [x] `lib/mpz-content-io` wird **vor** dem ersten UI-Edit-Feld gebaut und mit Unit-Tests abgesichert; die bestehende CLI (`content-ingest.ts`) nutzt denselben Layer (DRY) — kein verteilter `node:fs`-Zugriff in UI-Code (T2). Umgesetzt #146 (2026-06-16).
 
 **Upload-Regeln (Befund 5)**
 
-- [ ] Pro Typ erlaubte Extensions + MIME-/Magic-Byte-Prüfung; Größenlimit; Dateinamen-Normalisierung (slug-safe); definierte Kollisionsregel (Replace vs. neuer Name). AirDrop-Dateinamen werden nie ungeprüft übernommen.
+- [x] Pro Typ erlaubte Extensions + MIME-/Magic-Byte-Prüfung; Größenlimit; Dateinamen-Normalisierung (slug-safe); definierte Kollisionsregel (Replace vs. neuer Name). AirDrop-Dateinamen werden nie ungeprüft übernommen. Umgesetzt #147 (`lib/mpz-upload-rules.ts`, `file-type`-Sniffing).
 
 **Validierungs-Vertrag (Befund 3)**
 
-- [ ] Nach jedem Save laufen **beide** Ebenen: strukturelle Validierung (`validateStationsFile()` importiert) **und** das Asset-Skript (`npm run validate:stations`). Es genügt nicht, nur das npm-Skript aufzurufen.
-- [ ] `validate:tokens` läuft **nicht** nach Content-Save (Access-Tokens sind inhaltlich unabhängig) — nur im späteren Deploy-Tab (L6).
-- [ ] Validierung ist „Save & Validate" (Button oder debounced ≥ 800 ms), kein Subprocess-Sturm bei jedem Tastendruck (L5).
+- [x] Nach jedem Save laufen **beide** Ebenen: strukturelle Validierung (`validateStationsFile()` importiert) **und** Asset-Prüfung (`validateStationAssets` importiert, gleiche Logik wie `npm run validate:stations`). Umgesetzt #150.
+- [x] `validate:tokens` läuft **nicht** nach Content-Save (Access-Tokens sind inhaltlich unabhängig) — nur im späteren Deploy-Tab (L6).
+- [x] Validierung ist „Save & Validate" (Button oder debounced ≥ 800 ms), kein Subprocess-Sturm bei jedem Tastendruck (L5). Umgesetzt #150.
 
 **Build / Prod**
 
-- [ ] `NODE_ENV=production` → 404 auf `/mpz/*` und `/api/mpz/*` (manuell gegen `next build` verifiziert).
-- [ ] `npm run build` bleibt grün; kein `any` in neuem Code.
+- [x] `NODE_ENV=production` → 404 auf `/mpz/*` und `/api/mpz/*` (Unit-Tests: `mpz-studio-guard`, Route-Tests, `middleware.test.ts`; Build grün).
+- [x] `npm run build` bleibt grün; kein `any` in neuem Code.
 - [ ] Defense-in-Depth dokumentiert/verifiziert: Prod-Image hat kein beschreibbares `data/`/`public/` für den Laufzeit-User (L3).
 
 ### Geklärte vormals offene Punkte

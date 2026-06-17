@@ -1,9 +1,31 @@
 import { join } from 'node:path'
+import { getStationsPaths } from '@/lib/mpz-content-io'
+import type { DialogRolle } from '@/lib/types'
 
 export const DIALOG_CLIP_RE = /^\d{2}-(frieda|otto|beide)\.wav$/
 
+export function buildClipName(segmentIndex: number, rolle: DialogRolle): string {
+  if (!Number.isInteger(segmentIndex) || segmentIndex < 0 || segmentIndex > 98) {
+    throw new Error(`segmentIndex muss eine Ganzzahl 0–98 sein, erhalten: ${segmentIndex}`)
+  }
+  const clip = `${String(segmentIndex + 1).padStart(2, '0')}-${rolle}.wav`
+  if (!DIALOG_CLIP_RE.test(clip)) {
+    throw new Error(`Ungültiger Clip-Name: ${clip}`)
+  }
+  return clip
+}
+
+export function dialogApiQuelle(slug: string, clip: string): string {
+  return `/api/dialog/${slug}/${clip}`
+}
+
+export function dialogAudioFsPath(appRoot: string, slug: string, clip: string): string {
+  return join(appRoot, 'content', 'dialog-audio', slug, clip)
+}
+
+/** Laufzeit-Pfad — immer über `getStationsPaths().appRoot`, nicht `process.cwd()`. */
 export function dialogAudioFilePath(slug: string, clip: string): string {
-  return join(process.cwd(), 'content', 'dialog-audio', slug, clip)
+  return dialogAudioFsPath(getStationsPaths().appRoot, slug, clip)
 }
 
 export function parseDialogApiPath(

@@ -11,6 +11,7 @@ Content einpflegen (JSON, Medien, Hotspots): [`content-einpflegen.md`](./content
 
 - Node.js 20+ und npm
 - Terminal im Verzeichnis **`app/`** (alle `npm`-Befehle dort)
+- **Entry-Token** für Test-URLs: [`app/lib/access-token-constants.mjs`](../app/lib/access-token-constants.mjs) (`FEST_DEV_TOKEN`, `HEFT_DEV_TOKEN`) — ändern sich nach `npm run rotate:access-tokens`
 
 ---
 
@@ -23,7 +24,7 @@ npm run dev
 ```
 
 - **URL am Mac:** [https://localhost:3000](https://localhost:3000) (`npm run dev` nutzt experimentelles HTTPS)
-- **iPhone im gleichen WLAN:** nur **`https://`** (nicht `http://`) — z. B. `https://192.168.x.x:3000/eintritt?t=fest-2026`
+- **iPhone im gleichen WLAN:** nur **`https://`** (nicht `http://`) — z. B. `https://192.168.x.x:3000/eintritt?t=fest-vkc2AuKW0S7QGHDT`
 - In `app/.env.local`: `ALLOWED_DEV_ORIGINS=<LAN-IP>` (Komma-getrennt). IP: `ipconfig getifaddr en0`
 - **Safari „Website öffnen“ tut nichts?** Das Dev-Zertifikat muss die **LAN-IP** enthalten (nicht nur `localhost`). Einmal im Ordner `app/`:
 
@@ -39,14 +40,14 @@ npm run dev
 
 **Sinnvolle Seiten zum Durchklicken:**
 
-**Raumstationen (alle 11 Slugs):** Dieselbe Shell [`RaumStationClient`](../app/components/raum-station-client.tsx) unter `/raum/[slug]` — TopBar (Zurück, Stationsliste), Hero mit Gyro, **Card-Peek** unten (#111). **Stations-Chip** unter dem Hero tippen → Raumansicht zentrieren (#72, alle Stationen mit `bild`). **Nur** `daz` und `pc-raum`: Maskottchen antippen → Dialog; währenddessen **X** neben Zurück beendet die Wiedergabe.
+**Raumstationen (alle 12 Slugs):** Dieselbe Shell [`RaumStationClient`](../app/components/raum-station-client.tsx) unter `/raum/[slug]` — TopBar (Zurück, Stationsliste), Hero mit Gyro, **Card-Peek** unten (#111). **Stations-Chip** unter dem Hero tippen → Raumansicht zentrieren (#72, alle Stationen mit `bild`). **Nur** `daz` und `pc-raum`: Maskottchen antippen → Dialog; währenddessen **X** neben Zurück beendet die Wiedergabe.
 
 | Seite | Zweck |
 | ----- | ----- |
 | [https://localhost:3000/](https://localhost:3000/) | Startseite — **ohne** vorherigen Entry: Redirect zu `/eintritt` |
-| [https://localhost:3000/eintritt?t=fest-2026](https://localhost:3000/eintritt?t=fest-2026) | Entry Schulfest: Cookie + Redirect `/` → Frontansicht-Hub **gesperrt** (0/11), Slots nach Raumbesuch frei (#21) |
-| [https://localhost:3000/eintritt?t=heft-2026-27](https://localhost:3000/eintritt?t=heft-2026-27) | Entry Heft: voller Hub (alle Stationen klickbar), Fortschritt zählt trotzdem (#21) |
-| [https://localhost:3000/stationen](https://localhost:3000/stationen) | Alle 11 Stationen als Liste mit **Raum-Icons** (#105; Lock im Modus `fest`) — Epic #58 |
+| [https://localhost:3000/eintritt?t=fest-vkc2AuKW0S7QGHDT](https://localhost:3000/eintritt?t=fest-vkc2AuKW0S7QGHDT) | Entry Schulfest: Cookie + Redirect `/` → Frontansicht-Hub **gesperrt** (0/12), Slots nach Raumbesuch frei (#21) |
+| [https://localhost:3000/eintritt?t=heft-ImulQPDmydy7VCVj](https://localhost:3000/eintritt?t=heft-ImulQPDmydy7VCVj) | Entry Heft: voller Hub (alle Stationen klickbar), Fortschritt zählt trotzdem (#21) |
+| [https://localhost:3000/stationen](https://localhost:3000/stationen) | Alle 12 Stationen als Liste mit **Raum-Icons** (#105; Lock im Modus `fest`) — Epic #58 |
 | [https://localhost:3000/eintritt](https://localhost:3000/eintritt) | Hinweisseite (Willkommens-Karte → Link auf Scan-Route); Fehler `?reason=expired\|invalid` |
 | [https://localhost:3000/eintritt/scan](https://localhost:3000/eintritt/scan) | **Vollbild-Entry-Scanner** (#57, #82); Kamera nur auf `localhost`/HTTPS; ohne Cookie erreichbar |
 | [https://localhost:3000/robots.txt](https://localhost:3000/robots.txt) | `Disallow: /` (Issue #16) |
@@ -62,7 +63,58 @@ npm run dev
 | [https://localhost:3000/raum/hort](https://localhost:3000/raum/hort) | Standard-Raum-Chrome |
 | [https://localhost:3000/raum/musik](https://localhost:3000/raum/musik) | **Gyro**, **2 Hotspots**, **4 Medien-Slots** (Audio/Video/Foto/Text, Player #18–#20); Chip zentriert |
 | [https://localhost:3000/raum/schulsozialarbeit](https://localhost:3000/raum/schulsozialarbeit) | Standard-Raum-Chrome; ein Text-Medium |
+| [https://localhost:3000/raum/schulhof](https://localhost:3000/raum/schulhof) | Standard-Raum-Chrome; Hof-Station (#86) |
 | [https://localhost:3000/raum/gibts-nicht](https://localhost:3000/raum/gibts-nicht) | **404** (nur im Dev-Server; unbekannte Slugs sind zur Build-Zeit fest) |
+
+### MPZ Studio (nur `npm run dev`, ADR-022, Issue #145)
+
+Internes Dev-only-Ingest-Tool — **nie** auf Coolify, in Production 404.
+
+1. In `app/.env.local`: `SN_MPZ_STUDIO_SECRET=…` setzen (Vorlage: `app/.env.example`).
+2. Dev-Server neu starten (Env wird beim Start geladen).
+3. [https://localhost:3000/mpz/studio](https://localhost:3000/mpz/studio) öffnen → Redirect zu `/mpz/unlock`, Secret eintragen → Cookie-Session → Dashboard.
+4. API-Check (optional): `curl -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET" http://localhost:3000/api/mpz/health`
+
+**Speichern & Validieren (#150, #155).** Nach Uploads/Kalibrierung zeigt das Dashboard den Status (debounced, ≥ 800 ms). Button oben rechts **Speichern & Validieren** normalisiert die Hub-Reihenfolge in `stations.json` und prüft Struktur + Dateireferenzen. Schreiben läuft über Temp-Datei → Validierung → `rename` (kein invalider Zustand bei Abbruch). Nach Medien-/Dialog-Upload liefert die API `validation` + `mtime` direkt; bei Fehlern: rotes Panel, ggf. Rollback aus `.bak`.
+
+**Medien hochladen (Issue #147).** Im Studio „Medien hochladen (Test)“ oder direkt
+[/mpz/studio/ingest](https://localhost:3000/mpz/studio/ingest): Station + Typ + Datei wählen → Upload. Die Datei landet unter `public/media/{slug}/{ordner}/` und der `medien[]`-Eintrag wird in `data/stations.json` ergänzt (gleicher Pfad wie die CLI). Regeln: Magic-Byte- und Größenprüfung je Typ (audio 25 MB, video 150 MB, foto 8 MB, text 512 KB); HEIC wird abgelehnt — bitte als JPG exportieren. Bei Dateinamen-/`id`-Kollision benennt die API automatisch um (`-2`, `-3`, …).
+
+curl-Beispiel (multipart, Cookie- oder Header-Auth):
+
+```bash
+curl -X POST http://localhost:3000/api/mpz/media/ingest \
+  -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET" \
+  -F "slug=werken" -F "typ=foto" -F "untertitel=Unser Werken" \
+  -F "file=@./foto.jpg"
+```
+
+**Dialog-Audio (Issue #148).** Im Studio „Dialog-Audio (Test)“ oder
+[/mpz/studio/dialog-audio](https://localhost:3000/mpz/studio/dialog-audio): Station `daz` oder `pc-raum` wählen → Segment-Tabelle zeigt fehlende Clips → WAV hochladen. Datei landet unter `content/dialog-audio/{slug}/NN-rolle.wav`; `dialog.segmente[i].quelle` wird auf `/api/dialog/{slug}/…` gesetzt. Nur echte WAV (max. 15 MB); Reihenfolge der `dialog.segmente[]` ist immutabel (siehe [content-einpflegen.md](./content-einpflegen.md)).
+
+```bash
+curl -X POST "http://localhost:3000/api/mpz/dialog-audio/ingest" \
+  -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET" \
+  -F "slug=daz" -F "segmentIndex=0" -F "collision=replace" \
+  -F "file=@./01-frieda.wav"
+```
+
+**Hotspot-Kalibrierung (Issue #149).** Zuerst `/mpz/unlock`. Im Studio: **Dashboard** (`/mpz/studio`) oder **Stationen** (`/mpz/studio/stationen`) — dort Vorschau und Kalibrier-Links je Station.
+
+- **Sphere:** `/raum/{slug}?hotspot-calib=1` (z. B. `daz`, `klassenzimmer`) → Hotspot-ID wählen, auf Ankerpunkt klicken → **In stations.json übernehmen** (oder JSON kopieren). **Startblick (#153):** Panorama zur Einstiegsansicht drehen → **Als Startblick übernehmen** (aktuelle Kamera, nicht Hotspot-Klick). Nach Reload gilt der neue Startblick (#152). Nach Browser-Zurück und erneutem Aufruf bleibt das Overlay sichtbar (reagiert auf URL via `useSearchParams`).
+- **Flat:** `/mpz/calib/flat/kunst` (Station mit `bild`, kein `equirectangular`) → Klick setzt `x`/`y` → Übernehmen. Hotspot muss bereits in `hotspots[]` existieren.
+
+```bash
+curl -X POST http://localhost:3000/api/mpz/hotspots/sphere \
+  -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET" \
+  -H "content-type: application/json" \
+  -d '{"slug":"daz","hotspotId":"hs-frieda","yaw":-45,"pitch":-20}'
+
+curl -X POST http://localhost:3000/api/mpz/view/sphere \
+  -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET" \
+  -H "content-type: application/json" \
+  -d '{"slug":"daz","startYaw":-30,"startPitch":-10}'
+```
 
 **Hinweis zu 404:** Die Routen kommen aus `data/stations.json` (`generateStaticParams`). Ein Slug, der **nicht** in der JSON-Datei steht, liefert in der **Produktion** nach `npm run build` eine 404-Seite. Unter `npm run dev` zeigt Next.js oft eine dynamische 404 — zum Verhalten wie online unbedingt **Abschnitt 3** ausführen.
 
@@ -99,7 +151,7 @@ npm run start
 - App unter [https://localhost:3000](https://localhost:3000) (Port siehe Terminal-Ausgabe).
 - Zum Beenden: im Terminal `Ctrl+C`.
 
-`npm run build` ruft zuvor **`npm run validate:tokens`** (Abgleich `app/gs39-tokens.css` ↔ `auftraggeber/.../colors_and_type.css`) und **`npm run validate:stations`** auf: Es muss jede in `stations.json` referenzierte Datei unter `public/` existieren (Raumbilder, Demo-Medien). Fehlt etwas, bricht der Build mit einer klaren Meldung ab. Zusätzlich gibt `validate:stations` bei riskantem Hotspot-**y** (nach Auto-Zoom unsichtbar) eine **Warnung** aus (Heuristik).
+`npm run build` ruft zuvor **`npm run validate:tokens`**, **`npm run validate:stations`**, **`npm run validate:coach`** und **`npm run validate:access-config`** auf: Es muss jede in `stations.json` referenzierte Datei unter `public/` existieren (Raumbilder, Demo-Medien). Fehlt etwas, bricht der Build mit einer klaren Meldung ab. Zusätzlich gibt `validate:stations` bei riskantem Hotspot-**y** (nach Auto-Zoom unsichtbar) eine **Warnung** aus (Heuristik).
 
 **Raum-Viewer (Issue #55 / #56, #72, #96, #107, #111):** `export const viewport` in [`app/app/layout.tsx`](../app/app/layout.tsx) — korrektes **device-width** auf dem Handy (kein „Mini-Desktop-Zoom“). **Pinch-Zoom gesperrt** projektweit ([#96](https://github.com/flxln/schulnavigator/issues/96)): Meta `userScalable: false` reicht auf iOS nicht — zusätzlich [`DisableZoom`](../app/components/ui/disable-zoom.tsx) im Root-Layout. Test: mit zwei Fingern zoomen → Seite darf **nicht** skalieren (nach Deploy ggf. Hard Reload in Safari).
 
@@ -132,13 +184,14 @@ TopBar auf Raumseiten: **viewport-breit** (`fixed`), nicht auf Content-Spalte be
 3. `/raum/klassenzimmer`, `/raum/musik` — Medien-Icons in der Szene
 4. `/raum/kunst` (Flat) — Regression: Gyro-Pan unverändert
 5. Dev-Kalibrierung: `/raum/daz?hotspot-calib=1` — Klick liefert `yaw`/`pitch`-Snippet
+6. **Startblick (#152/#153, ADR-023):** Optional `startYaw`/`startPitch` in `stations.json` — Kamera beim Laden und „Ansicht zentrieren“ (Stations-Chip) springen dorthin. Gyro startet erst nach Startblick-`rotate` (am Gerät prüfen: nach Orientierungs-Freigabe kein Sprung weg vom Startblick). MPZ-Persistenz: im Kalib-Overlay **Als Startblick übernehmen** (`POST /api/mpz/view/sphere`).
 
 Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/projektmanagement/2026-06-13-sphere-hotspot-acceptance.md).
 
 **Swipe-Onboarding (#107):**
 
 1. `localStorage.removeItem('schulnav.pan-onboarding.seen')` in der Konsole (oder DevTools → Application → Local Storage)
-2. `/eintritt?t=heft-2026-27` → `/raum/musik` — Overlay „Links oder rechts wischen“ erscheint, Merker **noch nicht gesetzt**; nach ~3 s Fade-out, Merker gesetzt
+2. `/eintritt?t=heft-ImulQPDmydy7VCVj` → `/raum/musik` — Overlay „Links oder rechts wischen“ erscheint, Merker **noch nicht gesetzt**; nach ~3 s Fade-out, Merker gesetzt
 3. Seite neu laden → **kein** Overlay
 4. Während Overlay sichtbar: Hotspot antippen → Tap funktioniert (`pointer-events: none` — Overlay blockiert keine Gesten)
 5. **iOS/Safari + HTTPS, erster Besuch:** zuerst „Orientierung aktivieren“ → nach Freigabe erscheint erst dann das Onboarding
@@ -148,20 +201,20 @@ Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/projektma
 
 **Stempel & Hub-Freischaltung (Issue #21 / ADR-009):**
 
-1. `/eintritt?t=fest-2026` → Hub gesperrt, „0 von 11“
-2. `/scan` → Raum-QR scannen → Fenster auf Hub frei, „1 von 11“
+1. `/eintritt?t=fest-vkc2AuKW0S7QGHDT` → Hub gesperrt, „0 von 12“
+2. `/scan` → Raum-QR scannen → Fenster auf Hub frei, „1 von 12“
 3. **Browser-Zurück** vom Raum → `/?highlight=slug` → Fenster-Pop, URL bereinigt nach ~1,2 s
-4. `/eintritt?t=heft-2026-27` → alle Fenster klickbar, Fortschritt bleibt
+4. `/eintritt?t=heft-ImulQPDmydy7VCVj` → alle Fenster klickbar, Fortschritt bleibt
 5. Local Storage `sn_visited_slugs` löschen → Fortschritt 0
 6. Mit Cookie direkt `/raum/musik` → nach Reload `/` ist Fenster frei (`fest`)
 7. `fest` mit bereits besuchten Stationen: Hub neu laden → kurzer Lade-Platzhalter, kein „alles gesperrt“-Flash
 8. Zwei Tabs (`/` + `/scan`): im zweiten Tab scannen → erster Tab aktualisiert bei Fokus
-9. Alle 11 Stationen besucht → auf `/` zuerst **Coach** (`complete`, Frieda + Otto), nach Schließen **SparkleBurst** auf der Fortschrittskarte; `sn_sparkle_done` verhindert Sparkle-Wiederholung; Coach-Keys `sn_coach_seen_fest` / `sn_coach_seen_heft` (modus-getrennt)
+9. Alle 12 Stationen besucht → auf `/` zuerst **Coach** (`complete`, Frieda + Otto), nach Schließen **SparkleBurst** auf der Fortschrittskarte; `sn_sparkle_done` verhindert Sparkle-Wiederholung; Coach-Keys `sn_coach_seen_fest` / `sn_coach_seen_heft` (modus-getrennt)
 10. `curl -sI https://localhost:3000/stationen` ohne Cookie → `307` nach `/eintritt`
 11. **Regression #83 (`fest`):** Raum per QR freischalten → Raum-Footer „Scanne die nächste Station!“ → **`/scan`**; ohne Scan schließen → `sn_visited_slugs` enthält **nicht** die ungescannte Station
-12. **`fest`/`heft` 1–10:** **über** der Fortschrittskarte **ein** Button „Scanne die nächste Station!“ — **kein** Stationsname, **kein** geteilter Button
-13. **`fest` 0/11:** nur „QR an der Tür scannen“ **über** der Fortschrittskarte
-14. **`fest`/`heft` 11/11:** kein Scan-CTA unter dem Hub (Sparkle in der Fortschrittskarte optional)
+12. **`fest`/`heft` 1–11:** **über** der Fortschrittskarte **ein** Button „Scanne die nächste Station!“ — **kein** Stationsname, **kein** geteilter Button
+13. **`fest` 0/12:** nur „QR an der Tür scannen“ **über** der Fortschrittskarte
+14. **`fest`/`heft` 12/12:** kein Scan-CTA unter dem Hub (Sparkle in der Fortschrittskarte optional)
 15. **Fortschrittskarte:** Tipp auf „Mein Rundgang …“ → **`/stationen`** (wie Listen-Icon oben rechts)
 16. **Kein Flash:** `fest` mit Fortschritt neu laden → vor Hydration Einzel-Scan, danach „Scanne die nächste Station!“ (Button-Text wechselt, Anzahl bleibt 1)
 
@@ -171,15 +224,15 @@ Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/projektma
 2. Einen Raum besuchen → zurück `/`: `first-visit` (Otto von rechts)
 3. `/raum/klassenzimmer`, `/raum/musik`, `/raum/hort` je einmalig: `room-first-*` (von links/rechts laut JSON)
 4. `/raum/daz`: **kein** Room-Coach; Dialog-Hotspot unverändert; während Dialog **kein** Coach
-5. Fortschritt auf 6/11 → Hub: `halfway`; von 5/11 direkt auf 7/11 springen → beim nächsten `/` erscheint `halfway` trotzdem (Schwellwert-Nachholen)
-6. 11/11 → Coach `complete` (`duo-split`) → schließen → Sparkle auf Fortschrittskarte → erneut `/` → weder Coach noch Sparkle
+5. Fortschritt auf 6/12 → Hub: `halfway`; von 5/12 direkt auf 7/12 springen → beim nächsten `/` erscheint `halfway` trotzdem (Schwellwert-Nachholen)
+6. 12/12 → Coach `complete` (`duo-split`) → schließen → Sparkle auf Fortschrittskarte → erneut `/` → weder Coach noch Sparkle
 7. Room-Coach erscheint, ohne X wegtippen (zurück) → Raum erneut öffnen → Coach **nicht** wieder (Seen beim Anzeigen)
 8. Heft: `welcome-hub` gesehen → Fest-Cookie → `welcome-hub` erscheint im Fest erneut (modus-getrennt)
 9. Medienpanel im Raum öffnen → kein Coach darüber; nach Schließen ggf. Room-Coach
 10. `prefers-reduced-motion`: kein Slide, Text sichtbar
 11. **Overlay-Priorität (iOS):** `schulnav.pan-onboarding.seen` + Coach-Keys leeren → Raum mit Room-Coach (`klassenzimmer`/`musik`/`hort`) → nur Gyro-Dialog (kein Coach-Flackern) → nach Freigabe nur Pan-Hinweis → danach Room-Coach
 12. **Desktop (gyrolos):** gleicher Raum, Coach-Keys leer → kein Gyro/Pan, Room-Coach erscheint direkt
-13. **Tablet-Spalte (Folge #74):** DevTools 768×1024 und 1024×768 — Backdrop fullscreen; Figuren, Blase und Schließen-Button innerhalb `.sn-page-container` (nicht am Viewport-Rand); `duo-split` auf `/` bei 11/11
+13. **Tablet-Spalte (Folge #74):** DevTools 768×1024 und 1024×768 — Backdrop fullscreen; Figuren, Blase und Schließen-Button innerhalb `.sn-page-container` (nicht am Viewport-Rand); `duo-split` auf `/` bei 12/12
 
 **Stationssymbole (#105):**
 
@@ -197,9 +250,9 @@ Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/projektma
 
 | Route | Prüfen |
 | ----- | ------ |
-| `/eintritt?t=heft-2026-27` → `/raum/klassenzimmer` | **4 Hotspots** im Panorama; Hotspot **Text** → Markdown inline (Tabelle, Blockquote); Hotspot **Video** → MP4-Wiedergabe |
+| `/eintritt?t=heft-ImulQPDmydy7VCVj` → `/raum/klassenzimmer` | **4 Hotspots** im Panorama; Hotspot **Text** → Markdown inline (Tabelle, Blockquote); Hotspot **Video** → MP4-Wiedergabe |
 | `/raum/klassenzimmer` Medienliste | Alle 4 Tiles; Text-Tile → „Tippen zum Lesen"; Markdown im Panel |
-| `/eintritt?t=heft-2026-27` → `/raum/musik` | Hotspot **Audio** öffnet Panel → Custom-Player (Play/Pause, Balken, Lautstärke); Panel schließen **während Wiedergabe** → Audio stoppt (Cleanup-Check) |
+| `/eintritt?t=heft-ImulQPDmydy7VCVj` → `/raum/musik` | Hotspot **Audio** öffnet Panel → Custom-Player (Play/Pause, Balken, Lautstärke); Panel schließen **während Wiedergabe** → Audio stoppt (Cleanup-Check) |
 | `/raum/musik` Hotspot **Video** | Poster-only-Modus (`/demo/video-plakat.jpg`); kein Autoplay, kein leeres `<video>` |
 | `/raum/musik` Medienliste → **Text** | Inline-Plaintext aus `/demo/musik-info.txt` (kein externer Link mehr) |
 | `/raum/schulsozialarbeit` → **Text** | Inline-Plaintext aus `/demo/ssa-hinweis.txt`, Umlaute korrekt |
@@ -305,23 +358,9 @@ Identisches Laufzeit-Image wie in Produktion — Schritt-für-Schritt: Abschnitt
 
 ---
 
-## Demo-Termin 10.06.
+## Archiv: MPZ-Demo-Meeting 10.06.
 
-Schritt-für-Schritt für das MPZ-Meeting mit Sten/Tina: [`demo-meeting-2026-06-10.md`](./demo-meeting-2026-06-10.md).
-
----
-
-## Device-Spike: Maskottchen-Hotspot + Dialog-Audio (iPhone)
-
-**Voraussetzung:** HTTPS (lokal `npm run dev` mit `--experimental-https` oder Deploy). Zuerst Entry: `/eintritt?t=fest-2026`.
-
-1. `/raum/daz` öffnen — **Frieda** als große Figur **links in der Bildmitte** sichtbar? (Hotspot-`y` muss im sichtbaren Drittel liegen, sonst Konsole: `Hotspot … liegt außerhalb des sichtbaren Bereichs`)
-2. **Einmal auf Frieda tippen** (nicht wischen) — startet Clip 1 **sofort** mit Ton? (Kein zweiter Start-Button nötig.)
-3. Dialog läuft alle 9 Clips durch; Raum lässt sich **weiter** mit Gyro bewegen.
-4. Netzwerk: ohne Cookie → `/api/dialog/daz/01-frieda.wav` = 403; mit Cookie = 200/206.
-5. Regression: `/raum/musik` — kleine gelbe Hotspots öffnen weiter Medien-Panel.
-
-**Bekannte Spike-Grenzen:** keine Sprechblase im Raum; Cutscene-Button parallel noch vorhanden; nur eine Figur (Frieda) als Hotspot.
+Protokoll und Fahrplan des abgeschlossenen Termins: [`2026-06-10-mpz-demo-meeting.md`](../dokumentation/projektmanagement/2026-06-10-mpz-demo-meeting.md) · [`2026-06-10-mpz-meeting-fahrplan.md`](../dokumentation/projektmanagement/2026-06-10-mpz-meeting-fahrplan.md)
 
 ---
 

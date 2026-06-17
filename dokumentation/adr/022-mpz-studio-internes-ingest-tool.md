@@ -41,7 +41,7 @@ Plan A (CLI/JSON-Ingest) bleibt der **Pflicht- und Fallback-Pfad**; MPZ Studio (
 ## Konsequenzen
 
 - **Dev-only:** Routen `/mpz/*` und `/api/mpz/*` sind nur bei `NODE_ENV=development` aktiv; in Production liefern sie `notFound()` / 404. Studio wird **nie** auf Coolify aktiviert, kein HTTP-Schreibzugriff auf `public/` in Production.
-- **Auth:** Zusätzlicher Secret-Header `x-mpz-studio-key` gegen `SN_MPZ_STUDIO_SECRET` (nur in `.env.local`, nie in Prod-Env).
+- **Auth:** Secret-Header `x-mpz-studio-key` gegen `SN_MPZ_STUDIO_SECRET` (nur in `.env.local`, nie in Prod-Env). **Ergänzung 2026-06-16 (#145):** Browser-Zugriff auf `/mpz/*` zusätzlich per httpOnly-Cookie `sn-mpz-studio` — gesetzt durch `POST /api/mpz/session` nach erfolgreicher Header-Prüfung; Middleware und API akzeptieren Header **oder** Cookie (unabhängige Prüfung, kein Kurzschluss). **Ergänzung 2026-06-16:** Dev-Entsperrseite `/mpz/unlock` (ohne Auth erreichbar, nur `development`) — Redirect von geschützten Studio-Routen; setzt Cookie und leitet nach `/mpz/studio` weiter.
 - **Guard pro Route (Sicherheitsbefund aus Review):** Die bestehende `app/middleware.ts` matcht `/api/*` **nicht** — der Dev-/Auth-Guard muss daher pro Studio-API-Route greifen (zentraler Helper), nicht über die Middleware. Defense-in-Depth: Das Prod-Docker-Image enthält kein für den Laufzeit-User beschreibbares `data/`/`public/`.
 - **Single Source of Truth:** Die bestehenden Validatoren (`validate:stations`, `validate:coach`, `validate:tokens`) laufen nach jedem Save — struktur- und asset-seitig.
 - **Projekttag-Sicherung:** Plan A (CLI/JSON) bleibt verpflichtend und ist der Fallback bei Instabilität von Plan B; das Studio darf den 24.–26.06.2026 nicht blockieren.
