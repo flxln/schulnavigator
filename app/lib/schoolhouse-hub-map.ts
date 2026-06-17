@@ -82,6 +82,9 @@ export const HUB_SLUG_MAP = {
 
 export type HubSlug = keyof typeof HUB_SLUG_MAP
 
+/** Kanonische Reihenfolge der 12 Hub-Stationen (MPZ Studio, Validierung). */
+export const MPZ_HUB_SLUGS = Object.keys(HUB_SLUG_MAP) as HubSlug[]
+
 export type HubStation = {
   slug: string
   titel: string

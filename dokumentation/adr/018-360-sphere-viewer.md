@@ -65,3 +65,4 @@ Zwei Viewer koexistieren hinter einem expliziten Flag `viewer: 'flat' | 'equirec
 - **Gyro nach Pinch (2026-06-11):** Zwei-Finger-Pinch ruft PSV `stopAll()` auf → GyroscopePlugin stoppt; Neustart per `touchend` (Capture-Phase merkt Gyro-Zustand vor PSV).
 - **Layer-Marker (2026-06-13):** Medien-Hotspots als PSV `imageLayer` (Kugel); Maskottchen als `element`-Billboard mit Fuß-Anker. Kalibrierung per Dev-Overlay `?hotspot-calib=1` → `yaw`/`pitch` in `hotspots360`. Dialog-Bubble: `bubblePitchOffset` für Kopf-Projektion. Spike: [`2026-06-13-sphere-hotspot-layer-spike.md`](../projektmanagement/2026-06-13-sphere-hotspot-layer-spike.md).
 - **Offen:** Tablet-Hero-Höhe im Sphere-Viewer (ADR-012 Epic); FPS/Ladezeit iPhone Safari (manuell messen).
+- **Startblick (2026-06-16):** Optional `startYaw` / `startPitch` pro Station — [ADR-023](./023-sphere-startblick.md); Runtime #152, MPZ-Persistenz #153.

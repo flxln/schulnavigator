@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import {
   DEFAULT_BUBBLE_PITCH_OFFSET_DEG,
+  normalizeYawDeg,
   radiansToDegrees,
   resolveBubbleProjectionPitchDeg,
   resolveImageLayerSize,
+  resolveSphereStartView,
   roundDeg,
 } from '@/lib/raum-viewer/sphere-marker-conventions'
 import type { Hotspot360 } from '@/lib/types'
@@ -48,5 +50,22 @@ describe('sphere-marker-conventions', () => {
     expect(resolveBubbleProjectionPitchDeg(hs)).toBe(
       -20 + DEFAULT_BUBBLE_PITCH_OFFSET_DEG,
     )
+  })
+
+  it('resolveSphereStartView nutzt Default 0/0', () => {
+    expect(resolveSphereStartView()).toEqual({ yawDeg: 0, pitchDeg: 0 })
+  })
+
+  it('resolveSphereStartView normalisiert yaw', () => {
+    expect(resolveSphereStartView(200, -5)).toEqual({ yawDeg: -160, pitchDeg: -5 })
+  })
+
+  it('resolveSphereStartView clampt pitch', () => {
+    expect(resolveSphereStartView(undefined, 120)).toEqual({ yawDeg: 0, pitchDeg: 90 })
+    expect(resolveSphereStartView(30)).toEqual({ yawDeg: 30, pitchDeg: 0 })
+  })
+
+  it('normalizeYawDeg mappt 200 auf −160', () => {
+    expect(normalizeYawDeg(200)).toBe(-160)
   })
 })

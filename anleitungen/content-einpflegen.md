@@ -46,7 +46,7 @@ flowchart LR
 
 - Terminal im Ordner **`app/`** (alle `npm`-Befehle dort)
 - Slug der Station aus der [kanonischen Liste](../dokumentation/content-verzeichnisstruktur.md) — **nicht umbenennen** (QR-Codes sind gedruckt)
-- Lokal testen: `npm run dev` → zuerst `/eintritt?t=heft-2026-27` (alle Räume sofort klickbar)
+- Lokal testen: `npm run dev` → zuerst `/eintritt?t=<heft-token>` (Wert aus [`app/lib/access-token-constants.mjs`](../app/lib/access-token-constants.mjs); alle Räume sofort klickbar)
 
 ---
 
@@ -232,7 +232,30 @@ Statt `x`/`y` gelten **Kugelkoordinaten** aus dem Equirectangular-Panorama:
 | `bubblePitchOffset` | nein | Zusätzlicher Pitch (Grad) für Dialog-Bubble nach oben; nur Dialog |
 | `icon`, `iconSize` | Medien | Wie bei Flat |
 
-**Kalibrierung (Dev):** `npm run dev` → `/raum/{slug}?hotspot-calib=1` → auf Ankerpunkt klicken → JSON-Snippet kopieren (`yaw` wird auf −180…180° normalisiert). Maskottchen: **Fuß** anklicken; Medien: **Icon-Mitte**. Abnahme-Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/projektmanagement/2026-06-13-sphere-hotspot-acceptance.md).
+**Kalibrierung (Dev):** `npm run dev` → `/raum/{slug}?hotspot-calib=1` → auf Ankerpunkt klicken → JSON-Snippet kopieren oder **In stations.json übernehmen** (nach `/mpz/unlock`, #149). Maskottchen: **Fuß** anklicken; Medien: **Icon-Mitte**. Abnahme-Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/projektmanagement/2026-06-13-sphere-hotspot-acceptance.md).
+
+### Startblick Sphere — `startYaw` / `startPitch` (optional, [ADR-023](../dokumentation/adr/023-sphere-startblick.md))
+
+Nur bei `viewer: "equirectangular"`. Steuert, **wohin die Kamera beim Öffnen des Raums blickt** und wohin „Ansicht zentrieren“ springt.
+
+| Feld | Pflicht | Werte / Hinweis |
+|------|---------|-----------------|
+| `startYaw` | nein | Grad −180…180; Default `0` (Equirectangular-Mitte) |
+| `startPitch` | nein | Grad −90…90; Default `0` |
+
+Gleiche Konvention wie `hotspots360[].yaw` / `pitch`. **Nicht** dasselbe wie Hotspot-Koordinaten — Startblick und Hotspots unabhängig pflegen.
+
+**Pflege:** Manuell in JSON; Dev-Übernahme aus aktueller Sphere-Ansicht geplant (#153, MPZ Studio). Issue #152 (Runtime).
+
+### Startausschnitt Flat — `startPanX` (optional, [ADR-024](../dokumentation/adr/024-flat-startpan.md))
+
+Nur bei `viewer` fehlend oder `"flat"`. Horizontale **Startposition** der Viewport-Mitte auf dem Quellbild.
+
+| Feld | Pflicht | Werte / Hinweis |
+|------|---------|-----------------|
+| `startPanX` | nein | 0…1; `0` = linker Rand (heutiges Default-Verhalten), `0.5` = Bildmitte |
+
+**Pflege:** Manuell schätzen und am Gerät prüfen; MPZ-Kalibrier-Klick optional Folge zu #149. Issue #154 (Runtime).
 
 ### `dialog` — Sprecherwechsel und Text (**heute pflegbar**)
 
@@ -245,7 +268,9 @@ Block `station.dialog` neben `hotspots[]` (Beispiel: `daz` in `stations.json`).
 | `segmente[].id` | ja | Eindeutig pro Station |
 | `segmente[].rolle` | ja | `frieda` \| `otto` \| `beide` — steuert Sprecher-Highlight und Schwanz der Blase (links/rechts/mitte) |
 | `segmente[].text` | ja | Text in der Sprechblase (während dieses Clips) |
-| `segmente[].quelle` | ja | `/api/dialog/{slug}/…wav` — Clips unter `app/content/dialog-audio/` |
+| `segmente[].quelle` | ja | `/api/dialog/{slug}/…wav` — Clips unter `app/content/dialog-audio/`; Dateiname `NN-rolle.wav` (Index in `segmente[]` + `rolle`) |
+
+**Reihenfolge:** Die Reihenfolge von `dialog.segmente[]` ist **immutabel**, solange WAV-Dateien existieren — der Clip-Name leitet sich aus der Array-Position ab (`01-frieda.wav` = Index 0). Kein Reorder/Insert/Delete in der Mitte ohne Clips umzubenennen. MPZ Studio warnt bei fehlenden oder verwaisten WAVs (#148).
 | `segmente[].gruppe` | nein | Verweis auf `gruppen[].id` — mehrere kurze Clips, **eine** Blase (z. B. fünf Grüße) |
 | `segmente[].tail` | nein | Optional `left` \| `right` \| `center` — überschreibt Schwanz aus `rolle` für dieses Segment |
 | `gruppen[]` | nein | `{ "id", "text" }` — gemeinsamer Blasentext für gruppierte Segmente |
@@ -270,7 +295,7 @@ Optionaler Block; fehlt er, bleibt die Blase wie bisher (`max-w-md`, 15 px Schri
 
 ## Schritt 3 — Hotspots platzieren
 
-Es gibt **keinen visuellen Editor** im Repo. Koordinaten werden in JSON gesetzt und am Gerät nachjustiert.
+**MPZ Studio (Dev, #149):** Sphere — `/raum/{slug}?hotspot-calib=1` mit „In stations.json übernehmen“; Flat — `/mpz/calib/flat/{slug}` (nach `/mpz/unlock`). Sonst: Koordinaten in JSON setzen und am Gerät nachjustieren.
 
 ### Koordinaten-System
 
@@ -343,7 +368,7 @@ npm run build
 
 | Route | Prüfen |
 |-------|--------|
-| `/eintritt?t=heft-2026-27` | Cookie setzen |
+| `/eintritt?t=<heft-token>` | Cookie setzen (Token: `access-token-constants.mjs`) |
 | `/raum/{slug}` | Medienliste: alle Typen abspielbar |
 | `/raum/{slug}` | Hotspots: Tipp öffnet dasselbe Panel |
 | Handy + HTTPS | Gyro, Hotspot erreichbar nach Wischen |

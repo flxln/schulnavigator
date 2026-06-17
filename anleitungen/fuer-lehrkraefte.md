@@ -11,24 +11,24 @@ Die App ist nicht öffentlich im Internet auffindbar. Besucher brauchen einen **
 | QR | Wann | Was passiert danach |
 |----|------|---------------------|
 | **Schulfest** (`fest`) | QR am **Eingang** am Tag der offenen Tür | Startseite zeigt das Schulhaus-Puzzle: Stationen werden nach und nach freigeschaltet, wenn Raum-QRs an den Türen gescannt werden. |
-| **Schulstartheft** (`heft`) | QR im **Heft** für Eltern | Alle 11 Stationen sind von Anfang an auf der Startseite wählbar. |
+| **Schulstartheft** (`heft`) | QR im **Heft** für Eltern | Alle 12 Stationen sind von Anfang an auf der Startseite wählbar. |
 
 **Raum-QRs** an den Türen führen immer zu `/raum/…` — sie ersetzen nicht den Eintritts-QR. Ohne Zugang: auf der **Hinweisseite** (`/eintritt`) die Karte „Eintritts-QR scannen“ antippen → Vollbild-Scanner (`/eintritt/scan`) startet die Kamera in der App. Nach dem Eintritt nutzt die **Scanner-Funktion** (`/scan`) die Raum-QRs an den Türen — ohne ständigen Wechsel zur Handy-Kamera.
 
 **MVP (bis Schulfest):** Content liefert die Schule als Dateien; MPZ pflegt sie ins Repo ein. Schritt-für-Schritt: **[content-einpflegen.md](./content-einpflegen.md)** (Medien, `stations.json`, Hotspots).
 
-*Directus / Admin-Oberfläche folgt in Phase 5 (ADR-003) — Abschnitte unten sind Platzhalter.*
+*Directus / Admin-Oberfläche folgt in Phase 5 (ADR-003) — die Schritte unten sind noch **nicht verfügbar** (Platzhalter).*
 
 ---
 
-## Schritt 1: Anmelden
+## Schritt 1: Anmelden _(noch nicht verfügbar — Directus)_
 
-## Schritt 2: Raum auswählen
+## Schritt 2: Raum auswählen _(noch nicht verfügbar)_
 
-## Schritt 3: Text bearbeiten
+## Schritt 3: Text bearbeiten _(noch nicht verfügbar)_
 
-## Schritt 4: Bilder hochladen
+## Schritt 4: Bilder hochladen _(noch nicht verfügbar)_
 
-## Schritt 5: Video verlinken
+## Schritt 5: Video verlinken _(noch nicht verfügbar)_
 
-## Schritt 6: Speichern & Vorschau
+## Schritt 6: Speichern & Vorschau _(noch nicht verfügbar)_

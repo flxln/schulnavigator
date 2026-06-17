@@ -287,7 +287,10 @@ export function RaumStationClient({
           {isSphere && station.panorama360 ? (
             <SphereRaumViewer
               ref={viewerRef}
+              stationSlug={station.slug}
               panorama={station.panorama360}
+              startYaw={station.startYaw}
+              startPitch={station.startPitch}
               alt={`Raumansicht ${station.titel}`}
               hotspots360={station.hotspots360}
               medien={station.medien}

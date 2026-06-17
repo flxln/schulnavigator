@@ -151,6 +151,9 @@ export interface Station {
   hotspots?: Hotspot[]
   /** Sphere-Viewer-Hotspots mit yaw/pitch-Kamerakoordinaten (ADR-018). */
   hotspots360?: Hotspot360[]
+  /** Optionaler Startblick in Grad (ADR-023); nur bei viewer === 'equirectangular'. */
+  startYaw?: number
+  startPitch?: number
   dialog?: Dialog
 }
 

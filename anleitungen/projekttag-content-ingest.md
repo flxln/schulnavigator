@@ -32,9 +32,9 @@ Allgemeine Content-Regeln: [content-einpflegen.md](./content-einpflegen.md)
 1. **Aufnahme** — Kinder-Audio/Video/Foto; nur mit Einwilligung
 2. **Datei** — AirDrop/USB auf den Laptop
 3. **Ingest** — CLI (siehe unten) oder manuell kopieren + Snippet in `stations.json`
-4. **Hotspots** — Sphere: `/raum/{slug}?hotspot-calib=1`; Flat: Koordinaten schätzen oder Konsole ([content-einpflegen.md](./content-einpflegen.md))
+4. **Hotspots** — Sphere: `/raum/{slug}?hotspot-calib=1` → „In stations.json übernehmen“ (#149); Flat: `/mpz/calib/flat/{slug}` (#149) oder manuell ([content-einpflegen.md](./content-einpflegen.md))
 5. **Validieren** — `cd app && npm run validate:stations`
-6. **Vorschau** — `npm run dev` → `/eintritt?t=heft-2026-27` → `/raum/{slug}`
+6. **Vorschau** — `npm run dev` → `/eintritt?t=<heft-token>` (aus `access-token-constants.mjs`) → `/raum/{slug}`
 7. **Commit** — eine Station pro Commit (Rollback möglich)
 8. **Deploy** — push → Coolify; Handy unter Mobilfunk testen
 
@@ -86,7 +86,9 @@ npm run content:ingest -- --slug werken --typ audio --file ~/Downloads/aufnahme.
 npm run content:ingest -- --slug werken --typ foto --file ./bild.jpg --no-append
 ```
 
-Nach dem Lauf: `validate:stations` (wird bei `--append` automatisch aufgerufen). Backup: `app/data/stations.json.bak`.
+Nach dem Lauf: Struktur- und Asset-Validierung laufen **vor** dem Schreiben über [`lib/mpz-content-io`](../app/lib/mpz-content-io.ts) (Pre-Validate, dann atomarer Write; Backup `app/data/stations.json.bak`). Bei Fehler bleibt `stations.json` unverändert.
+
+**Plan-B-Alternative (#147):** Derselbe Pfad/JSON-Effekt steht auch als lokales Studio-Upload-UI unter `/mpz/studio/ingest` bereit (nur `npm run dev`) — gemeinsamer Ingest-Layer mit der CLI, aber mit automatischem Umbenennen bei Kollision statt Abbruch.
 
 **Nicht unterstützt:** `link`, `embed` — URLs per Snippet in JSON eintragen.
 
@@ -94,9 +96,11 @@ Nach dem Lauf: `validate:stations` (wird bei `--append` automatisch aufgerufen).
 
 ## Dialog-Audio
 
-1. WAV nach `app/content/dialog-audio/{slug}/` — Namen: `01-frieda.wav`, `02-otto.wav`, …
+1. WAV nach `app/content/dialog-audio/{slug}/` — Namen: `01-frieda.wav`, `02-otto.wav`, … (Index in `segmente[]` + `rolle`)
 2. In `stations.json`: Snippet `sn-dialog-segment` oder Referenz `daz` / `pc-raum`
 3. `validate:stations` + Test mit Zugang (`/eintritt?t=heft-…`)
+
+**Plan-B (#148):** `npm run content:ingest-dialog -- --slug daz --segment 0 --file ./clip.wav` oder Studio unter `/mpz/studio/dialog-audio` (setzt `quelle` automatisch).
 
 ---
 

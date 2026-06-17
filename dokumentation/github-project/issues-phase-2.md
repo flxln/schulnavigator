@@ -535,7 +535,7 @@ Entry-Scanner von Inline-Block auf **`/eintritt/scan`** verschoben; gemeinsame `
 **Labels:** `org` `blocker`  
 **Assignee:** Felix / Thomas
 
-**Fahrplan (45–60 Min.):** [`anleitungen/meeting-fahrplan-2026-06-10.md`](../../anleitungen/meeting-fahrplan-2026-06-10.md) · Demo-Ablauf: [`demo-meeting-2026-06-10.md`](../../anleitungen/demo-meeting-2026-06-10.md)
+**Fahrplan (45–60 Min.):** [`dokumentation/projektmanagement/2026-06-10-mpz-meeting-fahrplan.md`](../projektmanagement/2026-06-10-mpz-meeting-fahrplan.md) · Demo-Ablauf: [`2026-06-10-mpz-demo-meeting.md`](../projektmanagement/2026-06-10-mpz-demo-meeting.md)
 
 Agenda:
 
@@ -560,7 +560,7 @@ Agenda:
 
 **Abhängigkeit:** [flxln/hilfreiche-tools#3](https://github.com/flxln/hilfreiche-tools/issues/3) (`station-audio-transkript`)
 
-**Umsetzung:** [ADR-010](../adr/010-dialog-cutscene-gated-audio.md) — Dialog-Cutscene statt zwei lose Audio-Medien im Panel; Clips unter `app/content/dialog-audio/{slug}/`, Auslieferung `GET /api/dialog/[slug]/[clip]` (Cookie, Range). Stationen **`daz`** und **`pc-raum`** mit je 9 Segmenten; Maskottchen PNGs in `public/brand/mascots/`. Demo-Ablauf: [`anleitungen/demo-meeting-2026-06-10.md`](../../anleitungen/demo-meeting-2026-06-10.md).
+**Umsetzung:** [ADR-010](../adr/010-dialog-cutscene-gated-audio.md) — Dialog-Cutscene statt zwei lose Audio-Medien im Panel; Clips unter `app/content/dialog-audio/{slug}/`, Auslieferung `GET /api/dialog/[slug]/[clip]` (Cookie, Range). Stationen **`daz`** und **`pc-raum`** mit je 9 Segmenten; Maskottchen PNGs in `public/brand/mascots/`. Demo-Ablauf: [`2026-06-10-mpz-demo-meeting.md`](../projektmanagement/2026-06-10-mpz-demo-meeting.md).
 
 ### Ziel (ursprünglich)
 

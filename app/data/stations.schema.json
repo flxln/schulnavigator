@@ -240,6 +240,16 @@
           "type": "array",
           "items": { "$ref": "#/$defs/hotspot360" }
         },
+        "startYaw": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180
+        },
+        "startPitch": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90
+        },
         "dialog": { "$ref": "#/$defs/dialog" }
       }
     }
