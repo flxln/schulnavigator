@@ -16,6 +16,8 @@ const mocks = vi.hoisted(() => {
     animate: ReturnType<typeof vi.fn>
     setPanorama: ReturnType<typeof vi.fn>
   } | null = null
+  let _deferPanorama = false
+  let _panoramaResolve: (() => void) | null = null
   return {
     requestAccess,
     gyroStart,
@@ -28,6 +30,18 @@ const mocks = vi.hoisted(() => {
     storeViewerConfig: (config: Record<string, unknown>) => { _viewerConfig = config },
     getViewerInstance: () => _viewerInstance,
     storeViewerInstance: (instance: typeof _viewerInstance) => { _viewerInstance = instance },
+    setDeferPanorama: (defer: boolean) => {
+      _deferPanorama = defer
+      if (!defer) _panoramaResolve = null
+    },
+    getDeferPanorama: () => _deferPanorama,
+    storePanoramaResolve: (resolve: () => void) => {
+      _panoramaResolve = resolve
+    },
+    firePanoramaLoaded: () => {
+      _panoramaResolve?.()
+      _panoramaResolve = null
+    },
     searchParams: new URLSearchParams() as URLSearchParams,
   }
 })
@@ -67,7 +81,14 @@ vi.mock('@photo-sphere-viewer/core', async () => {
       mocks.storeViewerConfig(config)
       const rotate = vi.fn()
       const animate = vi.fn()
-      const setPanorama = vi.fn().mockResolvedValue(undefined)
+      const setPanorama = vi.fn().mockImplementation(() => {
+        if (!mocks.getDeferPanorama()) {
+          return Promise.resolve()
+        }
+        return new Promise<void>((resolve) => {
+          mocks.storePanoramaResolve(resolve)
+        })
+      })
       const instance = {
       addEventListener: vi.fn((event: string, handler: () => void) => {
         if (event === 'ready') mocks.storeReadyCb(handler)
@@ -149,6 +170,7 @@ beforeEach(() => {
   mocks.gyroIsEnabled.mockReturnValue(false)
   mocks.storeViewerConfig({})
   mocks.storeViewerInstance(null)
+  mocks.setDeferPanorama(false)
   mocks.searchParams = new URLSearchParams()
 })
 
@@ -384,14 +406,50 @@ describe('Hotspot-Kalibrierung (Query-Parameter)', () => {
 })
 
 describe('Sphere-Startblick (ADR-023)', () => {
-  async function flushPanoramaLoad() {
+  beforeEach(() => {
+    mocks.setDeferPanorama(true)
+  })
+
+  afterEach(() => {
+    mocks.setDeferPanorama(false)
+  })
+
+  async function flushPanoramaRaf() {
     await act(async () => {
       await new Promise<void>((resolve) => {
         requestAnimationFrame(() => resolve())
       })
+    })
+  }
+
+  async function flushPanoramaLoad() {
+    await flushPanoramaRaf()
+    await act(async () => {
+      mocks.firePanoramaLoaded()
       await Promise.resolve()
     })
   }
+
+  it('ruft rotate erst nach setPanorama-Resolve auf', async () => {
+    render(
+      <SphereRaumViewerInner {...DEFAULT_PROPS} startYaw={30} startPitch={-5} />,
+    )
+    await flushPanoramaRaf()
+    const viewer = mocks.getViewerInstance()
+    expect(viewer?.setPanorama).toHaveBeenCalledWith(DEFAULT_PROPS.panorama)
+    expect(viewer?.rotate).not.toHaveBeenCalled()
+    expect(mocks.gyroStart).not.toHaveBeenCalled()
+
+    await act(async () => {
+      mocks.firePanoramaLoaded()
+      await Promise.resolve()
+    })
+
+    expect(viewer?.rotate).toHaveBeenCalledWith({
+      yaw: expect.closeTo((30 * Math.PI) / 180, 4),
+      pitch: expect.closeTo((-5 * Math.PI) / 180, 4),
+    })
+  })
 
   it('ruft rotate nach setPanorama mit startYaw/startPitch auf', async () => {
     render(
@@ -446,6 +504,45 @@ describe('Sphere-Startblick (ADR-023)', () => {
     })
     expect(viewer?.animate).toHaveBeenCalledWith({
       yaw: 0,
+      pitch: 0,
+      speed: '3rpm',
+    })
+  })
+
+  it('recenterView nach Prop-Änderung nutzt neuen startYaw', async () => {
+    const ref = createRef<StationViewerHandle>()
+    const { rerender } = render(
+      <SphereRaumViewerInner
+        {...DEFAULT_PROPS}
+        ref={ref}
+        startYaw={10}
+        startPitch={0}
+      />,
+    )
+    await act(async () => {
+      mocks.fireViewerReady()
+      await flushPanoramaLoad()
+    })
+
+    rerender(
+      <SphereRaumViewerInner
+        {...DEFAULT_PROPS}
+        ref={ref}
+        startYaw={80}
+        startPitch={0}
+      />,
+    )
+    await act(async () => {
+      await Promise.resolve()
+    })
+
+    const viewer = mocks.getViewerInstance()
+    viewer?.animate.mockClear()
+    act(() => {
+      ref.current?.recenterView()
+    })
+    expect(viewer?.animate).toHaveBeenCalledWith({
+      yaw: expect.closeTo((80 * Math.PI) / 180, 4),
       pitch: 0,
       speed: '3rpm',
     })
