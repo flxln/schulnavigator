@@ -101,7 +101,7 @@ curl -X POST "http://localhost:3000/api/mpz/dialog-audio/ingest" \
 
 **Hotspot-Kalibrierung (Issue #149).** Zuerst `/mpz/unlock`. Im Studio: **Dashboard** (`/mpz/studio`) oder **Stationen** (`/mpz/studio/stationen`) — dort Vorschau und Kalibrier-Links je Station.
 
-- **Sphere:** `/raum/{slug}?hotspot-calib=1` (z. B. `daz`, `klassenzimmer`) → Hotspot-ID wählen, auf Ankerpunkt klicken → **In stations.json übernehmen** (oder JSON kopieren). Nach Browser-Zurück und erneutem Aufruf bleibt das Overlay sichtbar (reagiert auf URL via `useSearchParams`).
+- **Sphere:** `/raum/{slug}?hotspot-calib=1` (z. B. `daz`, `klassenzimmer`) → Hotspot-ID wählen, auf Ankerpunkt klicken → **In stations.json übernehmen** (oder JSON kopieren). **Startblick (#153):** Panorama zur Einstiegsansicht drehen → **Als Startblick übernehmen** (aktuelle Kamera, nicht Hotspot-Klick). Nach Reload gilt der neue Startblick (#152). Nach Browser-Zurück und erneutem Aufruf bleibt das Overlay sichtbar (reagiert auf URL via `useSearchParams`).
 - **Flat:** `/mpz/calib/flat/kunst` (Station mit `bild`, kein `equirectangular`) → Klick setzt `x`/`y` → Übernehmen. Hotspot muss bereits in `hotspots[]` existieren.
 
 ```bash
@@ -109,6 +109,11 @@ curl -X POST http://localhost:3000/api/mpz/hotspots/sphere \
   -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET" \
   -H "content-type: application/json" \
   -d '{"slug":"daz","hotspotId":"hs-frieda","yaw":-45,"pitch":-20}'
+
+curl -X POST http://localhost:3000/api/mpz/view/sphere \
+  -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET" \
+  -H "content-type: application/json" \
+  -d '{"slug":"daz","startYaw":-30,"startPitch":-10}'
 ```
 
 **Hinweis zu 404:** Die Routen kommen aus `data/stations.json` (`generateStaticParams`). Ein Slug, der **nicht** in der JSON-Datei steht, liefert in der **Produktion** nach `npm run build` eine 404-Seite. Unter `npm run dev` zeigt Next.js oft eine dynamische 404 — zum Verhalten wie online unbedingt **Abschnitt 3** ausführen.
@@ -179,7 +184,7 @@ TopBar auf Raumseiten: **viewport-breit** (`fixed`), nicht auf Content-Spalte be
 3. `/raum/klassenzimmer`, `/raum/musik` — Medien-Icons in der Szene
 4. `/raum/kunst` (Flat) — Regression: Gyro-Pan unverändert
 5. Dev-Kalibrierung: `/raum/daz?hotspot-calib=1` — Klick liefert `yaw`/`pitch`-Snippet
-6. **Startblick (#152, ADR-023):** Optional `startYaw`/`startPitch` in `stations.json` — Kamera beim Laden und „Ansicht zentrieren“ (Stations-Chip) springen dorthin. Gyro startet erst nach Startblick-`rotate` (am Gerät prüfen: nach Orientierungs-Freigabe kein Sprung weg vom Startblick). MPZ-Persistenz folgt mit #153.
+6. **Startblick (#152/#153, ADR-023):** Optional `startYaw`/`startPitch` in `stations.json` — Kamera beim Laden und „Ansicht zentrieren“ (Stations-Chip) springen dorthin. Gyro startet erst nach Startblick-`rotate` (am Gerät prüfen: nach Orientierungs-Freigabe kein Sprung weg vom Startblick). MPZ-Persistenz: im Kalib-Overlay **Als Startblick übernehmen** (`POST /api/mpz/view/sphere`).
 
 Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/projektmanagement/2026-06-13-sphere-hotspot-acceptance.md).
 

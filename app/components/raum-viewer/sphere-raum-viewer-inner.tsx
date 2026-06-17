@@ -38,6 +38,7 @@ import {
   type SphereMarkerKind,
 } from '@/lib/raum-viewer/sphere-marker-factory'
 import {
+  normalizeYawDeg,
   resolveBubbleProjectionPitchDeg,
   resolveImageLayerSize,
   resolveSphereStartView,
@@ -117,6 +118,8 @@ export const SphereRaumViewerInner = forwardRef<
   const hotspots360Ref = useRef(hotspots360)
   const startYawRef = useRef(startYaw)
   const startPitchRef = useRef(startPitch)
+  const calibViewRef = useRef<{ yawDeg: number; pitchDeg: number } | null>(null)
+  const calibEnabledRef = useRef(calibEnabled)
   const [startViewApplied, setStartViewApplied] = useState(false)
   const loadedPanoramaRef = useRef<string | null>(null)
   const orientStateRef = useRef<string>('checking')
@@ -166,6 +169,14 @@ export const SphereRaumViewerInner = forwardRef<
     startYawRef.current = startYaw
     startPitchRef.current = startPitch
   }, [startYaw, startPitch])
+  useEffect(() => {
+    calibEnabledRef.current = calibEnabled
+  }, [calibEnabled])
+
+  const getCurrentCalibView = useCallback(
+    () => calibViewRef.current,
+    [],
+  )
 
   const isHero = layout === 'hero'
 
@@ -344,6 +355,12 @@ export const SphereRaumViewerInner = forwardRef<
       const yawDeg = e.position.yaw * (180 / Math.PI)
       const pitchDeg = e.position.pitch * (180 / Math.PI)
       onViewChangeRef.current?.(yawDeg, pitchDeg)
+      if (calibEnabledRef.current) {
+        calibViewRef.current = {
+          yawDeg: normalizeYawDeg(yawDeg),
+          pitchDeg,
+        }
+      }
     })
 
     if (calibEnabled) {
@@ -529,6 +546,12 @@ export const SphereRaumViewerInner = forwardRef<
           stationSlug={stationSlug}
           hotspots360={hotspots360}
           lastClick={calibClick}
+          getCurrentView={getCurrentCalibView}
+          savedStartView={
+            startYaw !== undefined && startPitch !== undefined
+              ? { startYaw, startPitch }
+              : undefined
+          }
         />
       ) : null}
       {isHero && orientState === 'needs-gesture' ? (

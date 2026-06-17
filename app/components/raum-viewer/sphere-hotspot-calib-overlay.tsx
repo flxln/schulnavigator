@@ -1,9 +1,50 @@
 'use client'
 
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import type { Hotspot360 } from '@/lib/types'
 import { sphereCalibFromClick } from '@/lib/raum-viewer/sphere-hotspot-calibration'
+import { markMpzStudioDirty } from '@/components/mpz-studio/studio-validation-context'
+
+const CALIB_VIEW_POLL_MS = 200
+
+type CalibView = { yawDeg: number; pitchDeg: number }
+
+function CalibViewReadout({
+  getCurrentView,
+  onViewChange,
+}: {
+  getCurrentView: () => CalibView | null
+  onViewChange?: (view: CalibView | null) => void
+}) {
+  const [view, setView] = useState<CalibView | null>(null)
+
+  useEffect(() => {
+    const tick = () => {
+      const next = getCurrentView()
+      setView(next)
+      onViewChange?.(next)
+    }
+    tick()
+    const id = window.setInterval(tick, CALIB_VIEW_POLL_MS)
+    return () => window.clearInterval(id)
+  }, [getCurrentView, onViewChange])
+
+  if (!view) {
+    return (
+      <p className="text-fg-on-dark/60">
+        Panorama drehen, um die Kameraposition zu erfassen.
+      </p>
+    )
+  }
+
+  return (
+    <p>
+      yaw: <strong>{view.yawDeg}°</strong> · pitch:{' '}
+      <strong>{view.pitchDeg}°</strong>
+    </p>
+  )
+}
 
 export type SphereHotspotCalibOverlayProps = {
   stationSlug: string
@@ -14,12 +55,16 @@ export type SphereHotspotCalibOverlayProps = {
     textureX?: number
     textureY?: number
   } | null
+  getCurrentView: () => CalibView | null
+  savedStartView?: { startYaw: number; startPitch: number }
 }
 
 export function SphereHotspotCalibOverlay({
   stationSlug,
   hotspots360,
   lastClick,
+  getCurrentView,
+  savedStartView,
 }: SphereHotspotCalibOverlayProps) {
   const [selectedId, setSelectedId] = useState<string>(
     hotspots360?.[0]?.id ?? '',
@@ -27,6 +72,10 @@ export function SphereHotspotCalibOverlay({
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [startBusy, setStartBusy] = useState(false)
+  const [startMessage, setStartMessage] = useState<string | null>(null)
+  const [startError, setStartError] = useState<string | null>(null)
+  const [hasCalibView, setHasCalibView] = useState(false)
 
   const snippet = lastClick
     ? sphereCalibFromClick(lastClick, selectedId || undefined)
@@ -81,8 +130,51 @@ export function SphereHotspotCalibOverlay({
     }
   }, [selectedId, snippet, stationSlug])
 
+  const persistStartView = useCallback(async () => {
+    const view = getCurrentView()
+    if (!view) {
+      setStartError('Panorama drehen, um eine Kameraposition zu erfassen.')
+      return
+    }
+    setStartBusy(true)
+    setStartMessage(null)
+    setStartError(null)
+    try {
+      const res = await fetch('/api/mpz/view/sphere', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          slug: stationSlug,
+          startYaw: view.yawDeg,
+          startPitch: view.pitchDeg,
+        }),
+      })
+      const json = (await res.json()) as { message?: string }
+      if (!res.ok) {
+        if (res.status === 401) {
+          setStartError('Nicht angemeldet — zuerst /mpz/unlock aufrufen.')
+        } else {
+          setStartError(json.message ?? `Fehler (${res.status})`)
+        }
+        return
+      }
+      markMpzStudioDirty()
+      setStartMessage(
+        `Startblick übernommen: yaw=${view.yawDeg}°, pitch=${view.pitchDeg}° (Reload für Vorschau)`,
+      )
+    } catch {
+      setStartError('Netzwerkfehler beim Speichern.')
+    } finally {
+      setStartBusy(false)
+    }
+  }, [getCurrentView, stationSlug])
+
+  const handleCalibViewChange = useCallback((view: CalibView | null) => {
+    setHasCalibView(view !== null)
+  }, [])
+
   return (
-    <div className="pointer-events-auto absolute bottom-3 left-3 right-3 z-20 max-h-[45%] overflow-y-auto rounded-[var(--r-md)] bg-black/80 p-3 text-xs text-fg-on-dark shadow-gs39-md">
+    <div className="pointer-events-auto absolute bottom-3 left-3 right-3 z-20 max-h-[55%] overflow-y-auto rounded-[var(--r-md)] bg-black/80 p-3 text-xs text-fg-on-dark shadow-gs39-md">
       <p className="mb-2 font-semibold">Hotspot-Kalibrierung (Dev)</p>
       <p className="mb-2 text-fg-on-dark/80">
         Klicke den <strong>Ankerpunkt</strong> im Panorama (Maskottchen: Fuß,
@@ -153,6 +245,50 @@ export function SphereHotspotCalibOverlay({
         <p className="mt-2 text-brand-red">
           {error}
           {error.includes('/mpz/unlock') ? (
+            <>
+              {' '}
+              <Link href="/mpz/unlock" className="underline">
+                Entsperren
+              </Link>
+            </>
+          ) : null}
+        </p>
+      ) : null}
+
+      <hr className="my-3 border-fg-on-dark/20" />
+
+      <p className="mb-2 font-semibold">Startblick (Dev)</p>
+      <p className="mb-2 text-fg-on-dark/80">
+        Drehe das Panorama zur gewünschten <strong>Einstiegsansicht</strong>.
+        Das ist nicht derselbe Wert wie ein Hotspot-Klick.
+      </p>
+      {savedStartView ? (
+        <p className="mb-2 text-fg-on-dark/70">
+          Gespeichert: yaw={savedStartView.startYaw}°, pitch=
+          {savedStartView.startPitch}°
+        </p>
+      ) : (
+        <p className="mb-2 text-fg-on-dark/60">Noch kein Startblick in stations.json.</p>
+      )}
+      <CalibViewReadout
+        getCurrentView={getCurrentView}
+        onViewChange={handleCalibViewChange}
+      />
+      <div className="mt-2">
+        <button
+          type="button"
+          disabled={startBusy || !hasCalibView}
+          className="rounded border border-brand-green/50 bg-brand-green/20 px-3 py-1.5 text-sm font-medium text-fg-on-dark disabled:opacity-40"
+          onClick={() => void persistStartView()}
+        >
+          {startBusy ? 'Speichern…' : 'Als Startblick übernehmen'}
+        </button>
+      </div>
+      {startMessage ? <p className="mt-2 text-brand-green">{startMessage}</p> : null}
+      {startError ? (
+        <p className="mt-2 text-brand-red">
+          {startError}
+          {startError.includes('/mpz/unlock') ? (
             <>
               {' '}
               <Link href="/mpz/unlock" className="underline">

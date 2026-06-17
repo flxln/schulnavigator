@@ -39,11 +39,11 @@
 
 **Akzeptanz:**
 
-- [ ] `POST /api/mpz/view/sphere` (oder äquivalent): `{ slug, startYaw, startPitch }` + `withMpzStudioAccess`
-- [ ] Domain-Layer `lib/mpz-view-ingest.ts` (analog Hotspot-Ingest) → `writeStations({ strict: true, validateAssets: false })`
-- [ ] Erweiterung `SphereHotspotCalibOverlay` oder Studio-Panel: Button **„Als Startblick übernehmen“** (aktuelle PSV-Position)
-- [ ] Hinweis in `lokal-testen-und-anschauen.md`; Link von `/mpz/studio`
-- [ ] Route-Tests Guard 401/404
+- [x] `POST /api/mpz/view/sphere` (oder äquivalent): `{ slug, startYaw, startPitch }` + `withMpzStudioAccess`
+- [x] Domain-Layer `lib/mpz-view-ingest.ts` (analog Hotspot-Ingest) → `writeStations({ strict: true, validateAssets: false })`
+- [x] Erweiterung `SphereHotspotCalibOverlay` oder Studio-Panel: Button **„Als Startblick übernehmen“** (aktuelle PSV-Position)
+- [x] Hinweis in `lokal-testen-und-anschauen.md`; Link von `/mpz/studio`
+- [x] Route-Tests Guard 401/404
 
 **Blockiert durch:** #146 (IO) — #152 (Runtime) erledigt.
 
