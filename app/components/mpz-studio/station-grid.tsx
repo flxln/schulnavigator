@@ -99,6 +99,12 @@ export function StationGrid() {
 
                 <div className="flex flex-col gap-2 border-t border-border-1 pt-3 text-sm">
                   <Link
+                    href={`/mpz/studio/stationen/${encodeURIComponent(st.slug)}`}
+                    className="font-semibold text-accent underline-offset-2 hover:underline"
+                  >
+                    Bearbeiten
+                  </Link>
+                  <Link
                     href={`/raum/${st.slug}`}
                     target="_blank"
                     rel="noopener noreferrer"
