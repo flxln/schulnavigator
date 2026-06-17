@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { MPZ_HUB_SLUGS } from '@/lib/schoolhouse-hub-map'
+import { markMpzStudioDirty } from '@/components/mpz-studio/studio-validation-context'
 
 const TYPEN = [
   { value: 'audio', label: 'Audio (.mp3 .wav .m4a)' },
@@ -57,6 +58,7 @@ export function MediaIngestForm({ initialSlug }: MediaIngestFormProps) {
         quelle: json.quelle ?? '',
         id: json.medium?.id ?? '',
       })
+      markMpzStudioDirty()
       form.reset()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Netzwerkfehler')

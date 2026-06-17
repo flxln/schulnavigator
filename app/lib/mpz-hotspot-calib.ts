@@ -93,7 +93,13 @@ export async function applyFlatHotspotCoords(
 
     await io.writeStations(
       { stations: nextStations },
-      { strict: true, validateAssets: false },
+      {
+        strict: true,
+        validateAssets: false,
+        makeBackup: true,
+        postValidate: true,
+        touchedSlug: input.slug,
+      },
     )
 
     return { hotspotId: input.hotspotId, x, y }
@@ -152,7 +158,13 @@ export async function applySphereHotspotCoords(
 
     await io.writeStations(
       { stations: nextStations },
-      { strict: true, validateAssets: false },
+      {
+        strict: true,
+        validateAssets: false,
+        makeBackup: true,
+        postValidate: true,
+        touchedSlug: input.slug,
+      },
     )
 
     return { hotspotId: input.hotspotId, yaw, pitch }
