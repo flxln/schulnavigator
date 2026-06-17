@@ -49,5 +49,12 @@ Der Fortschrittsbalken in GitHub ergibt sich automatisch aus den geschlossenen I
 
 ## MPZ Studio v0 — internes Ingest-Tool (ADR-022)
 
-**Fällig:** 22.06.2026
+**Fällig:** 22.06.2026 · **Status:** abgeschlossen (2026-06-17, PR #156)
 **Beschreibung:** Ausnahme zur Phasen-Konvention — bewusst **eigener** Milestone, weil MPZ Studio als initiative über v0 (vor Fest) / v1 / v2 (Post-Fest) spannt und in keine einzelne Phase passt. v0-Scope: schmales, MPZ-internes Dev-only-Pflege-UI (ADR-022) als optionaler **Plan B** zum CLI/JSON-Workflow — Medien-Ingest, Dialog-Audio, Hotspot-Kalibrierung; schreibt nur lokale Repo-Dateien, **nie** auf Coolify. Epic [#144](https://github.com/flxln/schulnavigator/issues/144), Unterissues #145–#151 — [epic-mpz-studio.md](./epic-mpz-studio.md). Optional; Plan A bleibt Pflicht + Fallback und darf nicht blockiert werden.
+
+---
+
+## MPZ Studio v1 — Station-Detail & Content-Pflege (ADR-022)
+
+**Fällig:** 31.07.2026
+**Beschreibung:** Post-Fest-Erweiterung: Station-Detail unter `/mpz/studio/stationen/[slug]` mit Tabs Stammdaten, Medien, Hotspots, Dialog-Audio. Epic [#158](https://github.com/flxln/schulnavigator/issues/158), Unterissues #159–#164 — [epic-mpz-studio-v1.md](./epic-mpz-studio-v1.md). Branch `mpz-studio-v1`.
