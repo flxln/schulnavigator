@@ -1,7 +1,7 @@
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import rawStations from '@/data/stations.json'
 import { ingestDialogClip } from '@/lib/mpz-dialog-audio-ingest'
 import { createMpzContentIo, resetMpzWriteLockForTests } from '@/lib/mpz-content-io'
@@ -10,6 +10,7 @@ import {
   applySphereHotspotCoords,
   MpzHotspotCalibError,
 } from '@/lib/mpz-hotspot-calib'
+import * as mpzStationsValidation from '@/lib/mpz-stations-validation'
 import type { StationsFile } from '@/lib/types'
 
 const baseFixture = rawStations as StationsFile
@@ -60,7 +61,17 @@ const TEST_WAV = Buffer.concat([
 ])
 
 describe('mpz-hotspot-calib', () => {
+  beforeEach(() => {
+    vi.spyOn(mpzStationsValidation, 'validateStationsContent').mockReturnValue({
+      structureErrors: [],
+      assetErrors: [],
+      warnings: [],
+      bySlug: {},
+    })
+  })
+
   afterEach(() => {
+    vi.restoreAllMocks()
     resetMpzWriteLockForTests()
     for (const dir of temps) {
       try {

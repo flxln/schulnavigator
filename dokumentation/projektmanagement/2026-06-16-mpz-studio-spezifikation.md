@@ -291,13 +291,13 @@ Abgeleitet aus zwei unabhängigen Plan-Reviews (SE-15: Codex, GLM-5.1). v0 ist *
 
 **Security (Befund 2 / L4)**
 
-- [ ] Ein zentraler Helper `assertMpzStudioAccess(request)` (in `lib/mpz-content-io` oder eigenem Modul) wird in **jeder** `/api/mpz/*`-Route aufgerufen — die Edge-Middleware deckt `/api/*` nicht ab.
-- [ ] Guard-Verhalten getestet: `development` ohne Secret → 401, `development` mit gültigem Secret → ok, `production` → 404 auf `/mpz/*` **und** `/api/mpz/*`.
-- [ ] `SN_MPZ_STUDIO_SECRET` nur in `.env.local`, dokumentiert in `.env.example`; **nicht** in Prod-/Coolify-Env.
+- [x] Ein zentraler Helper `assertMpzStudioAccess(request)` (in `lib/mpz-studio-guard`) wird in **jeder** `/api/mpz/*`-Route aufgerufen — die Edge-Middleware deckt `/api/*` nicht ab.
+- [x] Guard-Verhalten getestet: `development` ohne Secret → 401, `development` mit gültigem Secret → ok, `production` → 404 auf `/mpz/*` **und** `/api/mpz/*`.
+- [x] `SN_MPZ_STUDIO_SECRET` nur in `.env.local`, dokumentiert in `.env.example`; **nicht** in Prod-/Coolify-Env.
 
 **IO-Kontrakt (Befund 4)**
 
-- [ ] `writeStations()` schreibt **atomar**: temp-Datei → `fs.rename`, vorher `stations.json.bak` aktualisieren; deterministische Key-Reihenfolge / pretty-print.
+- [x] `writeStations()` schreibt **atomar**: temp-Datei → `fs.rename`, vorher `stations.json.bak` aktualisieren; deterministische Key-Reihenfolge / pretty-print.
 - [x] **Rollback:** Schlägt die Validierung nach dem Save fehl, wird die vorige Version wiederhergestellt (`.bak` bzw. nicht-comitteter Stand) — keine kaputte `stations.json` bleibt liegen. Umgesetzt #150 (`postValidate` in `lib/mpz-content-io`, Scope per `touchedSlug`).
 - [x] `lib/mpz-content-io` wird **vor** dem ersten UI-Edit-Feld gebaut und mit Unit-Tests abgesichert; die bestehende CLI (`content-ingest.ts`) nutzt denselben Layer (DRY) — kein verteilter `node:fs`-Zugriff in UI-Code (T2). Umgesetzt #146 (2026-06-16).
 
@@ -313,8 +313,8 @@ Abgeleitet aus zwei unabhängigen Plan-Reviews (SE-15: Codex, GLM-5.1). v0 ist *
 
 **Build / Prod**
 
-- [ ] `NODE_ENV=production` → 404 auf `/mpz/*` und `/api/mpz/*` (manuell gegen `next build` verifiziert).
-- [ ] `npm run build` bleibt grün; kein `any` in neuem Code.
+- [x] `NODE_ENV=production` → 404 auf `/mpz/*` und `/api/mpz/*` (Unit-Tests: `mpz-studio-guard`, Route-Tests, `middleware.test.ts`; Build grün).
+- [x] `npm run build` bleibt grün; kein `any` in neuem Code.
 - [ ] Defense-in-Depth dokumentiert/verifiziert: Prod-Image hat kein beschreibbares `data/`/`public/` für den Laufzeit-User (L3).
 
 ### Geklärte vormals offene Punkte
