@@ -8,7 +8,8 @@ export type SlugValidationBucket = {
 }
 
 export type StationsContentValidation = {
-  errors: string[]
+  structureErrors: string[]
+  assetErrors: string[]
   warnings: string[]
   bySlug: Record<string, SlugValidationBucket>
 }
@@ -53,48 +54,56 @@ export function groupMessagesBySlug(
   return bySlug
 }
 
+export function mergeValidationErrors(
+  validation: StationsContentValidation,
+): string[] {
+  return [...validation.structureErrors, ...validation.assetErrors]
+}
+
 export function validateStationsContent(
   data: StationsFile,
   appRoot: string,
 ): StationsContentValidation {
-  const errors: string[] = []
+  const structureErrors: string[] = []
   const warnings: string[] = []
 
   try {
     validateStationsFile(data)
   } catch (err) {
-    errors.push(
+    structureErrors.push(
       err instanceof Error ? err.message : 'Struktur-Validierung fehlgeschlagen',
     )
   }
 
   const assetResult = validateStationAssets(data, { appRoot })
-  errors.push(...assetResult.errors)
-  warnings.push(...assetResult.warnings)
 
   return {
-    errors,
-    warnings,
-    bySlug: groupMessagesBySlug(errors, warnings),
+    structureErrors,
+    assetErrors: assetResult.errors,
+    warnings: assetResult.warnings,
+    bySlug: groupMessagesBySlug(assetResult.errors, assetResult.warnings),
   }
 }
 
+/** Strukturfehler und Asset-Meldungen ohne Station-Präfix. */
 export function globalValidationErrors(errors: string[]): string[] {
   return errors.filter((msg) => !STATION_MSG_RE.test(msg))
 }
 
-/** Post-Validate-Rollback: nur Asset-errors im Scope; Warnings nie. */
+/** Kein rename bei Scope-Fehlern; Warnings nie. */
 export function shouldRollbackPostValidate(
   validation: StationsContentValidation,
-  touchedSlug?: string,
+  touchedSlugs?: string[],
 ): boolean {
-  if (globalValidationErrors(validation.errors).length > 0) {
+  if (validation.structureErrors.length > 0) {
     return true
   }
 
-  if (!touchedSlug) {
-    return Object.values(validation.bySlug).some((b) => b.errors.length > 0)
+  if (!touchedSlugs || touchedSlugs.length === 0) {
+    return validation.assetErrors.length > 0
   }
 
-  return (validation.bySlug[touchedSlug]?.errors.length ?? 0) > 0
+  return touchedSlugs.some(
+    (slug) => (validation.bySlug[slug]?.errors.length ?? 0) > 0,
+  )
 }

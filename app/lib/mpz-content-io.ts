@@ -2,6 +2,8 @@ import {
   copyFile,
   readFile,
   rename,
+  stat,
+  unlink,
   writeFile,
 } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
@@ -9,8 +11,10 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { HUB_SLUG_MAP } from '@/lib/schoolhouse-hub-map'
 import {
+  mergeValidationErrors,
   shouldRollbackPostValidate,
   validateStationsContent,
+  type StationsContentValidation,
 } from '@/lib/mpz-stations-validation'
 import type { StationsFile } from '@/lib/types'
 import { validateStationsFile } from '@/lib/validate-stations'
@@ -39,10 +43,15 @@ export interface WriteStationsOptions {
   canonicalize?: boolean
   /** Default true */
   makeBackup?: boolean
-  /** Nach atomarem Write: Struktur + Assets prüfen; bei Fehler Rollback aus .bak */
+  /** tmp validieren vor rename; bei Fehler bleibt stations.json unberührt */
   postValidate?: boolean
-  /** Rollback nur bei Asset-Fehlern auf dieser Station (ohne: jeder Asset-error) */
-  touchedSlug?: string
+  /** Rollback-Scope für Asset-Fehler (leer = voller Scope) */
+  touchedSlugs?: string[]
+}
+
+export type WriteStationsResult = {
+  mtime: string | null
+  validation?: StationsContentValidation
 }
 
 export interface MpzContentIoPaths {
@@ -53,7 +62,10 @@ export interface MpzContentIoPaths {
 
 export interface MpzContentIo {
   readStations(): Promise<StationsFile>
-  writeStations(data: StationsFile, options?: WriteStationsOptions): Promise<void>
+  writeStations(
+    data: StationsFile,
+    options?: WriteStationsOptions,
+  ): Promise<WriteStationsResult>
   getPaths(): MpzContentIoPaths
 }
 
@@ -83,6 +95,15 @@ export function serializeStationsFile(data: StationsFile): string {
   return `${JSON.stringify(data, null, 2)}\n`
 }
 
+async function fileMtime(path: string): Promise<string | null> {
+  try {
+    const info = await stat(path)
+    return info.mtime.toISOString()
+  } catch {
+    return null
+  }
+}
+
 async function writeAtomic(targetPath: string, content: string): Promise<void> {
   const dir = dirname(targetPath)
   const tmpPath = join(dir, `stations.json.${process.pid}.tmp`)
@@ -92,7 +113,6 @@ async function writeAtomic(targetPath: string, content: string): Promise<void> {
   } catch (err) {
     try {
       if (existsSync(tmpPath)) {
-        const { unlink } = await import('node:fs/promises')
         await unlink(tmpPath)
       }
     } catch {
@@ -105,16 +125,46 @@ async function writeAtomic(targetPath: string, content: string): Promise<void> {
   }
 }
 
-async function restoreStationsFromBackup(paths: MpzContentIoPaths): Promise<void> {
-  if (!existsSync(paths.backupPath)) {
-    throw new MpzContentIoError('IO', 'Rollback nicht möglich: kein Backup')
-  }
+async function commitStationsWrite(
+  paths: MpzContentIoPaths,
+  content: string,
+  payload: StationsFile,
+  touchedSlugs: string[] | undefined,
+): Promise<WriteStationsResult> {
+  const dir = dirname(paths.stationsPath)
+  const tmpPath = join(dir, `stations.json.${process.pid}.tmp`)
+
   try {
-    await copyFile(paths.backupPath, paths.stationsPath)
+    await writeFile(tmpPath, content, 'utf8')
+
+    const validation = validateStationsContent(payload, paths.appRoot)
+    if (shouldRollbackPostValidate(validation, touchedSlugs)) {
+      await unlink(tmpPath)
+      throw new MpzContentIoError(
+        'VALIDATION',
+        mergeValidationErrors(validation).join('\n') || 'Post-Validate fehlgeschlagen',
+      )
+    }
+
+    await rename(tmpPath, paths.stationsPath)
+    return {
+      mtime: await fileMtime(paths.stationsPath),
+      validation,
+    }
   } catch (err) {
+    if (existsSync(tmpPath)) {
+      try {
+        await unlink(tmpPath)
+      } catch {
+        /* ignore */
+      }
+    }
+    if (err instanceof MpzContentIoError) {
+      throw err
+    }
     throw new MpzContentIoError(
       'IO',
-      err instanceof Error ? err.message : 'Rollback aus Backup fehlgeschlagen',
+      err instanceof Error ? err.message : 'Atomares Schreiben fehlgeschlagen',
     )
   }
 }
@@ -154,13 +204,13 @@ export function createMpzContentIo(overrides?: Partial<MpzContentIoPaths>): MpzC
     async writeStations(
       data: StationsFile,
       options: WriteStationsOptions = {},
-    ): Promise<void> {
+    ): Promise<WriteStationsResult> {
       const strict = options.strict !== false
       const validateAssets = options.validateAssets === true
       const canonicalize = options.canonicalize === true
       const makeBackup = options.makeBackup !== false
       const postValidate = options.postValidate === true
-      const touchedSlug = options.touchedSlug
+      const touchedSlugs = options.touchedSlugs
 
       if (strict) {
         try {
@@ -206,20 +256,12 @@ export function createMpzContentIo(overrides?: Partial<MpzContentIoPaths>): MpzC
         }
       }
 
-      await writeAtomic(paths.stationsPath, serialized)
-
       if (postValidate) {
-        const validation = validateStationsContent(payload, paths.appRoot)
-        if (shouldRollbackPostValidate(validation, touchedSlug)) {
-          if (makeBackup) {
-            await restoreStationsFromBackup(paths)
-          }
-          throw new MpzContentIoError(
-            'VALIDATION',
-            validation.errors.join('\n') || 'Post-Validate fehlgeschlagen',
-          )
-        }
+        return commitStationsWrite(paths, serialized, payload, touchedSlugs)
       }
+
+      await writeAtomic(paths.stationsPath, serialized)
+      return { mtime: await fileMtime(paths.stationsPath) }
     },
   }
 }
@@ -237,7 +279,7 @@ export function readStations(): Promise<StationsFile> {
 export function writeStations(
   data: StationsFile,
   options?: WriteStationsOptions,
-): Promise<void> {
+): Promise<WriteStationsResult> {
   return defaultIo.writeStations(data, options)
 }
 

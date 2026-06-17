@@ -15,6 +15,7 @@
 | Unterissue | `#149` | Flat-Kalibrier-Route `/mpz/calib/flat/{slug}` + 360°-Rückschreibung | `tech` | #146 |
 | Unterissue | `#150` | Validierungs-Vertrag nach Save (Struktur + Asset) | `tech` | #146 |
 | Unterissue | `#151` | Dashboard, Stationen-Liste, Vorschau-Links + Entwickler-Doku | `tech` | #145 |
+| Unterissue | `#155` | IO-Härtung: validate-before-rename, Write-Lock Medien-Ingest (#150-Nacharbeit) | `tech` | #150 |
 | Unterissue | `#153` | MPZ Studio: Sphere-Startblick kalibrieren & persistieren | `tech` | #146, #152 |
 
 ## Ziel
@@ -33,6 +34,7 @@ Schmales, **MPZ-internes** Pflege-UI als optionaler **Plan B** zum bereits umges
 | #149 | https://github.com/flxln/schulnavigator/issues/149 |
 | #150 | https://github.com/flxln/schulnavigator/issues/150 |
 | #151 | https://github.com/flxln/schulnavigator/issues/151 |
+| #155 | https://github.com/flxln/schulnavigator/issues/155 |
 | #153 | https://github.com/flxln/schulnavigator/issues/153 |
 
 ## Kontext
@@ -66,6 +68,7 @@ Schmales, **MPZ-internes** Pflege-UI als optionaler **Plan B** zum bereits umges
 - [x] #148 Dialog-Audio-Ingest (WAV-Konvention, Segment-Verknüpfung, Audit; `lib/mpz-dialog-audio-ingest`, API ingest/status, Mini-UI `/mpz/studio/dialog-audio`, CLI `content:ingest-dialog`)
 - [x] #149 Flat-Kalibrier-Route + 360°-Rückschreibung (inkl. geteilte Write-Queue `withMpzWriteLock`, Bugfix `?hotspot-calib=1` nach Client-Navigation)
 - [x] #150 Validierungs-Vertrag (Post-Validate + Rollback, Save-&-Validate-Button, debounced GET)
+- [x] #155 IO-Härtung validate-before-rename + Write-Lock Medien-Ingest + inline-Report
 - [x] #151 Dashboard/Liste/Vorschau + Doku in `fuer-entwickler.md`
 - [ ] #153 MPZ: Sphere-Startblick kalibrieren ([ADR-023](../adr/023-sphere-startblick.md), blockiert #152)
 - [ ] Prod-Build verifiziert: 404 auf `/mpz/*` + `/api/mpz/*`, Build grün ohne `any`

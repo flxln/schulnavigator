@@ -1,10 +1,11 @@
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import rawStations from '@/data/stations.json'
 import { createMpzContentIo } from '@/lib/mpz-content-io'
 import { ingestMediumFile, MpzUploadError } from '@/lib/mpz-medium-ingest'
+import * as mpzStationsValidation from '@/lib/mpz-stations-validation'
 import type { StationsFile } from '@/lib/types'
 
 const fixture = rawStations as StationsFile
@@ -35,6 +36,7 @@ function readStationsFile(io: ReturnType<typeof createMpzContentIo>): StationsFi
 
 describe('mpz-medium-ingest · ingestMediumFile', () => {
   afterEach(() => {
+    vi.restoreAllMocks()
     for (const dir of temps) {
       try {
         rmSync(dir, { recursive: true, force: true })
@@ -43,6 +45,15 @@ describe('mpz-medium-ingest · ingestMediumFile', () => {
       }
     }
     temps.length = 0
+  })
+
+  beforeEach(() => {
+    vi.spyOn(mpzStationsValidation, 'validateStationsContent').mockReturnValue({
+      structureErrors: [],
+      assetErrors: [],
+      warnings: [],
+      bySlug: {},
+    })
   })
 
   it('schreibt Datei und Medium in JSON', async () => {

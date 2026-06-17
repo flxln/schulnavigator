@@ -13,6 +13,7 @@ import {
   withMpzWriteLock,
   resetMpzWriteLockForTests,
 } from '@/lib/mpz-content-io'
+import { runMpzStudioValidation, type MpzValidationReport } from '@/lib/mpz-studio-overview'
 import {
   type IngestSource,
   persistFile,
@@ -48,6 +49,8 @@ export interface IngestDialogClipResult {
   destPath: string
   segmentId: string
   jsonWritten: boolean
+  mtime?: string | null
+  validation?: MpzValidationReport
 }
 
 export interface DialogSegmentAudit {
@@ -298,15 +301,18 @@ async function ingestDialogClipInner(
 
   segment.quelle = expectedQuelle
 
+  let writeResult: Awaited<ReturnType<MpzContentIo['writeStations']>>
+  let validation: MpzValidationReport
   try {
-    await io.writeStations(data, {
+    writeResult = await io.writeStations(data, {
       strict: true,
       validateAssets: false,
       canonicalize: false,
       makeBackup: true,
       postValidate: true,
-      touchedSlug: input.slug,
+      touchedSlugs: [input.slug],
     })
+    validation = await runMpzStudioValidation(io)
   } catch (err) {
     await rollbackWav(destPath, bakPath)
     throw err
@@ -322,6 +328,8 @@ async function ingestDialogClipInner(
     destPath,
     segmentId: segment.id,
     jsonWritten: true,
+    mtime: writeResult.mtime,
+    validation,
   }
 }
 

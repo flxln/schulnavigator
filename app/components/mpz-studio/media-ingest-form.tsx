@@ -3,7 +3,8 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { MPZ_HUB_SLUGS } from '@/lib/schoolhouse-hub-map'
-import { markMpzStudioDirty } from '@/components/mpz-studio/studio-validation-context'
+import type { MpzValidationReport } from '@/lib/mpz-studio-overview'
+import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
 
 const TYPEN = [
   { value: 'audio', label: 'Audio (.mp3 .wav .m4a)' },
@@ -23,6 +24,7 @@ export type MediaIngestFormProps = {
 }
 
 export function MediaIngestForm({ initialSlug }: MediaIngestFormProps) {
+  const { applyReport } = useStudioValidation()
   const defaultSlug =
     initialSlug && MPZ_HUB_SLUGS.includes(initialSlug as (typeof MPZ_HUB_SLUGS)[number])
       ? initialSlug
@@ -48,6 +50,8 @@ export function MediaIngestForm({ initialSlug }: MediaIngestFormProps) {
         quelle?: string
         medium?: { id?: string }
         message?: string
+        mtime?: string | null
+        validation?: MpzValidationReport | null
       }
       if (!res.ok) {
         setError(json.message ?? `Fehler (${res.status})`)
@@ -58,7 +62,9 @@ export function MediaIngestForm({ initialSlug }: MediaIngestFormProps) {
         quelle: json.quelle ?? '',
         id: json.medium?.id ?? '',
       })
-      markMpzStudioDirty()
+      if (json.validation) {
+        applyReport(json.validation, json.mtime ?? json.validation.stationsModifiedAt)
+      }
       form.reset()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Netzwerkfehler')

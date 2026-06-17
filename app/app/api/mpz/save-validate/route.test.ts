@@ -43,10 +43,14 @@ describe('POST /api/mpz/save-validate', () => {
       report: { stationSummaries: unknown[]; ok: boolean }
       rolledBack: boolean
       saved: boolean
+      postWriteMtime: string | null
     }
     expect(body.report.stationSummaries).toHaveLength(12)
     expect(typeof body.report.ok).toBe('boolean')
     expect(typeof body.rolledBack).toBe('boolean')
     expect(typeof body.saved).toBe('boolean')
+    expect(body.postWriteMtime === null || typeof body.postWriteMtime === 'string').toBe(
+      true,
+    )
   })
 })

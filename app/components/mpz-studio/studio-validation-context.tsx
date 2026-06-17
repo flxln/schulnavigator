@@ -13,8 +13,6 @@ import type { MpzValidationReport } from '@/lib/mpz-studio-overview'
 
 export const MPZ_STUDIO_DIRTY_EVENT = 'mpz-studio-dirty'
 
-const DEBOUNCE_MS = 800
-
 export type SaveValidateFeedback = {
   ok: boolean
   rolledBack: boolean
@@ -27,6 +25,7 @@ type StudioValidationContextValue = {
   dirty: boolean
   error: string | null
   saveFeedback: SaveValidateFeedback | null
+  applyReport: (report: MpzValidationReport, mtime: string | null) => void
   markDirty: () => void
   validateNow: () => Promise<void>
   saveAndValidate: () => Promise<void>
@@ -51,7 +50,17 @@ export function StudioValidationProvider({ children }: { children: ReactNode }) 
   const [saveFeedback, setSaveFeedback] = useState<SaveValidateFeedback | null>(
     null,
   )
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const lastValidatedMtimeRef = useRef<string | null>(null)
+
+  const applyReport = useCallback(
+    (nextReport: MpzValidationReport, mtime: string | null) => {
+      setReport(nextReport)
+      lastValidatedMtimeRef.current = mtime ?? nextReport.stationsModifiedAt
+      setDirty(false)
+      setError(null)
+    },
+    [],
+  )
 
   const validateNow = useCallback(async () => {
     setLoading(true)
@@ -68,31 +77,20 @@ export function StudioValidationProvider({ children }: { children: ReactNode }) 
         return
       }
       const data = (await res.json()) as MpzValidationReport
-      setReport(data)
-      setDirty(false)
+      applyReport(data, data.stationsModifiedAt)
     } catch {
       setError('Netzwerkfehler bei der Validierung.')
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [applyReport])
 
   const markDirty = useCallback(() => {
     setDirty(true)
     setSaveFeedback(null)
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current)
-    }
-    debounceRef.current = setTimeout(() => {
-      void validateNow()
-    }, DEBOUNCE_MS)
-  }, [validateNow])
+  }, [])
 
   const saveAndValidate = useCallback(async () => {
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current)
-      debounceRef.current = null
-    }
     setLoading(true)
     setError(null)
     setSaveFeedback(null)
@@ -111,20 +109,23 @@ export function StudioValidationProvider({ children }: { children: ReactNode }) 
         report: MpzValidationReport
         rolledBack: boolean
         saved: boolean
+        postWriteMtime: string | null
       }
-      setReport(body.report)
-      setDirty(false)
+      applyReport(body.report, body.postWriteMtime)
       setSaveFeedback({
         ok: body.report.ok,
         rolledBack: body.rolledBack,
         saved: body.saved,
       })
+      if (body.rolledBack) {
+        setDirty(true)
+      }
     } catch {
       setError('Netzwerkfehler bei Speichern & Validieren.')
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [applyReport])
 
   const clearSaveFeedback = useCallback(() => {
     setSaveFeedback(null)
@@ -140,14 +141,6 @@ export function StudioValidationProvider({ children }: { children: ReactNode }) 
     return () => window.removeEventListener(MPZ_STUDIO_DIRTY_EVENT, onDirty)
   }, [markDirty])
 
-  useEffect(() => {
-    return () => {
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current)
-      }
-    }
-  }, [])
-
   return (
     <StudioValidationContext.Provider
       value={{
@@ -156,6 +149,7 @@ export function StudioValidationProvider({ children }: { children: ReactNode }) 
         dirty,
         error,
         saveFeedback,
+        applyReport,
         markDirty,
         validateNow,
         saveAndValidate,
