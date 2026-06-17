@@ -149,7 +149,7 @@ export function FlatHotspotCalib({
     <div className="flex min-h-[calc(100dvh-0px)] flex-col bg-[#0f1420] text-fg-on-dark">
       <div className="flex h-[50px] shrink-0 items-center gap-3 border-b border-white/10 bg-[#1a2035] px-5">
         <Link
-          href="/mpz/studio"
+          href="/mpz/studio/stationen"
           className="text-sm text-white/60 hover:text-white/90"
         >
           ← Zurück

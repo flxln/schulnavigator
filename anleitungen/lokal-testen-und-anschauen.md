@@ -97,7 +97,7 @@ curl -X POST "http://localhost:3000/api/mpz/dialog-audio/ingest" \
   -F "file=@./01-frieda.wav"
 ```
 
-**Hotspot-Kalibrierung (Issue #149).** Zuerst `/mpz/unlock`. Im Studio unter „Hotspot-Kalibrierung“ oder direkt:
+**Hotspot-Kalibrierung (Issue #149).** Zuerst `/mpz/unlock`. Im Studio: **Dashboard** (`/mpz/studio`) oder **Stationen** (`/mpz/studio/stationen`) — dort Vorschau und Kalibrier-Links je Station.
 
 - **Sphere:** `/raum/{slug}?hotspot-calib=1` (z. B. `daz`, `klassenzimmer`) → Hotspot-ID wählen, auf Ankerpunkt klicken → **In stations.json übernehmen** (oder JSON kopieren). Nach Browser-Zurück und erneutem Aufruf bleibt das Overlay sichtbar (reagiert auf URL via `useSearchParams`).
 - **Flat:** `/mpz/calib/flat/kunst` (Station mit `bild`, kein `equirectangular`) → Klick setzt `x`/`y` → Übernehmen. Hotspot muss bereits in `hotspots[]` existieren.

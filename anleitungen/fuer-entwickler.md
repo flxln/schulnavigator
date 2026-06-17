@@ -25,6 +25,25 @@ Die App läuft unter [http://localhost:3000](http://localhost:3000).
 
 **Content einpflegen (JSON + Dateien, Hotspots):** [content-einpflegen.md](./content-einpflegen.md).
 
+**MPZ Studio (optional, nur `development`):** [ADR-022](../dokumentation/adr/022-mpz-studio-internes-ingest-tool.md) — internes Ingest-Tool unter `/mpz/studio` (Dashboard, Stationen-Liste, Medien, Dialog-Audio, Hotspot-Kalibrierung). Siehe Abschnitt [MPZ Studio](#mpz-studio-lokal-adr-022) unten.
+
+---
+
+## MPZ Studio (lokal, ADR-022)
+
+Nur bei `NODE_ENV=development` erreichbar; in Production liefern `/mpz/*` und `/api/mpz/*` **404**. Nicht auf Coolify deployen oder Secrets in Prod setzen.
+
+1. In `app/.env.local`: `SN_MPZ_STUDIO_SECRET` setzen (siehe `.env.example`).
+2. Dev-Server starten: `npm run dev`.
+3. Browser: [`/mpz/unlock`](http://localhost:3000/mpz/unlock) — Secret eingeben → Session-Cookie.
+4. [`/mpz/studio`](http://localhost:3000/mpz/studio) — Dashboard mit Validierungsstatus und Links zu allen 12 Stationen.
+
+**Grenzen:** Schreibt nur lokale Dateien (`data/stations.json`, `public/media/`, `content/dialog-audio/`). Kein Git-Commit aus dem Studio — nach Änderungen manuell `validate:stations`, `git commit`, Deploy.
+
+**Plan A (Pflicht + Fallback):** CLI und manuelles JSON ([content-einpflegen.md](./content-einpflegen.md)) bleiben für den Projekttag maßgeblich.
+
+Details und Testrouten: [lokal-testen-und-anschauen.md](./lokal-testen-und-anschauen.md) (Abschnitt MPZ Studio).
+
 ---
 
 ## Umgebungsvariablen

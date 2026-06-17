@@ -30,10 +30,10 @@ export default async function MpzFlatCalibPage({ params }: PageProps) {
           Sphere-Kalibrierung: /raum/{slug}?hotspot-calib=1
         </Link>
         <Link
-          href="/mpz/studio"
+          href="/mpz/studio/stationen"
           className="text-sm font-semibold text-accent underline-offset-2 hover:underline"
         >
-          ← Zurück zum Studio
+          ← Zurück zu Stationen
         </Link>
       </main>
     )
