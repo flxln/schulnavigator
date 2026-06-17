@@ -2,21 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-
-const SLUGS = [
-  'klassenzimmer',
-  'musik',
-  'daz',
-  'kunst',
-  'pc-raum',
-  'lesewelt',
-  'werken',
-  'speiseraum',
-  'hort',
-  'turnhalle',
-  'schulsozialarbeit',
-  'schulhof',
-] as const
+import { MPZ_HUB_SLUGS } from '@/lib/schoolhouse-hub-map'
 
 const TYPEN = [
   { value: 'audio', label: 'Audio (.mp3 .wav .m4a)' },
@@ -31,7 +17,15 @@ interface SuccessState {
   id: string
 }
 
-export function MediaIngestForm() {
+export type MediaIngestFormProps = {
+  initialSlug?: string
+}
+
+export function MediaIngestForm({ initialSlug }: MediaIngestFormProps) {
+  const defaultSlug =
+    initialSlug && MPZ_HUB_SLUGS.includes(initialSlug as (typeof MPZ_HUB_SLUGS)[number])
+      ? initialSlug
+      : MPZ_HUB_SLUGS[0]
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<SuccessState | null>(null)
@@ -78,9 +72,10 @@ export function MediaIngestForm() {
         <select
           name="slug"
           required
+          defaultValue={defaultSlug}
           className="rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1"
         >
-          {SLUGS.map((s) => (
+          {MPZ_HUB_SLUGS.map((s) => (
             <option key={s} value={s}>
               {s}
             </option>
