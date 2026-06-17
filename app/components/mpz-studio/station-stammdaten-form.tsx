@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import {
@@ -217,7 +218,7 @@ export function StationStammdatenForm({ slug, station }: StationStammdatenFormPr
           disabled={viewerBlocked}
           title={
             viewerBlocked
-              ? 'Viewer-Wechsel gesperrt — diese Station hat Hotspots. Hotspots erst in der CLI/JSON entfernen (Hotspot-UI folgt in #162).'
+              ? 'Viewer-Wechsel gesperrt — diese Station hat Hotspots. Zuerst im Tab Hotspots entfernen.'
               : undefined
           }
           className={inputClass}
@@ -228,8 +229,14 @@ export function StationStammdatenForm({ slug, station }: StationStammdatenFormPr
         </select>
         {viewerBlocked && (
           <p className="text-fg-3">
-            Viewer-Wechsel gesperrt — diese Station hat Hotspots. Hotspots erst in der
-            CLI/JSON entfernen (Hotspot-UI folgt in #162).
+            Viewer-Wechsel gesperrt — diese Station hat Hotspots.{' '}
+            <Link
+              href={`/mpz/studio/stationen/${encodeURIComponent(slug)}?tab=hotspots`}
+              className="font-semibold text-accent underline-offset-2 hover:underline"
+            >
+              Im Hotspots-Tab entfernen
+            </Link>
+            .
           </p>
         )}
         {fieldErrors.viewer && (

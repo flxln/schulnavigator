@@ -45,7 +45,7 @@ export function getViewerChangeWarnings(
       warnings.push({
         kind: 'flat-hotspots-present',
         message:
-          'Flat-Hotspots (hotspots) müssen vor dem Wechsel entfernt werden — Hotspot-UI folgt in #162.',
+          'Flat-Hotspots (hotspots) müssen vor dem Wechsel entfernt werden — im Tab Hotspots entfernen.',
       })
     }
   }
@@ -54,7 +54,7 @@ export function getViewerChangeWarnings(
     warnings.push({
       kind: 'sphere-hotspots-present',
       message:
-        'Sphere-Hotspots (hotspots360) müssen vor dem Wechsel entfernt werden — Hotspot-UI folgt in #162.',
+        'Sphere-Hotspots (hotspots360) müssen vor dem Wechsel entfernt werden — im Tab Hotspots entfernen.',
     })
   }
 

@@ -5,6 +5,7 @@ import {
   UPLOAD_RULES,
   isUploadTyp,
   sanitizeFilename,
+  sanitizeUploadFilename,
   slugifyId,
   validateUpload,
 } from '@/lib/mpz-upload-rules'
@@ -56,6 +57,21 @@ describe('mpz-upload-rules · slugifyId / sanitizeFilename', () => {
 
   it('fremde Audio-Endung wird auf Default mp3 normiert', () => {
     expect(sanitizeFilename('ton.ogg', 'audio')).toBe('ton.mp3')
+  })
+
+  it('sanitizeUploadFilename entfernt Pfadanteile (Traversal)', () => {
+    expect(
+      sanitizeUploadFilename('../../evil.svg', {
+        extensions: ['.svg', '.png', '.webp'],
+        defaultExt: '.svg',
+      }),
+    ).toBe('evil.svg')
+    expect(
+      sanitizeUploadFilename('../../evil.js', {
+        extensions: ['.svg', '.png', '.webp'],
+        defaultExt: '.svg',
+      }),
+    ).toBe('evil.svg')
   })
 })
 
