@@ -1,7 +1,7 @@
 # Epic: MPZ Studio v0 — internes Dev-only-Ingest-Tool (ADR-022)
 
 **Milestone:** MPZ Studio v0 (fällig 22.06.2026)
-**Status:** abgeschlossen (v0-DoD erfüllt, 2026-06-17; Prod-Guard per Unit-Tests + `npm run build`)
+**Status:** abgeschlossen (v0-DoD erfüllt, 2026-06-17; merged [PR #156](https://github.com/flxln/schulnavigator/pull/156))
 
 ## Übersicht
 
@@ -57,7 +57,8 @@ Schmales, **MPZ-internes** Pflege-UI als optionaler **Plan B** zum bereits umges
 
 ## Risiken / Folge-Tasks
 
-- **Orphan-Files (Folge-Task zu #147, Pre-Mortem Gemini #3):** Der Ingest kompensiert bei JSON-Fehler (`unlink`), aber ein Prozessabsturz **zwischen** Datei-Write und JSON-Write kann verwaiste Dateien in `public/media/` hinterlassen, die langfristig die Kollisions-Logik (`-2`, `-3`) verschmutzen. Geplant, **nicht in #147 gebaut:** kleines `clean-orphans`-CLI-Skript, das `public/media/`-Dateien gegen `data/stations.json` abgleicht und nicht referenzierte Dateien meldet/löscht. Single-Operator (ADR-022) macht das v0 unkritisch.
+- **Duplikat-Slugs in `stations.json` (Folge #157):** Nach Medien-Ingest-Tests können doppelte `slug`-Einträge entstehen. Workaround: `git restore app/data/stations.json`. Eindeutigkeits-Guard in `writeStations`/Validator geplant.
+- **Orphan-Files (Folge-Task zu #147, Pre-Mortem Gemini #3):** Prozessabsturz zwischen Datei-Write und JSON-Write kann verwaiste Dateien in `public/media/` hinterlassen. Geplant: `clean-orphans`-CLI — nicht in v0 gebaut.
 
 ## Checkliste (Epic)
 
