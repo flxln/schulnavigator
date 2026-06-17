@@ -64,7 +64,7 @@ Schmales, **MPZ-internes** Pflege-UI als optionaler **Plan B** zum bereits umges
 - [x] #146 `lib/mpz-content-io` (atomar, `.bak`, Pre-Validate, Tests, CLI-DRY)
 - [x] #147 Medien-Ingest + Upload-Regeln (Magic-Byte via `file-type`/Größe/Normalisierung/Kollision; `lib/mpz-upload-rules.ts` + `lib/mpz-medium-ingest.ts`, API `POST /api/mpz/media/ingest`, Mini-UI `/mpz/studio/ingest`, CLI-DRY)
 - [x] #148 Dialog-Audio-Ingest (WAV-Konvention, Segment-Verknüpfung, Audit; `lib/mpz-dialog-audio-ingest`, API ingest/status, Mini-UI `/mpz/studio/dialog-audio`, CLI `content:ingest-dialog`)
-- [x] #149 Flat-Kalibrier-Route + 360°-Rückschreibung
+- [x] #149 Flat-Kalibrier-Route + 360°-Rückschreibung (inkl. geteilte Write-Queue `withMpzWriteLock`, Bugfix `?hotspot-calib=1` nach Client-Navigation)
 - [ ] #150 Validierungs-Vertrag (Struktur + Asset; `validate:tokens` raus; debounced)
 - [ ] #151 Dashboard/Liste/Vorschau + Doku in `fuer-entwickler.md`
 - [ ] #153 MPZ: Sphere-Startblick kalibrieren ([ADR-023](../adr/023-sphere-startblick.md), blockiert #152)

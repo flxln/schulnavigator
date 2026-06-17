@@ -1,6 +1,7 @@
 import {
   createMpzContentIo,
   type MpzContentIo,
+  withMpzWriteLock,
 } from '@/lib/mpz-content-io'
 import { HUB_SLUG_MAP } from '@/lib/schoolhouse-hub-map'
 import {
@@ -21,17 +22,6 @@ export class MpzHotspotCalibError extends Error {
     this.name = 'MpzHotspotCalibError'
     this.code = code
   }
-}
-
-let ingestChain: Promise<void> = Promise.resolve()
-
-function withIngestLock<T>(fn: () => Promise<T>): Promise<T> {
-  const run = ingestChain.then(fn)
-  ingestChain = run.then(
-    () => undefined,
-    () => undefined,
-  )
-  return run
 }
 
 function roundNorm(v: number): number {
@@ -58,7 +48,7 @@ export async function applyFlatHotspotCoords(
   input: { slug: string; hotspotId: string; x: number; y: number },
   io: MpzContentIo = createMpzContentIo(),
 ): Promise<{ hotspotId: string; x: number; y: number }> {
-  return withIngestLock(async () => {
+  return withMpzWriteLock(async () => {
     if (!HUB_SLUGS.has(input.slug)) {
       throw new MpzHotspotCalibError('VALIDATION', `Unbekannter slug "${input.slug}".`)
     }
@@ -114,7 +104,7 @@ export async function applySphereHotspotCoords(
   input: { slug: string; hotspotId: string; yaw: number; pitch: number },
   io: MpzContentIo = createMpzContentIo(),
 ): Promise<{ hotspotId: string; yaw: number; pitch: number }> {
-  return withIngestLock(async () => {
+  return withMpzWriteLock(async () => {
     if (!HUB_SLUGS.has(input.slug)) {
       throw new MpzHotspotCalibError('VALIDATION', `Unbekannter slug "${input.slug}".`)
     }
