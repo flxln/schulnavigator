@@ -41,6 +41,10 @@ import {
   MIN_ICON_SIZE_NORM,
   MIN_MASCOT_SIZE_NORM,
 } from '@/lib/raum-viewer/constants'
+import {
+  normalizeYawDeg,
+  roundDeg,
+} from '@/lib/raum-viewer/sphere-marker-conventions'
 
 const EXPECTED_STATION_COUNT = Object.keys(HUB_SLUG_MAP).length
 
@@ -302,6 +306,54 @@ const VIEWER_MODES: readonly ViewerMode[] = ['flat', 'equirectangular']
 
 function isViewerMode(v: unknown): v is ViewerMode {
   return typeof v === 'string' && (VIEWER_MODES as readonly string[]).includes(v)
+}
+
+function validateOptionalStartView(
+  raw: Record<string, unknown>,
+  prefix: string,
+  viewer: ViewerMode,
+): { startYaw?: number; startPitch?: number } {
+  const hasStartYaw = raw.startYaw !== undefined
+  const hasStartPitch = raw.startPitch !== undefined
+
+  if (viewer === 'flat') {
+    assert(
+      !hasStartYaw && !hasStartPitch,
+      `${prefix}: startYaw/startPitch nur bei viewer 'equirectangular' erlaubt`,
+    )
+    return {}
+  }
+
+  let startYaw: number | undefined
+  if (hasStartYaw) {
+    assert(
+      typeof raw.startYaw === 'number' && Number.isFinite(raw.startYaw),
+      `${prefix}: startYaw muss Zahl sein`,
+    )
+    assert(
+      raw.startYaw >= -180 && raw.startYaw <= 180,
+      `${prefix}: startYaw muss −180 bis 180 sein`,
+    )
+    startYaw = normalizeYawDeg(raw.startYaw)
+  }
+
+  let startPitch: number | undefined
+  if (hasStartPitch) {
+    assert(
+      typeof raw.startPitch === 'number' && Number.isFinite(raw.startPitch),
+      `${prefix}: startPitch muss Zahl sein`,
+    )
+    assert(
+      raw.startPitch >= -90 && raw.startPitch <= 90,
+      `${prefix}: startPitch muss −90 bis 90 sein`,
+    )
+    startPitch = roundDeg(Math.min(90, Math.max(-90, raw.startPitch)))
+  }
+
+  return {
+    ...(startYaw !== undefined ? { startYaw } : {}),
+    ...(startPitch !== undefined ? { startPitch } : {}),
+  }
 }
 
 function validateHotspot360(h: unknown, ctx: string): Hotspot360 {
@@ -678,6 +730,8 @@ function validateStation(raw: unknown, index: number): Station {
     )
   }
 
+  const startView = validateOptionalStartView(raw, prefix, viewer)
+
   if (raw.bild !== undefined) {
     assert(
       typeof raw.bild === 'string' && raw.bild.startsWith('/'),
@@ -784,6 +838,7 @@ function validateStation(raw: unknown, index: number): Station {
     medien,
     hotspots,
     hotspots360,
+    ...startView,
     dialog,
   }
 }

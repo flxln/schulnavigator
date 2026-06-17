@@ -440,3 +440,57 @@ describe('validateStationsFile Hub (ADR-016)', () => {
     )
   })
 })
+
+describe('validateStationsFile startYaw/startPitch (ADR-023)', () => {
+  function musikWithStartView(overrides: Record<string, unknown> = {}) {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const musik = data.stations.find((s) => s.slug === 'musik') as Record<string, unknown>
+    Object.assign(musik, overrides)
+    return data
+  }
+
+  it('akzeptiert optionale startYaw/startPitch bei equirectangular', () => {
+    const stations = validateStationsFile(
+      musikWithStartView({ startYaw: 45, startPitch: -10 }) as unknown,
+    )
+    const musik = stations.find((s) => s.slug === 'musik')
+    expect(musik?.startYaw).toBe(45)
+    expect(musik?.startPitch).toBe(-10)
+  })
+
+  it('wirft bei startYaw > 180 (keine Normalisierung im Validator)', () => {
+    expect(() =>
+      validateStationsFile(musikWithStartView({ startYaw: 200 }) as unknown),
+    ).toThrow('startYaw muss −180 bis 180 sein')
+  })
+
+  it('wirft bei startYaw außerhalb des Bereichs', () => {
+    expect(() =>
+      validateStationsFile(musikWithStartView({ startYaw: 181 }) as unknown),
+    ).toThrow('startYaw muss −180 bis 180 sein')
+  })
+
+  it('wirft bei startPitch außerhalb des Bereichs', () => {
+    expect(() =>
+      validateStationsFile(musikWithStartView({ startPitch: 95 }) as unknown),
+    ).toThrow('startPitch muss −90 bis 90 sein')
+  })
+
+  it('wirft bei startYaw auf Flat-Station', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const kunst = data.stations.find((s) => s.slug === 'kunst') as Record<string, unknown>
+    kunst.startYaw = 10
+    expect(() => validateStationsFile(data as unknown)).toThrow(
+      "startYaw/startPitch nur bei viewer 'equirectangular'",
+    )
+  })
+
+  it('lässt startPitch weg wenn nur startYaw gesetzt', () => {
+    const stations = validateStationsFile(
+      musikWithStartView({ startYaw: 30 }) as unknown,
+    )
+    const musik = stations.find((s) => s.slug === 'musik')
+    expect(musik?.startYaw).toBe(30)
+    expect(musik?.startPitch).toBeUndefined()
+  })
+})
