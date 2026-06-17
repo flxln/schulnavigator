@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
 import { StationStammdatenForm } from '@/components/mpz-studio/station-stammdaten-form'
+import { StationHotspotsTable } from '@/components/mpz-studio/station-hotspots-table'
 import { StationMedienTable } from '@/components/mpz-studio/station-medien-table'
 import type { Station, ViewerMode } from '@/lib/types'
 
@@ -24,18 +25,6 @@ function healthDotClass(health: 'ok' | 'warn' | 'error'): string {
   if (health === 'ok') return 'bg-brand-green'
   if (health === 'warn') return 'bg-brand-sun'
   return 'bg-brand-red'
-}
-
-function calibHref(station: Station | null, slug: string): string | null {
-  if (!station) return null
-  const viewer = station.viewer ?? 'flat'
-  if (viewer === 'equirectangular') {
-    return `/raum/${slug}?hotspot-calib=1`
-  }
-  if (viewer === 'flat' && station.bild) {
-    return `/mpz/calib/flat/${slug}`
-  }
-  return null
 }
 
 function resolveTab(raw: string | null): DetailTab {
@@ -65,7 +54,6 @@ export function StationDetailShell({
     (station?.hotspots?.length ?? 0) + (station?.hotspots360?.length ?? 0) ||
     summary?.hotspotCount ||
     0
-  const calib = calibHref(station, slug)
 
   const tabs: { id: DetailTab; label: string; badge?: number; hidden?: boolean }[] =
     [
@@ -168,20 +156,8 @@ export function StationDetailShell({
       )}
 
       {activeTab === 'hotspots' && (
-        <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5 text-sm text-fg-2">
-          <p className="mb-4">Hotspots-Tabelle folgt in #162.</p>
-          {calib ? (
-            <Link
-              href={calib}
-              className="font-semibold text-accent underline-offset-2 hover:underline"
-            >
-              {viewer === 'equirectangular'
-                ? 'Kalibrieren (Hotspots + Startblick)'
-                : 'Hotspot kalibrieren'}
-            </Link>
-          ) : (
-            <p className="text-fg-3">Kein Kalibrier-Link verfügbar (Raumbild fehlt).</p>
-          )}
+        <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5">
+          <StationHotspotsTable slug={slug} station={station} />
         </section>
       )}
 

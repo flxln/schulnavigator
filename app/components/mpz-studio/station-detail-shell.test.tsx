@@ -1,5 +1,5 @@
 /** @vitest-environment jsdom */
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, render, screen, within } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { StationDetailShell } from '@/components/mpz-studio/station-detail-shell'
 import type { MpzValidationReport } from '@/lib/mpz-studio-overview'
@@ -94,7 +94,8 @@ describe('StationDetailShell', () => {
 
     expect(screen.getByRole('link', { name: 'Stammdaten' })).toBeTruthy()
     expect(screen.getByRole('link', { name: /Medien/ })).toBeTruthy()
-    expect(screen.getByRole('link', { name: /Hotspots/ })).toBeTruthy()
+    const nav = screen.getByRole('navigation', { name: 'Station bearbeiten' })
+    expect(within(nav).getByRole('link', { name: /Hotspots/ })).toBeTruthy()
     expect(screen.queryByRole('link', { name: 'Dialog-Audio' })).toBeNull()
   })
 
@@ -120,8 +121,9 @@ describe('StationDetailShell', () => {
     expect(screen.getByRole('link', { name: /Medien/ }).getAttribute('href')).toBe(
       '/mpz/studio/stationen/klassenzimmer?tab=medien',
     )
+    const nav = screen.getByRole('navigation', { name: 'Station bearbeiten' })
     expect(
-      screen.getByRole('link', { name: /Hotspots/ }).getAttribute('href'),
+      within(nav).getByRole('link', { name: /Hotspots/ }).getAttribute('href'),
     ).toBe('/mpz/studio/stationen/klassenzimmer?tab=hotspots')
   })
 
@@ -141,10 +143,38 @@ describe('StationDetailShell', () => {
 
   it('Medien-Tab Empty-State für hort', () => {
     mocks.searchParams = new URLSearchParams('tab=medien')
-    setReport('hort', false)
-    const station = getStationBySlug('hort')!
+    const emptyHort = {
+      slug: 'hort',
+      titel: 'Hortzimmer',
+      beschreibung: 'Test',
+      bild: '/stations/hort.jpg',
+      medien: [],
+    }
+    mocks.report = {
+      ok: true,
+      checkedAt: new Date().toISOString(),
+      durationMs: 1,
+      errors: [],
+      warnings: [],
+      bySlug: {},
+      stationsModifiedAt: null,
+      stationSummaries: [
+        {
+          slug: 'hort',
+          hubNr: 9,
+          titel: 'Hortzimmer',
+          viewer: 'flat',
+          medienCount: 0,
+          hotspotCount: 0,
+          hasDialog: false,
+          hasBild: true,
+          health: 'ok',
+          issues: [],
+        },
+      ],
+    }
 
-    render(<StationDetailShell station={station} slug="hort" hubNr={9} />)
+    render(<StationDetailShell station={emptyHort} slug="hort" hubNr={9} />)
 
     expect(screen.getByText('Noch keine Medien')).toBeTruthy()
     expect(screen.getByRole('link', { name: 'Erstes Medium hinzufügen' })).toBeTruthy()
@@ -162,6 +192,32 @@ describe('StationDetailShell', () => {
     expect(screen.getByRole('link', { name: '← Alle Stationen' }).getAttribute('href')).toBe(
       '/mpz/studio/stationen',
     )
+  })
+
+  it('Hotspots-Tab zeigt Tabelle für klassenzimmer', () => {
+    mocks.searchParams = new URLSearchParams('tab=hotspots')
+    setReport('klassenzimmer', false)
+    const station = getStationBySlug('klassenzimmer')!
+
+    render(
+      <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} />,
+    )
+
+    expect(screen.getByText('hs-text')).toBeTruthy()
+    expect(screen.getByText('hs-foto')).toBeTruthy()
+    expect(
+      screen.getByRole('link', { name: 'Kalibrieren (Hotspots + Startblick)' }).getAttribute('href'),
+    ).toBe('/raum/klassenzimmer?hotspot-calib=1')
+  })
+
+  it('Hotspots-Tab Empty-State für kunst', () => {
+    mocks.searchParams = new URLSearchParams('tab=hotspots')
+    setReport('kunst', false)
+    const station = getStationBySlug('kunst')!
+
+    render(<StationDetailShell station={station} slug="kunst" hubNr={4} />)
+
+    expect(screen.getByText('Keine Hotspots')).toBeTruthy()
   })
 
   it('station null zeigt slug als Titel-Fallback', () => {

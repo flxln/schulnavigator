@@ -28,7 +28,7 @@ function hotspotBlockMessage(station: Station, mediumId: string): string | null 
   const refs = findMediumHotspotReferences(station, mediumId)
   const ids = [...refs.flat, ...refs.sphere]
   if (ids.length === 0) return null
-  return `Wird von Hotspot(s) referenziert: ${ids.join(', ')}. Zuerst in #162/JSON bereinigen.`
+  return `Wird von Hotspot(s) referenziert: ${ids.join(', ')}. Zuerst im Tab Hotspots entfernen.`
 }
 
 function buildConfirmMessage(medium: Medium, slug: string): string {
@@ -118,7 +118,7 @@ export function StationMedienTable({ slug, station }: StationMedienTableProps) {
         if (json.error === 'HOTSPOT_REFERENCE') {
           setError(
             json.message ??
-              'Hotspot-Referenz blockiert das Entfernen — bitte zuerst in #162/JSON bereinigen.',
+              'Hotspot-Referenz blockiert das Entfernen — bitte zuerst im Tab Hotspots entfernen.',
           )
         } else {
           setError(json.message ?? `Fehler (${res.status})`)
