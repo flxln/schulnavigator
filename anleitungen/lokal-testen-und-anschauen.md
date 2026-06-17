@@ -75,7 +75,7 @@ Internes Dev-only-Ingest-Tool — **nie** auf Coolify, in Production 404.
 3. [https://localhost:3000/mpz/studio](https://localhost:3000/mpz/studio) öffnen → Redirect zu `/mpz/unlock`, Secret eintragen → Cookie-Session → Dashboard.
 4. API-Check (optional): `curl -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET" http://localhost:3000/api/mpz/health`
 
-**Speichern & Validieren (#150).** Nach Uploads/Kalibrierung zeigt das Dashboard den Status (debounced, ≥ 800 ms). Button oben rechts **Speichern & Validieren** normalisiert die Hub-Reihenfolge in `stations.json` und prüft Struktur + Dateireferenzen. Bei Fehlern: rotes Panel, ggf. Rollback aus `.bak`.
+**Speichern & Validieren (#150, #155).** Nach Uploads/Kalibrierung zeigt das Dashboard den Status (debounced, ≥ 800 ms). Button oben rechts **Speichern & Validieren** normalisiert die Hub-Reihenfolge in `stations.json` und prüft Struktur + Dateireferenzen. Schreiben läuft über Temp-Datei → Validierung → `rename` (kein invalider Zustand bei Abbruch). Nach Medien-/Dialog-Upload liefert die API `validation` + `mtime` direkt; bei Fehlern: rotes Panel, ggf. Rollback aus `.bak`.
 
 **Medien hochladen (Issue #147).** Im Studio „Medien hochladen (Test)“ oder direkt
 [/mpz/studio/ingest](https://localhost:3000/mpz/studio/ingest): Station + Typ + Datei wählen → Upload. Die Datei landet unter `public/media/{slug}/{ordner}/` und der `medien[]`-Eintrag wird in `data/stations.json` ergänzt (gleicher Pfad wie die CLI). Regeln: Magic-Byte- und Größenprüfung je Typ (audio 25 MB, video 150 MB, foto 8 MB, text 512 KB); HEIC wird abgelehnt — bitte als JPG exportieren. Bei Dateinamen-/`id`-Kollision benennt die API automatisch um (`-2`, `-3`, …).

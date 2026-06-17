@@ -1,7 +1,7 @@
 # Epic: MPZ Studio v0 — internes Dev-only-Ingest-Tool (ADR-022)
 
 **Milestone:** MPZ Studio v0 (fällig 22.06.2026)
-**Status:** geplant (optionaler Plan B; Plan A bleibt Pflicht + Fallback)
+**Status:** in Arbeit (#145–#151, #155 erledigt; #153 + Prod-Verifikation offen)
 
 ## Übersicht
 
