@@ -43,6 +43,7 @@ import {
 } from '@/lib/raum-viewer/sphere-marker-conventions'
 
 export type SphereRaumViewerInnerProps = {
+  stationSlug?: string
   panorama: string
   alt: string
   hotspots360?: Hotspot360[]
@@ -70,6 +71,7 @@ export const SphereRaumViewerInner = forwardRef<
   SphereRaumViewerInnerProps
 >(function SphereRaumViewerInner(
   {
+    stationSlug,
     panorama,
     alt,
     hotspots360,
@@ -448,8 +450,9 @@ export const SphereRaumViewerInner = forwardRef<
         skip={panOnboardingSkip}
         onActiveChange={handlePanOnboardingActiveChange}
       />
-      {calibEnabled ? (
+      {calibEnabled && stationSlug ? (
         <SphereHotspotCalibOverlay
+          stationSlug={stationSlug}
           hotspots360={hotspots360}
           lastClick={calibClick}
         />

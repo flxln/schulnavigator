@@ -32,7 +32,7 @@ Allgemeine Content-Regeln: [content-einpflegen.md](./content-einpflegen.md)
 1. **Aufnahme** — Kinder-Audio/Video/Foto; nur mit Einwilligung
 2. **Datei** — AirDrop/USB auf den Laptop
 3. **Ingest** — CLI (siehe unten) oder manuell kopieren + Snippet in `stations.json`
-4. **Hotspots** — Sphere: `/raum/{slug}?hotspot-calib=1`; Flat: Koordinaten schätzen oder Konsole ([content-einpflegen.md](./content-einpflegen.md))
+4. **Hotspots** — Sphere: `/raum/{slug}?hotspot-calib=1` → „In stations.json übernehmen“ (#149); Flat: `/mpz/calib/flat/{slug}` (#149) oder manuell ([content-einpflegen.md](./content-einpflegen.md))
 5. **Validieren** — `cd app && npm run validate:stations`
 6. **Vorschau** — `npm run dev` → `/eintritt?t=<heft-token>` (aus `access-token-constants.mjs`) → `/raum/{slug}`
 7. **Commit** — eine Station pro Commit (Rollback möglich)
