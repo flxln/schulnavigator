@@ -117,6 +117,7 @@ export const SphereRaumViewerInner = forwardRef<
   const hotspots360Ref = useRef(hotspots360)
   const startYawRef = useRef(startYaw)
   const startPitchRef = useRef(startPitch)
+  const [startViewApplied, setStartViewApplied] = useState(false)
   const loadedPanoramaRef = useRef<string | null>(null)
   const orientStateRef = useRef<string>('checking')
   const startGyroRef = useRef<() => Promise<void>>(async () => {})
@@ -180,12 +181,25 @@ export const SphereRaumViewerInner = forwardRef<
     }
   }, [orientationEnabled])
 
+  const finishStartView = useCallback(
+    (viewer: Viewer, yaw?: number, pitch?: number) => {
+      applySphereStartView(viewer, yaw, pitch)
+      setStartViewApplied(true)
+    },
+    [],
+  )
+
+  const finishStartViewRef = useRef(finishStartView)
+  useEffect(() => {
+    finishStartViewRef.current = finishStartView
+  }, [finishStartView])
+
   useEffect(() => { startGyroRef.current = startGyroIfPossible }, [startGyroIfPossible])
 
   useEffect(() => {
-    if (!ready || orientState !== 'active') return
+    if (!ready || orientState !== 'active' || !startViewApplied) return
     void startGyroIfPossible()
-  }, [ready, orientState, startGyroIfPossible])
+  }, [ready, orientState, startViewApplied, startGyroIfPossible])
 
   useImperativeHandle(ref, () => ({
     recenterView() {
@@ -362,11 +376,12 @@ export const SphereRaumViewerInner = forwardRef<
     const rafId = requestAnimationFrame(() => {
       if (destroyed) return
       loadedPanoramaRef.current = panorama
+      setStartViewApplied(false)
       void viewer
         .setPanorama(panorama)
         .then(() => {
           if (destroyed) return
-          applySphereStartView(
+          finishStartViewRef.current(
             viewer,
             startYawRef.current,
             startPitchRef.current,
@@ -377,6 +392,7 @@ export const SphereRaumViewerInner = forwardRef<
 
     return () => {
       destroyed = true
+      setStartViewApplied(false)
       cancelAnimationFrame(rafId)
       el.removeEventListener('touchstart', onTouchStart, { capture: true })
       el.removeEventListener('touchend', onTouchEnd)
@@ -397,10 +413,15 @@ export const SphereRaumViewerInner = forwardRef<
     if (!viewer || !ready) return
     if (loadedPanoramaRef.current === panorama) return
     loadedPanoramaRef.current = panorama
+    setStartViewApplied(false)
     void viewer
       .setPanorama(panorama)
       .then(() => {
-        applySphereStartView(viewer, startYawRef.current, startPitchRef.current)
+        finishStartViewRef.current(
+          viewer,
+          startYawRef.current,
+          startPitchRef.current,
+        )
       })
       .catch(() => {})
   }, [panorama, ready])
@@ -408,8 +429,8 @@ export const SphereRaumViewerInner = forwardRef<
   useEffect(() => {
     const viewer = viewerRef.current
     if (!viewer || !ready) return
-    applySphereStartView(viewer, startYaw, startPitch)
-  }, [startYaw, startPitch, ready])
+    finishStartView(viewer, startYaw, startPitch)
+  }, [startYaw, startPitch, ready, finishStartView])
 
   // Marker-Struktur: einmal anlegen/entfernen bei Hotspot- oder Medien-Änderung
   useEffect(() => {

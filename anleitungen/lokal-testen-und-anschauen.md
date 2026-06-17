@@ -179,7 +179,7 @@ TopBar auf Raumseiten: **viewport-breit** (`fixed`), nicht auf Content-Spalte be
 3. `/raum/klassenzimmer`, `/raum/musik` — Medien-Icons in der Szene
 4. `/raum/kunst` (Flat) — Regression: Gyro-Pan unverändert
 5. Dev-Kalibrierung: `/raum/daz?hotspot-calib=1` — Klick liefert `yaw`/`pitch`-Snippet
-6. **Startblick (#152, ADR-023):** Optional `startYaw`/`startPitch` in `stations.json` — Kamera beim Laden und „Ansicht zentrieren“ (Stations-Chip) springen dorthin. MPZ-Persistenz folgt mit #153.
+6. **Startblick (#152, ADR-023):** Optional `startYaw`/`startPitch` in `stations.json` — Kamera beim Laden und „Ansicht zentrieren“ (Stations-Chip) springen dorthin. Gyro startet erst nach Startblick-`rotate` (am Gerät prüfen: nach Orientierungs-Freigabe kein Sprung weg vom Startblick). MPZ-Persistenz folgt mit #153.
 
 Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/projektmanagement/2026-06-13-sphere-hotspot-acceptance.md).
 

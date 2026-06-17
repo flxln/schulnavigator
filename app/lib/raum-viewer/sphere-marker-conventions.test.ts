@@ -60,6 +60,11 @@ describe('sphere-marker-conventions', () => {
     expect(resolveSphereStartView(200, -5)).toEqual({ yawDeg: -160, pitchDeg: -5 })
   })
 
+  it('resolveSphereStartView clampt pitch', () => {
+    expect(resolveSphereStartView(undefined, 120)).toEqual({ yawDeg: 0, pitchDeg: 90 })
+    expect(resolveSphereStartView(30)).toEqual({ yawDeg: 30, pitchDeg: 0 })
+  })
+
   it('normalizeYawDeg mappt 200 auf −160', () => {
     expect(normalizeYawDeg(200)).toBe(-160)
   })

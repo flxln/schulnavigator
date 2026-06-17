@@ -319,7 +319,7 @@ function validateOptionalStartView(
   if (viewer === 'flat') {
     assert(
       !hasStartYaw && !hasStartPitch,
-      `${prefix}: startYaw/startPitch nur bei viewer 'equirectangular' erlaubt`,
+      `${prefix}: startYaw/startPitch ist nur bei viewer "equirectangular" erlaubt.`,
     )
     return {}
   }
@@ -328,11 +328,11 @@ function validateOptionalStartView(
   if (hasStartYaw) {
     assert(
       typeof raw.startYaw === 'number' && Number.isFinite(raw.startYaw),
-      `${prefix}: startYaw muss Zahl sein`,
+      `${prefix}: startYaw muss eine Zahl sein.`,
     )
     assert(
       raw.startYaw >= -180 && raw.startYaw <= 180,
-      `${prefix}: startYaw muss −180 bis 180 sein`,
+      `${prefix}: startYaw muss eine Zahl zwischen -180 und 180 sein (war: ${raw.startYaw}).`,
     )
     startYaw = normalizeYawDeg(raw.startYaw)
   }
@@ -341,11 +341,11 @@ function validateOptionalStartView(
   if (hasStartPitch) {
     assert(
       typeof raw.startPitch === 'number' && Number.isFinite(raw.startPitch),
-      `${prefix}: startPitch muss Zahl sein`,
+      `${prefix}: startPitch muss eine Zahl sein.`,
     )
     assert(
       raw.startPitch >= -90 && raw.startPitch <= 90,
-      `${prefix}: startPitch muss −90 bis 90 sein`,
+      `${prefix}: startPitch muss eine Zahl zwischen -90 und 90 sein (war: ${raw.startPitch}).`,
     )
     startPitch = roundDeg(Math.min(90, Math.max(-90, raw.startPitch)))
   }

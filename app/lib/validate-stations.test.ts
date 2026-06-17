@@ -461,19 +461,25 @@ describe('validateStationsFile startYaw/startPitch (ADR-023)', () => {
   it('wirft bei startYaw > 180 (keine Normalisierung im Validator)', () => {
     expect(() =>
       validateStationsFile(musikWithStartView({ startYaw: 200 }) as unknown),
-    ).toThrow('startYaw muss −180 bis 180 sein')
+    ).toThrow('startYaw muss eine Zahl zwischen -180 und 180 sein (war: 200).')
   })
 
   it('wirft bei startYaw außerhalb des Bereichs', () => {
     expect(() =>
       validateStationsFile(musikWithStartView({ startYaw: 181 }) as unknown),
-    ).toThrow('startYaw muss −180 bis 180 sein')
+    ).toThrow('startYaw muss eine Zahl zwischen -180 und 180 sein (war: 181).')
   })
 
   it('wirft bei startPitch außerhalb des Bereichs', () => {
     expect(() =>
       validateStationsFile(musikWithStartView({ startPitch: 95 }) as unknown),
-    ).toThrow('startPitch muss −90 bis 90 sein')
+    ).toThrow('startPitch muss eine Zahl zwischen -90 und 90 sein (war: 95).')
+  })
+
+  it('wirft bei startPitch > 90 mit war-Wert', () => {
+    expect(() =>
+      validateStationsFile(musikWithStartView({ startPitch: 120 }) as unknown),
+    ).toThrow('startPitch muss eine Zahl zwischen -90 und 90 sein (war: 120).')
   })
 
   it('wirft bei startYaw auf Flat-Station', () => {
@@ -481,7 +487,7 @@ describe('validateStationsFile startYaw/startPitch (ADR-023)', () => {
     const kunst = data.stations.find((s) => s.slug === 'kunst') as Record<string, unknown>
     kunst.startYaw = 10
     expect(() => validateStationsFile(data as unknown)).toThrow(
-      "startYaw/startPitch nur bei viewer 'equirectangular'",
+      'startYaw/startPitch ist nur bei viewer "equirectangular" erlaubt.',
     )
   })
 
