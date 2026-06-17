@@ -135,6 +135,28 @@ describe('mpz-content-io', () => {
     expect(parsed.stations).toHaveLength(11)
   })
 
+  it('writeStations lehnt doppelte Slugs ab (auch strict:false)', async () => {
+    const io = makeTempIo()
+    const { stationsPath } = io.getPaths()
+    temps.push(io.getPaths().appRoot)
+    const before = serializeStationsFile(fixture)
+    writeFileSync(stationsPath, before, 'utf8')
+
+    const dup = structuredClone(fixture)
+    const musik = dup.stations.find((s) => s.slug === 'musik')
+    if (!musik) throw new Error('musik fixture fehlt')
+    dup.stations.push(structuredClone(musik))
+
+    await expect(
+      io.writeStations(dup, {
+        strict: false,
+        makeBackup: false,
+        validateAssets: false,
+      }),
+    ).rejects.toMatchObject({ code: 'VALIDATION' })
+    expect(readFileSync(stationsPath, 'utf8')).toBe(before)
+  })
+
   it('validateAssets:true lehnt fehlendes Asset vor Write ab', async () => {
     const io = makeTempIo()
     const { stationsPath } = io.getPaths()

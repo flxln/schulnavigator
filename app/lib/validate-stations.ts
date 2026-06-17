@@ -77,6 +77,23 @@ function isRecord(v: unknown): v is Record<string, unknown> {
   return typeof v === 'object' && v !== null && !Array.isArray(v)
 }
 
+/** Wirft bei doppelten oder fehlenden `station.slug` (Basis-Guard für MPZ-Writes). */
+export function assertUniqueStationSlugs(rawStations: unknown): void {
+  assert(Array.isArray(rawStations), 'stations muss Array sein')
+  const slugs = new Set<string>()
+  for (let i = 0; i < rawStations.length; i++) {
+    const entry = rawStations[i]
+    const prefix = `stations[${i}]`
+    assert(isRecord(entry), `${prefix}: Station ist kein Objekt`)
+    assert(
+      typeof entry.slug === 'string' && entry.slug.length > 0,
+      `${prefix}: slug fehlt`,
+    )
+    assert(!slugs.has(entry.slug), `doppelter slug "${entry.slug}"`)
+    slugs.add(entry.slug)
+  }
+}
+
 function isMediumTyp(v: unknown): v is MediumTyp {
   return (
     typeof v === 'string' && (MEDIUM_TYPEN as readonly string[]).includes(v)
@@ -847,13 +864,9 @@ export function validateStationsFile(raw: unknown): Station[] {
   assert(isRecord(raw), 'Root muss Objekt sein')
   assert(Array.isArray(raw.stations), 'stations muss Array sein')
   assert(raw.stations.length > 0, 'stations ist leer')
-  const slugs = new Set<string>()
-  const stations = raw.stations.map((s, i) => {
-    const st = validateStation(s, i)
-    assert(!slugs.has(st.slug), `doppelter slug "${st.slug}"`)
-    slugs.add(st.slug)
-    return st
-  })
+  assertUniqueStationSlugs(raw.stations)
+  const stations = raw.stations.map((s, i) => validateStation(s, i))
+  const slugs = new Set(stations.map((s) => s.slug))
   assert(
     stations.length === EXPECTED_STATION_COUNT,
     `stations: erwartet ${EXPECTED_STATION_COUNT} Einträge, erhalten ${stations.length}`,

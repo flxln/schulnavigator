@@ -17,7 +17,7 @@ import {
   type StationsContentValidation,
 } from '@/lib/mpz-stations-validation'
 import type { StationsFile } from '@/lib/types'
-import { validateStationsFile } from '@/lib/validate-stations'
+import { validateStationsFile, assertUniqueStationSlugs } from '@/lib/validate-stations'
 import { validateStationAssets } from '@/scripts/validate-station-assets'
 
 export const MPZ_STATIONS_REL = 'data/stations.json'
@@ -211,6 +211,15 @@ export function createMpzContentIo(overrides?: Partial<MpzContentIoPaths>): MpzC
       const makeBackup = options.makeBackup !== false
       const postValidate = options.postValidate === true
       const touchedSlugs = options.touchedSlugs
+
+      try {
+        assertUniqueStationSlugs(data.stations)
+      } catch (err) {
+        throw new MpzContentIoError(
+          'VALIDATION',
+          err instanceof Error ? err.message : 'Slug-Eindeutigkeit verletzt',
+        )
+      }
 
       if (strict) {
         try {
