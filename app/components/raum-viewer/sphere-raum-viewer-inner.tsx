@@ -8,6 +8,7 @@ import {
   useRef,
   useState,
 } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { Viewer } from '@photo-sphere-viewer/core'
 import { MarkersPlugin } from '@photo-sphere-viewer/markers-plugin'
 import { GyroscopePlugin } from '@photo-sphere-viewer/gyroscope-plugin'
@@ -60,10 +61,11 @@ export type SphereRaumViewerInnerProps = {
 
 const VIEWER_HEIGHT_CLASS_DEFAULT = 'sn-viewer-fallback-height'
 
-function isHotspotCalibEnabled(): boolean {
+function hotspotCalibFromSearchParams(
+  searchParams: ReturnType<typeof useSearchParams>,
+): boolean {
   if (process.env.NODE_ENV !== 'development') return false
-  if (typeof window === 'undefined') return false
-  return new URLSearchParams(window.location.search).get('hotspot-calib') === '1'
+  return searchParams.get('hotspot-calib') === '1'
 }
 
 export const SphereRaumViewerInner = forwardRef<
@@ -87,6 +89,8 @@ export const SphereRaumViewerInner = forwardRef<
   },
   ref,
 ) {
+  const searchParams = useSearchParams()
+  const calibEnabled = hotspotCalibFromSearchParams(searchParams)
   const containerRef = useRef<HTMLDivElement>(null)
   const viewerRef = useRef<Viewer | null>(null)
   const markersPluginRef = useRef<MarkersPlugin | null>(null)
@@ -102,7 +106,6 @@ export const SphereRaumViewerInner = forwardRef<
   const mascotElementsRef = useRef<Map<string, HTMLElement>>(new Map())
   const [ready, setReady] = useState(false)
   const [panOnboardingActive, setPanOnboardingActive] = useState(false)
-  const [calibEnabled] = useState(isHotspotCalibEnabled)
   const [calibClick, setCalibClick] = useState<{
     yaw: number
     pitch: number
