@@ -1,4 +1,4 @@
-import { readFile } from 'node:fs/promises'
+import { readFile, stat } from 'node:fs/promises'
 import { NextResponse, type NextRequest } from 'next/server'
 import { withMpzStudioAccess } from '@/lib/mpz-studio-guard'
 import {
@@ -16,22 +16,34 @@ export type MpzSaveValidateResponse = {
   report: Awaited<ReturnType<typeof runMpzStudioValidation>>
   rolledBack: boolean
   saved: boolean
+  postWriteMtime: string | null
+}
+
+async function currentMtime(stationsPath: string): Promise<string | null> {
+  try {
+    const info = await stat(stationsPath)
+    return info.mtime.toISOString()
+  } catch {
+    return null
+  }
 }
 
 export const POST = withMpzStudioAccess(async (_req: NextRequest) => {
   let rolledBack = false
   let saved = false
+  let postWriteMtime: string | null = null
+
+  const io = createMpzContentIo()
+  const { stationsPath } = io.getPaths()
 
   try {
     await withMpzWriteLock(async () => {
-      const io = createMpzContentIo()
-      const { stationsPath } = io.getPaths()
       const before = await readFile(stationsPath, 'utf8')
       const data = await io.readStations()
       const canonical = canonicalizeStationsFile(data)
       const afterSerialized = serializeStationsFile(canonical)
 
-      await io.writeStations(canonical, {
+      const writeResult = await io.writeStations(canonical, {
         strict: true,
         canonicalize: true,
         makeBackup: true,
@@ -39,10 +51,12 @@ export const POST = withMpzStudioAccess(async (_req: NextRequest) => {
       })
 
       saved = before !== afterSerialized
+      postWriteMtime = writeResult.mtime
     })
   } catch (err) {
     if (err instanceof MpzContentIoError && err.code === 'VALIDATION') {
       rolledBack = true
+      postWriteMtime = await currentMtime(stationsPath)
     } else if (err instanceof MpzContentIoError) {
       return NextResponse.json(
         { error: 'io', message: err.message },
@@ -60,6 +74,11 @@ export const POST = withMpzStudioAccess(async (_req: NextRequest) => {
   }
 
   const report = await runMpzStudioValidation()
-  const body: MpzSaveValidateResponse = { report, rolledBack, saved }
+  const body: MpzSaveValidateResponse = {
+    report,
+    rolledBack,
+    saved,
+    postWriteMtime,
+  }
   return NextResponse.json(body)
 })

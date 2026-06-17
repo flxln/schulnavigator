@@ -38,7 +38,7 @@ Nur bei `NODE_ENV=development` erreichbar; in Production liefern `/mpz/*` und `/
 3. Browser: [`/mpz/unlock`](http://localhost:3000/mpz/unlock) — Secret eingeben → Session-Cookie.
 4. [`/mpz/studio`](http://localhost:3000/mpz/studio) — Dashboard mit Validierungsstatus und Links zu allen 12 Stationen.
 
-**Validierung (#150):** Nach jedem Studio-Write (Ingest, Dialog-Audio, Hotspot-Kalib) läuft Post-Validate (`validateStationsFile` + `validateStationAssets` importiert, kein Subprocess). Bei Fehlern im Scope der geänderten Station wird aus `stations.json.bak` zurückgerollt. Oben rechts: **Speichern & Validieren** — normalisiert die Hub-Reihenfolge und prüft alle Referenzen (`POST /api/mpz/save-validate`). `validate:tokens` läuft **nicht** nach Content-Save.
+**Validierung (#150, #155):** Nach jedem Studio-Write läuft Post-Validate (`validateStationsFile` + `validateStationAssets` importiert). Bei Fehlern im Scope der geänderten Station wird **kein rename** ausgeführt (`stations.json` bleibt unverändert). Medien-Ingest läuft in `withMpzWriteLock`. Ingest-APIs liefern `validation` + `mtime` inline.
 
 **Grenzen:** Schreibt nur lokale Dateien (`data/stations.json`, `public/media/`, `content/dialog-audio/`). Kein Git-Commit aus dem Studio — nach Änderungen manuell `git commit`, Deploy (Build führt `validate:stations` ohnehin aus).
 

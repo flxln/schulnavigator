@@ -7,6 +7,7 @@ import {
 import { HUB_SLUG_MAP, MPZ_HUB_SLUGS } from '@/lib/schoolhouse-hub-map'
 import {
   globalValidationErrors,
+  mergeValidationErrors,
   type SlugValidationBucket,
   validateStationsContent,
 } from '@/lib/mpz-stations-validation'
@@ -189,10 +190,12 @@ export async function runMpzStudioValidation(
     }
   }
 
-  const { errors, warnings, bySlug } = validateStationsContent(
+  const validation = validateStationsContent(
     stationsFile,
     io.getPaths().appRoot,
   )
+  const errors = mergeValidationErrors(validation)
+  const { warnings, bySlug } = validation
 
   const stationSummaries = buildStationOverviews(
     stationsFile,

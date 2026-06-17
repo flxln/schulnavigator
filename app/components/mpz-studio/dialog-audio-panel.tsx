@@ -3,7 +3,8 @@
 import Link from 'next/link'
 import { useCallback, useEffect, useState } from 'react'
 import type { DialogSegmentAudit } from '@/lib/mpz-dialog-audio-ingest'
-import { markMpzStudioDirty } from '@/components/mpz-studio/studio-validation-context'
+import type { MpzValidationReport } from '@/lib/mpz-studio-overview'
+import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
 
 const DIALOG_SLUGS = ['daz', 'pc-raum'] as const
 
@@ -30,6 +31,7 @@ const STATE_CLASS: Record<DialogSegmentAudit['state'], string> = {
 }
 
 export function DialogAudioPanel() {
+  const { applyReport } = useStudioValidation()
   const [slug, setSlug] = useState<string>('daz')
   const [status, setStatus] = useState<StatusResponse | null>(null)
   const [loadError, setLoadError] = useState<string | null>(null)
@@ -79,13 +81,19 @@ export function DialogAudioPanel() {
         method: 'POST',
         body: form,
       })
-      const json = (await res.json()) as { message?: string }
+      const json = (await res.json()) as {
+        message?: string
+        mtime?: string | null
+        validation?: MpzValidationReport | null
+      }
       if (!res.ok) {
         setRowError(json.message ?? `Upload fehlgeschlagen (${res.status})`)
         return
       }
       await loadStatus(slug)
-      markMpzStudioDirty()
+      if (json.validation) {
+        applyReport(json.validation, json.mtime ?? json.validation.stationsModifiedAt)
+      }
     } catch {
       setRowError('Upload fehlgeschlagen.')
     } finally {

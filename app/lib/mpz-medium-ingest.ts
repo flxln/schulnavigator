@@ -4,7 +4,10 @@ import { extname, join } from 'node:path'
 import {
   createMpzContentIo,
   type MpzContentIo,
+  withMpzWriteLock,
+  resetMpzWriteLockForTests,
 } from '@/lib/mpz-content-io'
+import { runMpzStudioValidation, type MpzValidationReport } from '@/lib/mpz-studio-overview'
 import { HUB_SLUG_MAP } from '@/lib/schoolhouse-hub-map'
 import type { Medium } from '@/lib/types'
 import {
@@ -53,6 +56,8 @@ export interface IngestMediumResult {
   filename: string
   destPath: string
   jsonWritten: boolean
+  mtime?: string | null
+  validation?: MpzValidationReport
 }
 
 const HUB_SLUGS = new Set(Object.keys(HUB_SLUG_MAP))
@@ -116,6 +121,13 @@ function uniqueMediumId(existing: Set<string>, base: string): string {
 export async function ingestMediumFile(
   input: IngestMediumInput,
   io: MpzContentIo = createMpzContentIo(),
+): Promise<IngestMediumResult> {
+  return withMpzWriteLock(() => ingestMediumFileInner(input, io))
+}
+
+async function ingestMediumFileInner(
+  input: IngestMediumInput,
+  io: MpzContentIo,
 ): Promise<IngestMediumResult> {
   if (!isUploadTyp(input.typ)) {
     throw new MpzUploadError(
@@ -226,21 +238,33 @@ export async function ingestMediumFile(
   station.medien.push(medium)
 
   try {
-    await io.writeStations(data, {
+    const writeResult = await io.writeStations(data, {
       strict: true,
       validateAssets: false,
       canonicalize: false,
       makeBackup: true,
       postValidate: true,
-      touchedSlug: input.slug,
+      touchedSlugs: [input.slug],
     })
+    const validation = await runMpzStudioValidation(io)
+    return {
+      medium,
+      quelle,
+      filename: finalFilename,
+      destPath,
+      jsonWritten: true,
+      mtime: writeResult.mtime,
+      validation,
+    }
   } catch (err) {
     // Kompensation: gerade geschriebene Datei wieder entfernen (Befund #6).
     await safeUnlink(destPath)
     throw err
   }
+}
 
-  return { medium, quelle, filename: finalFilename, destPath, jsonWritten: true }
+export function resetMediumIngestLockForTests(): void {
+  resetMpzWriteLockForTests()
 }
 
 function stemOf(filename: string): string {

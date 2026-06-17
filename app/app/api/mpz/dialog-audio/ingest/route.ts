@@ -74,6 +74,8 @@ export const POST = withMpzStudioAccess(async (req: NextRequest) => {
         clip: result.clip,
         quelle: result.quelle,
         segmentId: result.segmentId,
+        mtime: result.mtime ?? null,
+        validation: result.validation ?? null,
       },
       { status: 201 },
     )

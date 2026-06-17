@@ -98,7 +98,7 @@ export async function applyFlatHotspotCoords(
         validateAssets: false,
         makeBackup: true,
         postValidate: true,
-        touchedSlug: input.slug,
+        touchedSlugs: [input.slug],
       },
     )
 
@@ -163,7 +163,7 @@ export async function applySphereHotspotCoords(
         validateAssets: false,
         makeBackup: true,
         postValidate: true,
-        touchedSlug: input.slug,
+        touchedSlugs: [input.slug],
       },
     )
 

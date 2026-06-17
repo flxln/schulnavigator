@@ -151,9 +151,9 @@ describe('mpz-content-io', () => {
     expect(readFileSync(stationsPath, 'utf8')).toBe(before)
   })
 
-  it('postValidate:true rollt bei Fehler auf touchedSlug zurück', async () => {
+  it('postValidate:true lässt stations.json unverändert bei Fehler im Scope', async () => {
     const io = makeTempIo()
-    const { stationsPath, backupPath } = io.getPaths()
+    const { stationsPath } = io.getPaths()
     temps.push(io.getPaths().appRoot)
     const before = serializeStationsFile(fixture)
     writeFileSync(stationsPath, before, 'utf8')
@@ -167,22 +167,22 @@ describe('mpz-content-io', () => {
         strict: true,
         makeBackup: true,
         postValidate: true,
-        touchedSlug: 'klassenzimmer',
+        touchedSlugs: ['klassenzimmer'],
       }),
     ).rejects.toMatchObject({ code: 'VALIDATION' })
 
     expect(readFileSync(stationsPath, 'utf8')).toBe(before)
-    expect(readFileSync(backupPath, 'utf8')).toBe(before)
   })
 
-  it('postValidate:true behält Write bei Fremd-Slug-Fehler (touchedSlug)', async () => {
+  it('postValidate:true behält Write bei Fremd-Slug-Fehler (touchedSlugs)', async () => {
     const io = makeTempIo()
     const { stationsPath } = io.getPaths()
     temps.push(io.getPaths().appRoot)
     writeFileSync(stationsPath, serializeStationsFile(fixture), 'utf8')
 
     vi.spyOn(mpzStationsValidation, 'validateStationsContent').mockReturnValue({
-      errors: ['Station kunst (bild): Datei fehlt — /stations/kunst.jpg'],
+      structureErrors: [],
+      assetErrors: ['Station kunst (bild): Datei fehlt — /stations/kunst.jpg'],
       warnings: [],
       bySlug: mpzStationsValidation.groupMessagesBySlug(
         ['Station kunst (bild): Datei fehlt — /stations/kunst.jpg'],
@@ -194,16 +194,17 @@ describe('mpz-content-io', () => {
     const musik = next.stations.find((s) => s.slug === 'musik')!
     musik.titel = 'Musikraum Test-Titel'
 
-    await io.writeStations(next, {
+    const result = await io.writeStations(next, {
       strict: true,
       makeBackup: true,
       postValidate: true,
-      touchedSlug: 'musik',
+      touchedSlugs: ['musik'],
     })
 
     const parsed = JSON.parse(readFileSync(stationsPath, 'utf8')) as StationsFile
     const musikAfter = parsed.stations.find((s) => s.slug === 'musik')
     expect(musikAfter?.titel).toBe('Musikraum Test-Titel')
+    expect(result.mtime).toBeTruthy()
   })
 
   it('canonicalize:true sortiert nach Hub-Reihenfolge', () => {

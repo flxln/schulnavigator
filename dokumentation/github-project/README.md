@@ -85,4 +85,4 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Epic **#144** (MPZ Studio v0, ADR-022) — #145–#151, #150 erledigt; #153 offen; [epic-mpz-studio.md](epic-mpz-studio.md)
 - [ ] **#152–#154** Startblick/Startpan (ADR-023/024) — [issues-startblick.md](issues-startblick.md)
 
-Letzter dokumentierter Abgleich: **2026-06-17** (#150 Validierungs-Vertrag nach Save; #153 offen).
+Letzter dokumentierter Abgleich: **2026-06-17** (#155 IO-Härtung; #153 offen).

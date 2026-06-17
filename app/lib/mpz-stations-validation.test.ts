@@ -3,6 +3,7 @@ import raw from '@/data/stations.json'
 import {
   globalValidationErrors,
   groupMessagesBySlug,
+  mergeValidationErrors,
   shouldRollbackPostValidate,
   STATION_MSG_RE,
   validateStationsContent,
@@ -25,6 +26,18 @@ describe('mpz-stations-validation', () => {
     expect(bySlug.daz?.warnings).toHaveLength(1)
   })
 
+  it('validateStationsContent trennt Struktur- und Asset-Fehler', () => {
+    const partial: StationsFile = { stations: fixture.stations.slice(0, 11) }
+    const appRoot = mkdtempSync(join(tmpdir(), 'mpz-val-'))
+    const result = validateStationsContent(partial, appRoot)
+    expect(result.structureErrors.length).toBeGreaterThan(0)
+    expect(result.assetErrors.length).toBeGreaterThanOrEqual(0)
+    expect(mergeValidationErrors(result)).toEqual([
+      ...result.structureErrors,
+      ...result.assetErrors,
+    ])
+  })
+
   it('jeder validateStationAssets-Fehler matcht STATION_MSG_RE (B1-Vertrag)', () => {
     const appRoot = mkdtempSync(join(tmpdir(), 'mpz-val-'))
     const broken = structuredClone(fixture)
@@ -36,43 +49,53 @@ describe('mpz-stations-validation', () => {
     }
   })
 
-  it('shouldRollbackPostValidate: globaler Strukturfehler → immer Rollback', () => {
+  it('shouldRollbackPostValidate: Strukturfehler → immer Rollback', () => {
     const validation = validateStationsContent(
       { stations: fixture.stations.slice(0, 11) },
       '/tmp',
     )
-    expect(globalValidationErrors(validation.errors).length).toBeGreaterThan(0)
-    expect(shouldRollbackPostValidate(validation, 'klassenzimmer')).toBe(true)
+    expect(validation.structureErrors.length).toBeGreaterThan(0)
+    expect(shouldRollbackPostValidate(validation, ['klassenzimmer'])).toBe(true)
   })
 
-  it('shouldRollbackPostValidate: Fremd-Slug-Fehler ohne touchedSlug → Rollback', () => {
+  it('shouldRollbackPostValidate: Fremd-Slug-Fehler mit touchedSlugs → kein Rollback', () => {
     const validation = {
-      errors: ['Station kunst (bild): Datei fehlt'],
+      structureErrors: [],
+      assetErrors: ['Station kunst (bild): Datei fehlt'],
       warnings: [],
       bySlug: groupMessagesBySlug(['Station kunst (bild): Datei fehlt'], []),
     }
     expect(shouldRollbackPostValidate(validation)).toBe(true)
-    expect(shouldRollbackPostValidate(validation, 'klassenzimmer')).toBe(false)
+    expect(shouldRollbackPostValidate(validation, ['klassenzimmer'])).toBe(false)
   })
 
-  it('shouldRollbackPostValidate: touchedSlug mit eigenem Fehler → Rollback', () => {
+  it('shouldRollbackPostValidate: touchedSlugs mit eigenem Fehler → Rollback', () => {
     const validation = {
-      errors: ['Station klassenzimmer (medium x): Datei fehlt'],
+      structureErrors: [],
+      assetErrors: ['Station klassenzimmer (medium x): Datei fehlt'],
       warnings: [],
       bySlug: groupMessagesBySlug(
         ['Station klassenzimmer (medium x): Datei fehlt'],
         [],
       ),
     }
-    expect(shouldRollbackPostValidate(validation, 'klassenzimmer')).toBe(true)
+    expect(shouldRollbackPostValidate(validation, ['klassenzimmer'])).toBe(true)
   })
 
   it('shouldRollbackPostValidate: nur Warnings → kein Rollback', () => {
     const validation = {
-      errors: [],
+      structureErrors: [],
+      assetErrors: [],
       warnings: ['Station kunst: warn'],
       bySlug: groupMessagesBySlug([], ['Station kunst: warn']),
     }
     expect(shouldRollbackPostValidate(validation)).toBe(false)
+  })
+
+  it('globalValidationErrors erfasst Strukturmeldungen', () => {
+    const msgs = ['stations.json: foo', 'Station kunst (bild): fehlt']
+    const global = globalValidationErrors(msgs)
+    expect(global).toContain('stations.json: foo')
+    expect(global).not.toContain('Station kunst (bild): fehlt')
   })
 })
