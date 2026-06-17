@@ -83,7 +83,7 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issue **#141** (`rotate:access-tokens`) — geschlossen 2026-06-15, [PR #142](https://github.com/flxln/schulnavigator/pull/142) → `main`
 
 - [x] Epic **#144** (MPZ Studio v0, ADR-022) — #145–#151, #155 erledigt; #153 + Prod-Build offen; [epic-mpz-studio.md](epic-mpz-studio.md)
-- [x] Issue **#152** (Sphere-Startblick Runtime, ADR-023) — umgesetzt 2026-06-17, Branch `feature/mpz-studio`
-- [ ] **#153–#154** Startblick MPZ / Flat-Startpan (ADR-023/024) — [issues-startblick.md](issues-startblick.md)
+- [x] Issue **#152** (Sphere-Startblick Runtime + Pre-Mortem Gyro-Gating, ADR-023) — umgesetzt 2026-06-17 (`a1b272d`, `4a59010`), Branch `feature/mpz-studio`
+- [ ] **#153–#154** Startblick MPZ / Flat-Startpan (ADR-023/024) — [issues-startblick.md](issues-startblick.md); #153 entblockt
 
-Letzter dokumentierter Abgleich: **2026-06-17** (#152 Sphere-Startblick Runtime; #153 offen).
+Letzter dokumentierter Abgleich: **2026-06-17** (#152 inkl. Gyro-Gating-Nacharbeit; #153 offen).
