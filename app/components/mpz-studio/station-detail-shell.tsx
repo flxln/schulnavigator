@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
+import { StationStammdatenForm } from '@/components/mpz-studio/station-stammdaten-form'
 import type { Station, ViewerMode } from '@/lib/types'
 
 const VALID_TABS = ['stammdaten', 'medien', 'hotspots', 'dialog-audio'] as const
@@ -154,12 +155,8 @@ export function StationDetailShell({
       </nav>
 
       {activeTab === 'stammdaten' && (
-        <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5 text-sm text-fg-2">
-          <p className="mb-4">Stammdaten-Editor folgt in #160.</p>
-          <p>
-            <span className="font-semibold text-fg-1">Slug:</span>{' '}
-            <code className="font-mono text-xs">{slug}</code>
-          </p>
+        <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5">
+          <StationStammdatenForm slug={slug} station={station} />
         </section>
       )}
 

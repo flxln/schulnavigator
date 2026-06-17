@@ -49,17 +49,24 @@ export function mpzStudioPageGuard(req: NextRequest): NextResponse {
   return NextResponse.next()
 }
 
+type MpzRouteContext = {
+  params: Promise<Record<string, string>>
+}
+
 type MpzStudioRouteHandler = (
   req: NextRequest,
+  context?: MpzRouteContext,
 ) => NextResponse | Promise<NextResponse>
 
-export function withMpzStudioAccess(handler: MpzStudioRouteHandler): MpzStudioRouteHandler {
-  return async (req: NextRequest) => {
+export function withMpzStudioAccess(
+  handler: MpzStudioRouteHandler,
+): (req: NextRequest, context: MpzRouteContext) => Promise<NextResponse> {
+  return async (req: NextRequest, context: MpzRouteContext) => {
     const denied = assertMpzStudioAccess(req)
     if (denied) {
       return denied
     }
-    return handler(req)
+    return handler(req, context)
   }
 }
 

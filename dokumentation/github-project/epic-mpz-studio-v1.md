@@ -1,7 +1,7 @@
 # Epic: MPZ Studio v1 — Station-Detail & Content-Pflege (ADR-022)
 
 **Milestone:** MPZ Studio v1 (Post-Fest, Juli 2026)
-**Status:** in Arbeit (Branch `mpz-studio-v1`, 2026-06-17) · **#159** erledigt
+**Status:** in Arbeit (Branch `mpz-studio-v1`, 2026-06-17) · **#159**, **#160** erledigt
 **Parent:** Epic [#144](https://github.com/flxln/schulnavigator/issues/144) (v0 abgeschlossen, [PR #156](https://github.com/flxln/schulnavigator/pull/156))
 
 ## Übersicht
@@ -10,7 +10,7 @@
 |-------|-----|-------|--------|-----------------|
 | **Epic (Parent)** | `#158` | MPZ Studio v1 — Station-Detail & Content-Pflege (ADR-022) | `tech` | — |
 | Unterissue | `#159` | Station-Detail-Shell (Route, Tabs, Grid-Link) | `tech`, `blocker` | v0 #151 | ✓ |
-| Unterissue | `#160` | Stammdaten-Editor (`titel`, `beschreibung`, `viewer`) | `tech` | #159, v0 #146 |
+| Unterissue | `#160` | Stammdaten-Editor (`titel`, `beschreibung`, `viewer`) | `tech` | #159, v0 #146 | ✓ |
 | Unterissue | `#161` | Medien-Tabelle auf Station-Detail | `tech` | #159, v0 #147 |
 | Unterissue | `#162` | Hotspots-Tabelle auf Station-Detail | `tech` | #159, v0 #149 |
 | Unterissue | `#163` | Dialog-Audio-Tab pro Station | `tech` | #159, v0 #148 |
@@ -76,7 +76,7 @@ Interaktiv: [mpz-studio-prototype/MPZ Studio.html](../design/mpz-studio-claude-d
 - [x] GitHub Epic + Unterissues angelegt (#158–#164)
 - [x] Station-Detail-Route + Tab-Shell (#159)
 - [x] Grid verlinkt auf Detail (#159)
-- [ ] Stammdaten-Editor (inkl. `beschreibung`) (#160)
+- [x] Stammdaten-Editor (inkl. `beschreibung`) (#160)
 - [ ] Medien-Tabelle (#161)
 - [ ] Hotspots-Tabelle (#162)
 - [ ] Dialog-Audio-Tab (#163)

@@ -12,6 +12,7 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock('next/navigation', () => ({
   useSearchParams: () => mocks.searchParams,
+  useRouter: () => ({ refresh: vi.fn() }),
 }))
 
 vi.mock('next/link', () => ({
@@ -42,6 +43,7 @@ vi.mock('@/components/mpz-studio/studio-validation-context', () => ({
     saveAndValidate: vi.fn(),
     clearSaveFeedback: vi.fn(),
   }),
+  markMpzStudioDirty: vi.fn(),
 }))
 
 function summaryForSlug(slug: string, hasDialog: boolean) {
