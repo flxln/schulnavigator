@@ -97,6 +97,18 @@ curl -X POST "http://localhost:3000/api/mpz/dialog-audio/ingest" \
   -F "file=@./01-frieda.wav"
 ```
 
+**Hotspot-Kalibrierung (Issue #149).** Zuerst `/mpz/unlock`. Im Studio unter „Hotspot-Kalibrierung“ oder direkt:
+
+- **Sphere:** `/raum/daz?hotspot-calib=1` → Hotspot-ID wählen, auf Ankerpunkt klicken → **In stations.json übernehmen** (oder JSON kopieren).
+- **Flat:** `/mpz/calib/flat/kunst` (Station mit `bild`, kein `equirectangular`) → Klick setzt `x`/`y` → Übernehmen. Hotspot muss bereits in `hotspots[]` existieren.
+
+```bash
+curl -X POST http://localhost:3000/api/mpz/hotspots/sphere \
+  -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET" \
+  -H "content-type: application/json" \
+  -d '{"slug":"daz","hotspotId":"hs-frieda","yaw":-45,"pitch":-20}'
+```
+
 **Hinweis zu 404:** Die Routen kommen aus `data/stations.json` (`generateStaticParams`). Ein Slug, der **nicht** in der JSON-Datei steht, liefert in der **Produktion** nach `npm run build` eine 404-Seite. Unter `npm run dev` zeigt Next.js oft eine dynamische 404 — zum Verhalten wie online unbedingt **Abschnitt 3** ausführen.
 
 ### Scanner bei System-Dark-Mode

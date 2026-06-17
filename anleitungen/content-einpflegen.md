@@ -232,7 +232,7 @@ Statt `x`/`y` gelten **Kugelkoordinaten** aus dem Equirectangular-Panorama:
 | `bubblePitchOffset` | nein | Zusätzlicher Pitch (Grad) für Dialog-Bubble nach oben; nur Dialog |
 | `icon`, `iconSize` | Medien | Wie bei Flat |
 
-**Kalibrierung (Dev):** `npm run dev` → `/raum/{slug}?hotspot-calib=1` → auf Ankerpunkt klicken → JSON-Snippet kopieren (`yaw` wird auf −180…180° normalisiert). Maskottchen: **Fuß** anklicken; Medien: **Icon-Mitte**. Abnahme-Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/projektmanagement/2026-06-13-sphere-hotspot-acceptance.md).
+**Kalibrierung (Dev):** `npm run dev` → `/raum/{slug}?hotspot-calib=1` → auf Ankerpunkt klicken → JSON-Snippet kopieren oder **In stations.json übernehmen** (nach `/mpz/unlock`, #149). Maskottchen: **Fuß** anklicken; Medien: **Icon-Mitte**. Abnahme-Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/projektmanagement/2026-06-13-sphere-hotspot-acceptance.md).
 
 ### Startblick Sphere — `startYaw` / `startPitch` (optional, [ADR-023](../dokumentation/adr/023-sphere-startblick.md))
 
@@ -295,7 +295,7 @@ Optionaler Block; fehlt er, bleibt die Blase wie bisher (`max-w-md`, 15 px Schri
 
 ## Schritt 3 — Hotspots platzieren
 
-Es gibt **keinen visuellen Editor** im Repo. Koordinaten werden in JSON gesetzt und am Gerät nachjustiert.
+**MPZ Studio (Dev, #149):** Sphere — `/raum/{slug}?hotspot-calib=1` mit „In stations.json übernehmen“; Flat — `/mpz/calib/flat/{slug}` (nach `/mpz/unlock`). Sonst: Koordinaten in JSON setzen und am Gerät nachjustieren.
 
 ### Koordinaten-System
 
