@@ -4,6 +4,8 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import type { ReactNode } from 'react'
 import { PlanABanner } from '@/components/mpz-studio/plan-a-banner'
+import { SaveValidatePanel } from '@/components/mpz-studio/save-validate-panel'
+import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
 
 type NavItem = {
   href: string
@@ -51,6 +53,16 @@ export type StudioShellProps = {
 export function StudioShell({ children }: StudioShellProps) {
   const pathname = usePathname()
   const title = pageTitle(pathname)
+  const {
+    dirty,
+    loading,
+    report,
+    saveFeedback,
+    saveAndValidate,
+    clearSaveFeedback,
+  } = useStudioValidation()
+
+  const buttonDisabled = loading || (!dirty && report?.ok === true)
 
   return (
     <div className="flex min-h-full flex-col md:flex-row">
@@ -108,13 +120,28 @@ export function StudioShell({ children }: StudioShellProps) {
           <h1 className="text-lg font-bold text-fg-1">{title}</h1>
           <button
             type="button"
-            disabled
-            title="Folgt in #150"
-            className="cursor-not-allowed rounded-gs39-sm border border-border-1 bg-bg-2 px-3 py-1.5 text-sm font-semibold text-fg-3"
+            disabled={buttonDisabled}
+            onClick={() => void saveAndValidate()}
+            title={
+              buttonDisabled && !loading
+                ? 'Keine ausstehenden Änderungen'
+                : undefined
+            }
+            className={`rounded-gs39-sm px-3 py-1.5 text-sm font-semibold transition-colors ${
+              buttonDisabled
+                ? 'cursor-not-allowed border border-border-1 bg-bg-2 text-fg-3'
+                : 'border border-brand-green bg-brand-green text-fg-on-dark hover:opacity-90'
+            }`}
           >
-            Speichern & Validieren
+            {loading ? 'Prüfe Struktur und Dateien…' : 'Speichern & Validieren'}
           </button>
         </header>
+        {saveFeedback && (
+          <SaveValidatePanel
+            feedback={saveFeedback}
+            onDismiss={clearSaveFeedback}
+          />
+        )}
         <div className="flex-1 px-4 py-6 md:px-8">{children}</div>
       </div>
     </div>

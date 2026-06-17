@@ -1,8 +1,8 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import type { MpzValidationReport } from '@/lib/mpz-studio-overview'
+import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
 
 function formatGermanDate(iso: string | null): string {
   if (!iso) return '—'
@@ -13,35 +13,7 @@ function formatGermanDate(iso: string | null): string {
 }
 
 export function StudioDashboard() {
-  const [report, setReport] = useState<MpzValidationReport | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  const load = useCallback(async () => {
-    setLoading(true)
-    setError(null)
-    try {
-      const res = await fetch('/api/mpz/validate')
-      if (res.status === 401) {
-        setError('Zuerst /mpz/unlock aufrufen.')
-        setReport(null)
-        return
-      }
-      if (!res.ok) {
-        setError('Validierung fehlgeschlagen.')
-        return
-      }
-      setReport((await res.json()) as MpzValidationReport)
-    } catch {
-      setError('Netzwerkfehler bei der Validierung.')
-    } finally {
-      setLoading(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    void load()
-  }, [load])
+  const { report, loading, error, validateNow } = useStudioValidation()
 
   const problemStations =
     report?.stationSummaries.filter((s) => s.health !== 'ok') ?? []
@@ -51,8 +23,9 @@ export function StudioDashboard() {
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-6">
       <p className="text-sm text-fg-2">
-        Übersicht aller 12 Hub-Stationen — Validierung on-demand (#151). Vollständiger
-        Save-&-Validate-Vertrag folgt in #150.
+        Übersicht aller 12 Hub-Stationen — Struktur- und Asset-Validierung nach jedem
+        Save (#150). Oben rechts: <strong>Speichern & Validieren</strong> normalisiert
+        die Hub-Reihenfolge und prüft alle Referenzen.
       </p>
 
       {error && (
@@ -64,69 +37,13 @@ export function StudioDashboard() {
         </p>
       )}
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5 shadow-gs39-sm">
-          <div className="mb-3 flex items-start justify-between gap-3">
-            <div>
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-fg-3">
-                Validierung
-              </h2>
-              {loading ? (
-                <p className="mt-1 text-sm text-fg-2">Prüfe Struktur und Dateien…</p>
-              ) : report ? (
-                <p className="mt-1 text-sm text-fg-1">
-                  {report.ok
-                    ? 'Alle Stationen valid'
-                    : `${errorCount} Fehler, ${warnCount} Warnungen`}
-                </p>
-              ) : null}
-              {report && !loading && (
-                <p className="mt-1 text-xs text-fg-3">
-                  {formatGermanDate(report.checkedAt)} · {report.durationMs} ms
-                </p>
-              )}
-            </div>
-            <button
-              type="button"
-              onClick={() => void load()}
-              disabled={loading}
-              className="rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-1.5 text-xs font-semibold text-fg-1 hover:bg-bg-2 disabled:opacity-50"
-            >
-              Erneut prüfen
-            </button>
-          </div>
-        </section>
-
-        <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5 shadow-gs39-sm">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-fg-3">
-            Stationen
-          </h2>
-          {report && !loading && (
-            <div className="mt-3 flex gap-6 text-sm">
-              <div>
-                <p className="text-2xl font-black text-brand-green">
-                  {report.stationSummaries.filter((s) => s.health === 'ok').length}
-                </p>
-                <p className="text-xs text-fg-3">Valid</p>
-              </div>
-              <div>
-                <p className="text-2xl font-black text-brand-sun">{warnCount}</p>
-                <p className="text-xs text-fg-3">Warnungen</p>
-              </div>
-              <div>
-                <p className="text-2xl font-black text-brand-red">{errorCount}</p>
-                <p className="text-xs text-fg-3">Fehler</p>
-              </div>
-            </div>
-          )}
-          <Link
-            href="/mpz/studio/stationen"
-            className="mt-4 inline-block text-sm font-semibold text-accent underline-offset-2 hover:underline"
-          >
-            Alle Stationen anzeigen
-          </Link>
-        </section>
-      </div>
+      <ValidationCards
+        report={report}
+        loading={loading}
+        errorCount={errorCount}
+        warnCount={warnCount}
+        onRefresh={() => void validateNow()}
+      />
 
       <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-0 shadow-gs39-sm">
         <div className="border-b border-border-1 px-4 py-3">
@@ -195,6 +112,86 @@ export function StudioDashboard() {
             Plan A — CLI-Anleitung
           </a>
         </div>
+      </section>
+    </div>
+  )
+}
+
+function ValidationCards({
+  report,
+  loading,
+  errorCount,
+  warnCount,
+  onRefresh,
+}: {
+  report: MpzValidationReport | null
+  loading: boolean
+  errorCount: number
+  warnCount: number
+  onRefresh: () => void
+}) {
+  return (
+    <div className="grid gap-4 md:grid-cols-2">
+      <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5 shadow-gs39-sm">
+        <div className="mb-3 flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-fg-3">
+              Validierung
+            </h2>
+            {loading ? (
+              <p className="mt-1 text-sm text-fg-2">Prüfe Struktur und Dateien…</p>
+            ) : report ? (
+              <p className="mt-1 text-sm text-fg-1">
+                {report.ok
+                  ? 'Alle Stationen valid'
+                  : `${errorCount} Fehler, ${warnCount} Warnungen`}
+              </p>
+            ) : null}
+            {report && !loading && (
+              <p className="mt-1 text-xs text-fg-3">
+                {formatGermanDate(report.checkedAt)} · {report.durationMs} ms
+              </p>
+            )}
+          </div>
+          <button
+            type="button"
+            onClick={onRefresh}
+            disabled={loading}
+            className="rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-1.5 text-xs font-semibold text-fg-1 hover:bg-bg-2 disabled:opacity-50"
+          >
+            Erneut prüfen
+          </button>
+        </div>
+      </section>
+
+      <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5 shadow-gs39-sm">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-fg-3">
+          Stationen
+        </h2>
+        {report && !loading && (
+          <div className="mt-3 flex gap-6 text-sm">
+            <div>
+              <p className="text-2xl font-black text-brand-green">
+                {report.stationSummaries.filter((s) => s.health === 'ok').length}
+              </p>
+              <p className="text-xs text-fg-3">Valid</p>
+            </div>
+            <div>
+              <p className="text-2xl font-black text-brand-sun">{warnCount}</p>
+              <p className="text-xs text-fg-3">Warnungen</p>
+            </div>
+            <div>
+              <p className="text-2xl font-black text-brand-red">{errorCount}</p>
+              <p className="text-xs text-fg-3">Fehler</p>
+            </div>
+          </div>
+        )}
+        <Link
+          href="/mpz/studio/stationen"
+          className="mt-4 inline-block text-sm font-semibold text-accent underline-offset-2 hover:underline"
+        >
+          Alle Stationen anzeigen
+        </Link>
       </section>
     </div>
   )

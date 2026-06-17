@@ -8,6 +8,10 @@ import { existsSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { HUB_SLUG_MAP } from '@/lib/schoolhouse-hub-map'
+import {
+  shouldRollbackPostValidate,
+  validateStationsContent,
+} from '@/lib/mpz-stations-validation'
 import type { StationsFile } from '@/lib/types'
 import { validateStationsFile } from '@/lib/validate-stations'
 import { validateStationAssets } from '@/scripts/validate-station-assets'
@@ -35,6 +39,10 @@ export interface WriteStationsOptions {
   canonicalize?: boolean
   /** Default true */
   makeBackup?: boolean
+  /** Nach atomarem Write: Struktur + Assets prüfen; bei Fehler Rollback aus .bak */
+  postValidate?: boolean
+  /** Rollback nur bei Asset-Fehlern auf dieser Station (ohne: jeder Asset-error) */
+  touchedSlug?: string
 }
 
 export interface MpzContentIoPaths {
@@ -97,6 +105,20 @@ async function writeAtomic(targetPath: string, content: string): Promise<void> {
   }
 }
 
+async function restoreStationsFromBackup(paths: MpzContentIoPaths): Promise<void> {
+  if (!existsSync(paths.backupPath)) {
+    throw new MpzContentIoError('IO', 'Rollback nicht möglich: kein Backup')
+  }
+  try {
+    await copyFile(paths.backupPath, paths.stationsPath)
+  } catch (err) {
+    throw new MpzContentIoError(
+      'IO',
+      err instanceof Error ? err.message : 'Rollback aus Backup fehlgeschlagen',
+    )
+  }
+}
+
 export function createMpzContentIo(overrides?: Partial<MpzContentIoPaths>): MpzContentIo {
   const paths = defaultPaths(overrides)
 
@@ -137,6 +159,8 @@ export function createMpzContentIo(overrides?: Partial<MpzContentIoPaths>): MpzC
       const validateAssets = options.validateAssets === true
       const canonicalize = options.canonicalize === true
       const makeBackup = options.makeBackup !== false
+      const postValidate = options.postValidate === true
+      const touchedSlug = options.touchedSlug
 
       if (strict) {
         try {
@@ -183,6 +207,19 @@ export function createMpzContentIo(overrides?: Partial<MpzContentIoPaths>): MpzC
       }
 
       await writeAtomic(paths.stationsPath, serialized)
+
+      if (postValidate) {
+        const validation = validateStationsContent(payload, paths.appRoot)
+        if (shouldRollbackPostValidate(validation, touchedSlug)) {
+          if (makeBackup) {
+            await restoreStationsFromBackup(paths)
+          }
+          throw new MpzContentIoError(
+            'VALIDATION',
+            validation.errors.join('\n') || 'Post-Validate fehlgeschlagen',
+          )
+        }
+      }
     },
   }
 }

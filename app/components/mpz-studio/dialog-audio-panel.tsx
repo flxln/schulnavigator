@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useCallback, useEffect, useState } from 'react'
 import type { DialogSegmentAudit } from '@/lib/mpz-dialog-audio-ingest'
+import { markMpzStudioDirty } from '@/components/mpz-studio/studio-validation-context'
 
 const DIALOG_SLUGS = ['daz', 'pc-raum'] as const
 
@@ -84,6 +85,7 @@ export function DialogAudioPanel() {
         return
       }
       await loadStatus(slug)
+      markMpzStudioDirty()
     } catch {
       setRowError('Upload fehlgeschlagen.')
     } finally {

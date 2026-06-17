@@ -298,7 +298,7 @@ Abgeleitet aus zwei unabhängigen Plan-Reviews (SE-15: Codex, GLM-5.1). v0 ist *
 **IO-Kontrakt (Befund 4)**
 
 - [ ] `writeStations()` schreibt **atomar**: temp-Datei → `fs.rename`, vorher `stations.json.bak` aktualisieren; deterministische Key-Reihenfolge / pretty-print.
-- [ ] **Rollback:** Schlägt die Validierung nach dem Save fehl, wird die vorige Version wiederhergestellt (`.bak` bzw. nicht-comitteter Stand) — keine kaputte `stations.json` bleibt liegen.
+- [x] **Rollback:** Schlägt die Validierung nach dem Save fehl, wird die vorige Version wiederhergestellt (`.bak` bzw. nicht-comitteter Stand) — keine kaputte `stations.json` bleibt liegen. Umgesetzt #150 (`postValidate` in `lib/mpz-content-io`, Scope per `touchedSlug`).
 - [x] `lib/mpz-content-io` wird **vor** dem ersten UI-Edit-Feld gebaut und mit Unit-Tests abgesichert; die bestehende CLI (`content-ingest.ts`) nutzt denselben Layer (DRY) — kein verteilter `node:fs`-Zugriff in UI-Code (T2). Umgesetzt #146 (2026-06-16).
 
 **Upload-Regeln (Befund 5)**
@@ -307,9 +307,9 @@ Abgeleitet aus zwei unabhängigen Plan-Reviews (SE-15: Codex, GLM-5.1). v0 ist *
 
 **Validierungs-Vertrag (Befund 3)**
 
-- [ ] Nach jedem Save laufen **beide** Ebenen: strukturelle Validierung (`validateStationsFile()` importiert) **und** das Asset-Skript (`npm run validate:stations`). Es genügt nicht, nur das npm-Skript aufzurufen.
-- [ ] `validate:tokens` läuft **nicht** nach Content-Save (Access-Tokens sind inhaltlich unabhängig) — nur im späteren Deploy-Tab (L6).
-- [ ] Validierung ist „Save & Validate" (Button oder debounced ≥ 800 ms), kein Subprocess-Sturm bei jedem Tastendruck (L5).
+- [x] Nach jedem Save laufen **beide** Ebenen: strukturelle Validierung (`validateStationsFile()` importiert) **und** Asset-Prüfung (`validateStationAssets` importiert, gleiche Logik wie `npm run validate:stations`). Umgesetzt #150.
+- [x] `validate:tokens` läuft **nicht** nach Content-Save (Access-Tokens sind inhaltlich unabhängig) — nur im späteren Deploy-Tab (L6).
+- [x] Validierung ist „Save & Validate" (Button oder debounced ≥ 800 ms), kein Subprocess-Sturm bei jedem Tastendruck (L5). Umgesetzt #150.
 
 **Build / Prod**
 

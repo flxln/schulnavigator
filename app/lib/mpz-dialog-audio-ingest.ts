@@ -304,6 +304,8 @@ async function ingestDialogClipInner(
       validateAssets: false,
       canonicalize: false,
       makeBackup: true,
+      postValidate: true,
+      touchedSlug: input.slug,
     })
   } catch (err) {
     await rollbackWav(destPath, bakPath)

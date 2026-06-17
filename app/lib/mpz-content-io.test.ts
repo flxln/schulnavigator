@@ -1,13 +1,14 @@
 import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import raw from '@/data/stations.json'
 import {
   canonicalizeStationsFile,
   createMpzContentIo,
   serializeStationsFile,
 } from '@/lib/mpz-content-io'
+import * as mpzStationsValidation from '@/lib/mpz-stations-validation'
 import type { StationsFile } from '@/lib/types'
 import { validateStationAssets } from '@/scripts/validate-station-assets'
 
@@ -28,6 +29,7 @@ describe('mpz-content-io', () => {
   const temps: string[] = []
 
   afterEach(() => {
+    vi.restoreAllMocks()
     for (const dir of temps) {
       try {
         rmSync(dir, { recursive: true, force: true })
@@ -147,6 +149,61 @@ describe('mpz-content-io', () => {
       io.writeStations(broken, { strict: true, validateAssets: true }),
     ).rejects.toMatchObject({ code: 'VALIDATION' })
     expect(readFileSync(stationsPath, 'utf8')).toBe(before)
+  })
+
+  it('postValidate:true rollt bei Fehler auf touchedSlug zurück', async () => {
+    const io = makeTempIo()
+    const { stationsPath, backupPath } = io.getPaths()
+    temps.push(io.getPaths().appRoot)
+    const before = serializeStationsFile(fixture)
+    writeFileSync(stationsPath, before, 'utf8')
+
+    const broken = structuredClone(fixture)
+    const klassenzimmer = broken.stations.find((s) => s.slug === 'klassenzimmer')!
+    klassenzimmer.medien[0]!.quelle = '/media/klassenzimmer/audio/fehlt-post-validate.mp3'
+
+    await expect(
+      io.writeStations(broken, {
+        strict: true,
+        makeBackup: true,
+        postValidate: true,
+        touchedSlug: 'klassenzimmer',
+      }),
+    ).rejects.toMatchObject({ code: 'VALIDATION' })
+
+    expect(readFileSync(stationsPath, 'utf8')).toBe(before)
+    expect(readFileSync(backupPath, 'utf8')).toBe(before)
+  })
+
+  it('postValidate:true behält Write bei Fremd-Slug-Fehler (touchedSlug)', async () => {
+    const io = makeTempIo()
+    const { stationsPath } = io.getPaths()
+    temps.push(io.getPaths().appRoot)
+    writeFileSync(stationsPath, serializeStationsFile(fixture), 'utf8')
+
+    vi.spyOn(mpzStationsValidation, 'validateStationsContent').mockReturnValue({
+      errors: ['Station kunst (bild): Datei fehlt — /stations/kunst.jpg'],
+      warnings: [],
+      bySlug: mpzStationsValidation.groupMessagesBySlug(
+        ['Station kunst (bild): Datei fehlt — /stations/kunst.jpg'],
+        [],
+      ),
+    })
+
+    const next = structuredClone(fixture)
+    const musik = next.stations.find((s) => s.slug === 'musik')!
+    musik.titel = 'Musikraum Test-Titel'
+
+    await io.writeStations(next, {
+      strict: true,
+      makeBackup: true,
+      postValidate: true,
+      touchedSlug: 'musik',
+    })
+
+    const parsed = JSON.parse(readFileSync(stationsPath, 'utf8')) as StationsFile
+    const musikAfter = parsed.stations.find((s) => s.slug === 'musik')
+    expect(musikAfter?.titel).toBe('Musikraum Test-Titel')
   })
 
   it('canonicalize:true sortiert nach Hub-Reihenfolge', () => {

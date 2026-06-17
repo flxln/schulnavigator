@@ -5,11 +5,16 @@ import {
   type MpzContentIo,
 } from '@/lib/mpz-content-io'
 import { HUB_SLUG_MAP, MPZ_HUB_SLUGS } from '@/lib/schoolhouse-hub-map'
+import {
+  globalValidationErrors,
+  type SlugValidationBucket,
+  validateStationsContent,
+} from '@/lib/mpz-stations-validation'
 import type { Station, StationsFile, ViewerMode } from '@/lib/types'
-import { validateStationsFile } from '@/lib/validate-stations'
-import { validateStationAssets } from '@/scripts/validate-station-assets'
 
 export { MPZ_HUB_SLUGS }
+export { groupMessagesBySlug } from '@/lib/mpz-stations-validation'
+export type { SlugValidationBucket } from '@/lib/mpz-stations-validation'
 
 export type StationHealth = 'ok' | 'warn' | 'error'
 
@@ -26,11 +31,6 @@ export type MpzStationOverview = {
   issues: string[]
 }
 
-export type SlugValidationBucket = {
-  errors: string[]
-  warnings: string[]
-}
-
 export type MpzValidationReport = {
   ok: boolean
   checkedAt: string
@@ -42,44 +42,8 @@ export type MpzValidationReport = {
   stationsModifiedAt: string | null
 }
 
-const STATION_MSG_RE = /^Station ([^\s(]+)/
-
 function emptyBucket(): SlugValidationBucket {
   return { errors: [], warnings: [] }
-}
-
-function bucketForSlug(
-  bySlug: Record<string, SlugValidationBucket>,
-  slug: string,
-): SlugValidationBucket {
-  if (!bySlug[slug]) {
-    bySlug[slug] = emptyBucket()
-  }
-  return bySlug[slug]
-}
-
-export function groupMessagesBySlug(
-  errors: string[],
-  warnings: string[],
-): Record<string, SlugValidationBucket> {
-  const bySlug: Record<string, SlugValidationBucket> = {}
-
-  for (const msg of errors) {
-    const match = STATION_MSG_RE.exec(msg)
-    const slug = match?.[1]
-    if (slug) {
-      bucketForSlug(bySlug, slug).errors.push(msg)
-    }
-  }
-  for (const msg of warnings) {
-    const match = STATION_MSG_RE.exec(msg)
-    const slug = match?.[1]
-    if (slug) {
-      bucketForSlug(bySlug, slug).warnings.push(msg)
-    }
-  }
-
-  return bySlug
 }
 
 function resolveViewer(station: Station): ViewerMode {
@@ -202,20 +166,19 @@ export async function runMpzStudioValidation(
   io: MpzContentIo = createMpzContentIo(),
 ): Promise<MpzValidationReport> {
   const started = Date.now()
-  const errors: string[] = []
-  const warnings: string[] = []
+  const readErrors: string[] = []
 
   let stationsFile: StationsFile
   try {
     stationsFile = await io.readStations()
   } catch (err) {
-    errors.push(err instanceof Error ? err.message : 'stations.json lesen fehlgeschlagen')
+    readErrors.push(err instanceof Error ? err.message : 'stations.json lesen fehlgeschlagen')
     return {
       ok: false,
       checkedAt: new Date().toISOString(),
       durationMs: Date.now() - started,
-      errors,
-      warnings,
+      errors: readErrors,
+      warnings: [],
       bySlug: {},
       stationSummaries: buildStationOverviews(
         { stations: [] },
@@ -226,19 +189,11 @@ export async function runMpzStudioValidation(
     }
   }
 
-  try {
-    validateStationsFile(stationsFile)
-  } catch (err) {
-    errors.push(err instanceof Error ? err.message : 'Struktur-Validierung fehlgeschlagen')
-  }
+  const { errors, warnings, bySlug } = validateStationsContent(
+    stationsFile,
+    io.getPaths().appRoot,
+  )
 
-  const assetResult = validateStationAssets(stationsFile, {
-    appRoot: io.getPaths().appRoot,
-  })
-  errors.push(...assetResult.errors)
-  warnings.push(...assetResult.warnings)
-
-  const bySlug = groupMessagesBySlug(errors, warnings)
   const stationSummaries = buildStationOverviews(
     stationsFile,
     bySlug,
@@ -246,7 +201,7 @@ export async function runMpzStudioValidation(
   )
 
   const hasStationErrors = stationSummaries.some((s) => s.health === 'error')
-  const globalErrors = errors.filter((msg) => !STATION_MSG_RE.test(msg))
+  const globalErrors = globalValidationErrors(errors)
 
   return {
     ok: globalErrors.length === 0 && !hasStationErrors,

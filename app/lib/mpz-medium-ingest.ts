@@ -231,6 +231,8 @@ export async function ingestMediumFile(
       validateAssets: false,
       canonicalize: false,
       makeBackup: true,
+      postValidate: true,
+      touchedSlug: input.slug,
     })
   } catch (err) {
     // Kompensation: gerade geschriebene Datei wieder entfernen (Befund #6).

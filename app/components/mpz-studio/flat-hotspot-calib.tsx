@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { markMpzStudioDirty } from '@/components/mpz-studio/studio-validation-context'
 import type { Hotspot } from '@/lib/types'
 import {
   flatCalibFromImageClick,
@@ -138,6 +139,7 @@ export function FlatHotspotCalib({
       }
       setMessage(`Übernommen: ${selectedId} → x=${marker.x}, y=${marker.y}`)
       setApplied(true)
+      markMpzStudioDirty()
     } catch {
       setError('Netzwerkfehler — Studio-Cookie gesetzt? (/mpz/unlock)')
     } finally {
