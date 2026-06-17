@@ -20,11 +20,16 @@ const mocks = vi.hoisted(() => {
     storeReadyCb: (fn: () => void) => { _readyCb = fn },
     getViewerConfig: () => _viewerConfig,
     storeViewerConfig: (config: Record<string, unknown>) => { _viewerConfig = config },
+    searchParams: new URLSearchParams() as URLSearchParams,
   }
 })
 
 vi.mock('@photo-sphere-viewer/markers-plugin', () => ({
   MarkersPlugin: class MockMarkersPlugin {},
+}))
+
+vi.mock('next/navigation', () => ({
+  useSearchParams: () => mocks.searchParams,
 }))
 
 vi.mock('@photo-sphere-viewer/gyroscope-plugin', () => ({
@@ -129,6 +134,7 @@ beforeEach(() => {
   mocks.gyroStart.mockClear()
   mocks.gyroIsEnabled.mockReturnValue(false)
   mocks.storeViewerConfig({})
+  mocks.searchParams = new URLSearchParams()
 })
 
 describe('Config-Smoke-Test (Zoom-Sperre)', () => {
@@ -321,5 +327,43 @@ describe('Sphere-Marker (Layer + Lifecycle)', () => {
     expect(configs.some((c) => c.element instanceof HTMLElement)).toBe(true)
     expect(plugin.clearMarkers).not.toHaveBeenCalled()
     expect(plugin.updateMarker).toHaveBeenCalled()
+  })
+})
+
+describe('Hotspot-Kalibrierung (Query-Parameter)', () => {
+  it('zeigt Overlay bei ?hotspot-calib=1 und stationSlug in development', () => {
+    vi.stubEnv('NODE_ENV', 'development')
+    mocks.searchParams = new URLSearchParams('hotspot-calib=1')
+    render(
+      <SphereRaumViewerInner {...DEFAULT_PROPS} stationSlug="klassenzimmer" />,
+    )
+    expect(screen.getByText('Hotspot-Kalibrierung (Dev)')).toBeTruthy()
+    vi.unstubAllEnvs()
+  })
+
+  it('zeigt kein Overlay ohne hotspot-calib Query-Parameter', () => {
+    vi.stubEnv('NODE_ENV', 'development')
+    mocks.searchParams = new URLSearchParams()
+    render(
+      <SphereRaumViewerInner {...DEFAULT_PROPS} stationSlug="klassenzimmer" />,
+    )
+    expect(screen.queryByText('Hotspot-Kalibrierung (Dev)')).toBeNull()
+    vi.unstubAllEnvs()
+  })
+
+  it('reagiert auf geänderte Search-Params (Navigation-Simulation)', () => {
+    vi.stubEnv('NODE_ENV', 'development')
+    mocks.searchParams = new URLSearchParams()
+    const { rerender } = render(
+      <SphereRaumViewerInner {...DEFAULT_PROPS} stationSlug="klassenzimmer" />,
+    )
+    expect(screen.queryByText('Hotspot-Kalibrierung (Dev)')).toBeNull()
+
+    mocks.searchParams = new URLSearchParams('hotspot-calib=1')
+    rerender(
+      <SphereRaumViewerInner {...DEFAULT_PROPS} stationSlug="klassenzimmer" />,
+    )
+    expect(screen.getByText('Hotspot-Kalibrierung (Dev)')).toBeTruthy()
+    vi.unstubAllEnvs()
   })
 })
