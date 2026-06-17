@@ -203,3 +203,20 @@ export function writeStations(
 ): Promise<void> {
   return defaultIo.writeStations(data, options)
 }
+
+let mpzWriteChain: Promise<void> = Promise.resolve()
+
+/** Serialisiert parallele MPZ-Writes auf stations.json (Dialog-Ingest, Hotspot-Kalib, …). */
+export function withMpzWriteLock<T>(fn: () => Promise<T>): Promise<T> {
+  const run = mpzWriteChain.then(fn)
+  mpzWriteChain = run.then(
+    () => undefined,
+    () => undefined,
+  )
+  return run
+}
+
+/** Nur für Tests: Write-Queue zurücksetzen. */
+export function resetMpzWriteLockForTests(): void {
+  mpzWriteChain = Promise.resolve()
+}

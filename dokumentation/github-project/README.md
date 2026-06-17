@@ -85,4 +85,4 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Epic **#144** (MPZ Studio v0, ADR-022) — #145–#149 erledigt; #150–#151, #153 offen; [epic-mpz-studio.md](epic-mpz-studio.md)
 - [ ] **#152–#154** Startblick/Startpan (ADR-023/024) — [issues-startblick.md](issues-startblick.md)
 
-Letzter dokumentierter Abgleich: **2026-06-16** (ADR-023/024, Issues #152–#154).
+Letzter dokumentierter Abgleich: **2026-06-17** (#149 Nacharbeit: `withMpzWriteLock`, Sphere-Kalib-Navigation; #152–#154 Startblick/Startpan).

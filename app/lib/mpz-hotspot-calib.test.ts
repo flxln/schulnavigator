@@ -3,7 +3,8 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
 import rawStations from '@/data/stations.json'
-import { createMpzContentIo } from '@/lib/mpz-content-io'
+import { ingestDialogClip } from '@/lib/mpz-dialog-audio-ingest'
+import { createMpzContentIo, resetMpzWriteLockForTests } from '@/lib/mpz-content-io'
 import {
   applyFlatHotspotCoords,
   applySphereHotspotCoords,
@@ -50,8 +51,17 @@ function readStationsFile(io: ReturnType<typeof createMpzContentIo>): StationsFi
   return JSON.parse(readFileSync(io.getPaths().stationsPath, 'utf8')) as StationsFile
 }
 
+const TEST_WAV = Buffer.concat([
+  Buffer.from('RIFF'),
+  Buffer.from([0x24, 0, 0, 0]),
+  Buffer.from('WAVEfmt '),
+  Buffer.from('CLIP-TEST'),
+  Buffer.alloc(1016, 0x20),
+])
+
 describe('mpz-hotspot-calib', () => {
   afterEach(() => {
+    resetMpzWriteLockForTests()
     for (const dir of temps) {
       try {
         rmSync(dir, { recursive: true, force: true })
@@ -125,5 +135,37 @@ describe('mpz-hotspot-calib', () => {
         io,
       ),
     ).rejects.toBeInstanceOf(MpzHotspotCalibError)
+  })
+
+  it('serialisiert parallele Writes gegen Dialog-Ingest (geteilte Queue)', async () => {
+    const io = makeIo()
+    const root = io.getPaths().appRoot
+    mkdirSync(join(root, 'content', 'dialog-audio', 'daz'), { recursive: true })
+    resetMpzWriteLockForTests()
+
+    await Promise.all([
+      applyFlatHotspotCoords(
+        { slug: 'kunst', hotspotId: 'hs-demo', x: 0.9, y: 0.1 },
+        io,
+      ),
+      ingestDialogClip(
+        {
+          slug: 'daz',
+          segmentIndex: 0,
+          source: { buffer: TEST_WAV },
+          originalName: 'test.wav',
+          collision: 'replace',
+        },
+        io,
+      ),
+    ])
+
+    const data = readStationsFile(io)
+    const kunstHs = data.stations
+      .find((s) => s.slug === 'kunst')
+      ?.hotspots?.find((h) => h.id === 'hs-demo')
+    expect(kunstHs).toMatchObject({ x: 0.9, y: 0.1 })
+    const dazSeg = data.stations.find((s) => s.slug === 'daz')?.dialog?.segmente[0]
+    expect(dazSeg?.quelle).toBe('/api/dialog/daz/01-frieda.wav')
   })
 })

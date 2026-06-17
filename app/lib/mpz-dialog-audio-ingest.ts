@@ -10,6 +10,8 @@ import {
 import {
   createMpzContentIo,
   type MpzContentIo,
+  withMpzWriteLock,
+  resetMpzWriteLockForTests,
 } from '@/lib/mpz-content-io'
 import {
   type IngestSource,
@@ -63,17 +65,6 @@ export interface DialogSegmentAudit {
 export interface DialogAudioAuditResult {
   segments: DialogSegmentAudit[]
   orphans: string[]
-}
-
-let ingestChain: Promise<void> = Promise.resolve()
-
-function withIngestLock<T>(fn: () => Promise<T>): Promise<T> {
-  const run = ingestChain.then(fn)
-  ingestChain = run.then(
-    () => undefined,
-    () => undefined,
-  )
-  return run
 }
 
 function textPreview(text: string): string {
@@ -336,10 +327,10 @@ export async function ingestDialogClip(
   input: IngestDialogClipInput,
   io: MpzContentIo = createMpzContentIo(),
 ): Promise<IngestDialogClipResult> {
-  return withIngestLock(() => ingestDialogClipInner(input, io))
+  return withMpzWriteLock(() => ingestDialogClipInner(input, io))
 }
 
 /** Nur für Tests: Queue zurücksetzen. */
 export function resetDialogIngestLockForTests(): void {
-  ingestChain = Promise.resolve()
+  resetMpzWriteLockForTests()
 }
