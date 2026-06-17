@@ -57,7 +57,7 @@ Schmales, **MPZ-internes** Pflege-UI als optionaler **Plan B** zum bereits umges
 
 ## Risiken / Folge-Tasks
 
-- **Duplikat-Slugs in `stations.json` (Folge #157):** Nach Medien-Ingest-Tests können doppelte `slug`-Einträge entstehen. Workaround: `git restore app/data/stations.json`. Eindeutigkeits-Guard in `writeStations`/Validator geplant.
+- ~~**Duplikat-Slugs in `stations.json` (#157):**~~ Behoben: `assertUniqueStationSlugs` in jedem `writeStations` (auch `strict:false`).
 - **Orphan-Files (Folge-Task zu #147, Pre-Mortem Gemini #3):** Prozessabsturz zwischen Datei-Write und JSON-Write kann verwaiste Dateien in `public/media/` hinterlassen. Geplant: `clean-orphans`-CLI — nicht in v0 gebaut.
 
 ## Checkliste (Epic)

@@ -1,6 +1,14 @@
 import { describe, expect, it } from 'vitest'
 import raw from '@/data/stations.json'
-import { validateStationsFile } from '@/lib/validate-stations'
+import { assertUniqueStationSlugs, validateStationsFile } from '@/lib/validate-stations'
+
+describe('assertUniqueStationSlugs', () => {
+  it('wirft bei doppeltem slug', () => {
+    expect(() =>
+      assertUniqueStationSlugs([{ slug: 'musik' }, { slug: 'musik' }]),
+    ).toThrow('doppelter slug "musik"')
+  })
+})
 
 describe('validateStationsFile Hub (ADR-016)', () => {
   it('akzeptiert gültige stations.json', () => {
@@ -10,6 +18,16 @@ describe('validateStationsFile Hub (ADR-016)', () => {
     const musik = stations.find((s) => s.slug === 'musik')
     expect(musik?.viewer).toBe('equirectangular')
     expect(musik?.panorama360).toBe('/stations/360/musik.jpg')
+  })
+
+  it('wirft bei doppeltem slug', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const musik = data.stations.find((s) => s.slug === 'musik')
+    if (!musik) throw new Error('musik fixture fehlt')
+    data.stations.push(structuredClone(musik))
+    expect(() => validateStationsFile(data as unknown)).toThrow(
+      'doppelter slug "musik"',
+    )
   })
 
   it('akzeptiert dialog mit gruppe und beide', () => {
