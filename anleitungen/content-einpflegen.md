@@ -234,6 +234,29 @@ Statt `x`/`y` gelten **Kugelkoordinaten** aus dem Equirectangular-Panorama:
 
 **Kalibrierung (Dev):** `npm run dev` → `/raum/{slug}?hotspot-calib=1` → auf Ankerpunkt klicken → JSON-Snippet kopieren (`yaw` wird auf −180…180° normalisiert). Maskottchen: **Fuß** anklicken; Medien: **Icon-Mitte**. Abnahme-Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/projektmanagement/2026-06-13-sphere-hotspot-acceptance.md).
 
+### Startblick Sphere — `startYaw` / `startPitch` (optional, [ADR-023](../dokumentation/adr/023-sphere-startblick.md))
+
+Nur bei `viewer: "equirectangular"`. Steuert, **wohin die Kamera beim Öffnen des Raums blickt** und wohin „Ansicht zentrieren“ springt.
+
+| Feld | Pflicht | Werte / Hinweis |
+|------|---------|-----------------|
+| `startYaw` | nein | Grad −180…180; Default `0` (Equirectangular-Mitte) |
+| `startPitch` | nein | Grad −90…90; Default `0` |
+
+Gleiche Konvention wie `hotspots360[].yaw` / `pitch`. **Nicht** dasselbe wie Hotspot-Koordinaten — Startblick und Hotspots unabhängig pflegen.
+
+**Pflege:** Manuell in JSON; Dev-Übernahme aus aktueller Sphere-Ansicht geplant (#153, MPZ Studio). Issue #152 (Runtime).
+
+### Startausschnitt Flat — `startPanX` (optional, [ADR-024](../dokumentation/adr/024-flat-startpan.md))
+
+Nur bei `viewer` fehlend oder `"flat"`. Horizontale **Startposition** der Viewport-Mitte auf dem Quellbild.
+
+| Feld | Pflicht | Werte / Hinweis |
+|------|---------|-----------------|
+| `startPanX` | nein | 0…1; `0` = linker Rand (heutiges Default-Verhalten), `0.5` = Bildmitte |
+
+**Pflege:** Manuell schätzen und am Gerät prüfen; MPZ-Kalibrier-Klick optional Folge zu #149. Issue #154 (Runtime).
+
 ### `dialog` — Sprecherwechsel und Text (**heute pflegbar**)
 
 Block `station.dialog` neben `hotspots[]` (Beispiel: `daz` in `stations.json`).
