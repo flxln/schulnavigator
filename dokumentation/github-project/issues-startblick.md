@@ -29,6 +29,8 @@
 - [x] Unit-Tests Validator + ggf. Viewer-Init
 - [x] Doku: `content-einpflegen.md` (bereits ADR-Verweis), `architektur.md`
 
+**Nacharbeit (Pre-Mortem, Commit `4a59010`):** Gyro-Gating (`startViewApplied` vor `plugin.start`), deferred-`setPanorama`-Tests, Validator `(war: …)`.
+
 **Nicht im Scope:** MPZ-UI (#153), Flat (#154).
 
 ## #153 — MPZ Studio: Sphere-Startblick
@@ -43,7 +45,7 @@
 - [ ] Hinweis in `lokal-testen-und-anschauen.md`; Link von `/mpz/studio`
 - [ ] Route-Tests Guard 401/404
 
-**Blockiert durch:** #152 (Felder + Runtime), #146 (IO).
+**Blockiert durch:** #146 (IO) — #152 (Runtime) erledigt.
 
 **Epic #144:** Optional Post-v0-DoD; blockiert #149–#151 nicht.
 
