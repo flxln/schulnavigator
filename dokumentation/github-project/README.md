@@ -84,7 +84,7 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 
 - [x] Epic **#144** (MPZ Studio v0, ADR-022) — #145–#151, #153, #155 erledigt; Prod-Build offen; [epic-mpz-studio.md](epic-mpz-studio.md)
 - [x] Issue **#152** (Sphere-Startblick Runtime + Pre-Mortem Gyro-Gating, ADR-023) — umgesetzt 2026-06-17 (`a1b272d`, `4a59010`), Branch `feature/mpz-studio`
-- [x] Issue **#153** (MPZ Sphere-Startblick persistieren, ADR-023) — umgesetzt 2026-06-17, Branch `feature/mpz-studio`
+- [x] Issue **#153** (MPZ Sphere-Startblick persistieren, ADR-023) — umgesetzt 2026-06-17 (`057ca71`), Branch `feature/mpz-studio`, Issue geschlossen
 - [ ] **#154** Flat-Startpan (ADR-024) — [issues-startblick.md](issues-startblick.md)
 
 Letzter dokumentierter Abgleich: **2026-06-17** (#152/#153 Startblick Sphere; #154 offen).

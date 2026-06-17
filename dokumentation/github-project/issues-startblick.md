@@ -47,6 +47,8 @@
 
 **Blockiert durch:** #146 (IO) — #152 (Runtime) erledigt.
 
+**Umgesetzt:** 2026-06-17, Commit `057ca71` auf `feature/mpz-studio` — Issue geschlossen.
+
 **Epic #144:** Optional Post-v0-DoD; blockiert #149–#151 nicht.
 
 ## #154 — Flat-Startpan (Runtime)
