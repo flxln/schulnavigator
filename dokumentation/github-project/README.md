@@ -14,7 +14,8 @@ Dieser Ordner ist die **führende Spezifikation** für Milestones und Issues in 
 | [epic-coach-fortschritt.md](epic-coach-fortschritt.md) | Epic **#121**: ADR-019 — Coach Fortschritts-Einblendungen — Unterissue #122 (Raum-Overlay-Priorität) |
 | [epic-hub-wegweiser.md](epic-hub-wegweiser.md) | Epic **#124**: ADR-020 — Hub Wegweiser Schulhof/Turnhalle, 12 Stationen |
 | [epic-zugangsmodus-konfigurierbar.md](epic-zugangsmodus-konfigurierbar.md) | Epic **#132**: ADR-021 — Zugangsmodus `open`/`gated`, Tokens ENV, Embedding/CSP — Unterissues #133–#139 |
-| [epic-mpz-studio.md](epic-mpz-studio.md) | Epic **#144**: ADR-022 — MPZ Studio v0 (internes Dev-only-Ingest-Tool) — Unterissues #145–#151 · eigener Milestone „MPZ Studio v0" |
+| [epic-mpz-studio.md](epic-mpz-studio.md) | Epic **#144**: ADR-022 — MPZ Studio v0 (internes Dev-only-Ingest-Tool) — Unterissues #145–#151, #153 · eigener Milestone „MPZ Studio v0" |
+| [issues-startblick.md](issues-startblick.md) | Startblick Sphere (#152, #153) und Flat-Startpan (#154) — ADR-023/024 |
 | [labels.md](labels.md) | Label-Konventionen |
 
 Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) und [entscheidungen.md](../entscheidungen.md).
@@ -81,6 +82,7 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 
 - [x] Issue **#141** (`rotate:access-tokens`) — geschlossen 2026-06-15, [PR #142](https://github.com/flxln/schulnavigator/pull/142) → `main`
 
-- [x] Epic **#144** (MPZ Studio v0, ADR-022) — #145–#148 erledigt; #149–#151 offen; [epic-mpz-studio.md](epic-mpz-studio.md)
+- [x] Epic **#144** (MPZ Studio v0, ADR-022) — #145–#148 erledigt; #149–#151, #153 offen; [epic-mpz-studio.md](epic-mpz-studio.md)
+- [ ] **#152–#154** Startblick/Startpan (ADR-023/024) — [issues-startblick.md](issues-startblick.md)
 
-Letzter dokumentierter Abgleich: **2026-06-17** (#148 Dialog-Audio-Ingest, Branch `feature/mpz-studio`).
+Letzter dokumentierter Abgleich: **2026-06-16** (ADR-023/024, Issues #152–#154).

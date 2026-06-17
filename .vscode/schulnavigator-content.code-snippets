@@ -116,6 +116,21 @@
       "}"
     ]
   },
+  "Sphere-Startblick": {
+    "prefix": "sn-sphere-startblick",
+    "description": "Startblick für 360°-Station (ADR-023)",
+    "body": [
+      "\"startYaw\": ${1:0},",
+      "\"startPitch\": ${2:0}"
+    ]
+  },
+  "Flat-Startpan": {
+    "prefix": "sn-flat-startpan",
+    "description": "Horizontaler Startausschnitt Flat (ADR-024)",
+    "body": [
+      "\"startPanX\": ${1:0.5}"
+    ]
+  },
   "Dialog-Segment": {
     "prefix": "sn-dialog-segment",
     "description": "Dialog-Segment mit API-Audio-Pfad",

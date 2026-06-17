@@ -15,6 +15,7 @@
 | Unterissue | `#149` | Flat-Kalibrier-Route `/mpz/calib/flat/{slug}` + 360°-Rückschreibung | `tech` | #146 |
 | Unterissue | `#150` | Validierungs-Vertrag nach Save (Struktur + Asset) | `tech` | #146 |
 | Unterissue | `#151` | Dashboard, Stationen-Liste, Vorschau-Links + Entwickler-Doku | `tech` | #145 |
+| Unterissue | `#153` | MPZ Studio: Sphere-Startblick kalibrieren & persistieren | `tech` | #146, #152 |
 
 ## Ziel
 
@@ -32,6 +33,7 @@ Schmales, **MPZ-internes** Pflege-UI als optionaler **Plan B** zum bereits umges
 | #149 | https://github.com/flxln/schulnavigator/issues/149 |
 | #150 | https://github.com/flxln/schulnavigator/issues/150 |
 | #151 | https://github.com/flxln/schulnavigator/issues/151 |
+| #153 | https://github.com/flxln/schulnavigator/issues/153 |
 
 ## Kontext
 
@@ -49,7 +51,7 @@ Schmales, **MPZ-internes** Pflege-UI als optionaler **Plan B** zum bereits umges
 
 ## Scope-Abgrenzung
 
-**Draußen (Post-Fest v1/v2):** Coach, Embed-Allowlist-Extraktion, Brand, Hub-Slug-Map, Station-Icons, GS39-Tokens, Deploy-Tab, Config-Extraktion nach JSON.
+**Draußen (Post-Fest v1/v2):** Coach, Embed-Allowlist-Extraktion, Brand, Hub-Slug-Map, Station-Icons, GS39-Tokens, Deploy-Tab, Config-Extraktion nach JSON. **Startblick Sphere/Flat (Runtime):** #152, #154 — siehe [issues-startblick.md](issues-startblick.md); MPZ nur #153.
 
 ## Risiken / Folge-Tasks
 
@@ -65,4 +67,5 @@ Schmales, **MPZ-internes** Pflege-UI als optionaler **Plan B** zum bereits umges
 - [ ] #149 Flat-Kalibrier-Route + 360°-Rückschreibung
 - [ ] #150 Validierungs-Vertrag (Struktur + Asset; `validate:tokens` raus; debounced)
 - [ ] #151 Dashboard/Liste/Vorschau + Doku in `fuer-entwickler.md`
+- [ ] #153 MPZ: Sphere-Startblick kalibrieren ([ADR-023](../adr/023-sphere-startblick.md), blockiert #152)
 - [ ] Prod-Build verifiziert: 404 auf `/mpz/*` + `/api/mpz/*`, Build grün ohne `any`

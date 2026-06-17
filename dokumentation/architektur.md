@@ -93,6 +93,7 @@ Komponenten unter [`app/components/raum-viewer/`](../app/components/raum-viewer/
 | UI | `touch-action: none` + CSS-Containment auf dem Viewer; Hero: **Zentrieren** über tappbaren **Stations-Chip** (nicht mehr floating); Default-Layout: Button **Ansicht zentrieren** unter dem Viewer; `?debug=1` für HUD |
 | TopBar (Raum) | `TopBar` mit `onBack`, optionalem `leftExtra` (z. B. Dialog-Ende **X** 38×38) und `right`; rechte Slot-Breite spiegelt links (`lib/ui/top-bar-layout.ts`) |
 | Recenter-API | `RaumViewerHandle.recenterView()` — intern `RoomImagePane`; **nicht** aus `raum-viewer/index.ts` als Pane exportiert (#72) |
+| Startblick / Startpan | Optional `startYaw`/`startPitch` (Sphere, [ADR-023](./adr/023-sphere-startblick.md), #152) bzw. `startPanX` (Flat, [ADR-024](./adr/024-flat-startpan.md), #154); fehlen → heutiges Verhalten |
 | Fallback | Wischen, Tap; Banner wenn Orientierung fehlt; `sessionStorage`-Merker iOS + 2s-Watchdog bei fehlenden Events |
 | Onboarding (#107) | Einmaliges Overlay „Links oder rechts wischen“ (`PanOnboardingOverlay`); `localStorage` `schulnav.pan-onboarding.seen`; auf iOS erst nach Gyro-Berechtigung |
 | Ohne `bild` | Statisches Layout + Medienliste ([ADR-006](./adr/006-raum-viewer-gyro-hotspots.md)) |
