@@ -16,7 +16,7 @@ Dieser Ordner ist die **führende Spezifikation** für Milestones und Issues in 
 | [epic-zugangsmodus-konfigurierbar.md](epic-zugangsmodus-konfigurierbar.md) | Epic **#132**: ADR-021 — Zugangsmodus `open`/`gated`, Tokens ENV, Embedding/CSP — Unterissues #133–#139 |
 | [epic-mpz-studio.md](epic-mpz-studio.md) | Epic **#144**: ADR-022 — MPZ Studio v0 (internes Dev-only-Ingest-Tool) — Unterissues #145–#151, #153 · eigener Milestone „MPZ Studio v0" — **abgeschlossen** |
 | [epic-mpz-studio-v1.md](epic-mpz-studio-v1.md) | Epic **#158**: MPZ Studio v1 — Station-Detail (#159–#168) · Milestone „MPZ Studio v1" — **abgeschlossen**, Merge ausstehend |
-| [epic-mpz-studio-v2.md](epic-mpz-studio-v2.md) | MPZ Studio v2 (geplant): Content-Vollständigkeit & Betrieb — Branch `mpz-studio-v2`, Milestone [#9](https://github.com/flxln/schulnavigator/milestone/9) |
+| [epic-mpz-studio-v2.md](epic-mpz-studio-v2.md) | Epic **#170**: MPZ Studio v2 — Content & Betrieb (#171–#181) · Milestone [#9](https://github.com/flxln/schulnavigator/milestone/9) · Branch `mpz-studio-v2` |
 | [kurzfristige-ideen/mpz-studio-ui.md](../kurzfristige-ideen/mpz-studio-ui.md) | Domänen-CRUD-Matrix + Roadmap v2/v3 |
 | [issues-startblick.md](issues-startblick.md) | Startblick Sphere (#152, #153) und Flat-Startpan (#154) — ADR-023/024 |
 | [labels.md](labels.md) | Label-Konventionen |
@@ -101,7 +101,8 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Epic **#158** (MPZ Studio v1 — Station-Detail & Content-Pflege) — abgeschlossen 2026-06-18, [epic-mpz-studio-v1.md](epic-mpz-studio-v1.md); GitHub-Issues #159–#168 **alle geschlossen**; Milestone „MPZ Studio v1" **0 offen**
 - [ ] **Merge** Branch `mpz-studio-v1` → `main` — erledigt ([PR #169](https://github.com/flxln/schulnavigator/pull/169))
 - [x] Branch **`mpz-studio-v2`** von `main` angelegt (Entwicklung v2)
-- [ ] Epic **MPZ Studio v2** auf GitHub anlegen — Vorlage [epic-mpz-studio-v2.md](epic-mpz-studio-v2.md)
+- [x] Epic **#170** (MPZ Studio v2) + Unterissues **#171–#181** — [epic-mpz-studio-v2.md](epic-mpz-studio-v2.md)
+- [ ] **#171** Medien PATCH — erstes v2-Feature (empfohlen)
 - [ ] **#154** Flat-Startpan (ADR-024) — [issues-startblick.md](issues-startblick.md) (unabhängig vom v1-Merge)
 
-Letzter dokumentierter Abgleich: **2026-06-18** (Epic #158 abgeschlossen; v1-Merge + v2-Planung nächste Schritte).
+Letzter dokumentierter Abgleich: **2026-06-18** (Epic #170 v2 angelegt, #171–#181; v1 auf main).
