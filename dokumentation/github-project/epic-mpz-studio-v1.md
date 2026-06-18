@@ -16,6 +16,7 @@
 | Unterissue | `#165` | Hotspot anlegen (Medium, Koordinaten, Icon, iconSize) | `tech` | #161, #162, #166 (Icon-Picker) | ✓ |
 | Unterissue | `#166` | Hotspot-Icon-Ingest (`/media/{slug}/icons/`) | `tech` | #161 | ✓ |
 | Unterissue | `#167` | Hotspot bearbeiten (PATCH) | `tech` | #165 | ✓ |
+| Unterissue | `#168` | DELETE Hotspot: Fehler-Mapping an POST/PATCH | `tech` | #167 | |
 | Unterissue | `#163` | Dialog-Audio-Tab pro Station | `tech` | #159, v0 #148 |
 | Unterissue | `#164` | Doku & Epic-Abschluss | `tech`, `documentation` | #159–#163, #165–#167 |
 
@@ -53,8 +54,13 @@ Plan A (CLI/JSON) bleibt Fallback. Leitplanken aus ADR-022 unverändert: nur `NO
 | #165 | https://github.com/flxln/schulnavigator/issues/165 |
 | #166 | https://github.com/flxln/schulnavigator/issues/166 |
 | #167 | https://github.com/flxln/schulnavigator/issues/167 |
+| #168 | https://github.com/flxln/schulnavigator/issues/168 |
 
-## Design-Referenz
+## Bekannte Tech-Schulden (v1)
+
+| Issue | Thema |
+|-------|--------|
+| [#168](https://github.com/flxln/schulnavigator/issues/168) | `DELETE /api/mpz/stations/…/hotspots/[id]` mappt Domain-Client-Errors auf **500** statt **400** (POST/PATCH konsistent); latent bis Domain mehr Codes wirft — Post-Mortem [#167](../reviews/post-mortem-167-2026-06-18.md) |
 
 | Screen | Prototyp | Spec |
 |--------|----------|------|
@@ -70,7 +76,7 @@ Interaktiv: [mpz-studio-prototype/MPZ Studio.html](../design/mpz-studio-claude-d
 - **Dirty-State:** nach erfolgreichem Patch `markMpzStudioDirty()` → globaler Button „Speichern & Validieren“ (bereits #150).
 - **Stammdaten-Patch:** neues `lib/mpz-station-stammdaten.ts` + `PATCH /api/mpz/stations/[slug]/stammdaten` (nur erlaubte Felder, `slug` unveränderlich).
 - **Lesen:** `GET /api/mpz/stations/[slug]` für Detail-Formular.
-- **Viewer-Wechsel:** Warnung wenn `viewer` geändert wird und falsche Hotspot-Art belegt ist (Hinweis, kein Auto-Migrate in v1).
+- **Hotspot-API:** `POST`/`PATCH`/`DELETE` unter `/api/mpz/stations/[slug]/hotspots` — Fehler-Mapping für DELETE noch inkonsistent ([#168](https://github.com/flxln/schulnavigator/issues/168)).
 
 ## Kontext
 

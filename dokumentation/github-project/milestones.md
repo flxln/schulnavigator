@@ -57,4 +57,4 @@ Der Fortschrittsbalken in GitHub ergibt sich automatisch aus den geschlossenen I
 ## MPZ Studio v1 — Station-Detail & Content-Pflege (ADR-022)
 
 **Fällig:** 31.07.2026
-**Beschreibung:** Post-Fest-Erweiterung: Station-Detail unter `/mpz/studio/stationen/[slug]` mit Tabs Stammdaten, Medien, Hotspots, Dialog-Audio. Epic [#158](https://github.com/flxln/schulnavigator/issues/158), Unterissues #159–#164 — [epic-mpz-studio-v1.md](./epic-mpz-studio-v1.md). Branch `mpz-studio-v1`.
+**Beschreibung:** Post-Fest-Erweiterung: Station-Detail unter `/mpz/studio/stationen/[slug]` mit Tabs Stammdaten, Medien, Hotspots, Dialog-Audio. Epic [#158](https://github.com/flxln/schulnavigator/issues/158), Unterissues #159–#164, #165–#168 — [epic-mpz-studio-v1.md](./epic-mpz-studio-v1.md). Branch `mpz-studio-v1`. Offene Tech-Schuld: [#168](https://github.com/flxln/schulnavigator/issues/168) (DELETE Hotspot Fehler-Mapping).
