@@ -157,7 +157,7 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | Domäne | Aktion | Issue(s) | Status | Studio | Plan A |
 |--------|--------|----------|--------|--------|--------|
 | **Raum** | konfigurieren (Stammdaten, Viewer) | [#160](https://github.com/flxln/schulnavigator/issues/160), Shell [#159](https://github.com/flxln/schulnavigator/issues/159) | ✓ | ja | JSON |
-| **Raum** | Raumbilder Flat / 360° hochladen | [#173](https://github.com/flxln/schulnavigator/issues/173) | — | — | Datei + `export:pano` / `export:pano360` |
+| **Raum** | Raumbilder Flat / 360° hochladen | [#173](https://github.com/flxln/schulnavigator/issues/173) | ✓ | ja | Datei + `export:pano` / `export:pano360` |
 | **Medien** | erstellen (audio, video, foto, text) | [#147](https://github.com/flxln/schulnavigator/issues/147) | ✓ | ja (Upload) | `content:ingest` |
 | **Medien** | erstellen (link, embed) | [#172](https://github.com/flxln/schulnavigator/issues/172) | ✓ | ja (Modal) | JSON + Snippet |
 | **Medien** | bearbeiten (Metadaten) | [#171](https://github.com/flxln/schulnavigator/issues/171) | ✓ | ja | JSON |
@@ -183,7 +183,7 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | **Querschnitt** | Atomarer Schreib-Layer | [#146](https://github.com/flxln/schulnavigator/issues/146) | ✓ | (intern) | CLI nutzt gleiche IO |
 | **Querschnitt** | Brand, Hub, Deploy | [#174](https://github.com/flxln/schulnavigator/issues/174), [#178](https://github.com/flxln/schulnavigator/issues/178)–[#180](https://github.com/flxln/schulnavigator/issues/180) | — | — | Code / Skripte |
 
-**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) — **#172** link/embed im Studio anlegen erledigt. **Nächstes Issue:** [#173](https://github.com/flxln/schulnavigator/issues/173) Raumbild-Upload.
+**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) — **#173** Raumbild-Upload im Studio erledigt. **Nächstes Issue:** [#174](https://github.com/flxln/schulnavigator/issues/174) Brand & Design.
 
 ---
 
@@ -194,7 +194,7 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | `/mpz/studio` | #151 | Dashboard, Validierung |
 | `/mpz/studio/stationen` | #151 | Stations-Grid |
 | `/mpz/studio/stationen/[slug]` | #159 | Detail-Shell + Tabs |
-| Tab Stammdaten | #160 | Titel, Beschreibung, Viewer |
+| Tab Stammdaten | #160, #173 | Titel, Beschreibung, Viewer, Raumbild-Upload |
 | Tab Medien | #161, #171, #172 | Liste, Bearbeiten (PATCH), Entfernen, Modal Ingest (alle Typen) |
 | Tab Hotspots | #162, #165–#168 | CRUD, Kalibrier-Links |
 | Tab Dialog-Audio | #163 | Upload + Segment-Audit |
