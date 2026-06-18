@@ -68,7 +68,19 @@ Guard wie alle `/api/mpz/*`-Routen.
 
 **Validierung (#150, #155):** Nach jedem Studio-Write läuft Post-Validate (`validateStationsFile` + `validateStationAssets` importiert). Bei Fehlern im Scope der geänderten Station wird **kein rename** ausgeführt (`stations.json` bleibt unverändert). Medien-Ingest läuft in `withMpzWriteLock`. Ingest-APIs liefern `validation` + `mtime` inline.
 
-**Grenzen:** Schreibt nur lokale Dateien (`data/stations.json`, `public/media/`, `content/dialog-audio/`). Kein Git-Commit aus dem Studio — nach Änderungen manuell `git commit`, Deploy (Build führt `validate:stations` ohnehin aus).
+**Grenzen:** Schreibt nur lokale Dateien (`data/stations.json`, `public/media/`, `content/dialog-audio/`, ggf. `public/qr/`, `lib/access-token-constants.mjs`, `.env.local`). Kein Git-Commit aus dem Studio — nach Änderungen manuell `git commit`, Deploy (Build führt `validate:stations` ohnehin aus).
+
+**Deploy-Tab (#174):** [`/mpz/studio/deploy`](http://localhost:3000/mpz/studio/deploy) — Env (`NEXT_PUBLIC_BASE_URL`, `NEXT_PUBLIC_EMBED_ENABLED`), QR-Generierung, Token-Rotation (Dry-Run/Live), validate-all, Vorschau-Links.
+
+| Aktion | API |
+|--------|-----|
+| Env lesen/speichern | `GET` / `PATCH /api/mpz/deploy/env` |
+| QR generieren | `POST /api/mpz/deploy/generate-qr` — Body `{ dryRun?, preset?: 'all' \| 'schulfest' }` |
+| Token rotieren | `POST /api/mpz/deploy/rotate-tokens` — Body `{ dryRun: boolean }` |
+| Validate-all | `POST /api/mpz/deploy/validate-all` — `validate:stations`, `validate:coach`, `validate:tokens`, `test` |
+| Vorschau-Links | `GET /api/mpz/deploy/preview-links` |
+
+Nach Änderungen an `NEXT_PUBLIC_*` in `.env.local`: **Dev-Server neu starten** (`npm run dev`), damit Next.js die Werte lädt. Subprocess-Aktionen (QR, Token, validate-all) rufen dieselben npm-Skripte wie Plan A auf; kein Coolify-Deploy aus dem Studio.
 
 Details und Testrouten: [lokal-testen-und-anschauen.md](./lokal-testen-und-anschauen.md) (Abschnitt MPZ Studio).
 
