@@ -2,6 +2,7 @@ import { existsSync, readFileSync, statSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import type { StationsFile } from '@/lib/types'
+import { jpegDimensionsFromBuffer, webpDimensionsFromBuffer } from '@/lib/image-dimensions'
 
 const WARN_BYTES = 500 * 1024
 const WARN_PANO360_BYTES = 4 * 1024 * 1024
@@ -45,20 +46,26 @@ function isJpegFile(fsPath: string): boolean {
 
 function jpegDimensions(fsPath: string): { width: number; height: number } | null {
   const buf = readFileSync(fsPath)
-  let i = 2
-  while (i < buf.length - 8) {
-    if (buf[i] !== 0xff) return null
-    const marker = buf[i + 1]
-    if (marker === 0xc0 || marker === 0xc2) {
-      return {
-        height: buf.readUInt16BE(i + 5),
-        width: buf.readUInt16BE(i + 7),
-      }
-    }
-    const len = buf.readUInt16BE(i + 2)
-    i += 2 + len
+  return jpegDimensionsFromBuffer(buf)
+}
+
+function webpDimensions(fsPath: string): { width: number; height: number } | null {
+  const buf = readFileSync(fsPath)
+  return webpDimensionsFromBuffer(buf)
+}
+
+function checkPanorama360Ratio(
+  label: string,
+  urlPath: string,
+  dims: { width: number; height: number },
+  errors: string[],
+): void {
+  const ratio = dims.width / dims.height
+  if (Math.abs(ratio - 2) > PANO360_RATIO_TOLERANCE) {
+    errors.push(
+      `${label}: ${urlPath} hat Seitenverhältnis ${ratio.toFixed(2)}:1 (erwartet 2:1, ${dims.width}×${dims.height})`,
+    )
   }
-  return null
 }
 
 function checkPanorama360Asset(
@@ -78,12 +85,40 @@ function checkPanorama360Asset(
     errors.push(`${label}: ${urlPath} — JPEG-Dimensionen nicht lesbar`)
     return
   }
-  const ratio = dims.width / dims.height
-  if (Math.abs(ratio - 2) > PANO360_RATIO_TOLERANCE) {
+  checkPanorama360Ratio(label, urlPath, dims, errors)
+}
+
+function checkPanorama360WebpAsset(
+  label: string,
+  urlPath: string,
+  fsPath: string,
+  errors: string[],
+  warnings: string[],
+): void {
+  let st
+  try {
+    st = statSync(fsPath)
+  } catch {
+    errors.push(`${label}: Datei fehlt — ${urlPath}`)
+    return
+  }
+  if (st.size < MIN_JPEG_BYTES) {
     errors.push(
-      `${label}: ${urlPath} hat Seitenverhältnis ${ratio.toFixed(2)}:1 (erwartet 2:1, ${dims.width}×${dims.height})`,
+      `${label}: ${urlPath} ist zu klein (${st.size} B) — vermutlich leere Datei`,
+    )
+    return
+  }
+  if (st.size > WARN_PANO360_BYTES) {
+    warnings.push(
+      `${label}: ${urlPath} ist groß (${Math.round(st.size / 1024)} KB, Schwellwert ${WARN_PANO360_BYTES / 1024} KB)`,
     )
   }
+  const dims = webpDimensions(fsPath)
+  if (!dims) {
+    errors.push(`${label}: ${urlPath} — WebP-Dimensionen nicht lesbar`)
+    return
+  }
+  checkPanorama360Ratio(label, urlPath, dims, errors)
 }
 
 function checkJpegAsset(
@@ -180,6 +215,14 @@ export function validateStationAssets(
         errors.push(`Station ${slug} (panorama360): Datei fehlt — ${st.panorama360}`)
       } else if (/\.jpe?g$/i.test(fsPath)) {
         checkPanorama360Asset(
+          `Station ${slug} (panorama360)`,
+          st.panorama360,
+          fsPath,
+          errors,
+          warnings,
+        )
+      } else if (/\.webp$/i.test(fsPath)) {
+        checkPanorama360WebpAsset(
           `Station ${slug} (panorama360)`,
           st.panorama360,
           fsPath,

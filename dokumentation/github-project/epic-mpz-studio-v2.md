@@ -70,7 +70,7 @@ Leitplanken unverändert (ADR-022): nur `NODE_ENV=development`, nie Coolify, kei
 - [x] Milestone „MPZ Studio v2“ (#9) · Branch `mpz-studio-v2`
 - [x] Medien PATCH (#171) — umgesetzt 2026-06-18, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-171-2026-06-18.md](../reviews/post-mortem-171-2026-06-18.md)
 - [x] Medien link/embed (#172) — umgesetzt 2026-06-18, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-172-2026-06-18.md](../reviews/post-mortem-172-2026-06-18.md)
-- [ ] Raumbild-Upload (#173)
+- [x] Raumbild-Upload (#173) — umgesetzt 2026-06-18, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-173-2026-06-18.md](../reviews/post-mortem-173-2026-06-18.md)
 - [ ] Deploy-Tab (#174)
 - [ ] Dialog-Tab (#175)
 - [ ] Dialog-Hotspots (#176)
