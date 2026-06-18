@@ -64,6 +64,8 @@ Route: `/mpz/studio/stationen/[slug]?tab={stammdaten|medien|hotspots|dialog-audi
 
 Guard wie alle `/api/mpz/*`-Routen.
 
+**Fehler-Codes:** JSON-Feld `error` ist durchgängig `SCREAMING_SNAKE_CASE` (z. B. `NOT_FOUND`, `INVALID_JSON`, `INTERNAL_ERROR`). Domain-Codes werden unverändert durchgereicht. Konvention für Agenten: [`.cursor/rules/error-conventions.mdc`](../.cursor/rules/error-conventions.mdc).
+
 **Validierung (#150, #155):** Nach jedem Studio-Write läuft Post-Validate (`validateStationsFile` + `validateStationAssets` importiert). Bei Fehlern im Scope der geänderten Station wird **kein rename** ausgeführt (`stations.json` bleibt unverändert). Medien-Ingest läuft in `withMpzWriteLock`. Ingest-APIs liefern `validation` + `mtime` inline.
 
 **Grenzen:** Schreibt nur lokale Dateien (`data/stations.json`, `public/media/`, `content/dialog-audio/`). Kein Git-Commit aus dem Studio — nach Änderungen manuell `git commit`, Deploy (Build führt `validate:stations` ohnehin aus).

@@ -9,8 +9,6 @@ import {
 
 export const runtime = 'nodejs'
 
-// lowercase invalid_json/invalid_body — konsistent mit medien/[mediumId]/route.ts;
-// Hotspots-Route nutzt INVALID_BODY uppercase (Tech-Debt, nicht hier übernehmen).
 const POST_CLIENT_ERROR_400 = new Set(['INVALID_TYP', 'INVALID_ID', 'DUPLICATE_ID'])
 const POST_CLIENT_ERROR_422 = new Set([
   'INVALID_QUELLE',
@@ -75,7 +73,7 @@ export function parseCreate(body: unknown): AddStationMediumInput | null {
 
   if (Object.hasOwn(raw, 'openIn')) {
     // Nur Typ-Guard (strukturell). Wert-Validierung ('external' vs. anderer String)
-    // übernimmt die Domain → INVALID_OPEN_IN (422) statt 400 invalid_body.
+    // übernimmt die Domain → INVALID_OPEN_IN (422) statt 400 INVALID_BODY.
     if (typeof raw.openIn !== 'string') {
       return null
     }
@@ -114,7 +112,7 @@ export const POST = withMpzStudioAccess(async (req: NextRequest, context) => {
     body = await req.json()
   } catch {
     return NextResponse.json(
-      { error: 'invalid_json', message: 'Kein gültiges JSON.' },
+      { error: 'INVALID_JSON', message: 'Kein gültiges JSON.' },
       { status: 400 },
     )
   }
@@ -123,7 +121,7 @@ export const POST = withMpzStudioAccess(async (req: NextRequest, context) => {
   if (!input) {
     return NextResponse.json(
       {
-        error: 'invalid_body',
+        error: 'INVALID_BODY',
         message:
           'Body muss typ (link|embed) und quelle (string) enthalten; optionale Felder: id, untertitel, thumbnail, openIn, embedAllow.',
       },
@@ -144,7 +142,7 @@ export const POST = withMpzStudioAccess(async (req: NextRequest, context) => {
       return NextResponse.json({ error: err.code, message: err.message }, { status })
     }
     return NextResponse.json(
-      { error: 'internal', message: 'Unerwarteter Fehler beim Anlegen des Mediums.' },
+      { error: 'INTERNAL_ERROR', message: 'Unerwarteter Fehler beim Anlegen des Mediums.' },
       { status: 500 },
     )
   }

@@ -24,7 +24,7 @@ export const POST = withMpzStudioAccess(async (req: NextRequest) => {
     form = await req.formData()
   } catch {
     return NextResponse.json(
-      { error: 'invalid_form', message: 'Kein gültiges multipart/form-data.' },
+      { error: 'INVALID_FORM', message: 'Kein gültiges multipart/form-data.' },
       { status: 400 },
     )
   }
@@ -32,7 +32,7 @@ export const POST = withMpzStudioAccess(async (req: NextRequest) => {
   const file = form.get('file')
   if (!(file instanceof File)) {
     return NextResponse.json(
-      { error: 'missing_file', message: 'Feld "file" fehlt oder ist keine Datei.' },
+      { error: 'MISSING_FILE', message: 'Feld "file" fehlt oder ist keine Datei.' },
       { status: 400 },
     )
   }
@@ -41,7 +41,7 @@ export const POST = withMpzStudioAccess(async (req: NextRequest) => {
   const segmentIndexRaw = readField(form, 'segmentIndex')
   if (!slug || segmentIndexRaw === undefined) {
     return NextResponse.json(
-      { error: 'missing_fields', message: 'Felder "slug" und "segmentIndex" sind erforderlich.' },
+      { error: 'MISSING_FIELDS', message: 'Felder "slug" und "segmentIndex" sind erforderlich.' },
       { status: 400 },
     )
   }
@@ -49,7 +49,7 @@ export const POST = withMpzStudioAccess(async (req: NextRequest) => {
   const segmentIndex = Number.parseInt(segmentIndexRaw, 10)
   if (Number.isNaN(segmentIndex)) {
     return NextResponse.json(
-      { error: 'invalid_segment', message: 'segmentIndex muss eine Zahl sein.' },
+      { error: 'INVALID_SEGMENT', message: 'segmentIndex muss eine Zahl sein.' },
       { status: 422 },
     )
   }
@@ -90,7 +90,7 @@ export const POST = withMpzStudioAccess(async (req: NextRequest) => {
       return NextResponse.json({ error: err.code, message: err.message }, { status })
     }
     return NextResponse.json(
-      { error: 'internal', message: 'Unerwarteter Fehler beim Dialog-Upload.' },
+      { error: 'INTERNAL_ERROR', message: 'Unerwarteter Fehler beim Dialog-Upload.' },
       { status: 500 },
     )
   }

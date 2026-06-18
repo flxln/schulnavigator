@@ -19,7 +19,7 @@ export const POST = withMpzStudioAccess(async (req: NextRequest) => {
     form = await req.formData()
   } catch {
     return NextResponse.json(
-      { error: 'invalid_form', message: 'Kein gültiges multipart/form-data.' },
+      { error: 'INVALID_FORM', message: 'Kein gültiges multipart/form-data.' },
       { status: 400 },
     )
   }
@@ -27,7 +27,7 @@ export const POST = withMpzStudioAccess(async (req: NextRequest) => {
   const file = form.get('file')
   if (!(file instanceof File)) {
     return NextResponse.json(
-      { error: 'missing_file', message: 'Feld "file" fehlt oder ist keine Datei.' },
+      { error: 'MISSING_FILE', message: 'Feld "file" fehlt oder ist keine Datei.' },
       { status: 400 },
     )
   }
@@ -35,7 +35,7 @@ export const POST = withMpzStudioAccess(async (req: NextRequest) => {
   const slug = readField(form, 'slug')
   if (!slug) {
     return NextResponse.json(
-      { error: 'missing_fields', message: 'Feld "slug" ist erforderlich.' },
+      { error: 'MISSING_FIELDS', message: 'Feld "slug" ist erforderlich.' },
       { status: 400 },
     )
   }
@@ -64,7 +64,7 @@ export const POST = withMpzStudioAccess(async (req: NextRequest) => {
       return NextResponse.json({ error: err.code, message: err.message }, { status })
     }
     return NextResponse.json(
-      { error: 'internal', message: 'Unerwarteter Fehler beim Upload.' },
+      { error: 'INTERNAL_ERROR', message: 'Unerwarteter Fehler beim Upload.' },
       { status: 500 },
     )
   }

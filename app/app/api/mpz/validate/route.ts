@@ -12,13 +12,13 @@ export const GET = withMpzStudioAccess(async () => {
   } catch (err) {
     if (err instanceof MpzContentIoError) {
       return NextResponse.json(
-        { error: 'io', message: err.message },
+        { error: 'IO', message: err.message },
         { status: 500 },
       )
     }
     return NextResponse.json(
       {
-        error: 'validation_failed',
+        error: 'VALIDATION_FAILED',
         message: err instanceof Error ? err.message : 'Unbekannter Fehler',
       },
       { status: 500 },

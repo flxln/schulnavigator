@@ -120,7 +120,7 @@ describe('PATCH /api/mpz/stations/[slug]/medien/[mediumId]', () => {
     expect(res.status).toBe(401)
   })
 
-  it('ungültiger Body → 400 invalid_body', async () => {
+  it('ungültiger Body → 400 INVALID_BODY', async () => {
     vi.stubEnv('NODE_ENV', 'development')
     vi.stubEnv('SN_MPZ_STUDIO_SECRET', SECRET)
     const res = await PATCH(
@@ -129,7 +129,7 @@ describe('PATCH /api/mpz/stations/[slug]/medien/[mediumId]', () => {
     )
     expect(res.status).toBe(400)
     const json = (await res.json()) as { error: string }
-    expect(json.error).toBe('invalid_body')
+    expect(json.error).toBe('INVALID_BODY')
   })
 
   it('Erfolg mit gemocktem patchStationMedium', async () => {
