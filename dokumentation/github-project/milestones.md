@@ -56,5 +56,12 @@ Der Fortschrittsbalken in GitHub ergibt sich automatisch aus den geschlossenen I
 
 ## MPZ Studio v1 — Station-Detail & Content-Pflege (ADR-022)
 
-**Fällig:** 31.07.2026
-**Beschreibung:** Post-Fest-Erweiterung: Station-Detail unter `/mpz/studio/stationen/[slug]` mit Tabs Stammdaten, Medien, Hotspots, Dialog-Audio. Epic [#158](https://github.com/flxln/schulnavigator/issues/158) **abgeschlossen** 2026-06-18; Unterissues #159–#168 — [epic-mpz-studio-v1.md](./epic-mpz-studio-v1.md). Branch `mpz-studio-v1`.
+**Fällig:** 31.07.2026 · **Status:** abgeschlossen (2026-06-18); **0 offene Issues** im Milestone
+**Beschreibung:** Station-Detail unter `/mpz/studio/stationen/[slug]` mit Tabs Stammdaten, Medien, Hotspots, Dialog-Audio. Epic [#158](https://github.com/flxln/schulnavigator/issues/158) geschlossen; Unterissues #159–#168 erledigt — [epic-mpz-studio-v1.md](./epic-mpz-studio-v1.md). **Nächster Schritt:** Merge Branch `mpz-studio-v1` → `main` (PR).
+
+---
+
+## MPZ Studio v2 — Content-Vollständigkeit & Betrieb (ADR-022)
+
+**Fällig:** 31.08.2026 · **GitHub-Milestone:** [#9](https://github.com/flxln/schulnavigator/milestone/9)
+**Beschreibung:** Fehlende Studio-Pflege: Raumbild-Upload, Medien bearbeiten/link/embed, Dialog-Editor, Dialog-Hotspots, Coach-CRUD, Deploy-Tab, Config-Extraktion. Epic und Issues **noch anzulegen** — [epic-mpz-studio-v2.md](./epic-mpz-studio-v2.md), [mpz-studio-ui.md](../kurzfristige-ideen/mpz-studio-ui.md). v3 (Polish) bewusst später.
