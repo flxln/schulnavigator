@@ -23,6 +23,12 @@ vi.mock('next/link', () => ({
   ),
 }))
 
+vi.mock('@/components/mpz-studio/media-ingest-modal-context', () => ({
+  useMediaIngest: () => ({
+    openMediaIngest: vi.fn(),
+  }),
+}))
+
 vi.mock('@/components/mpz-studio/studio-validation-context', () => ({
   useStudioValidation: () => ({
     validateNow: vi.fn().mockResolvedValue(undefined),
@@ -96,7 +102,7 @@ describe('StationHotspotsTable', () => {
 
     render(<StationHotspotsTable slug="kunst" station={station} />)
 
-    expect(screen.getByRole('link', { name: 'Medium hinzufügen' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Medium hinzufügen' })).toBeTruthy()
     expect(screen.queryByRole('button', { name: 'Hotspot anlegen' })).toBeNull()
 
     vi.unstubAllGlobals()

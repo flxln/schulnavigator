@@ -104,7 +104,7 @@ function uniqueDiskPath(destDir: string, filename: string): string {
   return join(destDir, candidate)
 }
 
-function uniqueMediumId(existing: Set<string>, base: string): string {
+export function uniqueMediumId(existing: Set<string>, base: string): string {
   if (!existing.has(base)) return base
   let n = 2
   while (existing.has(`${base}-${n}`)) n += 1

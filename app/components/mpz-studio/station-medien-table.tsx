@@ -1,8 +1,8 @@
 'use client'
 
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Fragment, useEffect, useState, useTransition } from 'react'
+import { useMediaIngest } from '@/components/mpz-studio/media-ingest-modal-context'
 import { StationMediumEditForm } from '@/components/mpz-studio/station-medium-edit-form'
 import {
   markMpzStudioDirty,
@@ -65,6 +65,7 @@ function successMessage(
 
 export function StationMedienTable({ slug, station }: StationMedienTableProps) {
   const router = useRouter()
+  const { openMediaIngest } = useMediaIngest()
   const { validateNow } = useStudioValidation()
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
@@ -89,7 +90,6 @@ export function StationMedienTable({ slug, station }: StationMedienTableProps) {
 
   const stationRef = station
   const medien = stationRef.medien ?? []
-  const ingestHref = `/mpz/studio/ingest?slug=${encodeURIComponent(slug)}`
 
   async function handleRemove(medium: Medium) {
     const block = hotspotBlockMessage(stationRef, medium.id)
@@ -149,26 +149,28 @@ export function StationMedienTable({ slug, station }: StationMedienTableProps) {
           {medien.length} {medien.length === 1 ? 'Eintrag' : 'Einträge'} in{' '}
           <code className="font-mono text-xs">medien[]</code>
         </p>
-        <Link
-          href={ingestHref}
+        <button
+          type="button"
+          onClick={() => openMediaIngest({ slug })}
           className="rounded-gs39-sm bg-accent px-3 py-2 font-semibold text-white"
         >
           Medien hinzufügen
-        </Link>
+        </button>
       </div>
 
       {medien.length === 0 ? (
         <div className="rounded-gs39-md border border-dashed border-border-1 bg-bg-1 px-4 py-8 text-center">
           <p className="mb-3 font-semibold text-fg-1">Noch keine Medien</p>
           <p className="mb-4 text-fg-3">
-            Füge Audio, Video, Foto oder Text für diese Station hinzu.
+            Füge Audio, Video, Foto, Text, Link oder Embed für diese Station hinzu.
           </p>
-          <Link
-            href={ingestHref}
+          <button
+            type="button"
+            onClick={() => openMediaIngest({ slug })}
             className="inline-block rounded-gs39-sm bg-accent px-4 py-2 font-semibold text-white"
           >
             Erstes Medium hinzufügen
-          </Link>
+          </button>
         </div>
       ) : (
         <div className="overflow-x-auto rounded-gs39-md border border-border-1">

@@ -1,4 +1,5 @@
 import { StudioShell } from '@/components/mpz-studio/studio-shell'
+import { MediaIngestModalProvider } from '@/components/mpz-studio/media-ingest-modal-context'
 import { StudioValidationProvider } from '@/components/mpz-studio/studio-validation-context'
 
 export default function MpzStudioLayout({
@@ -8,7 +9,9 @@ export default function MpzStudioLayout({
 }>) {
   return (
     <StudioValidationProvider>
-      <StudioShell>{children}</StudioShell>
+      <MediaIngestModalProvider>
+        <StudioShell>{children}</StudioShell>
+      </MediaIngestModalProvider>
     </StudioValidationProvider>
   )
 }

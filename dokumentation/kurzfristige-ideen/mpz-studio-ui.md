@@ -159,7 +159,7 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | **Raum** | konfigurieren (Stammdaten, Viewer) | [#160](https://github.com/flxln/schulnavigator/issues/160), Shell [#159](https://github.com/flxln/schulnavigator/issues/159) | ✓ | ja | JSON |
 | **Raum** | Raumbilder Flat / 360° hochladen | [#173](https://github.com/flxln/schulnavigator/issues/173) | — | — | Datei + `export:pano` / `export:pano360` |
 | **Medien** | erstellen (audio, video, foto, text) | [#147](https://github.com/flxln/schulnavigator/issues/147) | ✓ | ja (Upload) | `content:ingest` |
-| **Medien** | erstellen (link, embed) | [#172](https://github.com/flxln/schulnavigator/issues/172) | — | — | JSON + Snippet |
+| **Medien** | erstellen (link, embed) | [#172](https://github.com/flxln/schulnavigator/issues/172) | ✓ | ja (Modal) | JSON + Snippet |
 | **Medien** | bearbeiten (Metadaten) | [#171](https://github.com/flxln/schulnavigator/issues/171) | ✓ | ja | JSON |
 | **Medien** | löschen | [#161](https://github.com/flxln/schulnavigator/issues/161) | ✓ | ja | JSON |
 | **Medien** | Tabelle + Link zu Ingest | [#161](https://github.com/flxln/schulnavigator/issues/161) | ✓ | ja | — |
@@ -183,7 +183,7 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | **Querschnitt** | Atomarer Schreib-Layer | [#146](https://github.com/flxln/schulnavigator/issues/146) | ✓ | (intern) | CLI nutzt gleiche IO |
 | **Querschnitt** | Brand, Hub, Deploy | [#174](https://github.com/flxln/schulnavigator/issues/174), [#178](https://github.com/flxln/schulnavigator/issues/178)–[#180](https://github.com/flxln/schulnavigator/issues/180) | — | — | Code / Skripte |
 
-**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) — **#171** Medien PATCH erledigt. **Nächstes Issue:** [#172](https://github.com/flxln/schulnavigator/issues/172) link/embed im Studio anlegen.
+**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) — **#172** link/embed im Studio anlegen erledigt. **Nächstes Issue:** [#173](https://github.com/flxln/schulnavigator/issues/173) Raumbild-Upload.
 
 ---
 
@@ -195,9 +195,9 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | `/mpz/studio/stationen` | #151 | Stations-Grid |
 | `/mpz/studio/stationen/[slug]` | #159 | Detail-Shell + Tabs |
 | Tab Stammdaten | #160 | Titel, Beschreibung, Viewer |
-| Tab Medien | #161, #171 | Liste, Bearbeiten (PATCH), Entfernen, Link Ingest |
+| Tab Medien | #161, #171, #172 | Liste, Bearbeiten (PATCH), Entfernen, Modal Ingest (alle Typen) |
 | Tab Hotspots | #162, #165–#168 | CRUD, Kalibrier-Links |
 | Tab Dialog-Audio | #163 | Upload + Segment-Audit |
-| `/mpz/studio/ingest` | #147 | Medien hochladen |
+| `/mpz/studio/ingest` | #147, #172 | Deep-Link öffnet Medien-Modal |
 | `/mpz/studio/dialog-audio` | #148 | Dialog-Audio (global) |
 | `/mpz/calib/flat/[slug]` | #149 | Flat-Hotspot-Kalibrierung |
