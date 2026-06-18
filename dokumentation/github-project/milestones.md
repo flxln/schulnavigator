@@ -64,4 +64,4 @@ Der Fortschrittsbalken in GitHub ergibt sich automatisch aus den geschlossenen I
 ## MPZ Studio v2 — Content-Vollständigkeit & Betrieb (ADR-022)
 
 **Fällig:** 31.08.2026 · **GitHub-Milestone:** [#9](https://github.com/flxln/schulnavigator/milestone/9)
-**Beschreibung:** Fehlende Studio-Pflege: Raumbild-Upload, Medien bearbeiten/link/embed, Dialog-Editor, Dialog-Hotspots, Coach-CRUD, Deploy-Tab, Config-Extraktion. Epic noch anzulegen — [epic-mpz-studio-v2.md](./epic-mpz-studio-v2.md), Branch `mpz-studio-v2`.
+**Beschreibung:** Fehlende Studio-Pflege: Raumbild-Upload, Medien bearbeiten/link/embed, Dialog-Editor, Dialog-Hotspots, Coach-CRUD, Deploy-Tab, Config-Extraktion. Epic [#170](https://github.com/flxln/schulnavigator/issues/170), Unterissues #171–#181 — [epic-mpz-studio-v2.md](./epic-mpz-studio-v2.md), Branch `mpz-studio-v2`.

@@ -2,7 +2,7 @@
 
 _Inhaltliche Kategorisierung für Feature-Planung und Issues — unabhängig von der UI-Navigation in der [Studio-Spezifikation](../projektmanagement/2026-06-16-mpz-studio-spezifikation.md)._
 
-**Epics:** [v0 #144](https://github.com/flxln/schulnavigator/issues/144) · [v1 #158](https://github.com/flxln/schulnavigator/issues/158) (abgeschlossen, Merge ausstehend) · **v2** [epic-mpz-studio-v2.md](../github-project/epic-mpz-studio-v2.md) (geplant) · v3 Polish nach Bedarf
+**Epics:** [v0 #144](https://github.com/flxln/schulnavigator/issues/144) · [v1 #158](https://github.com/flxln/schulnavigator/issues/158) · **[v2 #170](https://github.com/flxln/schulnavigator/issues/170)** (in Arbeit, Branch `mpz-studio-v2`) · v3 Polish nach Bedarf
 
 **Phasierung (Spec):** v2 = fehlende Content-Pflege + Betrieb · v3 = Komfort-Editoren und Batch — siehe [Roadmap v2/v3](#roadmap-v2--v3) unten.
 
@@ -157,33 +157,33 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | Domäne | Aktion | Issue(s) | Status | Studio | Plan A |
 |--------|--------|----------|--------|--------|--------|
 | **Raum** | konfigurieren (Stammdaten, Viewer) | [#160](https://github.com/flxln/schulnavigator/issues/160), Shell [#159](https://github.com/flxln/schulnavigator/issues/159) | ✓ | ja | JSON |
-| **Raum** | Raumbilder Flat / 360° hochladen | — (v2) | — | — | Datei + `export:pano` / `export:pano360` |
+| **Raum** | Raumbilder Flat / 360° hochladen | [#173](https://github.com/flxln/schulnavigator/issues/173) | — | — | Datei + `export:pano` / `export:pano360` |
 | **Medien** | erstellen (audio, video, foto, text) | [#147](https://github.com/flxln/schulnavigator/issues/147) | ✓ | ja (Upload) | `content:ingest` |
-| **Medien** | erstellen (link, embed) | — | — | — | JSON + Snippet `sn-medium-link` / `sn-medium-embed` |
-| **Medien** | bearbeiten (Metadaten) | — (v2) | — | — | JSON |
+| **Medien** | erstellen (link, embed) | [#172](https://github.com/flxln/schulnavigator/issues/172) | — | — | JSON + Snippet |
+| **Medien** | bearbeiten (Metadaten) | [#171](https://github.com/flxln/schulnavigator/issues/171) | — | — | JSON |
 | **Medien** | löschen | [#161](https://github.com/flxln/schulnavigator/issues/161) | ✓ | ja | JSON |
 | **Medien** | Tabelle + Link zu Ingest | [#161](https://github.com/flxln/schulnavigator/issues/161) | ✓ | ja | — |
 | **Hotspots** | Medien-Hotspot erstellen | [#165](https://github.com/flxln/schulnavigator/issues/165) | ✓ | ja | JSON + Kalibrier-URL |
-| **Hotspots** | Dialog-Hotspot erstellen | — (v2, [Epic v1 Abgrenzung](../github-project/epic-mpz-studio-v1.md)) | ~ | nur Kalibrierung [#149](https://github.com/flxln/schulnavigator/issues/149) | JSON |
+| **Hotspots** | Dialog-Hotspot erstellen | [#176](https://github.com/flxln/schulnavigator/issues/176) | ~ | nur Kalibrierung [#149](https://github.com/flxln/schulnavigator/issues/149) | JSON |
 | **Hotspots** | Position kalibrieren (Flat) | [#149](https://github.com/flxln/schulnavigator/issues/149) | ✓ | `/mpz/calib/flat/{slug}` | `?hotspot-calib=1` (Sphere) |
 | **Hotspots** | Startblick Sphere persistieren | [#153](https://github.com/flxln/schulnavigator/issues/153) | ✓ | ja | JSON |
 | **Hotspots** | Icon hochladen | [#166](https://github.com/flxln/schulnavigator/issues/166) | ✓ | ja | Datei manuell |
 | **Hotspots** | bearbeiten | [#167](https://github.com/flxln/schulnavigator/issues/167) | ✓ | ja | JSON |
 | **Hotspots** | löschen | [#162](https://github.com/flxln/schulnavigator/issues/162), [#168](https://github.com/flxln/schulnavigator/issues/168) | ✓ | ja | JSON |
 | **Hotspots** | Tabelle + Kalibrier-Links | [#162](https://github.com/flxln/schulnavigator/issues/162) | ✓ | ja | — |
-| **Dialog** | Segmente & Texte | — (v2) | — | — | JSON + Snippet `sn-dialog-segment` |
-| **Dialog** | Sprechblasen-Layout (`bubble`) | — (v2) | — | — | JSON |
+| **Dialog** | Segmente & Texte | [#175](https://github.com/flxln/schulnavigator/issues/175) | — | — | JSON + Snippet |
+| **Dialog** | Sprechblasen-Layout (`bubble`) | [#175](https://github.com/flxln/schulnavigator/issues/175) | — | — | JSON |
 | **Dialog** | Audio-Clips hochladen | [#148](https://github.com/flxln/schulnavigator/issues/148), Tab [#163](https://github.com/flxln/schulnavigator/issues/163) | ✓ | ja | `content:ingest-dialog` |
 | **Dialog** | Audio-Status / fehlende Clips | [#148](https://github.com/flxln/schulnavigator/issues/148), [#163](https://github.com/flxln/schulnavigator/issues/163) | ✓ | ja | — |
-| **Dialog** | bearbeiten / löschen (Segmente) | — (v2) | — | — | JSON |
-| **Coach** | erstellen / bearbeiten / löschen | — (v2) | — | — | `coach-messages.json` + `sn-coach-room-first` |
+| **Dialog** | bearbeiten / löschen (Segmente) | [#175](https://github.com/flxln/schulnavigator/issues/175) | — | — | JSON |
+| **Coach** | erstellen / bearbeiten / löschen | [#177](https://github.com/flxln/schulnavigator/issues/177) | — | — | `coach-messages.json` |
 | **Querschnitt** | Save & Validieren, Rollback | [#150](https://github.com/flxln/schulnavigator/issues/150), [#155](https://github.com/flxln/schulnavigator/issues/155) | ✓ | ja | `validate:stations` |
 | **Querschnitt** | Dashboard, Stations-Grid, Vorschau | [#151](https://github.com/flxln/schulnavigator/issues/151) | ✓ | ja | — |
 | **Querschnitt** | Dev-Guard (`/mpz/*` nur lokal) | [#145](https://github.com/flxln/schulnavigator/issues/145) | ✓ | ja | — |
 | **Querschnitt** | Atomarer Schreib-Layer | [#146](https://github.com/flxln/schulnavigator/issues/146) | ✓ | (intern) | CLI nutzt gleiche IO |
-| **Querschnitt** | Brand, Hub, Deploy | — (v2) | — | — | Code / Skripte |
+| **Querschnitt** | Brand, Hub, Deploy | [#174](https://github.com/flxln/schulnavigator/issues/174), [#178](https://github.com/flxln/schulnavigator/issues/178)–[#180](https://github.com/flxln/schulnavigator/issues/180) | — | — | Code / Skripte |
 
-**Stand:** v1 auf `main` ([PR #169](https://github.com/flxln/schulnavigator/pull/169)). **Entwicklung v2:** Branch `mpz-studio-v2`.
+**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) angelegt (#171–#181). **Nächstes Issue:** [#171](https://github.com/flxln/schulnavigator/issues/171) Medien PATCH auf Branch `mpz-studio-v2`.
 
 ---
 
