@@ -16,7 +16,7 @@ Dieser Ordner ist die **führende Spezifikation** für Milestones und Issues in 
 | [epic-zugangsmodus-konfigurierbar.md](epic-zugangsmodus-konfigurierbar.md) | Epic **#132**: ADR-021 — Zugangsmodus `open`/`gated`, Tokens ENV, Embedding/CSP — Unterissues #133–#139 |
 | [epic-mpz-studio.md](epic-mpz-studio.md) | Epic **#144**: ADR-022 — MPZ Studio v0 (internes Dev-only-Ingest-Tool) — Unterissues #145–#151, #153 · eigener Milestone „MPZ Studio v0" — **abgeschlossen** |
 | [epic-mpz-studio-v1.md](epic-mpz-studio-v1.md) | Epic **#158**: MPZ Studio v1 — Station-Detail (#159–#168) · Milestone „MPZ Studio v1" — **abgeschlossen**, Merge ausstehend |
-| [epic-mpz-studio-v2.md](epic-mpz-studio-v2.md) | MPZ Studio v2 (geplant): Content-Vollständigkeit & Betrieb — Epic noch nicht auf GitHub |
+| [epic-mpz-studio-v2.md](epic-mpz-studio-v2.md) | MPZ Studio v2 (geplant): Content-Vollständigkeit & Betrieb — Branch `mpz-studio-v2`, Milestone [#9](https://github.com/flxln/schulnavigator/milestone/9) |
 | [kurzfristige-ideen/mpz-studio-ui.md](../kurzfristige-ideen/mpz-studio-ui.md) | Domänen-CRUD-Matrix + Roadmap v2/v3 |
 | [issues-startblick.md](issues-startblick.md) | Startblick Sphere (#152, #153) und Flat-Startpan (#154) — ADR-023/024 |
 | [labels.md](labels.md) | Label-Konventionen |
@@ -99,7 +99,8 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issue **#168** (DELETE Hotspot Fehler-Mapping) — umgesetzt 2026-06-18, Branch `mpz-studio-v1`, Post-Mortem [post-mortem-168-2026-06-18.md](../reviews/post-mortem-168-2026-06-18.md)
 - [x] Issue **#164** (MPZ Studio v1: Doku & Epic-Abschluss) — umgesetzt 2026-06-18, Branch `mpz-studio-v1`; schließt Epic [#158](https://github.com/flxln/schulnavigator/issues/158)
 - [x] Epic **#158** (MPZ Studio v1 — Station-Detail & Content-Pflege) — abgeschlossen 2026-06-18, [epic-mpz-studio-v1.md](epic-mpz-studio-v1.md); GitHub-Issues #159–#168 **alle geschlossen**; Milestone „MPZ Studio v1" **0 offen**
-- [ ] **Merge** Branch `mpz-studio-v1` → `main` (14 Commits, noch kein PR)
+- [ ] **Merge** Branch `mpz-studio-v1` → `main` — erledigt ([PR #169](https://github.com/flxln/schulnavigator/pull/169))
+- [x] Branch **`mpz-studio-v2`** von `main` angelegt (Entwicklung v2)
 - [ ] Epic **MPZ Studio v2** auf GitHub anlegen — Vorlage [epic-mpz-studio-v2.md](epic-mpz-studio-v2.md)
 - [ ] **#154** Flat-Startpan (ADR-024) — [issues-startblick.md](issues-startblick.md) (unabhängig vom v1-Merge)
 

@@ -1,7 +1,7 @@
 # Epic: MPZ Studio v2 — Content-Vollständigkeit & Betrieb (ADR-022)
 
 **Milestone:** [MPZ Studio v2](https://github.com/flxln/schulnavigator/milestone/9) (GitHub #9, fällig 31.08.2026)
-**Status:** geplant — Epic-Issue und Unterissues **noch nicht** auf GitHub angelegt
+**Status:** geplant — Epic-Issue und Unterissues **noch nicht** auf GitHub angelegt · Branch **`mpz-studio-v2`**
 **Parent:** Epic [#158](https://github.com/flxln/schulnavigator/issues/158) (v1 abgeschlossen, Merge `mpz-studio-v1` → `main` ausstehend)
 
 **Domänen-Übersicht:** [mpz-studio-ui.md](../kurzfristige-ideen/mpz-studio-ui.md) · **Spec:** [2026-06-16-mpz-studio-spezifikation.md](../projektmanagement/2026-06-16-mpz-studio-spezifikation.md) (Phasierung v2/v3)
