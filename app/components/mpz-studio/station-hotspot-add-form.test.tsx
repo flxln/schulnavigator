@@ -49,7 +49,7 @@ describe('StationHotspotAddForm', () => {
   })
 
   it('ohne Medien: Hinweis auf Ingest', () => {
-    const station = getStationBySlug('kunst')!
+    const station = { ...getStationBySlug('kunst')!, medien: [] }
     render(<StationHotspotAddForm slug="kunst" station={station} />)
 
     expect(screen.getByText('Hotspot hinzufügen')).toBeTruthy()

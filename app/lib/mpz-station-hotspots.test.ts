@@ -260,7 +260,10 @@ describe('mpz-station-hotspots', () => {
     })
 
     it('NO_MEDIAS wenn keine Medien', async () => {
-      const io = makeTempIo()
+      const custom = structuredClone(fixture) as StationsFile
+      const kunst = custom.stations.find((s) => s.slug === 'kunst')!
+      kunst.medien = []
+      const io = makeTempIo(custom)
       temps.push(io.getPaths().appRoot)
       await expect(
         addStationHotspot('kunst', { id: 'hs-x', mediumId: 'm1', x: 0.5, y: 0.5 }, io),
@@ -343,6 +346,44 @@ describe('mpz-station-hotspots', () => {
           io,
         ),
       ).rejects.toMatchObject({ code: 'INVALID_ICON_SIZE' })
+    })
+
+    it('INVALID_COORDS bei yaw auf Flat-Station', async () => {
+      const io = makeTempIo(stationWithFlatMedias())
+      temps.push(io.getPaths().appRoot)
+      await expect(
+        addStationHotspot(
+          'kunst',
+          { id: 'hs-x', mediumId: 'm1', x: 0.5, y: 0.5, yaw: 0 },
+          io,
+        ),
+      ).rejects.toMatchObject({ code: 'INVALID_COORDS' })
+    })
+
+    it('INVALID_COORDS bei x/y auf Sphere-Station', async () => {
+      const io = makeTempIo()
+      temps.push(io.getPaths().appRoot)
+      await expect(
+        addStationHotspot(
+          'klassenzimmer',
+          { id: 'hs-x', mediumId: 'demo-text', yaw: 0, pitch: 0, x: 0.5 },
+          io,
+        ),
+      ).rejects.toMatchObject({ code: 'INVALID_COORDS' })
+    })
+
+    it('INVALID_ICON wenn io.fileExists false', async () => {
+      const io = makeTempIo(stationWithFlatMedias())
+      temps.push(io.getPaths().appRoot)
+      const iconPath = writeIconFile(io, 'kunst', 'ghost.svg')
+      const fakeIo = { ...io, fileExists: () => false }
+      await expect(
+        addStationHotspot(
+          'kunst',
+          { id: 'hs-x', mediumId: 'm1', x: 0.5, y: 0.5, icon: iconPath },
+          fakeIo,
+        ),
+      ).rejects.toMatchObject({ code: 'INVALID_ICON' })
     })
 
     it('NOT_FOUND bei unbekanntem Slug', async () => {

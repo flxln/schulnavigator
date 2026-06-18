@@ -51,7 +51,7 @@ describe('StationHotspotsTable', () => {
   })
 
   it('Empty-State für kunst ohne Hotspots', () => {
-    const station = getStationBySlug('kunst')!
+    const station = { ...getStationBySlug('kunst')!, hotspots: undefined, hotspots360: undefined }
     render(<StationHotspotsTable slug="kunst" station={station} />)
 
     expect(screen.getByText('Keine Hotspots')).toBeTruthy()
@@ -85,7 +85,7 @@ describe('StationHotspotsTable', () => {
   })
 
   it('ohne Medien: Ingest-Hinweis statt Anlege-Button', () => {
-    const station = getStationBySlug('kunst')!
+    const station = { ...getStationBySlug('kunst')!, medien: [] }
     vi.stubGlobal(
       'fetch',
       vi.fn().mockResolvedValue({
