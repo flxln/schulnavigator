@@ -330,8 +330,8 @@ Abgeleitet aus zwei unabhängigen Plan-Reviews (SE-15: Codex, GLM-5.1). v0 ist *
 |-------|--------|------------|
 | **Plan A — Projekttag** | CLI, JSON-Schema, Snippets, Hotspot-Kalibrierung wie heute | **erledigt** 2026-06-16 |
 | **Plan B — Projekttag** | Studio v0: Medien-Upload + Hotspots (nur lokal) | optional bis ~22.06.2026 |
-| **v1 — Post-Fest** | Coach, Embed-Allowlist (nach JSON-Extraktion), Brand-Uploads, Raumbilder | Juli 2026 |
-| **v2 — Betrieb** | Hub-Slug-Map, Station-Icons, GS39-Tokens, Deploy-Tab (QR/Token) | August 2026 |
+| **v1 — Post-Fest** | Station-Detail, Stammdaten, Medien-/Hotspot-Tabellen, Dialog-Audio-Tab | **erledigt** 2026-06-18 (Epic #158) |
+| **v2 — Betrieb** | Coach, Embed-Allowlist, Brand-Uploads, Hub/Icons/Tokens, Deploy-Tab | August 2026 |
 | **v3 — Polish** | Markdown-Editor, Dialog-Bubble-Visual-Editor, Batch-Import aus `auftraggeber/` | nach Bedarf |
 
 **Projekttag-Minimum (v0):** Was Kinder liefern — Audio, Video, Foto, Text, ggf. Hotspots. Coach, Hub, Tokens sind am Projekttag selten zeitkritisch.
@@ -377,7 +377,25 @@ Nach Directus-Migration: Studio einfrieren oder nur noch für Migration/Massenim
 3. Stationen-Editor v0 (Medien-Upload, Hotspot-Rückschreibung)
 4. Parallel: `embed-allowlist.json` extrahieren (v1)
 5. API: Datei-Upload + `validate:stations` nach Save
-6. Doku: Abschnitt in [fuer-entwickler.md](../../anleitungen/fuer-entwickler.md) wenn v0 steht
+6. Doku: Abschnitt in [fuer-entwickler.md](../../anleitungen/fuer-entwickler.md) wenn v0 steht — **erledigt** v0 (#145); **v1 Station-Detail** ergänzt (#164, Epic [#158](../github-project/epic-mpz-studio-v1.md))
+
+---
+
+## v1 — Station-Detail (Post-Fest, Epic #158)
+
+**Status:** umgesetzt 2026-06-18 (Branch `mpz-studio-v1`, Milestone „MPZ Studio v1“).
+
+v1 schließt die Lücke zwischen Stations-Grid und Einzelwerkzeugen: pro Station eine Detail-Ansicht unter `/mpz/studio/stationen/[slug]` mit Tabs Stammdaten, Medien, Hotspots und Dialog-Audio. Spezifikation: [epic-mpz-studio-v1.md](../github-project/epic-mpz-studio-v1.md), Hotspot-Editor: [2026-06-17-mpz-studio-hotspot-editor-spezifikation.md](./2026-06-17-mpz-studio-hotspot-editor-spezifikation.md).
+
+| In v1 umgesetzt | Bewusst nicht v1 (v2) |
+|-----------------|----------------------|
+| Station-Detail-Route + Tab-Shell (#159) | Coach-Editor |
+| Stammdaten-PATCH (`titel`, `beschreibung`, `viewer`) (#160) | Brand & Design |
+| Medien-/Hotspots-Tabellen (#161, #162) | Hub-Karte / Deploy-Tab |
+| Hotspot anlegen/bearbeiten + Icon-Ingest (#165–#168) | Config-Extraktion (`hub-slug-map`, Icons) |
+| Dialog-Audio-Tab pro Station (#163) | Raumbild-Upload |
+
+Entwickler-Doku: [fuer-entwickler.md](../../anleitungen/fuer-entwickler.md) (Abschnitt MPZ Studio), Testrouten: [lokal-testen-und-anschauen.md](../../anleitungen/lokal-testen-und-anschauen.md).
 
 ---
 
@@ -385,6 +403,6 @@ Nach Directus-Migration: Studio einfrieren oder nur noch für Migration/Massenim
 
 - [x] ADR für MPZ Studio (internes Tool vs. ADR-003 „kein Custom-Admin“) — entschieden als eigener [ADR-022](../adr/022-mpz-studio-internes-ingest-tool.md) (Status: entschieden, 2026-06-16); ADR-003 mit Cross-Link „ergänzt durch ADR-022“ markiert
 - [x] Flat-Hotspot-Kalibrierung: **eigene Route `/mpz/calib/flat/{slug}`** (SE-15 U2/Befund 6) — siehe [v0 — Definition of Done](#v0--definition-of-done-plan-b)
-- [ ] `SN_MPZ_STUDIO_SECRET` in `.env.example` dokumentieren (nur wenn Plan B umgesetzt)
+- [x] `SN_MPZ_STUDIO_SECRET` in `.env.example` dokumentieren — erledigt mit v0 (#145)
 - [x] Plan A: JSON-Schema, Snippets, `content:ingest` (2026-06-16)
 - [x] v0-DoD + Akzeptanzkriterien aus SE-15-Reviews (Codex, GLM-5.1) eingearbeitet (2026-06-16)

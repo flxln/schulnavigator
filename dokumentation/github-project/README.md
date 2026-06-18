@@ -94,6 +94,8 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issue **#167** (Hotspot bearbeiten PATCH) — umgesetzt 2026-06-18, Branch `mpz-studio-v1`, Post-Mortem [post-mortem-167-2026-06-18.md](../reviews/post-mortem-167-2026-06-18.md)
 - [x] Issue **#163** (MPZ Studio v1: Dialog-Audio-Tab pro Station) — umgesetzt 2026-06-18, Branch `mpz-studio-v1`, Post-Mortem [post-mortem-163-2026-06-18.md](../reviews/post-mortem-163-2026-06-18.md)
 - [x] Issue **#168** (DELETE Hotspot Fehler-Mapping) — umgesetzt 2026-06-18, Branch `mpz-studio-v1`, Post-Mortem [post-mortem-168-2026-06-18.md](../reviews/post-mortem-168-2026-06-18.md)
+- [x] Issue **#164** (MPZ Studio v1: Doku & Epic-Abschluss) — umgesetzt 2026-06-18, Branch `mpz-studio-v1`; schließt Epic [#158](https://github.com/flxln/schulnavigator/issues/158)
+- [x] Epic **#158** (MPZ Studio v1 — Station-Detail & Content-Pflege) — abgeschlossen 2026-06-18, [epic-mpz-studio-v1.md](epic-mpz-studio-v1.md)
 - [ ] **#154** Flat-Startpan (ADR-024) — [issues-startblick.md](issues-startblick.md)
 
-Letzter dokumentierter Abgleich: **2026-06-18** (#168 DELETE-Mapping erledigt; Epic #158 offen #164; #154 Flat-Startpan offen).
+Letzter dokumentierter Abgleich: **2026-06-18** (Epic #158 abgeschlossen; #154 Flat-Startpan offen).

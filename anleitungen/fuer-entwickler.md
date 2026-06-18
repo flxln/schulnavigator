@@ -25,7 +25,7 @@ Die App läuft unter [http://localhost:3000](http://localhost:3000).
 
 **Content einpflegen (JSON + Dateien, Hotspots):** [content-einpflegen.md](./content-einpflegen.md).
 
-**MPZ Studio (optional, nur `development`):** [ADR-022](../dokumentation/adr/022-mpz-studio-internes-ingest-tool.md) — internes Ingest-Tool unter `/mpz/studio` (Dashboard, Stationen-Liste, Medien, Dialog-Audio, Hotspot-Kalibrierung). Siehe Abschnitt [MPZ Studio](#mpz-studio-lokal-adr-022) unten.
+**MPZ Studio (optional, nur `development`):** [ADR-022](../dokumentation/adr/022-mpz-studio-internes-ingest-tool.md) — internes Ingest-Tool unter `/mpz/studio` (Dashboard, Stationen-Liste, **Station-Detail** mit Tabs, Medien, Dialog-Audio, Hotspot-Kalibrierung). Siehe Abschnitt [MPZ Studio](#mpz-studio-lokal-adr-022) unten.
 
 ---
 
@@ -37,10 +37,22 @@ Nur bei `NODE_ENV=development` erreichbar; in Production liefern `/mpz/*` und `/
 2. Dev-Server starten: `npm run dev`.
 3. Browser: [`/mpz/unlock`](http://localhost:3000/mpz/unlock) — Secret eingeben → Session-Cookie.
 4. [`/mpz/studio`](http://localhost:3000/mpz/studio) — Dashboard mit Validierungsstatus und Links zu allen 12 Stationen.
+5. **Station-Detail (v1, Epic #158):** [`/mpz/studio/stationen`](http://localhost:3000/mpz/studio/stationen) → Kachel **Bearbeiten** oder direkt [`/mpz/studio/stationen/{slug}`](http://localhost:3000/mpz/studio/stationen/kunst) — Tabs **Stammdaten**, **Medien**, **Hotspots**, **Dialog-Audio** (nur Stationen mit `dialog`).
 
-**Validierung (#150, #155):** Nach jedem Studio-Write läuft Post-Validate (`validateStationsFile` + `validateStationAssets` importiert). Bei Fehlern im Scope der geänderten Station wird **kein rename** ausgeführt (`stations.json` bleibt unverändert). Medien-Ingest läuft in `withMpzWriteLock`. Ingest-APIs liefern `validation` + `mtime` inline.
+**Station-Detail & Stammdaten (#159–#160, #164)**
 
-**Grenzen:** Schreibt nur lokale Dateien (`data/stations.json`, `public/media/`, `content/dialog-audio/`). Kein Git-Commit aus dem Studio — nach Änderungen manuell `git commit`, Deploy (Build führt `validate:stations` ohnehin aus).
+Route: `/mpz/studio/stationen/[slug]?tab={stammdaten|medien|hotspots|dialog-audio}` (Default: `stammdaten`). Shell: [`StationDetailShell`](../app/components/mpz-studio/station-detail-shell.tsx).
+
+| Tab | UI | Schreib-API |
+|-----|-----|-------------|
+| Stammdaten | `titel`, `beschreibung`, `viewer` (`flat` / `equirectangular`); read-only: `slug`, `bild`, `panorama360` | `PATCH /api/mpz/stations/[slug]/stammdaten` |
+| Medien | Tabelle mit Links zu Ingest, Entfernen (#161) | `DELETE /api/mpz/stations/[slug]/medien/[mediumId]` |
+| Hotspots | Tabelle, Anlegen/Bearbeiten/Entfernen, Kalibrier-Links (#162, #165–#168) | `POST`/`PATCH`/`DELETE` …/hotspots |
+| Dialog-Audio | Segment-Tabelle + Upload (#163) | `POST /api/mpz/dialog-audio/ingest` |
+
+**Stammdaten-Flow:** Formular sendet partielles JSON (`titel`, `beschreibung`, `viewer`). Domain: [`patchStationStammdaten`](../app/lib/mpz-station-stammdaten.ts) in `withMpzWriteLock` → `writeStations({ strict: true, postValidate: true })`. Bei Erfolg: `markMpzStudioDirty()` → `validateNow()` → `router.refresh()`. `viewer`-Wechsel mit bestehenden Hotspots zeigt Warnung; blockierende Konstellationen werden serverseitig abgelehnt.
+
+**Lesen:** `GET /api/mpz/stations/[slug]` liefert die Station für das Detail-Formular (serverseitig beim ersten Render aus `readStations()`).
 
 **Plan A (Pflicht + Fallback):** CLI und manuelles JSON ([content-einpflegen.md](./content-einpflegen.md)) bleiben für den Projekttag maßgeblich.
 
@@ -48,8 +60,13 @@ Nur bei `NODE_ENV=development` erreichbar; in Production liefern `/mpz/*` und `/
 
 - `POST /api/mpz/view/sphere` — Body `{ slug, startYaw, startPitch }` schreibt den Sphere-Startblick in `stations.json` (#153, ADR-023).
 - `POST` / `PATCH` / `DELETE` `/api/mpz/stations/[slug]/hotspots` bzw. `…/hotspots/[hotspotId]` — Hotspot anlegen (#165), bearbeiten (#167), entfernen (#162). Fehler-Mapping: `NOT_FOUND` → 404; Client-Domain-Codes (`DUPLICATE_ID`, `INVALID_COORDS`, …) → 400; `NOT_EDITABLE` nur bei PATCH → 403 (#168).
+- `PATCH /api/mpz/stations/[slug]/stammdaten` — Stammdaten (`titel`, `beschreibung`, `viewer`) (#160).
 
 Guard wie alle `/api/mpz/*`-Routen.
+
+**Validierung (#150, #155):** Nach jedem Studio-Write läuft Post-Validate (`validateStationsFile` + `validateStationAssets` importiert). Bei Fehlern im Scope der geänderten Station wird **kein rename** ausgeführt (`stations.json` bleibt unverändert). Medien-Ingest läuft in `withMpzWriteLock`. Ingest-APIs liefern `validation` + `mtime` inline.
+
+**Grenzen:** Schreibt nur lokale Dateien (`data/stations.json`, `public/media/`, `content/dialog-audio/`). Kein Git-Commit aus dem Studio — nach Änderungen manuell `git commit`, Deploy (Build führt `validate:stations` ohnehin aus).
 
 Details und Testrouten: [lokal-testen-und-anschauen.md](./lokal-testen-und-anschauen.md) (Abschnitt MPZ Studio).
 
