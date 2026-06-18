@@ -105,7 +105,7 @@ export const PATCH = withMpzStudioAccess(async (req: NextRequest, context) => {
     body = await req.json()
   } catch {
     return NextResponse.json(
-      { error: 'invalid_json', message: 'Kein gültiges JSON.' },
+      { error: 'INVALID_JSON', message: 'Kein gültiges JSON.' },
       { status: 400 },
     )
   }
@@ -114,7 +114,7 @@ export const PATCH = withMpzStudioAccess(async (req: NextRequest, context) => {
   if (!patch) {
     return NextResponse.json(
       {
-        error: 'invalid_body',
+        error: 'INVALID_BODY',
         message:
           'Body muss mindestens ein gültiges Feld (untertitel, thumbnail, poster, videoSource, quelle, openIn, embedAllow) enthalten.',
       },
@@ -135,7 +135,7 @@ export const PATCH = withMpzStudioAccess(async (req: NextRequest, context) => {
       return NextResponse.json({ error: err.code, message: err.message }, { status })
     }
     return NextResponse.json(
-      { error: 'internal', message: 'Unerwarteter Fehler beim Speichern des Mediums.' },
+      { error: 'INTERNAL_ERROR', message: 'Unerwarteter Fehler beim Speichern des Mediums.' },
       { status: 500 },
     )
   }
@@ -156,7 +156,7 @@ export const DELETE = withMpzStudioAccess(async (_req: NextRequest, context) => 
       return NextResponse.json({ error: err.code, message: err.message }, { status })
     }
     return NextResponse.json(
-      { error: 'internal', message: 'Unerwarteter Fehler beim Entfernen des Mediums.' },
+      { error: 'INTERNAL_ERROR', message: 'Unerwarteter Fehler beim Entfernen des Mediums.' },
       { status: 500 },
     )
   }

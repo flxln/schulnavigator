@@ -123,7 +123,7 @@ export const PATCH = withMpzStudioAccess(async (req: NextRequest, context) => {
       return NextResponse.json({ error: err.code, message: err.message }, { status })
     }
     return NextResponse.json(
-      { error: 'internal', message: 'Unerwarteter Fehler beim Bearbeiten des Hotspots.' },
+      { error: 'INTERNAL_ERROR', message: 'Unerwarteter Fehler beim Bearbeiten des Hotspots.' },
       { status: 500 },
     )
   }
@@ -144,7 +144,7 @@ export const DELETE = withMpzStudioAccess(async (_req: NextRequest, context) => 
       return NextResponse.json({ error: err.code, message: err.message }, { status })
     }
     return NextResponse.json(
-      { error: 'internal', message: 'Unerwarteter Fehler beim Entfernen des Hotspots.' },
+      { error: 'INTERNAL_ERROR', message: 'Unerwarteter Fehler beim Entfernen des Hotspots.' },
       { status: 500 },
     )
   }

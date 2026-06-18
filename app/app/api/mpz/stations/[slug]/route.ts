@@ -23,7 +23,7 @@ export const GET = withMpzStudioAccess(async (_req: NextRequest, context) => {
       return NextResponse.json({ error: err.code, message: err.message }, { status })
     }
     return NextResponse.json(
-      { error: 'internal', message: 'Unerwarteter Fehler beim Lesen der Station.' },
+      { error: 'INTERNAL_ERROR', message: 'Unerwarteter Fehler beim Lesen der Station.' },
       { status: 500 },
     )
   }

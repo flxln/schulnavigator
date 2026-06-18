@@ -78,7 +78,7 @@ describe('POST /api/mpz/stations/[slug]/medien', () => {
     expect(res.status).toBe(404)
   })
 
-  it('invalid_json → 400', async () => {
+  it('INVALID_JSON → 400', async () => {
     vi.stubEnv('NODE_ENV', 'development')
     vi.stubEnv('SN_MPZ_STUDIO_SECRET', SECRET)
     const req = new NextRequest(new URL(BASE), {
@@ -92,16 +92,16 @@ describe('POST /api/mpz/stations/[slug]/medien', () => {
     const res = await POST(req, routeContext)
     expect(res.status).toBe(400)
     const json = (await res.json()) as { error: string }
-    expect(json.error).toBe('invalid_json')
+    expect(json.error).toBe('INVALID_JSON')
   })
 
-  it('invalid_body → 400', async () => {
+  it('INVALID_BODY → 400', async () => {
     vi.stubEnv('NODE_ENV', 'development')
     vi.stubEnv('SN_MPZ_STUDIO_SECRET', SECRET)
     const res = await POST(postRequest({ typ: 'link' }, { cookie: SECRET }), routeContext)
     expect(res.status).toBe(400)
     const json = (await res.json()) as { error: string }
-    expect(json.error).toBe('invalid_body')
+    expect(json.error).toBe('INVALID_BODY')
   })
 
   it('INVALID_TYP → 400', async () => {

@@ -29,7 +29,7 @@ export const POST = withMpzStudioAccess(async (req: NextRequest) => {
     form = await req.formData()
   } catch {
     return NextResponse.json(
-      { error: 'invalid_form', message: 'Kein gültiges multipart/form-data.' },
+      { error: 'INVALID_FORM', message: 'Kein gültiges multipart/form-data.' },
       { status: 400 },
     )
   }
@@ -37,7 +37,7 @@ export const POST = withMpzStudioAccess(async (req: NextRequest) => {
   const file = form.get('file')
   if (!(file instanceof File)) {
     return NextResponse.json(
-      { error: 'missing_file', message: 'Feld "file" fehlt oder ist keine Datei.' },
+      { error: 'MISSING_FILE', message: 'Feld "file" fehlt oder ist keine Datei.' },
       { status: 400 },
     )
   }
@@ -46,13 +46,13 @@ export const POST = withMpzStudioAccess(async (req: NextRequest) => {
   const typ = readField(form, 'typ')
   if (!slug || !typ) {
     return NextResponse.json(
-      { error: 'missing_fields', message: 'Felder "slug" und "typ" sind erforderlich.' },
+      { error: 'MISSING_FIELDS', message: 'Felder "slug" und "typ" sind erforderlich.' },
       { status: 400 },
     )
   }
   if (!isUploadTyp(typ)) {
     return NextResponse.json(
-      { error: 'invalid_typ', message: `Typ "${typ}" wird nicht unterstützt.` },
+      { error: 'UNSUPPORTED_UPLOAD_TYP', message: `Typ "${typ}" wird nicht unterstützt.` },
       { status: 422 },
     )
   }
@@ -95,7 +95,7 @@ export const POST = withMpzStudioAccess(async (req: NextRequest) => {
       return NextResponse.json({ error: err.code, message: err.message }, { status })
     }
     return NextResponse.json(
-      { error: 'internal', message: 'Unerwarteter Fehler beim Upload.' },
+      { error: 'INTERNAL_ERROR', message: 'Unerwarteter Fehler beim Upload.' },
       { status: 500 },
     )
   }

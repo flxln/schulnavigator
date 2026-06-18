@@ -104,7 +104,8 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Epic **#170** (MPZ Studio v2) + Unterissues **#171–#181** — [epic-mpz-studio-v2.md](epic-mpz-studio-v2.md)
 - [x] Issue **#171** (Medien PATCH Metadaten) — umgesetzt 2026-06-18, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-171-2026-06-18.md](../reviews/post-mortem-171-2026-06-18.md)
 - [x] Issue **#172** (Medien link/embed im Studio anlegen) — umgesetzt 2026-06-18, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-172-2026-06-18.md](../reviews/post-mortem-172-2026-06-18.md)
+- [x] MPZ-API Fehler-Codes vereinheitlicht (`SCREAMING_SNAKE_CASE`, Cursor-Regel `.cursor/rules/error-conventions.mdc`) — 2026-06-18, Branch `mpz-studio-v2`, Issue #182
 - [ ] **#173** Raumbild-Upload Flat + 360° — nächstes v2-Feature (empfohlen)
 - [ ] **#154** Flat-Startpan (ADR-024) — [issues-startblick.md](issues-startblick.md) (unabhängig vom v1-Merge)
 
-Letzter dokumentierter Abgleich: **2026-06-18** (#172 Medien link/embed erledigt; nächstes v2-Issue #173).
+Letzter dokumentierter Abgleich: **2026-06-18** (#182 MPZ-API Fehler-Codes vereinheitlicht; nächstes v2-Issue #173).

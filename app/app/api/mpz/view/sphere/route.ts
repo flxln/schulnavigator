@@ -20,7 +20,7 @@ export const POST = withMpzStudioAccess(async (req: NextRequest) => {
     body = (await req.json()) as SphereViewBody
   } catch {
     return NextResponse.json(
-      { error: 'invalid_json', message: 'Kein gültiges JSON.' },
+      { error: 'INVALID_JSON', message: 'Kein gültiges JSON.' },
       { status: 400 },
     )
   }
@@ -34,7 +34,7 @@ export const POST = withMpzStudioAccess(async (req: NextRequest) => {
   ) {
     return NextResponse.json(
       {
-        error: 'missing_fields',
+        error: 'MISSING_FIELDS',
         message: 'Felder slug, startYaw und startPitch sind erforderlich.',
       },
       { status: 400 },
@@ -54,7 +54,7 @@ export const POST = withMpzStudioAccess(async (req: NextRequest) => {
       return NextResponse.json({ error: err.code, message: err.message }, { status })
     }
     return NextResponse.json(
-      { error: 'internal', message: 'Unerwarteter Fehler beim Startblick-Update.' },
+      { error: 'INTERNAL_ERROR', message: 'Unerwarteter Fehler beim Startblick-Update.' },
       { status: 500 },
     )
   }
