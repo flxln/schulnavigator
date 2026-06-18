@@ -7,7 +7,7 @@ export type HotspotIconUploadProps = {
   onUploaded?: (path: string) => void
 }
 
-async function fetchIconPaths(slug: string): Promise<string[]> {
+export async function fetchHotspotIconPaths(slug: string): Promise<string[]> {
   const res = await fetch(
     `/api/mpz/stations/${encodeURIComponent(slug)}/hotspot-icons`,
   )
@@ -27,7 +27,7 @@ export function HotspotIconUpload({ slug, onUploaded }: HotspotIconUploadProps) 
   const reload = useCallback(async () => {
     setLoadError(null)
     try {
-      const next = await fetchIconPaths(slug)
+      const next = await fetchHotspotIconPaths(slug)
       setPaths(next)
     } catch (err) {
       setLoadError(err instanceof Error ? err.message : 'Liste konnte nicht geladen werden.')

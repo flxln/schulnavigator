@@ -88,7 +88,7 @@ Erweiterung von [`station-hotspots-table.tsx`](../../app/components/mpz-studio/s
 - **Flat:** Felder `x`, `y` (Zahl, 4 Dezimalen, 0–1); Default `0.5` / `0.5`
 - **Sphere:** `yaw`, `pitch` (Grad); Default `0` / `0`
 - **Grafik:** Dropdown „Icon“ — Einträge: *(keins)*, vorhandene Dateien unter `/media/{slug}/icons/`, Button „Icon hochladen…“ (#166)
-- **iconSize:** Slider oder Zahl `0.05`–`0.25`, Default `0.2` (wie Demo-Stationen)
+- **iconSize:** optionales Feld `0.05`–`0.25`; leer lassen = kein `iconSize` im JSON → Viewer nutzt `DEFAULT_ICON_SIZE_NORM`. Nur bei expliziter Eingabe wird der Wert gesendet (kein erzwungener Default `0.2`, sonst weichen neue Hotspots von Bestandsdaten ab)
 - Submit → POST → Erfolg: Tabelle aktualisieren, optional Hinweis Kalibrierung
 
 ### Block B — Icon hochladen (#166)
@@ -119,7 +119,7 @@ Fehlercodes (vor `writeStations`): `NOT_FOUND`, `DUPLICATE_ID`, `MEDIUM_NOT_FOUN
 
 - Koordinaten gegen Validator-Grenzen prüfen (nicht nur HTML `min`/`max`)
 - `icon`: wenn gesetzt, Pfad muss mit `/media/{slug}/` beginnen; optional `postValidate` / Asset-Check bei Save & Validate
-- `iconSize`: clamp auf `MIN_ICON_SIZE_NORM`…`MAX_ICON_SIZE_NORM`
+- `iconSize`: wenn gesetzt, strikt gegen `MIN_ICON_SIZE_NORM`…`MAX_ICON_SIZE_NORM` prüfen → bei Verletzung `INVALID_ICON_SIZE` (kein stilles Clamping; konsistent mit `validate-stations.ts` und Akzeptanztest „iconSize 0,3 → Fehler“)
 
 ### `patchStationHotspot` (#167)
 
