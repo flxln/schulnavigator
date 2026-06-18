@@ -80,6 +80,7 @@ afterEach(() => {
   cleanup()
   mocks.searchParams = new URLSearchParams()
   mocks.report = null
+  vi.unstubAllGlobals()
 })
 
 describe('StationDetailShell', () => {
@@ -107,6 +108,45 @@ describe('StationDetailShell', () => {
     render(<StationDetailShell station={station} slug="daz" hubNr={3} />)
 
     expect(screen.getByRole('link', { name: 'Dialog-Audio' })).toBeTruthy()
+  })
+
+  it('Dialog-Audio-Tab zeigt Segment-Tabelle für daz', async () => {
+    mocks.searchParams = new URLSearchParams('tab=dialog-audio')
+    setReport('daz', true)
+    const station = getStationBySlug('daz')!
+
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          slug: 'daz',
+          segments: [
+            {
+              segmentIndex: 0,
+              segmentId: 'd1',
+              rolle: 'frieda',
+              textPreview: 'Hallo, willkommen',
+              expectedClip: '01-frieda.wav',
+              quelle: '/api/dialog/daz/01-frieda.wav',
+              fileExists: true,
+              quelleMatchesConvention: true,
+              state: 'ok',
+            },
+          ],
+          orphans: [],
+          missingCount: 0,
+          driftCount: 0,
+        }),
+      }),
+    )
+
+    render(<StationDetailShell station={station} slug="daz" hubNr={3} />)
+
+    expect(screen.queryByText('Dialog-Audio-Tab folgt in #163.')).toBeNull()
+    expect(await screen.findByText('Clip')).toBeTruthy()
+    expect(screen.getByText('Status')).toBeTruthy()
+    expect(screen.getByText('01-frieda.wav')).toBeTruthy()
   })
 
   it('Tab-Links enthalten korrektes ?tab=', () => {

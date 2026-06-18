@@ -30,9 +30,14 @@ const STATE_CLASS: Record<DialogSegmentAudit['state'], string> = {
   fehlt: 'bg-brand-red/15 text-fg-1',
 }
 
-export function DialogAudioPanel() {
+export type DialogAudioPanelProps = {
+  slug?: string
+}
+
+export function DialogAudioPanel({ slug: slugProp }: DialogAudioPanelProps) {
   const { applyReport } = useStudioValidation()
-  const [slug, setSlug] = useState<string>('daz')
+  const [selectedSlug, setSelectedSlug] = useState<string>('daz')
+  const slug = slugProp ?? selectedSlug
   const [status, setStatus] = useState<StatusResponse | null>(null)
   const [loadError, setLoadError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
@@ -124,24 +129,26 @@ export function DialogAudioPanel() {
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex flex-col gap-2">
-        <label htmlFor="dialog-slug" className="text-sm font-semibold text-fg-1">
-          Station
-        </label>
-        <select
-          id="dialog-slug"
-          value={slug}
-          disabled={busy}
-          onChange={(e) => setSlug(e.target.value)}
-          className="rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-sm text-fg-1"
-        >
-          {DIALOG_SLUGS.map((s) => (
-            <option key={s} value={s}>
-              {s}
-            </option>
-          ))}
-        </select>
-      </div>
+      {slugProp === undefined && (
+        <div className="flex flex-col gap-2">
+          <label htmlFor="dialog-slug" className="text-sm font-semibold text-fg-1">
+            Station
+          </label>
+          <select
+            id="dialog-slug"
+            value={selectedSlug}
+            disabled={busy}
+            onChange={(e) => setSelectedSlug(e.target.value)}
+            className="rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-sm text-fg-1"
+          >
+            {DIALOG_SLUGS.map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       {loadError && (
         <p className="rounded-gs39-sm border border-brand-red/30 bg-brand-red/10 px-3 py-2 text-sm text-fg-1">
