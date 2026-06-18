@@ -71,7 +71,3 @@ Sie werden **nicht** in Auftraggebergesprächen thematisiert.
 - Soll die Architektur von Anfang an mehrere Schulen/Mandanten unterstützen?
 - Mehrsprachigkeit (DE/TR/AR etc.) — jetzt einplanen oder erst bei Bedarf?
 - Analytics: Wie viele Besucher haben welchen Raum gescannt? (DSGVO-konform lösbar via Plausible)
-
-## MPZ Studio (intern, Dev-only)
-
-- 🟡 **Hotspot-API Fehler-Mapping:** `DELETE /api/mpz/stations/…/hotspots/[id]` behandelt Domain-Client-Errors anders als `POST`/`PATCH` (500 statt 400) — offen [#168](https://github.com/flxln/schulnavigator/issues/168); Post-Mortem [#167](../reviews/post-mortem-167-2026-06-18.md)

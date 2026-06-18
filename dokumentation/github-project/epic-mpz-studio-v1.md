@@ -1,7 +1,7 @@
 # Epic: MPZ Studio v1 — Station-Detail & Content-Pflege (ADR-022)
 
 **Milestone:** MPZ Studio v1 (Post-Fest, Juli 2026)
-**Status:** in Arbeit (Branch `mpz-studio-v1`, 2026-06-18) · **#159**, **#160**, **#161**, **#162**, **#163**, **#165**, **#166**, **#167** erledigt
+**Status:** in Arbeit (Branch `mpz-studio-v1`, 2026-06-18) · **#159**, **#160**, **#161**, **#162**, **#163**, **#165**, **#166**, **#167**, **#168** erledigt
 **Parent:** Epic [#144](https://github.com/flxln/schulnavigator/issues/144) (v0 abgeschlossen, [PR #156](https://github.com/flxln/schulnavigator/pull/156))
 
 ## Übersicht
@@ -16,7 +16,7 @@
 | Unterissue | `#165` | Hotspot anlegen (Medium, Koordinaten, Icon, iconSize) | `tech` | #161, #162, #166 (Icon-Picker) | ✓ |
 | Unterissue | `#166` | Hotspot-Icon-Ingest (`/media/{slug}/icons/`) | `tech` | #161 | ✓ |
 | Unterissue | `#167` | Hotspot bearbeiten (PATCH) | `tech` | #165 | ✓ |
-| Unterissue | `#168` | DELETE Hotspot: Fehler-Mapping an POST/PATCH | `tech` | #167 | |
+| Unterissue | `#168` | DELETE Hotspot: Fehler-Mapping an POST/PATCH | `tech` | #167 | ✓ |
 | Unterissue | `#163` | Dialog-Audio-Tab pro Station | `tech` | #159, v0 #148 | ✓ |
 | Unterissue | `#164` | Doku & Epic-Abschluss | `tech`, `documentation` | #159–#163, #165–#167 |
 
@@ -56,12 +56,6 @@ Plan A (CLI/JSON) bleibt Fallback. Leitplanken aus ADR-022 unverändert: nur `NO
 | #167 | https://github.com/flxln/schulnavigator/issues/167 |
 | #168 | https://github.com/flxln/schulnavigator/issues/168 |
 
-## Bekannte Tech-Schulden (v1)
-
-| Issue | Thema |
-|-------|--------|
-| [#168](https://github.com/flxln/schulnavigator/issues/168) | `DELETE /api/mpz/stations/…/hotspots/[id]` mappt Domain-Client-Errors auf **500** statt **400** (POST/PATCH konsistent); latent bis Domain mehr Codes wirft — Post-Mortem [#167](../reviews/post-mortem-167-2026-06-18.md) |
-
 | Screen | Prototyp | Spec |
 |--------|----------|------|
 | S4 Stammdaten | `studio-stationen.jsx` | [02-v0-screens-und-user-stories.md](../design/mpz-studio-claude-design/02-v0-screens-und-user-stories.md) § S4 |
@@ -76,7 +70,7 @@ Interaktiv: [mpz-studio-prototype/MPZ Studio.html](../design/mpz-studio-claude-d
 - **Dirty-State:** nach erfolgreichem Patch `markMpzStudioDirty()` → globaler Button „Speichern & Validieren“ (bereits #150).
 - **Stammdaten-Patch:** neues `lib/mpz-station-stammdaten.ts` + `PATCH /api/mpz/stations/[slug]/stammdaten` (nur erlaubte Felder, `slug` unveränderlich).
 - **Lesen:** `GET /api/mpz/stations/[slug]` für Detail-Formular.
-- **Hotspot-API:** `POST`/`PATCH`/`DELETE` unter `/api/mpz/stations/[slug]/hotspots` — Fehler-Mapping für DELETE noch inkonsistent ([#168](https://github.com/flxln/schulnavigator/issues/168)).
+- **Hotspot-API:** `POST`/`PATCH`/`DELETE` unter `/api/mpz/stations/[slug]/hotspots` — einheitliches Fehler-Mapping (#168).
 
 ## Kontext
 
@@ -97,6 +91,7 @@ Interaktiv: [mpz-studio-prototype/MPZ Studio.html](../design/mpz-studio-claude-d
 - [x] Hotspot anlegen inkl. Koordinaten, Icon, iconSize (#165)
 - [x] Hotspot-Icon-Ingest (#166)
 - [x] Hotspot bearbeiten (#167) — Post-Mortem: [post-mortem-167-2026-06-18.md](../reviews/post-mortem-167-2026-06-18.md)
+- [x] DELETE Hotspot Fehler-Mapping (#168) — Post-Mortem: [post-mortem-168-2026-06-18.md](../reviews/post-mortem-168-2026-06-18.md)
 - [x] Dialog-Audio-Tab (#163) — Post-Mortem: [post-mortem-163-2026-06-18.md](../reviews/post-mortem-163-2026-06-18.md)
 - [x] Tests + `npm run build` (#159)
 - [ ] Doku (`fuer-entwickler.md`, Spec-Notiz) (#164)

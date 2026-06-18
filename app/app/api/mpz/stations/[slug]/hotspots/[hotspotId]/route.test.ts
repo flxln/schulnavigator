@@ -112,6 +112,18 @@ describe('DELETE /api/mpz/stations/[slug]/hotspots/[hotspotId]', () => {
     const json = (await res.json()) as { error: string }
     expect(json.error).toBe('NOT_FOUND')
   })
+
+  it('INVALID_COORDS → 400', async () => {
+    vi.stubEnv('NODE_ENV', 'development')
+    vi.stubEnv('SN_MPZ_STUDIO_SECRET', SECRET)
+    const { MpzStationHotspotsError } = await import('@/lib/mpz-station-hotspots')
+    vi.mocked(removeStationHotspot).mockRejectedValue(
+      new MpzStationHotspotsError('INVALID_COORDS', 'ungültig'),
+    )
+    const res = await DELETE(request('DELETE', { cookie: SECRET }), routeContext)
+    expect(res.status).toBe(400)
+    await expect(res.json()).resolves.toMatchObject({ error: 'INVALID_COORDS' })
+  })
 })
 
 describe('PATCH /api/mpz/stations/[slug]/hotspots/[hotspotId]', () => {

@@ -47,7 +47,7 @@ Nur bei `NODE_ENV=development` erreichbar; in Production liefern `/mpz/*` und `/
 **API (Auswahl):**
 
 - `POST /api/mpz/view/sphere` — Body `{ slug, startYaw, startPitch }` schreibt den Sphere-Startblick in `stations.json` (#153, ADR-023).
-- `POST` / `PATCH` / `DELETE` `/api/mpz/stations/[slug]/hotspots` bzw. `…/hotspots/[hotspotId]` — Hotspot anlegen (#165), bearbeiten (#167), entfernen (#162). Fehler-Mapping: `POST` und `PATCH` liefern Client-Domain-Fehler als **400**; `DELETE` mappt derzeit alle Codes außer `NOT_FOUND` auf **500** — Nacharbeit [#168](https://github.com/flxln/schulnavigator/issues/168).
+- `POST` / `PATCH` / `DELETE` `/api/mpz/stations/[slug]/hotspots` bzw. `…/hotspots/[hotspotId]` — Hotspot anlegen (#165), bearbeiten (#167), entfernen (#162). Fehler-Mapping: `NOT_FOUND` → 404; Client-Domain-Codes (`DUPLICATE_ID`, `INVALID_COORDS`, …) → 400; `NOT_EDITABLE` nur bei PATCH → 403 (#168).
 
 Guard wie alle `/api/mpz/*`-Routen.
 
