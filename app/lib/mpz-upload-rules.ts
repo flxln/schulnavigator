@@ -101,6 +101,17 @@ export function slugifyId(value: string): string {
     .slice(0, 48)
 }
 
+export function sanitizeUploadFilename(
+  originalName: string,
+  rule: { extensions: readonly string[]; defaultExt: string },
+): string {
+  const base = basename(originalName)
+  const rawExt = extname(base).toLowerCase()
+  const stem = slugifyId(base.slice(0, base.length - rawExt.length)) || 'datei'
+  const ext = rule.extensions.includes(rawExt) ? rawExt : rule.defaultExt
+  return `${stem}${ext}`
+}
+
 /**
  * AirDrop-Namen (`IMG_1234.heic`, Leerzeichen, Umlaute) werden nie 1:1 übernommen.
  * Erzwingt eine erlaubte Endung je Typ (HEIC etc. → Default-Ext, aber der Inhalt
@@ -108,11 +119,10 @@ export function slugifyId(value: string): string {
  */
 export function sanitizeFilename(originalName: string, typ: UploadTyp): string {
   const rule = UPLOAD_RULES[typ]
-  const base = basename(originalName)
-  const rawExt = extname(base).toLowerCase()
-  const stem = slugifyId(base.slice(0, base.length - rawExt.length)) || 'datei'
-  const ext = rule.extensions.includes(rawExt) ? rawExt : rule.defaultExt
-  return `${stem}${ext}`
+  return sanitizeUploadFilename(originalName, {
+    extensions: rule.extensions,
+    defaultExt: rule.defaultExt,
+  })
 }
 
 function formatBytes(bytes: number): string {

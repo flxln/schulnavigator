@@ -116,6 +116,24 @@ curl -X POST http://localhost:3000/api/mpz/view/sphere \
   -d '{"slug":"daz","startYaw":-30,"startPitch":-10}'
 ```
 
+**Station-Detail (v1, Epic #158, Issues #159–#168).** Nach `/mpz/unlock`: [https://localhost:3000/mpz/studio/stationen](https://localhost:3000/mpz/studio/stationen) → **Bearbeiten** auf einer Kachel oder direkt z. B. [https://localhost:3000/mpz/studio/stationen/kunst](https://localhost:3000/mpz/studio/stationen/kunst).
+
+| Tab (`?tab=`) | Kurztest |
+|---------------|----------|
+| `stammdaten` (Default) | `titel`/`beschreibung` ändern → Speichern → Erfolgsmeldung; global **Speichern & Validieren** danach grün |
+| `medien` | Medien-Tabelle; Link zu Ingest; Entfernen mit Bestätigung |
+| `hotspots` | Hotspot anlegen/bearbeiten/entfernen; Kalibrier-Link öffnet `?hotspot-calib=1` oder `/mpz/calib/flat/{slug}` |
+| `dialog-audio` | Nur bei Stationen mit `dialog` (z. B. `daz`, `pc-raum`): Segment-Upload wie globale Dialog-Audio-Seite |
+
+Stammdaten-API (optional):
+
+```bash
+curl -X PATCH "http://localhost:3000/api/mpz/stations/kunst/stammdaten" \
+  -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET" \
+  -H "content-type: application/json" \
+  -d '{"beschreibung":"Test aus curl"}'
+```
+
 **Hinweis zu 404:** Die Routen kommen aus `data/stations.json` (`generateStaticParams`). Ein Slug, der **nicht** in der JSON-Datei steht, liefert in der **Produktion** nach `npm run build` eine 404-Seite. Unter `npm run dev` zeigt Next.js oft eine dynamische 404 — zum Verhalten wie online unbedingt **Abschnitt 3** ausführen.
 
 ### Scanner bei System-Dark-Mode

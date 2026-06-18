@@ -67,6 +67,7 @@ export interface MpzContentIo {
     options?: WriteStationsOptions,
   ): Promise<WriteStationsResult>
   getPaths(): MpzContentIoPaths
+  fileExists(absPath: string): boolean
 }
 
 const HUB_SLUG_ORDER = Object.keys(HUB_SLUG_MAP)
@@ -174,6 +175,10 @@ export function createMpzContentIo(overrides?: Partial<MpzContentIoPaths>): MpzC
 
   return {
     getPaths: () => ({ ...paths }),
+
+    fileExists(absPath: string): boolean {
+      return existsSync(absPath)
+    },
 
     async readStations(): Promise<StationsFile> {
       try {
