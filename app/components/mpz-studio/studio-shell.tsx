@@ -7,6 +7,8 @@ import { PlanABanner } from '@/components/mpz-studio/plan-a-banner'
 import { SaveValidatePanel } from '@/components/mpz-studio/save-validate-panel'
 import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
 
+import type { MpzValidationReport } from '@/lib/mpz-studio-overview'
+
 type NavItem = {
   href: string
   label: string
@@ -38,7 +40,18 @@ const NAV_ITEMS: NavItem[] = [
 
 const DISABLED_V1 = ['Coach', 'Brand & Design', 'Hub-Karte', 'Deploy']
 
-function pageTitle(pathname: string): string {
+const STATION_DETAIL_PATH_RE = /^\/mpz\/studio\/stationen\/([^/]+)$/
+
+function pageTitle(
+  pathname: string,
+  report: MpzValidationReport | null,
+): string {
+  const detailMatch = STATION_DETAIL_PATH_RE.exec(pathname)
+  if (detailMatch) {
+    const slug = detailMatch[1] ?? ''
+    const summary = report?.stationSummaries.find((s) => s.slug === slug)
+    return summary?.titel ?? (slug || 'Stationen')
+  }
   if (pathname === '/mpz/studio') return 'Dashboard'
   if (pathname.startsWith('/mpz/studio/stationen')) return 'Stationen'
   if (pathname.startsWith('/mpz/studio/ingest')) return 'Medien hochladen'
@@ -52,7 +65,6 @@ export type StudioShellProps = {
 
 export function StudioShell({ children }: StudioShellProps) {
   const pathname = usePathname()
-  const title = pageTitle(pathname)
   const {
     dirty,
     loading,
@@ -61,6 +73,7 @@ export function StudioShell({ children }: StudioShellProps) {
     saveAndValidate,
     clearSaveFeedback,
   } = useStudioValidation()
+  const title = pageTitle(pathname, report)
 
   const buttonDisabled = loading || (!dirty && report?.ok === true)
 
@@ -110,7 +123,7 @@ export function StudioShell({ children }: StudioShellProps) {
         <div className="hidden border-t border-white/10 px-4 py-3 text-[11px] text-white/35 md:block">
           39. Grundschule Dresden
           <br />
-          <code className="text-[10px]">stations.json · Plan B v0</code>
+          <code className="text-[10px]">stations.json · v1</code>
         </div>
       </aside>
 

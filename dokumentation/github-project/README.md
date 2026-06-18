@@ -14,7 +14,10 @@ Dieser Ordner ist die **führende Spezifikation** für Milestones und Issues in 
 | [epic-coach-fortschritt.md](epic-coach-fortschritt.md) | Epic **#121**: ADR-019 — Coach Fortschritts-Einblendungen — Unterissue #122 (Raum-Overlay-Priorität) |
 | [epic-hub-wegweiser.md](epic-hub-wegweiser.md) | Epic **#124**: ADR-020 — Hub Wegweiser Schulhof/Turnhalle, 12 Stationen |
 | [epic-zugangsmodus-konfigurierbar.md](epic-zugangsmodus-konfigurierbar.md) | Epic **#132**: ADR-021 — Zugangsmodus `open`/`gated`, Tokens ENV, Embedding/CSP — Unterissues #133–#139 |
-| [epic-mpz-studio.md](epic-mpz-studio.md) | Epic **#144**: ADR-022 — MPZ Studio v0 (internes Dev-only-Ingest-Tool) — Unterissues #145–#151, #153 · eigener Milestone „MPZ Studio v0" |
+| [epic-mpz-studio.md](epic-mpz-studio.md) | Epic **#144**: ADR-022 — MPZ Studio v0 (internes Dev-only-Ingest-Tool) — Unterissues #145–#151, #153 · eigener Milestone „MPZ Studio v0" — **abgeschlossen** |
+| [epic-mpz-studio-v1.md](epic-mpz-studio-v1.md) | Epic **#158**: MPZ Studio v1 — Station-Detail (#159–#168) · Milestone „MPZ Studio v1" — **abgeschlossen**, Merge ausstehend |
+| [epic-mpz-studio-v2.md](epic-mpz-studio-v2.md) | MPZ Studio v2 (geplant): Content-Vollständigkeit & Betrieb — Epic noch nicht auf GitHub |
+| [kurzfristige-ideen/mpz-studio-ui.md](../kurzfristige-ideen/mpz-studio-ui.md) | Domänen-CRUD-Matrix + Roadmap v2/v3 |
 | [issues-startblick.md](issues-startblick.md) | Startblick Sphere (#152, #153) und Flat-Startpan (#154) — ADR-023/024 |
 | [labels.md](labels.md) | Label-Konventionen |
 
@@ -85,6 +88,19 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Epic **#144** (MPZ Studio v0, ADR-022) — abgeschlossen, [PR #156](https://github.com/flxln/schulnavigator/pull/156) merged; [#157](https://github.com/flxln/schulnavigator/issues/157) Duplikat-Slugs behoben
 - [x] Issue **#152** (Sphere-Startblick Runtime + Pre-Mortem Gyro-Gating, ADR-023) — umgesetzt 2026-06-17 (`a1b272d`, `4a59010`), Branch `feature/mpz-studio`
 - [x] Issue **#153** (MPZ Sphere-Startblick persistieren, ADR-023) — umgesetzt 2026-06-17 (`057ca71`), Branch `feature/mpz-studio`, Issue geschlossen
-- [ ] **#154** Flat-Startpan (ADR-024) — [issues-startblick.md](issues-startblick.md)
+- [x] Issue **#159** (MPZ Studio v1: Station-Detail-Shell) — umgesetzt 2026-06-17, Branch `mpz-studio-v1`
+- [x] Issue **#160** (MPZ Studio v1: Stammdaten-Editor) — umgesetzt 2026-06-17, Branch `mpz-studio-v1`
+- [x] Issue **#161** (MPZ Studio v1: Medien-Tabelle) — umgesetzt 2026-06-17, Branch `mpz-studio-v1`
+- [x] Issue **#162** (MPZ Studio v1: Hotspots-Tabelle) — umgesetzt 2026-06-17, Branch `mpz-studio-v1`
+- [x] Issue **#165** (Hotspot anlegen: Medium, Koordinaten, Icon, iconSize) — umgesetzt 2026-06-18, Branch `mpz-studio-v1`, [Hotspot-Editor-Spec](../projektmanagement/2026-06-17-mpz-studio-hotspot-editor-spezifikation.md)
+- [x] Issue **#166** (Hotspot-Icon-Ingest) — umgesetzt 2026-06-17, Branch `mpz-studio-v1`
+- [x] Issue **#167** (Hotspot bearbeiten PATCH) — umgesetzt 2026-06-18, Branch `mpz-studio-v1`, Post-Mortem [post-mortem-167-2026-06-18.md](../reviews/post-mortem-167-2026-06-18.md)
+- [x] Issue **#163** (MPZ Studio v1: Dialog-Audio-Tab pro Station) — umgesetzt 2026-06-18, Branch `mpz-studio-v1`, Post-Mortem [post-mortem-163-2026-06-18.md](../reviews/post-mortem-163-2026-06-18.md)
+- [x] Issue **#168** (DELETE Hotspot Fehler-Mapping) — umgesetzt 2026-06-18, Branch `mpz-studio-v1`, Post-Mortem [post-mortem-168-2026-06-18.md](../reviews/post-mortem-168-2026-06-18.md)
+- [x] Issue **#164** (MPZ Studio v1: Doku & Epic-Abschluss) — umgesetzt 2026-06-18, Branch `mpz-studio-v1`; schließt Epic [#158](https://github.com/flxln/schulnavigator/issues/158)
+- [x] Epic **#158** (MPZ Studio v1 — Station-Detail & Content-Pflege) — abgeschlossen 2026-06-18, [epic-mpz-studio-v1.md](epic-mpz-studio-v1.md); GitHub-Issues #159–#168 **alle geschlossen**; Milestone „MPZ Studio v1" **0 offen**
+- [ ] **Merge** Branch `mpz-studio-v1` → `main` (14 Commits, noch kein PR)
+- [ ] Epic **MPZ Studio v2** auf GitHub anlegen — Vorlage [epic-mpz-studio-v2.md](epic-mpz-studio-v2.md)
+- [ ] **#154** Flat-Startpan (ADR-024) — [issues-startblick.md](issues-startblick.md) (unabhängig vom v1-Merge)
 
-Letzter dokumentierter Abgleich: **2026-06-17** (Epic #144 merged PR #156; #157 Duplikat-Slugs offen; #154 Flat-Startpan offen).
+Letzter dokumentierter Abgleich: **2026-06-18** (Epic #158 abgeschlossen; v1-Merge + v2-Planung nächste Schritte).

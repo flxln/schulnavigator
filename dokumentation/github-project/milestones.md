@@ -49,5 +49,19 @@ Der Fortschrittsbalken in GitHub ergibt sich automatisch aus den geschlossenen I
 
 ## MPZ Studio v0 — internes Ingest-Tool (ADR-022)
 
-**Fällig:** 22.06.2026
+**Fällig:** 22.06.2026 · **Status:** abgeschlossen (2026-06-17, PR #156)
 **Beschreibung:** Ausnahme zur Phasen-Konvention — bewusst **eigener** Milestone, weil MPZ Studio als initiative über v0 (vor Fest) / v1 / v2 (Post-Fest) spannt und in keine einzelne Phase passt. v0-Scope: schmales, MPZ-internes Dev-only-Pflege-UI (ADR-022) als optionaler **Plan B** zum CLI/JSON-Workflow — Medien-Ingest, Dialog-Audio, Hotspot-Kalibrierung; schreibt nur lokale Repo-Dateien, **nie** auf Coolify. Epic [#144](https://github.com/flxln/schulnavigator/issues/144), Unterissues #145–#151 — [epic-mpz-studio.md](./epic-mpz-studio.md). Optional; Plan A bleibt Pflicht + Fallback und darf nicht blockiert werden.
+
+---
+
+## MPZ Studio v1 — Station-Detail & Content-Pflege (ADR-022)
+
+**Fällig:** 31.07.2026 · **Status:** abgeschlossen (2026-06-18); **0 offene Issues** im Milestone
+**Beschreibung:** Station-Detail unter `/mpz/studio/stationen/[slug]` mit Tabs Stammdaten, Medien, Hotspots, Dialog-Audio. Epic [#158](https://github.com/flxln/schulnavigator/issues/158) geschlossen; Unterissues #159–#168 erledigt — [epic-mpz-studio-v1.md](./epic-mpz-studio-v1.md). **Nächster Schritt:** Merge Branch `mpz-studio-v1` → `main` (PR).
+
+---
+
+## MPZ Studio v2 — Content-Vollständigkeit & Betrieb (ADR-022)
+
+**Fällig:** 31.08.2026 · **GitHub-Milestone:** [#9](https://github.com/flxln/schulnavigator/milestone/9)
+**Beschreibung:** Fehlende Studio-Pflege: Raumbild-Upload, Medien bearbeiten/link/embed, Dialog-Editor, Dialog-Hotspots, Coach-CRUD, Deploy-Tab, Config-Extraktion. Epic und Issues **noch anzulegen** — [epic-mpz-studio-v2.md](./epic-mpz-studio-v2.md), [mpz-studio-ui.md](../kurzfristige-ideen/mpz-studio-ui.md). v3 (Polish) bewusst später.

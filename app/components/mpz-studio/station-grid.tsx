@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
+import { mpzStationCalibHref } from '@/lib/mpz-studio-calib'
 import type { MpzStationOverview, MpzValidationReport } from '@/lib/mpz-studio-overview'
 
 function healthDotClass(health: MpzStationOverview['health']): string {
@@ -12,16 +13,6 @@ function healthDotClass(health: MpzStationOverview['health']): string {
 
 function viewerLabel(viewer: MpzStationOverview['viewer']): string {
   return viewer === 'equirectangular' ? '360°' : 'flat'
-}
-
-function calibHref(st: MpzStationOverview): string | null {
-  if (st.viewer === 'equirectangular') {
-    return `/raum/${st.slug}?hotspot-calib=1`
-  }
-  if (st.viewer === 'flat' && st.hasBild) {
-    return `/mpz/calib/flat/${st.slug}`
-  }
-  return null
 }
 
 export function StationGrid() {
@@ -58,7 +49,11 @@ export function StationGrid() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {stations.map((st) => {
-            const calib = calibHref(st)
+            const calib = mpzStationCalibHref({
+              viewer: st.viewer,
+              slug: st.slug,
+              hasBild: st.hasBild,
+            })
             return (
               <article
                 key={st.slug}
@@ -98,6 +93,12 @@ export function StationGrid() {
                 )}
 
                 <div className="flex flex-col gap-2 border-t border-border-1 pt-3 text-sm">
+                  <Link
+                    href={`/mpz/studio/stationen/${encodeURIComponent(st.slug)}`}
+                    className="font-semibold text-accent underline-offset-2 hover:underline"
+                  >
+                    Bearbeiten
+                  </Link>
                   <Link
                     href={`/raum/${st.slug}`}
                     target="_blank"

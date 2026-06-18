@@ -146,6 +146,7 @@ Kurzfassung (vorläufig):
 - Dateinamen: `kebab-case`
 - Komponenten: `PascalCase`
 - Keine Kommentare, die nur beschreiben was der Code tut
+- **Vor jedem Edit: Datei zuerst lesen.** Vor dem Ändern einer Funktion: alle Aufrufer per grep suchen. Erst recherchieren, dann editieren.
 
 ---
 
