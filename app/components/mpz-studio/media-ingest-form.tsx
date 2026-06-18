@@ -1,10 +1,10 @@
 'use client'
 
-import Link from 'next/link'
 import { useState } from 'react'
 import { MPZ_HUB_SLUGS } from '@/lib/schoolhouse-hub-map'
 import type { MpzValidationReport } from '@/lib/mpz-studio-overview'
 import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
+import type { MediumTyp } from '@/lib/types'
 
 const TYPEN = [
   { value: 'audio', label: 'Audio (.mp3 .wav .m4a)' },
@@ -21,9 +21,19 @@ interface SuccessState {
 
 export type MediaIngestFormProps = {
   initialSlug?: string
+  fixedTyp?: MediumTyp
+  hideSlugSelect?: boolean
+  hideTypSelect?: boolean
+  onSuccess?: () => void
 }
 
-export function MediaIngestForm({ initialSlug }: MediaIngestFormProps) {
+export function MediaIngestForm({
+  initialSlug,
+  fixedTyp,
+  hideSlugSelect = false,
+  hideTypSelect = false,
+  onSuccess,
+}: MediaIngestFormProps) {
   const { applyReport } = useStudioValidation()
   const defaultSlug =
     initialSlug && MPZ_HUB_SLUGS.includes(initialSlug as (typeof MPZ_HUB_SLUGS)[number])
@@ -40,7 +50,7 @@ export function MediaIngestForm({ initialSlug }: MediaIngestFormProps) {
     setBusy(true)
     const form = e.currentTarget
     const data = new FormData(form)
-    const slug = String(data.get('slug') ?? '')
+    const slug = String(data.get('slug') ?? defaultSlug)
     try {
       const res = await fetch('/api/mpz/media/ingest', {
         method: 'POST',
@@ -66,6 +76,7 @@ export function MediaIngestForm({ initialSlug }: MediaIngestFormProps) {
         applyReport(json.validation, json.mtime ?? json.validation.stationsModifiedAt)
       }
       form.reset()
+      onSuccess?.()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Netzwerkfehler')
     } finally {
@@ -75,36 +86,45 @@ export function MediaIngestForm({ initialSlug }: MediaIngestFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <label className="flex flex-col gap-1 text-sm">
-        <span className="font-semibold text-fg-2">Station (slug)</span>
-        <select
-          name="slug"
-          required
-          defaultValue={defaultSlug}
-          className="rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1"
-        >
-          {MPZ_HUB_SLUGS.map((s) => (
-            <option key={s} value={s}>
-              {s}
-            </option>
-          ))}
-        </select>
-      </label>
+      {!hideSlugSelect && (
+        <label className="flex flex-col gap-1 text-sm">
+          <span className="font-semibold text-fg-2">Station (slug)</span>
+          <select
+            name="slug"
+            required
+            defaultValue={defaultSlug}
+            className="rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1"
+          >
+            {MPZ_HUB_SLUGS.map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
 
-      <label className="flex flex-col gap-1 text-sm">
-        <span className="font-semibold text-fg-2">Typ</span>
-        <select
-          name="typ"
-          required
-          className="rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1"
-        >
-          {TYPEN.map((t) => (
-            <option key={t.value} value={t.value}>
-              {t.label}
-            </option>
-          ))}
-        </select>
-      </label>
+      {hideSlugSelect && <input type="hidden" name="slug" value={defaultSlug} />}
+
+      {!hideTypSelect && (
+        <label className="flex flex-col gap-1 text-sm">
+          <span className="font-semibold text-fg-2">Typ</span>
+          <select
+            name="typ"
+            required
+            defaultValue={fixedTyp ?? 'audio'}
+            className="rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1"
+          >
+            {TYPEN.map((t) => (
+              <option key={t.value} value={t.value}>
+                {t.label}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
+
+      {hideTypSelect && fixedTyp && <input type="hidden" name="typ" value={fixedTyp} />}
 
       <label className="flex flex-col gap-1 text-sm">
         <span className="font-semibold text-fg-2">Datei</span>
@@ -142,17 +162,11 @@ export function MediaIngestForm({ initialSlug }: MediaIngestFormProps) {
         </p>
       )}
 
-      {success && (
+      {success && !onSuccess && (
         <div className="rounded-gs39-sm border border-green-300 bg-green-50 px-3 py-2 text-sm text-green-900">
           <p>
             Hochgeladen: <code>{success.quelle}</code> (id <code>{success.id}</code>)
           </p>
-          <Link
-            href={`/raum/${success.slug}`}
-            className="font-semibold underline underline-offset-2"
-          >
-            Vorschau /raum/{success.slug}
-          </Link>
         </div>
       )}
     </form>

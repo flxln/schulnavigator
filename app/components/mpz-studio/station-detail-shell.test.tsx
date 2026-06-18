@@ -30,6 +30,12 @@ vi.mock('next/link', () => ({
   ),
 }))
 
+vi.mock('@/components/mpz-studio/media-ingest-modal-context', () => ({
+  useMediaIngest: () => ({
+    openMediaIngest: vi.fn(),
+  }),
+}))
+
 vi.mock('@/components/mpz-studio/studio-validation-context', () => ({
   useStudioValidation: () => ({
     report: mocks.report,
@@ -176,7 +182,7 @@ describe('StationDetailShell', () => {
       <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} />,
     )
 
-    expect(screen.getByRole('link', { name: 'Medien hinzufügen' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Medien hinzufügen' })).toBeTruthy()
     expect(screen.getByText('demo-audio')).toBeTruthy()
     expect(screen.getByText('demo-video')).toBeTruthy()
   })
@@ -217,7 +223,7 @@ describe('StationDetailShell', () => {
     render(<StationDetailShell station={emptyHort} slug="hort" hubNr={9} />)
 
     expect(screen.getByText('Noch keine Medien')).toBeTruthy()
-    expect(screen.getByRole('link', { name: 'Erstes Medium hinzufügen' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Erstes Medium hinzufügen' })).toBeTruthy()
   })
 
   it('Breadcrumb verlinkt auf Stations-Grid', () => {

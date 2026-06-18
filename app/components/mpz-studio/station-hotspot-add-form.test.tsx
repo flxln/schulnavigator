@@ -24,6 +24,12 @@ vi.mock('next/link', () => ({
   ),
 }))
 
+vi.mock('@/components/mpz-studio/media-ingest-modal-context', () => ({
+  useMediaIngest: () => ({
+    openMediaIngest: vi.fn(),
+  }),
+}))
+
 vi.mock('@/components/mpz-studio/studio-validation-context', () => ({
   useStudioValidation: () => ({
     validateNow: vi.fn().mockResolvedValue(undefined),
@@ -53,9 +59,7 @@ describe('StationHotspotAddForm', () => {
     render(<StationHotspotAddForm slug="kunst" station={station} />)
 
     expect(screen.getByText('Hotspot hinzufügen')).toBeTruthy()
-    expect(screen.getByRole('link', { name: 'Medium hinzufügen' }).getAttribute('href')).toBe(
-      '/mpz/studio/ingest?slug=kunst',
-    )
+    expect(screen.getByRole('button', { name: 'Medium hinzufügen' })).toBeTruthy()
     expect(screen.queryByRole('button', { name: 'Hotspot anlegen' })).toBeNull()
   })
 

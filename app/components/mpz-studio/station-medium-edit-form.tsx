@@ -3,10 +3,15 @@
 import { useRouter } from 'next/navigation'
 import { useEffect, useState, useTransition } from 'react'
 import {
+  defaultLinkEmbedFormValues,
+  MediumLinkEmbedFields,
+  type LinkEmbedFormValues,
+} from '@/components/mpz-studio/medium-link-embed-fields'
+import { DEFAULT_EMBED_ALLOW_SUFFIXES } from '@/lib/embed-allowlist'
+import {
   markMpzStudioDirty,
   useStudioValidation,
 } from '@/components/mpz-studio/studio-validation-context'
-import { DEFAULT_EMBED_ALLOW_SUFFIXES } from '@/lib/embed-allowlist'
 import type { Medium } from '@/lib/types'
 
 export type StationMediumEditFormProps = {
@@ -24,15 +29,25 @@ function labelClassName(): string {
   return 'mb-1 block text-xs font-semibold text-fg-3'
 }
 
-function mediumToForm(medium: Medium) {
+function mediumToForm(medium: Medium): LinkEmbedFormValues & {
+  poster: string
+  videoSource: 'upload' | 'youtube'
+} {
+  const linkEmbed =
+    medium.typ === 'link' || medium.typ === 'embed'
+      ? {
+          untertitel: medium.untertitel ?? '',
+          thumbnail: medium.thumbnail ?? '',
+          quelle: medium.quelle ?? '',
+          openInExternal: medium.openIn === 'external',
+          embedAllow: medium.embedAllow ?? [...DEFAULT_EMBED_ALLOW_SUFFIXES],
+        }
+      : defaultLinkEmbedFormValues('link')
+
   return {
-    untertitel: medium.untertitel ?? '',
-    thumbnail: medium.thumbnail ?? '',
+    ...linkEmbed,
     poster: medium.poster ?? '',
     videoSource: medium.videoSource ?? 'upload',
-    quelle: medium.quelle ?? '',
-    openInExternal: medium.openIn === 'external',
-    embedAllow: medium.embedAllow ?? [...DEFAULT_EMBED_ALLOW_SUFFIXES],
   }
 }
 
@@ -104,16 +119,11 @@ export function StationMediumEditForm({
     setForm((prev) => ({ ...prev, [key]: value }))
   }
 
-  function toggleEmbedAllow(suffix: string) {
-    setForm((prev) => {
-      const has = prev.embedAllow.includes(suffix)
-      return {
-        ...prev,
-        embedAllow: has
-          ? prev.embedAllow.filter((s) => s !== suffix)
-          : [...prev.embedAllow, suffix],
-      }
-    })
+  function updateLinkEmbedField<K extends keyof LinkEmbedFormValues>(
+    key: K,
+    value: LinkEmbedFormValues[K],
+  ) {
+    setForm((prev) => ({ ...prev, [key]: value }))
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -192,44 +202,42 @@ export function StationMediumEditForm({
           />
         </div>
 
-        <div className="sm:col-span-2">
-          <label htmlFor={`edit-med-untertitel-${medium.id}`} className={labelClassName()}>
-            Untertitel (optional)
-          </label>
-          <input
-            id={`edit-med-untertitel-${medium.id}`}
-            type="text"
-            value={form.untertitel}
-            onChange={(e) => updateField('untertitel', e.target.value)}
-            className={fieldClassName()}
-          />
-        </div>
-
         {quelleReadOnly ? (
-          <div className="sm:col-span-2">
-            <label htmlFor={`edit-med-quelle-ro-${medium.id}`} className={labelClassName()}>
-              Quelle (read-only)
-            </label>
-            <input
-              id={`edit-med-quelle-ro-${medium.id}`}
-              type="text"
-              readOnly
-              value={medium.quelle}
-              className={`${fieldClassName()} bg-bg-2 font-mono text-xs text-fg-3`}
-            />
-          </div>
+          <>
+            <div className="sm:col-span-2">
+              <label htmlFor={`edit-med-untertitel-${medium.id}`} className={labelClassName()}>
+                Untertitel (optional)
+              </label>
+              <input
+                id={`edit-med-untertitel-${medium.id}`}
+                type="text"
+                value={form.untertitel}
+                onChange={(e) => updateField('untertitel', e.target.value)}
+                className={fieldClassName()}
+              />
+            </div>
+
+            <div className="sm:col-span-2">
+              <label htmlFor={`edit-med-quelle-ro-${medium.id}`} className={labelClassName()}>
+                Quelle (read-only)
+              </label>
+              <input
+                id={`edit-med-quelle-ro-${medium.id}`}
+                type="text"
+                readOnly
+                value={medium.quelle}
+                className={`${fieldClassName()} bg-bg-2 font-mono text-xs text-fg-3`}
+              />
+            </div>
+          </>
         ) : (
           <div className="sm:col-span-2">
-            <label htmlFor={`edit-med-quelle-${medium.id}`} className={labelClassName()}>
-              Quelle (https)
-            </label>
-            <input
-              id={`edit-med-quelle-${medium.id}`}
-              type="url"
-              required
-              value={form.quelle}
-              onChange={(e) => updateField('quelle', e.target.value)}
-              className={`${fieldClassName()} font-mono text-xs`}
+            <MediumLinkEmbedFields
+              typ={medium.typ as 'link' | 'embed'}
+              slug={slug}
+              values={form}
+              onChange={updateLinkEmbedField}
+              idPrefix={`edit-med-${medium.id}`}
             />
           </div>
         )}
@@ -272,54 +280,22 @@ export function StationMediumEditForm({
           </>
         )}
 
-        <div className="sm:col-span-2">
-          <label htmlFor={`edit-med-thumbnail-${medium.id}`} className={labelClassName()}>
-            thumbnail (optional)
-          </label>
-          <input
-            id={`edit-med-thumbnail-${medium.id}`}
-            type="text"
-            value={form.thumbnail}
-            onChange={(e) => updateField('thumbnail', e.target.value)}
-            placeholder="/media/…"
-            className={`${fieldClassName()} font-mono text-xs`}
-          />
-          <p className="mt-1 text-xs text-fg-3">
-            Pfad unter <code className="font-mono">/media/{slug}/</code> oder anderem öffentlichen
-            Pfad.
-          </p>
-        </div>
-
-        {medium.typ === 'link' && (
+        {quelleReadOnly && (
           <div className="sm:col-span-2">
-            <label className="flex items-center gap-2 text-sm text-fg-2">
-              <input
-                type="checkbox"
-                checked={form.openInExternal}
-                onChange={(e) => updateField('openInExternal', e.target.checked)}
-              />
-              In externem Tab öffnen (<code className="font-mono text-xs">openIn: external</code>)
+            <label htmlFor={`edit-med-thumbnail-${medium.id}`} className={labelClassName()}>
+              thumbnail (optional)
             </label>
-          </div>
-        )}
-
-        {medium.typ === 'embed' && (
-          <div className="sm:col-span-2">
-            <span className={labelClassName()}>embedAllow (optional)</span>
-            <div className="flex flex-col gap-2">
-              {DEFAULT_EMBED_ALLOW_SUFFIXES.map((suffix) => (
-                <label key={suffix} className="flex items-center gap-2 text-sm text-fg-2">
-                  <input
-                    type="checkbox"
-                    checked={form.embedAllow.includes(suffix)}
-                    onChange={() => toggleEmbedAllow(suffix)}
-                  />
-                  {suffix}
-                </label>
-              ))}
-            </div>
+            <input
+              id={`edit-med-thumbnail-${medium.id}`}
+              type="text"
+              value={form.thumbnail}
+              onChange={(e) => updateField('thumbnail', e.target.value)}
+              placeholder="/media/…"
+              className={`${fieldClassName()} font-mono text-xs`}
+            />
             <p className="mt-1 text-xs text-fg-3">
-              Alle abgewählt → Standard-Allowlist (beide Domains).
+              Pfad unter <code className="font-mono">/media/{slug}/</code> oder anderem öffentlichen
+              Pfad.
             </p>
           </div>
         )}

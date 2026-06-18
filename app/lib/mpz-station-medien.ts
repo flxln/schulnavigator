@@ -18,6 +18,8 @@ import {
   resolveEmbedAllowlist,
 } from '@/lib/embed-allowlist'
 import { isValidHttpsUrl } from '@/lib/external-link'
+import { uniqueMediumId } from '@/lib/mpz-medium-ingest'
+import { slugifyId } from '@/lib/mpz-upload-rules'
 import { HUB_SLUG_MAP } from '@/lib/schoolhouse-hub-map'
 import type { LinkOpenIn, Medium, MediumTyp, Station, StationsFile, VideoSource } from '@/lib/types'
 
@@ -33,6 +35,16 @@ export type MediumPatchInput = {
   embedAllow?: string[] | null
 }
 
+export type AddStationMediumInput = {
+  typ: 'link' | 'embed'
+  quelle: string
+  id?: string
+  untertitel?: string
+  thumbnail?: string
+  openIn?: 'external'
+  embedAllow?: string[] | null
+}
+
 export type MediumErrorCode =
   | 'NOT_FOUND'
   | 'HOTSPOT_REFERENCE'
@@ -44,6 +56,9 @@ export type MediumErrorCode =
   | 'INVALID_VIDEO_SOURCE'
   | 'INVALID_OPEN_IN'
   | 'INVALID_EMBED_ALLOW'
+  | 'DUPLICATE_ID'
+  | 'INVALID_ID'
+  | 'INVALID_TYP'
 
 /** @deprecated Verwende MediumErrorCode */
 export type MediumRemoveErrorCode = 'NOT_FOUND' | 'HOTSPOT_REFERENCE'
@@ -101,6 +116,84 @@ function allowedPatchKeys(typ: MediumTyp): Set<keyof MediumPatchInput> {
 
 function isOptionalStringClear(value: unknown): boolean {
   return value === null || value === ''
+}
+
+const MEDIUM_ID_RE = /^[a-z0-9][a-z0-9-]*$/
+
+function validateMediumId(id: string): void {
+  if (!id || !MEDIUM_ID_RE.test(id)) {
+    throw new MpzStationMedienError(
+      'INVALID_ID',
+      `Medium-ID "${id}" ist ungültig (erwartet: Kleinbuchstaben, Ziffern, Bindestriche; z. B. kunst-link).`,
+    )
+  }
+}
+
+export function validateLinkEmbedState(medium: Medium): void {
+  if (medium.typ !== 'link' && medium.typ !== 'embed') {
+    return
+  }
+
+  if (medium.thumbnail !== undefined && !medium.thumbnail.startsWith('/')) {
+    throw new MpzStationMedienError(
+      'INVALID_THUMBNAIL',
+      'thumbnail muss ein Pfad mit führendem / sein.',
+    )
+  }
+
+  if (medium.typ === 'link') {
+    if (medium.embedAllow !== undefined) {
+      throw new MpzStationMedienError(
+        'FIELD_NOT_ALLOWED',
+        'embedAllow ist für typ "link" nicht erlaubt.',
+      )
+    }
+    if (!isValidHttpsUrl(medium.quelle)) {
+      throw new MpzStationMedienError(
+        'INVALID_QUELLE',
+        'link.quelle muss eine gültige https-URL sein.',
+      )
+    }
+    if (medium.openIn !== undefined && medium.openIn !== 'external') {
+      throw new MpzStationMedienError(
+        'INVALID_OPEN_IN',
+        "openIn muss 'external' sein.",
+      )
+    }
+    return
+  }
+
+  if (medium.openIn !== undefined) {
+    throw new MpzStationMedienError(
+      'FIELD_NOT_ALLOWED',
+      'openIn ist für typ "embed" nicht erlaubt.',
+    )
+  }
+
+  if (medium.embedAllow !== undefined) {
+    for (const entry of medium.embedAllow) {
+      if (typeof entry !== 'string' || entry.includes('/')) {
+        throw new MpzStationMedienError(
+          'INVALID_EMBED_ALLOW',
+          `embedAllow darf nur Einträge aus ${DEFAULT_EMBED_ALLOW_SUFFIXES.join(', ')} enthalten.`,
+        )
+      }
+    }
+    if (!isEmbedAllowSubset(medium.embedAllow)) {
+      throw new MpzStationMedienError(
+        'INVALID_EMBED_ALLOW',
+        `embedAllow darf nur Einträge aus ${DEFAULT_EMBED_ALLOW_SUFFIXES.join(', ')} enthalten.`,
+      )
+    }
+  }
+
+  const allowlist = resolveEmbedAllowlist({ embedAllow: medium.embedAllow })
+  if (!isEmbedUrlAllowed(medium.quelle, allowlist)) {
+    throw new MpzStationMedienError(
+      'INVALID_QUELLE',
+      'embed.quelle muss eine gültige https-URL auf der Allowlist-Domain sein.',
+    )
+  }
 }
 
 function assertFieldAllowed(
@@ -238,24 +331,7 @@ function normalizeMediumPatch(
     delete record[key]
   }
 
-  if (existing.typ === 'link') {
-    if (!isValidHttpsUrl(merged.quelle)) {
-      throw new MpzStationMedienError(
-        'INVALID_QUELLE',
-        'link.quelle muss eine gültige https-URL sein.',
-      )
-    }
-  }
-
-  if (existing.typ === 'embed') {
-    const allowlist = resolveEmbedAllowlist({ embedAllow: merged.embedAllow })
-    if (!isEmbedUrlAllowed(merged.quelle, allowlist)) {
-      throw new MpzStationMedienError(
-        'INVALID_QUELLE',
-        'embed.quelle muss eine gültige https-URL auf der Allowlist-Domain sein.',
-      )
-    }
-  }
+  validateLinkEmbedState(merged)
 
   return { set, remove }
 }
@@ -408,6 +484,113 @@ export async function patchStationMedium(
 
     return {
       station: filteredStation,
+      mtime: writeResult.mtime,
+    }
+  })
+}
+
+function buildLinkEmbedMedium(
+  slug: string,
+  input: AddStationMediumInput,
+  existingIds: Set<string>,
+): Medium {
+  if (input.typ !== 'link' && input.typ !== 'embed') {
+    throw new MpzStationMedienError(
+      'INVALID_TYP',
+      `typ "${String(input.typ)}" ist nicht erlaubt — nur link oder embed.`,
+    )
+  }
+
+  if (input.typ === 'link' && input.embedAllow != null && input.embedAllow.length > 0) {
+    throw new MpzStationMedienError(
+      'FIELD_NOT_ALLOWED',
+      'embedAllow ist für typ "link" nicht erlaubt.',
+    )
+  }
+
+  if (input.typ === 'embed' && input.openIn !== undefined) {
+    throw new MpzStationMedienError(
+      'FIELD_NOT_ALLOWED',
+      'openIn ist für typ "embed" nicht erlaubt.',
+    )
+  }
+
+  const trimmedQuelle = input.quelle.trim()
+  if (!trimmedQuelle) {
+    throw new MpzStationMedienError('INVALID_QUELLE', 'quelle darf nicht leer sein.')
+  }
+
+  const rawId = input.id?.trim()
+  let mediumId: string
+  if (rawId) {
+    validateMediumId(rawId)
+    mediumId = rawId
+  } else {
+    mediumId = uniqueMediumId(existingIds, slugifyId(`${slug}-${input.typ}`))
+  }
+
+  if (existingIds.has(mediumId)) {
+    throw new MpzStationMedienError(
+      'DUPLICATE_ID',
+      `Medium-ID "${mediumId}" existiert bereits in Station "${slug}".`,
+    )
+  }
+
+  const medium: Medium = {
+    id: mediumId,
+    typ: input.typ,
+    quelle: trimmedQuelle,
+  }
+
+  if (input.untertitel !== undefined && input.untertitel.trim() !== '') {
+    medium.untertitel = input.untertitel.trim()
+  }
+
+  if (input.thumbnail !== undefined && input.thumbnail.trim() !== '') {
+    medium.thumbnail = input.thumbnail.trim()
+  }
+
+  if (input.typ === 'link' && input.openIn === 'external') {
+    medium.openIn = 'external'
+  }
+
+  if (input.typ === 'embed' && input.embedAllow != null && input.embedAllow.length > 0) {
+    medium.embedAllow = input.embedAllow
+  }
+
+  validateLinkEmbedState(medium)
+
+  return medium
+}
+
+export async function addStationMedium(
+  slug: string,
+  input: AddStationMediumInput,
+  io: MpzContentIo = createMpzContentIo(),
+): Promise<{ station: Station; mtime: string | null }> {
+  return withMpzWriteLock(async () => {
+    const data = await io.readStations()
+    const station = findHubStation(data, slug)
+    const existingIds = new Set((station.medien ?? []).map((m) => m.id))
+    const medium = buildLinkEmbedMedium(slug, input, existingIds)
+    const nextMedien = [...(station.medien ?? []), medium]
+    const nextStation: Station = { ...station, medien: nextMedien }
+    const nextStations = data.stations.map((s) => (s.slug === slug ? nextStation : s))
+
+    const writeResult = await io.writeStations(
+      { stations: nextStations },
+      {
+        strict: true,
+        validateAssets: false,
+        canonicalize: false,
+        makeBackup: true,
+        postValidate: true,
+        touchedSlugs: [slug],
+      },
+    )
+
+    return {
+      station: nextStation,
       mtime: writeResult.mtime,
     }
   })
