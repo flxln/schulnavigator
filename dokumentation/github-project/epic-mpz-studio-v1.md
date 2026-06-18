@@ -1,7 +1,7 @@
 # Epic: MPZ Studio v1 — Station-Detail & Content-Pflege (ADR-022)
 
 **Milestone:** MPZ Studio v1 (Post-Fest, Juli 2026)
-**Status:** abgeschlossen (Branch `mpz-studio-v1`, 2026-06-18) · Unterissues **#159–#168** erledigt · GitHub Epic **#158** geschlossen · **Merge nach `main` ausstehend** (14 Commits ahead of `main`, kein offener PR)
+**Status:** abgeschlossen (2026-06-18) · Merge nach `main` via [PR #169](https://github.com/flxln/schulnavigator/pull/169)
 **Parent:** Epic [#144](https://github.com/flxln/schulnavigator/issues/144) (v0 abgeschlossen, [PR #156](https://github.com/flxln/schulnavigator/pull/156))
 
 ## Übersicht
@@ -95,5 +95,5 @@ Interaktiv: [mpz-studio-prototype/MPZ Studio.html](../design/mpz-studio-claude-d
 - [x] Dialog-Audio-Tab (#163) — Post-Mortem: [post-mortem-163-2026-06-18.md](../reviews/post-mortem-163-2026-06-18.md)
 - [x] Tests + `npm run build` (#159)
 - [x] Doku (`fuer-entwickler.md`, Spec-Notiz, `lokal-testen-und-anschauen.md`) (#164)
-- [ ] Merge `mpz-studio-v1` → `main` (PR, dann Branch optional löschen)
+- [x] Merge `mpz-studio-v1` → `main` ([PR #169](https://github.com/flxln/schulnavigator/pull/169))
 - [ ] Folge-Epic v2: [epic-mpz-studio-v2.md](./epic-mpz-studio-v2.md)

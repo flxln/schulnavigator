@@ -183,7 +183,7 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | **Querschnitt** | Atomarer Schreib-Layer | [#146](https://github.com/flxln/schulnavigator/issues/146) | ✓ | (intern) | CLI nutzt gleiche IO |
 | **Querschnitt** | Brand, Hub, Deploy | — (v2) | — | — | Code / Skripte |
 
-**Stand:** 2026-06-18 — v0 (#144) und v1 (#158) abgeschlossen (GitHub Milestone v1: 0 offen). **Nächster Schritt:** Merge `mpz-studio-v1` → `main`, danach Epic v2 anlegen ([Roadmap](#roadmap-v2--v3)).
+**Stand:** v1 auf `main` ([PR #169](https://github.com/flxln/schulnavigator/pull/169)). **Entwicklung v2:** Branch `mpz-studio-v2`.
 
 ---
 
