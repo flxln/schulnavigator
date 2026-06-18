@@ -10,6 +10,7 @@ import {
 } from '@/lib/mpz-content-io'
 import * as mpzStationsValidation from '@/lib/mpz-stations-validation'
 import {
+  addStationHotspot,
   MpzStationHotspotsError,
   removeStationHotspot,
 } from '@/lib/mpz-station-hotspots'
@@ -24,6 +25,26 @@ function makeTempIo(initial: StationsFile = fixture) {
   mkdirSync(join(appRoot, 'public'), { recursive: true })
   writeFileSync(stationsPath, serializeStationsFile(initial), 'utf8')
   return createMpzContentIo({ appRoot, stationsPath, backupPath: `${stationsPath}.bak` })
+}
+
+function stationWithFlatMedias() {
+  const custom = structuredClone(fixture) as StationsFile
+  const kunst = custom.stations.find((s) => s.slug === 'kunst')!
+  kunst.viewer = 'flat'
+  kunst.medien = [
+    { id: 'm1', typ: 'text', quelle: '/media/kunst/texte/a.md' },
+    { id: 'm2', typ: 'text', quelle: '/media/kunst/texte/b.md' },
+  ]
+  kunst.hotspots = undefined
+  return custom
+}
+
+function writeIconFile(io: ReturnType<typeof makeTempIo>, slug: string, name: string) {
+  const iconsDir = join(io.getPaths().appRoot, 'public', 'media', slug, 'icons')
+  mkdirSync(iconsDir, { recursive: true })
+  const iconPath = join(iconsDir, name)
+  writeFileSync(iconPath, '<svg xmlns="http://www.w3.org/2000/svg"/>', 'utf8')
+  return `/media/${slug}/icons/${name}`
 }
 
 describe('mpz-station-hotspots', () => {
@@ -164,6 +185,173 @@ describe('mpz-station-hotspots', () => {
 
     const onDisk = JSON.parse(readFileSync(io.getPaths().stationsPath, 'utf8')) as StationsFile
     expect(onDisk.stations.find((s) => s.slug === 'daz')?.dialog).toBeDefined()
+  })
+
+  describe('addStationHotspot', () => {
+    it('Flat: legt Hotspot mit Koordinaten an', async () => {
+      const io = makeTempIo(stationWithFlatMedias())
+      temps.push(io.getPaths().appRoot)
+
+      const result = await addStationHotspot(
+        'kunst',
+        {
+          id: 'hs-neu',
+          label: 'Test',
+          mediumId: 'm1',
+          x: 0.51234,
+          y: 0.31876,
+          iconSize: 0.2,
+        },
+        io,
+      )
+
+      expect(result.station.hotspots).toHaveLength(1)
+      expect(result.station.hotspots?.[0]).toEqual({
+        id: 'hs-neu',
+        label: 'Test',
+        x: 0.5123,
+        y: 0.3188,
+        mediumId: 'm1',
+        iconSize: 0.2,
+      })
+    })
+
+    it('Sphere: legt Hotspot mit yaw/pitch an', async () => {
+      const io = makeTempIo()
+      temps.push(io.getPaths().appRoot)
+
+      const result = await addStationHotspot(
+        'klassenzimmer',
+        {
+          id: 'hs-neu-sphere',
+          mediumId: 'demo-text',
+          yaw: 45.5,
+          pitch: -10.3,
+          iconSize: 0.2,
+        },
+        io,
+      )
+
+      expect(result.station.hotspots360?.some((h) => h.id === 'hs-neu-sphere')).toBe(true)
+      const hs = result.station.hotspots360?.find((h) => h.id === 'hs-neu-sphere')
+      expect(hs?.yaw).toBe(45.5)
+      expect(hs?.pitch).toBe(-10.3)
+      expect(hs?.mediumId).toBe('demo-text')
+    })
+
+    it('mit Icon-Pfad wenn Datei existiert', async () => {
+      const io = makeTempIo(stationWithFlatMedias())
+      temps.push(io.getPaths().appRoot)
+      const iconPath = writeIconFile(io, 'kunst', 'test.svg')
+
+      const result = await addStationHotspot(
+        'kunst',
+        {
+          id: 'hs-icon',
+          mediumId: 'm1',
+          x: 0.5,
+          y: 0.5,
+          icon: iconPath,
+        },
+        io,
+      )
+
+      expect(result.station.hotspots?.[0]?.icon).toBe(iconPath)
+    })
+
+    it('NO_MEDIAS wenn keine Medien', async () => {
+      const io = makeTempIo()
+      temps.push(io.getPaths().appRoot)
+      await expect(
+        addStationHotspot('kunst', { id: 'hs-x', mediumId: 'm1', x: 0.5, y: 0.5 }, io),
+      ).rejects.toMatchObject({ code: 'NO_MEDIAS' })
+    })
+
+    it('INVALID_ID bei ungültiger ID', async () => {
+      const io = makeTempIo(stationWithFlatMedias())
+      temps.push(io.getPaths().appRoot)
+      await expect(
+        addStationHotspot('kunst', { id: 'HS-Bad', mediumId: 'm1', x: 0.5, y: 0.5 }, io),
+      ).rejects.toMatchObject({ code: 'INVALID_ID' })
+    })
+
+    it('DUPLICATE_ID bei bestehender ID', async () => {
+      const io = makeTempIo()
+      temps.push(io.getPaths().appRoot)
+      await expect(
+        addStationHotspot(
+          'klassenzimmer',
+          { id: 'hs-text', mediumId: 'demo-text', yaw: 0, pitch: 0 },
+          io,
+        ),
+      ).rejects.toMatchObject({ code: 'DUPLICATE_ID' })
+    })
+
+    it('MEDIUM_NOT_FOUND bei unbekanntem Medium', async () => {
+      const io = makeTempIo(stationWithFlatMedias())
+      temps.push(io.getPaths().appRoot)
+      await expect(
+        addStationHotspot('kunst', { id: 'hs-x', mediumId: 'fehlt', x: 0.5, y: 0.5 }, io),
+      ).rejects.toMatchObject({ code: 'MEDIUM_NOT_FOUND' })
+    })
+
+    it('INVALID_COORDS bei x außerhalb [0,1]', async () => {
+      const io = makeTempIo(stationWithFlatMedias())
+      temps.push(io.getPaths().appRoot)
+      await expect(
+        addStationHotspot('kunst', { id: 'hs-x', mediumId: 'm1', x: 1.5, y: 0.5 }, io),
+      ).rejects.toMatchObject({ code: 'INVALID_COORDS' })
+    })
+
+    it('INVALID_COORDS bei yaw außerhalb Bereich', async () => {
+      const io = makeTempIo()
+      temps.push(io.getPaths().appRoot)
+      await expect(
+        addStationHotspot(
+          'klassenzimmer',
+          { id: 'hs-x', mediumId: 'demo-text', yaw: 200, pitch: 0 },
+          io,
+        ),
+      ).rejects.toMatchObject({ code: 'INVALID_COORDS' })
+    })
+
+    it('INVALID_ICON bei fehlender Datei', async () => {
+      const io = makeTempIo(stationWithFlatMedias())
+      temps.push(io.getPaths().appRoot)
+      await expect(
+        addStationHotspot(
+          'kunst',
+          {
+            id: 'hs-x',
+            mediumId: 'm1',
+            x: 0.5,
+            y: 0.5,
+            icon: '/media/kunst/icons/fehlt.svg',
+          },
+          io,
+        ),
+      ).rejects.toMatchObject({ code: 'INVALID_ICON' })
+    })
+
+    it('INVALID_ICON_SIZE außerhalb Bereich', async () => {
+      const io = makeTempIo(stationWithFlatMedias())
+      temps.push(io.getPaths().appRoot)
+      await expect(
+        addStationHotspot(
+          'kunst',
+          { id: 'hs-x', mediumId: 'm1', x: 0.5, y: 0.5, iconSize: 0.3 },
+          io,
+        ),
+      ).rejects.toMatchObject({ code: 'INVALID_ICON_SIZE' })
+    })
+
+    it('NOT_FOUND bei unbekanntem Slug', async () => {
+      const io = makeTempIo()
+      temps.push(io.getPaths().appRoot)
+      await expect(
+        addStationHotspot('fehlt', { id: 'hs-x', mediumId: 'm1', x: 0.5, y: 0.5 }, io),
+      ).rejects.toMatchObject({ code: 'NOT_FOUND' })
+    })
   })
 })
 

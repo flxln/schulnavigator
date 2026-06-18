@@ -8,6 +8,7 @@ import {
   useStudioValidation,
 } from '@/components/mpz-studio/studio-validation-context'
 import { HotspotIconUpload } from '@/components/mpz-studio/hotspot-icon-upload'
+import { StationHotspotAddForm } from '@/components/mpz-studio/station-hotspot-add-form'
 import {
   formatHotspotCoordsFlat,
   formatHotspotCoordsSphere,
@@ -42,6 +43,7 @@ export function StationHotspotsTable({ slug, station }: StationHotspotsTableProp
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
   const [removingId, setRemovingId] = useState<string | null>(null)
+  const [uploadedIconPath, setUploadedIconPath] = useState<string | null>(null)
 
   useEffect(() => {
     setError(null)
@@ -148,8 +150,14 @@ export function StationHotspotsTable({ slug, station }: StationHotspotsTableProp
     <div className="flex flex-col gap-4 text-sm">
       <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-4">
         <h3 className="mb-3 font-semibold text-fg-1">Hotspot-Icons</h3>
-        <HotspotIconUpload slug={slug} />
+        <HotspotIconUpload slug={slug} onUploaded={setUploadedIconPath} />
       </section>
+
+      <StationHotspotAddForm
+        slug={slug}
+        station={station}
+        uploadedIconPath={uploadedIconPath}
+      />
 
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>

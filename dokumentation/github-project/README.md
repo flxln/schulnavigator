@@ -89,9 +89,9 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issue **#159** (MPZ Studio v1: Station-Detail-Shell) — umgesetzt 2026-06-17, Branch `mpz-studio-v1`
 - [x] Issue **#161** (MPZ Studio v1: Medien-Tabelle) — umgesetzt 2026-06-17, Branch `mpz-studio-v1`
 - [x] Issue **#162** (MPZ Studio v1: Hotspots-Tabelle) — umgesetzt 2026-06-17, Branch `mpz-studio-v1`
-- [ ] Issue **#165** (Hotspot anlegen: Medium, Koordinaten, Icon, iconSize) — spezifiziert, [Hotspot-Editor-Spec](../projektmanagement/2026-06-17-mpz-studio-hotspot-editor-spezifikation.md)
+- [x] Issue **#165** (Hotspot anlegen: Medium, Koordinaten, Icon, iconSize) — umgesetzt 2026-06-18, Branch `mpz-studio-v1`, [Hotspot-Editor-Spec](../projektmanagement/2026-06-17-mpz-studio-hotspot-editor-spezifikation.md)
 - [x] Issue **#166** (Hotspot-Icon-Ingest) — umgesetzt 2026-06-17, Branch `mpz-studio-v1`
 - [ ] Issue **#167** (Hotspot bearbeiten PATCH) — spezifiziert
 - [ ] **#154** Flat-Startpan (ADR-024) — [issues-startblick.md](issues-startblick.md)
 
-Letzter dokumentierter Abgleich: **2026-06-17** (#162 Hotspots-Tabelle, #166 Icon-Ingest; #165/#167 spezifiziert; Epic #158 offen #163–#165/#167; #154 Flat-Startpan offen).
+Letzter dokumentierter Abgleich: **2026-06-18** (#165 Hotspot anlegen; Epic #158 offen #163/#167/#164; #154 Flat-Startpan offen).

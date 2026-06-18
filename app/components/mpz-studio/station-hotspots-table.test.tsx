@@ -65,4 +65,40 @@ describe('StationHotspotsTable', () => {
     render(<StationHotspotsTable slug="kunst" station={null} />)
     expect(screen.getByRole('alert').textContent).toContain('Station fehlt')
   })
+
+  it('zeigt Add-Formular bei Station mit Medien', () => {
+    const station = getStationBySlug('klassenzimmer')!
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ paths: [] }),
+      }),
+    )
+
+    render(<StationHotspotsTable slug="klassenzimmer" station={station} />)
+
+    expect(screen.getByRole('button', { name: 'Hotspot anlegen' })).toBeTruthy()
+    expect(screen.getByLabelText('yaw (°)')).toBeTruthy()
+
+    vi.unstubAllGlobals()
+  })
+
+  it('ohne Medien: Ingest-Hinweis statt Anlege-Button', () => {
+    const station = getStationBySlug('kunst')!
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ paths: [] }),
+      }),
+    )
+
+    render(<StationHotspotsTable slug="kunst" station={station} />)
+
+    expect(screen.getByRole('link', { name: 'Medium hinzufügen' })).toBeTruthy()
+    expect(screen.queryByRole('button', { name: 'Hotspot anlegen' })).toBeNull()
+
+    vi.unstubAllGlobals()
+  })
 })

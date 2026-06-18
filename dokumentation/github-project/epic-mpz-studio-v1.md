@@ -88,7 +88,7 @@ Interaktiv: [mpz-studio-prototype/MPZ Studio.html](../design/mpz-studio-claude-d
 - [x] Stammdaten-Editor (inkl. `beschreibung`) (#160)
 - [x] Medien-Tabelle (#161)
 - [x] Hotspots-Tabelle (#162)
-- [ ] Hotspot anlegen inkl. Koordinaten, Icon, iconSize (#165)
+- [x] Hotspot anlegen inkl. Koordinaten, Icon, iconSize (#165)
 - [x] Hotspot-Icon-Ingest (#166)
 - [ ] Hotspot bearbeiten (#167)
 - [ ] Dialog-Audio-Tab (#163)
