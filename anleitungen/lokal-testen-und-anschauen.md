@@ -121,7 +121,7 @@ curl -X POST http://localhost:3000/api/mpz/view/sphere \
 | Tab (`?tab=`) | Kurztest |
 |---------------|----------|
 | `stammdaten` (Default) | `titel`/`beschreibung` ändern → Speichern → Erfolgsmeldung; global **Speichern & Validieren** danach grün |
-| `medien` | Medien-Tabelle; Link zu Ingest; Entfernen mit Bestätigung |
+| `medien` | Medien-Tabelle; **Bearbeiten** (Inline-Panel, PATCH Metadaten, #171); Link zu Ingest; Entfernen mit Bestätigung |
 | `hotspots` | Hotspot anlegen/bearbeiten/entfernen; Kalibrier-Link öffnet `?hotspot-calib=1` oder `/mpz/calib/flat/{slug}` |
 | `dialog-audio` | Nur bei Stationen mit `dialog` (z. B. `daz`, `pc-raum`): Segment-Upload wie globale Dialog-Audio-Seite |
 

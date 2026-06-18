@@ -68,7 +68,7 @@ Leitplanken unverändert (ADR-022): nur `NODE_ENV=development`, nie Coolify, kei
 
 - [x] GitHub Epic + Unterissues angelegt (#170–#181)
 - [x] Milestone „MPZ Studio v2“ (#9) · Branch `mpz-studio-v2`
-- [ ] Medien PATCH (#171)
+- [x] Medien PATCH (#171) — umgesetzt 2026-06-18, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-171-2026-06-18.md](../reviews/post-mortem-171-2026-06-18.md)
 - [ ] Medien link/embed (#172)
 - [ ] Raumbild-Upload (#173)
 - [ ] Deploy-Tab (#174)

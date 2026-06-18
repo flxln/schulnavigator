@@ -2,7 +2,8 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState, useTransition } from 'react'
+import { Fragment, useEffect, useState, useTransition } from 'react'
+import { StationMediumEditForm } from '@/components/mpz-studio/station-medium-edit-form'
 import {
   markMpzStudioDirty,
   useStudioValidation,
@@ -69,11 +70,13 @@ export function StationMedienTable({ slug, station }: StationMedienTableProps) {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
   const [removingId, setRemovingId] = useState<string | null>(null)
+  const [editingId, setEditingId] = useState<string | null>(null)
 
   useEffect(() => {
     setError(null)
     setSuccess(null)
     setRemovingId(null)
+    setEditingId(null)
   }, [station])
 
   if (!station) {
@@ -184,35 +187,67 @@ export function StationMedienTable({ slug, station }: StationMedienTableProps) {
             <tbody>
               {medien.map((medium) => {
                 const block = hotspotBlockMessage(stationRef, medium.id)
+                const isEditing = editingId === medium.id
                 const rowBusy = isPending || removingId === medium.id
                 return (
-                  <tr key={medium.id} className="border-b border-border-1 last:border-b-0">
-                    <td className="px-3 py-2 text-fg-2">{medium.typ}</td>
-                    <td className="px-3 py-2 font-mono text-xs text-fg-1">{medium.id}</td>
-                    <td className="px-3 py-2 text-fg-2">{medium.untertitel ?? '—'}</td>
-                    <td
-                      className="max-w-[14rem] truncate px-3 py-2 font-mono text-xs text-fg-2"
-                      title={medium.quelle}
-                    >
-                      {truncateQuelle(medium.quelle)}
-                    </td>
-                    <td className="px-3 py-2">
-                      {block ? (
-                        <span className="text-xs text-fg-3" title={block}>
-                          Gesperrt
-                        </span>
-                      ) : (
-                        <button
-                          type="button"
-                          disabled={rowBusy}
-                          onClick={() => handleRemove(medium)}
-                          className="font-semibold text-brand-red disabled:opacity-50"
-                        >
-                          {rowBusy ? 'Entfernt …' : 'Entfernen'}
-                        </button>
-                      )}
-                    </td>
-                  </tr>
+                  <Fragment key={medium.id}>
+                    <tr className="border-b border-border-1 last:border-b-0">
+                      <td className="px-3 py-2 text-fg-2">{medium.typ}</td>
+                      <td className="px-3 py-2 font-mono text-xs text-fg-1">{medium.id}</td>
+                      <td className="px-3 py-2 text-fg-2">{medium.untertitel ?? '—'}</td>
+                      <td
+                        className="max-w-[14rem] truncate px-3 py-2 font-mono text-xs text-fg-2"
+                        title={medium.quelle}
+                      >
+                        {truncateQuelle(medium.quelle)}
+                      </td>
+                      <td className="px-3 py-2">
+                        <div className="flex flex-wrap items-center gap-3">
+                          <button
+                            type="button"
+                            disabled={rowBusy || isEditing}
+                            onClick={() => {
+                              setError(null)
+                              setSuccess(null)
+                              setEditingId(medium.id)
+                            }}
+                            className="font-semibold text-accent disabled:opacity-50"
+                          >
+                            {isEditing ? 'Bearbeiten …' : 'Bearbeiten'}
+                          </button>
+                          {block ? (
+                            <span className="text-xs text-fg-3" title={block}>
+                              Gesperrt
+                            </span>
+                          ) : (
+                            <button
+                              type="button"
+                              disabled={rowBusy || isEditing}
+                              onClick={() => handleRemove(medium)}
+                              className="font-semibold text-brand-red disabled:opacity-50"
+                            >
+                              {rowBusy ? 'Entfernt …' : 'Entfernen'}
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                    {isEditing && (
+                      <tr>
+                        <td colSpan={5} className="p-0">
+                          <StationMediumEditForm
+                            slug={slug}
+                            medium={medium}
+                            onCancel={() => setEditingId(null)}
+                            onSuccess={(message) => {
+                              setSuccess(message)
+                              setEditingId(null)
+                            }}
+                          />
+                        </td>
+                      </tr>
+                    )}
+                  </Fragment>
                 )
               })}
             </tbody>
