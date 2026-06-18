@@ -5,8 +5,8 @@ export default function MpzStudioDialogAudioPage() {
     <div className="mx-auto max-w-3xl">
       <p className="mb-6 text-sm text-fg-2">
         WAV-Upload nach Konvention <code className="text-fg-1">NN-rolle.wav</code>{' '}
-        (#148). Reihenfolge der{' '}
-        <code className="text-fg-1">dialog.segmente[]</code> ist immutabel.
+        (#148). Kein Drag-Reorder — Segmente anlegen, löschen oder Rollen ändern im{' '}
+        <strong>Dialog-Tab</strong> der Station (strukturelle Änderungen mit Clip-Renumbering).
       </p>
       <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5 shadow-gs39-sm">
         <DialogAudioPanel />

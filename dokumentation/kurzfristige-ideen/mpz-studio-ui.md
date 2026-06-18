@@ -171,11 +171,11 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | **Hotspots** | bearbeiten | [#167](https://github.com/flxln/schulnavigator/issues/167) | ✓ | ja | JSON |
 | **Hotspots** | löschen | [#162](https://github.com/flxln/schulnavigator/issues/162), [#168](https://github.com/flxln/schulnavigator/issues/168) | ✓ | ja | JSON |
 | **Hotspots** | Tabelle + Kalibrier-Links | [#162](https://github.com/flxln/schulnavigator/issues/162) | ✓ | ja | — |
-| **Dialog** | Segmente & Texte | [#175](https://github.com/flxln/schulnavigator/issues/175) | — | — | JSON + Snippet |
-| **Dialog** | Sprechblasen-Layout (`bubble`) | [#175](https://github.com/flxln/schulnavigator/issues/175) | — | — | JSON |
+| **Dialog** | Segmente & Texte | [#175](https://github.com/flxln/schulnavigator/issues/175) | ✓ | ja | JSON + Snippet |
+| **Dialog** | Sprechblasen-Layout (`bubble`) | [#175](https://github.com/flxln/schulnavigator/issues/175) | ✓ | ja | JSON |
 | **Dialog** | Audio-Clips hochladen | [#148](https://github.com/flxln/schulnavigator/issues/148), Tab [#163](https://github.com/flxln/schulnavigator/issues/163) | ✓ | ja | `content:ingest-dialog` |
 | **Dialog** | Audio-Status / fehlende Clips | [#148](https://github.com/flxln/schulnavigator/issues/148), [#163](https://github.com/flxln/schulnavigator/issues/163) | ✓ | ja | — |
-| **Dialog** | bearbeiten / löschen (Segmente) | [#175](https://github.com/flxln/schulnavigator/issues/175) | — | — | JSON |
+| **Dialog** | bearbeiten / löschen (Segmente) | [#175](https://github.com/flxln/schulnavigator/issues/175) | ✓ | ja | JSON |
 | **Coach** | erstellen / bearbeiten / löschen | [#177](https://github.com/flxln/schulnavigator/issues/177) | — | — | `coach-messages.json` |
 | **Querschnitt** | Save & Validieren, Rollback | [#150](https://github.com/flxln/schulnavigator/issues/150), [#155](https://github.com/flxln/schulnavigator/issues/155) | ✓ | ja | `validate:stations` |
 | **Querschnitt** | Dashboard, Stations-Grid, Vorschau | [#151](https://github.com/flxln/schulnavigator/issues/151) | ✓ | ja | — |
@@ -184,7 +184,7 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | **Querschnitt** | Deploy (Env, QR, Token, validate-all) | [#174](https://github.com/flxln/schulnavigator/issues/174) | ✓ | ja | Skripte / `.env.local` |
 | **Querschnitt** | Brand, Hub | [#178](https://github.com/flxln/schulnavigator/issues/178)–[#180](https://github.com/flxln/schulnavigator/issues/180) | — | — | Code / Skripte |
 
-**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) — **#174** Deploy-Tab im Studio erledigt. **Nächstes Issue:** [#175](https://github.com/flxln/schulnavigator/issues/175) Dialog-Tab.
+**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) — **#175** Dialog-Tab im Studio erledigt. **Nächstes Issue:** [#176](https://github.com/flxln/schulnavigator/issues/176) Dialog-Hotspots.
 
 ---
 
@@ -198,6 +198,7 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | Tab Stammdaten | #160, #173 | Titel, Beschreibung, Viewer, Raumbild-Upload |
 | Tab Medien | #161, #171, #172 | Liste, Bearbeiten (PATCH), Entfernen, Modal Ingest (alle Typen) |
 | Tab Hotspots | #162, #165–#168 | CRUD, Kalibrier-Links |
+| Tab Dialog | #175 | Figuren, Segmente, Gruppen, bubble, Audio-Audit-Banner |
 | Tab Dialog-Audio | #163 | Upload + Segment-Audit |
 | `/mpz/studio/ingest` | #147, #172 | Deep-Link öffnet Medien-Modal |
 | `/mpz/studio/dialog-audio` | #148 | Dialog-Audio (global) |
