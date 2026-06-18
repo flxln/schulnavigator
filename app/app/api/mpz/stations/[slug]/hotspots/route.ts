@@ -9,6 +9,7 @@ import {
 
 export const runtime = 'nodejs'
 
+// sync with [hotspotId]/route.ts; Single Source of Truth folgt im Dedup-Follow-up
 const CLIENT_ERROR_CODES = new Set([
   'DUPLICATE_ID',
   'MEDIUM_NOT_FOUND',
@@ -36,6 +37,7 @@ export const POST = withMpzStudioAccess(async (req: NextRequest, context) => {
     return NextResponse.json(result, { status: 200 })
   } catch (err) {
     if (err instanceof MpzStationHotspotsError) {
+      // NOT_EDITABLE bewusst nicht gemappt — addStationHotspot wirft ihn nicht; bei Domain-Erweiterung mapHotspotError aus [hotspotId]/route.ts nutzen
       const status = err.code === 'NOT_FOUND' ? 404 : CLIENT_ERROR_CODES.has(err.code) ? 400 : 500
       return NextResponse.json({ error: err.code, message: err.message }, { status })
     }

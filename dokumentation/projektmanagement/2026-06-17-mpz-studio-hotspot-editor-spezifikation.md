@@ -142,7 +142,7 @@ Fehlercodes (vor `writeStations`): `NOT_FOUND`, `DUPLICATE_ID`, `MEDIUM_NOT_FOUN
 | Icon-Pfad zeigt auf fehlende Datei | Save & Validate / `postValidate`; Picker nur existierende Dateien (#166) |
 | Geteiltes Icon (`pc-raum` delightex.svg) | Entfernen/Bearbeiten ändert nur JSON-Referenz, nicht Datei — wie #161 |
 | Koordinaten doppelt (Formular + Kalibrierung) | Bearbeiten (#167) und Kalibrierung (#149) schreiben dieselben Felder; letzter Write gewinnt |
-| DELETE-Fehler-Mapping inkonsistent zu POST/PATCH | [#168](https://github.com/flxln/schulnavigator/issues/168): `DELETE` mappt alle Nicht-`NOT_FOUND`-Domain-Codes auf 500; latent bis Domain erweitert wird |
+| DELETE-Fehler-Mapping inkonsistent zu POST/PATCH | Erledigt [#168](https://github.com/flxln/schulnavigator/issues/168): DELETE nutzt `mapHotspotError` wie PATCH — Post-Mortem [post-mortem-168-2026-06-18.md](../reviews/post-mortem-168-2026-06-18.md) |
 
 ---
 
