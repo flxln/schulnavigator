@@ -44,7 +44,12 @@ Nur bei `NODE_ENV=development` erreichbar; in Production liefern `/mpz/*` und `/
 
 **Plan A (Pflicht + Fallback):** CLI und manuelles JSON ([content-einpflegen.md](./content-einpflegen.md)) bleiben für den Projekttag maßgeblich.
 
-**API (Auswahl):** `POST /api/mpz/view/sphere` — Body `{ slug, startYaw, startPitch }` schreibt den Sphere-Startblick in `stations.json` (#153, ADR-023). Guard wie alle `/api/mpz/*`-Routen.
+**API (Auswahl):**
+
+- `POST /api/mpz/view/sphere` — Body `{ slug, startYaw, startPitch }` schreibt den Sphere-Startblick in `stations.json` (#153, ADR-023).
+- `POST` / `PATCH` / `DELETE` `/api/mpz/stations/[slug]/hotspots` bzw. `…/hotspots/[hotspotId]` — Hotspot anlegen (#165), bearbeiten (#167), entfernen (#162). Fehler-Mapping: `POST` und `PATCH` liefern Client-Domain-Fehler als **400**; `DELETE` mappt derzeit alle Codes außer `NOT_FOUND` auf **500** — Nacharbeit [#168](https://github.com/flxln/schulnavigator/issues/168).
+
+Guard wie alle `/api/mpz/*`-Routen.
 
 Details und Testrouten: [lokal-testen-und-anschauen.md](./lokal-testen-und-anschauen.md) (Abschnitt MPZ Studio).
 

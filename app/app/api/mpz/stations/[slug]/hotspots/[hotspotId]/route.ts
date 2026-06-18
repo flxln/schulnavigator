@@ -135,6 +135,7 @@ export const DELETE = withMpzStudioAccess(async (_req: NextRequest, context) => 
     return NextResponse.json(result, { status: 200 })
   } catch (err) {
     if (err instanceof MpzStationHotspotsError) {
+      // Fehler-Mapping inkonsistent zu PATCH/POST — #168
       const status = err.code === 'NOT_FOUND' ? 404 : 500
       return NextResponse.json({ error: err.code, message: err.message }, { status })
     }
