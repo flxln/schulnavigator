@@ -1,7 +1,7 @@
 # Epic: MPZ Studio v1 — Station-Detail & Content-Pflege (ADR-022)
 
 **Milestone:** MPZ Studio v1 (Post-Fest, Juli 2026)
-**Status:** in Arbeit (Branch `mpz-studio-v1`, 2026-06-17) · **#159**, **#160**, **#161**, **#162**, **#166** erledigt
+**Status:** in Arbeit (Branch `mpz-studio-v1`, 2026-06-18) · **#159**, **#160**, **#161**, **#162**, **#165**, **#166**, **#167** erledigt
 **Parent:** Epic [#144](https://github.com/flxln/schulnavigator/issues/144) (v0 abgeschlossen, [PR #156](https://github.com/flxln/schulnavigator/pull/156))
 
 ## Übersicht
@@ -13,9 +13,9 @@
 | Unterissue | `#160` | Stammdaten-Editor (`titel`, `beschreibung`, `viewer`) | `tech` | #159, v0 #146 | ✓ |
 | Unterissue | `#161` | Medien-Tabelle auf Station-Detail | `tech` | #159, v0 #147 | ✓ |
 | Unterissue | `#162` | Hotspots-Tabelle auf Station-Detail | `tech` | #159, v0 #149 | ✓ |
-| Unterissue | `#165` | Hotspot anlegen (Medium, Koordinaten, Icon, iconSize) | `tech` | #161, #162, #166 (Icon-Picker) | |
+| Unterissue | `#165` | Hotspot anlegen (Medium, Koordinaten, Icon, iconSize) | `tech` | #161, #162, #166 (Icon-Picker) | ✓ |
 | Unterissue | `#166` | Hotspot-Icon-Ingest (`/media/{slug}/icons/`) | `tech` | #161 | ✓ |
-| Unterissue | `#167` | Hotspot bearbeiten (PATCH) | `tech` | #165 | |
+| Unterissue | `#167` | Hotspot bearbeiten (PATCH) | `tech` | #165 | ✓ |
 | Unterissue | `#163` | Dialog-Audio-Tab pro Station | `tech` | #159, v0 #148 |
 | Unterissue | `#164` | Doku & Epic-Abschluss | `tech`, `documentation` | #159–#163, #165–#167 |
 
@@ -90,7 +90,7 @@ Interaktiv: [mpz-studio-prototype/MPZ Studio.html](../design/mpz-studio-claude-d
 - [x] Hotspots-Tabelle (#162)
 - [x] Hotspot anlegen inkl. Koordinaten, Icon, iconSize (#165)
 - [x] Hotspot-Icon-Ingest (#166)
-- [ ] Hotspot bearbeiten (#167)
+- [x] Hotspot bearbeiten (#167) — Post-Mortem: [post-mortem-167-2026-06-18.md](../reviews/post-mortem-167-2026-06-18.md)
 - [ ] Dialog-Audio-Tab (#163)
 - [x] Tests + `npm run build` (#159)
 - [ ] Doku (`fuer-entwickler.md`, Spec-Notiz) (#164)

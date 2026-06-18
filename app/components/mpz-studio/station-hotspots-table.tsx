@@ -2,13 +2,14 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState, useTransition } from 'react'
+import { Fragment, useEffect, useState, useTransition } from 'react'
 import {
   markMpzStudioDirty,
   useStudioValidation,
 } from '@/components/mpz-studio/studio-validation-context'
 import { HotspotIconUpload } from '@/components/mpz-studio/hotspot-icon-upload'
 import { StationHotspotAddForm } from '@/components/mpz-studio/station-hotspot-add-form'
+import { StationHotspotEditForm } from '@/components/mpz-studio/station-hotspot-edit-form'
 import {
   formatHotspotCoordsFlat,
   formatHotspotCoordsSphere,
@@ -36,6 +37,10 @@ function successMessage(slug: string): string {
   return `Hotspot entfernt. Für /raum/${slug} ggf. Dev-Server neu starten (Modul-Cache).`
 }
 
+function isMediaHotspot(hs: Hotspot | Hotspot360): boolean {
+  return hs.action !== 'dialog'
+}
+
 export function StationHotspotsTable({ slug, station }: StationHotspotsTableProps) {
   const router = useRouter()
   const { validateNow } = useStudioValidation()
@@ -43,12 +48,14 @@ export function StationHotspotsTable({ slug, station }: StationHotspotsTableProp
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
   const [removingId, setRemovingId] = useState<string | null>(null)
+  const [editingId, setEditingId] = useState<string | null>(null)
   const [uploadedIconPath, setUploadedIconPath] = useState<string | null>(null)
 
   useEffect(() => {
     setError(null)
     setSuccess(null)
     setRemovingId(null)
+    setEditingId(null)
   }, [station])
 
   if (!station) {
@@ -59,14 +66,15 @@ export function StationHotspotsTable({ slug, station }: StationHotspotsTableProp
     )
   }
 
-  const viewer = station.viewer ?? 'flat'
+  const activeStation = station
+  const viewer = activeStation.viewer ?? 'flat'
   const calib = mpzStationCalibHref({
     viewer,
     slug,
-    hasBild: !!station.bild,
+    hasBild: !!activeStation.bild,
   })
   const isSphere = viewer === 'equirectangular'
-  const hotspots = isSphere ? (station.hotspots360 ?? []) : (station.hotspots ?? [])
+  const hotspots = isSphere ? (activeStation.hotspots360 ?? []) : (activeStation.hotspots ?? [])
   const arrayLabel = isSphere ? 'hotspots360[]' : 'hotspots[]'
   const coordHint = isSphere
     ? 'yaw ∈ [-180, 180] · pitch ∈ [-90, 90]'
@@ -111,38 +119,73 @@ export function StationHotspotsTable({ slug, station }: StationHotspotsTableProp
       ? formatHotspotCoordsSphere(hs as Hotspot360)
       : formatHotspotCoordsFlat(hs as Hotspot)
     const rowBusy = isPending || removingId === hs.id
+    const isEditing = editingId === hs.id
+    const canEdit = isMediaHotspot(hs)
 
     return (
-      <tr key={hs.id} className="border-b border-border-1 last:border-b-0">
-        <td className="px-3 py-2 font-mono text-xs text-fg-1">{hs.id}</td>
-        <td className="px-3 py-2 text-fg-2">{hs.label ?? '—'}</td>
-        <td className="px-3 py-2 font-mono text-xs text-fg-2">{coords}</td>
-        <td className="px-3 py-2 font-mono text-xs text-fg-2">
-          {formatHotspotRowLink(hs)}
-        </td>
-        <td className="px-3 py-2">
-          <div className="flex flex-wrap items-center gap-3">
-            {calib && (
-              <Link
-                href={calib}
-                target={isSphere ? '_blank' : undefined}
-                rel={isSphere ? 'noopener noreferrer' : undefined}
-                className="font-semibold text-accent underline-offset-2 hover:underline"
+      <Fragment key={hs.id}>
+        <tr className="border-b border-border-1 last:border-b-0">
+          <td className="px-3 py-2 font-mono text-xs text-fg-1">{hs.id}</td>
+          <td className="px-3 py-2 text-fg-2">{hs.label ?? '—'}</td>
+          <td className="px-3 py-2 font-mono text-xs text-fg-2">{coords}</td>
+          <td className="px-3 py-2 font-mono text-xs text-fg-2">
+            {formatHotspotRowLink(hs)}
+          </td>
+          <td className="px-3 py-2">
+            <div className="flex flex-wrap items-center gap-3">
+              {calib && (
+                <Link
+                  href={calib}
+                  target={isSphere ? '_blank' : undefined}
+                  rel={isSphere ? 'noopener noreferrer' : undefined}
+                  className="font-semibold text-accent underline-offset-2 hover:underline"
+                >
+                  {isSphere ? '↗ Sphere-App' : 'Kalibrieren'}
+                </Link>
+              )}
+              {canEdit && (
+                <button
+                  type="button"
+                  disabled={rowBusy || isEditing}
+                  onClick={() => {
+                    setError(null)
+                    setSuccess(null)
+                    setEditingId(hs.id)
+                  }}
+                  className="font-semibold text-accent disabled:opacity-50"
+                >
+                  {isEditing ? 'Bearbeiten …' : 'Bearbeiten'}
+                </button>
+              )}
+              <button
+                type="button"
+                disabled={rowBusy || isEditing}
+                onClick={() => handleRemove(hs.id)}
+                className="font-semibold text-brand-red disabled:opacity-50"
               >
-                {isSphere ? '↗ Sphere-App' : 'Kalibrieren'}
-              </Link>
-            )}
-            <button
-              type="button"
-              disabled={rowBusy}
-              onClick={() => handleRemove(hs.id)}
-              className="font-semibold text-brand-red disabled:opacity-50"
-            >
-              {rowBusy ? 'Entfernt …' : 'Entfernen'}
-            </button>
-          </div>
-        </td>
-      </tr>
+                {rowBusy ? 'Entfernt …' : 'Entfernen'}
+              </button>
+            </div>
+          </td>
+        </tr>
+        {isEditing && (
+          <tr>
+            <td colSpan={5} className="p-0">
+              <StationHotspotEditForm
+                slug={slug}
+                station={activeStation}
+                hotspot={hs}
+                uploadedIconPath={uploadedIconPath}
+                onCancel={() => setEditingId(null)}
+                onSuccess={(message) => {
+                  setSuccess(message)
+                  setEditingId(null)
+                }}
+              />
+            </td>
+          </tr>
+        )}
+      </Fragment>
     )
   }
 
@@ -155,7 +198,7 @@ export function StationHotspotsTable({ slug, station }: StationHotspotsTableProp
 
       <StationHotspotAddForm
         slug={slug}
-        station={station}
+        station={activeStation}
         uploadedIconPath={uploadedIconPath}
       />
 
