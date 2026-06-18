@@ -18,6 +18,7 @@ import type { Hotspot, Hotspot360, Station, StationsFile, ViewerMode } from '@/l
 
 export type StationHotspotErrorCode =
   | 'NOT_FOUND'
+  | 'NOT_EDITABLE'
   | 'DUPLICATE_ID'
   | 'MEDIUM_NOT_FOUND'
   | 'NO_MEDIAS'
@@ -44,6 +45,17 @@ export type AddStationHotspotInput = {
   pitch?: number
   icon?: string
   iconSize?: number
+}
+
+export type PatchStationHotspotInput = {
+  label?: string
+  mediumId?: string
+  x?: number
+  y?: number
+  yaw?: number
+  pitch?: number
+  icon?: string | null
+  iconSize?: number | null
 }
 
 export class MpzStationHotspotsError extends Error {
@@ -125,7 +137,7 @@ function validateIconPath(
   return icon
 }
 
-function assertFlatCoordsOnly(input: AddStationHotspotInput): void {
+function assertFlatCoordsOnly(input: { yaw?: number; pitch?: number }): void {
   if (input.yaw !== undefined || input.pitch !== undefined) {
     throw new MpzStationHotspotsError(
       'INVALID_COORDS',
@@ -134,13 +146,38 @@ function assertFlatCoordsOnly(input: AddStationHotspotInput): void {
   }
 }
 
-function assertSphereCoordsOnly(input: AddStationHotspotInput): void {
+function assertSphereCoordsOnly(input: { x?: number; y?: number }): void {
   if (input.x !== undefined || input.y !== undefined) {
     throw new MpzStationHotspotsError(
       'INVALID_COORDS',
       'Sphere-Hotspot darf kein x/y haben.',
     )
   }
+}
+
+function buildMergedHotspotInput(
+  existing: Hotspot | Hotspot360,
+  patch: PatchStationHotspotInput,
+): AddStationHotspotInput {
+  const merged: AddStationHotspotInput = {
+    id: existing.id,
+    mediumId: 'mediumId' in patch ? patch.mediumId! : existing.mediumId!,
+    label: 'label' in patch ? patch.label : existing.label,
+    icon: 'icon' in patch ? (patch.icon ?? undefined) : existing.icon,
+    iconSize: 'iconSize' in patch ? (patch.iconSize ?? undefined) : existing.iconSize,
+  }
+
+  if ('x' in existing) {
+    const flat = existing as Hotspot
+    merged.x = 'x' in patch ? patch.x : flat.x
+    merged.y = 'y' in patch ? patch.y : flat.y
+  } else {
+    const sphere = existing as Hotspot360
+    merged.yaw = 'yaw' in patch ? patch.yaw : sphere.yaw
+    merged.pitch = 'pitch' in patch ? patch.pitch : sphere.pitch
+  }
+
+  return merged
 }
 
 function buildFlatHotspot(
@@ -227,6 +264,28 @@ function buildSphereHotspot(
     ...(icon ? { icon } : {}),
     ...(iconSize !== undefined ? { iconSize } : {}),
   }
+}
+
+const REBUILT_HOTSPOT_KEYS = [
+  'label',
+  'mediumId',
+  'icon',
+  'iconSize',
+  'x',
+  'y',
+  'yaw',
+  'pitch',
+] as const
+
+function mergeBuiltHotspot(
+  existing: Hotspot | Hotspot360,
+  built: Hotspot | Hotspot360,
+): Hotspot | Hotspot360 {
+  const preserved = { ...existing } as Record<string, unknown>
+  for (const key of REBUILT_HOTSPOT_KEYS) {
+    delete preserved[key]
+  }
+  return { ...preserved, ...built }
 }
 
 function hasDialogHotspot(hotspots: Array<Hotspot | Hotspot360> | undefined): boolean {
@@ -353,6 +412,92 @@ export async function removeStationHotspot(
       if (station.dialog !== undefined && !hasDialogHotspot(nextStation.hotspots)) {
         warnOrphanedDialog(slug)
       }
+    }
+
+    const nextStations = data.stations.map((s) => (s.slug === slug ? nextStation : s))
+
+    const writeResult = await io.writeStations(
+      { stations: nextStations },
+      {
+        strict: true,
+        validateAssets: false,
+        canonicalize: false,
+        makeBackup: true,
+        postValidate: true,
+        touchedSlugs: [slug],
+      },
+    )
+
+    return { station: nextStation, mtime: writeResult.mtime }
+  })
+}
+
+export async function patchStationHotspot(
+  slug: string,
+  hotspotId: string,
+  patch: PatchStationHotspotInput,
+  io: MpzContentIo = createMpzContentIo(),
+): Promise<{ station: Station; mtime: string | null }> {
+  return withMpzWriteLock(async () => {
+    const data = await io.readStations()
+    const station = findHubStation(data, slug)
+    const viewer = resolveViewer(station)
+
+    const hotspots = viewer === 'equirectangular' ? station.hotspots360 : station.hotspots
+    const existing = hotspots?.find((h) => h.id === hotspotId)
+
+    if (!existing) {
+      throw new MpzStationHotspotsError(
+        'NOT_FOUND',
+        `Hotspot "${hotspotId}" nicht in Station "${slug}" gefunden.`,
+      )
+    }
+
+    if (existing.action === 'dialog') {
+      throw new MpzStationHotspotsError(
+        'NOT_EDITABLE',
+        'Dialog-Hotspot kann nicht bearbeitet werden.',
+      )
+    }
+
+    if (viewer === 'equirectangular') {
+      assertSphereCoordsOnly(patch)
+    } else {
+      assertFlatCoordsOnly(patch)
+    }
+
+    if ('mediumId' in patch) {
+      if (!station.medien?.some((m) => m.id === patch.mediumId)) {
+        throw new MpzStationHotspotsError(
+          'MEDIUM_NOT_FOUND',
+          `Medium "${patch.mediumId}" nicht in Station "${slug}" gefunden.`,
+        )
+      }
+    }
+
+    // Merge-Objekt MUSS vor Range-Validierung gebaut werden — buildFlatHotspot wirft bei x===undefined.
+    const merged = buildMergedHotspotInput(existing, patch)
+
+    let built: Hotspot | Hotspot360
+    if (viewer === 'equirectangular') {
+      built = buildSphereHotspot(merged, slug, io)
+    } else {
+      built = buildFlatHotspot(merged, slug, io)
+    }
+
+    const nextHotspot = mergeBuiltHotspot(existing, built)
+
+    let nextStation: Station
+    if (viewer === 'equirectangular') {
+      const hotspots360 = (station.hotspots360 ?? []).map((h) =>
+        h.id === hotspotId ? (nextHotspot as Hotspot360) : h,
+      )
+      nextStation = { ...station, hotspots360 }
+    } else {
+      const nextHotspots = (station.hotspots ?? []).map((h) =>
+        h.id === hotspotId ? (nextHotspot as Hotspot) : h,
+      )
+      nextStation = { ...station, hotspots: nextHotspots }
     }
 
     const nextStations = data.stations.map((s) => (s.slug === slug ? nextStation : s))

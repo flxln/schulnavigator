@@ -12,6 +12,7 @@ import * as mpzStationsValidation from '@/lib/mpz-stations-validation'
 import {
   addStationHotspot,
   MpzStationHotspotsError,
+  patchStationHotspot,
   removeStationHotspot,
 } from '@/lib/mpz-station-hotspots'
 import type { StationsFile } from '@/lib/types'
@@ -175,7 +176,7 @@ describe('mpz-station-hotspots', () => {
 
     const io = makeTempIo(custom)
     temps.push(io.getPaths().appRoot)
-    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => { })
 
     await removeStationHotspot('daz', 'hs-frieda', io)
 
@@ -392,6 +393,196 @@ describe('mpz-station-hotspots', () => {
       await expect(
         addStationHotspot('fehlt', { id: 'hs-x', mediumId: 'm1', x: 0.5, y: 0.5 }, io),
       ).rejects.toMatchObject({ code: 'NOT_FOUND' })
+    })
+  })
+
+  describe('patchStationHotspot', () => {
+    async function addFlatHotspot(io: ReturnType<typeof makeTempIo>, overrides = {}) {
+      return addStationHotspot(
+        'kunst',
+        {
+          id: 'hs-patch',
+          label: 'Alt',
+          mediumId: 'm1',
+          x: 0.4,
+          y: 0.6,
+          iconSize: 0.2,
+          ...overrides,
+        },
+        io,
+      )
+    }
+
+    it('Flat: ändert label', async () => {
+      const io = makeTempIo(stationWithFlatMedias())
+      temps.push(io.getPaths().appRoot)
+      await addFlatHotspot(io)
+
+      const result = await patchStationHotspot('kunst', 'hs-patch', { label: 'Neu' }, io)
+      expect(result.station.hotspots?.[0]?.label).toBe('Neu')
+    })
+
+    it('Flat: label leeren entfernt Key', async () => {
+      const io = makeTempIo(stationWithFlatMedias())
+      temps.push(io.getPaths().appRoot)
+      await addFlatHotspot(io)
+
+      const result = await patchStationHotspot('kunst', 'hs-patch', { label: '' }, io)
+      expect(result.station.hotspots?.[0]).not.toHaveProperty('label')
+    })
+
+    it('Flat: mediumId wechseln', async () => {
+      const io = makeTempIo(stationWithFlatMedias())
+      temps.push(io.getPaths().appRoot)
+      await addFlatHotspot(io)
+
+      const result = await patchStationHotspot('kunst', 'hs-patch', { mediumId: 'm2' }, io)
+      expect(result.station.hotspots?.[0]?.mediumId).toBe('m2')
+    })
+
+    it('Flat: partielles x behält y', async () => {
+      const io = makeTempIo(stationWithFlatMedias())
+      temps.push(io.getPaths().appRoot)
+      await addFlatHotspot(io)
+
+      const result = await patchStationHotspot('kunst', 'hs-patch', { x: 0.75 }, io)
+      expect(result.station.hotspots?.[0]?.x).toBe(0.75)
+      expect(result.station.hotspots?.[0]?.y).toBe(0.6)
+    })
+
+    it('Flat: icon setzen und entfernen (null und leer)', async () => {
+      const io = makeTempIo(stationWithFlatMedias())
+      temps.push(io.getPaths().appRoot)
+      await addFlatHotspot(io)
+      const iconPath = writeIconFile(io, 'kunst', 'patch.svg')
+
+      const withIcon = await patchStationHotspot('kunst', 'hs-patch', { icon: iconPath }, io)
+      expect(withIcon.station.hotspots?.[0]?.icon).toBe(iconPath)
+
+      const withoutIconNull = await patchStationHotspot('kunst', 'hs-patch', { icon: null }, io)
+      expect(withoutIconNull.station.hotspots?.[0]).not.toHaveProperty('icon')
+
+      await patchStationHotspot('kunst', 'hs-patch', { icon: iconPath }, io)
+      const withoutIconEmpty = await patchStationHotspot('kunst', 'hs-patch', { icon: '' }, io)
+      expect(withoutIconEmpty.station.hotspots?.[0]).not.toHaveProperty('icon')
+    })
+
+    it('Flat: iconSize setzen und mit null entfernen', async () => {
+      const io = makeTempIo(stationWithFlatMedias())
+      temps.push(io.getPaths().appRoot)
+      await addFlatHotspot(io, { iconSize: undefined })
+
+      const withSize = await patchStationHotspot('kunst', 'hs-patch', { iconSize: 0.15 }, io)
+      expect(withSize.station.hotspots?.[0]?.iconSize).toBe(0.15)
+
+      const withoutSize = await patchStationHotspot('kunst', 'hs-patch', { iconSize: null }, io)
+      expect(withoutSize.station.hotspots?.[0]).not.toHaveProperty('iconSize')
+    })
+
+    it('Flat: fehlender iconSize-Key lässt bestehenden Wert', async () => {
+      const io = makeTempIo(stationWithFlatMedias())
+      temps.push(io.getPaths().appRoot)
+      await addFlatHotspot(io)
+
+      const result = await patchStationHotspot('kunst', 'hs-patch', { label: 'Nur Label' }, io)
+      expect(result.station.hotspots?.[0]?.iconSize).toBe(0.2)
+    })
+
+    it('Sphere: yaw/pitch patchen und partielles yaw behält pitch', async () => {
+      const io = makeTempIo()
+      temps.push(io.getPaths().appRoot)
+      // hs-text hat icon: '/media/klassenzimmer/icons/buch.png'; buildSphereHotspot
+      // re-validiert beim Patch auch nicht geänderte Icon-Felder (Plan-Annahme ⁴).
+      writeIconFile(io, 'klassenzimmer', 'buch.png')
+
+      const result = await patchStationHotspot(
+        'klassenzimmer',
+        'hs-text',
+        { yaw: 10, pitch: -5 },
+        io,
+      )
+      const hs = result.station.hotspots360?.find((h) => h.id === 'hs-text')
+      expect(hs?.yaw).toBe(10)
+      expect(hs?.pitch).toBe(-5)
+
+      const partial = await patchStationHotspot('klassenzimmer', 'hs-text', { yaw: 20 }, io)
+      const hs2 = partial.station.hotspots360?.find((h) => h.id === 'hs-text')
+      expect(hs2?.yaw).toBe(20)
+      expect(hs2?.pitch).toBe(-5)
+    })
+
+    it('MEDIUM_NOT_FOUND', async () => {
+      const io = makeTempIo(stationWithFlatMedias())
+      temps.push(io.getPaths().appRoot)
+      await addFlatHotspot(io)
+      await expect(
+        patchStationHotspot('kunst', 'hs-patch', { mediumId: 'fehlt' }, io),
+      ).rejects.toMatchObject({ code: 'MEDIUM_NOT_FOUND' })
+    })
+
+    it('INVALID_COORDS bei x außerhalb Bereich', async () => {
+      const io = makeTempIo(stationWithFlatMedias())
+      temps.push(io.getPaths().appRoot)
+      await addFlatHotspot(io)
+      await expect(
+        patchStationHotspot('kunst', 'hs-patch', { x: 1.5 }, io),
+      ).rejects.toMatchObject({ code: 'INVALID_COORDS' })
+    })
+
+    it('INVALID_COORDS bei yaw auf Flat-Station', async () => {
+      const io = makeTempIo(stationWithFlatMedias())
+      temps.push(io.getPaths().appRoot)
+      await addFlatHotspot(io)
+      await expect(
+        patchStationHotspot('kunst', 'hs-patch', { yaw: 0 }, io),
+      ).rejects.toMatchObject({ code: 'INVALID_COORDS' })
+    })
+
+    it('INVALID_COORDS bei x auf Sphere-Station', async () => {
+      const io = makeTempIo()
+      temps.push(io.getPaths().appRoot)
+      await expect(
+        patchStationHotspot('klassenzimmer', 'hs-text', { x: 0.5 }, io),
+      ).rejects.toMatchObject({ code: 'INVALID_COORDS' })
+    })
+
+    it('INVALID_ICON bei fehlender Datei', async () => {
+      const io = makeTempIo(stationWithFlatMedias())
+      temps.push(io.getPaths().appRoot)
+      await addFlatHotspot(io)
+      await expect(
+        patchStationHotspot(
+          'kunst',
+          'hs-patch',
+          { icon: '/media/kunst/icons/fehlt.svg' },
+          io,
+        ),
+      ).rejects.toMatchObject({ code: 'INVALID_ICON' })
+    })
+
+    it('INVALID_ICON_SIZE außerhalb Bereich', async () => {
+      const io = makeTempIo(stationWithFlatMedias())
+      temps.push(io.getPaths().appRoot)
+      await addFlatHotspot(io)
+      await expect(
+        patchStationHotspot('kunst', 'hs-patch', { iconSize: 0.3 }, io),
+      ).rejects.toMatchObject({ code: 'INVALID_ICON_SIZE' })
+    })
+
+    it('NOT_FOUND bei unbekanntem Hotspot', async () => {
+      const io = makeTempIo(stationWithFlatMedias())
+      temps.push(io.getPaths().appRoot)
+      await expect(
+        patchStationHotspot('kunst', 'fehlt', { label: 'X' }, io),
+      ).rejects.toMatchObject({ code: 'NOT_FOUND' })
+    })
+
+    it('NOT_EDITABLE bei Dialog-Hotspot', async () => {
+      const io = makeTempIo()
+      temps.push(io.getPaths().appRoot)
+      await expect(
+        patchStationHotspot('daz', 'hs-frieda', { label: 'X' }, io),
+      ).rejects.toMatchObject({ code: 'NOT_EDITABLE' })
     })
   })
 })
