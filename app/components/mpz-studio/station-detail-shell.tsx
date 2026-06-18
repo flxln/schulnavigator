@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
 import { StationStammdatenForm } from '@/components/mpz-studio/station-stammdaten-form'
 import { StationHotspotsTable } from '@/components/mpz-studio/station-hotspots-table'
+import { DialogAudioPanel } from '@/components/mpz-studio/dialog-audio-panel'
 import { StationMedienTable } from '@/components/mpz-studio/station-medien-table'
 import type { Station, ViewerMode } from '@/lib/types'
 
@@ -162,8 +163,8 @@ export function StationDetailShell({
       )}
 
       {activeTab === 'dialog-audio' && hasDialog && (
-        <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5 text-sm text-fg-2">
-          <p>Dialog-Audio-Tab folgt in #163.</p>
+        <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5">
+          <DialogAudioPanel slug={slug} />
         </section>
       )}
     </div>
