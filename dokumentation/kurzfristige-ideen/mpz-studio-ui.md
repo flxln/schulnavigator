@@ -181,9 +181,10 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | **Querschnitt** | Dashboard, Stations-Grid, Vorschau | [#151](https://github.com/flxln/schulnavigator/issues/151) | ✓ | ja | — |
 | **Querschnitt** | Dev-Guard (`/mpz/*` nur lokal) | [#145](https://github.com/flxln/schulnavigator/issues/145) | ✓ | ja | — |
 | **Querschnitt** | Atomarer Schreib-Layer | [#146](https://github.com/flxln/schulnavigator/issues/146) | ✓ | (intern) | CLI nutzt gleiche IO |
-| **Querschnitt** | Brand, Hub, Deploy | [#174](https://github.com/flxln/schulnavigator/issues/174), [#178](https://github.com/flxln/schulnavigator/issues/178)–[#180](https://github.com/flxln/schulnavigator/issues/180) | — | — | Code / Skripte |
+| **Querschnitt** | Deploy (Env, QR, Token, validate-all) | [#174](https://github.com/flxln/schulnavigator/issues/174) | ✓ | ja | Skripte / `.env.local` |
+| **Querschnitt** | Brand, Hub | [#178](https://github.com/flxln/schulnavigator/issues/178)–[#180](https://github.com/flxln/schulnavigator/issues/180) | — | — | Code / Skripte |
 
-**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) — **#173** Raumbild-Upload im Studio erledigt. **Nächstes Issue:** [#174](https://github.com/flxln/schulnavigator/issues/174) Brand & Design.
+**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) — **#174** Deploy-Tab im Studio erledigt. **Nächstes Issue:** [#175](https://github.com/flxln/schulnavigator/issues/175) Dialog-Tab.
 
 ---
 
@@ -200,4 +201,5 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | Tab Dialog-Audio | #163 | Upload + Segment-Audit |
 | `/mpz/studio/ingest` | #147, #172 | Deep-Link öffnet Medien-Modal |
 | `/mpz/studio/dialog-audio` | #148 | Dialog-Audio (global) |
+| `/mpz/studio/deploy` | #174 | Env, QR, Token-Rotation, validate-all, Vorschau |
 | `/mpz/calib/flat/[slug]` | #149 | Flat-Hotspot-Kalibrierung |
