@@ -15,7 +15,6 @@ import {
 } from '@/lib/raum-viewer/constants'
 import type { Station, ViewerMode } from '@/lib/types'
 
-const DEFAULT_ICON_SIZE = 0.2
 const DEFAULT_FLAT_COORD = 0.5
 const DEFAULT_SPHERE_COORD = 0
 
@@ -43,7 +42,7 @@ function resetForm(viewer: ViewerMode) {
     yaw: String(DEFAULT_SPHERE_COORD),
     pitch: String(DEFAULT_SPHERE_COORD),
     icon: '',
-    iconSize: String(DEFAULT_ICON_SIZE),
+    iconSize: '',
   }
 }
 
@@ -130,7 +129,11 @@ export function StationHotspotAddForm({
     const body: Record<string, unknown> = {
       id: form.id.trim(),
       mediumId: form.mediumId,
-      iconSize: Number(form.iconSize),
+    }
+
+    const iconSizeRaw = form.iconSize.trim()
+    if (iconSizeRaw) {
+      body.iconSize = Number(iconSizeRaw)
     }
 
     const label = form.label.trim()
@@ -333,15 +336,15 @@ export function StationHotspotAddForm({
 
           <div>
             <label htmlFor="hs-icon-size" className={labelClassName()}>
-              iconSize
+              iconSize (optional)
             </label>
             <input
               id="hs-icon-size"
               type="number"
-              required
               step="0.01"
               min={MIN_ICON_SIZE_NORM}
               max={MAX_ICON_SIZE_NORM}
+              placeholder="leer = Viewer-Default"
               value={form.iconSize}
               onChange={(e) => updateField('iconSize', e.target.value)}
               className={fieldClassName()}

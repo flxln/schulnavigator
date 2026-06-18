@@ -213,7 +213,11 @@ describe('StationDetailShell', () => {
   it('Hotspots-Tab Empty-State für kunst', () => {
     mocks.searchParams = new URLSearchParams('tab=hotspots')
     setReport('kunst', false)
-    const station = getStationBySlug('kunst')!
+    const station = {
+      ...getStationBySlug('kunst')!,
+      hotspots: undefined,
+      hotspots360: undefined,
+    }
 
     render(<StationDetailShell station={station} slug="kunst" hubNr={4} />)
 

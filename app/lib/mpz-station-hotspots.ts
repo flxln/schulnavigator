@@ -1,10 +1,10 @@
-import { existsSync } from 'node:fs'
 import {
   createMpzContentIo,
   type MpzContentIo,
   withMpzWriteLock,
 } from '@/lib/mpz-content-io'
 import { resolveIconPublicPath } from '@/lib/mpz-hotspot-icon-ingest'
+import { roundNorm } from '@/lib/mpz-hotspot-calib'
 import {
   MAX_ICON_SIZE_NORM,
   MIN_ICON_SIZE_NORM,
@@ -16,7 +16,7 @@ import {
 import { HUB_SLUG_MAP } from '@/lib/schoolhouse-hub-map'
 import type { Hotspot, Hotspot360, Station, StationsFile, ViewerMode } from '@/lib/types'
 
-export type HotspotErrorCode =
+export type StationHotspotErrorCode =
   | 'NOT_FOUND'
   | 'DUPLICATE_ID'
   | 'MEDIUM_NOT_FOUND'
@@ -26,8 +26,11 @@ export type HotspotErrorCode =
   | 'INVALID_ICON'
   | 'INVALID_ICON_SIZE'
 
-/** @deprecated Use HotspotErrorCode */
-export type HotspotRemoveErrorCode = 'NOT_FOUND'
+/** @deprecated Verwende StationHotspotErrorCode */
+export type HotspotErrorCode = StationHotspotErrorCode
+
+/** @deprecated Verwende StationHotspotErrorCode */
+export type HotspotRemoveErrorCode = StationHotspotErrorCode
 
 const HOTSPOT_ID_RE = /^[a-z0-9][a-z0-9-]*$/
 
@@ -44,9 +47,9 @@ export type AddStationHotspotInput = {
 }
 
 export class MpzStationHotspotsError extends Error {
-  readonly code: HotspotErrorCode
+  readonly code: StationHotspotErrorCode
 
-  constructor(code: HotspotErrorCode, message: string) {
+  constructor(code: StationHotspotErrorCode, message: string) {
     super(message)
     this.name = 'MpzStationHotspotsError'
     this.code = code
@@ -69,10 +72,6 @@ function findHubStation(data: StationsFile, slug: string): Station {
 
 function resolveViewer(station: Station): ViewerMode {
   return station.viewer ?? 'flat'
-}
-
-function roundNorm(v: number): number {
-  return Math.round(v * 10_000) / 10_000
 }
 
 function clampPitch(deg: number): number {
@@ -111,12 +110,13 @@ function validateIconPath(
   slug: string,
   icon: string | undefined,
   appRoot: string,
+  io: MpzContentIo,
 ): string | undefined {
   if (icon === undefined || icon === '') {
     return undefined
   }
   const resolved = resolveIconPublicPath(appRoot, slug, icon)
-  if (!resolved || !existsSync(resolved)) {
+  if (!resolved || !io.fileExists(resolved)) {
     throw new MpzStationHotspotsError(
       'INVALID_ICON',
       `Icon-Pfad "${icon}" ist ungültig oder die Datei fehlt.`,
@@ -125,11 +125,30 @@ function validateIconPath(
   return icon
 }
 
+function assertFlatCoordsOnly(input: AddStationHotspotInput): void {
+  if (input.yaw !== undefined || input.pitch !== undefined) {
+    throw new MpzStationHotspotsError(
+      'INVALID_COORDS',
+      'Flat-Hotspot darf kein yaw/pitch haben.',
+    )
+  }
+}
+
+function assertSphereCoordsOnly(input: AddStationHotspotInput): void {
+  if (input.x !== undefined || input.y !== undefined) {
+    throw new MpzStationHotspotsError(
+      'INVALID_COORDS',
+      'Sphere-Hotspot darf kein x/y haben.',
+    )
+  }
+}
+
 function buildFlatHotspot(
   input: AddStationHotspotInput,
   slug: string,
-  appRoot: string,
+  io: MpzContentIo,
 ): Hotspot {
+  assertFlatCoordsOnly(input)
   if (
     input.x === undefined ||
     input.y === undefined ||
@@ -149,7 +168,8 @@ function buildFlatHotspot(
   }
 
   const iconSize = validateIconSize(input.iconSize)
-  const icon = validateIconPath(slug, input.icon, appRoot)
+  const { appRoot } = io.getPaths()
+  const icon = validateIconPath(slug, input.icon, appRoot, io)
   const label = input.label?.trim()
 
   return {
@@ -166,8 +186,9 @@ function buildFlatHotspot(
 function buildSphereHotspot(
   input: AddStationHotspotInput,
   slug: string,
-  appRoot: string,
+  io: MpzContentIo,
 ): Hotspot360 {
+  assertSphereCoordsOnly(input)
   if (
     input.yaw === undefined ||
     input.pitch === undefined ||
@@ -193,7 +214,8 @@ function buildSphereHotspot(
   }
 
   const iconSize = validateIconSize(input.iconSize)
-  const icon = validateIconPath(slug, input.icon, appRoot)
+  const { appRoot } = io.getPaths()
+  const icon = validateIconPath(slug, input.icon, appRoot, io)
   const label = input.label?.trim()
 
   return {
@@ -254,15 +276,14 @@ export async function addStationHotspot(
       )
     }
 
-    const { appRoot } = io.getPaths()
     let nextStation: Station
 
     if (viewer === 'equirectangular') {
-      const hotspot = buildSphereHotspot(input, slug, appRoot)
+      const hotspot = buildSphereHotspot(input, slug, io)
       const hotspots360 = [...(station.hotspots360 ?? []), hotspot]
       nextStation = { ...station, hotspots360 }
     } else {
-      const hotspot = buildFlatHotspot(input, slug, appRoot)
+      const hotspot = buildFlatHotspot(input, slug, io)
       const hotspots = [...(station.hotspots ?? []), hotspot]
       nextStation = { ...station, hotspots }
     }

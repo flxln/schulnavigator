@@ -24,7 +24,7 @@ export class MpzHotspotCalibError extends Error {
   }
 }
 
-function roundNorm(v: number): number {
+export function roundNorm(v: number): number {
   return Math.round(Math.min(1, Math.max(0, v)) * 10_000) / 10_000
 }
 
