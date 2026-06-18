@@ -103,16 +103,18 @@ describe('StationDetailShell', () => {
     expect(screen.getByRole('link', { name: /Medien/ })).toBeTruthy()
     const nav = screen.getByRole('navigation', { name: 'Station bearbeiten' })
     expect(within(nav).getByRole('link', { name: /Hotspots/ })).toBeTruthy()
+    expect(screen.queryByRole('link', { name: 'Dialog' })).toBeNull()
     expect(screen.queryByRole('link', { name: 'Dialog-Audio' })).toBeNull()
   })
 
-  it('rendert Dialog-Audio-Tab für daz wenn hasDialog', () => {
+  it('rendert Dialog- und Dialog-Audio-Tabs für daz wenn hasDialog', () => {
     mocks.searchParams = new URLSearchParams()
     setReport('daz', true)
     const station = getStationBySlug('daz')!
 
     render(<StationDetailShell station={station} slug="daz" hubNr={3} />)
 
+    expect(screen.getByRole('link', { name: 'Dialog' })).toBeTruthy()
     expect(screen.getByRole('link', { name: 'Dialog-Audio' })).toBeTruthy()
   })
 

@@ -37,17 +37,18 @@ Nur bei `NODE_ENV=development` erreichbar; in Production liefern `/mpz/*` und `/
 2. Dev-Server starten: `npm run dev`.
 3. Browser: [`/mpz/unlock`](http://localhost:3000/mpz/unlock) — Secret eingeben → Session-Cookie.
 4. [`/mpz/studio`](http://localhost:3000/mpz/studio) — Dashboard mit Validierungsstatus und Links zu allen 12 Stationen.
-5. **Station-Detail (v1, Epic #158):** [`/mpz/studio/stationen`](http://localhost:3000/mpz/studio/stationen) → Kachel **Bearbeiten** oder direkt [`/mpz/studio/stationen/{slug}`](http://localhost:3000/mpz/studio/stationen/kunst) — Tabs **Stammdaten**, **Medien**, **Hotspots**, **Dialog-Audio** (nur Stationen mit `dialog`).
+5. **Station-Detail (v1, Epic #158):** [`/mpz/studio/stationen`](http://localhost:3000/mpz/studio/stationen) → Kachel **Bearbeiten** oder direkt [`/mpz/studio/stationen/{slug}`](http://localhost:3000/mpz/studio/stationen/kunst) — Tabs **Stammdaten**, **Medien**, **Hotspots**, **Dialog**, **Dialog-Audio** (letztere nur Stationen mit `dialog`).
 
 **Station-Detail & Stammdaten (#159–#160, #164)**
 
-Route: `/mpz/studio/stationen/[slug]?tab={stammdaten|medien|hotspots|dialog-audio}` (Default: `stammdaten`). Shell: [`StationDetailShell`](../app/components/mpz-studio/station-detail-shell.tsx).
+Route: `/mpz/studio/stationen/[slug]?tab={stammdaten|medien|hotspots|dialog|dialog-audio}` (Default: `stammdaten`). Shell: [`StationDetailShell`](../app/components/mpz-studio/station-detail-shell.tsx).
 
 | Tab | UI | Schreib-API |
 |-----|-----|-------------|
 | Stammdaten | `titel`, `beschreibung`, `viewer` (`flat` / `equirectangular`); read-only: `slug`, `bild`, `panorama360` | `PATCH /api/mpz/stations/[slug]/stammdaten` |
 | Medien | Tabelle mit Links zu Ingest, Entfernen (#161) | `DELETE /api/mpz/stations/[slug]/medien/[mediumId]` |
 | Hotspots | Tabelle, Anlegen/Bearbeiten/Entfernen, Kalibrier-Links (#162, #165–#168) | `POST`/`PATCH`/`DELETE` …/hotspots |
+| Dialog | Figuren, Segmente, Gruppen, `bubble` (#175) | `PATCH`/`POST`/`DELETE` …/dialog/* |
 | Dialog-Audio | Segment-Tabelle + Upload (#163) | `POST /api/mpz/dialog-audio/ingest` |
 
 **Stammdaten-Flow:** Formular sendet partielles JSON (`titel`, `beschreibung`, `viewer`). Domain: [`patchStationStammdaten`](../app/lib/mpz-station-stammdaten.ts) in `withMpzWriteLock` → `writeStations({ strict: true, postValidate: true })`. Bei Erfolg: `markMpzStudioDirty()` → `validateNow()` → `router.refresh()`. `viewer`-Wechsel mit bestehenden Hotspots zeigt Warnung; blockierende Konstellationen werden serverseitig abgelehnt.
@@ -61,6 +62,9 @@ Route: `/mpz/studio/stationen/[slug]?tab={stammdaten|medien|hotspots|dialog-audi
 - `POST /api/mpz/view/sphere` — Body `{ slug, startYaw, startPitch }` schreibt den Sphere-Startblick in `stations.json` (#153, ADR-023).
 - `POST` / `PATCH` / `DELETE` `/api/mpz/stations/[slug]/hotspots` bzw. `…/hotspots/[hotspotId]` — Hotspot anlegen (#165), bearbeiten (#167), entfernen (#162). Fehler-Mapping: `NOT_FOUND` → 404; Client-Domain-Codes (`DUPLICATE_ID`, `INVALID_COORDS`, …) → 400; `NOT_EDITABLE` nur bei PATCH → 403 (#168).
 - `PATCH /api/mpz/stations/[slug]/stammdaten` — Stammdaten (`titel`, `beschreibung`, `viewer`) (#160).
+- `PATCH /api/mpz/stations/[slug]/dialog` — `figuren`, `bubble` (#175).
+- `POST` / `PATCH` / `DELETE` `/api/mpz/stations/[slug]/dialog/segmente` bzw. `…/segmente/[segmentId]` — Dialog-Segmente (#175). Strukturelle Änderungen (Löschen, `rolle`) renummerieren WAV-Clips unter `content/dialog-audio/{slug}/`.
+- `POST` / `PATCH` / `DELETE` `/api/mpz/stations/[slug]/dialog/gruppen` bzw. `…/gruppen/[gruppeId]` — Dialog-Gruppen (#175).
 
 Guard wie alle `/api/mpz/*`-Routen.
 

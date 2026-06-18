@@ -188,7 +188,7 @@ Querschnitt: `thumbnail`, Hotspot-`icon` / `iconSize` — Verknüpfung mit Hotsp
 |-------|--------|
 | `figuren[]` | Checkbox Frieda/Otto |
 | `segmente[]` | `id`, `rolle`, `text`, `quelle`, optional `gruppe`, `tail` |
-| `gruppen[]` | Gruppentext für `beide`-Segmente |
+| `gruppen[]` | Optionaler Gruppentext; auf Segmenten **jeder** Rolle referenzierbar (Validator erzwingt kein `beide`). Typischer Fall: gemeinsame `beide`-Sequenz wie `gruesse`. |
 | `bubble` | `y`, `x`, `maxWidth`, `fontSize`, `followPan` (ADR-015) |
 
 WAV-Upload erzeugt automatisch `quelle: "/api/dialog/{slug}/01-frieda.wav"` (Konvention `DIALOG_CLIP_RE`). Warnung bei fehlender Datei.
