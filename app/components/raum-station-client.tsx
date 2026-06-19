@@ -307,6 +307,7 @@ export function RaumStationClient({
             <RaumViewer
               ref={viewerRef}
               bild={station.bild}
+              startPanX={station.startPanX}
               alt={`Raumansicht ${station.titel}`}
               hotspots={station.hotspots}
               medien={station.medien}

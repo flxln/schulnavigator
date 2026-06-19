@@ -154,6 +154,8 @@ export interface Station {
   /** Optionaler Startblick in Grad (ADR-023); nur bei viewer === 'equirectangular'. */
   startYaw?: number
   startPitch?: number
+  /** Optionaler horizontaler Startausschnitt 0…1 (ADR-024); nur bei Flat-Viewer. */
+  startPanX?: number
   dialog?: Dialog
 }
 
