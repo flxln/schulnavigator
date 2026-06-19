@@ -577,12 +577,142 @@ describe('mpz-station-hotspots', () => {
       ).rejects.toMatchObject({ code: 'NOT_FOUND' })
     })
 
-    it('NOT_EDITABLE bei Dialog-Hotspot', async () => {
+    it('patcht Dialog-Hotspot label', async () => {
+      const io = makeTempIo()
+      temps.push(io.getPaths().appRoot)
+      const result = await patchStationHotspot('daz', 'hs-frieda', { label: 'Neu' }, io)
+      const hs = result.station.hotspots360?.find((h) => h.id === 'hs-frieda')
+      expect(hs?.label).toBe('Neu')
+      expect(hs?.action).toBe('dialog')
+    })
+
+    it('FORBIDDEN_FIELD bei mediumId auf Dialog-Hotspot', async () => {
       const io = makeTempIo()
       temps.push(io.getPaths().appRoot)
       await expect(
-        patchStationHotspot('daz', 'hs-frieda', { label: 'X' }, io),
-      ).rejects.toMatchObject({ code: 'NOT_EDITABLE' })
+        patchStationHotspot('daz', 'hs-frieda', { mediumId: 'm1' }, io),
+      ).rejects.toMatchObject({ code: 'FORBIDDEN_FIELD' })
+    })
+  })
+
+  describe('addStationHotspot dialog', () => {
+    it('Sphere: legt Dialog-Hotspot an', async () => {
+      const custom = structuredClone(fixture) as StationsFile
+      const daz = custom.stations.find((s) => s.slug === 'daz')!
+      daz.hotspots360 = []
+
+      const io = makeTempIo(custom)
+      temps.push(io.getPaths().appRoot)
+
+      const result = await addStationHotspot(
+        'daz',
+        {
+          action: 'dialog',
+          id: 'hs-dialog-neu',
+          mascot: 'frieda',
+          yaw: 10,
+          pitch: -5,
+          bubblePitchOffset: 12,
+        },
+        io,
+      )
+
+      const hs = result.station.hotspots360?.find((h) => h.id === 'hs-dialog-neu')
+      expect(hs?.action).toBe('dialog')
+      expect(hs?.mascot).toBe('frieda')
+      expect((hs as { bubblePitchOffset?: number }).bubblePitchOffset).toBe(12)
+    })
+
+    it('NO_DIALOG wenn station.dialog fehlt', async () => {
+      const custom = structuredClone(fixture) as StationsFile
+      const kunst = custom.stations.find((s) => s.slug === 'kunst')!
+      kunst.viewer = 'flat'
+      kunst.hotspots = []
+      kunst.dialog = undefined
+
+      const io = makeTempIo(custom)
+      temps.push(io.getPaths().appRoot)
+
+      await expect(
+        addStationHotspot(
+          'kunst',
+          { action: 'dialog', id: 'hs-x', mascot: 'frieda', x: 0.5, y: 0.5 },
+          io,
+        ),
+      ).rejects.toMatchObject({ code: 'NO_DIALOG' })
+    })
+
+    it('MASCOT_NOT_IN_FIGUREN wenn mascot nicht in figuren', async () => {
+      const custom = structuredClone(fixture) as StationsFile
+      const kunst = custom.stations.find((s) => s.slug === 'kunst')!
+      kunst.viewer = 'flat'
+      kunst.hotspots = []
+      kunst.dialog = {
+        figuren: ['otto'],
+        segmente: [{ id: 's1', rolle: 'otto', text: 'Hi', quelle: '/api/dialog/kunst/02-otto.wav' }],
+      }
+
+      const io = makeTempIo(custom)
+      temps.push(io.getPaths().appRoot)
+
+      await expect(
+        addStationHotspot(
+          'kunst',
+          { action: 'dialog', id: 'hs-x', mascot: 'frieda', x: 0.5, y: 0.5 },
+          io,
+        ),
+      ).rejects.toMatchObject({ code: 'MASCOT_NOT_IN_FIGUREN' })
+    })
+
+    it('FORBIDDEN_FIELD bei bubblePitchOffset auf Flat-Dialog', async () => {
+      const custom = structuredClone(fixture) as StationsFile
+      const kunst = custom.stations.find((s) => s.slug === 'kunst')!
+      kunst.viewer = 'flat'
+      kunst.hotspots = []
+      kunst.dialog = {
+        figuren: ['frieda'],
+        segmente: [{ id: 's1', rolle: 'frieda', text: 'Hi', quelle: '/api/dialog/kunst/01-frieda.wav' }],
+      }
+
+      const io = makeTempIo(custom)
+      temps.push(io.getPaths().appRoot)
+
+      await expect(
+        addStationHotspot(
+          'kunst',
+          {
+            action: 'dialog',
+            id: 'hs-x',
+            mascot: 'frieda',
+            x: 0.5,
+            y: 0.5,
+            bubblePitchOffset: 10,
+          },
+          io,
+        ),
+      ).rejects.toMatchObject({ code: 'FORBIDDEN_FIELD' })
+    })
+
+    it('Dialog-Hotspot ohne Medien erlaubt', async () => {
+      const custom = structuredClone(fixture) as StationsFile
+      const kunst = custom.stations.find((s) => s.slug === 'kunst')!
+      kunst.viewer = 'flat'
+      kunst.medien = []
+      kunst.hotspots = []
+      kunst.dialog = {
+        figuren: ['frieda'],
+        segmente: [{ id: 's1', rolle: 'frieda', text: 'Hi', quelle: '/api/dialog/kunst/01-frieda.wav' }],
+      }
+
+      const io = makeTempIo(custom)
+      temps.push(io.getPaths().appRoot)
+
+      const result = await addStationHotspot(
+        'kunst',
+        { action: 'dialog', id: 'hs-dialog', mascot: 'frieda', x: 0.3, y: 0.4 },
+        io,
+      )
+      expect(result.station.hotspots?.some((h) => h.id === 'hs-dialog')).toBe(true)
     })
   })
 })

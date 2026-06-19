@@ -164,11 +164,11 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | **Medien** | löschen | [#161](https://github.com/flxln/schulnavigator/issues/161) | ✓ | ja | JSON |
 | **Medien** | Tabelle + Link zu Ingest | [#161](https://github.com/flxln/schulnavigator/issues/161) | ✓ | ja | — |
 | **Hotspots** | Medien-Hotspot erstellen | [#165](https://github.com/flxln/schulnavigator/issues/165) | ✓ | ja | JSON + Kalibrier-URL |
-| **Hotspots** | Dialog-Hotspot erstellen | [#176](https://github.com/flxln/schulnavigator/issues/176) | ~ | nur Kalibrierung [#149](https://github.com/flxln/schulnavigator/issues/149) | JSON |
+| **Hotspots** | Dialog-Hotspot erstellen | [#176](https://github.com/flxln/schulnavigator/issues/176) | ✓ | ja | JSON + Kalibrier-URL |
 | **Hotspots** | Position kalibrieren (Flat) | [#149](https://github.com/flxln/schulnavigator/issues/149) | ✓ | `/mpz/calib/flat/{slug}` | `?hotspot-calib=1` (Sphere) |
 | **Hotspots** | Startblick Sphere persistieren | [#153](https://github.com/flxln/schulnavigator/issues/153) | ✓ | ja | JSON |
 | **Hotspots** | Icon hochladen | [#166](https://github.com/flxln/schulnavigator/issues/166) | ✓ | ja | Datei manuell |
-| **Hotspots** | bearbeiten | [#167](https://github.com/flxln/schulnavigator/issues/167) | ✓ | ja | JSON |
+| **Hotspots** | bearbeiten | [#167](https://github.com/flxln/schulnavigator/issues/167), [#176](https://github.com/flxln/schulnavigator/issues/176) | ✓ | ja | JSON |
 | **Hotspots** | löschen | [#162](https://github.com/flxln/schulnavigator/issues/162), [#168](https://github.com/flxln/schulnavigator/issues/168) | ✓ | ja | JSON |
 | **Hotspots** | Tabelle + Kalibrier-Links | [#162](https://github.com/flxln/schulnavigator/issues/162) | ✓ | ja | — |
 | **Dialog** | Segmente & Texte | [#175](https://github.com/flxln/schulnavigator/issues/175) | ✓ | ja | JSON + Snippet |
@@ -184,7 +184,7 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | **Querschnitt** | Deploy (Env, QR, Token, validate-all) | [#174](https://github.com/flxln/schulnavigator/issues/174) | ✓ | ja | Skripte / `.env.local` |
 | **Querschnitt** | Brand, Hub | [#178](https://github.com/flxln/schulnavigator/issues/178)–[#180](https://github.com/flxln/schulnavigator/issues/180) | — | — | Code / Skripte |
 
-**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) — **#175** Dialog-Tab im Studio erledigt. **Nächstes Issue:** [#176](https://github.com/flxln/schulnavigator/issues/176) Dialog-Hotspots.
+**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) — **#176** Dialog-Hotspots im Studio erledigt. **Nächstes Issue:** [#177](https://github.com/flxln/schulnavigator/issues/177) Coach-Editor.
 
 ---
 
