@@ -115,7 +115,7 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issue **#180** (Brand-Uploads: Logos, Maskottchen, Motive + Studio-UI) — umgesetzt 2026-06-20, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-180-2026-06-20.md](../reviews/post-mortem-180-2026-06-20.md)
 - [x] Issue **#181** (Doku & Epic-Abschluss) — umgesetzt 2026-06-20, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-181-2026-06-20.md](../reviews/post-mortem-181-2026-06-20.md); schließt Epic [#170](https://github.com/flxln/schulnavigator/issues/170)
 - [x] Epic **#170** (MPZ Studio v2 — Content & Betrieb) — abgeschlossen 2026-06-20, [epic-mpz-studio-v2.md](epic-mpz-studio-v2.md); GitHub-Issues #171–#181 **alle erledigt**
-- [ ] **Merge** Branch `mpz-studio-v2` → `main` — ausstehend (PR)
+- [ ] **Merge** Branch `mpz-studio-v2` → `main` — [PR #183](https://github.com/flxln/schulnavigator/pull/183)
 - [ ] **#154** Flat-Startpan (ADR-024) — [issues-startblick.md](issues-startblick.md) (unabhängig vom v2-Merge)
 
 Letzter dokumentierter Abgleich: **2026-06-20** (#181 Doku & Epic-Abschluss; Epic #170 abgeschlossen).
