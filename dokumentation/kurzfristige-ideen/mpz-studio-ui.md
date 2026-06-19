@@ -2,7 +2,7 @@
 
 _Inhaltliche Kategorisierung für Feature-Planung und Issues — unabhängig von der UI-Navigation in der [Studio-Spezifikation](../projektmanagement/2026-06-16-mpz-studio-spezifikation.md)._
 
-**Epics:** [v0 #144](https://github.com/flxln/schulnavigator/issues/144) · [v1 #158](https://github.com/flxln/schulnavigator/issues/158) · [v2 #170](https://github.com/flxln/schulnavigator/issues/170) **abgeschlossen** (2026-06-20, Branch `mpz-studio-v2`) · v3 Polish nach Bedarf
+**Epics:** [v0 #144](https://github.com/flxln/schulnavigator/issues/144) · [v1 #158](https://github.com/flxln/schulnavigator/issues/158) · [v2 #170](https://github.com/flxln/schulnavigator/issues/170) **abgeschlossen** (auf `main`, [PR #183](https://github.com/flxln/schulnavigator/pull/183)) · v3 Polish nach Bedarf
 
 **Phasierung (Spec):** v2 erledigt — fehlende Content-Pflege + Betrieb · v3 = Komfort-Editoren und Batch — siehe [Roadmap v2/v3](#roadmap-v2--v3) unten.
 
@@ -186,7 +186,7 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | **Querschnitt** | Hub-Slug-Map, Akzente, Icons | [#179](https://github.com/flxln/schulnavigator/issues/179) | ✓ | ja | `hub-slug-map.json` usw. |
 | **Querschnitt** | Brand-Uploads | [#180](https://github.com/flxln/schulnavigator/issues/180) | ✓ | ja | Dateien / Code |
 
-**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) **abgeschlossen** (2026-06-20) — alle Unterissues #171–#181 erledigt. Merge: [PR #183](https://github.com/flxln/schulnavigator/pull/183).
+**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) **abgeschlossen** (2026-06-20) — auf `main` ([PR #183](https://github.com/flxln/schulnavigator/pull/183)).
 
 ---
 

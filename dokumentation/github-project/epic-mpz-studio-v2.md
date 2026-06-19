@@ -1,7 +1,7 @@
 # Epic: MPZ Studio v2 — Content-Vollständigkeit & Betrieb (ADR-022)
 
 **Milestone:** [MPZ Studio v2](https://github.com/flxln/schulnavigator/milestone/9) (GitHub #9)
-**Status:** abgeschlossen (2026-06-20) · Merge nach `main`: [PR #183](https://github.com/flxln/schulnavigator/pull/183) (Branch `mpz-studio-v2`)
+**Status:** abgeschlossen (2026-06-20) · gemerged nach `main` ([PR #183](https://github.com/flxln/schulnavigator/pull/183), Commit `3a356c3`)
 **Parent:** Epic [#158](https://github.com/flxln/schulnavigator/issues/158) (v1 abgeschlossen, [PR #169](https://github.com/flxln/schulnavigator/pull/169))
 
 **Domänen-Übersicht:** [mpz-studio-ui.md](../kurzfristige-ideen/mpz-studio-ui.md) · **Spec:** [2026-06-16-mpz-studio-spezifikation.md](../projektmanagement/2026-06-16-mpz-studio-spezifikation.md) (Phasierung v2/v3)
@@ -79,4 +79,4 @@ Leitplanken unverändert (ADR-022): nur `NODE_ENV=development`, nie Coolify, kei
 - [x] Hub/Icons-Config (#179) — umgesetzt 2026-06-20, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-179-2026-06-20.md](../reviews/post-mortem-179-2026-06-20.md)
 - [x] Brand-Uploads (#180) — umgesetzt 2026-06-20, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-180-2026-06-20.md](../reviews/post-mortem-180-2026-06-20.md)
 - [x] Doku & Epic-Abschluss (#181) — umgesetzt 2026-06-20, Post-Mortem [post-mortem-181-2026-06-20.md](../reviews/post-mortem-181-2026-06-20.md)
-- [ ] Merge `mpz-studio-v2` → `main` — [PR #183](https://github.com/flxln/schulnavigator/pull/183)
+- [x] Merge `mpz-studio-v2` → `main` — [PR #183](https://github.com/flxln/schulnavigator/pull/183) (2026-06-20)
