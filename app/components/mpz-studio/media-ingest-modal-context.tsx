@@ -23,7 +23,13 @@ const MediaIngestModalContext = createContext<MediaIngestModalContextValue | nul
   null,
 )
 
-export function MediaIngestModalProvider({ children }: { children: ReactNode }) {
+export function MediaIngestModalProvider({
+  children,
+  globalSuffixes,
+}: {
+  children: ReactNode
+  globalSuffixes: readonly string[]
+}) {
   const [open, setOpen] = useState(false)
   const [slug, setSlug] = useState<string | undefined>()
   const [initialTyp, setInitialTyp] = useState<MediumTyp | undefined>()
@@ -45,6 +51,7 @@ export function MediaIngestModalProvider({ children }: { children: ReactNode }) 
         open={open}
         slug={slug}
         initialTyp={initialTyp}
+        globalSuffixes={globalSuffixes}
         onClose={handleClose}
       />
     </MediaIngestModalContext.Provider>

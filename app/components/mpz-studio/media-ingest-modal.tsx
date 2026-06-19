@@ -21,6 +21,7 @@ export type MediaIngestModalProps = {
   open: boolean
   slug?: string
   initialTyp?: MediumTyp
+  globalSuffixes: readonly string[]
   onClose: () => void
 }
 
@@ -28,7 +29,13 @@ function fieldClassName(): string {
   return 'w-full rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1'
 }
 
-export function MediaIngestModal({ open, slug, initialTyp, onClose }: MediaIngestModalProps) {
+export function MediaIngestModal({
+  open,
+  slug,
+  initialTyp,
+  globalSuffixes,
+  onClose,
+}: MediaIngestModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const defaultSlug: string =
     slug && MPZ_HUB_SLUGS.includes(slug as (typeof MPZ_HUB_SLUGS)[number])
@@ -125,6 +132,7 @@ export function MediaIngestModal({ open, slug, initialTyp, onClose }: MediaInges
             key={`${selectedSlug}-${selectedTyp}`}
             slug={selectedSlug}
             typ={selectedTyp as 'link' | 'embed'}
+            globalSuffixes={globalSuffixes}
             onSuccess={() => onClose()}
           />
         )}

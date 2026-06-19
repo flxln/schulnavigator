@@ -44,6 +44,11 @@ const NAV_ITEMS: NavItem[] = [
     match: (path) => path.startsWith('/mpz/studio/coach'),
   },
   {
+    href: '/mpz/studio/embeds',
+    label: 'Embeds & Links',
+    match: (path) => path.startsWith('/mpz/studio/embeds'),
+  },
+  {
     href: '/mpz/studio/deploy',
     label: 'Deploy',
     match: (path) => path.startsWith('/mpz/studio/deploy'),
@@ -69,6 +74,7 @@ function pageTitle(
   if (pathname.startsWith('/mpz/studio/ingest')) return 'Medien hochladen'
   if (pathname.startsWith('/mpz/studio/dialog-audio')) return 'Dialog-Audio'
   if (pathname.startsWith('/mpz/studio/coach')) return 'Coach'
+  if (pathname.startsWith('/mpz/studio/embeds')) return 'Embeds & Links'
   if (pathname.startsWith('/mpz/studio/deploy')) return 'Deploy'
   return 'MPZ Studio'
 }

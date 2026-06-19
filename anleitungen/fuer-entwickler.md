@@ -65,6 +65,7 @@ Route: `/mpz/studio/stationen/[slug]?tab={stammdaten|medien|hotspots|dialog|dial
 - `PATCH /api/mpz/stations/[slug]/dialog` — `figuren`, `bubble` (#175).
 - `POST` / `PATCH` / `DELETE` `/api/mpz/stations/[slug]/dialog/segmente` bzw. `…/segmente/[segmentId]` — Dialog-Segmente (#175). Strukturelle Änderungen (Löschen, `rolle`) renummerieren WAV-Clips unter `content/dialog-audio/{slug}/`.
 - `POST` / `PATCH` / `DELETE` `/api/mpz/stations/[slug]/dialog/gruppen` bzw. `…/gruppen/[gruppeId]` — Dialog-Gruppen (#175).
+- `GET` / `PUT` `/api/mpz/embed-allowlist` — Globale Embed-Domain-Allowlist (#178, `data/embed-allowlist.json`). Domain: [`mpz-embed-allowlist.ts`](../app/lib/mpz-embed-allowlist.ts). Route: [`/mpz/studio/embeds`](http://localhost:3000/mpz/studio/embeds). Post-Write: Inline-Validator + Cross-Check gegen `stations.json`. **PUT** (volle Liste). CSP `frame-src` erst nach Dev-Neustart/`build`. Domain-Fehler → **422**; malformed Body → **400** `INVALID_BODY`.
 - `GET` / `POST` `/api/mpz/coach/messages` sowie `PATCH` / `DELETE` `/api/mpz/coach/messages/[messageId]` — Coach-Nachrichten (#177, `content/coach-messages.json`). Domain: [`mpz-coach-messages.ts`](../app/lib/mpz-coach-messages.ts). Route: [`/mpz/studio/coach`](http://localhost:3000/mpz/studio/coach). Post-Write: TS-Inline-Validator (spiegelt `validate:coach`). Domain-Fehler → **422**; malformed Request → **400**.
 
 Guard wie alle `/api/mpz/*`-Routen.
@@ -73,7 +74,7 @@ Guard wie alle `/api/mpz/*`-Routen.
 
 **Validierung (#150, #155):** Nach jedem Studio-Write läuft Post-Validate (`validateStationsFile` + `validateStationAssets` importiert). Bei Fehlern im Scope der geänderten Station wird **kein rename** ausgeführt (`stations.json` bleibt unverändert). Medien-Ingest läuft in `withMpzWriteLock`. Ingest-APIs liefern `validation` + `mtime` inline.
 
-**Grenzen:** Schreibt nur lokale Dateien (`data/stations.json`, `content/coach-messages.json`, `public/media/`, `content/dialog-audio/`, ggf. `public/qr/`, `lib/access-token-constants.mjs`, `.env.local`). Kein Git-Commit aus dem Studio — nach Änderungen manuell `git commit`, Deploy (Build führt `validate:stations` und `validate:coach` aus).
+**Grenzen:** Schreibt nur lokale Dateien (`data/stations.json`, `data/embed-allowlist.json`, `content/coach-messages.json`, `public/media/`, `content/dialog-audio/`, ggf. `public/qr/`, `lib/access-token-constants.mjs`, `.env.local`). Kein Git-Commit aus dem Studio — nach Änderungen manuell `git commit`, Deploy (Build führt `validate:stations`, `validate:coach` und `validate:embed-allowlist` aus).
 
 **Deploy-Tab (#174):** [`/mpz/studio/deploy`](http://localhost:3000/mpz/studio/deploy) — Env (`NEXT_PUBLIC_BASE_URL`, `NEXT_PUBLIC_EMBED_ENABLED`), QR-Generierung, Token-Rotation (Dry-Run/Live), validate-all, Vorschau-Links.
 
@@ -115,6 +116,7 @@ Alle Befehle im Verzeichnis `app/` ausführen.
 | `npm run validate:tokens` | Prüft `app/gs39-tokens.css` gegen `auftraggeber/.../colors_and_type.css` (lokal) bzw. `app/scripts/reference/colors_and_type.css` (Docker, nur `app/` als Kontext) — wird von `build` mitaufgerufen |
 | `npm run validate:stations` | Prüft `bild`- und `quelle`-Pfade unter `public/`; warnt bei extremem Hotspot-**y** (Heuristik, sichtbarer Ausschnitt nach Auto-Zoom) — wird von `build` mitaufgerufen |
 | `npm run validate:coach` | Prüft Coach-JSON gegen Schema und `stations.json` — wird von `build` mitaufgerufen |
+| `npm run validate:embed-allowlist` | Prüft `data/embed-allowlist.json` — wird von `build` mitaufgerufen |
 | `npm run validate:access-config` | Prüft Token-Konfiguration (Sync mit QR-Specs) — wird von `build` mitaufgerufen |
 | `npm run generate:qr`  | QR-PNGs + Druck-PDFs + `manifest.json` unter `public/qr/` (Issue #15, PDF-Erweiterung #130); `--preset=schulfest` für Schulfest-Set (12 Räume + Entry fest) — [schulfest-gs39-playbook.md](./schulfest-gs39-playbook.md) |
 | `npm run rotate:access-tokens` | Entry-Token rotieren, `access-token-constants.mjs` + Manifeste + beide QR-Sets; Coolify-JSON auf stdout — [#141](https://github.com/flxln/schulnavigator/issues/141), siehe [Token rotieren](#token-pflegen--rotieren) |

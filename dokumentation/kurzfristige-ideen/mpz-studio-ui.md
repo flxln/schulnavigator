@@ -108,7 +108,7 @@ Nicht pro Raum, aber für vollständiges Studio relevant ([Spec](../projektmanag
 
 | Modul | Inhalt | Phase |
 |-------|--------|-------|
-| **Embeds & Links** | Globale Allowlist + Übersicht embed/link-Medien | v2 |
+| **Embeds & Links** | Globale Allowlist + Übersicht embed/link-Medien | v2 ✓ |
 | **Deploy** | Env, QR, Token-Rotation, validate-all | v2 |
 | **Brand & Design** | Logos, Maskottchen, GS39-Tokens, Stations-Akzente | v2 |
 | **Hub-Karte** | Slug ↔ Fenster-Slot (Geometrie bleibt Code) | v2 |
@@ -182,9 +182,10 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | **Querschnitt** | Dev-Guard (`/mpz/*` nur lokal) | [#145](https://github.com/flxln/schulnavigator/issues/145) | ✓ | ja | — |
 | **Querschnitt** | Atomarer Schreib-Layer | [#146](https://github.com/flxln/schulnavigator/issues/146) | ✓ | (intern) | CLI nutzt gleiche IO |
 | **Querschnitt** | Deploy (Env, QR, Token, validate-all) | [#174](https://github.com/flxln/schulnavigator/issues/174) | ✓ | ja | Skripte / `.env.local` |
-| **Querschnitt** | Brand, Hub | [#178](https://github.com/flxln/schulnavigator/issues/178)–[#180](https://github.com/flxln/schulnavigator/issues/180) | — | — | Code / Skripte |
+| **Querschnitt** | Embed-Allowlist | [#178](https://github.com/flxln/schulnavigator/issues/178) | ✓ | ja | `embed-allowlist.json` |
+| **Querschnitt** | Brand, Hub | [#179](https://github.com/flxln/schulnavigator/issues/179)–[#180](https://github.com/flxln/schulnavigator/issues/180) | — | — | Code / Skripte |
 
-**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) — **#177** Coach-Editor erledigt. **Nächstes Issue:** [#178](https://github.com/flxln/schulnavigator/issues/178) Brand & Design.
+**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) — **#178** Embed-Allowlist erledigt. **Nächstes Issue:** [#179](https://github.com/flxln/schulnavigator/issues/179) Hub/Icons-Config.
 
 ---
 
@@ -203,5 +204,6 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | `/mpz/studio/ingest` | #147, #172 | Deep-Link öffnet Medien-Modal |
 | `/mpz/studio/dialog-audio` | #148 | Dialog-Audio (global) |
 | `/mpz/studio/coach` | #177 | Coach-Nachrichten (`coach-messages.json`) |
+| `/mpz/studio/embeds` | #178 | Globale Embed-Allowlist + link/embed-Übersicht |
 | `/mpz/studio/deploy` | #174 | Env, QR, Token-Rotation, validate-all, Vorschau |
 | `/mpz/calib/flat/[slug]` | #149 | Flat-Hotspot-Kalibrierung |

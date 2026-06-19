@@ -7,7 +7,6 @@ import {
   MediumLinkEmbedFields,
   type LinkEmbedFormValues,
 } from '@/components/mpz-studio/medium-link-embed-fields'
-import { DEFAULT_EMBED_ALLOW_SUFFIXES } from '@/lib/embed-allowlist'
 import {
   markMpzStudioDirty,
   useStudioValidation,
@@ -17,6 +16,7 @@ import type { Medium } from '@/lib/types'
 export type StationMediumEditFormProps = {
   slug: string
   medium: Medium
+  globalSuffixes: readonly string[]
   onCancel: () => void
   onSuccess: (message: string) => void
 }
@@ -29,7 +29,10 @@ function labelClassName(): string {
   return 'mb-1 block text-xs font-semibold text-fg-3'
 }
 
-function mediumToForm(medium: Medium): LinkEmbedFormValues & {
+function mediumToForm(
+  medium: Medium,
+  globalSuffixes: readonly string[],
+): LinkEmbedFormValues & {
   poster: string
   videoSource: 'upload' | 'youtube'
 } {
@@ -40,9 +43,9 @@ function mediumToForm(medium: Medium): LinkEmbedFormValues & {
           thumbnail: medium.thumbnail ?? '',
           quelle: medium.quelle ?? '',
           openInExternal: medium.openIn === 'external',
-          embedAllow: medium.embedAllow ?? [...DEFAULT_EMBED_ALLOW_SUFFIXES],
+          embedAllow: medium.embedAllow ?? [...globalSuffixes],
         }
-      : defaultLinkEmbedFormValues('link')
+      : defaultLinkEmbedFormValues('link', globalSuffixes)
 
   return {
     ...linkEmbed,
@@ -54,9 +57,10 @@ function mediumToForm(medium: Medium): LinkEmbedFormValues & {
 function buildDiff(
   medium: Medium,
   form: ReturnType<typeof mediumToForm>,
+  globalSuffixes: readonly string[],
 ): Record<string, unknown> {
   const patch: Record<string, unknown> = {}
-  const initial = mediumToForm(medium)
+  const initial = mediumToForm(medium, globalSuffixes)
 
   if (form.untertitel !== initial.untertitel) {
     patch.untertitel = form.untertitel
@@ -101,19 +105,20 @@ function buildDiff(
 export function StationMediumEditForm({
   slug,
   medium,
+  globalSuffixes,
   onCancel,
   onSuccess,
 }: StationMediumEditFormProps) {
   const router = useRouter()
   const { validateNow } = useStudioValidation()
-  const [form, setForm] = useState(() => mediumToForm(medium))
+  const [form, setForm] = useState(() => mediumToForm(medium, globalSuffixes))
   const [error, setError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
 
   useEffect(() => {
-    setForm(mediumToForm(medium))
+    setForm(mediumToForm(medium, globalSuffixes))
     setError(null)
-  }, [medium])
+  }, [medium, globalSuffixes])
 
   function updateField<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {
     setForm((prev) => ({ ...prev, [key]: value }))
@@ -130,7 +135,7 @@ export function StationMediumEditForm({
     e.preventDefault()
     setError(null)
 
-    const patch = buildDiff(medium, form)
+    const patch = buildDiff(medium, form, globalSuffixes)
     if (Object.keys(patch).length === 0) {
       setError('Keine Änderungen zum Speichern.')
       return
@@ -235,6 +240,7 @@ export function StationMediumEditForm({
             <MediumLinkEmbedFields
               typ={medium.typ as 'link' | 'embed'}
               slug={slug}
+              globalSuffixes={globalSuffixes}
               values={form}
               onChange={updateLinkEmbedField}
               idPrefix={`edit-med-${medium.id}`}

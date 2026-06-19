@@ -14,6 +14,7 @@ import type { Medium, Station } from '@/lib/types'
 export type StationMedienTableProps = {
   slug: string
   station: Station | null
+  globalSuffixes: readonly string[]
 }
 
 function truncateQuelle(quelle: string, max = 48): string {
@@ -63,7 +64,7 @@ function successMessage(
   return parts.join(' ')
 }
 
-export function StationMedienTable({ slug, station }: StationMedienTableProps) {
+export function StationMedienTable({ slug, station, globalSuffixes }: StationMedienTableProps) {
   const router = useRouter()
   const { openMediaIngest } = useMediaIngest()
   const { validateNow } = useStudioValidation()
@@ -240,6 +241,7 @@ export function StationMedienTable({ slug, station }: StationMedienTableProps) {
                           <StationMediumEditForm
                             slug={slug}
                             medium={medium}
+                            globalSuffixes={globalSuffixes}
                             onCancel={() => setEditingId(null)}
                             onSuccess={(message) => {
                               setSuccess(message)
