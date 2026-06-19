@@ -16,7 +16,7 @@ import {
   MpzUploadError,
   sanitizeUploadFilename,
 } from '@/lib/mpz-upload-rules'
-import { HUB_SLUG_MAP } from '@/lib/schoolhouse-hub-map'
+import { getHubSlugOrder, isHubSlug } from '@/lib/schoolhouse-hub-map'
 
 export const ICON_EXTENSIONS = ['.svg', '.png', '.webp'] as const
 export const MAX_ICON_BYTES = 2 * 1024 * 1024
@@ -26,7 +26,6 @@ const ICON_SANITIZE_RULE = {
   defaultExt: '.svg' as const,
 }
 
-const HUB_SLUGS = new Set(Object.keys(HUB_SLUG_MAP))
 const ICON_EXT_SET = new Set<string>(ICON_EXTENSIONS)
 
 export type IconCollisionMode = 'reject' | 'replace'
@@ -169,10 +168,10 @@ export async function ingestHotspotIcon(
   io: MpzContentIo = createMpzContentIo(),
 ): Promise<IngestHotspotIconResult> {
   return withMpzWriteLock(async () => {
-    if (!HUB_SLUGS.has(input.slug)) {
+    if (!isHubSlug(input.slug)) {
       throw new MpzUploadError(
         'VALIDATION',
-        `Unbekannter slug "${input.slug}". Erlaubt: ${[...HUB_SLUGS].join(', ')}.`,
+        `Unbekannter slug "${input.slug}". Erlaubt: ${getHubSlugOrder().join(', ')}.`,
       )
     }
 
@@ -201,10 +200,10 @@ export async function listStationHotspotIcons(
   slug: string,
   io: MpzContentIo = createMpzContentIo(),
 ): Promise<{ paths: string[] }> {
-  if (!HUB_SLUGS.has(slug)) {
+  if (!isHubSlug(slug)) {
     throw new MpzUploadError(
       'VALIDATION',
-      `Unbekannter slug "${slug}". Erlaubt: ${[...HUB_SLUGS].join(', ')}.`,
+      `Unbekannter slug "${slug}". Erlaubt: ${getHubSlugOrder().join(', ')}.`,
     )
   }
 

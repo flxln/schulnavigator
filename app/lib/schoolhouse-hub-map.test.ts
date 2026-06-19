@@ -3,8 +3,8 @@ import { expandHitRect, hitRectsOverlap } from '@/lib/schoolhouse-hub-hit'
 import {
   buildHubStations,
   getHubMapping,
+  getHubSlugMap,
   HUB_SLOTS,
-  HUB_SLUG_MAP,
   HUB_VIEWBOX,
   listHubStationHitFrames,
 } from '@/lib/schoolhouse-hub-map'
@@ -35,7 +35,7 @@ describe('schoolhouse-hub-map', () => {
   it('definiert 5 Deko-Slots ohne Slug-Zuordnung', () => {
     const deko = Object.entries(HUB_SLOTS).filter(([, s]) => s.kind === 'deko')
     expect(deko).toHaveLength(5)
-    const usedDeko = Object.values(HUB_SLUG_MAP).map((m) => m.slotId)
+    const usedDeko = Object.values(getHubSlugMap()).map((m) => m.slotId)
     for (const [id] of deko) {
       expect(usedDeko).not.toContain(id)
     }
@@ -54,7 +54,7 @@ describe('schoolhouse-hub-map', () => {
   it('deckt alle Stations-Slugs aus stations.json ab', () => {
     const slugs = getAllStations().map((s) => s.slug)
     for (const slug of slugs) {
-      expect(slug in HUB_SLUG_MAP).toBe(true)
+      expect(slug in getHubSlugMap()).toBe(true)
     }
   })
 

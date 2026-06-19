@@ -4,7 +4,7 @@ import {
   createMpzContentIo,
   type MpzContentIo,
 } from '@/lib/mpz-content-io'
-import { HUB_SLUG_MAP, MPZ_HUB_SLUGS } from '@/lib/schoolhouse-hub-map'
+import { getHubSlugMap, MPZ_HUB_SLUGS } from '@/lib/schoolhouse-hub-map'
 import {
   globalValidationErrors,
   mergeValidationErrors,
@@ -116,7 +116,7 @@ export function buildStationOverviews(
   const bySlugMap = new Map(stationsFile.stations.map((s) => [s.slug, s]))
 
   return MPZ_HUB_SLUGS.map((slug) => {
-    const hub = HUB_SLUG_MAP[slug]
+    const hub = getHubSlugMap()[slug]
     const station = bySlugMap.get(slug)
     const slugIssues = bySlug[slug] ?? emptyBucket()
     const audit =
@@ -136,7 +136,7 @@ export function buildStationOverviews(
 
     return {
       slug,
-      hubNr: hub.nr,
+      hubNr: hub!.nr,
       titel: station?.titel ?? slug,
       viewer: station ? resolveViewer(station) : 'flat',
       medienCount: station?.medien?.length ?? 0,

@@ -9,12 +9,18 @@ import {
 import { basename, dirname, join } from 'node:path'
 import { existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { HUB_SLUG_MAP } from '@/lib/schoolhouse-hub-map'
+import { buildHubStations, getHubSlugOrder } from '@/lib/schoolhouse-hub-map'
 import { validateCoachMessagesContent } from '@/lib/mpz-coach-messages-validation'
 import {
   validateEmbedAllowlistContent,
   type EmbedAllowlistFile,
 } from '@/lib/mpz-embed-allowlist-validation'
+import {
+  validateHubSlugMapContent,
+  validateStationAccentsContent,
+  validateStationIconsContent,
+  type HubConfigBundle,
+} from '@/lib/mpz-hub-config-validation'
 import {
   mergeValidationErrors,
   shouldRollbackPostValidate,
@@ -28,6 +34,9 @@ import { validateStationAssets } from '@/scripts/validate-station-assets'
 export const MPZ_STATIONS_REL = 'data/stations.json'
 export const MPZ_COACH_REL = 'content/coach-messages.json'
 export const MPZ_EMBED_ALLOWLIST_REL = 'data/embed-allowlist.json'
+export const MPZ_HUB_SLUG_MAP_REL = 'data/hub-slug-map.json'
+export const MPZ_STATION_ACCENTS_REL = 'data/station-accents.json'
+export const MPZ_STATION_ICONS_REL = 'data/station-icons.json'
 
 export type MpzContentIoErrorCode = 'VALIDATION' | 'IO'
 
@@ -97,6 +106,25 @@ export type EmbedAllowlistWriteResult = {
   mtime: string | null
 }
 
+export interface WriteHubConfigOptions {
+  /** Default true */
+  makeBackup?: boolean
+  /** Inline-Validator + Cross-Check gegen stations.json vor rename */
+  postValidate?: boolean
+  stationsFile: StationsFile
+}
+
+export type WriteHubConfigResult = {
+  mtime: string | null
+}
+
+export type HubConfigWriteResult = {
+  slugMap: Record<string, { slotId: string; nr: number }>
+  accents: Record<string, string>
+  icons: Record<string, { type: 'lucide'; name: string }>
+  mtime: string | null
+}
+
 export interface MpzContentIoPaths {
   appRoot: string
   stationsPath: string
@@ -105,6 +133,12 @@ export interface MpzContentIoPaths {
   coachBackupPath: string
   allowlistPath: string
   allowlistBackupPath: string
+  hubSlugMapPath: string
+  hubSlugMapBackupPath: string
+  stationAccentsPath: string
+  stationAccentsBackupPath: string
+  stationIconsPath: string
+  stationIconsBackupPath: string
 }
 
 export interface MpzContentIo {
@@ -123,11 +157,14 @@ export interface MpzContentIo {
     data: EmbedAllowlistFile,
     options: WriteEmbedAllowlistOptions,
   ): Promise<WriteEmbedAllowlistResult>
+  readHubConfig(): Promise<HubConfigBundle>
+  writeHubConfig(
+    data: HubConfigBundle,
+    options: WriteHubConfigOptions,
+  ): Promise<WriteHubConfigResult>
   getPaths(): MpzContentIoPaths
   fileExists(absPath: string): boolean
 }
-
-const HUB_SLUG_ORDER = Object.keys(HUB_SLUG_MAP)
 
 function defaultPaths(overrides?: Partial<MpzContentIoPaths>): MpzContentIoPaths {
   const libDir = dirname(fileURLToPath(import.meta.url))
@@ -144,6 +181,18 @@ function defaultPaths(overrides?: Partial<MpzContentIoPaths>): MpzContentIoPaths
     overrides?.allowlistPath ?? join(appRoot, MPZ_EMBED_ALLOWLIST_REL)
   const allowlistBackupPath =
     overrides?.allowlistBackupPath ?? `${allowlistPath}.bak`
+  const hubSlugMapPath =
+    overrides?.hubSlugMapPath ?? join(appRoot, MPZ_HUB_SLUG_MAP_REL)
+  const hubSlugMapBackupPath =
+    overrides?.hubSlugMapBackupPath ?? `${hubSlugMapPath}.bak`
+  const stationAccentsPath =
+    overrides?.stationAccentsPath ?? join(appRoot, MPZ_STATION_ACCENTS_REL)
+  const stationAccentsBackupPath =
+    overrides?.stationAccentsBackupPath ?? `${stationAccentsPath}.bak`
+  const stationIconsPath =
+    overrides?.stationIconsPath ?? join(appRoot, MPZ_STATION_ICONS_REL)
+  const stationIconsBackupPath =
+    overrides?.stationIconsBackupPath ?? `${stationIconsPath}.bak`
   return {
     appRoot,
     stationsPath,
@@ -152,6 +201,12 @@ function defaultPaths(overrides?: Partial<MpzContentIoPaths>): MpzContentIoPaths
     coachBackupPath,
     allowlistPath,
     allowlistBackupPath,
+    hubSlugMapPath,
+    hubSlugMapBackupPath,
+    stationAccentsPath,
+    stationAccentsBackupPath,
+    stationIconsPath,
+    stationIconsBackupPath,
   }
 }
 
@@ -162,7 +217,7 @@ function tmpPathFor(targetPath: string): string {
 }
 
 export function canonicalizeStationsFile(data: StationsFile): StationsFile {
-  const order = new Map(HUB_SLUG_ORDER.map((slug, index) => [slug, index]))
+  const order = new Map(getHubSlugOrder().map((slug, index) => [slug, index]))
   const stations = [...data.stations].sort((a, b) => {
     const ai = order.get(a.slug) ?? Number.MAX_SAFE_INTEGER
     const bi = order.get(b.slug) ?? Number.MAX_SAFE_INTEGER
@@ -180,6 +235,18 @@ export function serializeCoachMessagesFile(data: CoachMessagesFile): string {
 }
 
 export function serializeEmbedAllowlistFile(data: EmbedAllowlistFile): string {
+  return `${JSON.stringify(data, null, 2)}\n`
+}
+
+export function serializeHubSlugMapFile(data: HubConfigBundle['slugMap']): string {
+  return `${JSON.stringify(data, null, 2)}\n`
+}
+
+export function serializeStationAccentsFile(data: HubConfigBundle['accents']): string {
+  return `${JSON.stringify(data, null, 2)}\n`
+}
+
+export function serializeStationIconsFile(data: HubConfigBundle['icons']): string {
   return `${JSON.stringify(data, null, 2)}\n`
 }
 
@@ -331,6 +398,112 @@ async function commitEmbedAllowlistWrite(
       } catch {
         /* ignore */
       }
+    }
+    if (err instanceof MpzContentIoError) {
+      throw err
+    }
+    throw new MpzContentIoError(
+      'IO',
+      err instanceof Error ? err.message : 'Atomares Schreiben fehlgeschlagen',
+    )
+  }
+}
+
+async function cleanupHubConfigTmps(paths: MpzContentIoPaths): Promise<void> {
+  for (const targetPath of [
+    paths.hubSlugMapPath,
+    paths.stationAccentsPath,
+    paths.stationIconsPath,
+  ]) {
+    const tmpPath = tmpPathFor(targetPath)
+    if (existsSync(tmpPath)) {
+      try {
+        await unlink(tmpPath)
+      } catch {
+        /* ignore */
+      }
+    }
+  }
+}
+
+async function restoreHubConfigBackups(paths: MpzContentIoPaths): Promise<void> {
+  const pairs: [string, string][] = [
+    [paths.hubSlugMapBackupPath, paths.hubSlugMapPath],
+    [paths.stationAccentsBackupPath, paths.stationAccentsPath],
+    [paths.stationIconsBackupPath, paths.stationIconsPath],
+  ]
+  for (const [backupPath, targetPath] of pairs) {
+    if (existsSync(backupPath)) {
+      await copyFile(backupPath, targetPath)
+    }
+  }
+}
+
+async function commitHubConfigWrite(
+  paths: MpzContentIoPaths,
+  serialized: { slugMap: string; accents: string; icons: string },
+  payload: HubConfigBundle,
+  stationsFile: StationsFile,
+): Promise<WriteHubConfigResult> {
+  const targetPaths = [
+    paths.hubSlugMapPath,
+    paths.stationAccentsPath,
+    paths.stationIconsPath,
+  ]
+  const tmpPaths = targetPaths.map((targetPath) => tmpPathFor(targetPath))
+  const contents = [serialized.slugMap, serialized.accents, serialized.icons]
+
+  try {
+    for (let i = 0; i < tmpPaths.length; i += 1) {
+      await writeFile(tmpPaths[i]!, contents[i]!, 'utf8')
+    }
+
+    const stationSlugs = new Set(
+      stationsFile.stations.map((s) => s.slug).filter((slug): slug is string => !!slug),
+    )
+    const validationOptions = { expectedSlugs: stationSlugs }
+
+    const errors = [
+      ...validateHubSlugMapContent(payload.slugMap, validationOptions),
+      ...validateStationAccentsContent(payload.accents, validationOptions),
+      ...validateStationIconsContent(payload.icons, validationOptions),
+    ]
+    if (errors.length > 0) {
+      await cleanupHubConfigTmps(paths)
+      throw new MpzContentIoError('VALIDATION', errors[0] ?? 'Validierung fehlgeschlagen')
+    }
+
+    const hubSlugMap = payload.slugMap.mappings
+    try {
+      validateStationsFile(stationsFile, { hubSlugMap })
+      buildHubStations(stationsFile.stations, { hubSlugMap })
+    } catch (err) {
+      await cleanupHubConfigTmps(paths)
+      throw new MpzContentIoError(
+        'VALIDATION',
+        err instanceof Error ? err.message : 'Cross-Validate stations.json fehlgeschlagen',
+      )
+    }
+
+    try {
+      for (let i = 0; i < targetPaths.length; i += 1) {
+        await rename(tmpPaths[i]!, targetPaths[i]!)
+      }
+    } catch (renameErr) {
+      await cleanupHubConfigTmps(paths)
+      await restoreHubConfigBackups(paths)
+      throw new MpzContentIoError(
+        'IO',
+        renameErr instanceof Error ? renameErr.message : 'Atomares Schreiben fehlgeschlagen',
+      )
+    }
+
+    return { mtime: await fileMtime(paths.hubSlugMapPath) }
+  } catch (err) {
+    if (!(err instanceof MpzContentIoError && err.code === 'VALIDATION')) {
+      await cleanupHubConfigTmps(paths)
+    } else if (err.code === 'VALIDATION') {
+      await cleanupHubConfigTmps(paths)
     }
     if (err instanceof MpzContentIoError) {
       throw err
@@ -577,6 +750,102 @@ export function createMpzContentIo(overrides?: Partial<MpzContentIoPaths>): MpzC
 
       await writeAtomicFile(paths.allowlistPath, serialized)
       return { mtime: await fileMtime(paths.allowlistPath) }
+    },
+
+    async readHubConfig(): Promise<HubConfigBundle> {
+      const readJsonFile = async (
+        filePath: string,
+        label: string,
+      ): Promise<unknown> => {
+        try {
+          const raw = await readFile(filePath, 'utf8')
+          return JSON.parse(raw) as unknown
+        } catch (err) {
+          if (err instanceof SyntaxError) {
+            throw new MpzContentIoError('IO', `${label}: ungültiges JSON — ${err.message}`)
+          }
+          throw new MpzContentIoError(
+            'IO',
+            err instanceof Error ? err.message : `${label} konnte nicht gelesen werden`,
+          )
+        }
+      }
+
+      const [slugMapRaw, accentsRaw, iconsRaw] = await Promise.all([
+        readJsonFile(paths.hubSlugMapPath, 'hub-slug-map.json'),
+        readJsonFile(paths.stationAccentsPath, 'station-accents.json'),
+        readJsonFile(paths.stationIconsPath, 'station-icons.json'),
+      ])
+
+      if (
+        typeof slugMapRaw !== 'object' ||
+        slugMapRaw === null ||
+        typeof (slugMapRaw as HubConfigBundle['slugMap']).mappings !== 'object'
+      ) {
+        throw new MpzContentIoError('IO', 'hub-slug-map.json: ungültige Struktur (mappings fehlt)')
+      }
+      if (
+        typeof accentsRaw !== 'object' ||
+        accentsRaw === null ||
+        typeof (accentsRaw as HubConfigBundle['accents']).accents !== 'object'
+      ) {
+        throw new MpzContentIoError('IO', 'station-accents.json: ungültige Struktur (accents fehlt)')
+      }
+      if (
+        typeof iconsRaw !== 'object' ||
+        iconsRaw === null ||
+        typeof (iconsRaw as HubConfigBundle['icons']).icons !== 'object'
+      ) {
+        throw new MpzContentIoError('IO', 'station-icons.json: ungültige Struktur (icons fehlt)')
+      }
+
+      return {
+        slugMap: slugMapRaw as HubConfigBundle['slugMap'],
+        accents: accentsRaw as HubConfigBundle['accents'],
+        icons: iconsRaw as HubConfigBundle['icons'],
+      }
+    },
+
+    async writeHubConfig(
+      data: HubConfigBundle,
+      options: WriteHubConfigOptions,
+    ): Promise<WriteHubConfigResult> {
+      const makeBackup = options.makeBackup !== false
+      const postValidate = options.postValidate === true
+      const serialized = {
+        slugMap: serializeHubSlugMapFile(data.slugMap),
+        accents: serializeStationAccentsFile(data.accents),
+        icons: serializeStationIconsFile(data.icons),
+      }
+
+      if (makeBackup) {
+        const backupPairs: [string, string][] = [
+          [paths.hubSlugMapPath, paths.hubSlugMapBackupPath],
+          [paths.stationAccentsPath, paths.stationAccentsBackupPath],
+          [paths.stationIconsPath, paths.stationIconsBackupPath],
+        ]
+        for (const [sourcePath, backupPath] of backupPairs) {
+          if (existsSync(sourcePath)) {
+            try {
+              await copyFile(sourcePath, backupPath)
+            } catch (err) {
+              throw new MpzContentIoError(
+                'IO',
+                err instanceof Error ? err.message : 'Hub-Config-Backup konnte nicht erstellt werden',
+              )
+            }
+          }
+        }
+      }
+
+      if (postValidate) {
+        return commitHubConfigWrite(paths, serialized, data, options.stationsFile)
+      }
+
+      await writeAtomicFile(paths.hubSlugMapPath, serialized.slugMap)
+      await writeAtomicFile(paths.stationAccentsPath, serialized.accents)
+      await writeAtomicFile(paths.stationIconsPath, serialized.icons)
+      return { mtime: await fileMtime(paths.hubSlugMapPath) }
     },
   }
 }

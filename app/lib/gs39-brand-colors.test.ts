@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { GS39_BRAND_HEX, GS39_STATION_ACCENT_HEX } from './gs39-brand-colors'
+import { GS39_BRAND_HEX, getStationAccentsMap } from './gs39-brand-colors'
 import { getAllStations } from './stations'
 
 describe('gs39-brand-colors', () => {
@@ -13,7 +13,7 @@ describe('gs39-brand-colors', () => {
     const stations = getAllStations()
     expect(stations.length).toBe(12)
     for (const s of stations) {
-      expect(GS39_STATION_ACCENT_HEX[s.slug]).toMatch(/^#[0-9a-f]{6}$/i)
+      expect(getStationAccentsMap()[s.slug]).toMatch(/^#[0-9a-f]{6}$/i)
     }
   })
 })

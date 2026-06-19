@@ -3,7 +3,7 @@ import { Suspense } from 'react'
 import { StationDetailShell } from '@/components/mpz-studio/station-detail-shell'
 import { createMpzContentIo, MpzContentIoError } from '@/lib/mpz-content-io'
 import { getEmbedAllowSuffixes } from '@/lib/embed-allowlist'
-import { HUB_SLUG_MAP, isHubSlug } from '@/lib/schoolhouse-hub-map'
+import { getHubSlugMap, isHubSlug } from '@/lib/schoolhouse-hub-map'
 import type { Station } from '@/lib/types'
 
 type PageProps = {
@@ -16,7 +16,7 @@ export default async function MpzStationDetailPage({ params }: PageProps) {
     notFound()
   }
 
-  const hubNr = HUB_SLUG_MAP[slug].nr
+  const hubNr = getHubSlugMap()[slug]!.nr
   let station: Station | null = null
 
   try {

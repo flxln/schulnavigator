@@ -22,9 +22,9 @@ import {
 } from '@/lib/mpz-medium-ingest'
 import { MpzContentIoError } from '@/lib/mpz-content-io'
 import { isUploadTyp, UPLOAD_RULES } from '@/lib/mpz-upload-rules'
-import { HUB_SLUG_MAP } from '@/lib/schoolhouse-hub-map'
+import { getHubSlugOrder, isHubSlug, MPZ_HUB_SLUGS } from '@/lib/schoolhouse-hub-map'
 
-const HUB_SLUGS = Object.keys(HUB_SLUG_MAP)
+const HUB_SLUGS = getHubSlugOrder()
 
 interface IngestOptions {
   slug?: string
@@ -106,7 +106,7 @@ async function main(): Promise<void> {
     usage()
   }
 
-  if (!HUB_SLUGS.includes(opts.slug)) {
+  if (!isHubSlug(opts.slug)) {
     console.error(`Unbekannter slug "${opts.slug}". Erlaubt: ${HUB_SLUGS.join(', ')}`)
     process.exit(1)
   }

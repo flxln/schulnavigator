@@ -250,12 +250,14 @@ Diese Inhalte und Strukturen liegen in TypeScript und erfordern Entwickler:
 
 | Datei | Was |
 |-------|-----|
-| `app/lib/schoolhouse-hub-map.ts` | Hub-Slot-Zuordnung (welcher Slug an welchem Fenster/Wegweiser) |
-| `app/lib/station-icons.ts` | Lucide-Icons pro Station auf Hub/Liste |
-| `app/lib/gs39-brand-colors.ts` | Akzentfarben pro Station im Hub |
+| `app/lib/hub-slot-definitions.ts` | Hub-Slot-Geometrie (`HUB_SLOTS`) — an SVG gekoppelt |
 | `app/lib/home-cta.ts`, `app/lib/next-station.ts` | Startseiten-CTA-Logik |
-| `app/lib/embed-allowlist.ts` | Erlaubte Embed-Domains (aktuell nur `delightex.com`) |
+| `app/lib/lucide-icon-registry.ts` | Lucide-Name → Komponente (nicht JSON-serialisierbar) |
 | UI-Komponenten | Feste UI-Strings (Hinweisseiten, Buttons) |
+
+**Hub-Konfiguration (Slug↔Slot, Akzente, Icons):** `data/hub-slug-map.json`, `data/station-accents.json`, `data/station-icons.json` — MPZ Studio [`/mpz/studio/hub`](../anleitungen/fuer-entwickler.md) oder manuell im Repo. Loader: `schoolhouse-hub-map.ts`, `gs39-brand-colors.ts`, `station-icons.ts`.
+
+**Embed-Allowlist:** `data/embed-allowlist.json` — MPZ Studio `/mpz/studio/embeds`.
 
 Hub-SVG: `viewBox` 1086,5×1453,9 ist an Slot-Koordinaten gekoppelt — bei Asset-Wechsel Koordinaten neu vermessen ([ADR-016](./adr/016-hub-frontansicht-39gs.md), [ADR-020](./adr/020-hub-wegweiser-aussen-stationen.md)).
 
@@ -306,8 +308,10 @@ Bis dahin: **kein Admin-UI** — alles über Repo-Dateien.
 | Hotspot-Preset-Icons | `public/brand/hotspot-icons/` | — | Dev |
 | Hub-Gebäude-SVG | `public/brand/hub/` | — | Dev (Skript) |
 | Farben/Typo | `gs39-tokens.css` | — | Dev (aus Auftraggeber) |
-| Hub-Slot ↔ Station | `schoolhouse-hub-map.ts` | — | Dev |
-| Stations-Icons (Hub) | `station-icons.ts` | — | Dev |
+| Hub-Slot ↔ Station | `data/hub-slug-map.json` | MPZ Studio `/mpz/studio/hub` | MPZ |
+| Stations-Akzente (Hub) | `data/station-accents.json` | MPZ Studio `/mpz/studio/hub` | MPZ |
+| Stations-Icons (Hub) | `data/station-icons.json` | MPZ Studio `/mpz/studio/hub` | MPZ |
+| Embed-Allowlist | `data/embed-allowlist.json` | MPZ Studio `/mpz/studio/embeds` | MPZ |
 | Eintritts-Token | `access-tokens.ts` | — | Dev |
 | QR-Codes | `public/qr/` (generiert) | — | Dev (`generate:qr`) |
 | Demo → echter Content | Migration | Pfade in JSON | MPZ |

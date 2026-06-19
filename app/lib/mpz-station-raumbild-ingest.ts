@@ -12,7 +12,7 @@ import { readImageDimensions } from '@/lib/image-dimensions'
 import { type IngestSource, persistFile } from '@/lib/mpz-medium-ingest'
 import { runMpzStudioValidation, type MpzValidationReport } from '@/lib/mpz-studio-overview'
 import { MpzUploadError } from '@/lib/mpz-upload-rules'
-import { HUB_SLUG_MAP } from '@/lib/schoolhouse-hub-map'
+import { getHubSlugOrder, isHubSlug } from '@/lib/schoolhouse-hub-map'
 import type { Station, StationsFile } from '@/lib/types'
 
 export type RaumbildVariant = 'flat' | 'pano360'
@@ -28,7 +28,6 @@ export const FLAT_RATIO_TOLERANCE = 0.02
 export const PANO360_RATIO = 2
 export const PANO360_RATIO_TOLERANCE = 0.02
 
-const HUB_SLUGS = new Set(Object.keys(HUB_SLUG_MAP))
 const PANO360_EXTENSIONS = ['.jpg', '.webp'] as const
 
 export interface IngestStationRaumbildInput {
@@ -164,10 +163,10 @@ export async function validateRaumbildUpload(input: {
 }
 
 function findHubStation(data: StationsFile, slug: string): Station {
-  if (!HUB_SLUGS.has(slug)) {
+  if (!isHubSlug(slug)) {
     throw new MpzUploadError(
       'VALIDATION',
-      `Unbekannter slug "${slug}". Erlaubt: ${[...HUB_SLUGS].join(', ')}.`,
+      `Unbekannter slug "${slug}". Erlaubt: ${getHubSlugOrder().join(', ')}.`,
     )
   }
   const station = data.stations.find((s) => s.slug === slug)
