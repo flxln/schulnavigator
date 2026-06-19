@@ -81,5 +81,5 @@ Eigenes Content- und Storage-Modell, getrennt vom Dialog (ADR-010/011). Sieben F
 - **Storage-Keys:** `sn_coach_seen_fest`, `sn_coach_seen_heft` (`{version, seen, suppressed}`); bestehender `sn_sparkle_done` bleibt unverändert.
 - **Seed-Räume (MVP):** `klassenzimmer`, `musik`, `hort` (kurze Orientierungstexte, mit MPZ nachziehbar); **keine** `daz`/`pc-raum` (Dialog-Hotspots).
 - **Abgegrenzt zu ADR-010/011:** Dialog (Hotspot-getriggert, Audio) bleibt unberührt; Coach ist text-only, fortschritts-getriggert. Kein Autoplay-Audio (iOS-sicher).
-- **Bewusst nicht jetzt:** `fest-locked-tap`-Toast (Follow-up), Coach-Audio/„Anhören", placement-Umschalten per Breakpoint, Directus-Anbindung.
+- **Bewusst nicht jetzt:** `fest-locked-tap`-Toast (Follow-up), Coach-Audio mit Autoplay ([Ideenskizze](../kurzfristige-ideen/coach-audio.md) — widerspricht MVP-Regel „kein Autoplay“; Ergänzungs-ADR nötig), placement-Umschalten per Breakpoint, Directus-Anbindung.
 - **Offen:** finale Coach-Texte inhaltlich mit MPZ; ggf. weitere Seed-Räume nach Festerfahrung.

@@ -167,6 +167,9 @@ export type CoachPlacement = 'bottom' | 'left' | 'right' | 'duo-split'
 
 export type CoachTrigger = 'hub-milestone' | 'hub-complete' | 'room-first'
 
+/** Coach-Anzeigemodus (Alias für fest/heft — semantisch getrennt von EntryMode). */
+export type CoachMode = EntryMode
+
 export interface CoachMessage {
   id: string
   trigger: CoachTrigger
@@ -178,7 +181,7 @@ export interface CoachMessage {
   /** Nur bei `room-first`. */
   slug?: string
   /** Fehlt → gilt für fest und heft. */
-  modes?: readonly EntryMode[]
+  modes?: readonly CoachMode[]
 }
 
 export interface CoachMessagesFile {

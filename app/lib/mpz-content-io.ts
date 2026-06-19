@@ -6,21 +6,23 @@ import {
   unlink,
   writeFile,
 } from 'node:fs/promises'
+import { basename, dirname, join } from 'node:path'
 import { existsSync } from 'node:fs'
-import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { HUB_SLUG_MAP } from '@/lib/schoolhouse-hub-map'
+import { validateCoachMessagesContent } from '@/lib/mpz-coach-messages-validation'
 import {
   mergeValidationErrors,
   shouldRollbackPostValidate,
   validateStationsContent,
   type StationsContentValidation,
 } from '@/lib/mpz-stations-validation'
-import type { StationsFile } from '@/lib/types'
+import type { CoachMessage, CoachMessagesFile, StationsFile } from '@/lib/types'
 import { validateStationsFile, assertUniqueStationSlugs } from '@/lib/validate-stations'
 import { validateStationAssets } from '@/scripts/validate-station-assets'
 
 export const MPZ_STATIONS_REL = 'data/stations.json'
+export const MPZ_COACH_REL = 'content/coach-messages.json'
 
 export type MpzContentIoErrorCode = 'VALIDATION' | 'IO'
 
@@ -54,10 +56,30 @@ export type WriteStationsResult = {
   validation?: StationsContentValidation
 }
 
+export interface WriteCoachMessagesOptions {
+  /** Default true */
+  makeBackup?: boolean
+  /** Inline-Validator vor rename; bei Fehler bleibt coach-messages.json unberührt */
+  postValidate?: boolean
+  stationCount: number
+  stationSlugs: ReadonlySet<string>
+}
+
+export type WriteCoachMessagesResult = {
+  mtime: string | null
+}
+
+export type CoachWriteResult = {
+  messages: readonly CoachMessage[]
+  mtime: string | null
+}
+
 export interface MpzContentIoPaths {
   appRoot: string
   stationsPath: string
   backupPath: string
+  coachPath: string
+  coachBackupPath: string
 }
 
 export interface MpzContentIo {
@@ -66,6 +88,11 @@ export interface MpzContentIo {
     data: StationsFile,
     options?: WriteStationsOptions,
   ): Promise<WriteStationsResult>
+  readCoachMessages(): Promise<CoachMessagesFile>
+  writeCoachMessages(
+    data: CoachMessagesFile,
+    options: WriteCoachMessagesOptions,
+  ): Promise<WriteCoachMessagesResult>
   getPaths(): MpzContentIoPaths
   fileExists(absPath: string): boolean
 }
@@ -79,7 +106,17 @@ function defaultPaths(overrides?: Partial<MpzContentIoPaths>): MpzContentIoPaths
     overrides?.stationsPath ?? join(appRoot, MPZ_STATIONS_REL)
   const backupPath =
     overrides?.backupPath ?? `${stationsPath}.bak`
-  return { appRoot, stationsPath, backupPath }
+  const coachPath =
+    overrides?.coachPath ?? join(appRoot, MPZ_COACH_REL)
+  const coachBackupPath =
+    overrides?.coachBackupPath ?? `${coachPath}.bak`
+  return { appRoot, stationsPath, backupPath, coachPath, coachBackupPath }
+}
+
+function tmpPathFor(targetPath: string): string {
+  const dir = dirname(targetPath)
+  const base = basename(targetPath)
+  return join(dir, `${base}.${process.pid}.tmp`)
 }
 
 export function canonicalizeStationsFile(data: StationsFile): StationsFile {
@@ -96,6 +133,10 @@ export function serializeStationsFile(data: StationsFile): string {
   return `${JSON.stringify(data, null, 2)}\n`
 }
 
+export function serializeCoachMessagesFile(data: CoachMessagesFile): string {
+  return `${JSON.stringify(data, null, 2)}\n`
+}
+
 async function fileMtime(path: string): Promise<string | null> {
   try {
     const info = await stat(path)
@@ -105,9 +146,8 @@ async function fileMtime(path: string): Promise<string | null> {
   }
 }
 
-async function writeAtomic(targetPath: string, content: string): Promise<void> {
-  const dir = dirname(targetPath)
-  const tmpPath = join(dir, `stations.json.${process.pid}.tmp`)
+export async function writeAtomicFile(targetPath: string, content: string): Promise<void> {
+  const tmpPath = tmpPathFor(targetPath)
   try {
     await writeFile(tmpPath, content, 'utf8')
     await rename(tmpPath, targetPath)
@@ -132,8 +172,7 @@ async function commitStationsWrite(
   payload: StationsFile,
   touchedSlugs: string[] | undefined,
 ): Promise<WriteStationsResult> {
-  const dir = dirname(paths.stationsPath)
-  const tmpPath = join(dir, `stations.json.${process.pid}.tmp`)
+  const tmpPath = tmpPathFor(paths.stationsPath)
 
   try {
     await writeFile(tmpPath, content, 'utf8')
@@ -152,6 +191,44 @@ async function commitStationsWrite(
       mtime: await fileMtime(paths.stationsPath),
       validation,
     }
+  } catch (err) {
+    if (existsSync(tmpPath)) {
+      try {
+        await unlink(tmpPath)
+      } catch {
+        /* ignore */
+      }
+    }
+    if (err instanceof MpzContentIoError) {
+      throw err
+    }
+    throw new MpzContentIoError(
+      'IO',
+      err instanceof Error ? err.message : 'Atomares Schreiben fehlgeschlagen',
+    )
+  }
+}
+
+async function commitCoachWrite(
+  paths: MpzContentIoPaths,
+  content: string,
+  payload: CoachMessagesFile,
+  stationCount: number,
+  stationSlugs: ReadonlySet<string>,
+): Promise<WriteCoachMessagesResult> {
+  const tmpPath = tmpPathFor(paths.coachPath)
+
+  try {
+    await writeFile(tmpPath, content, 'utf8')
+
+    const errors = validateCoachMessagesContent(payload, stationCount, stationSlugs)
+    if (errors.length > 0) {
+      await unlink(tmpPath)
+      throw new MpzContentIoError('VALIDATION', errors.join('\n'))
+    }
+
+    await rename(tmpPath, paths.coachPath)
+    return { mtime: await fileMtime(paths.coachPath) }
   } catch (err) {
     if (existsSync(tmpPath)) {
       try {
@@ -202,6 +279,38 @@ export function createMpzContentIo(overrides?: Partial<MpzContentIoPaths>): MpzC
         throw new MpzContentIoError(
           'IO',
           err instanceof Error ? err.message : 'stations.json konnte nicht gelesen werden',
+        )
+      }
+    },
+
+    async readCoachMessages(): Promise<CoachMessagesFile> {
+      try {
+        const raw = await readFile(paths.coachPath, 'utf8')
+        const parsed: unknown = JSON.parse(raw)
+        if (
+          typeof parsed !== 'object' ||
+          parsed === null ||
+          !Array.isArray((parsed as CoachMessagesFile).messages)
+        ) {
+          throw new MpzContentIoError(
+            'IO',
+            'coach-messages.json: ungültige Struktur (messages fehlt)',
+          )
+        }
+        return parsed as CoachMessagesFile
+      } catch (err) {
+        if (err instanceof MpzContentIoError) {
+          throw err
+        }
+        if (err instanceof SyntaxError) {
+          throw new MpzContentIoError(
+            'IO',
+            `coach-messages.json: ungültiges JSON — ${err.message}`,
+          )
+        }
+        throw new MpzContentIoError(
+          'IO',
+          err instanceof Error ? err.message : 'coach-messages.json konnte nicht gelesen werden',
         )
       }
     },
@@ -274,8 +383,41 @@ export function createMpzContentIo(overrides?: Partial<MpzContentIoPaths>): MpzC
         return commitStationsWrite(paths, serialized, payload, touchedSlugs)
       }
 
-      await writeAtomic(paths.stationsPath, serialized)
+      await writeAtomicFile(paths.stationsPath, serialized)
       return { mtime: await fileMtime(paths.stationsPath) }
+    },
+
+    async writeCoachMessages(
+      data: CoachMessagesFile,
+      options: WriteCoachMessagesOptions,
+    ): Promise<WriteCoachMessagesResult> {
+      const makeBackup = options.makeBackup !== false
+      const postValidate = options.postValidate === true
+      const serialized = serializeCoachMessagesFile(data)
+
+      if (makeBackup && existsSync(paths.coachPath)) {
+        try {
+          await copyFile(paths.coachPath, paths.coachBackupPath)
+        } catch (err) {
+          throw new MpzContentIoError(
+            'IO',
+            err instanceof Error ? err.message : 'Coach-Backup konnte nicht erstellt werden',
+          )
+        }
+      }
+
+      if (postValidate) {
+        return commitCoachWrite(
+          paths,
+          serialized,
+          data,
+          options.stationCount,
+          options.stationSlugs,
+        )
+      }
+
+      await writeAtomicFile(paths.coachPath, serialized)
+      return { mtime: await fileMtime(paths.coachPath) }
     },
   }
 }
