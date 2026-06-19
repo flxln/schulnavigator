@@ -184,9 +184,9 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | **Querschnitt** | Deploy (Env, QR, Token, validate-all) | [#174](https://github.com/flxln/schulnavigator/issues/174) | ✓ | ja | Skripte / `.env.local` |
 | **Querschnitt** | Embed-Allowlist | [#178](https://github.com/flxln/schulnavigator/issues/178) | ✓ | ja | `embed-allowlist.json` |
 | **Querschnitt** | Hub-Slug-Map, Akzente, Icons | [#179](https://github.com/flxln/schulnavigator/issues/179) | ✓ | ja | `hub-slug-map.json` usw. |
-| **Querschnitt** | Brand-Uploads | [#180](https://github.com/flxln/schulnavigator/issues/180) | — | — | Dateien / Code |
+| **Querschnitt** | Brand-Uploads | [#180](https://github.com/flxln/schulnavigator/issues/180) | ✓ | ja | Dateien / Code |
 
-**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) — **#179** Hub/Icons-Config erledigt. **Nächstes Issue:** [#180](https://github.com/flxln/schulnavigator/issues/180) Brand-Uploads.
+**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) — **#180** Brand-Uploads erledigt. **Nächstes Issue:** [#181](https://github.com/flxln/schulnavigator/issues/181) Doku & Epic-Abschluss.
 
 ---
 
@@ -207,5 +207,6 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | `/mpz/studio/coach` | #177 | Coach-Nachrichten (`coach-messages.json`) |
 | `/mpz/studio/embeds` | #178 | Globale Embed-Allowlist + link/embed-Übersicht |
 | `/mpz/studio/hub` | #179 | Hub-Slug-Map, Akzente, Lucide-Icons |
+| `/mpz/studio/brand` | #180 | Logos, Maskottchen, optionale Motive (`public/brand/`) |
 | `/mpz/studio/deploy` | #174 | Env, QR, Token-Rotation, validate-all, Vorschau |
 | `/mpz/calib/flat/[slug]` | #149 | Flat-Hotspot-Kalibrierung |

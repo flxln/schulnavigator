@@ -32,3 +32,20 @@ Design-System-Doku: `auftraggeber/material/UI-Vorschläge/UI-vorschlag-website.m
 ## Pflege
 
 Bei Aktualisierung durch die Schule: Dateien hier ersetzen, Commit im Hauptrepo, erneut deployen. Submodule allein reichen nicht für Production.
+
+**MPZ Studio (lokal, #180):** [`/mpz/studio/brand`](../../anleitungen/fuer-entwickler.md) — slot-basiertes Ersetzen der Dateien unten.
+
+### Upload-Slots (Studio)
+
+| Slot-ID | Ziel |
+|---------|------|
+| `logo-jubilaeum-lockup` | `/brand/logos/jubilaeum-lockup.svg` |
+| `logo-badge` | `/brand/logos/badge.svg` |
+| `logo-mpz` | `/brand/logos/mpz-logo.png` |
+| `mascot-frieda` | `/brand/mascots/frieda.png` |
+| `mascot-otto` | `/brand/mascots/otto.png` |
+| `motif-bunting` | `/brand/motifs/bunting.png` |
+| `motif-balloons` | `/brand/motifs/balloons.png` |
+| `motif-heart-sparkles` | `/brand/motifs/heart-sparkles.png` |
+
+Hotspot-Preset-Icons (`hotspot-icons/`) und Hub-SVG (`hub/`) werden nicht über das Studio ersetzt.

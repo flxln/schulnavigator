@@ -257,6 +257,8 @@ Diese Inhalte und Strukturen liegen in TypeScript und erfordern Entwickler:
 
 **Hub-Konfiguration (Slug↔Slot, Akzente, Icons):** `data/hub-slug-map.json`, `data/station-accents.json`, `data/station-icons.json` — MPZ Studio [`/mpz/studio/hub`](../anleitungen/fuer-entwickler.md) oder manuell im Repo. Loader: `schoolhouse-hub-map.ts`, `gs39-brand-colors.ts`, `station-icons.ts`.
 
+**Brand-Assets (Logos, Maskottchen, Motive):** `public/brand/` — MPZ Studio [`/mpz/studio/brand`](../anleitungen/fuer-entwickler.md) oder manuell im Repo. Feste Slot-Dateinamen (z. B. `mascots/frieda.png`); Hotspot-Preset-Icons und Hub-SVG bleiben Dev-Pflege.
+
 **Embed-Allowlist:** `data/embed-allowlist.json` — MPZ Studio `/mpz/studio/embeds`.
 
 Hub-SVG: `viewBox` 1086,5×1453,9 ist an Slot-Koordinaten gekoppelt — bei Asset-Wechsel Koordinaten neu vermessen ([ADR-016](./adr/016-hub-frontansicht-39gs.md), [ADR-020](./adr/020-hub-wegweiser-aussen-stationen.md)).
