@@ -37,10 +37,6 @@ function successMessage(slug: string): string {
   return `Hotspot entfernt. Für /raum/${slug} ggf. Dev-Server neu starten (Modul-Cache).`
 }
 
-function isMediaHotspot(hs: Hotspot | Hotspot360): boolean {
-  return hs.action !== 'dialog'
-}
-
 export function StationHotspotsTable({ slug, station }: StationHotspotsTableProps) {
   const router = useRouter()
   const { validateNow } = useStudioValidation()
@@ -120,7 +116,6 @@ export function StationHotspotsTable({ slug, station }: StationHotspotsTableProp
       : formatHotspotCoordsFlat(hs as Hotspot)
     const rowBusy = isPending || removingId === hs.id
     const isEditing = editingId === hs.id
-    const canEdit = isMediaHotspot(hs)
 
     return (
       <Fragment key={hs.id}>
@@ -143,20 +138,18 @@ export function StationHotspotsTable({ slug, station }: StationHotspotsTableProp
                   {isSphere ? '↗ Sphere-App' : 'Kalibrieren'}
                 </Link>
               )}
-              {canEdit && (
-                <button
-                  type="button"
-                  disabled={rowBusy || isEditing}
-                  onClick={() => {
-                    setError(null)
-                    setSuccess(null)
-                    setEditingId(hs.id)
-                  }}
-                  className="font-semibold text-accent disabled:opacity-50"
-                >
-                  {isEditing ? 'Bearbeiten …' : 'Bearbeiten'}
-                </button>
-              )}
+              <button
+                type="button"
+                disabled={rowBusy || isEditing}
+                onClick={() => {
+                  setError(null)
+                  setSuccess(null)
+                  setEditingId(hs.id)
+                }}
+                className="font-semibold text-accent disabled:opacity-50"
+              >
+                {isEditing ? 'Bearbeiten …' : 'Bearbeiten'}
+              </button>
               <button
                 type="button"
                 disabled={rowBusy || isEditing}

@@ -15,6 +15,11 @@ const CLIENT_ERROR_CODES = new Set([
   'DUPLICATE_ID',
   'MEDIUM_NOT_FOUND',
   'NO_MEDIAS',
+  'NO_DIALOG',
+  'MASCOT_NOT_IN_FIGUREN',
+  'INVALID_MASCOT_SIZE',
+  'INVALID_BUBBLE_PITCH',
+  'FORBIDDEN_FIELD',
   'INVALID_ID',
   'INVALID_COORDS',
   'INVALID_ICON',
@@ -68,6 +73,22 @@ export function parsePatch(body: unknown): PatchStationHotspotInput | null {
     if (!isNullableNumber(raw.iconSize)) return null
     patch.iconSize = raw.iconSize
   }
+  if (Object.hasOwn(raw, 'mascot')) {
+    if (typeof raw.mascot !== 'string' || !raw.mascot.trim()) return null
+    patch.mascot = raw.mascot as PatchStationHotspotInput['mascot']
+  }
+  if (Object.hasOwn(raw, 'mascotSize')) {
+    if (!isNullableNumber(raw.mascotSize)) return null
+    patch.mascotSize = raw.mascotSize
+  }
+  if (Object.hasOwn(raw, 'mascotFlipX')) {
+    if (raw.mascotFlipX !== null && typeof raw.mascotFlipX !== 'boolean') return null
+    patch.mascotFlipX = raw.mascotFlipX
+  }
+  if (Object.hasOwn(raw, 'bubblePitchOffset')) {
+    if (!isNullableNumber(raw.bubblePitchOffset)) return null
+    patch.bubblePitchOffset = raw.bubblePitchOffset
+  }
 
   if (Object.keys(patch).length === 0) {
     return null
@@ -98,13 +119,23 @@ export const PATCH = withMpzStudioAccess(async (req: NextRequest, context) => {
     )
   }
 
+  if (body && typeof body === 'object' && Object.hasOwn(body as object, 'action')) {
+    return NextResponse.json(
+      {
+        error: 'FORBIDDEN_FIELD',
+        message: 'action kann nach Anlegen nicht geändert werden.',
+      },
+      { status: 400 },
+    )
+  }
+
   const patch = parsePatch(body)
   if (!patch) {
     return NextResponse.json(
       {
         error: 'INVALID_BODY',
         message:
-          'Body muss mindestens ein gültiges Feld (label, mediumId, x, y, yaw, pitch, icon, iconSize) enthalten.',
+          'Body muss mindestens ein gültiges Feld (label, mediumId, x, y, yaw, pitch, icon, iconSize, mascot, mascotSize, mascotFlipX, bubblePitchOffset) enthalten.',
       },
       { status: 400 },
     )

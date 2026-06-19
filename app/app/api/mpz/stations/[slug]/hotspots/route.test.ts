@@ -106,4 +106,37 @@ describe('POST /api/mpz/stations/[slug]/hotspots', () => {
     )
     expect(res.status).toBe(404)
   })
+
+  it('ungültiger action-Wert → 400 INVALID_BODY', async () => {
+    vi.stubEnv('NODE_ENV', 'development')
+    vi.stubEnv('SN_MPZ_STUDIO_SECRET', SECRET)
+    const res = await POST(
+      postRequest({ action: 'foo', id: 'hs-x', mascot: 'frieda', x: 0.5, y: 0.5 }, { cookie: SECRET }),
+      routeContext,
+    )
+    expect(res.status).toBe(400)
+    await expect(res.json()).resolves.toMatchObject({ error: 'INVALID_BODY' })
+    expect(addStationHotspot).not.toHaveBeenCalled()
+  })
+
+  it('legt Dialog-Hotspot an', async () => {
+    vi.stubEnv('NODE_ENV', 'development')
+    vi.stubEnv('SN_MPZ_STUDIO_SECRET', SECRET)
+    vi.mocked(addStationHotspot).mockResolvedValue({
+      station: { slug: 'kunst' } as never,
+      mtime: '2026-01-01T00:00:00.000Z',
+    })
+
+    const body = {
+      action: 'dialog',
+      id: 'hs-dialog',
+      mascot: 'frieda',
+      yaw: 0,
+      pitch: 0,
+    }
+    const res = await POST(postRequest(body, { cookie: SECRET }), routeContext)
+
+    expect(res.status).toBe(200)
+    expect(addStationHotspot).toHaveBeenCalledWith('kunst', body)
+  })
 })

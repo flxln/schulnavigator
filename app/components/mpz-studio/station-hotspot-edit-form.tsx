@@ -9,9 +9,11 @@ import {
 import { fetchHotspotIconPaths } from '@/components/mpz-studio/hotspot-icon-upload'
 import {
   MAX_ICON_SIZE_NORM,
+  MAX_MASCOT_SIZE_NORM,
   MIN_ICON_SIZE_NORM,
+  MIN_MASCOT_SIZE_NORM,
 } from '@/lib/raum-viewer/constants'
-import type { Hotspot, Hotspot360, Station } from '@/lib/types'
+import type { DialogFigure, Hotspot, Hotspot360, Station } from '@/lib/types'
 
 export type StationHotspotEditFormProps = {
   slug: string
@@ -31,6 +33,36 @@ function labelClassName(): string {
 }
 
 function hotspotToForm(hotspot: Hotspot | Hotspot360) {
+  const isDialog = hotspot.action === 'dialog'
+
+  if (isDialog) {
+    const sphere = hotspot as Hotspot360
+    const base = {
+      label: hotspot.label ?? '',
+      mascot: hotspot.mascot ?? ('frieda' as DialogFigure),
+      mascotSize: hotspot.mascotSize !== undefined ? String(hotspot.mascotSize) : '',
+      mascotFlipX: hotspot.mascotFlipX ?? false,
+      bubblePitchOffset:
+        'bubblePitchOffset' in sphere && sphere.bubblePitchOffset !== undefined
+          ? String(sphere.bubblePitchOffset)
+          : '',
+    }
+
+    if ('x' in hotspot) {
+      return {
+        ...base,
+        x: String(hotspot.x),
+        y: String(hotspot.y),
+      }
+    }
+
+    return {
+      ...base,
+      yaw: String(sphere.yaw),
+      pitch: String(sphere.pitch),
+    }
+  }
+
   const base = {
     label: hotspot.label ?? '',
     mediumId: hotspot.mediumId ?? '',
@@ -67,6 +99,8 @@ export function StationHotspotEditForm({
   const viewer = station.viewer ?? 'flat'
   const isSphere = viewer === 'equirectangular'
   const medien = station.medien ?? []
+  const dialogFiguren = station.dialog?.figuren ?? []
+  const isDialog = hotspot.action === 'dialog'
 
   const [form, setForm] = useState(() => hotspotToForm(hotspot))
   const [iconPaths, setIconPaths] = useState<string[]>([])
@@ -86,15 +120,17 @@ export function StationHotspotEditForm({
   }, [slug])
 
   useEffect(() => {
-    void reloadIcons()
-  }, [reloadIcons])
+    if (!isDialog) {
+      void reloadIcons()
+    }
+  }, [reloadIcons, isDialog])
 
   useEffect(() => {
-    if (uploadedIconPath) {
+    if (uploadedIconPath && !isDialog) {
       setForm((prev) => ({ ...prev, icon: uploadedIconPath }))
       void reloadIcons()
     }
-  }, [uploadedIconPath, reloadIcons])
+  }, [uploadedIconPath, reloadIcons, isDialog])
 
   useEffect(() => {
     setForm(hotspotToForm(hotspot))
@@ -111,16 +147,31 @@ export function StationHotspotEditForm({
 
     const body: Record<string, unknown> = {
       label: form.label.trim(),
-      mediumId: form.mediumId,
     }
 
-    const iconSizeRaw = form.iconSize.trim()
-    body.iconSize = iconSizeRaw ? Number(iconSizeRaw) : null
+    if (isDialog) {
+      body.mascot = 'mascot' in form ? form.mascot : 'frieda'
 
-    if (form.icon) {
-      body.icon = form.icon
+      const mascotSizeRaw = 'mascotSize' in form ? form.mascotSize.trim() : ''
+      body.mascotSize = mascotSizeRaw ? Number(mascotSizeRaw) : null
+
+      body.mascotFlipX = 'mascotFlipX' in form && form.mascotFlipX ? true : null
+
+      if (isSphere && 'bubblePitchOffset' in form) {
+        const bubbleRaw = form.bubblePitchOffset.trim()
+        body.bubblePitchOffset = bubbleRaw ? Number(bubbleRaw) : null
+      }
     } else {
-      body.icon = ''
+      body.mediumId = 'mediumId' in form ? form.mediumId : ''
+
+      const iconSizeRaw = 'iconSize' in form ? form.iconSize.trim() : ''
+      body.iconSize = iconSizeRaw ? Number(iconSizeRaw) : null
+
+      if ('icon' in form && form.icon) {
+        body.icon = form.icon
+      } else {
+        body.icon = ''
+      }
     }
 
     if (isSphere) {
@@ -162,7 +213,9 @@ export function StationHotspotEditForm({
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 border-t border-border-1 bg-bg-1 p-4">
-      <p className="text-xs font-semibold uppercase tracking-wide text-fg-3">Hotspot bearbeiten</p>
+      <p className="text-xs font-semibold uppercase tracking-wide text-fg-3">
+        {isDialog ? 'Dialog-Hotspot bearbeiten' : 'Hotspot bearbeiten'}
+      </p>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
@@ -191,24 +244,141 @@ export function StationHotspotEditForm({
           />
         </div>
 
-        <div className="sm:col-span-2">
-          <label htmlFor={`edit-hs-medium-${hotspot.id}`} className={labelClassName()}>
-            Medium
-          </label>
-          <select
-            id={`edit-hs-medium-${hotspot.id}`}
-            required
-            value={form.mediumId}
-            onChange={(e) => updateField('mediumId', e.target.value)}
-            className={fieldClassName()}
-          >
-            {medien.map((m) => (
-              <option key={m.id} value={m.id}>
-                {m.id} ({m.typ})
-              </option>
-            ))}
-          </select>
-        </div>
+        {isDialog ? (
+          <>
+            <div className="sm:col-span-2">
+              <label htmlFor={`edit-hs-mascot-${hotspot.id}`} className={labelClassName()}>
+                Maskottchen
+              </label>
+              <select
+                id={`edit-hs-mascot-${hotspot.id}`}
+                required
+                value={'mascot' in form ? form.mascot : 'frieda'}
+                onChange={(e) => updateField('mascot' as keyof typeof form, e.target.value)}
+                className={fieldClassName()}
+              >
+                {dialogFiguren.map((figur) => (
+                  <option key={figur} value={figur}>
+                    {figur}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor={`edit-hs-mascot-size-${hotspot.id}`} className={labelClassName()}>
+                mascotSize (optional)
+              </label>
+              <input
+                id={`edit-hs-mascot-size-${hotspot.id}`}
+                type="number"
+                step="0.01"
+                min={MIN_MASCOT_SIZE_NORM}
+                max={MAX_MASCOT_SIZE_NORM}
+                placeholder="leer = Viewer-Default"
+                value={'mascotSize' in form ? form.mascotSize : ''}
+                onChange={(e) => updateField('mascotSize' as keyof typeof form, e.target.value)}
+                className={fieldClassName()}
+              />
+            </div>
+
+            <div className="flex items-end">
+              <label className="flex items-center gap-2 text-sm text-fg-2">
+                <input
+                  type="checkbox"
+                  checked={'mascotFlipX' in form ? form.mascotFlipX : false}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, mascotFlipX: e.target.checked }))
+                  }
+                />
+                mascotFlipX (horizontal spiegeln)
+              </label>
+            </div>
+
+            {isSphere && (
+              <div>
+                <label htmlFor={`edit-hs-bubble-${hotspot.id}`} className={labelClassName()}>
+                  bubblePitchOffset (optional, °)
+                </label>
+                <input
+                  id={`edit-hs-bubble-${hotspot.id}`}
+                  type="number"
+                  step="any"
+                  min={-45}
+                  max={45}
+                  placeholder="leer = Viewer-Default"
+                  value={'bubblePitchOffset' in form ? form.bubblePitchOffset : ''}
+                  onChange={(e) =>
+                    updateField('bubblePitchOffset' as keyof typeof form, e.target.value)
+                  }
+                  className={fieldClassName()}
+                />
+              </div>
+            )}
+          </>
+        ) : (
+          <>
+            <div className="sm:col-span-2">
+              <label htmlFor={`edit-hs-medium-${hotspot.id}`} className={labelClassName()}>
+                Medium
+              </label>
+              <select
+                id={`edit-hs-medium-${hotspot.id}`}
+                required
+                value={'mediumId' in form ? form.mediumId : ''}
+                onChange={(e) => updateField('mediumId' as keyof typeof form, e.target.value)}
+                className={fieldClassName()}
+              >
+                {medien.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.id} ({m.typ})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor={`edit-hs-icon-${hotspot.id}`} className={labelClassName()}>
+                Icon (optional)
+              </label>
+              <select
+                id={`edit-hs-icon-${hotspot.id}`}
+                value={'icon' in form ? form.icon : ''}
+                onChange={(e) => updateField('icon' as keyof typeof form, e.target.value)}
+                className={fieldClassName()}
+              >
+                <option value="">(keins — Viewer-Fallback)</option>
+                {iconPaths.map((path) => (
+                  <option key={path} value={path}>
+                    {path}
+                  </option>
+                ))}
+              </select>
+              {iconLoadError && (
+                <p role="alert" className="mt-1 text-xs text-brand-red">
+                  {iconLoadError}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label htmlFor={`edit-hs-icon-size-${hotspot.id}`} className={labelClassName()}>
+                iconSize (optional)
+              </label>
+              <input
+                id={`edit-hs-icon-size-${hotspot.id}`}
+                type="number"
+                step="0.01"
+                min={MIN_ICON_SIZE_NORM}
+                max={MAX_ICON_SIZE_NORM}
+                placeholder="leer = Viewer-Default"
+                value={'iconSize' in form ? form.iconSize : ''}
+                onChange={(e) => updateField('iconSize' as keyof typeof form, e.target.value)}
+                className={fieldClassName()}
+              />
+            </div>
+          </>
+        )}
 
         {isSphere ? (
           <>
@@ -284,47 +454,6 @@ export function StationHotspotEditForm({
             </div>
           </>
         )}
-
-        <div>
-          <label htmlFor={`edit-hs-icon-${hotspot.id}`} className={labelClassName()}>
-            Icon (optional)
-          </label>
-          <select
-            id={`edit-hs-icon-${hotspot.id}`}
-            value={form.icon}
-            onChange={(e) => updateField('icon', e.target.value)}
-            className={fieldClassName()}
-          >
-            <option value="">(keins — Viewer-Fallback)</option>
-            {iconPaths.map((path) => (
-              <option key={path} value={path}>
-                {path}
-              </option>
-            ))}
-          </select>
-          {iconLoadError && (
-            <p role="alert" className="mt-1 text-xs text-brand-red">
-              {iconLoadError}
-            </p>
-          )}
-        </div>
-
-        <div>
-          <label htmlFor={`edit-hs-icon-size-${hotspot.id}`} className={labelClassName()}>
-            iconSize (optional)
-          </label>
-          <input
-            id={`edit-hs-icon-size-${hotspot.id}`}
-            type="number"
-            step="0.01"
-            min={MIN_ICON_SIZE_NORM}
-            max={MAX_ICON_SIZE_NORM}
-            placeholder="leer = Viewer-Default"
-            value={form.iconSize}
-            onChange={(e) => updateField('iconSize', e.target.value)}
-            className={fieldClassName()}
-          />
-        </div>
       </div>
 
       <div className="flex flex-wrap items-center gap-3">

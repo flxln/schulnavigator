@@ -108,7 +108,8 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issue **#173** (Raumbild-Upload Flat + 360°) — umgesetzt 2026-06-18, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-173-2026-06-18.md](../reviews/post-mortem-173-2026-06-18.md)
 - [x] Issue **#174** (Deploy-Tab: Env, QR, Token, validate-all) — umgesetzt 2026-06-18, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-174-2026-06-18.md](../reviews/post-mortem-174-2026-06-18.md)
 - [x] Issue **#175** (Dialog-Tab: Segmente, Gruppen, bubble) — umgesetzt 2026-06-18, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-175-2026-06-18.md](../reviews/post-mortem-175-2026-06-18.md)
-- [ ] **#176** Dialog-Hotspots — nächstes v2-Feature (empfohlen)
+- [x] Issue **#176** (Dialog-Hotspot anlegen/bearbeiten) — umgesetzt 2026-06-19, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-176-2026-06-19.md](../reviews/post-mortem-176-2026-06-19.md)
+- [ ] **#177** Coach-Editor — nächstes v2-Feature (empfohlen)
 - [ ] **#154** Flat-Startpan (ADR-024) — [issues-startblick.md](issues-startblick.md) (unabhängig vom v1-Merge)
 
-Letzter dokumentierter Abgleich: **2026-06-18** (#175 Dialog-Tab; nächstes v2-Issue #176).
+Letzter dokumentierter Abgleich: **2026-06-19** (#176 Dialog-Hotspots; nächstes v2-Issue #177).
