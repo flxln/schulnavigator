@@ -7,14 +7,23 @@ import { resolveIconPublicPath } from '@/lib/mpz-hotspot-icon-ingest'
 import { roundNorm } from '@/lib/mpz-hotspot-calib'
 import {
   MAX_ICON_SIZE_NORM,
+  MAX_MASCOT_SIZE_NORM,
   MIN_ICON_SIZE_NORM,
+  MIN_MASCOT_SIZE_NORM,
 } from '@/lib/raum-viewer/constants'
 import {
   normalizeYawDeg,
   roundDeg,
 } from '@/lib/raum-viewer/sphere-marker-conventions'
-import { HUB_SLUG_MAP } from '@/lib/schoolhouse-hub-map'
-import type { Hotspot, Hotspot360, Station, StationsFile, ViewerMode } from '@/lib/types'
+import { isHubSlug } from '@/lib/schoolhouse-hub-map'
+import type {
+  DialogFigure,
+  Hotspot,
+  Hotspot360,
+  Station,
+  StationsFile,
+  ViewerMode,
+} from '@/lib/types'
 
 export type StationHotspotErrorCode =
   | 'NOT_FOUND'
@@ -22,6 +31,11 @@ export type StationHotspotErrorCode =
   | 'DUPLICATE_ID'
   | 'MEDIUM_NOT_FOUND'
   | 'NO_MEDIAS'
+  | 'NO_DIALOG'
+  | 'MASCOT_NOT_IN_FIGUREN'
+  | 'INVALID_MASCOT_SIZE'
+  | 'INVALID_BUBBLE_PITCH'
+  | 'FORBIDDEN_FIELD'
   | 'INVALID_ID'
   | 'INVALID_COORDS'
   | 'INVALID_ICON'
@@ -35,7 +49,8 @@ export type HotspotRemoveErrorCode = StationHotspotErrorCode
 
 const HOTSPOT_ID_RE = /^[a-z0-9][a-z0-9-]*$/
 
-export type AddStationHotspotInput = {
+export type AddStationMediumHotspotInput = {
+  action?: 'medium'
   id: string
   label?: string
   mediumId: string
@@ -47,6 +62,24 @@ export type AddStationHotspotInput = {
   iconSize?: number
 }
 
+export type AddStationDialogHotspotInput = {
+  action: 'dialog'
+  id: string
+  label?: string
+  mascot: DialogFigure
+  mascotSize?: number
+  mascotFlipX?: boolean
+  bubblePitchOffset?: number
+  x?: number
+  y?: number
+  yaw?: number
+  pitch?: number
+}
+
+export type AddStationHotspotInput =
+  | AddStationMediumHotspotInput
+  | AddStationDialogHotspotInput
+
 export type PatchStationHotspotInput = {
   label?: string
   mediumId?: string
@@ -56,6 +89,10 @@ export type PatchStationHotspotInput = {
   pitch?: number
   icon?: string | null
   iconSize?: number | null
+  mascot?: DialogFigure
+  mascotSize?: number | null
+  mascotFlipX?: boolean | null
+  bubblePitchOffset?: number | null
 }
 
 export class MpzStationHotspotsError extends Error {
@@ -69,7 +106,7 @@ export class MpzStationHotspotsError extends Error {
 }
 
 function findHubStation(data: StationsFile, slug: string): Station {
-  if (!(slug in HUB_SLUG_MAP)) {
+  if (!isHubSlug(slug)) {
     throw new MpzStationHotspotsError('NOT_FOUND', `Unbekannter Hub-Slug "${slug}".`)
   }
   const station = data.stations.find((s) => s.slug === slug)
@@ -137,6 +174,149 @@ function validateIconPath(
   return icon
 }
 
+function isDialogAddInput(input: AddStationHotspotInput): input is AddStationDialogHotspotInput {
+  return input.action === 'dialog'
+}
+
+function isDialogFigure(value: string): value is DialogFigure {
+  return value === 'frieda' || value === 'otto'
+}
+
+function assertDialogExists(station: Station, slug: string): void {
+  if (!station.dialog) {
+    throw new MpzStationHotspotsError(
+      'NO_DIALOG',
+      `Station "${slug}" hat keinen Dialog-Block — zuerst im Dialog-Tab Figuren anlegen.`,
+    )
+  }
+}
+
+function assertMascotInFiguren(station: Station, mascot: string, slug: string): void {
+  if (!isDialogFigure(mascot)) {
+    throw new MpzStationHotspotsError(
+      'MASCOT_NOT_IN_FIGUREN',
+      `Maskottchen "${mascot}" ist ungültig (erwartet: frieda oder otto).`,
+    )
+  }
+  assertDialogExists(station, slug)
+  if (!station.dialog!.figuren.includes(mascot)) {
+    throw new MpzStationHotspotsError(
+      'MASCOT_NOT_IN_FIGUREN',
+      `Maskottchen "${mascot}" fehlt in dialog.figuren der Station "${slug}".`,
+    )
+  }
+}
+
+function assertNoMediumFieldsOnDialogInput(input: AddStationDialogHotspotInput): void {
+  const record = input as Record<string, unknown>
+  if (record.mediumId !== undefined) {
+    throw new MpzStationHotspotsError(
+      'FORBIDDEN_FIELD',
+      'Dialog-Hotspot darf kein mediumId haben.',
+    )
+  }
+  if (record.icon !== undefined) {
+    throw new MpzStationHotspotsError(
+      'FORBIDDEN_FIELD',
+      'Dialog-Hotspot darf kein icon haben.',
+    )
+  }
+  if (record.iconSize !== undefined) {
+    throw new MpzStationHotspotsError(
+      'FORBIDDEN_FIELD',
+      'Dialog-Hotspot darf kein iconSize haben.',
+    )
+  }
+}
+
+function assertPatchForbiddenForDialog(patch: PatchStationHotspotInput): void {
+  if ('mediumId' in patch) {
+    throw new MpzStationHotspotsError(
+      'FORBIDDEN_FIELD',
+      'Dialog-Hotspot darf kein mediumId haben.',
+    )
+  }
+  if ('icon' in patch) {
+    throw new MpzStationHotspotsError(
+      'FORBIDDEN_FIELD',
+      'Dialog-Hotspot darf kein icon haben.',
+    )
+  }
+  if ('iconSize' in patch) {
+    throw new MpzStationHotspotsError(
+      'FORBIDDEN_FIELD',
+      'Dialog-Hotspot darf kein iconSize haben.',
+    )
+  }
+}
+
+function assertPatchForbiddenForMedium(patch: PatchStationHotspotInput): void {
+  if ('mascot' in patch) {
+    throw new MpzStationHotspotsError(
+      'FORBIDDEN_FIELD',
+      'Medien-Hotspot darf kein mascot haben.',
+    )
+  }
+  if ('mascotSize' in patch) {
+    throw new MpzStationHotspotsError(
+      'FORBIDDEN_FIELD',
+      'Medien-Hotspot darf kein mascotSize haben.',
+    )
+  }
+  if ('mascotFlipX' in patch) {
+    throw new MpzStationHotspotsError(
+      'FORBIDDEN_FIELD',
+      'Medien-Hotspot darf kein mascotFlipX haben.',
+    )
+  }
+  if ('bubblePitchOffset' in patch) {
+    throw new MpzStationHotspotsError(
+      'FORBIDDEN_FIELD',
+      'Medien-Hotspot darf kein bubblePitchOffset haben.',
+    )
+  }
+}
+
+function validateMascotSize(mascotSize: number | undefined): number | undefined {
+  if (mascotSize === undefined) {
+    return undefined
+  }
+  if (!Number.isFinite(mascotSize)) {
+    throw new MpzStationHotspotsError(
+      'INVALID_MASCOT_SIZE',
+      'mascotSize muss eine Zahl sein.',
+    )
+  }
+  if (mascotSize < MIN_MASCOT_SIZE_NORM || mascotSize > MAX_MASCOT_SIZE_NORM) {
+    throw new MpzStationHotspotsError(
+      'INVALID_MASCOT_SIZE',
+      `mascotSize muss ${MIN_MASCOT_SIZE_NORM}–${MAX_MASCOT_SIZE_NORM} sein.`,
+    )
+  }
+  return mascotSize
+}
+
+function validateBubblePitchOffset(
+  bubblePitchOffset: number | undefined,
+): number | undefined {
+  if (bubblePitchOffset === undefined) {
+    return undefined
+  }
+  if (!Number.isFinite(bubblePitchOffset)) {
+    throw new MpzStationHotspotsError(
+      'INVALID_BUBBLE_PITCH',
+      'bubblePitchOffset muss eine Zahl sein.',
+    )
+  }
+  if (bubblePitchOffset < -45 || bubblePitchOffset > 45) {
+    throw new MpzStationHotspotsError(
+      'INVALID_BUBBLE_PITCH',
+      'bubblePitchOffset muss −45 bis 45 sein.',
+    )
+  }
+  return roundDeg(bubblePitchOffset)
+}
+
 function assertFlatCoordsOnly(input: { yaw?: number; pitch?: number }): void {
   if (input.yaw !== undefined || input.pitch !== undefined) {
     throw new MpzStationHotspotsError(
@@ -155,11 +335,43 @@ function assertSphereCoordsOnly(input: { x?: number; y?: number }): void {
   }
 }
 
+function buildMergedDialogHotspotInput(
+  existing: Hotspot | Hotspot360,
+  patch: PatchStationHotspotInput,
+): AddStationDialogHotspotInput {
+  const merged: AddStationDialogHotspotInput = {
+    action: 'dialog',
+    id: existing.id,
+    mascot: 'mascot' in patch ? patch.mascot! : existing.mascot!,
+    label: 'label' in patch ? patch.label : existing.label,
+    mascotSize:
+      'mascotSize' in patch ? (patch.mascotSize ?? undefined) : existing.mascotSize,
+    mascotFlipX:
+      'mascotFlipX' in patch ? (patch.mascotFlipX ?? undefined) : existing.mascotFlipX,
+  }
+
+  if ('x' in existing) {
+    const flat = existing as Hotspot
+    merged.x = 'x' in patch ? patch.x : flat.x
+    merged.y = 'y' in patch ? patch.y : flat.y
+  } else {
+    const sphere = existing as Hotspot360
+    merged.yaw = 'yaw' in patch ? patch.yaw : sphere.yaw
+    merged.pitch = 'pitch' in patch ? patch.pitch : sphere.pitch
+    merged.bubblePitchOffset =
+      'bubblePitchOffset' in patch
+        ? (patch.bubblePitchOffset ?? undefined)
+        : sphere.bubblePitchOffset
+  }
+
+  return merged
+}
+
 function buildMergedHotspotInput(
   existing: Hotspot | Hotspot360,
   patch: PatchStationHotspotInput,
-): AddStationHotspotInput {
-  const merged: AddStationHotspotInput = {
+): AddStationMediumHotspotInput {
+  const merged: AddStationMediumHotspotInput = {
     id: existing.id,
     mediumId: 'mediumId' in patch ? patch.mediumId! : existing.mediumId!,
     label: 'label' in patch ? patch.label : existing.label,
@@ -181,7 +393,7 @@ function buildMergedHotspotInput(
 }
 
 function buildFlatHotspot(
-  input: AddStationHotspotInput,
+  input: AddStationMediumHotspotInput,
   slug: string,
   io: MpzContentIo,
 ): Hotspot {
@@ -221,7 +433,7 @@ function buildFlatHotspot(
 }
 
 function buildSphereHotspot(
-  input: AddStationHotspotInput,
+  input: AddStationMediumHotspotInput,
   slug: string,
   io: MpzContentIo,
 ): Hotspot360 {
@@ -266,11 +478,99 @@ function buildSphereHotspot(
   }
 }
 
+function buildFlatDialogHotspot(input: AddStationDialogHotspotInput): Hotspot {
+  assertFlatCoordsOnly(input)
+  if (input.bubblePitchOffset !== undefined) {
+    throw new MpzStationHotspotsError(
+      'FORBIDDEN_FIELD',
+      'Flat-Dialog-Hotspot darf kein bubblePitchOffset haben.',
+    )
+  }
+  if (
+    input.x === undefined ||
+    input.y === undefined ||
+    !Number.isFinite(input.x) ||
+    !Number.isFinite(input.y)
+  ) {
+    throw new MpzStationHotspotsError(
+      'INVALID_COORDS',
+      'Flat-Hotspot benötigt x und y als Zahlen.',
+    )
+  }
+  if (input.x < 0 || input.x > 1 || input.y < 0 || input.y > 1) {
+    throw new MpzStationHotspotsError(
+      'INVALID_COORDS',
+      'x und y müssen zwischen 0 und 1 liegen.',
+    )
+  }
+
+  const mascotSize = validateMascotSize(input.mascotSize)
+  const label = input.label?.trim()
+
+  return {
+    id: input.id,
+    action: 'dialog',
+    mascot: input.mascot,
+    ...(label ? { label } : {}),
+    x: roundNorm(input.x),
+    y: roundNorm(input.y),
+    ...(mascotSize !== undefined ? { mascotSize } : {}),
+    ...(input.mascotFlipX !== undefined ? { mascotFlipX: input.mascotFlipX } : {}),
+  }
+}
+
+function buildSphereDialogHotspot(input: AddStationDialogHotspotInput): Hotspot360 {
+  assertSphereCoordsOnly(input)
+  if (
+    input.yaw === undefined ||
+    input.pitch === undefined ||
+    !Number.isFinite(input.yaw) ||
+    !Number.isFinite(input.pitch)
+  ) {
+    throw new MpzStationHotspotsError(
+      'INVALID_COORDS',
+      'Sphere-Hotspot benötigt yaw und pitch als Zahlen.',
+    )
+  }
+  if (input.yaw < -180 || input.yaw > 180) {
+    throw new MpzStationHotspotsError(
+      'INVALID_COORDS',
+      'yaw muss zwischen −180 und 180 liegen.',
+    )
+  }
+  if (input.pitch < -90 || input.pitch > 90) {
+    throw new MpzStationHotspotsError(
+      'INVALID_COORDS',
+      'pitch muss zwischen −90 und 90 liegen.',
+    )
+  }
+
+  const mascotSize = validateMascotSize(input.mascotSize)
+  const bubblePitchOffset = validateBubblePitchOffset(input.bubblePitchOffset)
+  const label = input.label?.trim()
+
+  return {
+    id: input.id,
+    action: 'dialog',
+    mascot: input.mascot,
+    ...(label ? { label } : {}),
+    yaw: normalizeYawDeg(input.yaw),
+    pitch: clampPitch(input.pitch),
+    ...(mascotSize !== undefined ? { mascotSize } : {}),
+    ...(input.mascotFlipX !== undefined ? { mascotFlipX: input.mascotFlipX } : {}),
+    ...(bubblePitchOffset !== undefined ? { bubblePitchOffset } : {}),
+  }
+}
+
 const REBUILT_HOTSPOT_KEYS = [
   'label',
   'mediumId',
   'icon',
   'iconSize',
+  'mascot',
+  'mascotSize',
+  'mascotFlipX',
+  'bubblePitchOffset',
   'x',
   'y',
   'yaw',
@@ -307,12 +607,15 @@ export async function addStationHotspot(
     const data = await io.readStations()
     const station = findHubStation(data, slug)
     const viewer = resolveViewer(station)
+    const isDialog = isDialogAddInput(input)
 
-    if (!station.medien?.length) {
-      throw new MpzStationHotspotsError(
-        'NO_MEDIAS',
-        `Station "${slug}" hat keine Medien — zuerst Medium ingestieren.`,
-      )
+    if (!isDialog) {
+      if (!station.medien?.length) {
+        throw new MpzStationHotspotsError(
+          'NO_MEDIAS',
+          `Station "${slug}" hat keine Medien — zuerst Medium ingestieren.`,
+        )
+      }
     }
 
     validateHotspotId(input.id)
@@ -328,21 +631,30 @@ export async function addStationHotspot(
       )
     }
 
-    if (!station.medien.some((m) => m.id === input.mediumId)) {
-      throw new MpzStationHotspotsError(
-        'MEDIUM_NOT_FOUND',
-        `Medium "${input.mediumId}" nicht in Station "${slug}" gefunden.`,
-      )
+    if (!isDialog) {
+      if (!station.medien!.some((m) => m.id === input.mediumId)) {
+        throw new MpzStationHotspotsError(
+          'MEDIUM_NOT_FOUND',
+          `Medium "${input.mediumId}" nicht in Station "${slug}" gefunden.`,
+        )
+      }
+    } else {
+      assertNoMediumFieldsOnDialogInput(input)
+      assertMascotInFiguren(station, input.mascot, slug)
     }
 
     let nextStation: Station
 
     if (viewer === 'equirectangular') {
-      const hotspot = buildSphereHotspot(input, slug, io)
+      const hotspot = isDialog
+        ? buildSphereDialogHotspot(input)
+        : buildSphereHotspot(input, slug, io)
       const hotspots360 = [...(station.hotspots360 ?? []), hotspot]
       nextStation = { ...station, hotspots360 }
     } else {
-      const hotspot = buildFlatHotspot(input, slug, io)
+      const hotspot = isDialog
+        ? buildFlatDialogHotspot(input)
+        : buildFlatHotspot(input, slug, io)
       const hotspots = [...(station.hotspots ?? []), hotspot]
       nextStation = { ...station, hotspots }
     }
@@ -453,12 +765,7 @@ export async function patchStationHotspot(
       )
     }
 
-    if (existing.action === 'dialog') {
-      throw new MpzStationHotspotsError(
-        'NOT_EDITABLE',
-        'Dialog-Hotspot kann nicht bearbeitet werden.',
-      )
-    }
+    const isDialog = existing.action === 'dialog'
 
     if (viewer === 'equirectangular') {
       assertSphereCoordsOnly(patch)
@@ -466,23 +773,35 @@ export async function patchStationHotspot(
       assertFlatCoordsOnly(patch)
     }
 
-    if ('mediumId' in patch) {
-      if (!station.medien?.some((m) => m.id === patch.mediumId)) {
-        throw new MpzStationHotspotsError(
-          'MEDIUM_NOT_FOUND',
-          `Medium "${patch.mediumId}" nicht in Station "${slug}" gefunden.`,
-        )
-      }
-    }
-
-    // Merge-Objekt MUSS vor Range-Validierung gebaut werden — buildFlatHotspot wirft bei x===undefined.
-    const merged = buildMergedHotspotInput(existing, patch)
-
     let built: Hotspot | Hotspot360
-    if (viewer === 'equirectangular') {
-      built = buildSphereHotspot(merged, slug, io)
+
+    if (isDialog) {
+      assertPatchForbiddenForDialog(patch)
+      if ('mascot' in patch) {
+        assertMascotInFiguren(station, patch.mascot!, slug)
+      }
+      const merged = buildMergedDialogHotspotInput(existing, patch)
+      built =
+        viewer === 'equirectangular'
+          ? buildSphereDialogHotspot(merged)
+          : buildFlatDialogHotspot(merged)
     } else {
-      built = buildFlatHotspot(merged, slug, io)
+      assertPatchForbiddenForMedium(patch)
+
+      if ('mediumId' in patch) {
+        if (!station.medien?.some((m) => m.id === patch.mediumId)) {
+          throw new MpzStationHotspotsError(
+            'MEDIUM_NOT_FOUND',
+            `Medium "${patch.mediumId}" nicht in Station "${slug}" gefunden.`,
+          )
+        }
+      }
+
+      const merged = buildMergedHotspotInput(existing, patch)
+      built =
+        viewer === 'equirectangular'
+          ? buildSphereHotspot(merged, slug, io)
+          : buildFlatHotspot(merged, slug, io)
     }
 
     const nextHotspot = mergeBuiltHotspot(existing, built)

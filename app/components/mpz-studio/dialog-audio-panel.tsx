@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useCallback, useEffect, useState } from 'react'
+import { DialogAudioStateBadge } from '@/components/mpz-studio/dialog-audio-status-badges'
 import type { DialogSegmentAudit } from '@/lib/mpz-dialog-audio-ingest'
 import type { MpzValidationReport } from '@/lib/mpz-studio-overview'
 import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
@@ -14,20 +15,6 @@ interface StatusResponse {
   orphans: string[]
   missingCount: number
   driftCount: number
-}
-
-const STATE_LABEL: Record<DialogSegmentAudit['state'], string> = {
-  ok: 'ok',
-  leer: 'leer',
-  drift: 'Drift',
-  fehlt: 'fehlt',
-}
-
-const STATE_CLASS: Record<DialogSegmentAudit['state'], string> = {
-  ok: 'bg-brand-green/15 text-fg-1',
-  leer: 'bg-bg-3 text-fg-2',
-  drift: 'bg-brand-sun/20 text-fg-1',
-  fehlt: 'bg-brand-red/15 text-fg-1',
 }
 
 export type DialogAudioPanelProps = {
@@ -198,11 +185,7 @@ export function DialogAudioPanel({ slug: slugProp }: DialogAudioPanelProps) {
                     </td>
                     <td className="py-2 pr-2 font-mono text-xs text-fg-2">{seg.expectedClip}</td>
                     <td className="py-2 pr-2">
-                      <span
-                        className={`inline-block rounded-full px-2 py-0.5 text-xs font-semibold ${STATE_CLASS[seg.state]}`}
-                      >
-                        {STATE_LABEL[seg.state]}
-                      </span>
+                      <DialogAudioStateBadge state={seg.state} />
                     </td>
                     <td className="py-2 text-right">
                       <button

@@ -1,0 +1,16 @@
+{
+  "mappings": {
+    "klassenzimmer": { "slotId": "portal", "nr": 1 },
+    "musik": { "slotId": "fenster-ul-1", "nr": 2 },
+    "daz": { "slotId": "fenster-uc-l", "nr": 3 },
+    "kunst": { "slotId": "fenster-uc-r", "nr": 4 },
+    "pc-raum": { "slotId": "fenster-ur-1", "nr": 5 },
+    "lesewelt": { "slotId": "fenster-ur-2", "nr": 6 },
+    "werken": { "slotId": "fenster-ll", "nr": 7 },
+    "speiseraum": { "slotId": "fenster-lc", "nr": 8 },
+    "hort": { "slotId": "fenster-rc", "nr": 9 },
+    "turnhalle": { "slotId": "wegweiser-oben", "nr": 10 },
+    "schulsozialarbeit": { "slotId": "fenster-ul-2", "nr": 11 },
+    "schulhof": { "slotId": "wegweiser-unten", "nr": 12 }
+  }
+}

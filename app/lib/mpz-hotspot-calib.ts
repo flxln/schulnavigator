@@ -3,14 +3,12 @@ import {
   type MpzContentIo,
   withMpzWriteLock,
 } from '@/lib/mpz-content-io'
-import { HUB_SLUG_MAP } from '@/lib/schoolhouse-hub-map'
+import { isHubSlug } from '@/lib/schoolhouse-hub-map'
 import {
   normalizeYawDeg,
   roundDeg,
 } from '@/lib/raum-viewer/sphere-marker-conventions'
 import type { Station, StationsFile, ViewerMode } from '@/lib/types'
-
-const HUB_SLUGS = new Set(Object.keys(HUB_SLUG_MAP))
 
 export type MpzHotspotCalibErrorCode = 'VALIDATION' | 'IO'
 
@@ -49,7 +47,7 @@ export async function applyFlatHotspotCoords(
   io: MpzContentIo = createMpzContentIo(),
 ): Promise<{ hotspotId: string; x: number; y: number }> {
   return withMpzWriteLock(async () => {
-    if (!HUB_SLUGS.has(input.slug)) {
+    if (!isHubSlug(input.slug)) {
       throw new MpzHotspotCalibError('VALIDATION', `Unbekannter slug "${input.slug}".`)
     }
     if (!Number.isFinite(input.x) || !Number.isFinite(input.y)) {
@@ -111,7 +109,7 @@ export async function applySphereHotspotCoords(
   io: MpzContentIo = createMpzContentIo(),
 ): Promise<{ hotspotId: string; yaw: number; pitch: number }> {
   return withMpzWriteLock(async () => {
-    if (!HUB_SLUGS.has(input.slug)) {
+    if (!isHubSlug(input.slug)) {
       throw new MpzHotspotCalibError('VALIDATION', `Unbekannter slug "${input.slug}".`)
     }
     if (

@@ -21,7 +21,7 @@ export const POST = withMpzStudioAccess(async (req: NextRequest) => {
     body = (await req.json()) as FlatBody
   } catch {
     return NextResponse.json(
-      { error: 'invalid_json', message: 'Kein gültiges JSON.' },
+      { error: 'INVALID_JSON', message: 'Kein gültiges JSON.' },
       { status: 400 },
     )
   }
@@ -37,7 +37,7 @@ export const POST = withMpzStudioAccess(async (req: NextRequest) => {
   ) {
     return NextResponse.json(
       {
-        error: 'missing_fields',
+        error: 'MISSING_FIELDS',
         message: 'Felder slug, hotspotId, x und y sind erforderlich.',
       },
       { status: 400 },
@@ -57,7 +57,7 @@ export const POST = withMpzStudioAccess(async (req: NextRequest) => {
       return NextResponse.json({ error: err.code, message: err.message }, { status })
     }
     return NextResponse.json(
-      { error: 'internal', message: 'Unerwarteter Fehler beim Hotspot-Update.' },
+      { error: 'INTERNAL_ERROR', message: 'Unerwarteter Fehler beim Hotspot-Update.' },
       { status: 500 },
     )
   }

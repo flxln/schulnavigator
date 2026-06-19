@@ -8,7 +8,7 @@ import {
   resetMpzWriteLockForTests,
 } from '@/lib/mpz-content-io'
 import { runMpzStudioValidation, type MpzValidationReport } from '@/lib/mpz-studio-overview'
-import { HUB_SLUG_MAP } from '@/lib/schoolhouse-hub-map'
+import { getHubSlugOrder, isHubSlug } from '@/lib/schoolhouse-hub-map'
 import type { Medium } from '@/lib/types'
 import {
   HEADER_SLICE_BYTES,
@@ -60,8 +60,6 @@ export interface IngestMediumResult {
   validation?: MpzValidationReport
 }
 
-const HUB_SLUGS = new Set(Object.keys(HUB_SLUG_MAP))
-
 export async function readHeaderSlice(source: IngestSource): Promise<{
   headerSlice: Buffer
   byteLength: number
@@ -104,7 +102,7 @@ function uniqueDiskPath(destDir: string, filename: string): string {
   return join(destDir, candidate)
 }
 
-function uniqueMediumId(existing: Set<string>, base: string): string {
+export function uniqueMediumId(existing: Set<string>, base: string): string {
   if (!existing.has(base)) return base
   let n = 2
   while (existing.has(`${base}-${n}`)) n += 1
@@ -135,10 +133,10 @@ async function ingestMediumFileInner(
       `Typ "${input.typ}" nicht unterstützt. Erlaubt: ${Object.keys(UPLOAD_RULES).join(', ')}.`,
     )
   }
-  if (!HUB_SLUGS.has(input.slug)) {
+  if (!isHubSlug(input.slug)) {
     throw new MpzUploadError(
       'VALIDATION',
-      `Unbekannter slug "${input.slug}". Erlaubt: ${[...HUB_SLUGS].join(', ')}.`,
+      `Unbekannter slug "${input.slug}". Erlaubt: ${getHubSlugOrder().join(', ')}.`,
     )
   }
 

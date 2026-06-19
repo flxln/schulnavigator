@@ -1,0 +1,46 @@
+---
+description: Einheitliche Fehler-Codes (SCREAMING_SNAKE_CASE) in MPZ-API und Domain-Libs
+globs: app/app/api/**/*.ts, app/lib/**/*.ts
+---
+
+# Namenskonventionen für API- und Domain-Fehlermeldungen
+
+Im Schulnavigator-Projekt müssen alle Fehler-Codes einheitlich benannt sein, damit Frontend und Tests nicht zwischen zwei Dialekten unterscheiden müssen.
+
+## Regel
+
+- **Fehler-Codes ausnahmslos in `SCREAMING_SNAKE_CASE`** (z. B. `NOT_FOUND`, `UNAUTHORIZED`, `INTERNAL_ERROR`, `INVALID_BODY`).
+- **Verboten:** `lowercase_snake_case` als `error`-Feld in JSON-Antworten (z. B. `not_found`, `internal`, `invalid_json`).
+- **Domain-Fehler** (`MpzStationHotspotsError`, `MpzStationMedienError`, …): `err.code` unverändert durchreichen — bereits `SCREAMING_SNAKE_CASE`.
+- **Transport-/Request-Fehler** (JSON parse, fehlende Felder, Guard): ebenfalls `SCREAMING_SNAKE_CASE`.
+
+## Mapping (Legacy → gültig)
+
+| Verboten | Erforderlich |
+| :--- | :--- |
+| `internal` | `INTERNAL_ERROR` |
+| `not_found` | `NOT_FOUND` |
+| `unauthorized` | `UNAUTHORIZED` |
+| `invalid_json` | `INVALID_JSON` |
+| `invalid_body` | `INVALID_BODY` |
+| `missing_fields` | `MISSING_FIELDS` |
+| `missing_file` | `MISSING_FILE` |
+| `missing_slug` | `MISSING_SLUG` |
+| `invalid_form` | `INVALID_FORM` |
+| `invalid_typ` (Upload-Ingest) | `UNSUPPORTED_UPLOAD_TYP` |
+| `invalid_segment` | `INVALID_SEGMENT` |
+| `validation_failed` | `VALIDATION_FAILED` |
+| `save_validate_failed` | `SAVE_VALIDATE_FAILED` |
+| `io` | `IO` |
+
+**Hinweis:** Domain-Code `INVALID_TYP` (Medien link/embed) ist bewusst getrennt von `UNSUPPORTED_UPLOAD_TYP` (Datei-Ingest).
+
+## Code-Beispiel
+
+```typescript
+// ❌ FALSCH:
+return NextResponse.json({ error: 'internal', message: '…' }, { status: 500 })
+
+// ✅ RICHTIG:
+return NextResponse.json({ error: 'INTERNAL_ERROR', message: '…' }, { status: 500 })
+```

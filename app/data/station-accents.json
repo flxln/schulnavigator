@@ -1,0 +1,16 @@
+{
+  "accents": {
+    "klassenzimmer": "#1f6abb",
+    "daz": "#1f6abb",
+    "pc-raum": "#082a50",
+    "werken": "#fbbb24",
+    "turnhalle": "#ef3a37",
+    "speiseraum": "#fbbb24",
+    "kunst": "#fbbb24",
+    "lesewelt": "#4b9a23",
+    "hort": "#ef3a37",
+    "musik": "#ef3a37",
+    "schulsozialarbeit": "#4b9a23",
+    "schulhof": "#4b9a23"
+  }
+}

@@ -6,16 +6,18 @@ import { useStudioValidation } from '@/components/mpz-studio/studio-validation-c
 import { StationStammdatenForm } from '@/components/mpz-studio/station-stammdaten-form'
 import { StationHotspotsTable } from '@/components/mpz-studio/station-hotspots-table'
 import { DialogAudioPanel } from '@/components/mpz-studio/dialog-audio-panel'
+import { StationDialogPanel } from '@/components/mpz-studio/station-dialog-panel'
 import { StationMedienTable } from '@/components/mpz-studio/station-medien-table'
 import type { Station, ViewerMode } from '@/lib/types'
 
-const VALID_TABS = ['stammdaten', 'medien', 'hotspots', 'dialog-audio'] as const
+const VALID_TABS = ['stammdaten', 'medien', 'hotspots', 'dialog', 'dialog-audio'] as const
 type DetailTab = (typeof VALID_TABS)[number]
 
 export type StationDetailShellProps = {
   station: Station | null
   slug: string
   hubNr: number
+  globalSuffixes: readonly string[]
 }
 
 function viewerLabel(viewer: ViewerMode): string {
@@ -39,6 +41,7 @@ export function StationDetailShell({
   station,
   slug,
   hubNr,
+  globalSuffixes,
 }: StationDetailShellProps) {
   const searchParams = useSearchParams()
   const activeTab = resolveTab(searchParams.get('tab'))
@@ -61,6 +64,11 @@ export function StationDetailShell({
       { id: 'stammdaten', label: 'Stammdaten' },
       { id: 'medien', label: 'Medien', badge: medienCount },
       { id: 'hotspots', label: 'Hotspots', badge: hotspotCount || undefined },
+      {
+        id: 'dialog',
+        label: 'Dialog',
+        hidden: !hasDialog,
+      },
       {
         id: 'dialog-audio',
         label: 'Dialog-Audio',
@@ -152,13 +160,19 @@ export function StationDetailShell({
 
       {activeTab === 'medien' && (
         <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5">
-          <StationMedienTable slug={slug} station={station} />
+          <StationMedienTable slug={slug} station={station} globalSuffixes={globalSuffixes} />
         </section>
       )}
 
       {activeTab === 'hotspots' && (
         <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5">
           <StationHotspotsTable slug={slug} station={station} />
+        </section>
+      )}
+
+      {activeTab === 'dialog' && hasDialog && (
+        <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5">
+          <StationDialogPanel slug={slug} station={station} />
         </section>
       )}
 
