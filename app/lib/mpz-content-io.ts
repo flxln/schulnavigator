@@ -12,6 +12,10 @@ import { fileURLToPath } from 'node:url'
 import { HUB_SLUG_MAP } from '@/lib/schoolhouse-hub-map'
 import { validateCoachMessagesContent } from '@/lib/mpz-coach-messages-validation'
 import {
+  validateEmbedAllowlistContent,
+  type EmbedAllowlistFile,
+} from '@/lib/mpz-embed-allowlist-validation'
+import {
   mergeValidationErrors,
   shouldRollbackPostValidate,
   validateStationsContent,
@@ -23,6 +27,7 @@ import { validateStationAssets } from '@/scripts/validate-station-assets'
 
 export const MPZ_STATIONS_REL = 'data/stations.json'
 export const MPZ_COACH_REL = 'content/coach-messages.json'
+export const MPZ_EMBED_ALLOWLIST_REL = 'data/embed-allowlist.json'
 
 export type MpzContentIoErrorCode = 'VALIDATION' | 'IO'
 
@@ -74,12 +79,32 @@ export type CoachWriteResult = {
   mtime: string | null
 }
 
+export interface WriteEmbedAllowlistOptions {
+  /** Default true */
+  makeBackup?: boolean
+  /** Inline-Validator + Cross-Check gegen stations.json vor rename */
+  postValidate?: boolean
+  /** Für Cross-Validate — aktueller Stand von stations.json */
+  stationsFile: StationsFile
+}
+
+export type WriteEmbedAllowlistResult = {
+  mtime: string | null
+}
+
+export type EmbedAllowlistWriteResult = {
+  suffixes: readonly string[]
+  mtime: string | null
+}
+
 export interface MpzContentIoPaths {
   appRoot: string
   stationsPath: string
   backupPath: string
   coachPath: string
   coachBackupPath: string
+  allowlistPath: string
+  allowlistBackupPath: string
 }
 
 export interface MpzContentIo {
@@ -93,6 +118,11 @@ export interface MpzContentIo {
     data: CoachMessagesFile,
     options: WriteCoachMessagesOptions,
   ): Promise<WriteCoachMessagesResult>
+  readEmbedAllowlist(): Promise<EmbedAllowlistFile>
+  writeEmbedAllowlist(
+    data: EmbedAllowlistFile,
+    options: WriteEmbedAllowlistOptions,
+  ): Promise<WriteEmbedAllowlistResult>
   getPaths(): MpzContentIoPaths
   fileExists(absPath: string): boolean
 }
@@ -110,7 +140,19 @@ function defaultPaths(overrides?: Partial<MpzContentIoPaths>): MpzContentIoPaths
     overrides?.coachPath ?? join(appRoot, MPZ_COACH_REL)
   const coachBackupPath =
     overrides?.coachBackupPath ?? `${coachPath}.bak`
-  return { appRoot, stationsPath, backupPath, coachPath, coachBackupPath }
+  const allowlistPath =
+    overrides?.allowlistPath ?? join(appRoot, MPZ_EMBED_ALLOWLIST_REL)
+  const allowlistBackupPath =
+    overrides?.allowlistBackupPath ?? `${allowlistPath}.bak`
+  return {
+    appRoot,
+    stationsPath,
+    backupPath,
+    coachPath,
+    coachBackupPath,
+    allowlistPath,
+    allowlistBackupPath,
+  }
 }
 
 function tmpPathFor(targetPath: string): string {
@@ -134,6 +176,10 @@ export function serializeStationsFile(data: StationsFile): string {
 }
 
 export function serializeCoachMessagesFile(data: CoachMessagesFile): string {
+  return `${JSON.stringify(data, null, 2)}\n`
+}
+
+export function serializeEmbedAllowlistFile(data: EmbedAllowlistFile): string {
   return `${JSON.stringify(data, null, 2)}\n`
 }
 
@@ -229,6 +275,55 @@ async function commitCoachWrite(
 
     await rename(tmpPath, paths.coachPath)
     return { mtime: await fileMtime(paths.coachPath) }
+  } catch (err) {
+    if (existsSync(tmpPath)) {
+      try {
+        await unlink(tmpPath)
+      } catch {
+        /* ignore */
+      }
+    }
+    if (err instanceof MpzContentIoError) {
+      throw err
+    }
+    throw new MpzContentIoError(
+      'IO',
+      err instanceof Error ? err.message : 'Atomares Schreiben fehlgeschlagen',
+    )
+  }
+}
+
+async function commitEmbedAllowlistWrite(
+  paths: MpzContentIoPaths,
+  content: string,
+  payload: EmbedAllowlistFile,
+  stationsFile: StationsFile,
+): Promise<WriteEmbedAllowlistResult> {
+  const tmpPath = tmpPathFor(paths.allowlistPath)
+
+  try {
+    await writeFile(tmpPath, content, 'utf8')
+
+    const allowlistErrors = validateEmbedAllowlistContent(payload)
+    if (allowlistErrors.length > 0) {
+      await unlink(tmpPath)
+      throw new MpzContentIoError('VALIDATION', allowlistErrors.join('\n'))
+    }
+
+    try {
+      validateStationsFile(stationsFile, {
+        embedAllowSuffixes: payload.suffixes,
+      })
+    } catch (err) {
+      await unlink(tmpPath)
+      throw new MpzContentIoError(
+        'VALIDATION',
+        err instanceof Error ? err.message : 'Cross-Validate stations.json fehlgeschlagen',
+      )
+    }
+
+    await rename(tmpPath, paths.allowlistPath)
+    return { mtime: await fileMtime(paths.allowlistPath) }
   } catch (err) {
     if (existsSync(tmpPath)) {
       try {
@@ -418,6 +513,70 @@ export function createMpzContentIo(overrides?: Partial<MpzContentIoPaths>): MpzC
 
       await writeAtomicFile(paths.coachPath, serialized)
       return { mtime: await fileMtime(paths.coachPath) }
+    },
+
+    async readEmbedAllowlist(): Promise<EmbedAllowlistFile> {
+      try {
+        const raw = await readFile(paths.allowlistPath, 'utf8')
+        const parsed: unknown = JSON.parse(raw)
+        if (
+          typeof parsed !== 'object' ||
+          parsed === null ||
+          !Array.isArray((parsed as EmbedAllowlistFile).suffixes)
+        ) {
+          throw new MpzContentIoError(
+            'IO',
+            'embed-allowlist.json: ungültige Struktur (suffixes fehlt)',
+          )
+        }
+        return parsed as EmbedAllowlistFile
+      } catch (err) {
+        if (err instanceof MpzContentIoError) {
+          throw err
+        }
+        if (err instanceof SyntaxError) {
+          throw new MpzContentIoError(
+            'IO',
+            `embed-allowlist.json: ungültiges JSON — ${err.message}`,
+          )
+        }
+        throw new MpzContentIoError(
+          'IO',
+          err instanceof Error ? err.message : 'embed-allowlist.json konnte nicht gelesen werden',
+        )
+      }
+    },
+
+    async writeEmbedAllowlist(
+      data: EmbedAllowlistFile,
+      options: WriteEmbedAllowlistOptions,
+    ): Promise<WriteEmbedAllowlistResult> {
+      const makeBackup = options.makeBackup !== false
+      const postValidate = options.postValidate === true
+      const serialized = serializeEmbedAllowlistFile(data)
+
+      if (makeBackup && existsSync(paths.allowlistPath)) {
+        try {
+          await copyFile(paths.allowlistPath, paths.allowlistBackupPath)
+        } catch (err) {
+          throw new MpzContentIoError(
+            'IO',
+            err instanceof Error ? err.message : 'Allowlist-Backup konnte nicht erstellt werden',
+          )
+        }
+      }
+
+      if (postValidate) {
+        return commitEmbedAllowlistWrite(
+          paths,
+          serialized,
+          data,
+          options.stationsFile,
+        )
+      }
+
+      await writeAtomicFile(paths.allowlistPath, serialized)
+      return { mtime: await fileMtime(paths.allowlistPath) }
     },
   }
 }

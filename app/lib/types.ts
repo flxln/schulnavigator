@@ -131,7 +131,7 @@ export interface Medium {
   thumbnail?: string
   /** Nur typ === 'link'; Default im Code: external. */
   openIn?: LinkOpenIn
-  /** Nur typ === 'embed'; Subset von DEFAULT_EMBED_ALLOW_SUFFIXES im Code. */
+  /** Nur typ === 'embed'; Subset der globalen Liste in data/embed-allowlist.json. */
   embedAllow?: string[]
   untertitel?: string
 }

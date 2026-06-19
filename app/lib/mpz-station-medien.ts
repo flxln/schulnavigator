@@ -12,7 +12,7 @@ import {
   isMediaPathStillReferenced,
 } from '@/lib/mpz-medium-references'
 import {
-  DEFAULT_EMBED_ALLOW_SUFFIXES,
+  getEmbedAllowSuffixes,
   isEmbedAllowSubset,
   isEmbedUrlAllowed,
   resolveEmbedAllowlist,
@@ -175,14 +175,14 @@ export function validateLinkEmbedState(medium: Medium): void {
       if (typeof entry !== 'string' || entry.includes('/')) {
         throw new MpzStationMedienError(
           'INVALID_EMBED_ALLOW',
-          `embedAllow darf nur Einträge aus ${DEFAULT_EMBED_ALLOW_SUFFIXES.join(', ')} enthalten.`,
+          `embedAllow darf nur Einträge aus ${getEmbedAllowSuffixes().join(', ')} enthalten.`,
         )
       }
     }
     if (!isEmbedAllowSubset(medium.embedAllow)) {
       throw new MpzStationMedienError(
         'INVALID_EMBED_ALLOW',
-        `embedAllow darf nur Einträge aus ${DEFAULT_EMBED_ALLOW_SUFFIXES.join(', ')} enthalten.`,
+        `embedAllow darf nur Einträge aus ${getEmbedAllowSuffixes().join(', ')} enthalten.`,
       )
     }
   }
@@ -302,14 +302,14 @@ function normalizeMediumPatch(
         if (typeof entry !== 'string' || entry.includes('/')) {
           throw new MpzStationMedienError(
             'INVALID_EMBED_ALLOW',
-            `embedAllow darf nur Einträge aus ${DEFAULT_EMBED_ALLOW_SUFFIXES.join(', ')} enthalten.`,
+            `embedAllow darf nur Einträge aus ${getEmbedAllowSuffixes().join(', ')} enthalten.`,
           )
         }
       }
       if (!isEmbedAllowSubset(patch.embedAllow)) {
         throw new MpzStationMedienError(
           'INVALID_EMBED_ALLOW',
-          `embedAllow darf nur Einträge aus ${DEFAULT_EMBED_ALLOW_SUFFIXES.join(', ')} enthalten.`,
+          `embedAllow darf nur Einträge aus ${getEmbedAllowSuffixes().join(', ')} enthalten.`,
         )
       }
       set.embedAllow = patch.embedAllow

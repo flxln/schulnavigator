@@ -16,6 +16,7 @@ import {
 export type MediaLinkEmbedFormProps = {
   slug: string
   typ: 'link' | 'embed'
+  globalSuffixes: readonly string[]
   onSuccess?: (message: string) => void
 }
 
@@ -27,11 +28,18 @@ function labelClassName(): string {
   return 'mb-1 block text-xs font-semibold text-fg-3'
 }
 
-export function MediaLinkEmbedForm({ slug, typ, onSuccess }: MediaLinkEmbedFormProps) {
+export function MediaLinkEmbedForm({
+  slug,
+  typ,
+  globalSuffixes,
+  onSuccess,
+}: MediaLinkEmbedFormProps) {
   const router = useRouter()
   const { validateNow } = useStudioValidation()
   const [mediumId, setMediumId] = useState('')
-  const [form, setForm] = useState<LinkEmbedFormValues>(() => defaultLinkEmbedFormValues(typ))
+  const [form, setForm] = useState<LinkEmbedFormValues>(() =>
+    defaultLinkEmbedFormValues(typ, globalSuffixes),
+  )
   const [error, setError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
 
@@ -46,7 +54,7 @@ export function MediaLinkEmbedForm({ slug, typ, onSuccess }: MediaLinkEmbedFormP
     e.preventDefault()
     setError(null)
 
-    if (!isLinkEmbedFormValid(typ, form)) {
+    if (!isLinkEmbedFormValid(typ, form, globalSuffixes)) {
       setError('Bitte eine gültige https-URL eingeben (Embed: Allowlist-Domain).')
       return
     }
@@ -97,7 +105,7 @@ export function MediaLinkEmbedForm({ slug, typ, onSuccess }: MediaLinkEmbedFormP
       const message = `Medium „${createdId}" angelegt. Für /raum/${slug} ggf. Dev-Server neu starten (Modul-Cache).`
       onSuccess?.(message)
       setMediumId('')
-      setForm(defaultLinkEmbedFormValues(typ))
+      setForm(defaultLinkEmbedFormValues(typ, globalSuffixes))
       markMpzStudioDirty()
       await validateNow()
       startTransition(() => {
@@ -131,6 +139,7 @@ export function MediaLinkEmbedForm({ slug, typ, onSuccess }: MediaLinkEmbedFormP
       <MediumLinkEmbedFields
         typ={typ}
         slug={slug}
+        globalSuffixes={globalSuffixes}
         values={form}
         onChange={updateField}
         idPrefix="med-create"
@@ -138,7 +147,7 @@ export function MediaLinkEmbedForm({ slug, typ, onSuccess }: MediaLinkEmbedFormP
 
       <button
         type="submit"
-        disabled={isPending || !isLinkEmbedFormValid(typ, form)}
+        disabled={isPending || !isLinkEmbedFormValid(typ, form, globalSuffixes)}
         className="rounded-gs39-sm bg-accent px-4 py-2 font-semibold text-white disabled:opacity-50"
       >
         {isPending ? 'Speichert …' : typ === 'link' ? 'Link anlegen' : 'Embed anlegen'}

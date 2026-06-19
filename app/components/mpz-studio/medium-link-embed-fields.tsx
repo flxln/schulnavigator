@@ -1,7 +1,6 @@
 'use client'
 
 import {
-  DEFAULT_EMBED_ALLOW_SUFFIXES,
   isEmbedEnabled,
   isEmbedUrlAllowed,
   resolveEmbedAllowlist,
@@ -19,6 +18,7 @@ export type LinkEmbedFormValues = {
 export type MediumLinkEmbedFieldsProps = {
   typ: 'link' | 'embed'
   slug: string
+  globalSuffixes: readonly string[]
   values: LinkEmbedFormValues
   onChange: <K extends keyof LinkEmbedFormValues>(
     key: K,
@@ -35,19 +35,23 @@ function labelClassName(): string {
   return 'mb-1 block text-xs font-semibold text-fg-3'
 }
 
-export function defaultLinkEmbedFormValues(typ: 'link' | 'embed'): LinkEmbedFormValues {
+export function defaultLinkEmbedFormValues(
+  typ: 'link' | 'embed',
+  globalSuffixes: readonly string[],
+): LinkEmbedFormValues {
   return {
     untertitel: '',
     thumbnail: '',
     quelle: '',
     openInExternal: false,
-    embedAllow: typ === 'embed' ? [...DEFAULT_EMBED_ALLOW_SUFFIXES] : [],
+    embedAllow: typ === 'embed' ? [...globalSuffixes] : [],
   }
 }
 
 export function MediumLinkEmbedFields({
   typ,
   slug,
+  globalSuffixes,
   values,
   onChange,
   idPrefix,
@@ -56,10 +60,13 @@ export function MediumLinkEmbedFields({
   const httpsOk = quelleTrimmed === '' || isValidHttpsUrl(quelleTrimmed)
   const embedAllowlist =
     typ === 'embed'
-      ? resolveEmbedAllowlist({
-          embedAllow:
-            values.embedAllow.length > 0 ? values.embedAllow : undefined,
-        })
+      ? resolveEmbedAllowlist(
+          {
+            embedAllow:
+              values.embedAllow.length > 0 ? values.embedAllow : undefined,
+          },
+          globalSuffixes,
+        )
       : []
   const embedUrlOk =
     typ !== 'embed' ||
@@ -151,7 +158,7 @@ export function MediumLinkEmbedFields({
           <div className="sm:col-span-2">
             <span className={labelClassName()}>embedAllow (optional)</span>
             <div className="flex flex-col gap-2">
-              {DEFAULT_EMBED_ALLOW_SUFFIXES.map((suffix) => (
+              {globalSuffixes.map((suffix) => (
                 <label key={suffix} className="flex items-center gap-2 text-sm text-fg-2">
                   <input
                     type="checkbox"
@@ -182,15 +189,22 @@ export function MediumLinkEmbedFields({
   )
 }
 
-export function isLinkEmbedFormValid(typ: 'link' | 'embed', values: LinkEmbedFormValues): boolean {
+export function isLinkEmbedFormValid(
+  typ: 'link' | 'embed',
+  values: LinkEmbedFormValues,
+  globalSuffixes: readonly string[],
+): boolean {
   const quelle = values.quelle.trim()
   if (!quelle || !isValidHttpsUrl(quelle)) {
     return false
   }
   if (typ === 'embed') {
-    const allowlist = resolveEmbedAllowlist({
-      embedAllow: values.embedAllow.length > 0 ? values.embedAllow : undefined,
-    })
+    const allowlist = resolveEmbedAllowlist(
+      {
+        embedAllow: values.embedAllow.length > 0 ? values.embedAllow : undefined,
+      },
+      globalSuffixes,
+    )
     if (!isEmbedUrlAllowed(quelle, allowlist)) {
       return false
     }

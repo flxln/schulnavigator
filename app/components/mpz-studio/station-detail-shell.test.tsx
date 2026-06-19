@@ -5,6 +5,8 @@ import { StationDetailShell } from '@/components/mpz-studio/station-detail-shell
 import type { MpzValidationReport } from '@/lib/mpz-studio-overview'
 import { getStationBySlug } from '@/lib/stations'
 
+const GLOBAL_SUFFIXES = ['bookcreator.com', 'delightex.com'] as const
+
 const mocks = vi.hoisted(() => ({
   searchParams: new URLSearchParams(),
   report: null as MpzValidationReport | null,
@@ -96,7 +98,7 @@ describe('StationDetailShell', () => {
     const station = getStationBySlug('klassenzimmer')!
 
     render(
-      <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} />,
+      <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} globalSuffixes={GLOBAL_SUFFIXES} />,
     )
 
     expect(screen.getByRole('link', { name: 'Stammdaten' })).toBeTruthy()
@@ -112,7 +114,7 @@ describe('StationDetailShell', () => {
     setReport('daz', true)
     const station = getStationBySlug('daz')!
 
-    render(<StationDetailShell station={station} slug="daz" hubNr={3} />)
+    render(<StationDetailShell station={station} slug="daz" hubNr={3} globalSuffixes={GLOBAL_SUFFIXES} />)
 
     expect(screen.getByRole('link', { name: 'Dialog' })).toBeTruthy()
     expect(screen.getByRole('link', { name: 'Dialog-Audio' })).toBeTruthy()
@@ -149,7 +151,7 @@ describe('StationDetailShell', () => {
       }),
     )
 
-    render(<StationDetailShell station={station} slug="daz" hubNr={3} />)
+    render(<StationDetailShell station={station} slug="daz" hubNr={3} globalSuffixes={GLOBAL_SUFFIXES} />)
 
     expect(screen.queryByText('Dialog-Audio-Tab folgt in #163.')).toBeNull()
     expect(await screen.findByText('Clip')).toBeTruthy()
@@ -163,7 +165,7 @@ describe('StationDetailShell', () => {
     const station = getStationBySlug('klassenzimmer')!
 
     render(
-      <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} />,
+      <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} globalSuffixes={GLOBAL_SUFFIXES} />,
     )
 
     expect(screen.getByRole('link', { name: /Medien/ }).getAttribute('href')).toBe(
@@ -181,7 +183,7 @@ describe('StationDetailShell', () => {
     const station = getStationBySlug('klassenzimmer')!
 
     render(
-      <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} />,
+      <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} globalSuffixes={GLOBAL_SUFFIXES} />,
     )
 
     expect(screen.getByRole('button', { name: 'Medien hinzufügen' })).toBeTruthy()
@@ -222,7 +224,7 @@ describe('StationDetailShell', () => {
       ],
     }
 
-    render(<StationDetailShell station={emptyHort} slug="hort" hubNr={9} />)
+    render(<StationDetailShell station={emptyHort} slug="hort" hubNr={9} globalSuffixes={GLOBAL_SUFFIXES} />)
 
     expect(screen.getByText('Noch keine Medien')).toBeTruthy()
     expect(screen.getByRole('button', { name: 'Erstes Medium hinzufügen' })).toBeTruthy()
@@ -234,7 +236,7 @@ describe('StationDetailShell', () => {
     const station = getStationBySlug('klassenzimmer')!
 
     render(
-      <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} />,
+      <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} globalSuffixes={GLOBAL_SUFFIXES} />,
     )
 
     expect(screen.getByRole('link', { name: '← Alle Stationen' }).getAttribute('href')).toBe(
@@ -248,7 +250,7 @@ describe('StationDetailShell', () => {
     const station = getStationBySlug('klassenzimmer')!
 
     render(
-      <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} />,
+      <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} globalSuffixes={GLOBAL_SUFFIXES} />,
     )
 
     expect(screen.getByText('hs-text')).toBeTruthy()
@@ -267,7 +269,7 @@ describe('StationDetailShell', () => {
       hotspots360: undefined,
     }
 
-    render(<StationDetailShell station={station} slug="kunst" hubNr={4} />)
+    render(<StationDetailShell station={station} slug="kunst" hubNr={4} globalSuffixes={GLOBAL_SUFFIXES} />)
 
     expect(screen.getByText('Keine Hotspots')).toBeTruthy()
   })
@@ -277,7 +279,7 @@ describe('StationDetailShell', () => {
     setReport('kunst', false)
     mocks.report!.stationSummaries[0].titel = 'kunst'
 
-    render(<StationDetailShell station={null} slug="kunst" hubNr={4} />)
+    render(<StationDetailShell station={null} slug="kunst" hubNr={4} globalSuffixes={GLOBAL_SUFFIXES} />)
 
     expect(screen.getByRole('heading', { level: 2, name: 'kunst' })).toBeTruthy()
   })

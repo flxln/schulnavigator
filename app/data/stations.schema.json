@@ -88,8 +88,7 @@
         "embedAllow": {
           "type": "array",
           "items": {
-            "type": "string",
-            "enum": ["delightex.com", "bookcreator.com"]
+            "type": "string"
           },
           "minItems": 1
         }

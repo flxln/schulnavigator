@@ -17,6 +17,7 @@ export type StationDetailShellProps = {
   station: Station | null
   slug: string
   hubNr: number
+  globalSuffixes: readonly string[]
 }
 
 function viewerLabel(viewer: ViewerMode): string {
@@ -40,6 +41,7 @@ export function StationDetailShell({
   station,
   slug,
   hubNr,
+  globalSuffixes,
 }: StationDetailShellProps) {
   const searchParams = useSearchParams()
   const activeTab = resolveTab(searchParams.get('tab'))
@@ -158,7 +160,7 @@ export function StationDetailShell({
 
       {activeTab === 'medien' && (
         <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5">
-          <StationMedienTable slug={slug} station={station} />
+          <StationMedienTable slug={slug} station={station} globalSuffixes={globalSuffixes} />
         </section>
       )}
 

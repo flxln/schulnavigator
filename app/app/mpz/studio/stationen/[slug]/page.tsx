@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import { StationDetailShell } from '@/components/mpz-studio/station-detail-shell'
 import { createMpzContentIo, MpzContentIoError } from '@/lib/mpz-content-io'
+import { getEmbedAllowSuffixes } from '@/lib/embed-allowlist'
 import { HUB_SLUG_MAP, isHubSlug } from '@/lib/schoolhouse-hub-map'
 import type { Station } from '@/lib/types'
 
@@ -29,7 +30,12 @@ export default async function MpzStationDetailPage({ params }: PageProps) {
 
   return (
     <Suspense fallback={<p className="text-sm text-fg-2">Laden…</p>}>
-      <StationDetailShell station={station} slug={slug} hubNr={hubNr} />
+      <StationDetailShell
+        station={station}
+        slug={slug}
+        hubNr={hubNr}
+        globalSuffixes={getEmbedAllowSuffixes()}
+      />
     </Suspense>
   )
 }
