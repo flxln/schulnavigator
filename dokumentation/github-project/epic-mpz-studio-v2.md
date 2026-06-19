@@ -79,4 +79,4 @@ Leitplanken unverändert (ADR-022): nur `NODE_ENV=development`, nie Coolify, kei
 - [x] Hub/Icons-Config (#179) — umgesetzt 2026-06-20, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-179-2026-06-20.md](../reviews/post-mortem-179-2026-06-20.md)
 - [x] Brand-Uploads (#180) — umgesetzt 2026-06-20, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-180-2026-06-20.md](../reviews/post-mortem-180-2026-06-20.md)
 - [x] Doku & Epic-Abschluss (#181) — umgesetzt 2026-06-20, Post-Mortem [post-mortem-181-2026-06-20.md](../reviews/post-mortem-181-2026-06-20.md)
-- [ ] Merge `mpz-studio-v2` → `main` (PR ausstehend)
+- [ ] Merge `mpz-studio-v2` → `main` — [PR #183](https://github.com/flxln/schulnavigator/pull/183)
