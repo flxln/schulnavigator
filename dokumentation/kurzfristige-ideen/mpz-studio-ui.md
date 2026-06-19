@@ -176,7 +176,7 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | **Dialog** | Audio-Clips hochladen | [#148](https://github.com/flxln/schulnavigator/issues/148), Tab [#163](https://github.com/flxln/schulnavigator/issues/163) | ✓ | ja | `content:ingest-dialog` |
 | **Dialog** | Audio-Status / fehlende Clips | [#148](https://github.com/flxln/schulnavigator/issues/148), [#163](https://github.com/flxln/schulnavigator/issues/163) | ✓ | ja | — |
 | **Dialog** | bearbeiten / löschen (Segmente) | [#175](https://github.com/flxln/schulnavigator/issues/175) | ✓ | ja | JSON |
-| **Coach** | erstellen / bearbeiten / löschen | [#177](https://github.com/flxln/schulnavigator/issues/177) | — | — | `coach-messages.json` |
+| **Coach** | erstellen / bearbeiten / löschen | [#177](https://github.com/flxln/schulnavigator/issues/177) | ✓ | ja | `coach-messages.json` |
 | **Querschnitt** | Save & Validieren, Rollback | [#150](https://github.com/flxln/schulnavigator/issues/150), [#155](https://github.com/flxln/schulnavigator/issues/155) | ✓ | ja | `validate:stations` |
 | **Querschnitt** | Dashboard, Stations-Grid, Vorschau | [#151](https://github.com/flxln/schulnavigator/issues/151) | ✓ | ja | — |
 | **Querschnitt** | Dev-Guard (`/mpz/*` nur lokal) | [#145](https://github.com/flxln/schulnavigator/issues/145) | ✓ | ja | — |
@@ -184,7 +184,7 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | **Querschnitt** | Deploy (Env, QR, Token, validate-all) | [#174](https://github.com/flxln/schulnavigator/issues/174) | ✓ | ja | Skripte / `.env.local` |
 | **Querschnitt** | Brand, Hub | [#178](https://github.com/flxln/schulnavigator/issues/178)–[#180](https://github.com/flxln/schulnavigator/issues/180) | — | — | Code / Skripte |
 
-**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) — **#176** Dialog-Hotspots im Studio erledigt. **Nächstes Issue:** [#177](https://github.com/flxln/schulnavigator/issues/177) Coach-Editor.
+**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) — **#177** Coach-Editor erledigt. **Nächstes Issue:** [#178](https://github.com/flxln/schulnavigator/issues/178) Brand & Design.
 
 ---
 
@@ -202,5 +202,6 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | Tab Dialog-Audio | #163 | Upload + Segment-Audit |
 | `/mpz/studio/ingest` | #147, #172 | Deep-Link öffnet Medien-Modal |
 | `/mpz/studio/dialog-audio` | #148 | Dialog-Audio (global) |
+| `/mpz/studio/coach` | #177 | Coach-Nachrichten (`coach-messages.json`) |
 | `/mpz/studio/deploy` | #174 | Env, QR, Token-Rotation, validate-all, Vorschau |
 | `/mpz/calib/flat/[slug]` | #149 | Flat-Hotspot-Kalibrierung |

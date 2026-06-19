@@ -106,6 +106,12 @@ export function StudioDashboard() {
           >
             Dialog-Audio
           </Link>
+          <Link
+            href="/mpz/studio/coach"
+            className="font-semibold text-accent underline-offset-2 hover:underline"
+          >
+            Coach-Nachrichten
+          </Link>
           <a
             href="https://github.com/flxln/schulnavigator/blob/main/anleitungen/content-einpflegen.md"
             className="font-semibold text-accent underline-offset-2 hover:underline"
