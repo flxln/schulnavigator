@@ -292,31 +292,31 @@ Bis dahin: **kein Admin-UI** — alles über Repo-Dateien.
 
 ## 14. Schnellreferenz: Content-Typ → Ort → Wer (MVP)
 
-| Content-Typ | Laufzeit-Ort | JSON / Config | Wer (MVP) |
-|-------------|--------------|---------------|-----------|
-| Stationstitel, Beschreibung | — | `stations.json` | MPZ |
-| Medien (A/V/Foto/Text) | `public/media/{slug}/` | `medien[]` | MPZ |
-| Externe Links / Embeds | — | `medien[]` (`link`/`embed`) | MPZ |
-| Raumbild Flat | `public/stations/` | `bild` | MPZ + Export-Skript |
-| Raumbild 360° | `public/stations/360/` | `viewer`, `panorama360` | MPZ + Export-Skript |
-| Hotspots Flat | — | `hotspots[]` | MPZ (Kalibrierung) |
-| Hotspots Sphere | — | `hotspots360[]` | MPZ (`?hotspot-calib=1`) |
-| Dialog-Texte | — | `dialog.segmente[]` | MPZ |
-| Dialog-Audio | `content/dialog-audio/` | `dialog.segmente[].quelle` | MPZ |
-| Sprechblasen-Layout | — | `dialog.bubble` | MPZ |
-| Coach-Texte | `content/coach-messages.json` | — | MPZ/Dev |
-| Maskottchen-Bilder | `public/brand/mascots/` | — | MPZ (aus Auftraggeber) |
-| Logos, Motive | `public/brand/` | — | MPZ |
-| Hotspot-Preset-Icons | `public/brand/hotspot-icons/` | — | Dev |
-| Hub-Gebäude-SVG | `public/brand/hub/` | — | Dev (Skript) |
-| Farben/Typo | `gs39-tokens.css` | — | Dev (aus Auftraggeber) |
-| Hub-Slot ↔ Station | `data/hub-slug-map.json` | MPZ Studio `/mpz/studio/hub` | MPZ |
-| Stations-Akzente (Hub) | `data/station-accents.json` | MPZ Studio `/mpz/studio/hub` | MPZ |
-| Stations-Icons (Hub) | `data/station-icons.json` | MPZ Studio `/mpz/studio/hub` | MPZ |
-| Embed-Allowlist | `data/embed-allowlist.json` | MPZ Studio `/mpz/studio/embeds` | MPZ |
-| Eintritts-Token | `access-tokens.ts` | — | Dev |
-| QR-Codes | `public/qr/` (generiert) | — | Dev (`generate:qr`) |
-| Demo → echter Content | Migration | Pfade in JSON | MPZ |
+| Content-Typ | Laufzeit-Ort | JSON / Config | Studio (lokal) | Wer (MVP) |
+|-------------|--------------|---------------|----------------|-----------|
+| Stationstitel, Beschreibung | — | `stations.json` | `/mpz/studio/stationen/[slug]` Tab Stammdaten | MPZ |
+| Medien (A/V/Foto/Text) | `public/media/{slug}/` | `medien[]` | Station-Detail Tab Medien + `/mpz/studio/ingest` | MPZ |
+| Externe Links / Embeds | — | `medien[]` (`link`/`embed`) | Station-Detail Tab Medien (Modal #172) | MPZ |
+| Raumbild Flat | `public/stations/` | `bild` | Tab Stammdaten (#173) oder Export-Skript | MPZ |
+| Raumbild 360° | `public/stations/360/` | `viewer`, `panorama360` | Tab Stammdaten (#173) oder `export:pano360` | MPZ |
+| Hotspots Flat | — | `hotspots[]` | Tab Hotspots + `/mpz/calib/flat/{slug}` | MPZ |
+| Hotspots Sphere | — | `hotspots360[]` | Tab Hotspots + `?hotspot-calib=1` | MPZ |
+| Dialog-Texte | — | `dialog.segmente[]` | Tab Dialog (#175) | MPZ |
+| Dialog-Audio | `content/dialog-audio/` | `dialog.segmente[].quelle` | Tab Dialog-Audio oder `/mpz/studio/dialog-audio` | MPZ |
+| Sprechblasen-Layout | — | `dialog.bubble` | Tab Dialog (#175) | MPZ |
+| Coach-Texte | `content/coach-messages.json` | — | `/mpz/studio/coach` (#177) | MPZ/Dev |
+| Maskottchen-Bilder | `public/brand/mascots/` | — | `/mpz/studio/brand` (#180) | MPZ |
+| Logos, Motive | `public/brand/` | — | `/mpz/studio/brand` (#180) | MPZ |
+| Hotspot-Preset-Icons | `public/brand/hotspot-icons/` | — | — (Dev, nicht Studio) | Dev |
+| Hub-Gebäude-SVG | `public/brand/hub/` | — | — (`npm run prepare:hub-outline`) | Dev |
+| Farben/Typo | `gs39-tokens.css` | — | — (Dev, nicht Studio) | Dev |
+| Hub-Slot ↔ Station | `data/hub-slug-map.json` | — | `/mpz/studio/hub` | MPZ |
+| Stations-Akzente (Hub) | `data/station-accents.json` | — | `/mpz/studio/hub` | MPZ |
+| Stations-Icons (Hub) | `data/station-icons.json` | — | `/mpz/studio/hub` | MPZ |
+| Embed-Allowlist | `data/embed-allowlist.json` | — | `/mpz/studio/embeds` | MPZ |
+| Eintritts-Token | `access-tokens.ts` | — | `/mpz/studio/deploy` (#174) | Dev |
+| QR-Codes | `public/qr/` (generiert) | — | `/mpz/studio/deploy` (#174) | Dev (`generate:qr`) |
+| Demo → echter Content | Migration | Pfade in JSON | — | MPZ |
 
 ---
 

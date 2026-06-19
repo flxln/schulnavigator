@@ -247,7 +247,7 @@ Nur bei `viewer: "equirectangular"`. Steuert, **wohin die Kamera beim Öffnen de
 
 Gleiche Konvention wie `hotspots360[].yaw` / `pitch`. **Nicht** dasselbe wie Hotspot-Koordinaten — Startblick und Hotspots unabhängig pflegen.
 
-**Pflege:** Manuell in JSON; Dev-Übernahme aus aktueller Sphere-Ansicht geplant (#153, MPZ Studio). Issue #152 (Runtime).
+**Pflege:** Manuell in JSON oder MPZ Studio: im Kalibrier-Overlay **Als Startblick übernehmen** (`POST /api/mpz/view/sphere`, #153). Runtime: Issue #152.
 
 ### Startausschnitt Flat — `startPanX` (optional, [ADR-024](../dokumentation/adr/024-flat-startpan.md))
 
