@@ -57,12 +57,14 @@
 
 **Akzeptanz:**
 
-- [ ] `Station`: optionales `startPanX` (0…1); nur bei Flat; Validator
-- [ ] `RoomImagePane`: Initial-`panPx` aus `startPanX`; `recenterView()` respektiert Feld
-- [ ] Tests: `recenter-pan`, Pane-Init
+- [x] `Station`: optionales `startPanX` (0…1); nur bei Flat; Validator
+- [x] `RoomImagePane`: Initial-`panPx` aus `startPanX`; `recenterView()` respektiert Feld
+- [x] Tests: `recenter-pan`, Pane-Init
 - [ ] Optional später: Klick in `/mpz/calib/flat/{slug}` (#149) → `startPanX` setzen (Folge-Task, nicht Blocker)
 
 **Priorität:** Niedriger als #152 — die meisten Live-Stationen sind `equirectangular`.
+
+**Umgesetzt:** 2026-06-20, Branch `feature/flat-startpan` — Issue geschlossen.
 
 ## Checkliste (Dokumentation, erledigt 2026-06-16)
 

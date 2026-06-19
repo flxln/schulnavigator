@@ -249,6 +249,11 @@
           "minimum": -90,
           "maximum": 90
         },
+        "startPanX": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
         "dialog": { "$ref": "#/$defs/dialog" }
       }
     }

@@ -384,6 +384,37 @@ function validateOptionalStartView(
   }
 }
 
+function validateOptionalStartPan(
+  raw: Record<string, unknown>,
+  prefix: string,
+  viewer: ViewerMode,
+): { startPanX?: number } {
+  const hasStartPanX = raw.startPanX !== undefined
+
+  if (viewer === 'equirectangular') {
+    assert(
+      !hasStartPanX,
+      `${prefix}: startPanX ist nur bei viewer "flat" erlaubt.`,
+    )
+    return {}
+  }
+
+  if (!hasStartPanX) {
+    return {}
+  }
+
+  assert(
+    typeof raw.startPanX === 'number' && Number.isFinite(raw.startPanX),
+    `${prefix}: startPanX muss eine Zahl sein.`,
+  )
+  assert(
+    raw.startPanX >= 0 && raw.startPanX <= 1,
+    `${prefix}: startPanX muss eine Zahl zwischen 0 und 1 sein (war: ${raw.startPanX}).`,
+  )
+
+  return { startPanX: raw.startPanX }
+}
+
 function validateHotspot360(h: unknown, ctx: string): Hotspot360 {
   assert(isRecord(h), `${ctx}: Hotspot360 ist kein Objekt`)
   assert(
@@ -764,6 +795,7 @@ function validateStation(
   }
 
   const startView = validateOptionalStartView(raw, prefix, viewer)
+  const startPan = validateOptionalStartPan(raw, prefix, viewer)
 
   if (raw.bild !== undefined) {
     assert(
@@ -872,6 +904,7 @@ function validateStation(
     hotspots,
     hotspots360,
     ...startView,
+    ...startPan,
     dialog,
   }
 }
