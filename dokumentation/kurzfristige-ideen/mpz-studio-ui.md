@@ -2,13 +2,13 @@
 
 _Inhaltliche Kategorisierung für Feature-Planung und Issues — unabhängig von der UI-Navigation in der [Studio-Spezifikation](../projektmanagement/2026-06-16-mpz-studio-spezifikation.md)._
 
-**Epics:** [v0 #144](https://github.com/flxln/schulnavigator/issues/144) · [v1 #158](https://github.com/flxln/schulnavigator/issues/158) · **[v2 #170](https://github.com/flxln/schulnavigator/issues/170)** (in Arbeit, Branch `mpz-studio-v2`) · v3 Polish nach Bedarf
+**Epics:** [v0 #144](https://github.com/flxln/schulnavigator/issues/144) · [v1 #158](https://github.com/flxln/schulnavigator/issues/158) · [v2 #170](https://github.com/flxln/schulnavigator/issues/170) **abgeschlossen** (2026-06-20, Branch `mpz-studio-v2`) · v3 Polish nach Bedarf
 
-**Phasierung (Spec):** v2 = fehlende Content-Pflege + Betrieb · v3 = Komfort-Editoren und Batch — siehe [Roadmap v2/v3](#roadmap-v2--v3) unten.
+**Phasierung (Spec):** v2 erledigt — fehlende Content-Pflege + Betrieb · v3 = Komfort-Editoren und Batch — siehe [Roadmap v2/v3](#roadmap-v2--v3) unten.
 
 **Legende:** `Studio` = MPZ Studio (nur `npm run dev`) · `Plan A` = CLI, JSON, Snippets, Kalibrier-URLs · **Status** ✓ umgesetzt · ~ teilweise · — offen
 
-Detaillierte Issue-Listen: [epic-mpz-studio.md](../github-project/epic-mpz-studio.md) · [epic-mpz-studio-v1.md](../github-project/epic-mpz-studio-v1.md) · [epic-mpz-studio-v2.md](../github-project/epic-mpz-studio-v2.md) (geplant)
+Detaillierte Issue-Listen: [epic-mpz-studio.md](../github-project/epic-mpz-studio.md) · [epic-mpz-studio-v1.md](../github-project/epic-mpz-studio-v1.md) · [epic-mpz-studio-v2.md](../github-project/epic-mpz-studio-v2.md)
 
 ---
 
@@ -109,9 +109,9 @@ Nicht pro Raum, aber für vollständiges Studio relevant ([Spec](../projektmanag
 | Modul | Inhalt | Phase |
 |-------|--------|-------|
 | **Embeds & Links** | Globale Allowlist + Übersicht embed/link-Medien | v2 ✓ |
-| **Deploy** | Env, QR, Token-Rotation, validate-all | v2 |
-| **Brand & Design** | Logos, Maskottchen, GS39-Tokens, Stations-Akzente | v2 |
-| **Hub-Karte** | Slug ↔ Fenster-Slot (Geometrie bleibt Code) | v2 |
+| **Deploy** | Env, QR, Token-Rotation, validate-all | v2 ✓ |
+| **Brand & Design** | Logos, Maskottchen, optionale Motive | v2 ✓ |
+| **Hub-Karte** | Slug ↔ Fenster-Slot (Geometrie bleibt Code) | v2 ✓ |
 
 ---
 
@@ -119,21 +119,21 @@ Nicht pro Raum, aber für vollständiges Studio relevant ([Spec](../projektmanag
 
 Die offenen Lücken sind **nicht viele**, aber sie sind inhaltlich unterschiedlich schwer. In der [Studio-Spec](../projektmanagement/2026-06-16-mpz-studio-spezifikation.md) heißen die nächsten Schritte bereits **v2** (Betrieb, August 2026) und **v3** (Polish). v3 wäre also **nicht** der Sammelbecken für alles Offene — nur für Komfort über Plan A hinaus.
 
-### v2 — Content & Betrieb (nächstes Epic)
+### v2 — Content & Betrieb (Epic #170, erledigt 2026-06-20)
 
-Alles, was heute noch **nur Plan A (JSON/CLI)** ist, aber fürs Studio-Alltag sinnvoll wäre:
+Alles, was zuvor **nur Plan A (JSON/CLI)** war und fürs Studio-Alltag sinnvoll war — umgesetzt in Issues #171–#180:
 
-| Paket | Domäne | Was | Priorität (Vorschlag) |
-|-------|--------|-----|------------------------|
-| **v2-A Raum** | Raum | Raumbild Flat + 360° hochladen (mit Größen-/Ratio-Validator) | hoch — blockiert Content ohne Export-Skript-Kenntnis |
-| **v2-B Medien** | Medien | Metadaten bearbeiten (PATCH); link/embed im Studio anlegen | hoch — häufige Nacharbeit nach Upload |
-| **v2-C Dialog** | Dialog | Tab „Dialog“: Segmente, Gruppen, `bubble` (Formular, kein WYSIWYG) | mittel — nur 2 Stationen |
-| **v2-C Dialog** | Hotspots | Dialog-Hotspot anlegen/bearbeiten (`action: dialog`, Maskottchen) | mittel — heute nur Kalibrierung + JSON |
-| **v2-D Coach** | Coach | CRUD `coach-messages.json` + Trigger-Typen | mittel — selten geändert, aber isoliert |
-| **v2-E Betrieb** | Querschnitt | Deploy-Tab (QR, Token, Env-Toggles, validate-all) | hoch — schließt den Pflege-Kreislauf |
-| **v2-F Konfig** | Querschnitt | `embed-allowlist.json`, Hub-Slug-Map, Station-Akzente/Icons (Config-Extraktion) | niedrig — selten, viel Refactor |
+| Paket | Domäne | Was | Issue |
+|-------|--------|-----|-------|
+| **v2-A Raum** | Raum | Raumbild Flat + 360° hochladen | #173 |
+| **v2-B Medien** | Medien | Metadaten bearbeiten (PATCH); link/embed im Studio anlegen | #171, #172 |
+| **v2-C Dialog** | Dialog | Tab „Dialog“: Segmente, Gruppen, `bubble` (Formular) | #175 |
+| **v2-C Dialog** | Hotspots | Dialog-Hotspot anlegen/bearbeiten | #176 |
+| **v2-D Coach** | Coach | CRUD `coach-messages.json` + Trigger-Typen | #177 |
+| **v2-E Betrieb** | Querschnitt | Deploy-Tab (QR, Token, Env, validate-all) | #174 |
+| **v2-F Konfig** | Querschnitt | `embed-allowlist.json`, Hub-Slug-Map, Akzente/Icons, Brand-Uploads | #178–#180 |
 
-**Grober Umfang v2:** ein Epic mit ~8–12 Unterissues — deutlich kleiner als v0+v1 zusammen.
+**Grober Umfang v2:** Epic mit 11 Unterissues (#171–#181) — abgeschlossen.
 
 ### v3 — Polish (optional, nach Bedarf)
 
@@ -186,7 +186,7 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | **Querschnitt** | Hub-Slug-Map, Akzente, Icons | [#179](https://github.com/flxln/schulnavigator/issues/179) | ✓ | ja | `hub-slug-map.json` usw. |
 | **Querschnitt** | Brand-Uploads | [#180](https://github.com/flxln/schulnavigator/issues/180) | ✓ | ja | Dateien / Code |
 
-**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) — **#180** Brand-Uploads erledigt. **Nächstes Issue:** [#181](https://github.com/flxln/schulnavigator/issues/181) Doku & Epic-Abschluss.
+**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) **abgeschlossen** (2026-06-20) — alle Unterissues #171–#181 erledigt. Merge `mpz-studio-v2` → `main` ausstehend.
 
 ---
 

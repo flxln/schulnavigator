@@ -331,7 +331,7 @@ Abgeleitet aus zwei unabhängigen Plan-Reviews (SE-15: Codex, GLM-5.1). v0 ist *
 | **Plan A — Projekttag** | CLI, JSON-Schema, Snippets, Hotspot-Kalibrierung wie heute | **erledigt** 2026-06-16 |
 | **Plan B — Projekttag** | Studio v0: Medien-Upload + Hotspots (nur lokal) | optional bis ~22.06.2026 |
 | **v1 — Post-Fest** | Station-Detail, Stammdaten, Medien-/Hotspot-Tabellen, Dialog-Audio-Tab | **erledigt** 2026-06-18 (Epic #158) |
-| **v2 — Betrieb** | Coach, Embed-Allowlist, Brand-Uploads, Hub/Icons/Tokens, Deploy-Tab | August 2026 |
+| **v2 — Betrieb** | Coach, Embed-Allowlist, Brand-Uploads, Hub/Icons, Deploy-Tab, Dialog-Editor, Raumbild-Upload | **erledigt** 2026-06-20 (Epic #170) |
 | **v3 — Polish** | Markdown-Editor, Dialog-Bubble-Visual-Editor, Batch-Import aus `auftraggeber/` | nach Bedarf |
 
 **Projekttag-Minimum (v0):** Was Kinder liefern — Audio, Video, Foto, Text, ggf. Hotspots. Coach, Hub, Tokens sind am Projekttag selten zeitkritisch.
@@ -377,7 +377,7 @@ Nach Directus-Migration: Studio einfrieren oder nur noch für Migration/Massenim
 3. Stationen-Editor v0 (Medien-Upload, Hotspot-Rückschreibung)
 4. Parallel: `embed-allowlist.json` extrahieren (v1)
 5. API: Datei-Upload + `validate:stations` nach Save
-6. Doku: Abschnitt in [fuer-entwickler.md](../../anleitungen/fuer-entwickler.md) wenn v0 steht — **erledigt** v0 (#145); **v1 Station-Detail** ergänzt (#164, Epic [#158](../github-project/epic-mpz-studio-v1.md))
+6. Doku: Abschnitt in [fuer-entwickler.md](../../anleitungen/fuer-entwickler.md) wenn v0 steht — **erledigt** v0 (#145); **v1 Station-Detail** ergänzt (#164, Epic [#158](../github-project/epic-mpz-studio-v1.md)); **v2 Content & Betrieb** ergänzt (#181, Epic [#170](../github-project/epic-mpz-studio-v2.md))
 
 ---
 
@@ -394,6 +394,25 @@ v1 schließt die Lücke zwischen Stations-Grid und Einzelwerkzeugen: pro Station
 | Medien-/Hotspots-Tabellen (#161, #162) | Hub-Karte / Deploy-Tab |
 | Hotspot anlegen/bearbeiten + Icon-Ingest (#165–#168) | Config-Extraktion (`hub-slug-map`, Icons) |
 | Dialog-Audio-Tab pro Station (#163) | Raumbild-Upload |
+
+Entwickler-Doku: [fuer-entwickler.md](../../anleitungen/fuer-entwickler.md) (Abschnitt MPZ Studio), Testrouten: [lokal-testen-und-anschauen.md](../../anleitungen/lokal-testen-und-anschauen.md).
+
+---
+
+## v2 — Content & Betrieb (Epic #170)
+
+**Status:** umgesetzt 2026-06-20 (Branch `mpz-studio-v2`, Milestone „MPZ Studio v2“).
+
+v2 schließt die verbleibenden Plan-A-Lücken: Raumbild-Upload, Medien-PATCH und link/embed, Dialog-Editor und Dialog-Hotspots, Coach-CRUD, Deploy-Tab sowie Config-Extraktion (Embed-Allowlist, Hub, Brand). Spezifikation: [epic-mpz-studio-v2.md](../github-project/epic-mpz-studio-v2.md), Domänen-Matrix: [mpz-studio-ui.md](../kurzfristige-ideen/mpz-studio-ui.md).
+
+| In v2 umgesetzt | Bewusst nicht v2 (v3) |
+|-----------------|----------------------|
+| Medien-PATCH + link/embed (#171, #172) | Markdown-WYSIWYG |
+| Raumbild-Upload Flat/360° (#173) | Dialog-Bubble visuell |
+| Deploy-Tab (#174) | Batch-Import `auftraggeber/` |
+| Dialog-Tab (#175), Dialog-Hotspots (#176) | YouTube im Studio (ADR-004) |
+| Coach-Editor (#177) | GS39-Token-Editor |
+| Embed-Allowlist (#178), Hub/Icons (#179), Brand (#180) | Lehrkräfte-Admin (Directus #47) |
 
 Entwickler-Doku: [fuer-entwickler.md](../../anleitungen/fuer-entwickler.md) (Abschnitt MPZ Studio), Testrouten: [lokal-testen-und-anschauen.md](../../anleitungen/lokal-testen-und-anschauen.md).
 
