@@ -20,7 +20,7 @@ import {
 import { isValidHttpsUrl } from '@/lib/external-link'
 import { uniqueMediumId } from '@/lib/mpz-medium-ingest'
 import { slugifyId } from '@/lib/mpz-upload-rules'
-import { HUB_SLUG_MAP } from '@/lib/schoolhouse-hub-map'
+import { isHubSlug } from '@/lib/schoolhouse-hub-map'
 import type { LinkOpenIn, Medium, MediumTyp, Station, StationsFile, VideoSource } from '@/lib/types'
 
 export type FileKeptReason = 'still-referenced' | 'not-local' | 'missing' | 'unlink-failed'
@@ -88,7 +88,7 @@ export class MpzStationMedienError extends Error {
 }
 
 function findHubStation(data: StationsFile, slug: string): Station {
-  if (!(slug in HUB_SLUG_MAP)) {
+  if (!isHubSlug(slug)) {
     throw new MpzStationMedienError('NOT_FOUND', `Unbekannter Hub-Slug "${slug}".`)
   }
   const station = data.stations.find((s) => s.slug === slug)

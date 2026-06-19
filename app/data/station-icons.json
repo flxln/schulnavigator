@@ -1,0 +1,16 @@
+{
+  "icons": {
+    "klassenzimmer": { "type": "lucide", "name": "GraduationCap" },
+    "musik": { "type": "lucide", "name": "Music" },
+    "daz": { "type": "lucide", "name": "Languages" },
+    "kunst": { "type": "lucide", "name": "Palette" },
+    "pc-raum": { "type": "lucide", "name": "Monitor" },
+    "lesewelt": { "type": "lucide", "name": "BookOpen" },
+    "werken": { "type": "lucide", "name": "Hammer" },
+    "speiseraum": { "type": "lucide", "name": "UtensilsCrossed" },
+    "hort": { "type": "lucide", "name": "Home" },
+    "turnhalle": { "type": "lucide", "name": "PersonStanding" },
+    "schulsozialarbeit": { "type": "lucide", "name": "HeartHandshake" },
+    "schulhof": { "type": "lucide", "name": "Trees" }
+  }
+}

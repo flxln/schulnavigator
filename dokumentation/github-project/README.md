@@ -111,7 +111,8 @@ Architektur und Phasenlogik siehe außerdem [projektplan.md](../projektplan.md) 
 - [x] Issue **#176** (Dialog-Hotspot anlegen/bearbeiten) — umgesetzt 2026-06-19, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-176-2026-06-19.md](../reviews/post-mortem-176-2026-06-19.md)
 - [x] Issue **#177** (Coach-Editor: coach-messages.json CRUD) — umgesetzt 2026-06-19, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-177-2026-06-19.md](../reviews/post-mortem-177-2026-06-19.md)
 - [x] Issue **#178** (Embed-Allowlist: `embed-allowlist.json` + Studio-UI) — umgesetzt 2026-06-19, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-178-2026-06-19.md](../reviews/post-mortem-178-2026-06-19.md)
-- [ ] **#179** Hub/Icons-Config — nächstes v2-Feature (empfohlen)
+- [x] Issue **#179** (Hub/Icons-Config: `hub-slug-map.json`, Akzente, Icons + Studio-UI) — umgesetzt 2026-06-20, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-179-2026-06-20.md](../reviews/post-mortem-179-2026-06-20.md)
+- [ ] **#180** Brand-Uploads — nächstes v2-Feature (empfohlen)
 - [ ] **#154** Flat-Startpan (ADR-024) — [issues-startblick.md](issues-startblick.md) (unabhängig vom v1-Merge)
 
-Letzter dokumentierter Abgleich: **2026-06-19** (#178 Embed-Allowlist; nächstes v2-Issue #179).
+Letzter dokumentierter Abgleich: **2026-06-19** (#179 Hub-Config; nächstes v2-Issue #180).

@@ -19,7 +19,7 @@ import {
   MpzDialogAudioSyncError,
   syncDialogAudioFiles,
 } from '@/lib/mpz-dialog-audio-sync'
-import { HUB_SLUG_MAP } from '@/lib/schoolhouse-hub-map'
+import { isHubSlug } from '@/lib/schoolhouse-hub-map'
 import type {
   DialogBubbleLayout,
   DialogBubbleTail,
@@ -126,7 +126,7 @@ const DIALOG_TAILS = new Set<DialogBubbleTail>(['left', 'right', 'center'])
 const DIALOG_FIGURES = new Set<DialogFigure>(['frieda', 'otto'])
 
 function findHubStation(data: StationsFile, slug: string): Station {
-  if (!(slug in HUB_SLUG_MAP)) {
+  if (!isHubSlug(slug)) {
     throw new MpzStationDialogError('NOT_FOUND', `Unbekannter Hub-Slug "${slug}".`)
   }
   const station = data.stations.find((s) => s.slug === slug)

@@ -49,13 +49,18 @@ const NAV_ITEMS: NavItem[] = [
     match: (path) => path.startsWith('/mpz/studio/embeds'),
   },
   {
+    href: '/mpz/studio/hub',
+    label: 'Hub-Karte',
+    match: (path) => path.startsWith('/mpz/studio/hub'),
+  },
+  {
     href: '/mpz/studio/deploy',
     label: 'Deploy',
     match: (path) => path.startsWith('/mpz/studio/deploy'),
   },
 ]
 
-const DISABLED_V1 = ['Brand & Design', 'Hub-Karte']
+const DISABLED_V1 = ['Brand & Design']
 
 const STATION_DETAIL_PATH_RE = /^\/mpz\/studio\/stationen\/([^/]+)$/
 
@@ -75,6 +80,7 @@ function pageTitle(
   if (pathname.startsWith('/mpz/studio/dialog-audio')) return 'Dialog-Audio'
   if (pathname.startsWith('/mpz/studio/coach')) return 'Coach'
   if (pathname.startsWith('/mpz/studio/embeds')) return 'Embeds & Links'
+  if (pathname.startsWith('/mpz/studio/hub')) return 'Hub-Karte'
   if (pathname.startsWith('/mpz/studio/deploy')) return 'Deploy'
   return 'MPZ Studio'
 }

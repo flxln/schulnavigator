@@ -26,8 +26,9 @@ import {
 } from '@/lib/dialog-bubble-layout'
 import {
   buildHubStations,
-  HUB_SLUG_MAP,
+  getHubSlugMap,
 } from '@/lib/schoolhouse-hub-map'
+import type { HubSlugMapping } from '@/lib/mpz-hub-config-validation'
 import {
   getEmbedAllowSuffixes,
   isEmbedAllowSubset,
@@ -45,8 +46,6 @@ import {
   normalizeYawDeg,
   roundDeg,
 } from '@/lib/raum-viewer/sphere-marker-conventions'
-
-const EXPECTED_STATION_COUNT = Object.keys(HUB_SLUG_MAP).length
 
 const MEDIUM_TYPEN: readonly MediumTyp[] = [
   'audio',
@@ -102,6 +101,7 @@ function isMediumTyp(v: unknown): v is MediumTyp {
 
 export type ValidateStationsFileOptions = {
   embedAllowSuffixes?: readonly string[]
+  hubSlugMap?: Record<string, HubSlugMapping>
 }
 
 function validateMedium(
@@ -709,6 +709,7 @@ function validateStation(
   raw: unknown,
   index: number,
   embedAllowSuffixes: readonly string[],
+  hubSlugMap: Record<string, HubSlugMapping>,
 ): Station {
   const prefix = `stations[${index}]`
   assert(isRecord(raw), `${prefix}: Station ist kein Objekt`)
@@ -721,7 +722,7 @@ function validateStation(
     `${prefix}: slug "${raw.slug}" ist kein kebab-case`,
   )
   assert(
-    raw.slug in HUB_SLUG_MAP,
+    raw.slug in hubSlugMap,
     `${prefix}: slug "${raw.slug}" hat keine Hub-Zuordnung (ADR-016)`,
   )
   assert(
@@ -880,22 +881,24 @@ export function validateStationsFile(
   options?: ValidateStationsFileOptions,
 ): Station[] {
   const embedAllowSuffixes = options?.embedAllowSuffixes ?? getEmbedAllowSuffixes()
+  const hubSlugMap = options?.hubSlugMap ?? getHubSlugMap()
+  const expectedStationCount = Object.keys(hubSlugMap).length
   assert(isRecord(raw), 'Root muss Objekt sein')
   assert(Array.isArray(raw.stations), 'stations muss Array sein')
   assert(raw.stations.length > 0, 'stations ist leer')
   assertUniqueStationSlugs(raw.stations)
   const stations = raw.stations.map((s, i) =>
-    validateStation(s, i, embedAllowSuffixes),
+    validateStation(s, i, embedAllowSuffixes, hubSlugMap),
   )
   const slugs = new Set(stations.map((s) => s.slug))
   assert(
-    stations.length === EXPECTED_STATION_COUNT,
-    `stations: erwartet ${EXPECTED_STATION_COUNT} Einträge, erhalten ${stations.length}`,
+    stations.length === expectedStationCount,
+    `stations: erwartet ${expectedStationCount} Einträge, erhalten ${stations.length}`,
   )
-  const expectedSlugs = new Set(Object.keys(HUB_SLUG_MAP))
+  const expectedSlugs = new Set(Object.keys(hubSlugMap))
   for (const slug of expectedSlugs) {
     assert(slugs.has(slug), `stations: fehlender slug "${slug}" für Hub`)
   }
-  buildHubStations(stations)
+  buildHubStations(stations, { hubSlugMap })
   return stations
 }

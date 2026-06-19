@@ -1,39 +1,76 @@
-import {
-  BookOpen,
-  GraduationCap,
-  Hammer,
-  HeartHandshake,
-  Home,
-  Languages,
-  Monitor,
-  Music,
-  Palette,
-  PersonStanding,
-  Trees,
-  UtensilsCrossed,
-  type LucideIcon,
-} from 'lucide-react'
+import stationIconsData from '../data/station-icons.json'
 import { GS39_BRAND_HEX } from '@/lib/gs39-brand-colors'
+import { resolveLucideIcon } from '@/lib/lucide-icon-registry'
+import {
+  validateStationIconsContent,
+  type StationIconsFile,
+} from '@/lib/mpz-hub-config-validation'
 import type { HubSlug } from '@/lib/schoolhouse-hub-map'
+import type { LucideIcon } from 'lucide-react'
 
 export type StationIconDef =
   | { type: 'lucide'; Icon: LucideIcon }
   | { type: 'image'; src: string; alt?: string }
 
-export const STATION_ICON_BY_SLUG: Record<HubSlug, StationIconDef> = {
-  klassenzimmer: { type: 'lucide', Icon: GraduationCap },
-  musik: { type: 'lucide', Icon: Music },
-  daz: { type: 'lucide', Icon: Languages },
-  kunst: { type: 'lucide', Icon: Palette },
-  'pc-raum': { type: 'lucide', Icon: Monitor },
-  lesewelt: { type: 'lucide', Icon: BookOpen },
-  werken: { type: 'lucide', Icon: Hammer },
-  speiseraum: { type: 'lucide', Icon: UtensilsCrossed },
-  hort: { type: 'lucide', Icon: Home },
-  turnhalle: { type: 'lucide', Icon: PersonStanding },
-  schulsozialarbeit: { type: 'lucide', Icon: HeartHandshake },
-  schulhof: { type: 'lucide', Icon: Trees },
+const FALLBACK_STATION_ICONS: Record<string, { type: 'lucide'; name: string }> = {
+  klassenzimmer: { type: 'lucide', name: 'GraduationCap' },
+  musik: { type: 'lucide', name: 'Music' },
+  daz: { type: 'lucide', name: 'Languages' },
+  kunst: { type: 'lucide', name: 'Palette' },
+  'pc-raum': { type: 'lucide', name: 'Monitor' },
+  lesewelt: { type: 'lucide', name: 'BookOpen' },
+  werken: { type: 'lucide', name: 'Hammer' },
+  speiseraum: { type: 'lucide', name: 'UtensilsCrossed' },
+  hort: { type: 'lucide', name: 'Home' },
+  turnhalle: { type: 'lucide', name: 'PersonStanding' },
+  schulsozialarbeit: { type: 'lucide', name: 'HeartHandshake' },
+  schulhof: { type: 'lucide', name: 'Trees' },
 }
+
+function resolveIconJson(entry: { type: 'lucide'; name: string }): StationIconDef | null {
+  const Icon = resolveLucideIcon(entry.name)
+  if (!Icon) {
+    return null
+  }
+  return { type: 'lucide', Icon }
+}
+
+function parseLoadedIcons(raw: unknown): Record<string, StationIconDef> {
+  const errors = validateStationIconsContent(raw)
+  if (errors.length > 0) {
+    const fallback: Record<string, StationIconDef> = {}
+    for (const [slug, entry] of Object.entries(FALLBACK_STATION_ICONS)) {
+      const def = resolveIconJson(entry)
+      if (def) {
+        fallback[slug] = def
+      }
+    }
+    return fallback
+  }
+
+  const file = raw as StationIconsFile
+  const out: Record<string, StationIconDef> = {}
+  for (const [slug, entry] of Object.entries(file.icons)) {
+    const def = resolveIconJson(entry)
+    if (def) {
+      out[slug] = def
+    }
+  }
+  return out
+}
+
+let cachedIcons: Record<string, StationIconDef> | null = null
+
+function getStationIconsMap(): Record<string, StationIconDef> {
+  if (cachedIcons === null) {
+    cachedIcons = parseLoadedIcons(stationIconsData)
+  }
+  return cachedIcons
+}
+
+/** @deprecated Nutze getStationIconDef() */
+export const STATION_ICON_BY_SLUG: Record<HubSlug, StationIconDef> =
+  getStationIconsMap() as Record<HubSlug, StationIconDef>
 
 export type StationBadgeStyleInput = {
   visited: boolean
@@ -48,7 +85,7 @@ export type StationBadgeStyle = {
 }
 
 export function getStationIconDef(slug: string): StationIconDef {
-  const def = STATION_ICON_BY_SLUG[slug as HubSlug]
+  const def = getStationIconsMap()[slug]
   if (!def) {
     throw new Error(`station-icons: kein Icon für slug "${slug}"`)
   }
@@ -62,4 +99,8 @@ export function getStationBadgeStyle(
   const muted = !input.visited
   const iconColor = muted ? GS39_BRAND_HEX.navy300 : input.accent
   return { iconColor, muted, locked }
+}
+
+export function resetStationIconsCacheForTests(): void {
+  cachedIcons = null
 }

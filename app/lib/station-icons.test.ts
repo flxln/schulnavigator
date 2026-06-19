@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { GS39_BRAND_HEX } from '@/lib/gs39-brand-colors'
-import { HUB_SLUG_MAP } from '@/lib/schoolhouse-hub-map'
+import { getHubSlugMap } from '@/lib/schoolhouse-hub-map'
 import {
   getStationBadgeStyle,
   getStationIconDef,
@@ -9,7 +9,7 @@ import {
 
 describe('station-icons', () => {
   it('definiert Icons für alle Hub-Slugs', () => {
-    for (const slug of Object.keys(HUB_SLUG_MAP)) {
+    for (const slug of Object.keys(getHubSlugMap())) {
       expect(STATION_ICON_BY_SLUG[slug as keyof typeof STATION_ICON_BY_SLUG]).toBeDefined()
       expect(getStationIconDef(slug).type).toBe('lucide')
     }

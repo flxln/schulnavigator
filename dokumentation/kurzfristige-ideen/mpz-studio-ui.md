@@ -183,9 +183,10 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | **Querschnitt** | Atomarer Schreib-Layer | [#146](https://github.com/flxln/schulnavigator/issues/146) | ✓ | (intern) | CLI nutzt gleiche IO |
 | **Querschnitt** | Deploy (Env, QR, Token, validate-all) | [#174](https://github.com/flxln/schulnavigator/issues/174) | ✓ | ja | Skripte / `.env.local` |
 | **Querschnitt** | Embed-Allowlist | [#178](https://github.com/flxln/schulnavigator/issues/178) | ✓ | ja | `embed-allowlist.json` |
-| **Querschnitt** | Brand, Hub | [#179](https://github.com/flxln/schulnavigator/issues/179)–[#180](https://github.com/flxln/schulnavigator/issues/180) | — | — | Code / Skripte |
+| **Querschnitt** | Hub-Slug-Map, Akzente, Icons | [#179](https://github.com/flxln/schulnavigator/issues/179) | ✓ | ja | `hub-slug-map.json` usw. |
+| **Querschnitt** | Brand-Uploads | [#180](https://github.com/flxln/schulnavigator/issues/180) | — | — | Dateien / Code |
 
-**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) — **#178** Embed-Allowlist erledigt. **Nächstes Issue:** [#179](https://github.com/flxln/schulnavigator/issues/179) Hub/Icons-Config.
+**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) — **#179** Hub/Icons-Config erledigt. **Nächstes Issue:** [#180](https://github.com/flxln/schulnavigator/issues/180) Brand-Uploads.
 
 ---
 
@@ -205,5 +206,6 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | `/mpz/studio/dialog-audio` | #148 | Dialog-Audio (global) |
 | `/mpz/studio/coach` | #177 | Coach-Nachrichten (`coach-messages.json`) |
 | `/mpz/studio/embeds` | #178 | Globale Embed-Allowlist + link/embed-Übersicht |
+| `/mpz/studio/hub` | #179 | Hub-Slug-Map, Akzente, Lucide-Icons |
 | `/mpz/studio/deploy` | #174 | Env, QR, Token-Rotation, validate-all, Vorschau |
 | `/mpz/calib/flat/[slug]` | #149 | Flat-Hotspot-Kalibrierung |
