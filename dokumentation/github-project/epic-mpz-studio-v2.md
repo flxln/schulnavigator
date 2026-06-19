@@ -77,5 +77,5 @@ Leitplanken unverändert (ADR-022): nur `NODE_ENV=development`, nie Coolify, kei
 - [x] Coach-Editor (#177) — umgesetzt 2026-06-19, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-177-2026-06-19.md](../reviews/post-mortem-177-2026-06-19.md)
 - [x] embed-allowlist (#178) — umgesetzt 2026-06-19, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-178-2026-06-19.md](../reviews/post-mortem-178-2026-06-19.md)
 - [x] Hub/Icons-Config (#179) — umgesetzt 2026-06-20, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-179-2026-06-20.md](../reviews/post-mortem-179-2026-06-20.md)
-- [ ] Brand-Uploads (#180)
+- [x] Brand-Uploads (#180) — umgesetzt 2026-06-20, Branch `mpz-studio-v2`, Post-Mortem [post-mortem-180-2026-06-20.md](../reviews/post-mortem-180-2026-06-20.md)
 - [ ] Doku & Epic-Abschluss (#181)
