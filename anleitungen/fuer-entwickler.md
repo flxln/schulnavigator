@@ -25,7 +25,7 @@ Die App läuft unter [http://localhost:3000](http://localhost:3000).
 
 **Content einpflegen (JSON + Dateien, Hotspots):** [content-einpflegen.md](./content-einpflegen.md).
 
-**MPZ Studio (optional, nur `development`):** [ADR-022](../dokumentation/adr/022-mpz-studio-internes-ingest-tool.md) — internes Ingest-Tool unter `/mpz/studio` (Dashboard, Stationen-Liste, **Station-Detail** mit Tabs, Medien, Dialog-Audio, Hotspot-Kalibrierung). Siehe Abschnitt [MPZ Studio](#mpz-studio-lokal-adr-022) unten.
+**MPZ Studio (optional, nur `development`):** [ADR-022](../dokumentation/adr/022-mpz-studio-internes-ingest-tool.md) — internes Ingest-Tool unter `/mpz/studio` (Dashboard, Stationen-Detail mit Tabs, Coach, Embeds, Hub, Brand, Deploy). Siehe Abschnitt [MPZ Studio](#mpz-studio-lokal-adr-022) unten. Epic v2 [#170](https://github.com/flxln/schulnavigator/issues/170) abgeschlossen.
 
 ---
 
@@ -37,17 +37,19 @@ Nur bei `NODE_ENV=development` erreichbar; in Production liefern `/mpz/*` und `/
 2. Dev-Server starten: `npm run dev`.
 3. Browser: [`/mpz/unlock`](http://localhost:3000/mpz/unlock) — Secret eingeben → Session-Cookie.
 4. [`/mpz/studio`](http://localhost:3000/mpz/studio) — Dashboard mit Validierungsstatus und Links zu allen 12 Stationen.
-5. **Station-Detail (v1, Epic #158):** [`/mpz/studio/stationen`](http://localhost:3000/mpz/studio/stationen) → Kachel **Bearbeiten** oder direkt [`/mpz/studio/stationen/{slug}`](http://localhost:3000/mpz/studio/stationen/kunst) — Tabs **Stammdaten**, **Medien**, **Hotspots**, **Dialog-Audio** (nur Stationen mit `dialog`).
+5. **Station-Detail (v1 #158, v2 #171–#176):** [`/mpz/studio/stationen`](http://localhost:3000/mpz/studio/stationen) → Kachel **Bearbeiten** oder direkt [`/mpz/studio/stationen/{slug}`](http://localhost:3000/mpz/studio/stationen/kunst) — Tabs **Stammdaten**, **Medien**, **Hotspots**, **Dialog**, **Dialog-Audio** (letztere nur Stationen mit `dialog`).
+6. **Querschnitt (v2 #174–#180):** Coach, Embeds & Links, Hub-Karte, Brand & Design, Deploy — jeweils eigene Navigationspunkte in der Studio-Shell.
 
-**Station-Detail & Stammdaten (#159–#160, #164)**
+**Station-Detail (#159–#176)**
 
-Route: `/mpz/studio/stationen/[slug]?tab={stammdaten|medien|hotspots|dialog-audio}` (Default: `stammdaten`). Shell: [`StationDetailShell`](../app/components/mpz-studio/station-detail-shell.tsx).
+Route: `/mpz/studio/stationen/[slug]?tab={stammdaten|medien|hotspots|dialog|dialog-audio}` (Default: `stammdaten`). Shell: [`StationDetailShell`](../app/components/mpz-studio/station-detail-shell.tsx).
 
 | Tab | UI | Schreib-API |
 |-----|-----|-------------|
-| Stammdaten | `titel`, `beschreibung`, `viewer` (`flat` / `equirectangular`); read-only: `slug`, `bild`, `panorama360` | `PATCH /api/mpz/stations/[slug]/stammdaten` |
-| Medien | Tabelle mit Links zu Ingest, Entfernen (#161) | `DELETE /api/mpz/stations/[slug]/medien/[mediumId]` |
-| Hotspots | Tabelle, Anlegen/Bearbeiten/Entfernen, Kalibrier-Links (#162, #165–#168) | `POST`/`PATCH`/`DELETE` …/hotspots |
+| Stammdaten | `titel`, `beschreibung`, `viewer`; read-only: `slug`; Raumbild-Upload Flat/360° (#173) | `PATCH …/stammdaten`; `POST …/raumbild` |
+| Medien | Tabelle, Bearbeiten (PATCH #171), link/embed anlegen (#172), Ingest-Link, Entfernen (#161) | `PATCH`/`POST`/`DELETE` …/medien |
+| Hotspots | Tabelle, Anlegen/Bearbeiten/Entfernen inkl. Dialog-Hotspot (#176), Kalibrier-Links (#162, #165–#168) | `POST`/`PATCH`/`DELETE` …/hotspots |
+| Dialog | Figuren, Segmente, Gruppen, `bubble` (#175) | `PATCH`/`POST`/`DELETE` …/dialog/* |
 | Dialog-Audio | Segment-Tabelle + Upload (#163) | `POST /api/mpz/dialog-audio/ingest` |
 
 **Stammdaten-Flow:** Formular sendet partielles JSON (`titel`, `beschreibung`, `viewer`). Domain: [`patchStationStammdaten`](../app/lib/mpz-station-stammdaten.ts) in `withMpzWriteLock` → `writeStations({ strict: true, postValidate: true })`. Bei Erfolg: `markMpzStudioDirty()` → `validateNow()` → `router.refresh()`. `viewer`-Wechsel mit bestehenden Hotspots zeigt Warnung; blockierende Konstellationen werden serverseitig abgelehnt.
@@ -61,12 +63,37 @@ Route: `/mpz/studio/stationen/[slug]?tab={stammdaten|medien|hotspots|dialog-audi
 - `POST /api/mpz/view/sphere` — Body `{ slug, startYaw, startPitch }` schreibt den Sphere-Startblick in `stations.json` (#153, ADR-023).
 - `POST` / `PATCH` / `DELETE` `/api/mpz/stations/[slug]/hotspots` bzw. `…/hotspots/[hotspotId]` — Hotspot anlegen (#165), bearbeiten (#167), entfernen (#162). Fehler-Mapping: `NOT_FOUND` → 404; Client-Domain-Codes (`DUPLICATE_ID`, `INVALID_COORDS`, …) → 400; `NOT_EDITABLE` nur bei PATCH → 403 (#168).
 - `PATCH /api/mpz/stations/[slug]/stammdaten` — Stammdaten (`titel`, `beschreibung`, `viewer`) (#160).
+- `POST /api/mpz/stations/[slug]/raumbild` — Raumbild Flat oder 360° (#173, `public/stations/` bzw. `public/stations/360/`). **POST** `multipart/form-data`: `variant` (`flat` \| `pano360`), `file`, optional `collision` (`reject` \| `replace`, Default `reject`). Erfolg **200** `{ path, variant }`. `MISSING_FILE`, `MISSING_FIELDS` → **400**; `VALIDATION` → **422**; `COLLISION` → **409**.
+- `PATCH /api/mpz/stations/[slug]/medien/[mediumId]` — Medien-Metadaten (#171). Felder typabhängig (`untertitel`, `thumbnail`, `poster`, `videoSource`, `quelle`, `openIn`, `embedAllow`); `id`/`typ` nicht patchbar. `INVALID_JSON` / `INVALID_BODY` / `NO_FIELDS` → **400**; `NOT_FOUND` → **404**; Domain (`FIELD_NOT_ALLOWED`, `INVALID_QUELLE`, …) → **422**.
+- `POST /api/mpz/stations/[slug]/medien` — link/embed anlegen (#172). Body `{ id, typ: 'link'|'embed', quelle, … }`. `INVALID_TYP`, `INVALID_ID`, `DUPLICATE_ID` → **400**; `INVALID_QUELLE`, `INVALID_EMBED_ALLOW`, … → **422**.
+- `DELETE /api/mpz/stations/[slug]/medien/[mediumId]` — Medium entfernen (#161).
+- `PATCH /api/mpz/stations/[slug]/dialog` — `figuren`, `bubble` (#175).
+- `POST` / `PATCH` / `DELETE` `/api/mpz/stations/[slug]/dialog/segmente` bzw. `…/segmente/[segmentId]` — Dialog-Segmente (#175). Strukturelle Änderungen (Löschen, `rolle`) renummerieren WAV-Clips unter `content/dialog-audio/{slug}/`.
+- `POST` / `PATCH` / `DELETE` `/api/mpz/stations/[slug]/dialog/gruppen` bzw. `…/gruppen/[gruppeId]` — Dialog-Gruppen (#175).
+- `GET` / `PUT` `/api/mpz/embed-allowlist` — Globale Embed-Domain-Allowlist (#178, `data/embed-allowlist.json`). Domain: [`mpz-embed-allowlist.ts`](../app/lib/mpz-embed-allowlist.ts). Route: [`/mpz/studio/embeds`](http://localhost:3000/mpz/studio/embeds). Post-Write: Inline-Validator + Cross-Check gegen `stations.json`. **PUT** (volle Liste). CSP `frame-src` erst nach Dev-Neustart/`build`. Domain-Fehler → **422**; malformed Body → **400** `INVALID_BODY`.
+- `GET` / `PUT` `/api/mpz/hub-config` — Hub-Slug-Map, Station-Akzente, Lucide-Icons (#179, `data/hub-slug-map.json`, `data/station-accents.json`, `data/station-icons.json`). Domain: [`mpz-hub-config.ts`](../app/lib/mpz-hub-config.ts). Route: [`/mpz/studio/hub`](http://localhost:3000/mpz/studio/hub). Post-Write: Inline-Validator + Cross-Check gegen `stations.json`. **PUT** (atomar alle drei Dateien). Slot-Geometrie (`HUB_SLOTS`) bleibt Code. Hub-Vorschau in der App erst nach Dev-Neustart/`build`. malformed Body → **400** `INVALID_BODY`; Validierungsfehler → **422** `VALIDATION`.
+- `GET` `/api/mpz/brand` sowie `POST` `/api/mpz/brand/upload` — Brand-Assets (#180, `public/brand/{logos,mascots,motifs}/`). Domain: [`mpz-brand-ingest.ts`](../app/lib/mpz-brand-ingest.ts). Route: [`/mpz/studio/brand`](http://localhost:3000/mpz/studio/brand). Slot-basiert (feste Dateinamen); **POST** `multipart/form-data` mit `slot` + `file`. Größenlimit wird vor `arrayBuffer()` geprüft. Response **201** `{ path, filename, mtime }`. Unbekannter/fehlender Slot → **400** `MISSING_FIELDS`; Validierung → **422** `VALIDATION`.
+- `GET` / `POST` `/api/mpz/coach/messages` sowie `PATCH` / `DELETE` `/api/mpz/coach/messages/[messageId]` — Coach-Nachrichten (#177, `content/coach-messages.json`). Domain: [`mpz-coach-messages.ts`](../app/lib/mpz-coach-messages.ts). Route: [`/mpz/studio/coach`](http://localhost:3000/mpz/studio/coach). Post-Write: TS-Inline-Validator (spiegelt `validate:coach`). Domain-Fehler → **422**; malformed Request → **400**.
 
 Guard wie alle `/api/mpz/*`-Routen.
 
+**Fehler-Codes:** JSON-Feld `error` ist durchgängig `SCREAMING_SNAKE_CASE` (z. B. `NOT_FOUND`, `INVALID_JSON`, `INTERNAL_ERROR`). Domain-Codes werden unverändert durchgereicht. Konvention für Agenten: [`.cursor/rules/error-conventions.mdc`](../.cursor/rules/error-conventions.mdc).
+
 **Validierung (#150, #155):** Nach jedem Studio-Write läuft Post-Validate (`validateStationsFile` + `validateStationAssets` importiert). Bei Fehlern im Scope der geänderten Station wird **kein rename** ausgeführt (`stations.json` bleibt unverändert). Medien-Ingest läuft in `withMpzWriteLock`. Ingest-APIs liefern `validation` + `mtime` inline.
 
-**Grenzen:** Schreibt nur lokale Dateien (`data/stations.json`, `public/media/`, `content/dialog-audio/`). Kein Git-Commit aus dem Studio — nach Änderungen manuell `git commit`, Deploy (Build führt `validate:stations` ohnehin aus).
+**Grenzen:** Schreibt nur lokale Dateien (`data/stations.json`, `data/embed-allowlist.json`, `data/hub-slug-map.json`, `data/station-accents.json`, `data/station-icons.json`, `content/coach-messages.json`, `public/media/`, `public/stations/` inkl. `360/`, `public/brand/`, `content/dialog-audio/`, ggf. `public/qr/`, `lib/access-token-constants.mjs`, `.env.local`). Kein Git-Commit aus dem Studio — nach Änderungen manuell `git commit`, Deploy (Build führt `validate:stations`, `validate:coach`, `validate:embed-allowlist` und `validate:hub-config` aus).
+
+**Deploy-Tab (#174):** [`/mpz/studio/deploy`](http://localhost:3000/mpz/studio/deploy) — Env (`NEXT_PUBLIC_BASE_URL`, `NEXT_PUBLIC_EMBED_ENABLED`), QR-Generierung, Token-Rotation (Dry-Run/Live), validate-all, Vorschau-Links.
+
+| Aktion | API |
+|--------|-----|
+| Env lesen/speichern | `GET` / `PATCH /api/mpz/deploy/env` |
+| QR generieren | `POST /api/mpz/deploy/generate-qr` — Body `{ dryRun?, preset?: 'all' \| 'schulfest' }` |
+| Token rotieren | `POST /api/mpz/deploy/rotate-tokens` — Body `{ dryRun: boolean }` |
+| Validate-all | `POST /api/mpz/deploy/validate-all` — `validate:stations`, `validate:coach`, `validate:tokens`, `test` |
+| Vorschau-Links | `GET /api/mpz/deploy/preview-links` |
+
+Nach Änderungen an `NEXT_PUBLIC_*` in `.env.local`: **Dev-Server neu starten** (`npm run dev`), damit Next.js die Werte lädt. Subprocess-Aktionen (QR, Token, validate-all) rufen dieselben npm-Skripte wie Plan A auf; kein Coolify-Deploy aus dem Studio.
 
 Details und Testrouten: [lokal-testen-und-anschauen.md](./lokal-testen-und-anschauen.md) (Abschnitt MPZ Studio).
 
@@ -96,6 +123,8 @@ Alle Befehle im Verzeichnis `app/` ausführen.
 | `npm run validate:tokens` | Prüft `app/gs39-tokens.css` gegen `auftraggeber/.../colors_and_type.css` (lokal) bzw. `app/scripts/reference/colors_and_type.css` (Docker, nur `app/` als Kontext) — wird von `build` mitaufgerufen |
 | `npm run validate:stations` | Prüft `bild`- und `quelle`-Pfade unter `public/`; warnt bei extremem Hotspot-**y** (Heuristik, sichtbarer Ausschnitt nach Auto-Zoom) — wird von `build` mitaufgerufen |
 | `npm run validate:coach` | Prüft Coach-JSON gegen Schema und `stations.json` — wird von `build` mitaufgerufen |
+| `npm run validate:embed-allowlist` | Prüft `data/embed-allowlist.json` — wird von `build` mitaufgerufen |
+| `npm run validate:hub-config` | Prüft `data/hub-slug-map.json`, `data/station-accents.json`, `data/station-icons.json` — wird von `build` mitaufgerufen |
 | `npm run validate:access-config` | Prüft Token-Konfiguration (Sync mit QR-Specs) — wird von `build` mitaufgerufen |
 | `npm run generate:qr`  | QR-PNGs + Druck-PDFs + `manifest.json` unter `public/qr/` (Issue #15, PDF-Erweiterung #130); `--preset=schulfest` für Schulfest-Set (12 Räume + Entry fest) — [schulfest-gs39-playbook.md](./schulfest-gs39-playbook.md) |
 | `npm run rotate:access-tokens` | Entry-Token rotieren, `access-token-constants.mjs` + Manifeste + beide QR-Sets; Coolify-JSON auf stdout — [#141](https://github.com/flxln/schulnavigator/issues/141), siehe [Token rotieren](#token-pflegen--rotieren) |

@@ -59,13 +59,13 @@ export const POST = withMpzStudioAccess(async (_req: NextRequest) => {
       postWriteMtime = await currentMtime(stationsPath)
     } else if (err instanceof MpzContentIoError) {
       return NextResponse.json(
-        { error: 'io', message: err.message },
+        { error: 'IO', message: err.message },
         { status: 500 },
       )
     } else {
       return NextResponse.json(
         {
-          error: 'save_validate_failed',
+          error: 'SAVE_VALIDATE_FAILED',
           message: err instanceof Error ? err.message : 'Unbekannter Fehler',
         },
         { status: 500 },

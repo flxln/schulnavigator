@@ -16,7 +16,7 @@ export const GET = withMpzStudioAccess(async (_req, context) => {
       return NextResponse.json({ error: err.code, message: err.message }, { status: 404 })
     }
     return NextResponse.json(
-      { error: 'internal', message: 'Unerwarteter Fehler beim Laden der Icons.' },
+      { error: 'INTERNAL_ERROR', message: 'Unerwarteter Fehler beim Laden der Icons.' },
       { status: 500 },
     )
   }

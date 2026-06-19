@@ -309,6 +309,7 @@ async function main() {
     console.log(
       '[QR] Dry-Run — keine PNGs/PDFs, kein Löschen, kein manifest.json.\n',
     )
+    console.log(`__QR_MANIFEST_JSON__=${JSON.stringify(manifest)}`)
     console.log(JSON.stringify(manifest, null, 2))
     const printItems = toPrintItems(manifest)
     printDryRunPreview(printItems, width, pdfNamePrefix(preset))

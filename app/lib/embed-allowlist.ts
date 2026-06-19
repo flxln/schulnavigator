@@ -1,13 +1,36 @@
+import embedAllowlistData from '../data/embed-allowlist.json'
+import {
+  validateEmbedAllowlistContent,
+  type EmbedAllowlistFile,
+} from './mpz-embed-allowlist-validation'
 import { externalLinkHostname, isValidHttpsUrl } from './external-link'
 import type { Medium } from '@/lib/types'
 
-/** Single Source of Truth — App-Allowlist, Validator-Subset und CSP frame-src. */
-export const DEFAULT_EMBED_ALLOW_SUFFIXES = [
+export const FALLBACK_EMBED_ALLOW_SUFFIXES = [
   'delightex.com',
   'bookcreator.com',
 ] as const
 
-export type EmbedAllowSuffix = (typeof DEFAULT_EMBED_ALLOW_SUFFIXES)[number]
+function parseLoadedAllowlist(raw: unknown): readonly string[] {
+  const errors = validateEmbedAllowlistContent(raw)
+  if (errors.length > 0) {
+    return [...FALLBACK_EMBED_ALLOW_SUFFIXES]
+  }
+  const file = raw as EmbedAllowlistFile
+  return [...file.suffixes].map((s) => s.trim().toLowerCase()).sort()
+}
+
+let cachedSuffixes: readonly string[] | null = null
+
+export function getEmbedAllowSuffixes(): readonly string[] {
+  if (cachedSuffixes === null) {
+    cachedSuffixes = parseLoadedAllowlist(embedAllowlistData)
+  }
+  return cachedSuffixes
+}
+
+/** @deprecated Nutze getEmbedAllowSuffixes() — Alias für Abwärtskompatibilität in Tests. */
+export const DEFAULT_EMBED_ALLOW_SUFFIXES = getEmbedAllowSuffixes()
 
 export function hostMatchesEmbedAllowlist(
   hostname: string,
@@ -20,8 +43,11 @@ export function hostMatchesEmbedAllowlist(
   })
 }
 
-export function resolveEmbedAllowlist(medium: Pick<Medium, 'embedAllow'>): string[] {
-  return medium.embedAllow ?? [...DEFAULT_EMBED_ALLOW_SUFFIXES]
+export function resolveEmbedAllowlist(
+  medium: Pick<Medium, 'embedAllow'>,
+  suffixes: readonly string[] = getEmbedAllowSuffixes(),
+): string[] {
+  return medium.embedAllow ?? [...suffixes]
 }
 
 export function isEmbedUrlAllowed(
@@ -41,10 +67,10 @@ export function isEmbedUrlAllowed(
 
 export function isEmbedAllowSubset(
   embedAllow: readonly string[],
+  suffixes: readonly string[] = getEmbedAllowSuffixes(),
 ): boolean {
-  return embedAllow.every((entry) =>
-    DEFAULT_EMBED_ALLOW_SUFFIXES.includes(entry as EmbedAllowSuffix),
-  )
+  const global = new Set(suffixes.map((s) => s.toLowerCase()))
+  return embedAllow.every((entry) => global.has(entry.toLowerCase()))
 }
 
 /** CSP frame-src hosts derived from suffix list (apex + wildcard per suffix). */
@@ -57,7 +83,7 @@ export function embedAllowlistToCspFrameSrc(suffixes: readonly string[]): string
 }
 
 export function defaultEmbedCspFrameSrc(): string {
-  return embedAllowlistToCspFrameSrc(DEFAULT_EMBED_ALLOW_SUFFIXES)
+  return embedAllowlistToCspFrameSrc(getEmbedAllowSuffixes())
 }
 
 /** Delightex 3D-Welt braucht Scripts im Frame; allow-same-origin schwächt Sandbox — bewusst für cross-origin-Embed. */
@@ -71,4 +97,9 @@ export function isEmbedEnabled(): boolean {
 export function isBookCreatorUrl(url: string): boolean {
   const host = externalLinkHostname(url)
   return host !== null && hostMatchesEmbedAllowlist(host, ['bookcreator.com'])
+}
+
+/** Nur für Tests: Cache nach JSON-Schreibvorgang zurücksetzen. */
+export function resetEmbedAllowSuffixesCacheForTests(): void {
+  cachedSuffixes = null
 }

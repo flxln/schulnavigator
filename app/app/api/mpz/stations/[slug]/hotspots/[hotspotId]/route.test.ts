@@ -54,6 +54,22 @@ describe('parsePatch', () => {
     expect(parsePatch({ label: '' })).toEqual({ label: '' })
   })
 
+  it('akzeptiert Dialog-Felder', () => {
+    expect(
+      parsePatch({
+        mascot: 'frieda',
+        mascotSize: 0.2,
+        mascotFlipX: true,
+        bubblePitchOffset: 12,
+      }),
+    ).toEqual({
+      mascot: 'frieda',
+      mascotSize: 0.2,
+      mascotFlipX: true,
+      bubblePitchOffset: 12,
+    })
+  })
+
   it('leerer Body → null', () => {
     expect(parsePatch({})).toBeNull()
     expect(parsePatch({ id: 'ignored' })).toBeNull()
@@ -187,19 +203,31 @@ describe('PATCH /api/mpz/stations/[slug]/hotspots/[hotspotId]', () => {
     expect(res.status).toBe(404)
   })
 
-  it('NOT_EDITABLE → 403', async () => {
+  it('action im Body → 400 FORBIDDEN_FIELD', async () => {
+    vi.stubEnv('NODE_ENV', 'development')
+    vi.stubEnv('SN_MPZ_STUDIO_SECRET', SECRET)
+    const res = await PATCH(
+      request('PATCH', { cookie: SECRET, body: { action: 'dialog', label: 'X' } }),
+      routeContext,
+    )
+    expect(res.status).toBe(400)
+    await expect(res.json()).resolves.toMatchObject({ error: 'FORBIDDEN_FIELD' })
+    expect(patchStationHotspot).not.toHaveBeenCalled()
+  })
+
+  it('FORBIDDEN_FIELD → 400', async () => {
     vi.stubEnv('NODE_ENV', 'development')
     vi.stubEnv('SN_MPZ_STUDIO_SECRET', SECRET)
     const { MpzStationHotspotsError } = await import('@/lib/mpz-station-hotspots')
     vi.mocked(patchStationHotspot).mockRejectedValue(
-      new MpzStationHotspotsError('NOT_EDITABLE', 'Dialog-Hotspot'),
+      new MpzStationHotspotsError('FORBIDDEN_FIELD', 'Dialog-Hotspot darf kein mediumId haben.'),
     )
     const res = await PATCH(
-      request('PATCH', { cookie: SECRET, body: { label: 'X' } }),
+      request('PATCH', { cookie: SECRET, body: { mediumId: 'm1' } }),
       routeContext,
     )
-    expect(res.status).toBe(403)
-    await expect(res.json()).resolves.toMatchObject({ error: 'NOT_EDITABLE' })
+    expect(res.status).toBe(400)
+    await expect(res.json()).resolves.toMatchObject({ error: 'FORBIDDEN_FIELD' })
   })
 
   it('INVALID_COORDS → 400', async () => {

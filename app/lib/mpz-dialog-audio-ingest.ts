@@ -19,7 +19,7 @@ import {
   persistFile,
   readHeaderSlice,
 } from '@/lib/mpz-medium-ingest'
-import { HUB_SLUG_MAP } from '@/lib/schoolhouse-hub-map'
+import { getHubSlugOrder, isHubSlug } from '@/lib/schoolhouse-hub-map'
 import type { DialogRolle, Station } from '@/lib/types'
 import { HEADER_SLICE_BYTES, MpzUploadError } from '@/lib/mpz-upload-rules'
 
@@ -29,8 +29,6 @@ const MB = 1024 * 1024
 const MAX_DIALOG_WAV_BYTES = 15 * MB
 const MIN_WAV_BYTES = 1024
 const LFS_POINTER_PREFIX = 'version https://git-lfs.github.com/spec/v1'
-
-const HUB_SLUGS = new Set(Object.keys(HUB_SLUG_MAP))
 
 export type DialogSegmentState = 'ok' | 'fehlt' | 'drift' | 'leer'
 
@@ -161,7 +159,7 @@ export async function auditDialogAudioForSlug(
   slug: string,
   io: MpzContentIo = createMpzContentIo(),
 ): Promise<DialogAudioAuditResult> {
-  if (!HUB_SLUGS.has(slug)) {
+  if (!isHubSlug(slug)) {
     throw new MpzUploadError('VALIDATION', `Unbekannter slug "${slug}".`)
   }
   const data = await io.readStations()
@@ -247,10 +245,10 @@ async function ingestDialogClipInner(
 ): Promise<IngestDialogClipResult> {
   const collision = input.collision ?? 'reject'
 
-  if (!HUB_SLUGS.has(input.slug)) {
+  if (!isHubSlug(input.slug)) {
     throw new MpzUploadError(
       'VALIDATION',
-      `Unbekannter slug "${input.slug}". Erlaubt: ${[...HUB_SLUGS].join(', ')}.`,
+      `Unbekannter slug "${input.slug}". Erlaubt: ${getHubSlugOrder().join(', ')}.`,
     )
   }
 

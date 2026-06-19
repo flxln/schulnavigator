@@ -116,14 +116,15 @@ curl -X POST http://localhost:3000/api/mpz/view/sphere \
   -d '{"slug":"daz","startYaw":-30,"startPitch":-10}'
 ```
 
-**Station-Detail (v1, Epic #158, Issues #159–#168).** Nach `/mpz/unlock`: [https://localhost:3000/mpz/studio/stationen](https://localhost:3000/mpz/studio/stationen) → **Bearbeiten** auf einer Kachel oder direkt z. B. [https://localhost:3000/mpz/studio/stationen/kunst](https://localhost:3000/mpz/studio/stationen/kunst).
+**Station-Detail (v1 #158, v2 #171–#176).** Nach `/mpz/unlock`: [https://localhost:3000/mpz/studio/stationen](https://localhost:3000/mpz/studio/stationen) → **Bearbeiten** auf einer Kachel oder direkt z. B. [https://localhost:3000/mpz/studio/stationen/kunst](https://localhost:3000/mpz/studio/stationen/kunst).
 
 | Tab (`?tab=`) | Kurztest |
 |---------------|----------|
-| `stammdaten` (Default) | `titel`/`beschreibung` ändern → Speichern → Erfolgsmeldung; global **Speichern & Validieren** danach grün |
-| `medien` | Medien-Tabelle; Link zu Ingest; Entfernen mit Bestätigung |
-| `hotspots` | Hotspot anlegen/bearbeiten/entfernen; Kalibrier-Link öffnet `?hotspot-calib=1` oder `/mpz/calib/flat/{slug}` |
-| `dialog-audio` | Nur bei Stationen mit `dialog` (z. B. `daz`, `pc-raum`): Segment-Upload wie globale Dialog-Audio-Seite |
+| `stammdaten` (Default) | `titel`/`beschreibung` ändern → Speichern; Raumbild Flat/360° hochladen (#173) → Vorschau aktualisiert |
+| `medien` | **Bearbeiten** (PATCH Metadaten, #171); **link**/**embed** per Modal anlegen (#172); Ingest-Link; Entfernen mit Bestätigung |
+| `hotspots` | Medien-Hotspot anlegen/bearbeiten/entfernen; Dialog-Hotspot mit Maskottchen (#176); Kalibrier-Link |
+| `dialog` | Nur `daz`/`pc-raum`: Segment-Text ändern, Gruppe anlegen, `bubble`-Felder (#175) |
+| `dialog-audio` | Segment-Upload wie globale Dialog-Audio-Seite (#163) |
 
 Stammdaten-API (optional):
 
@@ -133,6 +134,18 @@ curl -X PATCH "http://localhost:3000/api/mpz/stations/kunst/stammdaten" \
   -H "content-type: application/json" \
   -d '{"beschreibung":"Test aus curl"}'
 ```
+
+**MPZ Studio v2 — Querschnitt (Epic #170, Issues #174–#180).** Nach `/mpz/unlock` über die Studio-Navigation:
+
+| Route | Kurztest |
+|-------|----------|
+| [`/mpz/studio/coach`](https://localhost:3000/mpz/studio/coach) (#177) | Nachricht anlegen (Trigger-Typ wählen) → speichern → in Liste sichtbar → löschen |
+| [`/mpz/studio/embeds`](https://localhost:3000/mpz/studio/embeds) (#178) | Domain zur Allowlist hinzufügen; Übersicht link/embed-Medien aus `stations.json` |
+| [`/mpz/studio/hub`](https://localhost:3000/mpz/studio/hub) (#179) | Slug einem Fenster-Slot zuweisen; Akzentfarbe und Lucide-Icon ändern → speichern |
+| [`/mpz/studio/brand`](https://localhost:3000/mpz/studio/brand) (#180) | Slot-Datei ersetzen → Vorschau mit Cache-Bust (`?t=mtime`) |
+| [`/mpz/studio/deploy`](https://localhost:3000/mpz/studio/deploy) (#174) | **Validate-all** → grün; QR **Dry-Run**; Env lesen (Änderungen an `NEXT_PUBLIC_*` → Dev-Server neu starten) |
+
+Details und API-Referenz: [fuer-entwickler.md](./fuer-entwickler.md) (Abschnitt MPZ Studio).
 
 **Hinweis zu 404:** Die Routen kommen aus `data/stations.json` (`generateStaticParams`). Ein Slug, der **nicht** in der JSON-Datei steht, liefert in der **Produktion** nach `npm run build` eine 404-Seite. Unter `npm run dev` zeigt Next.js oft eine dynamische 404 — zum Verhalten wie online unbedingt **Abschnitt 3** ausführen.
 

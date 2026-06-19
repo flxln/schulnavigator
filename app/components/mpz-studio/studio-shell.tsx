@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import type { ReactNode } from 'react'
+import { useMediaIngest } from '@/components/mpz-studio/media-ingest-modal-context'
 import { PlanABanner } from '@/components/mpz-studio/plan-a-banner'
 import { SaveValidatePanel } from '@/components/mpz-studio/save-validate-panel'
 import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
@@ -10,9 +11,10 @@ import { useStudioValidation } from '@/components/mpz-studio/studio-validation-c
 import type { MpzValidationReport } from '@/lib/mpz-studio-overview'
 
 type NavItem = {
-  href: string
+  href?: string
   label: string
   match: (path: string) => boolean
+  action?: 'openMediaIngest'
 }
 
 const NAV_ITEMS: NavItem[] = [
@@ -27,7 +29,7 @@ const NAV_ITEMS: NavItem[] = [
     match: (path) => path.startsWith('/mpz/studio/stationen'),
   },
   {
-    href: '/mpz/studio/ingest',
+    action: 'openMediaIngest',
     label: 'Medien hochladen',
     match: (path) => path.startsWith('/mpz/studio/ingest'),
   },
@@ -36,9 +38,34 @@ const NAV_ITEMS: NavItem[] = [
     label: 'Dialog-Audio',
     match: (path) => path.startsWith('/mpz/studio/dialog-audio'),
   },
+  {
+    href: '/mpz/studio/coach',
+    label: 'Coach',
+    match: (path) => path.startsWith('/mpz/studio/coach'),
+  },
+  {
+    href: '/mpz/studio/embeds',
+    label: 'Embeds & Links',
+    match: (path) => path.startsWith('/mpz/studio/embeds'),
+  },
+  {
+    href: '/mpz/studio/hub',
+    label: 'Hub-Karte',
+    match: (path) => path.startsWith('/mpz/studio/hub'),
+  },
+  {
+    href: '/mpz/studio/brand',
+    label: 'Brand & Design',
+    match: (path) => path.startsWith('/mpz/studio/brand'),
+  },
+  {
+    href: '/mpz/studio/deploy',
+    label: 'Deploy',
+    match: (path) => path.startsWith('/mpz/studio/deploy'),
+  },
 ]
 
-const DISABLED_V1 = ['Coach', 'Brand & Design', 'Hub-Karte', 'Deploy']
+const DISABLED_V1: string[] = []
 
 const STATION_DETAIL_PATH_RE = /^\/mpz\/studio\/stationen\/([^/]+)$/
 
@@ -56,6 +83,11 @@ function pageTitle(
   if (pathname.startsWith('/mpz/studio/stationen')) return 'Stationen'
   if (pathname.startsWith('/mpz/studio/ingest')) return 'Medien hochladen'
   if (pathname.startsWith('/mpz/studio/dialog-audio')) return 'Dialog-Audio'
+  if (pathname.startsWith('/mpz/studio/coach')) return 'Coach'
+  if (pathname.startsWith('/mpz/studio/embeds')) return 'Embeds & Links'
+  if (pathname.startsWith('/mpz/studio/hub')) return 'Hub-Karte'
+  if (pathname.startsWith('/mpz/studio/brand')) return 'Brand & Design'
+  if (pathname.startsWith('/mpz/studio/deploy')) return 'Deploy'
   return 'MPZ Studio'
 }
 
@@ -65,6 +97,7 @@ export type StudioShellProps = {
 
 export function StudioShell({ children }: StudioShellProps) {
   const pathname = usePathname()
+  const { openMediaIngest } = useMediaIngest()
   const {
     dirty,
     loading,
@@ -91,15 +124,30 @@ export function StudioShell({ children }: StudioShellProps) {
         <nav className="flex flex-1 flex-row gap-1 overflow-x-auto px-2 py-3 md:flex-col md:overflow-x-visible">
           {NAV_ITEMS.map((item) => {
             const active = item.match(pathname)
+            const className = `whitespace-nowrap rounded-gs39-sm px-3 py-2 text-sm font-medium transition-colors md:whitespace-normal ${
+              active
+                ? 'border-l-[3px] border-brand-green bg-white/10 pl-[9px] text-fg-on-dark'
+                : 'border-l-[3px] border-transparent text-white/65 hover:bg-white/5 hover:text-fg-on-dark'
+            }`
+
+            if (item.action === 'openMediaIngest') {
+              return (
+                <button
+                  key={item.label}
+                  type="button"
+                  onClick={() => openMediaIngest()}
+                  className={`${className} w-full text-left`}
+                >
+                  {item.label}
+                </button>
+              )
+            }
+
             return (
               <Link
                 key={item.href}
-                href={item.href}
-                className={`whitespace-nowrap rounded-gs39-sm px-3 py-2 text-sm font-medium transition-colors md:whitespace-normal ${
-                  active
-                    ? 'border-l-[3px] border-brand-green bg-white/10 pl-[9px] text-fg-on-dark'
-                    : 'border-l-[3px] border-transparent text-white/65 hover:bg-white/5 hover:text-fg-on-dark'
-                }`}
+                href={item.href!}
+                className={className}
               >
                 {item.label}
               </Link>

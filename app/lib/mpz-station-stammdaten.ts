@@ -4,7 +4,7 @@ import {
   MpzContentIoError,
   withMpzWriteLock,
 } from '@/lib/mpz-content-io'
-import { HUB_SLUG_MAP } from '@/lib/schoolhouse-hub-map'
+import { isHubSlug } from '@/lib/schoolhouse-hub-map'
 import type { Station, StationsFile, ViewerMode } from '@/lib/types'
 import { getViewerChangeWarnings, type ViewerChangeWarning } from '@/lib/mpz-viewer-warnings'
 
@@ -43,7 +43,7 @@ function applyViewerToStation(station: Station, viewer: ViewerMode): Station {
 }
 
 function findHubStation(data: StationsFile, slug: string): Station {
-  if (!(slug in HUB_SLUG_MAP)) {
+  if (!isHubSlug(slug)) {
     throw new MpzStationStammdatenError('NOT_FOUND', `Unbekannter Hub-Slug "${slug}".`)
   }
   const station = data.stations.find((s) => s.slug === slug)

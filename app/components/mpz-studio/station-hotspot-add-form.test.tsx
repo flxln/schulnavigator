@@ -24,6 +24,12 @@ vi.mock('next/link', () => ({
   ),
 }))
 
+vi.mock('@/components/mpz-studio/media-ingest-modal-context', () => ({
+  useMediaIngest: () => ({
+    openMediaIngest: vi.fn(),
+  }),
+}))
+
 vi.mock('@/components/mpz-studio/studio-validation-context', () => ({
   useStudioValidation: () => ({
     validateNow: vi.fn().mockResolvedValue(undefined),
@@ -48,15 +54,36 @@ describe('StationHotspotAddForm', () => {
     vi.unstubAllGlobals()
   })
 
-  it('ohne Medien: Hinweis auf Ingest', () => {
-    const station = { ...getStationBySlug('kunst')!, medien: [] }
+  it('ohne Medien und ohne Dialog: Hinweis mit Links', () => {
+    const station = { ...getStationBySlug('kunst')!, medien: [], dialog: undefined }
     render(<StationHotspotAddForm slug="kunst" station={station} />)
 
     expect(screen.getByText('Hotspot hinzufügen')).toBeTruthy()
-    expect(screen.getByRole('link', { name: 'Medium hinzufügen' }).getAttribute('href')).toBe(
-      '/mpz/studio/ingest?slug=kunst',
-    )
+    expect(screen.getByRole('button', { name: 'Medium hinzufügen' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Dialog-Tab öffnen' })).toBeTruthy()
     expect(screen.queryByRole('button', { name: 'Hotspot anlegen' })).toBeNull()
+  })
+
+  it('mit Dialog ohne Medien: zeigt Dialog-Formular', () => {
+    const station = {
+      ...getStationBySlug('daz')!,
+      medien: [],
+    }
+    render(<StationHotspotAddForm slug="daz" station={station} />)
+
+    expect(screen.getByLabelText('Typ')).toBeTruthy()
+    expect(screen.getByLabelText('Maskottchen')).toBeTruthy()
+    expect(screen.queryByLabelText('Medium')).toBeNull()
+  })
+
+  it('mit Medien und Dialog: Typ-Umschaltung', () => {
+    const station = getStationBySlug('pc-raum')!
+    render(<StationHotspotAddForm slug="pc-raum" station={station} />)
+
+    expect(screen.getByLabelText('Medium')).toBeTruthy()
+    fireEvent.change(screen.getByLabelText('Typ'), { target: { value: 'dialog' } })
+    expect(screen.getByLabelText('Maskottchen')).toBeTruthy()
+    expect(screen.queryByLabelText('Medium')).toBeNull()
   })
 
   it('mit Medien: zeigt Formularfelder für Sphere', async () => {

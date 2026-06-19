@@ -1,0 +1,52 @@
+import { describe, expect, it } from 'vitest'
+import { validateCoachMessagesContent } from '@/lib/mpz-coach-messages-validation'
+import type { CoachMessagesFile } from '@/lib/types'
+
+const stationSlugs = new Set(['klassenzimmer', 'musik'])
+const stationCount = 2
+
+function validFile(): CoachMessagesFile {
+  return {
+    messages: [
+      {
+        id: 'complete',
+        trigger: 'hub-complete',
+        mascot: 'duo',
+        placement: 'duo-split',
+        text: 'Fertig',
+      },
+      {
+        id: 'm0',
+        trigger: 'hub-milestone',
+        milestone: 0,
+        mascot: 'frieda',
+        placement: 'left',
+        text: 'Hi',
+      },
+    ],
+  }
+}
+
+describe('validateCoachMessagesContent', () => {
+  it('akzeptiert gültige Datei', () => {
+    expect(validateCoachMessagesContent(validFile(), stationCount, stationSlugs)).toEqual(
+      [],
+    )
+  })
+
+  it('meldet fehlende hub-complete', () => {
+    const errors = validateCoachMessagesContent(
+      { messages: validFile().messages.filter((m) => m.trigger !== 'hub-complete') },
+      stationCount,
+      stationSlugs,
+    )
+    expect(errors.some((e) => e.includes('hub-complete'))).toBe(true)
+  })
+
+  it('meldet milestone außerhalb Bereich', () => {
+    const file = validFile()
+    file.messages[1] = { ...file.messages[1]!, milestone: 5 }
+    const errors = validateCoachMessagesContent(file, stationCount, stationSlugs)
+    expect(errors.some((e) => e.includes('außerhalb'))).toBe(true)
+  })
+})

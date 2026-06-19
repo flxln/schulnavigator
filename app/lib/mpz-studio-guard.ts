@@ -31,10 +31,10 @@ export function isMpzStudioAuthorized(req: NextRequest): boolean {
 
 export function assertMpzStudioAccess(req: NextRequest): NextResponse | null {
   if (!isMpzStudioEnabled()) {
-    return NextResponse.json({ error: 'not_found' }, { status: 404 })
+    return NextResponse.json({ error: 'NOT_FOUND' }, { status: 404 })
   }
   if (!isMpzStudioAuthorized(req)) {
-    return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+    return NextResponse.json({ error: 'UNAUTHORIZED' }, { status: 401 })
   }
   return null
 }

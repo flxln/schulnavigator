@@ -11,7 +11,7 @@ export const GET = withMpzStudioAccess(async (req: NextRequest) => {
   const slug = req.nextUrl.searchParams.get('slug')?.trim()
   if (!slug) {
     return NextResponse.json(
-      { error: 'missing_slug', message: 'Query-Parameter "slug" fehlt.' },
+      { error: 'MISSING_SLUG', message: 'Query-Parameter "slug" fehlt.' },
       { status: 400 },
     )
   }
@@ -32,7 +32,7 @@ export const GET = withMpzStudioAccess(async (req: NextRequest) => {
       return NextResponse.json({ error: err.code, message: err.message }, { status: 422 })
     }
     return NextResponse.json(
-      { error: 'internal', message: 'Status konnte nicht geladen werden.' },
+      { error: 'INTERNAL_ERROR', message: 'Status konnte nicht geladen werden.' },
       { status: 500 },
     )
   }

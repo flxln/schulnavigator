@@ -26,10 +26,11 @@ import {
 } from '@/lib/dialog-bubble-layout'
 import {
   buildHubStations,
-  HUB_SLUG_MAP,
+  getHubSlugMap,
 } from '@/lib/schoolhouse-hub-map'
+import type { HubSlugMapping } from '@/lib/mpz-hub-config-validation'
 import {
-  DEFAULT_EMBED_ALLOW_SUFFIXES,
+  getEmbedAllowSuffixes,
   isEmbedAllowSubset,
   isEmbedUrlAllowed,
   resolveEmbedAllowlist,
@@ -45,8 +46,6 @@ import {
   normalizeYawDeg,
   roundDeg,
 } from '@/lib/raum-viewer/sphere-marker-conventions'
-
-const EXPECTED_STATION_COUNT = Object.keys(HUB_SLUG_MAP).length
 
 const MEDIUM_TYPEN: readonly MediumTyp[] = [
   'audio',
@@ -100,7 +99,16 @@ function isMediumTyp(v: unknown): v is MediumTyp {
   )
 }
 
-function validateMedium(m: unknown, ctx: string): Medium {
+export type ValidateStationsFileOptions = {
+  embedAllowSuffixes?: readonly string[]
+  hubSlugMap?: Record<string, HubSlugMapping>
+}
+
+function validateMedium(
+  m: unknown,
+  ctx: string,
+  embedAllowSuffixes: readonly string[],
+): Medium {
   assert(isRecord(m), `${ctx}: Medium ist kein Objekt`)
   assert(typeof m.id === 'string' && m.id.length > 0, `${ctx}: medium.id fehlt`)
   assert(isMediumTyp(m.typ), `${ctx}: medium.typ ungültig (${String(m.typ)})`)
@@ -144,13 +152,16 @@ function validateMedium(m: unknown, ctx: string): Medium {
         )
       }
       assert(
-        isEmbedAllowSubset(m.embedAllow as string[]),
-        `${ctx}: embedAllow darf nur Einträge aus ${DEFAULT_EMBED_ALLOW_SUFFIXES.join(', ')} enthalten`,
+        isEmbedAllowSubset(m.embedAllow as string[], embedAllowSuffixes),
+        `${ctx}: embedAllow darf nur Einträge aus ${embedAllowSuffixes.join(', ')} enthalten`,
       )
     }
-    const allowlist = resolveEmbedAllowlist({
-      embedAllow: m.embedAllow as string[] | undefined,
-    })
+    const allowlist = resolveEmbedAllowlist(
+      {
+        embedAllow: m.embedAllow as string[] | undefined,
+      },
+      embedAllowSuffixes,
+    )
     assert(
       isEmbedUrlAllowed(m.quelle, allowlist),
       `${ctx}: embed.quelle muss gültige https-URL auf Allowlist-Domain sein`,
@@ -694,7 +705,12 @@ function validateDialog(raw: unknown, prefix: string): Dialog {
   }
 }
 
-function validateStation(raw: unknown, index: number): Station {
+function validateStation(
+  raw: unknown,
+  index: number,
+  embedAllowSuffixes: readonly string[],
+  hubSlugMap: Record<string, HubSlugMapping>,
+): Station {
   const prefix = `stations[${index}]`
   assert(isRecord(raw), `${prefix}: Station ist kein Objekt`)
   assert(
@@ -706,7 +722,7 @@ function validateStation(raw: unknown, index: number): Station {
     `${prefix}: slug "${raw.slug}" ist kein kebab-case`,
   )
   assert(
-    raw.slug in HUB_SLUG_MAP,
+    raw.slug in hubSlugMap,
     `${prefix}: slug "${raw.slug}" hat keine Hub-Zuordnung (ADR-016)`,
   )
   assert(
@@ -757,7 +773,7 @@ function validateStation(raw: unknown, index: number): Station {
   }
   assert(Array.isArray(raw.medien), `${prefix}: medien muss Array sein`)
   const medien = raw.medien.map((m, i) =>
-    validateMedium(m, `${prefix}.medien[${i}]`),
+    validateMedium(m, `${prefix}.medien[${i}]`, embedAllowSuffixes),
   )
   const mediumIds = new Set<string>()
   for (const medium of medien) {
@@ -860,21 +876,29 @@ function validateStation(raw: unknown, index: number): Station {
   }
 }
 
-export function validateStationsFile(raw: unknown): Station[] {
+export function validateStationsFile(
+  raw: unknown,
+  options?: ValidateStationsFileOptions,
+): Station[] {
+  const embedAllowSuffixes = options?.embedAllowSuffixes ?? getEmbedAllowSuffixes()
+  const hubSlugMap = options?.hubSlugMap ?? getHubSlugMap()
+  const expectedStationCount = Object.keys(hubSlugMap).length
   assert(isRecord(raw), 'Root muss Objekt sein')
   assert(Array.isArray(raw.stations), 'stations muss Array sein')
   assert(raw.stations.length > 0, 'stations ist leer')
   assertUniqueStationSlugs(raw.stations)
-  const stations = raw.stations.map((s, i) => validateStation(s, i))
+  const stations = raw.stations.map((s, i) =>
+    validateStation(s, i, embedAllowSuffixes, hubSlugMap),
+  )
   const slugs = new Set(stations.map((s) => s.slug))
   assert(
-    stations.length === EXPECTED_STATION_COUNT,
-    `stations: erwartet ${EXPECTED_STATION_COUNT} Einträge, erhalten ${stations.length}`,
+    stations.length === expectedStationCount,
+    `stations: erwartet ${expectedStationCount} Einträge, erhalten ${stations.length}`,
   )
-  const expectedSlugs = new Set(Object.keys(HUB_SLUG_MAP))
+  const expectedSlugs = new Set(Object.keys(hubSlugMap))
   for (const slug of expectedSlugs) {
     assert(slugs.has(slug), `stations: fehlender slug "${slug}" für Hub`)
   }
-  buildHubStations(stations)
+  buildHubStations(stations, { hubSlugMap })
   return stations
 }

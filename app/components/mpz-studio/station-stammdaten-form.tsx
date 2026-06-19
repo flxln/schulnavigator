@@ -7,6 +7,7 @@ import {
   markMpzStudioDirty,
   useStudioValidation,
 } from '@/components/mpz-studio/studio-validation-context'
+import { StationRaumbildUpload } from '@/components/mpz-studio/station-raumbild-upload'
 import {
   getViewerChangeWarnings,
   hasBlockingHotspots,
@@ -40,9 +41,11 @@ export function StationStammdatenForm({ slug, station }: StationStammdatenFormPr
   const [busy, setBusy] = useState(false)
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
   const [success, setSuccess] = useState<string | null>(null)
+  const [localStation, setLocalStation] = useState<Station | null>(station)
 
   useEffect(() => {
     if (!station) return
+    setLocalStation(station)
     setTitel(station.titel)
     setBeschreibung(station.beschreibung)
     setViewer(resolveViewer(station))
@@ -67,7 +70,7 @@ export function StationStammdatenForm({ slug, station }: StationStammdatenFormPr
     )
   }
 
-  const stationRef = station
+  const stationRef = localStation ?? station
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -253,24 +256,11 @@ export function StationStammdatenForm({ slug, station }: StationStammdatenFormPr
         )}
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2">
-        <label className="flex flex-col gap-1">
-          <span className="font-semibold text-fg-2">Raumbild (read-only)</span>
-          <code className={`break-all font-mono text-xs ${inputClass}`}>
-            {stationRef.bild ?? '—'}
-          </code>
-        </label>
-        <label className="flex flex-col gap-1">
-          <span className="font-semibold text-fg-2">Panorama 360° (read-only)</span>
-          <code className={`break-all font-mono text-xs ${inputClass}`}>
-            {stationRef.panorama360 ?? '—'}
-          </code>
-        </label>
-      </div>
-      <p className="text-fg-3">
-        Raumbilder manuell unter <code className="font-mono text-xs">public/stations/</code>{' '}
-        ablegen.
-      </p>
+      <StationRaumbildUpload
+        slug={slug}
+        station={stationRef}
+        onStationUpdated={setLocalStation}
+      />
 
       <button
         type="submit"

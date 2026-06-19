@@ -191,7 +191,9 @@ Orientierung: Eintrag `klassenzimmer` in `stations.json` (Issue **#93**).
 | `thumbnail` | nein | Vorschaubild unter `/public/…` — Medienliste und Hotspot-Fallback ([ADR-017](../dokumentation/adr/017-externe-medien-hotspot-marker.md) Stufe 1) |
 | `videoSource` | bei Video | `upload` (Standard) oder `youtube` (MVP: nur Hinweistext, kein Embed) |
 | `poster` | nein | Nur bei `typ: video` — Vorschaubild-Pfad |
-| `embedAllow` | bei `embed` | Optional; nur Subset von `delightex.com`, `bookcreator.com` (Code-Default) — verengen erlaubt, keine neuen Domains |
+| `embedAllow` | bei `embed` | Optional; nur Subset der globalen Liste in `data/embed-allowlist.json` — verengen erlaubt; neue Domains über MPZ Studio (#178) |
+
+**Hub-Konfiguration (#179):** Slug↔Slot-Zuordnung, Akzentfarben und Lucide-Icons pro Station liegen in `data/hub-slug-map.json`, `data/station-accents.json` und `data/station-icons.json` — bearbeitbar über MPZ Studio [`/mpz/studio/hub`](http://localhost:3000/mpz/studio/hub). Slot-Geometrie (`HUB_SLOTS` in Code) bleibt unverändert.
 
 ### Video-Modi (`videoSource`)
 
@@ -245,7 +247,7 @@ Nur bei `viewer: "equirectangular"`. Steuert, **wohin die Kamera beim Öffnen de
 
 Gleiche Konvention wie `hotspots360[].yaw` / `pitch`. **Nicht** dasselbe wie Hotspot-Koordinaten — Startblick und Hotspots unabhängig pflegen.
 
-**Pflege:** Manuell in JSON; Dev-Übernahme aus aktueller Sphere-Ansicht geplant (#153, MPZ Studio). Issue #152 (Runtime).
+**Pflege:** Manuell in JSON oder MPZ Studio: im Kalibrier-Overlay **Als Startblick übernehmen** (`POST /api/mpz/view/sphere`, #153). Runtime: Issue #152.
 
 ### Startausschnitt Flat — `startPanX` (optional, [ADR-024](../dokumentation/adr/024-flat-startpan.md))
 
