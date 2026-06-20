@@ -10,7 +10,7 @@ Abgleich mit [flxln/schulnavigator](https://github.com/flxln/schulnavigator). **
 | [milestones.md](./milestones.md) | Milestone-Beschreibungen für GitHub |
 | [labels.md](./labels.md) | Label-Konventionen |
 | [issues-schulfest-gs39-nachtrag.md](./issues-schulfest-gs39-nachtrag.md) | Epic **#86** — Schulfest/Hof-QR/Content |
-| [issues-startblick.md](./issues-startblick.md) | Startblick Sphere (#152–#153) und Flat-Startpan (#154) |
+| [issues-startblick.md](./issues-startblick.md) | Startblick Sphere (#152–#153) und Flat-Startpan (#154, #185) |
 
 ## Archiv
 

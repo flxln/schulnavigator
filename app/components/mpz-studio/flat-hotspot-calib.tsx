@@ -17,6 +17,7 @@ export type FlatHotspotCalibProps = {
   titel: string
   bild: string
   hotspots: Hotspot[]
+  embedded?: boolean
 }
 
 type LayoutState = {
@@ -33,6 +34,7 @@ export function FlatHotspotCalib({
   titel,
   bild,
   hotspots,
+  embedded = false,
 }: FlatHotspotCalibProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [naturalSize, setNaturalSize] = useState({ w: 0, h: 0 })
@@ -147,31 +149,14 @@ export function FlatHotspotCalib({
     }
   }, [marker, selectedId, slug])
 
-  return (
-    <div className="flex min-h-[calc(100dvh-0px)] flex-col bg-[#0f1420] text-fg-on-dark">
-      <div className="flex h-[50px] shrink-0 items-center gap-3 border-b border-white/10 bg-[#1a2035] px-5">
-        <Link
-          href="/mpz/studio/stationen"
-          className="text-sm text-white/60 hover:text-white/90"
-        >
-          ← Zurück
-        </Link>
-        <span className="text-white/30">|</span>
-        <span className="text-sm text-white/80">
-          Flat-Kalibrierung · <span className="font-mono">{slug}</span>
-        </span>
-        <span className="ml-auto rounded-full border border-brand-sun/40 bg-brand-sun/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-brand-sun">
-          calib · nur lokal
-        </span>
-      </div>
-
-      <div className="flex min-h-0 flex-1 flex-col md:flex-row">
-        <div
-          ref={containerRef}
-          className={`relative min-h-[50vh] flex-1 ${applied ? 'cursor-default' : 'cursor-crosshair'}`}
-          onClick={handlePanoClick}
-          role="presentation"
-        >
+  const body = (
+    <div className="flex min-h-0 flex-1 flex-col md:flex-row">
+      <div
+        ref={containerRef}
+        className={`relative min-h-[50vh] flex-1 ${applied ? 'cursor-default' : 'cursor-crosshair'}`}
+        onClick={handlePanoClick}
+        role="presentation"
+      >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={bild}
@@ -289,6 +274,30 @@ export function FlatHotspotCalib({
           {error ? <p className="text-sm text-brand-red">{error}</p> : null}
         </aside>
       </div>
+  )
+
+  if (embedded) {
+    return body
+  }
+
+  return (
+    <div className="flex min-h-[calc(100dvh-0px)] flex-col bg-[#0f1420] text-fg-on-dark">
+      <div className="flex h-[50px] shrink-0 items-center gap-3 border-b border-white/10 bg-[#1a2035] px-5">
+        <Link
+          href="/mpz/studio/stationen"
+          className="text-sm text-white/60 hover:text-white/90"
+        >
+          ← Zurück
+        </Link>
+        <span className="text-white/30">|</span>
+        <span className="text-sm text-white/80">
+          Flat-Kalibrierung · <span className="font-mono">{slug}</span>
+        </span>
+        <span className="ml-auto rounded-full border border-brand-sun/40 bg-brand-sun/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-brand-sun">
+          calib · nur lokal
+        </span>
+      </div>
+      {body}
     </div>
   )
 }

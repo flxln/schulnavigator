@@ -3,6 +3,7 @@ import {
   type MpzContentIo,
   withMpzWriteLock,
 } from '@/lib/mpz-content-io'
+import { roundNorm } from '@/lib/mpz-hotspot-calib'
 import { isHubSlug } from '@/lib/schoolhouse-hub-map'
 import {
   normalizeYawDeg,
@@ -81,5 +82,47 @@ export async function applySphereStartView(
     )
 
     return { slug: input.slug, startYaw, startPitch }
+  })
+}
+
+export async function applyFlatStartPan(
+  input: { slug: string; startPanX: number },
+  io: MpzContentIo = createMpzContentIo(),
+): Promise<{ slug: string; startPanX: number }> {
+  return withMpzWriteLock(async () => {
+    if (!isHubSlug(input.slug)) {
+      throw new MpzViewIngestError('VALIDATION', `Unbekannter slug "${input.slug}".`)
+    }
+    if (!Number.isFinite(input.startPanX)) {
+      throw new MpzViewIngestError('VALIDATION', 'startPanX muss eine Zahl sein.')
+    }
+
+    const startPanX = roundNorm(input.startPanX)
+    const data = await io.readStations()
+    const station = findStation(data, input.slug)
+    const viewer = resolveViewer(station)
+    if (viewer !== 'flat') {
+      throw new MpzViewIngestError(
+        'VALIDATION',
+        `Station "${input.slug}" ist kein Flat-Viewer.`,
+      )
+    }
+
+    const nextStations = data.stations.map((s) =>
+      s.slug === input.slug ? { ...s, startPanX } : s,
+    )
+
+    await io.writeStations(
+      { stations: nextStations },
+      {
+        strict: true,
+        validateAssets: false,
+        makeBackup: true,
+        postValidate: true,
+        touchedSlugs: [input.slug],
+      },
+    )
+
+    return { slug: input.slug, startPanX }
   })
 }

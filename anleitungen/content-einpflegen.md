@@ -257,7 +257,7 @@ Nur bei `viewer` fehlend oder `"flat"`. Horizontale **Startposition** der Viewpo
 |------|---------|-----------------|
 | `startPanX` | nein | 0…1; `0` = linker Rand (heutiges Default-Verhalten), `0.5` = Bildmitte |
 
-**Pflege:** Manuell schätzen und am Gerät prüfen; MPZ Studio: `/mpz/calib/flat/{slug}` → „Als Startpan übernehmen“ ([#185](https://github.com/flxln/schulnavigator/issues/185), geplant). Runtime: #154 (umgesetzt).
+**Pflege:** Manuell schätzen und am Gerät prüfen; MPZ Studio: `/mpz/calib/flat/{slug}` → Tab **Startpan** → „Als Startpan übernehmen“ ([#185](https://github.com/flxln/schulnavigator/issues/185)). Runtime: #154 (umgesetzt).
 
 ### `dialog` — Sprecherwechsel und Text (**heute pflegbar**)
 

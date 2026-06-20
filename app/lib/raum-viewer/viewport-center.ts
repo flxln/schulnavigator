@@ -13,6 +13,14 @@ export function normalizedViewportCenter(
   return { x: clamp(x, 0, 1), y: 0.5 }
 }
 
+export function startPanXFromPanChange(
+  panPx: number,
+  effectiveDisplayW: number,
+  containerW: number,
+): number {
+  return normalizedViewportCenter(panPx, containerW, effectiveDisplayW).x
+}
+
 export function panPxFromStartPanX(
   startPanX: number,
   containerW: number,

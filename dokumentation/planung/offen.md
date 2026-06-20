@@ -8,9 +8,7 @@ Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eing
 
 ## Technik (MPZ / Viewer)
 
-| Issue | Thema | Hinweis |
-|-------|--------|---------|
-| [#185](https://github.com/flxln/schulnavigator/issues/185) | Flat-Startpan MPZ persistieren | Folge zu #154; Plan [flat-startpan_mpz_#185.plan.md](../../.cursor/plans/flat-startpan_mpz_%23185.plan.md) |
+*(keine offenen Startblick/Startpan-Issues — #185 erledigt 2026-06-20)*
 
 ## GitHub — noch offen
 
