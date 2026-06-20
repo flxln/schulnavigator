@@ -27,7 +27,7 @@ Leitplanken unverändert (ADR-022): nur `NODE_ENV=development`, `assertMpzStudio
 | **Epic (Parent)** | `#186` | MPZ Studio v2.1 — Medien-Datei ersetzen (ADR-022) | `tech` | — |
 | Unterissue | `#187` | Domain + API: `replaceStationMediumFile` **(erledigt 2026-06-20)** | `tech`, `blocker` | — |
 | Unterissue | `#188` | UI: „Datei ersetzen“ im Medien-Editor **(erledigt 2026-06-20)** | `tech` | #187 |
-| Unterissue | `#189` | Thumbnail- und Poster-Upload (Medien) | `tech` | #187 |
+| Unterissue | `#189` | Thumbnail- und Poster-Upload (Medien) **(erledigt 2026-06-20)** | `tech` | #187 |
 | Unterissue | `#190` | Doku & Epic-Abschluss v2.1 | `tech`, `documentation` | #187–#189 |
 
 **Empfohlene Reihenfolge:** Domain/API → UI Datei ersetzen ∥ Thumbnail/Poster (parallel möglich) → Doku
@@ -112,7 +112,7 @@ In `StationMediumEditForm`:
 
 | Feld | Erlaubter `typ` des Mediums | Upload-Regeln | Zielordner |
 |------|----------------------------|---------------|------------|
-| `thumbnail` | alle außer reinem Pfad-Fall | `foto`-Regeln (`UPLOAD_RULES.foto`) | `/media/{slug}/fotos/` |
+| `thumbnail` | alle `MediumTyp`-Werte | `foto`-Regeln (`UPLOAD_RULES.foto`) | `/media/{slug}/fotos/` |
 | `poster` | nur `video` | `foto`-Regeln | `/media/{slug}/fotos/` |
 
 **API:**
@@ -150,8 +150,8 @@ Nach Upload: `thumbnail`/`poster` in JSON setzen (relativer Pfad `/media/…`). 
 - [ ] Ersetzen einer MP3 für bestehendes Audio-Medium: gleiche `medium.id`, Hotspot zeigt weiter auf dasselbe Medium.
 - [ ] Ersetzen mit anderer Endung (`.txt` → `.md`): `quelle` in JSON korrekt, alte Datei entfernt wenn unreferenziert.
 - [ ] Video mit `videoSource: youtube`: kein Datei-Replace in UI; API lehnt ab.
-- [ ] Thumbnail-Upload setzt `thumbnail`-Pfad ohne manuelles Tippen.
-- [ ] Poster-Upload nur bei `typ: video`.
+- [x] Thumbnail-Upload setzt `thumbnail`-Pfad ohne manuelles Tippen. (#189, 2026-06-20)
+- [x] Poster-Upload nur bei `typ: video`. (#189, 2026-06-20)
 
 **Technik**
 
@@ -186,6 +186,6 @@ Nach Upload: `thumbnail`/`poster` in JSON setzen (relativer Pfad `/media/…`). 
 - [x] Epic + Unterissues auf GitHub (#186–#190)
 - [x] Domain + API (#187)
 - [x] UI Datei ersetzen (#188)
-- [ ] Thumbnail/Poster-Upload
+- [x] Thumbnail/Poster-Upload (#189, 2026-06-20)
 - [ ] Doku & Epic-Abschluss
 - [ ] Merge Branch `mpz-studio-v2.1` → `main`

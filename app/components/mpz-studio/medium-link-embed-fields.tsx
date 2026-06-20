@@ -1,5 +1,6 @@
 'use client'
 
+import { MediumAssetUploadField } from '@/components/mpz-studio/medium-asset-upload-field'
 import {
   isEmbedEnabled,
   isEmbedUrlAllowed,
@@ -15,6 +16,14 @@ export type LinkEmbedFormValues = {
   embedAllow: string[]
 }
 
+export type ThumbnailAssetUploadProps = {
+  uploadDisabled: boolean
+  uploadDisabledHint?: string
+  onPickFile: (file: File) => void
+  busy: boolean
+  uploadError?: string | null
+}
+
 export type MediumLinkEmbedFieldsProps = {
   typ: 'link' | 'embed'
   slug: string
@@ -25,6 +34,7 @@ export type MediumLinkEmbedFieldsProps = {
     value: LinkEmbedFormValues[K],
   ) => void
   idPrefix: string
+  thumbnailAssetUpload?: ThumbnailAssetUploadProps
 }
 
 function fieldClassName(): string {
@@ -55,6 +65,7 @@ export function MediumLinkEmbedFields({
   values,
   onChange,
   idPrefix,
+  thumbnailAssetUpload,
 }: MediumLinkEmbedFieldsProps) {
   const quelleTrimmed = values.quelle.trim()
   const httpsOk = quelleTrimmed === '' || isValidHttpsUrl(quelleTrimmed)
@@ -122,23 +133,38 @@ export function MediumLinkEmbedFields({
         />
       </div>
 
-      <div className="sm:col-span-2">
-        <label htmlFor={`${idPrefix}-thumbnail`} className={labelClassName()}>
-          thumbnail (optional)
-        </label>
-        <input
-          id={`${idPrefix}-thumbnail`}
-          type="text"
+      {thumbnailAssetUpload ? (
+        <MediumAssetUploadField
+          field="thumbnail"
+          slug={slug}
           value={values.thumbnail}
-          onChange={(e) => onChange('thumbnail', e.target.value)}
-          placeholder="/media/…"
-          className={`${fieldClassName()} font-mono text-xs`}
+          onPathChange={(path) => onChange('thumbnail', path)}
+          uploadDisabled={thumbnailAssetUpload.uploadDisabled}
+          uploadDisabledHint={thumbnailAssetUpload.uploadDisabledHint}
+          onPickFile={thumbnailAssetUpload.onPickFile}
+          busy={thumbnailAssetUpload.busy}
+          idPrefix={idPrefix}
+          uploadError={thumbnailAssetUpload.uploadError}
         />
-        <p className="mt-1 text-xs text-fg-3">
-          Pfad unter <code className="font-mono">/media/{slug}/</code> oder anderem öffentlichen
-          Pfad.
-        </p>
-      </div>
+      ) : (
+        <div className="sm:col-span-2">
+          <label htmlFor={`${idPrefix}-thumbnail`} className={labelClassName()}>
+            thumbnail (optional)
+          </label>
+          <input
+            id={`${idPrefix}-thumbnail`}
+            type="text"
+            value={values.thumbnail}
+            onChange={(e) => onChange('thumbnail', e.target.value)}
+            placeholder="/media/…"
+            className={`${fieldClassName()} font-mono text-xs`}
+          />
+          <p className="mt-1 text-xs text-fg-3">
+            Pfad unter <code className="font-mono">/media/{slug}/</code> oder anderem öffentlichen
+            Pfad.
+          </p>
+        </div>
+      )}
 
       {typ === 'link' && (
         <div className="sm:col-span-2">
