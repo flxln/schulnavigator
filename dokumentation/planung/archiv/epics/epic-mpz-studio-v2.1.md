@@ -1,7 +1,7 @@
 # Epic: MPZ Studio v2.1 — Medien-Datei ersetzen (ADR-022)
 
 **Milestone:** [MPZ Studio v2.1](https://github.com/flxln/schulnavigator/milestone/10) (GitHub #10)
-**Status:** abgeschlossen (2026-06-20) · Branch `mpz-studio-v2.1` (Merge nach `main` ausstehend)
+**Status:** abgeschlossen (2026-06-20) · gemerged nach `main` ausstehend ([PR #194](https://github.com/flxln/schulnavigator/pull/194))
 **GitHub Epic:** [#186](https://github.com/flxln/schulnavigator/issues/186)
 **Parent:** Epic [#170](./epic-mpz-studio-v2.md) (v2 abgeschlossen)
 
@@ -173,4 +173,4 @@ In `StationMediumEditForm`: Abschnitt **„Datei ersetzen“** für `audio` | `v
 - [x] UI Datei ersetzen (#188)
 - [x] Thumbnail/Poster-Upload (#189)
 - [x] Doku & Epic-Abschluss (#190) — umgesetzt 2026-06-20, Post-Mortem [post-mortem-190-2026-06-20.md](../../../reviews/post-mortem/post-mortem-190-2026-06-20.md)
-- [ ] Merge Branch `mpz-studio-v2.1` → `main` (PR ausstehend)
+- [x] Merge Branch `mpz-studio-v2.1` → `main` — [PR #194](https://github.com/flxln/schulnavigator/pull/194)
