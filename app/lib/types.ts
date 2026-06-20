@@ -205,6 +205,8 @@ export interface CoachMessage {
   modes?: readonly CoachMode[]
   /** Optionale Figur-/Blasen-Geometrie — fehlt → globale CSS-Defaults. */
   layout?: CoachMessageLayout
+  /** Optionale Audio-Quelle — Konvention `/api/coach/{id}` (ADR-025). */
+  quelle?: string
 }
 
 export interface CoachMessagesFile {

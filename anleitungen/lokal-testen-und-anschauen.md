@@ -144,7 +144,7 @@ curl -X PATCH "http://localhost:3000/api/mpz/stations/kunst/stammdaten" \
 
 | Route | Kurztest |
 |-------|----------|
-| [`/mpz/studio/coach`](https://localhost:3000/mpz/studio/coach) (#177, Layout #192) | Nachricht anlegen → optional Layout-Felder/Spiegelung → speichern → Hub/Raum prüfen → „Auf Standard“ setzt `layout: null` |
+| [`/mpz/studio/coach`](https://localhost:3000/mpz/studio/coach) (#177, Layout #192, Audio #193) | Nachricht anlegen → optional Layout/Audio → speichern → Hub/Raum prüfen (Autoplay nach Scan auf iPhone testen) |
 | [`/mpz/studio/embeds`](https://localhost:3000/mpz/studio/embeds) (#178) | Domain zur Allowlist hinzufügen; Übersicht link/embed-Medien aus `stations.json` |
 | [`/mpz/studio/hub`](https://localhost:3000/mpz/studio/hub) (#179) | Slug einem Fenster-Slot zuweisen; Akzentfarbe und Lucide-Icon ändern → speichern |
 | [`/mpz/studio/brand`](https://localhost:3000/mpz/studio/brand) (#180) | Slot-Datei ersetzen → Vorschau mit Cache-Bust (`?t=mtime`) |
@@ -268,6 +268,7 @@ Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/archiv/pr
 10. `prefers-reduced-motion`: kein Slide, Text sichtbar
 11. **Overlay-Priorität (iOS):** `schulnav.pan-onboarding.seen` + Coach-Keys leeren → Raum mit Room-Coach (`klassenzimmer`/`musik`/`hort`) → nur Gyro-Dialog (kein Coach-Flackern) → nach Freigabe nur Pan-Hinweis → danach Room-Coach
 12. **Desktop (gyrolos):** gleicher Raum, Coach-Keys leer → kein Gyro/Pan, Room-Coach erscheint direkt
+13. **Coach-Audio (#193):** Message mit `quelle` + WAV im Studio → Hub/Raum: Autoplay; bei blockiertem `play()` Replay-Icon; Schließen stoppt Audio
 13. **Tablet-Spalte (Folge #74):** DevTools 768×1024 und 1024×768 — Backdrop fullscreen; Figuren, Blase und Schließen-Button innerhalb `.sn-page-container` (nicht am Viewport-Rand); `duo-split` auf `/` bei 12/12
 
 **Stationssymbole (#105):**

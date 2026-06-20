@@ -68,4 +68,23 @@ describe('validateCoachMessagesContent', () => {
     }
     expect(validateCoachMessagesContent(file, stationCount, stationSlugs)).toEqual([])
   })
+
+  it('meldet ungültige quelle', () => {
+    const file = validFile()
+    file.messages[1] = {
+      ...file.messages[1]!,
+      quelle: '/api/coach/wrong',
+    }
+    const errors = validateCoachMessagesContent(file, stationCount, stationSlugs)
+    expect(errors.some((e) => e.includes('quelle muss'))).toBe(true)
+  })
+
+  it('akzeptiert gültige quelle (Format)', () => {
+    const file = validFile()
+    file.messages[1] = {
+      ...file.messages[1]!,
+      quelle: '/api/coach/m0',
+    }
+    expect(validateCoachMessagesContent(file, stationCount, stationSlugs)).toEqual([])
+  })
 })
