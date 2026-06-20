@@ -347,4 +347,4 @@ Report-Only-CSP in erzwungene Policy gemerged; `Permissions-Policy` für Kamera/
 - [x] `Permissions-Policy`: `camera`, `gyroscope`, `accelerometer`, `magnetometer` für `(self)`
 - [x] Tests: `security-headers.test.ts`, `next.config.test.ts`
 - [x] Doku Entwickler-Runbook (Security-Header-Abschnitt)
-- [ ] Manueller Smoke nach Deploy (Scan, Flat, 360°, Embed) — Feldtest
+- [x] Manueller Smoke nach Deploy (Header `curl`, Scan/Flat/360°/Embed am Gerät) — 2026-06-20
