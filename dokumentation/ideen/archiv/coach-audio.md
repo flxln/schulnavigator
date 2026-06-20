@@ -2,7 +2,7 @@
 
 _Kurzfristige Idee — optionale gesprochene Kurzclips zu Coach-Einblendungen. Ergänzt [ADR-019](../../adr/019-coach-fortschritt-einblendung.md) (text-only MVP), ersetzt weder Dialog-Audio noch den Coach-Editor [#177](https://github.com/flxln/schulnavigator/issues/177)._
 
-**Bezug:** [ADR-019](../../adr/019-coach-fortschritt-einblendung.md) · [ADR-010](../../adr/010-dialog-cutscene-gated-audio.md) (gated Audio, iOS) · [Fortschritts-Einblendung](../archiv/maskottchen-fortschritt-einblendung.md) · Coach-Editor: `content/coach-messages.json`, `/mpz/studio/coach` · Epic: [epic-coach-erweiterungen.md](../../planung/epic-coach-erweiterungen.md) · Voraussetzung: [coach-layout.md](../archiv/coach-layout.md) (#192 erledigt)
+**Bezug:** [ADR-019](../../adr/019-coach-fortschritt-einblendung.md) · [ADR-010](../../adr/010-dialog-cutscene-gated-audio.md) (gated Audio, iOS) · [Fortschritts-Einblendung](../archiv/maskottchen-fortschritt-einblendung.md) · Coach-Editor: `content/coach-messages.json`, `/mpz/studio/coach` · Epic: [epic-coach-erweiterungen.md](../../planung/archiv/epics/epic-coach-erweiterungen.md) · Voraussetzung: [coach-layout.md](../archiv/coach-layout.md) (#192 erledigt)
 
 **Status:** umgesetzt — [#193](https://github.com/flxln/schulnavigator/issues/193) (Epic [#191](https://github.com/flxln/schulnavigator/issues/191)). ADR: [ADR-025](../../adr/025-coach-audio-autoplay.md). Voraussetzung: [coach-layout.md](../archiv/coach-layout.md) (#192 erledigt)
 

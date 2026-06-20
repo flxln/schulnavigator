@@ -1,12 +1,13 @@
 # Epic: Coach-Erweiterungen — Layout & Audio (ADR-019)
 
 **Milestone:** [Coach Erweiterungen](https://github.com/flxln/schulnavigator/milestone/11) (GitHub #11)
-**Status:** umgesetzt · **GitHub Epic:** [#191](https://github.com/flxln/schulnavigator/issues/191)
-**Parent:** Epic [#121](./archiv/epics/epic-coach-fortschritt.md) (Coach MVP, ADR-019) · Studio-Editor [#177](https://github.com/flxln/schulnavigator/issues/177)
+**Status:** abgeschlossen (2026-06-20) · gemerged nach `main` ([PR #194](https://github.com/flxln/schulnavigator/pull/194), Commit `4f7accc`)
+**GitHub Epic:** [#191](https://github.com/flxln/schulnavigator/issues/191)
+**Parent:** Epic [#121](./epic-coach-fortschritt.md) (Coach MVP, ADR-019) · Studio-Editor [#177](https://github.com/flxln/schulnavigator/issues/177)
 
-**Spezifikationen:** [coach-layout.md](../ideen/archiv/coach-layout.md) · [coach-audio.md](../ideen/archiv/coach-audio.md)
+**Spezifikationen:** [coach-layout.md](../../../ideen/archiv/coach-layout.md) · [coach-audio.md](../../../ideen/archiv/coach-audio.md)
 
-**Einordnung:** Nach MPZ Studio v2.1 #189, **vor** #190 (v2.1-Doku & Merge). Unabhängig vom Medien-CRUD-Epic #186.
+**Einordnung:** Eingeschoben nach MPZ Studio v2.1 #189, vor #190; mit v2.1 in [PR #194](https://github.com/flxln/schulnavigator/pull/194) gemerged.
 
 ---
 
@@ -27,7 +28,7 @@ Der Coach-MVP (ADR-019, #121/#177) liefert text-only Einblendungen mit vier `pla
 | Unterissue | `#192` | Coach: Layout Figur & Sprechblase (relativ) | `tech`, `design` | — |
 | Unterissue | `#193` | Coach: Audio mit Autoplay | `tech` | #192 empfohlen |
 
-**Empfohlene Reihenfolge:** Layout → Audio → (danach MPZ Studio v2.1 #190 Abschluss)
+**Empfohlene Reihenfolge:** Layout → Audio → MPZ Studio v2.1 #190 (Doku)
 
 ---
 
@@ -49,7 +50,7 @@ Der Coach-MVP (ADR-019, #121/#177) liefert text-only Einblendungen mit vier `pla
 
 ### 1 — Layout (#192)
 
-Siehe [coach-layout.md](../ideen/archiv/coach-layout.md).
+Siehe [coach-layout.md](../../../ideen/archiv/coach-layout.md).
 
 - Schema: optionales `layout` an `CoachMessage` (inkl. `mascotFlipX` / `mascotFlipY`)
 - Blasen-Offsets **relativ zur Figur** (Produktentscheidung 2026-06-20)
@@ -59,9 +60,9 @@ Siehe [coach-layout.md](../ideen/archiv/coach-layout.md).
 
 ### 2 — Audio (#193)
 
-Siehe [coach-audio.md](../ideen/offen/coach-audio.md).
+Siehe [coach-audio.md](../../../ideen/archiv/coach-audio.md).
 
-- ADR-Ergänzung zu ADR-019 (Autoplay-Ziel, iOS-Fallback)
+- ADR-Ergänzung zu ADR-019 (Autoplay-Ziel, iOS-Fallback) — [ADR-025](../../../adr/025-coach-audio-autoplay.md)
 - Feld `quelle` → `content/coach-audio/{id}.wav`
 - `GET /api/coach/[messageId]`
 - `useCoachAudio` / Overlay-Integration
@@ -103,18 +104,18 @@ Siehe [coach-audio.md](../ideen/offen/coach-audio.md).
 
 ## Kontext
 
-- [ADR-019](../adr/019-coach-fortschritt-einblendung.md)
-- [ADR-010](../adr/010-dialog-cutscene-gated-audio.md) (gated Audio, iOS)
-- [ADR-014](../adr/014-mascot-size-json.md) (normierte Maskottchen-Größe Dialog)
+- [ADR-019](../../../adr/019-coach-fortschritt-einblendung.md)
+- [ADR-025](../../../adr/025-coach-audio-autoplay.md)
+- [ADR-010](../../../adr/010-dialog-cutscene-gated-audio.md) (gated Audio, iOS)
 - Coach-Editor: [#177](https://github.com/flxln/schulnavigator/issues/177)
-- MPZ Studio v2.1: [#186](https://github.com/flxln/schulnavigator/issues/186) — #190 wartet auf dieses Epic
+- MPZ Studio v2.1: [#186](https://github.com/flxln/schulnavigator/issues/186) — [PR #194](https://github.com/flxln/schulnavigator/pull/194)
 
 ## Checkliste (Epic)
 
 - [x] GitHub Milestone „Coach Erweiterungen“ angelegt (#11)
 - [x] Epic + Unterissues auf GitHub (#191–#193)
-- [x] Layout (#192) — Branch `mpz-studio-v2.1`, Post-Mortem [post-mortem-192](../reviews/post-mortem/post-mortem-192-2026-06-20.md)
-- [x] Audio (#193)
-- [x] ADR-Ergänzung Coach-Audio ([ADR-025](../adr/025-coach-audio-autoplay.md))
+- [x] Layout (#192) — Post-Mortem [post-mortem-192](../../../reviews/post-mortem/post-mortem-192-2026-06-20.md)
+- [x] Audio (#193) — Post-Mortem [post-mortem-193](../../../reviews/post-mortem/post-mortem-193-2026-06-20.md)
+- [x] ADR-Ergänzung Coach-Audio ([ADR-025](../../../adr/025-coach-audio-autoplay.md))
 - [x] Doku (offen.md, epic, ideen/archiv)
-- [ ] Danach: #190 v2.1-Abschluss
+- [x] Merge nach `main` — [PR #194](https://github.com/flxln/schulnavigator/pull/194)

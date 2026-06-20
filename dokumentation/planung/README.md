@@ -11,14 +11,13 @@ Abgleich mit [flxln/schulnavigator](https://github.com/flxln/schulnavigator). **
 | [labels.md](./labels.md) | Label-Konventionen |
 | [issues-schulfest-gs39-nachtrag.md](./issues-schulfest-gs39-nachtrag.md) | Epic **#86** — Schulfest/Hof-QR/Content |
 | [issues-startblick.md](./issues-startblick.md) | Startblick Sphere (#152–#153) und Flat-Startpan (#154, #185) |
-| [epic-coach-erweiterungen.md](./epic-coach-erweiterungen.md) | Epic **#191** — Coach Layout & Audio (#192–#193) — **abgeschlossen** |
 
 ## Archiv
 
 | Pfad | Inhalt |
 |------|--------|
 | [archiv/issues-phase-0.md](./archiv/issues-phase-0.md) … [phase-5](./archiv/issues-phase-5.md) | Historische Issues pro Phase |
-| [archiv/epics/](./archiv/epics/) | Abgeschlossene Epic-Spezifikationen (u. a. [epic-mpz-studio-v2.1.md](./archiv/epics/epic-mpz-studio-v2.1.md) **#186**) |
+| [archiv/epics/](./archiv/epics/) | Abgeschlossene Epic-Spezifikationen (u. a. [epic-mpz-studio-v2.1.md](./archiv/epics/epic-mpz-studio-v2.1.md) **#186**, [epic-coach-erweiterungen.md](./archiv/epics/epic-coach-erweiterungen.md) **#191**) |
 
 Domänen-Matrix MPZ Studio: [ideen/archiv/mpz-studio-ui.md](../ideen/archiv/mpz-studio-ui.md).
 

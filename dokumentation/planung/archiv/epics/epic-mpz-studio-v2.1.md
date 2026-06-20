@@ -1,7 +1,7 @@
 # Epic: MPZ Studio v2.1 — Medien-Datei ersetzen (ADR-022)
 
 **Milestone:** [MPZ Studio v2.1](https://github.com/flxln/schulnavigator/milestone/10) (GitHub #10)
-**Status:** abgeschlossen (2026-06-20) · gemerged nach `main` ausstehend ([PR #194](https://github.com/flxln/schulnavigator/pull/194))
+**Status:** abgeschlossen (2026-06-20) · gemerged nach `main` ([PR #194](https://github.com/flxln/schulnavigator/pull/194), Commit `4f7accc`)
 **GitHub Epic:** [#186](https://github.com/flxln/schulnavigator/issues/186)
 **Parent:** Epic [#170](./epic-mpz-studio-v2.md) (v2 abgeschlossen)
 

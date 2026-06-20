@@ -95,6 +95,7 @@ Aus dem ehemaligen `github-project/README.md` übernommen. Nur Archiv — neue E
 - [x] Issue **#189** (Thumbnail-/Poster-Upload) — umgesetzt 2026-06-20, Branch `mpz-studio-v2.1`, Post-Mortem [post-mortem-189-2026-06-20.md](../../reviews/post-mortem/post-mortem-189-2026-06-20.md)
 - [x] Issue **#190** (Doku & Epic-Abschluss v2.1) — umgesetzt 2026-06-20, Branch `mpz-studio-v2.1`, Post-Mortem [post-mortem-190-2026-06-20.md](../../reviews/post-mortem/post-mortem-190-2026-06-20.md); schließt Epic [#186](https://github.com/flxln/schulnavigator/issues/186)
 - [x] Epic **#186** (MPZ Studio v2.1 — Medien-Datei ersetzen) — abgeschlossen 2026-06-20, [epic-mpz-studio-v2.1.md](epics/epic-mpz-studio-v2.1.md); GitHub-Issues #187–#190 **alle erledigt**
-- [ ] **Merge** Branch `mpz-studio-v2.1` → `main` — [PR #194](https://github.com/flxln/schulnavigator/pull/194)
+- [x] **Merge** Branch `mpz-studio-v2.1` → `main` — [PR #194](https://github.com/flxln/schulnavigator/pull/194) (2026-06-20, Commit `4f7accc`)
+- [x] Epic **#191** (Coach-Erweiterungen) — abgeschlossen 2026-06-20, [epic-coach-erweiterungen.md](epics/epic-coach-erweiterungen.md); in PR #194 gemerged
 
-Letzter dokumentierter Abgleich: **2026-06-20** (#190 v2.1-Doku; Epic #186 geschlossen; PR #194 offen).
+Letzter dokumentierter Abgleich: **2026-06-20** (PR #194 gemerged: v2.1 #186–#190 + Coach #191–#193).

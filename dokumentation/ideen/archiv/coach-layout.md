@@ -1,8 +1,8 @@
 # Coach-Layout — Figur & Sprechblase pro Message
 
-_Ergänzt [ADR-019](../../adr/019-coach-fortschritt-einblendung.md). Umgesetzt in [#192](https://github.com/flxln/schulnavigator/issues/192) (Epic [#191](../../planung/epic-coach-erweiterungen.md))._
+_Ergänzt [ADR-019](../../adr/019-coach-fortschritt-einblendung.md). Umgesetzt in [#192](https://github.com/flxln/schulnavigator/issues/192) (Epic [#191](../../planung/archiv/epics/epic-coach-erweiterungen.md))._
 
-**Bezug:** [ADR-019](../../adr/019-coach-fortschritt-einblendung.md) · Coach-Editor [#177](https://github.com/flxln/schulnavigator/issues/177) · Epic [#191](../../planung/epic-coach-erweiterungen.md) · Code: [`coach-layout.ts`](../../../app/lib/coach-layout.ts)
+**Bezug:** [ADR-019](../../adr/019-coach-fortschritt-einblendung.md) · Coach-Editor [#177](https://github.com/flxln/schulnavigator/issues/177) · Epic [#191](../../planung/archiv/epics/epic-coach-erweiterungen.md) · Code: [`coach-layout.ts`](../../../app/lib/coach-layout.ts)
 
 **Status:** ✅ umgesetzt (2026-06-20) · Post-Mortem: [post-mortem-192](../../reviews/post-mortem/post-mortem-192-2026-06-20.md)
 

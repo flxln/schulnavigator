@@ -421,7 +421,7 @@ Entwickler-Doku: [fuer-entwickler.md](../../anleitungen/fuer-entwickler.md) (Abs
 
 ## v2.1 — Medien-Datei ersetzen (Epic #186)
 
-**Status:** umgesetzt 2026-06-20 (Branch `mpz-studio-v2.1`, Milestone „MPZ Studio v2.1“).
+**Status:** umgesetzt 2026-06-20 (Branch `mpz-studio-v2.1`, Milestone „MPZ Studio v2.1“, gemerged [PR #194](https://github.com/flxln/schulnavigator/pull/194)).
 
 v2.1 schließt die Lücke zwischen Metadaten-PATCH (#171) und vollständigem Medien-CRUD: **Datei-Inhalt tauschen** bei gleicher `medium.id` (Hotspots bleiben), plus **Thumbnail-/Poster-Upload**. Spezifikation: [epic-mpz-studio-v2.1.md](../planung/archiv/epics/epic-mpz-studio-v2.1.md).
 
