@@ -1,18 +1,25 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useState, useTransition } from 'react'
+import { useCallback, useEffect, useState, useTransition } from 'react'
+import { CoachAudioStateBadge } from '@/components/mpz-studio/coach-audio-status-badges'
 import { CoachMessageForm } from '@/components/mpz-studio/coach-message-form'
 import {
   markMpzStudioDirty,
   useStudioValidation,
 } from '@/components/mpz-studio/studio-validation-context'
+import type { CoachAudioAuditEntry } from '@/lib/mpz-coach-audio-ingest'
 import type { CoachMessage } from '@/lib/types'
 
 export type CoachPanelProps = {
   messages: readonly CoachMessage[]
   stationSlugs: readonly string[]
   stationCount: number
+}
+
+interface CoachAudioStatusResponse {
+  entries: CoachAudioAuditEntry[]
+  orphans: string[]
 }
 
 function truncate(text: string, max = 60): string {
@@ -28,6 +35,26 @@ export function CoachPanel({ messages, stationSlugs, stationCount }: CoachPanelP
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
+  const [audioAudit, setAudioAudit] = useState<Map<string, CoachAudioAuditEntry>>(
+    new Map(),
+  )
+
+  const loadAudioStatus = useCallback(async () => {
+    try {
+      const res = await fetch('/api/mpz/coach-audio/status')
+      const json = (await res.json()) as CoachAudioStatusResponse & { message?: string }
+      if (!res.ok) {
+        return
+      }
+      setAudioAudit(new Map(json.entries.map((e) => [e.messageId, e])))
+    } catch {
+      /* Status optional — Tabelle zeigt dann kein Badge */
+    }
+  }, [])
+
+  useEffect(() => {
+    void loadAudioStatus()
+  }, [loadAudioStatus, messages])
 
   const editingMessage = editingId
     ? messages.find((m) => m.id === editingId)
@@ -38,6 +65,7 @@ export function CoachPanel({ messages, stationSlugs, stationCount }: CoachPanelP
     setError(null)
     setEditingId(null)
     setAdding(false)
+    void loadAudioStatus()
   }
 
   async function handleDelete(id: string) {
@@ -132,6 +160,7 @@ export function CoachPanel({ messages, stationSlugs, stationCount }: CoachPanelP
               <th className="px-3 py-2">Details</th>
               <th className="px-3 py-2">Maskottchen</th>
               <th className="px-3 py-2">Text</th>
+              <th className="px-3 py-2">Audio</th>
               <th className="px-3 py-2">Aktionen</th>
             </tr>
           </thead>
@@ -152,6 +181,18 @@ export function CoachPanel({ messages, stationSlugs, stationCount }: CoachPanelP
                   {m.mascot} / {m.placement}
                 </td>
                 <td className="max-w-[12rem] px-3 py-2 text-fg-2">{truncate(m.text)}</td>
+                <td className="px-3 py-2">
+                  {(() => {
+                    const entry = audioAudit.get(m.id)
+                    if (!m.quelle && !entry?.fileExists) {
+                      return <span className="text-xs text-fg-3">—</span>
+                    }
+                    if (entry) {
+                      return <CoachAudioStateBadge state={entry.state} />
+                    }
+                    return <span className="text-xs text-fg-3">—</span>
+                  })()}
+                </td>
                 <td className="px-3 py-2">
                   <div className="flex flex-wrap gap-2">
                     <button

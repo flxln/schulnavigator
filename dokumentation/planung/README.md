@@ -12,7 +12,7 @@ Abgleich mit [flxln/schulnavigator](https://github.com/flxln/schulnavigator). **
 | [issues-schulfest-gs39-nachtrag.md](./issues-schulfest-gs39-nachtrag.md) | Epic **#86** — Schulfest/Hof-QR/Content |
 | [issues-startblick.md](./issues-startblick.md) | Startblick Sphere (#152–#153) und Flat-Startpan (#154, #185) |
 | [epic-mpz-studio-v2.1.md](./epic-mpz-studio-v2.1.md) | Epic **#186** — Medien-Datei ersetzen, Thumbnail/Poster (#187–#190) |
-| [epic-coach-erweiterungen.md](./epic-coach-erweiterungen.md) | Epic **#191** — Coach Layout & Audio (#192–#193) |
+| [epic-coach-erweiterungen.md](./epic-coach-erweiterungen.md) | Epic **#191** — Coach Layout & Audio (#192–#193) — **abgeschlossen** |
 
 ## Archiv
 

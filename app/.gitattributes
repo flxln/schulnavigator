@@ -10,6 +10,9 @@ public/stations/360/*.webp filter=lfs diff=lfs merge=lfs -text
 # Dialog-Audio (Cookie-geschützt, GET /api/dialog/…, ADR-010)
 content/dialog-audio/**/*.wav filter=lfs diff=lfs merge=lfs -text
 
+# Coach-Audio (Cookie-geschützt, GET /api/coach/…, ADR-025)
+content/coach-audio/*.wav filter=lfs diff=lfs merge=lfs -text
+
 # Öffentliche Stations-Medien (public/media/{slug}/…)
 public/media/**/*.mp3 filter=lfs diff=lfs merge=lfs -text
 public/media/**/*.wav filter=lfs diff=lfs merge=lfs -text

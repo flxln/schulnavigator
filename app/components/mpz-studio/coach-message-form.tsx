@@ -147,6 +147,10 @@ export function CoachMessageForm({
     !message?.modes || message.modes.includes('heft'),
   )
   const [layoutOpen, setLayoutOpen] = useState(Boolean(message?.layout))
+  const [audioOpen, setAudioOpen] = useState(Boolean(message?.quelle))
+  const [audioBusy, setAudioBusy] = useState(false)
+  const [audioError, setAudioError] = useState<string | null>(null)
+  const [quelleDisplay, setQuelleDisplay] = useState(message?.quelle ?? '')
   const [layoutFields, setLayoutFields] = useState<LayoutFormState>(() =>
     layoutFormFromMessage(message),
   )
@@ -166,6 +170,8 @@ export function CoachMessageForm({
       setHeftMode(!message.modes || message.modes.includes('heft'))
       setLayoutFields(layoutFormFromMessage(message))
       setLayoutOpen(Boolean(message.layout))
+      setAudioOpen(Boolean(message.quelle))
+      setQuelleDisplay(message.quelle ?? '')
     }
   }, [message, stationSlugs])
 
@@ -194,6 +200,86 @@ export function CoachMessageForm({
       return { layout }
     }
     return {}
+  }
+
+  async function handleAudioUpload(file: File) {
+    if (mode !== 'edit' || !message) {
+      return
+    }
+    setAudioError(null)
+    setAudioBusy(true)
+    const form = new FormData()
+    form.set('messageId', message.id)
+    form.set('file', file)
+    form.set('collision', 'replace')
+    try {
+      const res = await fetch('/api/mpz/coach-audio/ingest', {
+        method: 'POST',
+        body: form,
+      })
+      const json = (await res.json()) as { quelle?: string; message?: string }
+      if (!res.ok) {
+        setAudioError(json.message ?? `Upload fehlgeschlagen (${res.status})`)
+        return
+      }
+      setQuelleDisplay(json.quelle ?? '')
+      markMpzStudioDirty()
+      await validateNow()
+      router.refresh()
+      onSuccess('Coach-Audio hochgeladen.')
+    } catch {
+      setAudioError('Upload fehlgeschlagen.')
+    } finally {
+      setAudioBusy(false)
+    }
+  }
+
+  async function handleAudioRemove() {
+    if (mode !== 'edit' || !message) {
+      return
+    }
+    setAudioError(null)
+    setAudioBusy(true)
+    try {
+      const res = await fetch(
+        `/api/mpz/coach/messages/${encodeURIComponent(message.id)}`,
+        {
+          method: 'PATCH',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ quelle: null }),
+        },
+      )
+      const json = (await res.json()) as { message?: string }
+      if (!res.ok) {
+        setAudioError(json.message ?? `Entfernen fehlgeschlagen (${res.status})`)
+        return
+      }
+      setQuelleDisplay('')
+      markMpzStudioDirty()
+      await validateNow()
+      router.refresh()
+      onSuccess('Coach-Audio entfernt.')
+    } catch {
+      setAudioError('Entfernen fehlgeschlagen.')
+    } finally {
+      setAudioBusy(false)
+    }
+  }
+
+  function handleUploadClick() {
+    if (audioBusy || mode !== 'edit' || !message) {
+      return
+    }
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = '.wav,audio/wav'
+    input.onchange = () => {
+      const file = input.files?.[0]
+      if (file) {
+        void handleAudioUpload(file)
+      }
+    }
+    input.click()
   }
 
   async function persistLayoutReset() {
@@ -455,6 +541,64 @@ export function CoachMessageForm({
           onChange={(e) => setText(e.target.value)}
           required
         />
+      </div>
+
+      <div className="mb-3 rounded-gs39-sm border border-border-1 bg-bg-2 p-3">
+        <button
+          type="button"
+          className="flex w-full items-center justify-between text-left text-sm font-semibold text-fg-1"
+          onClick={() => setAudioOpen((open) => !open)}
+          aria-expanded={audioOpen}
+        >
+          Audio (optional)
+          <span className="text-fg-3">{audioOpen ? '▾' : '▸'}</span>
+        </button>
+        {audioOpen && (
+          <div className="mt-3 space-y-3">
+            <p className="text-xs text-fg-3">
+              Autoplay beim Einblenden — nach QR-Scan auf iPhone testen. Nur WAV,
+              ca. 5–20 Sekunden.
+            </p>
+            {mode === 'add' ? (
+              <p className="text-xs text-fg-2">
+                Message zuerst speichern, dann Clip hochladen.
+              </p>
+            ) : (
+              <>
+                {quelleDisplay ? (
+                  <p className="text-xs text-fg-2">
+                    Quelle: <code className="text-fg-1">{quelleDisplay}</code>
+                  </p>
+                ) : (
+                  <p className="text-xs text-fg-3">Kein Clip hinterlegt.</p>
+                )}
+                {audioError && (
+                  <p className="text-xs text-brand-red">{audioError}</p>
+                )}
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    disabled={audioBusy || isPending}
+                    onClick={handleUploadClick}
+                    className="rounded-gs39-sm bg-accent px-3 py-1.5 text-sm font-semibold text-white disabled:opacity-50"
+                  >
+                    {quelleDisplay ? 'Clip ersetzen' : 'WAV hochladen'}
+                  </button>
+                  {quelleDisplay ? (
+                    <button
+                      type="button"
+                      disabled={audioBusy || isPending}
+                      onClick={() => void handleAudioRemove()}
+                      className="rounded-gs39-sm border border-border-1 px-3 py-1.5 text-sm font-semibold text-fg-2 disabled:opacity-50"
+                    >
+                      Audio entfernen
+                    </button>
+                  ) : null}
+                </div>
+              </>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="mb-3 rounded-gs39-sm border border-border-1 bg-bg-2 p-3">

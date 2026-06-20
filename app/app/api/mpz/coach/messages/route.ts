@@ -95,6 +95,13 @@ export function parseCreate(body: unknown): AddCoachMessageInput | null {
     }
   }
 
+  if (raw.quelle !== undefined) {
+    if (typeof raw.quelle !== 'string' || !raw.quelle.startsWith('/')) {
+      return null
+    }
+    input.quelle = raw.quelle
+  }
+
   return input
 }
 

@@ -4,7 +4,7 @@ _Kurzfristige Idee — optionale gesprochene Kurzclips zu Coach-Einblendungen. E
 
 **Bezug:** [ADR-019](../../adr/019-coach-fortschritt-einblendung.md) · [ADR-010](../../adr/010-dialog-cutscene-gated-audio.md) (gated Audio, iOS) · [Fortschritts-Einblendung](../archiv/maskottchen-fortschritt-einblendung.md) · Coach-Editor: `content/coach-messages.json`, `/mpz/studio/coach` · Epic: [epic-coach-erweiterungen.md](../../planung/epic-coach-erweiterungen.md) · Voraussetzung: [coach-layout.md](../archiv/coach-layout.md) (#192 erledigt)
 
-**Status:** spezifiziert — Umsetzung [#193](https://github.com/flxln/schulnavigator/issues/193) (Epic [#191](https://github.com/flxln/schulnavigator/issues/191)). Vor Umsetzung **ADR-Ergänzung** zu ADR-019 (dort steht heute noch „kein Autoplay“). **Empfohlen nach** [#192](https://github.com/flxln/schulnavigator/issues/192) Coach-Layout.
+**Status:** umgesetzt — [#193](https://github.com/flxln/schulnavigator/issues/193) (Epic [#191](https://github.com/flxln/schulnavigator/issues/191)). ADR: [ADR-025](../../adr/025-coach-audio-autoplay.md). Voraussetzung: [coach-layout.md](../archiv/coach-layout.md) (#192 erledigt)
 
 **Produktentscheidung (2026-06-19):** Wenn ein Clip hinterlegt ist, soll er **automatisch** mit der Einblendung starten — kein Pflicht-Tap auf „Anhören“. Text bleibt parallel sichtbar.
 

@@ -23,5 +23,6 @@ Kurze Risiko- und Abschluss-Notizen zu größeren Issues (v. a. MPZ Studio v2).
 | #187 Medien-Datei ersetzen | [pre-mortem-187](./pre-mortem/pre-mortem-187-2026-06-20.md) | [post-mortem-187](./post-mortem/post-mortem-187-2026-06-20.md) |
 | #189 Thumbnail-/Poster-Upload | [pre-mortem-189](./pre-mortem/pre-mortem-189-2026-06-20.md) | [post-mortem-189](./post-mortem/post-mortem-189-2026-06-20.md) |
 | #192 Coach-Layout | [pre-mortem-192](./pre-mortem/pre-mortem-192-2026-06-20.md) | [post-mortem-192](./post-mortem/post-mortem-192-2026-06-20.md) |
+| #193 Coach-Audio | [pre-mortem-193-1a](./pre-mortem/pre-mortem-193-1a.md) | [post-mortem-193](./post-mortem/post-mortem-193-2026-06-20.md) |
 | #143 CSP-Enforcement | — | [post-mortem-143](./post-mortem/post-mortem-143-2026-06-20.md) |
 | Runbook Agentic (Vault) | [pre-mortem-runbook-1a](./pre-mortem/pre-mortem-runbook-agentic-projekte-1a.md) | [post-mortem-runbook](./post-mortem/post-mortem-runbook-agentic-projekte-2026-06-20.md) |

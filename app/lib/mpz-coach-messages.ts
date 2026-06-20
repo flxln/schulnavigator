@@ -14,6 +14,7 @@ import {
   normalizeCoachLayoutInput,
   validateCoachLayoutFields,
 } from '@/lib/coach-layout'
+import { coachApiQuelle } from '@/lib/coach-audio'
 import type {
   CoachMascot,
   CoachMessage,
@@ -42,6 +43,7 @@ export type CoachErrorCode =
   | 'LAST_HUB_COMPLETE'
   | 'IMMUTABLE_FIELD'
   | 'INVALID_LAYOUT'
+  | 'INVALID_QUELLE'
 
 export type AddCoachMessageInput = {
   id: string
@@ -53,6 +55,7 @@ export type AddCoachMessageInput = {
   slug?: string
   modes?: readonly CoachMode[]
   layout?: CoachMessageLayout
+  quelle?: string
 }
 
 export type PatchCoachMessageInput = {
@@ -63,6 +66,7 @@ export type PatchCoachMessageInput = {
   slug?: string
   modes?: readonly CoachMode[] | null
   layout?: CoachMessageLayout | null
+  quelle?: string | null
 }
 
 export class MpzCoachMessagesError extends Error {
@@ -92,6 +96,7 @@ export const COACH_CLIENT_ERROR_CODES = new Set<CoachErrorCode>([
   'LAST_HUB_COMPLETE',
   'IMMUTABLE_FIELD',
   'INVALID_LAYOUT',
+  'INVALID_QUELLE',
 ])
 
 export function mapCoachError(
@@ -255,6 +260,28 @@ function validateLayoutField(layout: unknown): CoachMessageLayout | undefined {
   return normalizeCoachLayoutInput(layout as CoachMessageLayout)
 }
 
+function validateQuelleField(
+  quelle: unknown,
+  messageId: string,
+): string | undefined {
+  if (quelle === undefined) {
+    return undefined
+  }
+  if (typeof quelle !== 'string' || !quelle.startsWith('/')) {
+    throw new MpzCoachMessagesError(
+      'INVALID_QUELLE',
+      'quelle muss ein String sein, der mit / beginnt.',
+    )
+  }
+  if (quelle !== coachApiQuelle(messageId)) {
+    throw new MpzCoachMessagesError(
+      'INVALID_QUELLE',
+      `quelle muss "${coachApiQuelle(messageId)}" sein.`,
+    )
+  }
+  return quelle
+}
+
 function assertHubCompleteUnique(
   messages: CoachMessage[],
   excludeId?: string,
@@ -297,6 +324,11 @@ function normalizeMessageFields(
   const layout = validateLayoutField(message.layout)
   if (layout !== undefined) {
     normalized.layout = layout
+  }
+
+  const quelle = validateQuelleField(message.quelle, message.id)
+  if (quelle !== undefined) {
+    normalized.quelle = quelle
   }
 
   if (trigger === 'hub-milestone') {
@@ -397,6 +429,7 @@ export async function addCoachMessage(
       slug: input.slug,
       modes: input.modes,
       layout: input.layout,
+      quelle: input.quelle,
     }
 
     const normalized = normalizeMessageFields(
@@ -451,6 +484,11 @@ export async function patchCoachMessage(
       delete merged.layout
     } else if (patch.layout !== undefined) {
       merged.layout = patch.layout
+    }
+    if (patch.quelle === null) {
+      delete merged.quelle
+    } else if (patch.quelle !== undefined) {
+      merged.quelle = patch.quelle
     }
 
     const normalized = normalizeMessageFields(

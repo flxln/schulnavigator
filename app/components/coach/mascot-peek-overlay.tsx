@@ -1,11 +1,12 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { createPortal } from 'react-dom'
 import Image from 'next/image'
-import { X } from 'lucide-react'
+import { Volume2, X } from 'lucide-react'
 import { resolveCoachLayout } from '@/lib/coach-layout'
+import { useCoachAudio } from '@/hooks/use-coach-audio'
 import type { CoachMessage, CoachPlacement } from '@/lib/types'
 import { GS39_BRAND_HEX } from '@/lib/gs39-brand-colors'
 
@@ -71,6 +72,8 @@ export function MascotPeekOverlay({
   const tail = tailForPlacement(message.placement)
   const [portalReady, setPortalReady] = useState(false)
   const resolvedLayout = useMemo(() => resolveCoachLayout(message), [message])
+  const audioRef = useRef<HTMLAudioElement>(null)
+  const { playBlocked, isPlaying, replay } = useCoachAudio(message.quelle, audioRef)
 
   useEffect(() => {
     setPortalReady(true)
@@ -122,6 +125,26 @@ export function MascotPeekOverlay({
           >
             <X size={22} aria-hidden />
           </button>
+
+          {message.quelle ? (
+            <>
+              <audio ref={audioRef} preload="auto" className="sr-only" />
+              {playBlocked ? (
+                <button
+                  type="button"
+                  className="sn-coach-peek__replay"
+                  aria-label="Audio abspielen"
+                  onClick={replay}
+                >
+                  <Volume2 size={20} aria-hidden />
+                </button>
+              ) : isPlaying ? (
+                <span className="sn-coach-peek__audio-active" aria-hidden>
+                  <Volume2 size={18} />
+                </span>
+              ) : null}
+            </>
+          ) : null}
 
           {isDuo ? (
             <div

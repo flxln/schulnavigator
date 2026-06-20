@@ -185,6 +185,23 @@ for (const [index, raw] of messages.entries()) {
   }
 
   validateLayout(m.layout, ctx)
+
+  if (typeof m.id === 'string' && m.id.trim() !== '') {
+    if (m.quelle !== undefined) {
+      if (typeof m.quelle !== 'string') {
+        fail(`${ctx}: quelle muss String sein`)
+      } else if (!m.quelle.startsWith('/')) {
+        fail(`${ctx}: quelle muss mit / beginnen`)
+      } else if (m.quelle !== `/api/coach/${m.id}`) {
+        fail(`${ctx}: quelle muss "/api/coach/${m.id}" sein`)
+      } else {
+        const wavPath = join(appRoot, 'content', 'coach-audio', `${m.id}.wav`)
+        if (!existsSync(wavPath)) {
+          fail(`${ctx}: quelle gesetzt, aber content/coach-audio/${m.id}.wav fehlt`)
+        }
+      }
+    }
+  }
 }
 
 if (hubCompleteCount !== 1) {

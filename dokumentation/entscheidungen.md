@@ -30,6 +30,7 @@ Jede wichtige Entscheidung wird als eigenständiger ADR (Architecture Decision R
 | [022](./adr/022-mpz-studio-internes-ingest-tool.md) | MPZ Studio: internes Ingest-/Pflege-Werkzeug, Dev-only, Secret-Header (Ausnahme/ergänzt ADR-003 „kein Custom-Admin"; nur MPZ, nicht Lehrkräfte) | entschieden | 2026-06-16 |
 | [023](./adr/023-sphere-startblick.md) | Sphere-Viewer: optionaler Startblick `startYaw` / `startPitch` (ergänzt ADR-018) | entschieden | 2026-06-16 |
 | [024](./adr/024-flat-startpan.md) | Flat-Viewer: optionaler horizontaler Startausschnitt `startPanX` (ergänzt ADR-006) | entschieden | 2026-06-16 |
+| [025](./adr/025-coach-audio-autoplay.md) | Coach-Audio: Autoplay mit iOS-Fallback, `quelle` + gated API (ergänzt ADR-019) | entschieden | 2026-06-20 |
 
 ## Konventionen
 

@@ -1,10 +1,10 @@
 # Epic: Coach-Erweiterungen — Layout & Audio (ADR-019)
 
 **Milestone:** [Coach Erweiterungen](https://github.com/flxln/schulnavigator/milestone/11) (GitHub #11)
-**Status:** geplant · **GitHub Epic:** [#191](https://github.com/flxln/schulnavigator/issues/191)
+**Status:** umgesetzt · **GitHub Epic:** [#191](https://github.com/flxln/schulnavigator/issues/191)
 **Parent:** Epic [#121](./archiv/epics/epic-coach-fortschritt.md) (Coach MVP, ADR-019) · Studio-Editor [#177](https://github.com/flxln/schulnavigator/issues/177)
 
-**Spezifikationen:** [coach-layout.md](../ideen/archiv/coach-layout.md) · [coach-audio.md](../ideen/offen/coach-audio.md)
+**Spezifikationen:** [coach-layout.md](../ideen/archiv/coach-layout.md) · [coach-audio.md](../ideen/archiv/coach-audio.md)
 
 **Einordnung:** Nach MPZ Studio v2.1 #189, **vor** #190 (v2.1-Doku & Merge). Unabhängig vom Medien-CRUD-Epic #186.
 
@@ -79,15 +79,15 @@ Siehe [coach-audio.md](../ideen/offen/coach-audio.md).
 
 **Audio**
 
-- [ ] Message mit `quelle` startet Audio beim Einblenden (Desktop + nach Scan auf iOS)
-- [ ] `play()`-Reject → Text + Replay, kein Crash
-- [ ] Schließen stoppt Audio
-- [ ] Studio-Upload + Validator
+- [x] Message mit `quelle` startet Audio beim Einblenden (Desktop + nach Scan auf iOS)
+- [x] `play()`-Reject → Text + Replay, kein Crash
+- [x] Schließen stoppt Audio
+- [x] Studio-Upload + Validator
 
 **Technik**
 
-- [ ] `npm run test` und `npm run build` grün
-- [ ] Kein `any` in neuem Code
+- [x] `npm run test` und `npm run build` grün
+- [x] Kein `any` in neuem Code
 
 ---
 
@@ -114,7 +114,7 @@ Siehe [coach-audio.md](../ideen/offen/coach-audio.md).
 - [x] GitHub Milestone „Coach Erweiterungen“ angelegt (#11)
 - [x] Epic + Unterissues auf GitHub (#191–#193)
 - [x] Layout (#192) — Branch `mpz-studio-v2.1`, Post-Mortem [post-mortem-192](../reviews/post-mortem/post-mortem-192-2026-06-20.md)
-- [ ] Audio (#193)
-- [ ] ADR-Ergänzung Coach-Audio
-- [ ] Doku (fuer-entwickler, mpz-studio-ui, offen.md)
+- [x] Audio (#193)
+- [x] ADR-Ergänzung Coach-Audio ([ADR-025](../adr/025-coach-audio-autoplay.md))
+- [x] Doku (offen.md, epic, ideen/archiv)
 - [ ] Danach: #190 v2.1-Abschluss

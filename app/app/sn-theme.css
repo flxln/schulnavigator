@@ -780,6 +780,38 @@
   pointer-events: auto;
 }
 
+.sn-coach-peek__replay {
+  position: absolute;
+  top: max(0.75rem, env(safe-area-inset-top));
+  right: calc(max(0.75rem, env(safe-area-inset-right)) + 3rem);
+  z-index: 2;
+  display: grid;
+  height: 44px;
+  width: 44px;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: var(--bg-2);
+  color: var(--accent);
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.sn-coach-peek__audio-active {
+  position: absolute;
+  top: max(0.75rem, env(safe-area-inset-top));
+  right: calc(max(0.75rem, env(safe-area-inset-right)) + 3rem);
+  z-index: 2;
+  display: grid;
+  height: 44px;
+  width: 44px;
+  place-items: center;
+  color: var(--accent);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
 .sn-coach-peek__duo-row {
   position: relative;
   display: flex;
