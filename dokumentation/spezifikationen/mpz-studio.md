@@ -332,6 +332,7 @@ Abgeleitet aus zwei unabhängigen Plan-Reviews (SE-15: Codex, GLM-5.1). v0 ist *
 | **Plan B — Projekttag** | Studio v0: Medien-Upload + Hotspots (nur lokal) | optional bis ~22.06.2026 |
 | **v1 — Post-Fest** | Station-Detail, Stammdaten, Medien-/Hotspot-Tabellen, Dialog-Audio-Tab | **erledigt** 2026-06-18 (Epic #158) |
 | **v2 — Betrieb** | Coach, Embed-Allowlist, Brand-Uploads, Hub/Icons, Deploy-Tab, Dialog-Editor, Raumbild-Upload | **erledigt** 2026-06-20 (Epic #170) |
+| **v2.1 — Medien-CRUD** | Datei ersetzen (audio/video/foto/text), Thumbnail-/Poster-Upload | geplant (Epic #186, #187–#190) |
 | **v3 — Polish** | Markdown-Editor, Dialog-Bubble-Visual-Editor, Batch-Import aus `auftraggeber/` | nach Bedarf |
 
 **Projekttag-Minimum (v0):** Was Kinder liefern — Audio, Video, Foto, Text, ggf. Hotspots. Coach, Hub, Tokens sind am Projekttag selten zeitkritisch.
@@ -415,6 +416,21 @@ v2 schließt die verbleibenden Plan-A-Lücken: Raumbild-Upload, Medien-PATCH und
 | Embed-Allowlist (#178), Hub/Icons (#179), Brand (#180) | Lehrkräfte-Admin (Directus #47) |
 
 Entwickler-Doku: [fuer-entwickler.md](../../anleitungen/fuer-entwickler.md) (Abschnitt MPZ Studio), Testrouten: [lokal-testen-und-anschauen.md](../../anleitungen/lokal-testen-und-anschauen.md).
+
+---
+
+## v2.1 — Medien-Datei ersetzen (Epic #186)
+
+**Status:** geplant (Milestone „MPZ Studio v2.1“, GitHub #10).
+
+v2.1 schließt die Lücke zwischen Metadaten-PATCH (#171) und vollständigem Medien-CRUD: **Datei-Inhalt tauschen** bei gleicher `medium.id` (Hotspots bleiben), plus **Thumbnail-/Poster-Upload**. Spezifikation: [epic-mpz-studio-v2.1.md](../planung/epic-mpz-studio-v2.1.md).
+
+| In v2.1 geplant | Bewusst nicht v2.1 (v3) |
+|-----------------|-------------------------|
+| `replaceStationMediumFile` + API `POST …/file` (#187) **erledigt** 2026-06-20 | Markdown-WYSIWYG |
+| UI „Datei ersetzen“ (#188) | YouTube-`quelle` (ADR-004) |
+| Thumbnail-/Poster-Upload (#189) | Batch-Import `auftraggeber/` |
+| Doku (#190) | Lehrkräfte-Admin (Directus #47) |
 
 ---
 

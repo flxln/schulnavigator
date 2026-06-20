@@ -2,11 +2,11 @@
 
 _Inhaltliche Kategorisierung für Feature-Planung und Issues — unabhängig von der UI-Navigation in der [Studio-Spezifikation](../../spezifikationen/mpz-studio.md)._
 
-**Status:** ✅ v0–v2 umgesetzt (Epic #170, [PR #183](https://github.com/flxln/schulnavigator/pull/183)). v3 Polish offen.
+**Status:** ✅ v0–v2 umgesetzt (Epic #170, [PR #183](https://github.com/flxln/schulnavigator/pull/183)). **v2.1 geplant** (Epic #186). v3 Polish offen.
 
-**Epics:** [v0 #144](https://github.com/flxln/schulnavigator/issues/144) · [v1 #158](https://github.com/flxln/schulnavigator/issues/158) · [v2 #170](https://github.com/flxln/schulnavigator/issues/170) **abgeschlossen** (auf `main`, [PR #183](https://github.com/flxln/schulnavigator/pull/183)) · v3 Polish nach Bedarf
+**Epics:** [v0 #144](https://github.com/flxln/schulnavigator/issues/144) · [v1 #158](https://github.com/flxln/schulnavigator/issues/158) · [v2 #170](https://github.com/flxln/schulnavigator/issues/170) **abgeschlossen** · [v2.1 #186](https://github.com/flxln/schulnavigator/issues/186) **geplant** (#187–#190) · v3 Polish nach Bedarf
 
-**Phasierung (Spec):** v2 erledigt — fehlende Content-Pflege + Betrieb · v3 = Komfort-Editoren und Batch — siehe [Roadmap v2/v3](#roadmap-v2--v3) unten.
+**Phasierung (Spec):** v2 erledigt — fehlende Content-Pflege + Betrieb · **v2.1** = Medien-Datei ersetzen + Thumbnail/Poster-Upload · v3 = Komfort-Editoren und Batch — siehe [Roadmap v2/v2.1/v3](#roadmap-v2--v21--v3) unten.
 
 **Legende:** `Studio` = MPZ Studio (nur `npm run dev`) · `Plan A` = CLI, JSON, Snippets, Kalibrier-URLs · **Status** ✓ umgesetzt · ~ teilweise · — offen
 
@@ -43,6 +43,8 @@ Verknüpfung mit dem Raum erfolgt indirekt über **Hotspots** (oder Medienliste 
 ### bearbeiten
 
 - Metadaten (`id`, `untertitel`, `poster`, `thumbnail`, `embedAllow`, …)
+- **v2.1:** Datei-Inhalt ersetzen (`audio`, `video` upload, `foto`, `text`) bei gleicher `medium.id`
+- **v2.1:** Thumbnail/Poster per Upload (nicht nur Pfad)
 
 ### löschen
 
@@ -117,9 +119,9 @@ Nicht pro Raum, aber für vollständiges Studio relevant ([Spec](../../spezifika
 
 ---
 
-## Roadmap v2 / v3
+## Roadmap v2 / v2.1 / v3
 
-Die offenen Lücken sind **nicht viele**, aber sie sind inhaltlich unterschiedlich schwer. In der [Studio-Spec](../../spezifikationen/mpz-studio.md) heißen die nächsten Schritte bereits **v2** (Betrieb, August 2026) und **v3** (Polish). v3 wäre also **nicht** der Sammelbecken für alles Offene — nur für Komfort über Plan A hinaus.
+Die offenen Lücken sind **nicht viele**, aber sie sind inhaltlich unterschiedlich schwer. In der [Studio-Spec](../../spezifikationen/mpz-studio.md) heißen die nächsten Schritte **v2.1** (Medien-CRUD vervollständigen) und **v3** (Polish). v3 ist **nicht** der Sammelbecken für alles Offene — nur für Komfort über Plan A hinaus.
 
 ### v2 — Content & Betrieb (Epic #170, erledigt 2026-06-20)
 
@@ -137,13 +139,26 @@ Alles, was zuvor **nur Plan A (JSON/CLI)** war und fürs Studio-Alltag sinnvoll 
 
 **Grober Umfang v2:** Epic mit 11 Unterissues (#171–#181) — abgeschlossen.
 
+### v2.1 — Medien-Datei ersetzen (Epic #186, geplant)
+
+Schließt die praktische Lücke nach v2 #171 (nur Metadaten-PATCH): Datei-Tausch ohne neue `medium.id`, Thumbnail/Poster-Upload.
+
+| Paket | Domäne | Was | Issue |
+|-------|--------|-----|-------|
+| **v2.1-A** | Medien | Domain + API `replaceStationMediumFile` | #187 **erledigt** |
+| **v2.1-B** | Medien | UI „Datei ersetzen“ | #188 |
+| **v2.1-C** | Medien | Thumbnail-/Poster-Upload | #189 |
+| **v2.1-D** | Doku | Spec, Entwickler-Doku, Epic-Abschluss | #190 |
+
+Spezifikation: [epic-mpz-studio-v2.1.md](../../planung/epic-mpz-studio-v2.1.md)
+
 ### v3 — Polish (optional, nach Bedarf)
 
 Komfort, den Plan A oder einfache Formulare in v2 schon abdecken:
 
 | Was | Warum v3 |
 |-----|----------|
-| Markdown-Inline-Editor für Text-Medien | v2: Datei ersetzen reicht meist |
+| Markdown-Inline-Editor für Text-Medien | v2.1: Datei ersetzen im Studio; Inline-Edit optional |
 | Dialog-Bubble **visuell** positionieren | v2: JSON-Felder `bubble.y/x/…` reichen |
 | Batch-Import aus `auftraggeber/` | Einmal-Migration, kein Dauerworkflow |
 | YouTube-Video im Studio | Recht/DSB noch offen (ADR-004) |
@@ -163,6 +178,7 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | **Medien** | erstellen (audio, video, foto, text) | [#147](https://github.com/flxln/schulnavigator/issues/147) | ✓ | ja (Upload) | `content:ingest` |
 | **Medien** | erstellen (link, embed) | [#172](https://github.com/flxln/schulnavigator/issues/172) | ✓ | ja (Modal) | JSON + Snippet |
 | **Medien** | bearbeiten (Metadaten) | [#171](https://github.com/flxln/schulnavigator/issues/171) | ✓ | ja | JSON |
+| **Medien** | Datei ersetzen + Thumbnail/Poster-Upload | [#186](https://github.com/flxln/schulnavigator/issues/186) (#187–#189) | — | geplant | Dateisystem / CLI |
 | **Medien** | löschen | [#161](https://github.com/flxln/schulnavigator/issues/161) | ✓ | ja | JSON |
 | **Medien** | Tabelle + Link zu Ingest | [#161](https://github.com/flxln/schulnavigator/issues/161) | ✓ | ja | — |
 | **Hotspots** | Medien-Hotspot erstellen | [#165](https://github.com/flxln/schulnavigator/issues/165) | ✓ | ja | JSON + Kalibrier-URL |
