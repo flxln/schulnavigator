@@ -73,7 +73,11 @@ export function MascotPeekOverlay({
   const [portalReady, setPortalReady] = useState(false)
   const resolvedLayout = useMemo(() => resolveCoachLayout(message), [message])
   const audioRef = useRef<HTMLAudioElement>(null)
-  const { playBlocked, isPlaying, replay } = useCoachAudio(message.quelle, audioRef)
+  const { playBlocked, isPlaying, replay } = useCoachAudio(
+    message.quelle,
+    audioRef,
+    portalReady,
+  )
 
   useEffect(() => {
     setPortalReady(true)
