@@ -49,4 +49,23 @@ describe('validateCoachMessagesContent', () => {
     const errors = validateCoachMessagesContent(file, stationCount, stationSlugs)
     expect(errors.some((e) => e.includes('außerhalb'))).toBe(true)
   })
+
+  it('meldet ungültiges layout', () => {
+    const file = validFile()
+    file.messages[1] = {
+      ...file.messages[1]!,
+      layout: { mascotSize: 0.99 },
+    }
+    const errors = validateCoachMessagesContent(file, stationCount, stationSlugs)
+    expect(errors.some((e) => e.includes('layout.mascotSize außerhalb'))).toBe(true)
+  })
+
+  it('akzeptiert gültiges layout', () => {
+    const file = validFile()
+    file.messages[1] = {
+      ...file.messages[1]!,
+      layout: { mascotSize: 0.38, bubbleOffsetY: -0.25 },
+    }
+    expect(validateCoachMessagesContent(file, stationCount, stationSlugs)).toEqual([])
+  })
 })

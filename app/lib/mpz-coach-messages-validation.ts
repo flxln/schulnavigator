@@ -1,4 +1,5 @@
 import type { CoachMessage, CoachMessagesFile } from '@/lib/types'
+import { validateCoachLayoutFields } from '@/lib/coach-layout'
 
 export const COACH_PLACEMENTS = new Set(['bottom', 'left', 'right', 'duo-split'])
 export const COACH_TRIGGERS = new Set(['hub-milestone', 'hub-complete', 'room-first'])
@@ -105,6 +106,10 @@ export function validateCoachMessagesContent(
       if (m.milestone !== undefined) {
         errors.push(`${ctx}: room-first darf kein milestone haben`)
       }
+    }
+
+    if (m.layout !== undefined) {
+      errors.push(...validateCoachLayoutFields(m.layout, ctx))
     }
   }
 

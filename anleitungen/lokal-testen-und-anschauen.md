@@ -144,7 +144,7 @@ curl -X PATCH "http://localhost:3000/api/mpz/stations/kunst/stammdaten" \
 
 | Route | Kurztest |
 |-------|----------|
-| [`/mpz/studio/coach`](https://localhost:3000/mpz/studio/coach) (#177) | Nachricht anlegen (Trigger-Typ wählen) → speichern → in Liste sichtbar → löschen |
+| [`/mpz/studio/coach`](https://localhost:3000/mpz/studio/coach) (#177, Layout #192) | Nachricht anlegen → optional Layout-Felder/Spiegelung → speichern → Hub/Raum prüfen → „Auf Standard“ setzt `layout: null` |
 | [`/mpz/studio/embeds`](https://localhost:3000/mpz/studio/embeds) (#178) | Domain zur Allowlist hinzufügen; Übersicht link/embed-Medien aus `stations.json` |
 | [`/mpz/studio/hub`](https://localhost:3000/mpz/studio/hub) (#179) | Slug einem Fenster-Slot zuweisen; Akzentfarbe und Lucide-Icon ändern → speichern |
 | [`/mpz/studio/brand`](https://localhost:3000/mpz/studio/brand) (#180) | Slot-Datei ersetzen → Vorschau mit Cache-Bust (`?t=mtime`) |

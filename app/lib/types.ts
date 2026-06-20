@@ -172,6 +172,25 @@ export type CoachTrigger = 'hub-milestone' | 'hub-complete' | 'room-first'
 /** Coach-Anzeigemodus (Alias für fest/heft — semantisch getrennt von EntryMode). */
 export type CoachMode = EntryMode
 
+export interface CoachMessageLayout {
+  /** Anteil Viewport-Höhe (0.15–0.55). Eigene Semantik — nicht ADR-014. */
+  mascotSize?: number
+  /** rem — Versatz des placement-Ankers (Figur bzw. Duo-Row). */
+  mascotOffsetX?: number
+  mascotOffsetY?: number
+  /** rem — absolute Blasen-Breite (12–32), gerendert als min(100%, n rem). */
+  bubbleMaxWidth?: number
+  /** rem — Delta zur CSS-Default-Position der Blase. */
+  bubbleOffsetX?: number
+  bubbleOffsetY?: number
+  /** px (12–20). */
+  bubbleFontSize?: number
+  /** Horizontal spiegeln (wie Dialog mascotFlipX, ADR-014). */
+  mascotFlipX?: boolean
+  /** Vertikal spiegeln. */
+  mascotFlipY?: boolean
+}
+
 export interface CoachMessage {
   id: string
   trigger: CoachTrigger
@@ -184,6 +203,8 @@ export interface CoachMessage {
   slug?: string
   /** Fehlt → gilt für fest und heft. */
   modes?: readonly CoachMode[]
+  /** Optionale Figur-/Blasen-Geometrie — fehlt → globale CSS-Defaults. */
+  layout?: CoachMessageLayout
 }
 
 export interface CoachMessagesFile {

@@ -28,9 +28,9 @@ Leitplanken unverändert (ADR-022): nur `NODE_ENV=development`, `assertMpzStudio
 | Unterissue | `#187` | Domain + API: `replaceStationMediumFile` **(erledigt 2026-06-20)** | `tech`, `blocker` | — |
 | Unterissue | `#188` | UI: „Datei ersetzen“ im Medien-Editor **(erledigt 2026-06-20)** | `tech` | #187 |
 | Unterissue | `#189` | Thumbnail- und Poster-Upload (Medien) **(erledigt 2026-06-20)** | `tech` | #187 |
-| Unterissue | `#190` | Doku & Epic-Abschluss v2.1 | `tech`, `documentation` | #187–#189 |
+| Unterissue | `#190` | Doku & Epic-Abschluss v2.1 | `tech`, `documentation` | #187–#189, empfohlen nach Coach #191–#193 |
 
-**Empfohlene Reihenfolge:** Domain/API → UI Datei ersetzen ∥ Thumbnail/Poster (parallel möglich) → Doku
+**Empfohlene Reihenfolge:** Domain/API → UI Datei ersetzen ∥ Thumbnail/Poster (parallel möglich) → **Coach #191–#193** → Doku (#190)
 
 ---
 
@@ -187,5 +187,5 @@ Nach Upload: `thumbnail`/`poster` in JSON setzen (relativer Pfad `/media/…`). 
 - [x] Domain + API (#187)
 - [x] UI Datei ersetzen (#188)
 - [x] Thumbnail/Poster-Upload (#189, 2026-06-20)
-- [ ] Doku & Epic-Abschluss
+- [ ] Doku & Epic-Abschluss (#190) — nach Coach [#191](https://github.com/flxln/schulnavigator/issues/191)
 - [ ] Merge Branch `mpz-studio-v2.1` → `main`

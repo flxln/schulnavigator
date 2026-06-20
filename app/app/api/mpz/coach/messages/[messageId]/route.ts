@@ -9,6 +9,7 @@ import {
   removeCoachMessage,
   type PatchCoachMessageInput,
 } from '@/lib/mpz-coach-messages'
+import { parseCoachLayoutBody } from '@/lib/coach-layout'
 import type { CoachMascot, CoachMode, CoachPlacement } from '@/lib/types'
 
 export const runtime = 'nodejs'
@@ -71,6 +72,13 @@ export function parsePatch(body: unknown): PatchCoachMessageInput | null {
     } else {
       return null
     }
+  }
+  if ('layout' in raw) {
+    const layout = parseCoachLayoutBody(raw.layout, true)
+    if (layout === undefined) {
+      return null
+    }
+    patch.layout = layout
   }
 
   if (Object.keys(patch).length === 0) {

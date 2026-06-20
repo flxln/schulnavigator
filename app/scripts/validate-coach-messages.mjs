@@ -12,6 +12,66 @@ const TRIGGERS = new Set(['hub-milestone', 'hub-complete', 'room-first'])
 const MASCOTS = new Set(['frieda', 'otto', 'duo'])
 const MODES = new Set(['fest', 'heft'])
 
+const LAYOUT_KEYS = new Set([
+  'mascotSize',
+  'mascotOffsetX',
+  'mascotOffsetY',
+  'bubbleMaxWidth',
+  'bubbleOffsetX',
+  'bubbleOffsetY',
+  'bubbleFontSize',
+  'mascotFlipX',
+  'mascotFlipY',
+])
+
+const LAYOUT_BOOLEAN_KEYS = new Set(['mascotFlipX', 'mascotFlipY'])
+
+const LAYOUT_CLAMPS = {
+  mascotSize: { min: 0.15, max: 0.55 },
+  mascotOffsetX: { min: -5, max: 5 },
+  mascotOffsetY: { min: -5, max: 5 },
+  bubbleMaxWidth: { min: 12, max: 32 },
+  bubbleOffsetX: { min: -5, max: 5 },
+  bubbleOffsetY: { min: -5, max: 5 },
+  bubbleFontSize: { min: 12, max: 20 },
+}
+
+function validateLayout(layout, ctx) {
+  if (layout === undefined) {
+    return
+  }
+  if (typeof layout !== 'object' || layout === null || Array.isArray(layout)) {
+    fail(`${ctx}: layout muss ein Objekt sein`)
+    return
+  }
+  for (const key of Object.keys(layout)) {
+    if (!LAYOUT_KEYS.has(key)) {
+      fail(`${ctx}: unbekanntes layout-Feld "${key}"`)
+    }
+  }
+  for (const [key, clamp] of Object.entries(LAYOUT_CLAMPS)) {
+    if (!(key in layout)) {
+      continue
+    }
+    const value = layout[key]
+    if (typeof value !== 'number' || !Number.isFinite(value)) {
+      fail(`${ctx}: layout.${key} muss eine endliche Zahl sein`)
+      continue
+    }
+    if (value < clamp.min || value > clamp.max) {
+      fail(`${ctx}: layout.${key} außerhalb ${clamp.min}–${clamp.max}`)
+    }
+  }
+  for (const key of LAYOUT_BOOLEAN_KEYS) {
+    if (!(key in layout)) {
+      continue
+    }
+    if (typeof layout[key] !== 'boolean') {
+      fail(`${ctx}: layout.${key} muss boolean sein`)
+    }
+  }
+}
+
 function fail(msg) {
   console.error(`validate:coach: ${msg}`)
   process.exitCode = 1
@@ -123,6 +183,8 @@ for (const [index, raw] of messages.entries()) {
       fail(`${ctx}: room-first darf kein milestone haben`)
     }
   }
+
+  validateLayout(m.layout, ctx)
 }
 
 if (hubCompleteCount !== 1) {

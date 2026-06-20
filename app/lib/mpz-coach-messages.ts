@@ -10,9 +10,14 @@ import {
   COACH_PLACEMENTS,
   COACH_TRIGGERS,
 } from '@/lib/mpz-coach-messages-validation'
+import {
+  normalizeCoachLayoutInput,
+  validateCoachLayoutFields,
+} from '@/lib/coach-layout'
 import type {
   CoachMascot,
   CoachMessage,
+  CoachMessageLayout,
   CoachMessagesFile,
   CoachMode,
   CoachPlacement,
@@ -36,6 +41,7 @@ export type CoachErrorCode =
   | 'DUPLICATE_HUB_COMPLETE'
   | 'LAST_HUB_COMPLETE'
   | 'IMMUTABLE_FIELD'
+  | 'INVALID_LAYOUT'
 
 export type AddCoachMessageInput = {
   id: string
@@ -46,6 +52,7 @@ export type AddCoachMessageInput = {
   milestone?: number
   slug?: string
   modes?: readonly CoachMode[]
+  layout?: CoachMessageLayout
 }
 
 export type PatchCoachMessageInput = {
@@ -55,6 +62,7 @@ export type PatchCoachMessageInput = {
   milestone?: number
   slug?: string
   modes?: readonly CoachMode[] | null
+  layout?: CoachMessageLayout | null
 }
 
 export class MpzCoachMessagesError extends Error {
@@ -83,6 +91,7 @@ export const COACH_CLIENT_ERROR_CODES = new Set<CoachErrorCode>([
   'DUPLICATE_HUB_COMPLETE',
   'LAST_HUB_COMPLETE',
   'IMMUTABLE_FIELD',
+  'INVALID_LAYOUT',
 ])
 
 export function mapCoachError(
@@ -227,6 +236,25 @@ function validateSlug(
   return slug
 }
 
+function validateLayoutField(layout: unknown): CoachMessageLayout | undefined {
+  if (layout === undefined) {
+    return undefined
+  }
+  if (typeof layout !== 'object' || layout === null || Array.isArray(layout)) {
+    throw new MpzCoachMessagesError(
+      'INVALID_LAYOUT',
+      'layout muss ein Objekt sein.',
+    )
+  }
+
+  const errors = validateCoachLayoutFields(layout, 'layout')
+  if (errors.length > 0) {
+    throw new MpzCoachMessagesError('INVALID_LAYOUT', errors[0]!)
+  }
+
+  return normalizeCoachLayoutInput(layout as CoachMessageLayout)
+}
+
 function assertHubCompleteUnique(
   messages: CoachMessage[],
   excludeId?: string,
@@ -264,6 +292,11 @@ function normalizeMessageFields(
 
   if (modes !== undefined) {
     normalized.modes = modes
+  }
+
+  const layout = validateLayoutField(message.layout)
+  if (layout !== undefined) {
+    normalized.layout = layout
   }
 
   if (trigger === 'hub-milestone') {
@@ -363,6 +396,7 @@ export async function addCoachMessage(
       milestone: input.milestone,
       slug: input.slug,
       modes: input.modes,
+      layout: input.layout,
     }
 
     const normalized = normalizeMessageFields(
@@ -412,6 +446,11 @@ export async function patchCoachMessage(
       delete merged.modes
     } else if (patch.modes !== undefined) {
       merged.modes = patch.modes
+    }
+    if (patch.layout === null) {
+      delete merged.layout
+    } else if (patch.layout !== undefined) {
+      merged.layout = patch.layout
     }
 
     const normalized = normalizeMessageFields(
