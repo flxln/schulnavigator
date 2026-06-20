@@ -32,7 +32,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="de" className={`${nunito.variable} h-full antialiased`}>
+    <html
+      lang="de"
+      className={`${nunito.variable} h-full antialiased`}
+      suppressHydrationWarning
+    >
       <body className="flex min-h-full flex-col font-sans">
         <DisableZoom />
         {children}

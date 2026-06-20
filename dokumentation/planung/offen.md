@@ -2,7 +2,7 @@
 
 **Stand:** 2026-06-20 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
 
-**Letzter Abgleich:** 2026-06-20 — Coach-Epic #191 abgeschlossen (#192 Layout, #193 Audio); v2.1 #190 als Nächstes.
+**Letzter Abgleich:** 2026-06-20 — Coach-Audio-Nachzieh (#193: Demo-Clip, Portal-Timing, Hydration); v2.1 #190 als Nächstes.
 
 Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren). Abgeschlossene Epics: [archiv/epics/](./archiv/epics/).
 

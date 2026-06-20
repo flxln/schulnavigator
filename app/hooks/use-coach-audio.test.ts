@@ -88,6 +88,28 @@ describe('useCoachAudio', () => {
     expect(playSpy).toHaveBeenCalledTimes(2)
   })
 
+  it('startet Autoplay erst wenn enabled und audioRef gesetzt sind', async () => {
+    const audioRef = createRef<HTMLAudioElement>()
+    const el = document.createElement('audio')
+    const playSpy = vi.spyOn(el, 'play').mockResolvedValue(undefined)
+
+    const { rerender } = renderHook(
+      ({ enabled }: { enabled: boolean }) =>
+        useCoachAudio('/api/coach/welcome-hub', audioRef, enabled),
+      { initialProps: { enabled: false } },
+    )
+
+    expect(playSpy).not.toHaveBeenCalled()
+
+    audioRef.current = el
+    rerender({ enabled: true })
+
+    expect(playSpy).toHaveBeenCalled()
+    await waitFor(() => {
+      expect(el.src).toContain('/api/coach/welcome-hub')
+    })
+  })
+
   it('no-op ohne quelle', () => {
     const { audioRef, el } = setupAudio()
     const playSpy = vi.spyOn(el, 'play')

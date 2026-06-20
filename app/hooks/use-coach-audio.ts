@@ -11,13 +11,14 @@ export type UseCoachAudioResult = {
 export function useCoachAudio(
   quelle: string | undefined,
   audioRef: RefObject<HTMLAudioElement | null>,
+  enabled = true,
 ): UseCoachAudioResult {
   const [playBlocked, setPlayBlocked] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const playPendingRef = useRef<Promise<void> | null>(null)
 
   useEffect(() => {
-    if (!quelle) {
+    if (!quelle || !enabled) {
       return
     }
 
@@ -58,7 +59,7 @@ export function useCoachAudio(
       el.load()
       playPendingRef.current = null
     }
-  }, [quelle, audioRef])
+  }, [quelle, audioRef, enabled])
 
   const replay = useCallback(() => {
     const el = audioRef.current

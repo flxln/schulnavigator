@@ -7,7 +7,11 @@
       "mascot": "frieda",
       "placement": "left",
       "text": "Willkommen beim Schulrundgang! Tippe auf ein Fenster, den Wegweiser für Hof und Turnhalle oder scanne den QR-Code an der Raumtür.",
-      "modes": ["fest", "heft"]
+      "modes": [
+        "fest",
+        "heft"
+      ],
+      "quelle": "/api/coach/welcome-hub"
     },
     {
       "id": "first-visit",
@@ -16,7 +20,10 @@
       "mascot": "otto",
       "placement": "right",
       "text": "Super, deine erste Station! Schau dich um — im Schulhaus findest du alle Räume.",
-      "modes": ["fest", "heft"]
+      "modes": [
+        "fest",
+        "heft"
+      ]
     },
     {
       "id": "halfway",
@@ -25,7 +32,10 @@
       "mascot": "frieda",
       "placement": "right",
       "text": "Halbzeit! Du hast schon viele Räume entdeckt. Weiter so!",
-      "modes": ["fest", "heft"]
+      "modes": [
+        "fest",
+        "heft"
+      ]
     },
     {
       "id": "complete",
@@ -33,7 +43,10 @@
       "mascot": "duo",
       "placement": "duo-split",
       "text": "Wow — alle Stationen entdeckt! Danke, dass du unsere Schule erkundet hast.",
-      "modes": ["fest", "heft"]
+      "modes": [
+        "fest",
+        "heft"
+      ]
     },
     {
       "id": "room-first-klassenzimmer",
