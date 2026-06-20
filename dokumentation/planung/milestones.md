@@ -65,3 +65,10 @@ Der Fortschrittsbalken in GitHub ergibt sich automatisch aus den geschlossenen I
 
 **Fällig:** 31.08.2026 · **Status:** abgeschlossen (2026-06-20); **GitHub-Milestone:** [#9](https://github.com/flxln/schulnavigator/milestone/9)
 **Beschreibung:** Raumbild-Upload, Medien bearbeiten/link/embed, Dialog-Editor, Dialog-Hotspots, Coach-CRUD, Deploy-Tab, Config-Extraktion (Allowlist, Hub, Brand). Epic [#170](https://github.com/flxln/schulnavigator/issues/170) geschlossen; Unterissues #171–#181 erledigt — [epic-mpz-studio-v2.md](./epic-mpz-studio-v2.md). Gemerged nach `main` ([PR #183](https://github.com/flxln/schulnavigator/pull/183), 2026-06-20).
+
+---
+
+## MPZ Studio v2.1 — Medien-Datei ersetzen (ADR-022)
+
+**Fällig:** 31.08.2026 · **Status:** geplant · **GitHub-Milestone:** [#10](https://github.com/flxln/schulnavigator/milestone/10)
+**Beschreibung:** Datei-Inhalt für `audio`/`video`/`foto`/`text` im Studio ersetzen (gleiche `medium.id`), Thumbnail-/Poster-Upload. Schließt v2-Lücke nach #171 (nur Metadaten-PATCH). Epic [#186](https://github.com/flxln/schulnavigator/issues/186); Unterissues #187–#190 — [epic-mpz-studio-v2.1.md](./epic-mpz-studio-v2.1.md). **Nicht:** Markdown-Editor, YouTube (v3).
