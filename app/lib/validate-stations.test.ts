@@ -518,3 +518,44 @@ describe('validateStationsFile startYaw/startPitch (ADR-023)', () => {
     expect(musik?.startPitch).toBeUndefined()
   })
 })
+
+describe('validateStationsFile startPanX (ADR-024)', () => {
+  function kunstWithStartPan(overrides: Record<string, unknown> = {}) {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const kunst = data.stations.find((s) => s.slug === 'kunst') as Record<string, unknown>
+    Object.assign(kunst, overrides)
+    return data
+  }
+
+  it('akzeptiert optionales startPanX bei Flat-Station', () => {
+    const stations = validateStationsFile(
+      kunstWithStartPan({ startPanX: 0.5 }) as unknown,
+    )
+    const kunst = stations.find((s) => s.slug === 'kunst')
+    expect(kunst?.startPanX).toBe(0.5)
+  })
+
+  it('wirft bei startPanX auf equirectangular-Station', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const musik = data.stations.find((s) => s.slug === 'musik') as Record<string, unknown>
+    musik.startPanX = 0.5
+    expect(() => validateStationsFile(data as unknown)).toThrow(
+      'startPanX ist nur bei viewer "flat" erlaubt.',
+    )
+  })
+
+  it('wirft bei startPanX außerhalb des Bereichs', () => {
+    expect(() =>
+      validateStationsFile(kunstWithStartPan({ startPanX: 1.1 }) as unknown),
+    ).toThrow('startPanX muss eine Zahl zwischen 0 und 1 sein (war: 1.1).')
+  })
+
+  it('wirft bei startYaw und startPanX auf falscher Viewer-Kombination', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const kunst = data.stations.find((s) => s.slug === 'kunst') as Record<string, unknown>
+    kunst.startYaw = 10
+    expect(() => validateStationsFile(data as unknown)).toThrow(
+      'startYaw/startPitch ist nur bei viewer "equirectangular" erlaubt.',
+    )
+  })
+})

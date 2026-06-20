@@ -257,7 +257,7 @@ Nur bei `viewer` fehlend oder `"flat"`. Horizontale **Startposition** der Viewpo
 |------|---------|-----------------|
 | `startPanX` | nein | 0…1; `0` = linker Rand (heutiges Default-Verhalten), `0.5` = Bildmitte |
 
-**Pflege:** Manuell schätzen und am Gerät prüfen; MPZ-Kalibrier-Klick optional Folge zu #149. Issue #154 (Runtime).
+**Pflege:** Manuell schätzen und am Gerät prüfen; MPZ-Kalibrier-Klick optional Folge zu #149. Runtime: Issue #154 (umgesetzt).
 
 ### `dialog` — Sprecherwechsel und Text (**heute pflegbar**)
 

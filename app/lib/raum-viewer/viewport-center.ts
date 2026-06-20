@@ -1,4 +1,4 @@
-import { clamp } from '@/lib/raum-viewer/constants'
+import { clamp, clampPan } from '@/lib/raum-viewer/constants'
 
 export function normalizedViewportCenter(
   panPx: number,
@@ -11,4 +11,17 @@ export function normalizedViewportCenter(
   const imageX = containerW / 2 - panPx
   const x = imageX / displayW
   return { x: clamp(x, 0, 1), y: 0.5 }
+}
+
+export function panPxFromStartPanX(
+  startPanX: number,
+  containerW: number,
+  effectiveDisplayW: number,
+  maxPan: number,
+): number {
+  if (maxPan <= 0 || containerW <= 0 || effectiveDisplayW <= 0) {
+    return 0
+  }
+  const raw = containerW / 2 - startPanX * effectiveDisplayW
+  return clampPan(raw, maxPan)
 }
