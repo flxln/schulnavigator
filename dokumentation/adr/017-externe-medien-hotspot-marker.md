@@ -3,7 +3,7 @@
 **Datum:** 2026-06-10  
 **Status:** entschieden  
 **Ergänzt:** [ADR-006](./006-raum-viewer-gyro-hotspots.md) (Hotspots), [ADR-004](./004-video-hosting-mpz.md) (Drittanbieter-Medien), [ADR-003](./003-content-mvp-json-directus.md) (Content-Schema)  
-**Umsetzungsplan:** [`../projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md`](../projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md)
+**Umsetzungsplan:** [`../archiv/projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md`](../archiv/projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md)
 
 ## Kontext
 
@@ -128,4 +128,4 @@ Details, Dateiliste und Tests: Umsetzungsplan (siehe Kopfzeile).
 - **Doku:** `content-einpflegen.md`, `architektur.md`, Phase-5-Issues.
 - **Content:** Icons unter `public/media/{slug}/icons/`; PC-Raum zuerst `typ: link`, später `typ: embed` bei Freigabe.
 - **Directus (Phase 5):** Collections um `link`, `embed`, `thumbnail`, Hotspot-`icon` erweitern — Schema an ADR-017 angleichen.
-- **Issue #50:** Punkte „Verlinkung externe Lernspiele“, iframe und Hotspot-Icons → Epic **#97**, Unterissues **#98–#100** ([epic-externe-medien-hotspot-marker.md](../github-project/epic-externe-medien-hotspot-marker.md)).
+- **Issue #50:** Punkte „Verlinkung externe Lernspiele“, iframe und Hotspot-Icons → Epic **#97**, Unterissues **#98–#100** ([epic-externe-medien-hotspot-marker.md](../planung/archiv/epics/epic-externe-medien-hotspot-marker.md)).

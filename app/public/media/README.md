@@ -13,7 +13,7 @@ public/media/
     └── texte/      # TXT, MD
 ```
 
-Slug = App-Slug aus der [kanonischen Slug-Liste](../../../dokumentation/content-verzeichnisstruktur.md) (z. B. `musik`, `daz`).
+Slug = App-Slug aus der [kanonischen Slug-Liste](../../../dokumentation/content/verzeichnisstruktur.md) (z. B. `musik`, `daz`).
 
 ## Pfadkonvention in `stations.json`
 

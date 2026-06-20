@@ -11,7 +11,7 @@ Der MVP-Content-Workflow (Medien in `public/` + Einträge in `app/data/stations.
 
 Die Plan-A-Lösung (CLI `npm run content:ingest`, JSON-Schema, VS-Code-Snippets, Hotspot-Kalibrierung) ist **bereits umgesetzt** (2026-06-16) und deckt den kritischen Pfad ab. Offen blieb die Frage, ob ein komfortableres, **MPZ-internes** Pflege-UI („MPZ Studio") gebaut werden darf, ohne ADR-003 zu verletzen. Zwei unabhängige Plan-Reviews (SE-15: Codex und GLM-5.1) benennen genau diesen ungeklärten ADR-003-Konflikt als Pflicht-Klärung **vor** Umsetzung. Diese Entscheidung schließt die Lücke.
 
-Detail-Spezifikation, Scope-Stufen und Implementierungsfragen: [`dokumentation/projektmanagement/2026-06-16-mpz-studio-spezifikation.md`](../projektmanagement/2026-06-16-mpz-studio-spezifikation.md).
+Detail-Spezifikation, Scope-Stufen und Implementierungsfragen: [`dokumentation/spezifikationen/mpz-studio.md`](../spezifikationen/mpz-studio.md).
 
 ## Entscheidung
 

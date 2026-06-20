@@ -217,7 +217,7 @@ TopBar auf Raumseiten: **viewport-breit** (`fixed`), nicht auf Content-Spalte be
 5. Dev-Kalibrierung: `/raum/daz?hotspot-calib=1` — Klick liefert `yaw`/`pitch`-Snippet
 6. **Startblick (#152/#153, ADR-023):** Optional `startYaw`/`startPitch` in `stations.json` — Kamera beim Laden und „Ansicht zentrieren“ (Stations-Chip) springen dorthin. Gyro startet erst nach Startblick-`rotate` (am Gerät prüfen: nach Orientierungs-Freigabe kein Sprung weg vom Startblick). MPZ-Persistenz: im Kalib-Overlay **Als Startblick übernehmen** (`POST /api/mpz/view/sphere`).
 
-Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/projektmanagement/2026-06-13-sphere-hotspot-acceptance.md).
+Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/archiv/projektmanagement/2026-06-13-sphere-hotspot-acceptance.md).
 
 **Swipe-Onboarding (#107):**
 
@@ -391,7 +391,7 @@ Identisches Laufzeit-Image wie in Produktion — Schritt-für-Schritt: Abschnitt
 
 ## Archiv: MPZ-Demo-Meeting 10.06.
 
-Protokoll und Fahrplan des abgeschlossenen Termins: [`2026-06-10-mpz-demo-meeting.md`](../dokumentation/projektmanagement/2026-06-10-mpz-demo-meeting.md) · [`2026-06-10-mpz-meeting-fahrplan.md`](../dokumentation/projektmanagement/2026-06-10-mpz-meeting-fahrplan.md)
+Protokoll und Fahrplan des abgeschlossenen Termins: [`2026-06-10-mpz-demo-meeting.md`](../dokumentation/archiv/projektmanagement/2026-06-10-mpz-demo-meeting.md) · [`2026-06-10-mpz-meeting-fahrplan.md`](../dokumentation/archiv/projektmanagement/2026-06-10-mpz-meeting-fahrplan.md)
 
 ---
 

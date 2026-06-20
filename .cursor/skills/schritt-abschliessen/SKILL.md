@@ -22,7 +22,7 @@ Repo: `flxln/schulnavigator`. Sprache: Deutsch (Doku, Issue-Bodies, Commit-Messa
 ## Grundregeln
 
 1. **Aktueller Branch** — `git branch --show-current` ermitteln; alle Schritte beziehen sich auf diesen Branch und seinen Diff zu `main` (bzw. `origin/main`).
-2. **Markdown zuerst** — Änderungen zuerst in `dokumentation/` (und betroffene Anleitungen) festhalten, danach `gh` (siehe [github-project/README.md](../../dokumentation/github-project/README.md)).
+2. **Markdown zuerst** — Änderungen zuerst in `dokumentation/` (und betroffene Anleitungen) festhalten, danach `gh` (siehe [planung/README.md](../../dokumentation/planung/README.md)).
 3. **`gh` direkt ausführen** — ohne Bestätigung; bei Fehlern melden, korrigieren, erneut versuchen.
 4. **Commit und Push immer abschließen** — nach Doku + `gh` alle relevanten Änderungen auf dem Branch committen und `git push` ausführen (siehe Phase 5).
 5. **Keine Secrets** — `.env`, `.env.local`, Credentials nie stagen, committen oder in Issues/Doku.
@@ -49,7 +49,7 @@ Parallel prüfen:
 - `git branch --show-current` — Branch-Name für Push und Commit-Kontext
 - `git status` / `git diff` / `git diff main...HEAD` (falls `main` existiert) — Code + Doku auf dem Branch
 - `.cursor/plans/issue_*` oder `adr-*` — gibt es einen Umsetzungsplan?
-- `dokumentation/github-project/` — Epic- oder Phase-Datei zum Thema?
+- `dokumentation/planung/` — Epic- oder Phase-Datei zum Thema?
 - `dokumentation/adr/` + `entscheidungen.md` — ADR nötig oder schon vorhanden?
 - `gh issue view N` — falls Issue-Nummer bekannt
 
@@ -66,14 +66,14 @@ Skill `.cursor/skills/adr-erstellen/SKILL.md` vollständig anwenden:
 
 ### 2b — GitHub-Projekt-Spezifikation
 
-Zielordner: `dokumentation/github-project/`
+Zielordner: `dokumentation/planung/`
 
 | Situation | Datei |
 |-----------|-------|
-| Neues Epic | Neue `epic-<thema>.md` (Vorlage: [epic-externe-medien-hotspot-marker.md](../../dokumentation/github-project/epic-externe-medien-hotspot-marker.md)) |
-| Einzelnes Issue | Passende `issues-phase-N.md` |
+| Neues Epic | Neue `epic-<thema>.md` (Vorlage: [epic-externe-medien-hotspot-marker.md](../../dokumentation/planung/epic-externe-medien-hotspot-marker.md)) |
+| Einzelnes Issue | `planung/archiv/issues-phase-N.md` oder [planung/offen.md](../../dokumentation/planung/offen.md) |
 | Epic-Update | Bestehende `epic-*.md` — Checkboxen, Status, PR-Links |
-| Milestone-Text | [milestones.md](../../dokumentation/github-project/milestones.md) |
+| Milestone-Text | [milestones.md](../../dokumentation/planung/milestones.md) |
 
 **Epic-Vorlage (Mindestinhalt):**
 
@@ -107,10 +107,10 @@ Zielordner: `dokumentation/github-project/`
 ## Kontext
 - ADR: …
 - Epic-Parent: #NNN (nur bei Unterissue)
-- Spezifikation: dokumentation/github-project/…
+- Spezifikation: dokumentation/planung/…
 ```
 
-Labels aus [labels.md](../../dokumentation/github-project/labels.md). Milestone-Namen exakt wie in [milestones.md](../../dokumentation/github-project/milestones.md) (z. B. `Phase 5 — Post-Fest`).
+Labels aus [labels.md](../../dokumentation/planung/labels.md). Milestone-Namen exakt wie in [milestones.md](../../dokumentation/planung/milestones.md) (z. B. `Phase 5 — Post-Fest`).
 
 ### 2c — Weitere Doku (nur wenn betroffen)
 
@@ -119,18 +119,18 @@ Labels aus [labels.md](../../dokumentation/github-project/labels.md). Milestone-
 | Content-Schema / Medientypen | `anleitungen/content-einpflegen.md` |
 | Lokales Testen | `anleitungen/lokal-testen-und-anschauen.md` |
 | DSGVO / Drittanbieter | `dokumentation/dsgvo.md` |
-| Phasenstand | `dokumentation/projektplan.md` |
+| Phasenstand | `dokumentation/archiv/projektplan.md` |
 | Agenten-Kurzüberblick | `CLAUDE.md` (nur bei größeren Meilensteinen) |
 
 ### 2d — README-Checkliste
 
-In [github-project/README.md](../../dokumentation/github-project/README.md):
+In [planung/README.md](../../dokumentation/planung/README.md) bzw. [planung/offen.md](../../dokumentation/planung/offen.md):
 - erledigte Punkte `[x]` setzen
 - **Letzter dokumentierter Abgleich:** auf heutiges Datum + Kurzvermerk aktualisieren
 
 ## Phase 3 — GitHub syncen (`gh`, ohne Bestätigung)
 
-Nach Phase 2 **sofort** ausführen. Body-Dateien temporär unter `/tmp/` oder `dokumentation/github-project/.draft-*.md` anlegen (`.draft-*` nicht committen).
+Nach Phase 2 **sofort** ausführen. Body-Dateien temporär unter `/tmp/` oder `dokumentation/planung/.draft-*.md` anlegen (`.draft-*` nicht committen).
 
 ### Issue anlegen
 
@@ -182,7 +182,7 @@ git diff --stat
 ### Staging
 
 - **Stagen:** Code, `dokumentation/`, `anleitungen/`, `CLAUDE.md`, `.cursor/skills/` — alles, was zum abgeschlossenen Schritt gehört
-- **Nicht stagen:** `.env`, `.env.local`, `dokumentation/github-project/.draft-*`, Debug-Logs (`.cursor/debug-*.log`), nur lokale Artefakte
+- **Nicht stagen:** `.env`, `.env.local`, `dokumentation/planung/.draft-*`, Debug-Logs (`.cursor/debug-*.log`), nur lokale Artefakte
 
 ```bash
 git add <relevante Pfade>
@@ -250,19 +250,19 @@ Abgeschlossener Schritt (aktueller Branch)?
 
 | Thema | Pfad |
 |-------|------|
-| Sync-Regel | `dokumentation/github-project/README.md` |
+| Sync-Regel | `dokumentation/planung/README.md` |
 | ADR-Workflow | `.cursor/skills/adr-erstellen/SKILL.md` |
-| Labels | `dokumentation/github-project/labels.md` |
-| Milestones | `dokumentation/github-project/milestones.md` |
+| Labels | `dokumentation/planung/labels.md` |
+| Milestones | `dokumentation/planung/milestones.md` |
 | Entscheidungsindex | `dokumentation/entscheidungen.md` |
-| Projektphasen | `dokumentation/projektplan.md` |
+| Projektphasen | `dokumentation/archiv/projektplan.md` |
 
 ## Beispiel: Issue #100 nach Umsetzung (Typ A)
 
 1. Branch `feature/embed` — Diff/Plan lesen → Embed-Feature fertig
 2. `epic-externe-medien-hotspot-marker.md`: #100 Checkbox `[x]`, Status Stufe 3 erledigt
-3. `issues-phase-5.md`, `content-einpflegen.md`, `dsgvo.md` bei Bedarf
-4. `github-project/README.md` Checkliste + Datum
+3. `planung/offen.md`, `content-einpflegen.md`, `dsgvo.md` bei Bedarf
+4. `planung/offen.md` oder Sync-Log aktualisieren + Datum
 5. `gh issue close 100 --comment "Umgesetzt: EmbedViewer, Allowlist, CSP"`
 6. `git add` Code + Doku → Commit „Medientyp embed umsetzen, schließt #100“
 7. `git push -u origin feature/embed`
@@ -271,7 +271,7 @@ Abgeschlossener Schritt (aktueller Branch)?
 ## Beispiel: Neues Epic (Typ C)
 
 1. Branch `docs/epic-foo` — `dokumentation/adr/NNN-….md` (falls neu)
-2. `dokumentation/github-project/epic-<thema>.md` mit Platzhaltern `#___`
+2. `dokumentation/planung/epic-<thema>.md` mit Platzhaltern `#___`
 3. `gh issue create` Epic → Nummer N; Unterissues mit `Parent: #N`
 4. Epic-MD mit echten Nummern und URLs füllen
 5. `entscheidungen.md` / `README.md` ergänzen

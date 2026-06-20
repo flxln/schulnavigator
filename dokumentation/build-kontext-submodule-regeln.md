@@ -128,5 +128,5 @@ Workflow bei Token-Änderung:
 - [`CLAUDE.md`](../CLAUDE.md) — Agenten-Einstieg, Verweis hierher
 - [`anleitungen/fuer-entwickler.md`](../anleitungen/fuer-entwickler.md) — Coolify, Submodule-Fehler, Troubleshooting
 - [`dokumentation/architektur.md`](./architektur.md) — UI-Tokens, Deployment
-- [`dokumentation/content-verzeichnisstruktur.md`](./content-verzeichnisstruktur.md) — Content-Ablage (Autorenzone, Laufzeit, Slugs)
+- [`dokumentation/content/verzeichnisstruktur.md`](./verzeichnisstruktur.md) — Content-Ablage (Autorenzone, Laufzeit, Slugs)
 - [`app/AGENTS.md`](../app/AGENTS.md) — Regeln im npm-Projektroot

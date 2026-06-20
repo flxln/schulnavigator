@@ -4,7 +4,7 @@ Raumbilder für den Gyro-Viewer. Eine Datei pro Station, Dateiname = Slug.
 
 ## Regeln
 
-- **Dateiname:** `{slug}.jpg` — Slug aus der [kanonischen Slug-Liste](../../../dokumentation/content-verzeichnisstruktur.md)
+- **Dateiname:** `{slug}.jpg` — Slug aus der [kanonischen Slug-Liste](../../../dokumentation/content/verzeichnisstruktur.md)
 - **Format:** optimiertes JPG (Kleinbuchstaben `.jpg`), **max. 500 KB**
 - **Auflösung:** ≥ 2400 px Breite; Seitenverhältnis ≥ 2,5:1 für sinnvollen Gyro-Pan
 - **Keine Originalaufnahmen** — Rohdateien gehören nach `auftraggeber/material/stationen-360-pano/flat/{slug}/raw/`

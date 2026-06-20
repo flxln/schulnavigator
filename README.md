@@ -43,13 +43,19 @@ schulnavigator/
 ├── protokolle/                 # Submodule — Gesprächsprotokolle (nicht in Build/Runtime)
 ├── anleitungen/                # Für Lehrkräfte, Entwickler, QR-Druck
 ├── dokumentation/
-│   ├── adr/                    # Architecture Decision Records
-│   ├── github-project/         # Issues, Milestones, Labels (Quelldaten)
-│   ├── build-kontext-submodule-regeln.md  # Docker nur app/; KI-Agenten-Regeln
+│   ├── README.md                   # Landkarte der Doku
+│   ├── adr/                        # Architecture Decision Records
+│   ├── planung/                    # Issues, Milestones, offen.md
+│   ├── content/                    # Slugs, Pflege-Übersicht
+│   ├── spezifikationen/            # Feature-Specs (MPZ Studio)
+│   ├── ideen/                      # Produktideen (offen / archiv)
+│   ├── reviews/                    # Pre-/Post-Mortems
+│   ├── archiv/                     # Eingefrorener Projektplan, Meetings, Design
+│   ├── build-kontext-submodule-regeln.md
 │   ├── architektur.md
 │   ├── dsgvo.md
 │   ├── entscheidungen.md
-│   └── projektplan.md
+│   └── technische-fragen.md
 ├── prompts/                    # System-Prompts für Coding-Agenten
 └── CLAUDE.md                   # Projektkonventionen für KI-Agenten
 ```
@@ -67,7 +73,7 @@ Stand lokal im Browser prüfen: [`anleitungen/lokal-testen-und-anschauen.md`](./
 
 ## Projektplan
 
-Das Projekt ist in 6 Phasen aufgeteilt — von Architektur-Entscheidungen bis zum Live-Betrieb und der Erweiterung auf weitere Schulen. Details im [GitHub Project](https://github.com/flxln/schulnavigator/projects) und in [`dokumentation/projektplan.md`](./dokumentation/projektplan.md).
+Das Projekt ist in 6 Phasen aufgeteilt — von Architektur-Entscheidungen bis zum Live-Betrieb und der Erweiterung auf weitere Schulen. Details im [GitHub Project](https://github.com/flxln/schulnavigator/projects), [`dokumentation/planung/offen.md`](./dokumentation/planung/offen.md) und im eingefrorenen [`dokumentation/archiv/projektplan.md`](./dokumentation/archiv/projektplan.md).
 
 ## Öffentliche Doku (GitHub Pages)
 
@@ -78,7 +84,7 @@ Statische Projektunterlagen unter [`docs/`](./docs/) — nach Push auf `main` er
 | [Projektstatistik](https://flxln.github.io/schulnavigator/projektstatistik.html) | Arbeitszeit, Code, Issues, KI-Vergleich |
 | [Content pflegen](https://flxln.github.io/schulnavigator/content-pflege.html) | Interaktive Anleitung für `stations.json` |
 
-Quelle Content-Pflege: [`dokumentation/content-pflege-interaktiv.html`](./dokumentation/content-pflege-interaktiv.html) (bei Änderungen nach `docs/content-pflege.html` kopieren).
+Quelle Content-Pflege: [`dokumentation/content/pflege-interaktiv.html`](./dokumentation/content/pflege-interaktiv.html) (bei Änderungen nach `docs/content-pflege.html` kopieren).
 
 ## Datenschutz
 

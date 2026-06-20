@@ -2,9 +2,9 @@
 
 Operative Anleitung für Team und Schule am Schulfest. Technik: Modus **`fest`**, Entry-Token aus [`app/lib/access-token-constants.mjs`](../app/lib/access-token-constants.mjs) bzw. `public/qr/manifest-schulfest.json`, Raum-QRs → `/raum/{slug}` ([ADR-005](../dokumentation/adr/005-zugangskontrolle-token.md)).
 
-**Quelle Strategie:** [issues-schulfest-gs39-nachtrag.md](../dokumentation/github-project/issues-schulfest-gs39-nachtrag.md) (Epic #86)
+**Quelle Strategie:** [issues-schulfest-gs39-nachtrag.md](../dokumentation/planung/issues-schulfest-gs39-nachtrag.md) (Epic #86)
 
-Verwandt: [qr-codes-drucken.md](./qr-codes-drucken.md) · [content-einpflegen.md](./content-einpflegen.md) · [Abschlusstest Geräte](../dokumentation/projektmanagement/2026-06-15-abschlusstest-geraete.md)
+Verwandt: [qr-codes-drucken.md](./qr-codes-drucken.md) · [content-einpflegen.md](./content-einpflegen.md) · [Abschlusstest Geräte](../dokumentation/archiv/projektmanagement/2026-06-15-abschlusstest-geraete.md)
 
 ---
 
@@ -82,7 +82,7 @@ npm run generate:qr
 | Beschriftung | Raumname + „Scannen → Station in der App“ |
 | Test | Scan aus **1 m**, **Sonnenlicht**, iOS + Android |
 
-Sonnentest protokollieren (Datum, Scan ja/nein) — Zeile in [Abschlusstest](../dokumentation/projektmanagement/2026-06-15-abschlusstest-geraete.md) oder hier ergänzen.
+Sonnentest protokollieren (Datum, Scan ja/nein) — Zeile in [Abschlusstest](../dokumentation/archiv/projektmanagement/2026-06-15-abschlusstest-geraete.md) oder hier ergänzen.
 
 ---
 
@@ -98,8 +98,8 @@ Sonnentest protokollieren (Datum, Scan ja/nein) — Zeile in [Abschlusstest](../
 
 | Problem | Maßnahme |
 |---------|----------|
-| Kein Mobilfunk | Tablet-Fallback ([#41](../dokumentation/github-project/issues-phase-4.md)) — Entry-URL einmal öffnen |
-| App nicht erreichbar | MPZ-Ansprechpartner ([#42](../dokumentation/github-project/issues-phase-4.md)) |
+| Kein Mobilfunk | Tablet-Fallback ([#41](../dokumentation/planung/issues-phase-4.md)) — Entry-URL einmal öffnen |
+| App nicht erreichbar | MPZ-Ansprechpartner ([#42](../dokumentation/planung/issues-phase-4.md)) |
 | Scan klappt nicht | Buddy am Hof; QR-Größe / Beschädigung prüfen |
 
 ---
@@ -111,4 +111,4 @@ Sonnentest protokollieren (Datum, Scan ja/nein) — Zeile in [Abschlusstest](../
 - [ ] Hof-Schilder beschriftet und wetterfest
 - [ ] Tablet-Fallback geladen (Entry-URL aus `manifest-schulfest.json` oder gedrucktem Entry-QR)
 - [ ] MPZ erreichbar (Felix/Julia)
-- [ ] Mobilfunk am Hof getestet ([#91](../dokumentation/github-project/issues-schulfest-gs39-nachtrag.md))
+- [ ] Mobilfunk am Hof getestet ([#91](../dokumentation/planung/issues-schulfest-gs39-nachtrag.md))

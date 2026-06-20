@@ -16,7 +16,7 @@ Rahmenbedingungen, die die Entscheidungen prägen:
 - **Zielgruppe Grundschulkinder** — tippen viel, schließen Overlays selten bewusst.
 - **Fest-Modus markiert Räume nicht beim Öffnen als „visited"** (`station-visit-recorder.tsx:25` — `if (mode === 'fest') return`); „visited" entsteht dort nur über den QR-Scanner.
 
-Detail-Umsetzung: [Coach-Sparkle-MVP-Plan](../../.cursor/plans/coach_sparkle_mvp_d9e82ce2.plan.md); Kurzidee: [`maskottchen-fortschritt-einblendung.md`](../kurzfristige-ideen/maskottchen-fortschritt-einblendung.md).
+Detail-Umsetzung: [Coach-Sparkle-MVP-Plan](../../.cursor/plans/coach_sparkle_mvp_d9e82ce2.plan.md); Kurzidee: [`maskottchen-fortschritt-einblendung.md`](../ideen/archiv/maskottchen-fortschritt-einblendung.md).
 
 ## Entscheidung
 
@@ -81,5 +81,5 @@ Eigenes Content- und Storage-Modell, getrennt vom Dialog (ADR-010/011). Sieben F
 - **Storage-Keys:** `sn_coach_seen_fest`, `sn_coach_seen_heft` (`{version, seen, suppressed}`); bestehender `sn_sparkle_done` bleibt unverändert.
 - **Seed-Räume (MVP):** `klassenzimmer`, `musik`, `hort` (kurze Orientierungstexte, mit MPZ nachziehbar); **keine** `daz`/`pc-raum` (Dialog-Hotspots).
 - **Abgegrenzt zu ADR-010/011:** Dialog (Hotspot-getriggert, Audio) bleibt unberührt; Coach ist text-only, fortschritts-getriggert. Kein Autoplay-Audio (iOS-sicher).
-- **Bewusst nicht jetzt:** `fest-locked-tap`-Toast (Follow-up), Coach-Audio mit Autoplay ([Ideenskizze](../kurzfristige-ideen/coach-audio.md) — widerspricht MVP-Regel „kein Autoplay“; Ergänzungs-ADR nötig), placement-Umschalten per Breakpoint, Directus-Anbindung.
+- **Bewusst nicht jetzt:** `fest-locked-tap`-Toast (Follow-up), Coach-Audio mit Autoplay ([Ideenskizze](../ideen/offen/coach-audio.md) — widerspricht MVP-Regel „kein Autoplay“; Ergänzungs-ADR nötig), placement-Umschalten per Breakpoint, Directus-Anbindung.
 - **Offen:** finale Coach-Texte inhaltlich mit MPZ; ggf. weitere Seed-Räume nach Festerfahrung.
