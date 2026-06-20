@@ -7,6 +7,7 @@ import {
   MpzCoachMessagesError,
   type AddCoachMessageInput,
 } from '@/lib/mpz-coach-messages'
+import { parseCoachLayoutBody } from '@/lib/coach-layout'
 import type {
   CoachMascot,
   CoachMode,
@@ -82,6 +83,16 @@ export function parseCreate(body: unknown): AddCoachMessageInput | null {
       modes.push(mode)
     }
     input.modes = modes
+  }
+
+  if ('layout' in raw) {
+    const layout = parseCoachLayoutBody(raw.layout, false)
+    if (layout === undefined && raw.layout !== undefined) {
+      return null
+    }
+    if (layout !== undefined && layout !== null) {
+      input.layout = layout
+    }
   }
 
   return input
