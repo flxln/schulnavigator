@@ -2,7 +2,7 @@
 
 _Schneller, stabiler Workflow für 24./25.06.2026 — ohne MPZ Studio als Single Point of Failure._
 
-**MPZ Studio (Plan B)** ist optional und kommt später; die volle Spezifikation steht in [`2026-06-16-mpz-studio-spezifikation.md`](../dokumentation/projektmanagement/2026-06-16-mpz-studio-spezifikation.md).
+**MPZ Studio (Plan B)** ist optional und kommt später; die volle Spezifikation steht in [`mpz-studio.md`](../dokumentation/spezifikationen/mpz-studio.md).
 
 Allgemeine Content-Regeln: [content-einpflegen.md](./content-einpflegen.md)
 
@@ -118,6 +118,6 @@ Kein Studio auf Production — Schreibzugriff nur lokal im Repo.
 
 ## Verwandt
 
-- Issue [#37](../dokumentation/github-project/issues-phase-3.md) — Projekttag
+- Issue [#37](../dokumentation/planung/issues-phase-3.md) — Projekttag
 - [lokal-testen-und-anschauen.md](./lokal-testen-und-anschauen.md)
 - [fuer-entwickler.md](./fuer-entwickler.md) — Deploy

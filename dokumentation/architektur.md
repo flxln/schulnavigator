@@ -18,7 +18,7 @@ _Stand: 2026-06-11 (**#111:** Card-Peek Raumseiten + iOS-Breitenfix; **#107:** S
 | Raum-Viewer         | Gyro-Pan, Hotspots, Tap-Fallback; normales Foto   | gleich                           | [006](./adr/006-raum-viewer-gyro-hotspots.md) |
 | UI / Schul-Theme    | GS39-Tokens + Jubiläums-UI (Epic #58)             | pro Schule eigenes Token-Sheet   | [ADR-009](./adr/009-hub-isometrisch.md), Auftraggeber-CSS |
 | Startseite-Hub      | Frontansicht GS39 (SVG-Outline, Slot-Map)         | gleich                           | [ADR-016](./adr/016-hub-frontansicht-39gs.md) |
-| Responsive / Tablet | `.sn-page-container` (`max-w-lg` → `md:2xl` → `lg:3xl`) | gleich                           | [ADR-012](./adr/012-tablet-ipad-responsive-layout.md), Epic [#74–#78](./github-project/epic-tablet-ipad-layout.md) |
+| Responsive / Tablet | `.sn-page-container` (`max-w-lg` → `md:2xl` → `lg:3xl`) | gleich                           | [ADR-012](./adr/012-tablet-ipad-responsive-layout.md), Epic [#74–#78](./planung/archiv/epics/epic-tablet-ipad-layout.md) |
 
 ## Responsive & Tablet (ADR-012, umgesetzt 2026-06-14)
 
@@ -218,7 +218,7 @@ interface Station {
 }
 ```
 
-Vollständige Ablagekonventionen (Pfade, Autorenzone, Laufzeit): [`content-verzeichnisstruktur.md`](./content-verzeichnisstruktur.md).
+Vollständige Ablagekonventionen (Pfade, Autorenzone, Laufzeit): [`verzeichnisstruktur.md`](./verzeichnisstruktur.md).
 
 ## Deployment
 

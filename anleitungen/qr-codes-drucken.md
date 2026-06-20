@@ -72,7 +72,7 @@ npm run generate:qr -- --only=turnhalle,speiseraum,werken,lesewelt,musik,daz
 
 - PNGs aus `app/public/qr/` in die gewünschte Layout-Software legen (z. B. ein QR pro A6-Kärtchen).
 
-`manifest.json` im gleichen Ordner listet Dateiname und Ziel-URL (Hilfe für Abnahme und [#36](../dokumentation/github-project/issues-phase-3.md)).
+`manifest.json` im gleichen Ordner listet Dateiname und Ziel-URL (Hilfe für Abnahme und [#36](../dokumentation/planung/issues-phase-3.md)).
 
 ---
 

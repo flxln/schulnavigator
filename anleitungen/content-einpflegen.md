@@ -10,9 +10,9 @@ _Anleitung für MPZ/Lehrkräfte (MVP): Medien und Hotspots ohne Admin-Oberfläch
 
 Verwandte Dokumente:
 
-- [content-pflege-uebersicht.md](../dokumentation/content-pflege-uebersicht.md) — alle Pflegeorte und -wege (Übersicht)
-- [content-pflege-interaktiv.html](../dokumentation/content-pflege-interaktiv.html) — interaktive Übersicht nach Content-Typ
-- [content-verzeichnisstruktur.md](../dokumentation/content-verzeichnisstruktur.md) — Slugs, Zonen, Pfadkonventionen
+- [pflege-uebersicht.md](../dokumentation/content/pflege-uebersicht.md) — alle Pflegeorte und -wege (Übersicht)
+- [pflege-interaktiv.html](../dokumentation/content/pflege-interaktiv.html) — interaktive Übersicht nach Content-Typ
+- [verzeichnisstruktur.md](../dokumentation/content/verzeichnisstruktur.md) — Slugs, Zonen, Pfadkonventionen
 - [public/media/README.md](../app/public/media/README.md) — Kurzreferenz Ordnerstruktur
 - [lokal-testen-und-anschauen.md](./lokal-testen-und-anschauen.md) — Test-Routen, Build-Check
 - [fuer-entwickler.md](./fuer-entwickler.md) — Deploy, Git LFS, Coolify
@@ -45,7 +45,7 @@ flowchart LR
 ## Voraussetzungen
 
 - Terminal im Ordner **`app/`** (alle `npm`-Befehle dort)
-- Slug der Station aus der [kanonischen Liste](../dokumentation/content-verzeichnisstruktur.md) — **nicht umbenennen** (QR-Codes sind gedruckt)
+- Slug der Station aus der [kanonischen Liste](../dokumentation/content/verzeichnisstruktur.md) — **nicht umbenennen** (QR-Codes sind gedruckt)
 - Lokal testen: `npm run dev` → zuerst `/eintritt?t=<heft-token>` (Wert aus [`app/lib/access-token-constants.mjs`](../app/lib/access-token-constants.mjs); alle Räume sofort klickbar)
 
 ---
@@ -234,7 +234,7 @@ Statt `x`/`y` gelten **Kugelkoordinaten** aus dem Equirectangular-Panorama:
 | `bubblePitchOffset` | nein | Zusätzlicher Pitch (Grad) für Dialog-Bubble nach oben; nur Dialog |
 | `icon`, `iconSize` | Medien | Wie bei Flat |
 
-**Kalibrierung (Dev):** `npm run dev` → `/raum/{slug}?hotspot-calib=1` → auf Ankerpunkt klicken → JSON-Snippet kopieren oder **In stations.json übernehmen** (nach `/mpz/unlock`, #149). Maskottchen: **Fuß** anklicken; Medien: **Icon-Mitte**. Abnahme-Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/projektmanagement/2026-06-13-sphere-hotspot-acceptance.md).
+**Kalibrierung (Dev):** `npm run dev` → `/raum/{slug}?hotspot-calib=1` → auf Ankerpunkt klicken → JSON-Snippet kopieren oder **In stations.json übernehmen** (nach `/mpz/unlock`, #149). Maskottchen: **Fuß** anklicken; Medien: **Icon-Mitte**. Abnahme-Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/archiv/projektmanagement/2026-06-13-sphere-hotspot-acceptance.md).
 
 ### Startblick Sphere — `startYaw` / `startPitch` (optional, [ADR-023](../dokumentation/adr/023-sphere-startblick.md))
 
@@ -257,7 +257,7 @@ Nur bei `viewer` fehlend oder `"flat"`. Horizontale **Startposition** der Viewpo
 |------|---------|-----------------|
 | `startPanX` | nein | 0…1; `0` = linker Rand (heutiges Default-Verhalten), `0.5` = Bildmitte |
 
-**Pflege:** Manuell schätzen und am Gerät prüfen; MPZ-Kalibrier-Klick optional Folge zu #149. Runtime: Issue #154 (umgesetzt).
+**Pflege:** Manuell schätzen und am Gerät prüfen; MPZ Studio: `/mpz/calib/flat/{slug}` → „Als Startpan übernehmen“ ([#185](https://github.com/flxln/schulnavigator/issues/185), geplant). Runtime: #154 (umgesetzt).
 
 ### `dialog` — Sprecherwechsel und Text (**heute pflegbar**)
 
@@ -434,7 +434,7 @@ Button „Im Browser öffnen“ ist immer verfügbar.
 | 2 | `typ: link` | **live** |
 | 3 | `typ: embed` | **live** — Allowlist `delightex.com`, `bookcreator.com`; DSB-Freigabe vorausgesetzt |
 
-Umsetzungsplan: [`dokumentation/projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md`](../dokumentation/projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md)
+Umsetzungsplan: [`dokumentation/archiv/projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md`](../dokumentation/archiv/projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md)
 
 ---
 

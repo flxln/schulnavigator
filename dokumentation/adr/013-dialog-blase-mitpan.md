@@ -9,7 +9,7 @@
 ADR-011 Punkt 6 legte fest: Sprechblase bleibt viewport-fix (v1), Gyro während Dialog aktiv.
 Im iPhone-Test zeigte sich: wenn Nutzer während des Dialogs schwenken, wandern die Maskottchen mit dem Panorama, während die Blase mittig im Viewport stehen bleibt. Das wirkt wie ein zerrissener Dialog.
 
-Die Ideen-Datei [`dialog-maskottchen-abstand-und-pan.md`](../kurzfristige-ideen/dialog-maskottchen-abstand-und-pan.md) definierte drei Optionen:
+Die Ideen-Datei [`dialog-maskottchen-abstand-und-pan.md`](../ideen/archiv/dialog-maskottchen-abstand-und-pan.md) definierte drei Optionen:
 
 | Option | Beschreibung |
 |--------|-------------|

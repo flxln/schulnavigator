@@ -9,7 +9,7 @@ Issue **#14** (Phase 1) etablierte einen **Puzzle-SVG-Hub** (`viewBox` 400×600,
 
 Das Auftraggeber-Design **„Virtueller Schulrundgang“** ([`auftraggeber/Virtueller Schulrundgang/`](../../auftraggeber/Virtueller%20Schulrundgang/)) definiert eine andere Hub-Darstellung: **isometrisches Schulhaus** mit 11 klickbaren Bereichen (9 Fenster auf der Hauptfassade, Turnhalle, Garten), GS39-Chrome (Brush-Typo, Fortschrittskarte, Dekoration) und zusätzlich die Route **`/stationen`** (Stationsliste).
 
-Phase 2 verlangt eine **fertige App-Shell**, die dem Endprodukt entspricht ([`projektplan.md`](../projektplan.md)). Tokens und Raum-Viewer (#55/#56) sind umgesetzt; die **sichtbare** Jubiläums-UI fehlte bisher.
+Phase 2 verlangt eine **fertige App-Shell**, die dem Endprodukt entspricht ([`projektplan.md`](../archiv/projektplan.md)). Tokens und Raum-Viewer (#55/#56) sind umgesetzt; die **sichtbare** Jubiläums-UI fehlte bisher.
 
 **Unverändert bleiben** (eigene ADRs): Gyro-Raum-Viewer ([ADR-006](./006-raum-viewer-gyro-hotspots.md)), Zugang per Token/Cookie ([ADR-005](./005-zugangskontrolle-token.md), [ADR-007](./007-zugangskontrolle-cookie.md), [ADR-008](./008-eintritt-in-app-scanner.md)), Besuchs-Stempel (`sn_visited_slugs`, #21).
 
@@ -59,7 +59,7 @@ Phase 2 verlangt eine **fertige App-Shell**, die dem Endprodukt entspricht ([`pr
 
 **Technik:** `getHomeFooterCta` ([`app/lib/home-cta.ts`](../../app/lib/home-cta.ts)), geteilter Button [`home-fest-scan-cta.tsx`](../../app/components/home/home-fest-scan-cta.tsx), gemeinsame nächste Station [`getNextStation`](../../app/lib/next-station.ts) (Home + Footer; Footer überspringt besuchte Räume und den aktuellen Raum). Vor Hydration im `fest`: stabiler Einzel-Scan (`isHydrated` in der CTA-Entscheidung).
 
-Issue: **#84** (Sub-Issue zu **#83**, Kontext **#61**) — https://github.com/flxln/schulnavigator/issues/84 — siehe [issues-phase-2.md](../github-project/issues-phase-2.md).
+Issue: **#84** (Sub-Issue zu **#83**, Kontext **#61**) — https://github.com/flxln/schulnavigator/issues/84 — siehe [issues-phase-2.md](../planung/archiv/issues-phase-2.md).
 
 #### Nachtrag 2026-06-11 — Scan-CTA ohne Stationsvorschlag (#104)
 
@@ -120,4 +120,4 @@ Issue: **#104** (Folge **#84**) — https://github.com/flxln/schulnavigator/issu
 ## Bezug
 
 - Design: [`auftraggeber/Virtueller Schulrundgang/Schulnavigator.html`](../../auftraggeber/Virtueller%20Schulrundgang/Schulnavigator.html)
-- Ausführungsreihenfolge: [`dokumentation/projektmanagement/2026-05-27-gs39-ui-ausfuehrungsreihenfolge.md`](../projektmanagement/2026-05-27-gs39-ui-ausfuehrungsreihenfolge.md)
+- Ausführungsreihenfolge: [`dokumentation/archiv/projektmanagement/2026-05-27-gs39-ui-ausfuehrungsreihenfolge.md`](../archiv/projektmanagement/2026-05-27-gs39-ui-ausfuehrungsreihenfolge.md)
