@@ -49,4 +49,42 @@ describe('validateCoachMessagesContent', () => {
     const errors = validateCoachMessagesContent(file, stationCount, stationSlugs)
     expect(errors.some((e) => e.includes('außerhalb'))).toBe(true)
   })
+
+  it('meldet ungültiges layout', () => {
+    const file = validFile()
+    file.messages[1] = {
+      ...file.messages[1]!,
+      layout: { mascotSize: 0.99 },
+    }
+    const errors = validateCoachMessagesContent(file, stationCount, stationSlugs)
+    expect(errors.some((e) => e.includes('layout.mascotSize außerhalb'))).toBe(true)
+  })
+
+  it('akzeptiert gültiges layout', () => {
+    const file = validFile()
+    file.messages[1] = {
+      ...file.messages[1]!,
+      layout: { mascotSize: 0.38, bubbleOffsetY: -0.25 },
+    }
+    expect(validateCoachMessagesContent(file, stationCount, stationSlugs)).toEqual([])
+  })
+
+  it('meldet ungültige quelle', () => {
+    const file = validFile()
+    file.messages[1] = {
+      ...file.messages[1]!,
+      quelle: '/api/coach/wrong',
+    }
+    const errors = validateCoachMessagesContent(file, stationCount, stationSlugs)
+    expect(errors.some((e) => e.includes('quelle muss'))).toBe(true)
+  })
+
+  it('akzeptiert gültige quelle (Format)', () => {
+    const file = validFile()
+    file.messages[1] = {
+      ...file.messages[1]!,
+      quelle: '/api/coach/m0',
+    }
+    expect(validateCoachMessagesContent(file, stationCount, stationSlugs)).toEqual([])
+  })
 })

@@ -1,0 +1,118 @@
+'use client'
+
+import { useRef } from 'react'
+import { UPLOAD_RULES } from '@/lib/mpz-upload-rules'
+import type { MediumAssetField } from '@/lib/mpz-medium-asset-upload'
+
+const KB = 1024
+const MB = 1024 * KB
+const FOTO_RULE = UPLOAD_RULES.foto
+
+function formatMaxBytes(bytes: number): string {
+  if (bytes >= MB) return `${Math.round(bytes / MB)} MB`
+  return `${Math.round(bytes / KB)} KB`
+}
+
+function fieldClassName(): string {
+  return 'w-full rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1'
+}
+
+function labelClassName(): string {
+  return 'mb-1 block text-xs font-semibold text-fg-3'
+}
+
+export type MediumAssetUploadFieldProps = {
+  field: MediumAssetField
+  slug: string
+  value: string
+  onPathChange: (path: string) => void
+  uploadDisabled: boolean
+  uploadDisabledHint?: string
+  onPickFile: (file: File) => void
+  busy: boolean
+  idPrefix: string
+  uploadError?: string | null
+}
+
+export function MediumAssetUploadField({
+  field,
+  slug,
+  value,
+  onPathChange,
+  uploadDisabled,
+  uploadDisabledHint,
+  onPickFile,
+  busy,
+  idPrefix,
+  uploadError,
+}: MediumAssetUploadFieldProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const label = field === 'poster' ? 'poster (optional)' : 'thumbnail (optional)'
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
+    if (!file) return
+    onPickFile(file)
+  }
+
+  return (
+    <div className="sm:col-span-2">
+      <label htmlFor={`${idPrefix}-${field}`} className={labelClassName()}>
+        {label}
+      </label>
+      <input
+        id={`${idPrefix}-${field}`}
+        type="text"
+        value={value}
+        onChange={(e) => onPathChange(e.target.value)}
+        placeholder="/media/…"
+        className={`${fieldClassName()} font-mono text-xs`}
+      />
+      <p className="mt-1 text-xs text-fg-3">
+        Pfad unter <code className="font-mono">/media/{slug}/</code> oder anderem öffentlichen
+        Pfad.
+      </p>
+
+      <div className="mt-2 flex flex-col gap-2">
+        <input
+          ref={fileInputRef}
+          id={`${idPrefix}-${field}-file`}
+          type="file"
+          accept={FOTO_RULE.extensions.join(',')}
+          disabled={busy || uploadDisabled}
+          onChange={handleFileChange}
+          className="sr-only"
+          tabIndex={-1}
+          aria-hidden
+        />
+        <button
+          type="button"
+          disabled={busy || uploadDisabled}
+          onClick={() => fileInputRef.current?.click()}
+          className="w-fit rounded-gs39-sm border border-border-1 bg-bg-1 px-4 py-2 text-sm font-semibold text-fg-1 disabled:opacity-50"
+        >
+          {busy ? 'Lädt hoch …' : 'Bild hochladen'}
+        </button>
+        <p className="text-xs text-fg-3">
+          Erlaubt: {FOTO_RULE.extensions.join(', ')} · max. {formatMaxBytes(FOTO_RULE.maxBytes)}
+        </p>
+        {uploadDisabled && uploadDisabledHint && (
+          <p className="text-xs text-fg-3">{uploadDisabledHint}</p>
+        )}
+        {uploadError && (
+          <p
+            role="alert"
+            className="rounded-gs39-sm border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800"
+          >
+            {uploadError}
+          </p>
+        )}
+      </div>
+    </div>
+  )
+}
+
+export { FOTO_RULE, formatMaxBytes }

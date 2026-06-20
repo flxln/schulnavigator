@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { withMpzStudioAccess } from '@/lib/mpz-studio-guard'
 import { MpzContentIoError } from '@/lib/mpz-content-io'
+import { tryDeleteCoachWav } from '@/lib/coach-audio'
 import {
   assertImmutableCoachPatch,
   mapCoachError,
@@ -9,6 +10,7 @@ import {
   removeCoachMessage,
   type PatchCoachMessageInput,
 } from '@/lib/mpz-coach-messages'
+import { parseCoachLayoutBody } from '@/lib/coach-layout'
 import type { CoachMascot, CoachMode, CoachPlacement } from '@/lib/types'
 
 export const runtime = 'nodejs'
@@ -72,6 +74,22 @@ export function parsePatch(body: unknown): PatchCoachMessageInput | null {
       return null
     }
   }
+  if ('layout' in raw) {
+    const layout = parseCoachLayoutBody(raw.layout, true)
+    if (layout === undefined) {
+      return null
+    }
+    patch.layout = layout
+  }
+  if ('quelle' in raw) {
+    if (raw.quelle === null) {
+      patch.quelle = null
+    } else if (typeof raw.quelle === 'string') {
+      patch.quelle = raw.quelle
+    } else {
+      return null
+    }
+  }
 
   if (Object.keys(patch).length === 0) {
     return null
@@ -118,6 +136,9 @@ export const PATCH = withMpzStudioAccess(async (req: NextRequest, context) => {
 
   try {
     const result = await patchCoachMessage(messageId, patch)
+    if ('quelle' in patch && patch.quelle === null) {
+      tryDeleteCoachWav(messageId)
+    }
     return NextResponse.json(result, { status: 200 })
   } catch (err) {
     if (err instanceof MpzCoachMessagesError) {
@@ -140,6 +161,7 @@ export const DELETE = withMpzStudioAccess(async (_req: NextRequest, context) => 
 
   try {
     const result = await removeCoachMessage(messageId)
+    tryDeleteCoachWav(messageId)
     return NextResponse.json(result, { status: 200 })
   } catch (err) {
     if (err instanceof MpzCoachMessagesError) {

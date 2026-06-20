@@ -11,7 +11,8 @@ Kurzfristige Produkt- und UX-Ideen. **Umsetzte** Entscheidungen stehen in `adr/`
 | [360°-Panorama](./archiv/360-panorama-viewer-planung.md) | ✅ umgesetzt | [ADR-018](../adr/018-360-sphere-viewer.md) |
 | [Dialog Abstand & Pan](./archiv/dialog-maskottchen-abstand-und-pan.md) | ~ teilweise | Mitpan: [ADR-013](../adr/013-dialog-blase-mitpan.md); engere Positionen offen |
 | [Maskottchen Fest-Umfang](./archiv/maskottchen-fest-umfang.md) | ~ überholt | Größtenteils in ADR-019; Hub-Maskottchen-CTA fehlt |
-| [Coach-Audio](./offen/coach-audio.md) | — offen | Ergänzungs-ADR zu ADR-019 nötig |
+| [Coach-Layout](./archiv/coach-layout.md) | ✅ umgesetzt | [#192](https://github.com/flxln/schulnavigator/issues/192), [ADR-019](../adr/019-coach-fortschritt-einblendung.md) |
+| [Coach-Audio](./archiv/coach-audio.md) | ✅ umgesetzt | [#193](https://github.com/flxln/schulnavigator/issues/193), [ADR-025](../adr/025-coach-audio-autoplay.md) |
 
 Offene Gesamtliste: [planung/offen.md](../planung/offen.md).
 

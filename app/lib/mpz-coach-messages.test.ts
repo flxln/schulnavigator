@@ -214,3 +214,57 @@ describe('MpzCoachMessagesError', () => {
     ).rejects.toMatchObject({ code: 'INVALID_DUO_PLACEMENT' })
   })
 })
+
+describe('quelle', () => {
+  it('behält quelle bei addCoachMessage', async () => {
+    const io = makeTempIo()
+    const result = await addCoachMessage(
+      {
+        id: 'with-audio',
+        trigger: 'hub-milestone',
+        milestone: 1,
+        mascot: 'frieda',
+        placement: 'left',
+        text: 'Audio-Test',
+        quelle: '/api/coach/with-audio',
+      },
+      io,
+    )
+    const saved = result.messages.find((m) => m.id === 'with-audio')
+    expect(saved?.quelle).toBe('/api/coach/with-audio')
+  })
+
+  it('behält quelle bei patchCoachMessage', async () => {
+    const io = makeTempIo()
+    const result = await patchCoachMessage(
+      'welcome-hub',
+      { quelle: '/api/coach/welcome-hub' },
+      io,
+    )
+    const updated = result.messages.find((m) => m.id === 'welcome-hub')
+    expect(updated?.quelle).toBe('/api/coach/welcome-hub')
+  })
+
+  it('entfernt quelle bei patch null', async () => {
+    const io = makeTempIo()
+    await patchCoachMessage(
+      'welcome-hub',
+      { quelle: '/api/coach/welcome-hub' },
+      io,
+    )
+    const result = await patchCoachMessage('welcome-hub', { quelle: null }, io)
+    const updated = result.messages.find((m) => m.id === 'welcome-hub')
+    expect(updated?.quelle).toBeUndefined()
+  })
+
+  it('wirft INVALID_QUELLE bei falscher quelle', async () => {
+    const io = makeTempIo()
+    await expect(
+      patchCoachMessage(
+        'welcome-hub',
+        { quelle: '/api/coach/wrong-id' },
+        io,
+      ),
+    ).rejects.toMatchObject({ code: 'INVALID_QUELLE' })
+  })
+})

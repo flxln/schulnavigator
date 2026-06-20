@@ -2,6 +2,8 @@
 
 **Stand:** 2026-06-20 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
 
+**Letzter Abgleich:** 2026-06-20 — MPZ Studio v2.1 (#186) abgeschlossen (#190 Doku); Coach-Audio #193 erledigt.
+
 Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren). Abgeschlossene Epics: [archiv/epics/](./archiv/epics/).
 
 ---
@@ -27,7 +29,6 @@ Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eing
 
 | Idee | Datei |
 |------|--------|
-| Coach-Audio mit Autoplay | [ideen/offen/coach-audio.md](../ideen/offen/coach-audio.md) — ADR-Ergänzung zu ADR-019 nötig |
 | Dialog: engere Maskottchen-Positionen | [ideen/archiv/dialog-maskottchen-abstand-und-pan.md](../ideen/archiv/dialog-maskottchen-abstand-und-pan.md) — Mitpan erledigt (ADR-013), Abstand offen |
 | Hub: Maskottchen als dauerhafter CTA | [ideen/archiv/maskottchen-fest-umfang.md](../ideen/archiv/maskottchen-fest-umfang.md) — Punkt 2 nicht umgesetzt |
 | MPZ Studio v3 (Polish) | [ideen/archiv/mpz-studio-ui.md](../ideen/archiv/mpz-studio-ui.md) — Komfort-Editoren, Batch |

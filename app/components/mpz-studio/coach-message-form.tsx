@@ -6,9 +6,15 @@ import {
   markMpzStudioDirty,
   useStudioValidation,
 } from '@/components/mpz-studio/studio-validation-context'
+import {
+  COACH_LAYOUT_CLAMPS,
+  COACH_LAYOUT_FIELD_KEYS,
+  placementLayoutHint,
+} from '@/lib/coach-layout'
 import type {
   CoachMascot,
   CoachMessage,
+  CoachMessageLayout,
   CoachMode,
   CoachPlacement,
   CoachTrigger,
@@ -27,6 +33,81 @@ const TRIGGERS: CoachTrigger[] = ['hub-milestone', 'hub-complete', 'room-first']
 const MASCOTS: CoachMascot[] = ['frieda', 'otto', 'duo']
 const PLACEMENTS: CoachPlacement[] = ['bottom', 'left', 'right', 'duo-split']
 const MODES: CoachMode[] = ['fest', 'heft']
+
+const LAYOUT_FIELD_META: {
+  key: (typeof COACH_LAYOUT_FIELD_KEYS)[number]
+  label: string
+  step: string
+}[] = [
+  { key: 'mascotSize', label: 'Figur-Größe (vh-Anteil)', step: '0.01' },
+  { key: 'mascotOffsetX', label: 'Figur-Versatz X (rem)', step: '0.25' },
+  { key: 'mascotOffsetY', label: 'Figur-Versatz Y (rem)', step: '0.25' },
+  { key: 'bubbleMaxWidth', label: 'Blasen-Breite (rem)', step: '1' },
+  { key: 'bubbleOffsetX', label: 'Blasen-Versatz X (rem)', step: '0.25' },
+  { key: 'bubbleOffsetY', label: 'Blasen-Versatz Y (rem, Delta)', step: '0.25' },
+  { key: 'bubbleFontSize', label: 'Blasen-Schrift (px)', step: '1' },
+]
+
+type LayoutFormState = {
+  fields: Record<(typeof COACH_LAYOUT_FIELD_KEYS)[number], string>
+  mascotFlipX: boolean
+  mascotFlipY: boolean
+}
+
+function emptyLayoutForm(): LayoutFormState {
+  return {
+    fields: {
+      mascotSize: '',
+      mascotOffsetX: '',
+      mascotOffsetY: '',
+      bubbleMaxWidth: '',
+      bubbleOffsetX: '',
+      bubbleOffsetY: '',
+      bubbleFontSize: '',
+    },
+    mascotFlipX: false,
+    mascotFlipY: false,
+  }
+}
+
+function layoutFormFromMessage(message?: CoachMessage): LayoutFormState {
+  const layout = message?.layout
+  const state = emptyLayoutForm()
+  if (!layout) {
+    return state
+  }
+  for (const key of COACH_LAYOUT_FIELD_KEYS) {
+    const value = layout[key]
+    if (value !== undefined) {
+      state.fields[key] = String(value)
+    }
+  }
+  state.mascotFlipX = layout.mascotFlipX === true
+  state.mascotFlipY = layout.mascotFlipY === true
+  return state
+}
+
+function buildLayoutPayload(state: LayoutFormState): CoachMessageLayout | undefined {
+  const layout: CoachMessageLayout = {}
+  for (const key of COACH_LAYOUT_FIELD_KEYS) {
+    const raw = state.fields[key].trim()
+    if (raw === '') {
+      continue
+    }
+    const num = Number.parseFloat(raw)
+    if (!Number.isFinite(num)) {
+      continue
+    }
+    layout[key] = num
+  }
+  if (state.mascotFlipX) {
+    layout.mascotFlipX = true
+  }
+  if (state.mascotFlipY) {
+    layout.mascotFlipY = true
+  }
+  return Object.keys(layout).length > 0 ? layout : undefined
+}
 
 function fieldClassName(): string {
   return 'w-full rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1'
@@ -65,6 +146,14 @@ export function CoachMessageForm({
   const [heftMode, setHeftMode] = useState(
     !message?.modes || message.modes.includes('heft'),
   )
+  const [layoutOpen, setLayoutOpen] = useState(Boolean(message?.layout))
+  const [audioOpen, setAudioOpen] = useState(Boolean(message?.quelle))
+  const [audioBusy, setAudioBusy] = useState(false)
+  const [audioError, setAudioError] = useState<string | null>(null)
+  const [quelleDisplay, setQuelleDisplay] = useState(message?.quelle ?? '')
+  const [layoutFields, setLayoutFields] = useState<LayoutFormState>(() =>
+    layoutFormFromMessage(message),
+  )
   const [error, setError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
 
@@ -79,6 +168,10 @@ export function CoachMessageForm({
       setSlug(message.slug ?? stationSlugs[0] ?? '')
       setFestMode(!message.modes || message.modes.includes('fest'))
       setHeftMode(!message.modes || message.modes.includes('heft'))
+      setLayoutFields(layoutFormFromMessage(message))
+      setLayoutOpen(Boolean(message.layout))
+      setAudioOpen(Boolean(message.quelle))
+      setQuelleDisplay(message.quelle ?? '')
     }
   }, [message, stationSlugs])
 
@@ -101,6 +194,127 @@ export function CoachMessageForm({
     return { modes }
   }
 
+  function buildLayoutBody(): { layout?: CoachMessageLayout } {
+    const layout = buildLayoutPayload(layoutFields)
+    if (layout !== undefined) {
+      return { layout }
+    }
+    return {}
+  }
+
+  async function handleAudioUpload(file: File) {
+    if (mode !== 'edit' || !message) {
+      return
+    }
+    setAudioError(null)
+    setAudioBusy(true)
+    const form = new FormData()
+    form.set('messageId', message.id)
+    form.set('file', file)
+    form.set('collision', 'replace')
+    try {
+      const res = await fetch('/api/mpz/coach-audio/ingest', {
+        method: 'POST',
+        body: form,
+      })
+      const json = (await res.json()) as { quelle?: string; message?: string }
+      if (!res.ok) {
+        setAudioError(json.message ?? `Upload fehlgeschlagen (${res.status})`)
+        return
+      }
+      setQuelleDisplay(json.quelle ?? '')
+      markMpzStudioDirty()
+      await validateNow()
+      router.refresh()
+      onSuccess('Coach-Audio hochgeladen.')
+    } catch {
+      setAudioError('Upload fehlgeschlagen.')
+    } finally {
+      setAudioBusy(false)
+    }
+  }
+
+  async function handleAudioRemove() {
+    if (mode !== 'edit' || !message) {
+      return
+    }
+    setAudioError(null)
+    setAudioBusy(true)
+    try {
+      const res = await fetch(
+        `/api/mpz/coach/messages/${encodeURIComponent(message.id)}`,
+        {
+          method: 'PATCH',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ quelle: null }),
+        },
+      )
+      const json = (await res.json()) as { message?: string }
+      if (!res.ok) {
+        setAudioError(json.message ?? `Entfernen fehlgeschlagen (${res.status})`)
+        return
+      }
+      setQuelleDisplay('')
+      markMpzStudioDirty()
+      await validateNow()
+      router.refresh()
+      onSuccess('Coach-Audio entfernt.')
+    } catch {
+      setAudioError('Entfernen fehlgeschlagen.')
+    } finally {
+      setAudioBusy(false)
+    }
+  }
+
+  function handleUploadClick() {
+    if (audioBusy || mode !== 'edit' || !message) {
+      return
+    }
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = '.wav,audio/wav'
+    input.onchange = () => {
+      const file = input.files?.[0]
+      if (file) {
+        void handleAudioUpload(file)
+      }
+    }
+    input.click()
+  }
+
+  async function persistLayoutReset() {
+    if (mode !== 'edit' || !message) {
+      setLayoutFields(emptyLayoutForm())
+      return
+    }
+
+    setError(null)
+    startTransition(async () => {
+      try {
+        const res = await fetch(
+          `/api/mpz/coach/messages/${encodeURIComponent(message.id)}`,
+          {
+            method: 'PATCH',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ layout: null }),
+          },
+        )
+        const json = (await res.json()) as { message?: string }
+        if (!res.ok) {
+          setError(json.message ?? `Fehler (${res.status})`)
+          return
+        }
+        setLayoutFields(emptyLayoutForm())
+        markMpzStudioDirty()
+        await validateNow()
+        router.refresh()
+        onSuccess('Layout auf Standard zurückgesetzt.')
+      } catch {
+        setError('Zurücksetzen fehlgeschlagen.')
+      }
+    })
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
@@ -115,6 +329,7 @@ export function CoachMessageForm({
             placement,
             text,
             ...buildModesBody(),
+            ...buildLayoutBody(),
           }
           if (trigger === 'hub-milestone') {
             body.milestone = Number.parseInt(milestone, 10)
@@ -138,12 +353,16 @@ export function CoachMessageForm({
             placement,
             text,
             ...buildModesBody(),
+            ...buildLayoutBody(),
           }
           if (trigger === 'hub-milestone') {
             body.milestone = Number.parseInt(milestone, 10)
           }
           if (trigger === 'room-first') {
             body.slug = slug
+          }
+          if (message?.layout && !('layout' in body)) {
+            body.layout = null
           }
           const res = await fetch(
             `/api/mpz/coach/messages/${encodeURIComponent(message!.id)}`,
@@ -322,6 +541,151 @@ export function CoachMessageForm({
           onChange={(e) => setText(e.target.value)}
           required
         />
+      </div>
+
+      <div className="mb-3 rounded-gs39-sm border border-border-1 bg-bg-2 p-3">
+        <button
+          type="button"
+          className="flex w-full items-center justify-between text-left text-sm font-semibold text-fg-1"
+          onClick={() => setAudioOpen((open) => !open)}
+          aria-expanded={audioOpen}
+        >
+          Audio (optional)
+          <span className="text-fg-3">{audioOpen ? '▾' : '▸'}</span>
+        </button>
+        {audioOpen && (
+          <div className="mt-3 space-y-3">
+            <p className="text-xs text-fg-3">
+              Autoplay beim Einblenden — nach QR-Scan auf iPhone testen. Nur WAV,
+              ca. 5–20 Sekunden.
+            </p>
+            {mode === 'add' ? (
+              <p className="text-xs text-fg-2">
+                Message zuerst speichern, dann Clip hochladen.
+              </p>
+            ) : (
+              <>
+                {quelleDisplay ? (
+                  <p className="text-xs text-fg-2">
+                    Quelle: <code className="text-fg-1">{quelleDisplay}</code>
+                  </p>
+                ) : (
+                  <p className="text-xs text-fg-3">Kein Clip hinterlegt.</p>
+                )}
+                {audioError && (
+                  <p className="text-xs text-brand-red">{audioError}</p>
+                )}
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    disabled={audioBusy || isPending}
+                    onClick={handleUploadClick}
+                    className="rounded-gs39-sm bg-accent px-3 py-1.5 text-sm font-semibold text-white disabled:opacity-50"
+                  >
+                    {quelleDisplay ? 'Clip ersetzen' : 'WAV hochladen'}
+                  </button>
+                  {quelleDisplay ? (
+                    <button
+                      type="button"
+                      disabled={audioBusy || isPending}
+                      onClick={() => void handleAudioRemove()}
+                      className="rounded-gs39-sm border border-border-1 px-3 py-1.5 text-sm font-semibold text-fg-2 disabled:opacity-50"
+                    >
+                      Audio entfernen
+                    </button>
+                  ) : null}
+                </div>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+
+      <div className="mb-3 rounded-gs39-sm border border-border-1 bg-bg-2 p-3">
+        <button
+          type="button"
+          className="flex w-full items-center justify-between text-left text-sm font-semibold text-fg-1"
+          onClick={() => setLayoutOpen((open) => !open)}
+          aria-expanded={layoutOpen}
+        >
+          Layout (optional)
+          <span className="text-fg-3">{layoutOpen ? '▾' : '▸'}</span>
+        </button>
+        {layoutOpen && (
+          <div className="mt-3 space-y-3">
+            <p className="text-xs text-fg-3">{placementLayoutHint(placement)}</p>
+            <p className="text-xs text-fg-3">
+              Leere Felder = Standard. Am Gerät testen (Hub oder Raum). Werte sind
+              nicht 1:1 zwischen Placements übertragbar.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <label className="flex items-center gap-2 text-sm text-fg-1">
+                <input
+                  type="checkbox"
+                  checked={layoutFields.mascotFlipX}
+                  onChange={(e) =>
+                    setLayoutFields((prev) => ({
+                      ...prev,
+                      mascotFlipX: e.target.checked,
+                    }))
+                  }
+                />
+                Figur horizontal spiegeln (mascotFlipX)
+              </label>
+              <label className="flex items-center gap-2 text-sm text-fg-1">
+                <input
+                  type="checkbox"
+                  checked={layoutFields.mascotFlipY}
+                  onChange={(e) =>
+                    setLayoutFields((prev) => ({
+                      ...prev,
+                      mascotFlipY: e.target.checked,
+                    }))
+                  }
+                />
+                Figur vertikal spiegeln (mascotFlipY)
+              </label>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {LAYOUT_FIELD_META.map(({ key, label, step }) => {
+                const clamp = COACH_LAYOUT_CLAMPS[key]
+                return (
+                  <div key={key}>
+                    <label className={labelClassName()} htmlFor={`coach-layout-${key}`}>
+                      {label}
+                    </label>
+                    <input
+                      id={`coach-layout-${key}`}
+                      type="number"
+                      step={step}
+                      min={clamp.min}
+                      max={clamp.max}
+                      className={fieldClassName()}
+                      value={layoutFields.fields[key]}
+                      onChange={(e) =>
+                        setLayoutFields((prev) => ({
+                          ...prev,
+                          fields: { ...prev.fields, [key]: e.target.value },
+                        }))
+                      }
+                    />
+                    <p className="mt-0.5 text-xs text-fg-3">
+                      {clamp.min}–{clamp.max}
+                    </p>
+                  </div>
+                )
+              })}
+            </div>
+            <button
+              type="button"
+              disabled={isPending}
+              onClick={() => void persistLayoutReset()}
+              className="rounded-gs39-sm border border-border-1 px-3 py-1.5 text-sm font-semibold text-fg-2 disabled:opacity-50"
+            >
+              Auf Standard
+            </button>
+          </div>
+        )}
       </div>
 
       {trigger === 'hub-milestone' && (

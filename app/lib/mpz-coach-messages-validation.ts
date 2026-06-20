@@ -1,9 +1,31 @@
 import type { CoachMessage, CoachMessagesFile } from '@/lib/types'
+import { coachApiQuelle } from '@/lib/coach-audio'
+import { validateCoachLayoutFields } from '@/lib/coach-layout'
 
 export const COACH_PLACEMENTS = new Set(['bottom', 'left', 'right', 'duo-split'])
 export const COACH_TRIGGERS = new Set(['hub-milestone', 'hub-complete', 'room-first'])
 export const COACH_MASCOTS = new Set(['frieda', 'otto', 'duo'])
 export const COACH_MODES = new Set(['fest', 'heft'])
+
+export function validateCoachQuelleFields(
+  quelle: unknown,
+  messageId: string,
+  ctx: string,
+): string[] {
+  if (quelle === undefined) {
+    return []
+  }
+  if (typeof quelle !== 'string') {
+    return [`${ctx}: quelle muss String sein`]
+  }
+  if (!quelle.startsWith('/')) {
+    return [`${ctx}: quelle muss mit / beginnen`]
+  }
+  if (quelle !== coachApiQuelle(messageId)) {
+    return [`${ctx}: quelle muss "${coachApiQuelle(messageId)}" sein`]
+  }
+  return []
+}
 
 export function validateCoachMessagesContent(
   file: CoachMessagesFile,
@@ -105,6 +127,14 @@ export function validateCoachMessagesContent(
       if (m.milestone !== undefined) {
         errors.push(`${ctx}: room-first darf kein milestone haben`)
       }
+    }
+
+    if (m.layout !== undefined) {
+      errors.push(...validateCoachLayoutFields(m.layout, ctx))
+    }
+
+    if (typeof m.id === 'string' && m.id.trim() !== '') {
+      errors.push(...validateCoachQuelleFields(m.quelle, m.id, ctx))
     }
   }
 

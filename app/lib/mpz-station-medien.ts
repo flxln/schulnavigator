@@ -353,7 +353,7 @@ export function resolvePublicMediaPath(
   return candidate
 }
 
-async function tryDeleteMediaFile(
+export async function tryDeleteMediaFile(
   appRoot: string,
   slug: string,
   quelle: string,

@@ -1,9 +1,12 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import type { CSSProperties } from 'react'
 import { createPortal } from 'react-dom'
 import Image from 'next/image'
-import { X } from 'lucide-react'
+import { Volume2, X } from 'lucide-react'
+import { resolveCoachLayout } from '@/lib/coach-layout'
+import { useCoachAudio } from '@/hooks/use-coach-audio'
 import type { CoachMessage, CoachPlacement } from '@/lib/types'
 import { GS39_BRAND_HEX } from '@/lib/gs39-brand-colors'
 
@@ -31,9 +34,13 @@ function tailForPlacement(placement: CoachPlacement): 'left' | 'right' | 'center
 function MascotFigure({
   mascot,
   side,
+  style,
+  imgStyle,
 }: {
   mascot: 'frieda' | 'otto'
   side: 'left' | 'right' | 'bottom'
+  style?: CSSProperties
+  imgStyle?: CSSProperties
 }) {
   const modifier =
     side === 'bottom'
@@ -43,13 +50,14 @@ function MascotFigure({
         : 'sn-coach-peek__figure--right'
 
   return (
-    <div className={`sn-coach-peek__figure ${modifier}`}>
+    <div className={`sn-coach-peek__figure ${modifier}`} style={style}>
       <Image
         src={MASCOT_SRC[mascot]}
         alt=""
         width={280}
         height={280}
         className="sn-coach-peek__img"
+        style={imgStyle}
         priority
       />
     </div>
@@ -63,6 +71,13 @@ export function MascotPeekOverlay({
 }: MascotPeekOverlayProps) {
   const tail = tailForPlacement(message.placement)
   const [portalReady, setPortalReady] = useState(false)
+  const resolvedLayout = useMemo(() => resolveCoachLayout(message), [message])
+  const audioRef = useRef<HTMLAudioElement>(null)
+  const { playBlocked, isPlaying, replay } = useCoachAudio(
+    message.quelle,
+    audioRef,
+    portalReady,
+  )
 
   useEffect(() => {
     setPortalReady(true)
@@ -83,6 +98,11 @@ export function MascotPeekOverlay({
   }, [onDismiss])
 
   const isDuo = message.mascot === 'duo' && message.placement === 'duo-split'
+
+  const bubbleStyle: CSSProperties = {
+    ...resolvedLayout.bubbleStyle,
+    borderColor: `${accent}33`,
+  }
 
   const overlay = (
     <div
@@ -110,27 +130,64 @@ export function MascotPeekOverlay({
             <X size={22} aria-hidden />
           </button>
 
+          {message.quelle ? (
+            <>
+              <audio ref={audioRef} preload="auto" className="sr-only" />
+              {playBlocked ? (
+                <button
+                  type="button"
+                  className="sn-coach-peek__replay"
+                  aria-label="Audio abspielen"
+                  onClick={replay}
+                >
+                  <Volume2 size={20} aria-hidden />
+                </button>
+              ) : isPlaying ? (
+                <span className="sn-coach-peek__audio-active" aria-hidden>
+                  <Volume2 size={18} />
+                </span>
+              ) : null}
+            </>
+          ) : null}
+
           {isDuo ? (
-            <div className="sn-coach-peek__duo-row">
-              <MascotFigure mascot="frieda" side="left" />
-              <MascotFigure mascot="otto" side="right" />
+            <div
+              className="sn-coach-peek__duo-row"
+              style={resolvedLayout.duoRowStyle}
+            >
+              <MascotFigure
+                mascot="frieda"
+                side="left"
+                style={resolvedLayout.figureStyle}
+                imgStyle={resolvedLayout.imgStyle}
+              />
+              <MascotFigure
+                mascot="otto"
+                side="right"
+                style={resolvedLayout.figureStyle}
+                imgStyle={resolvedLayout.imgStyle}
+              />
             </div>
           ) : message.placement === 'bottom' ? (
             <MascotFigure
               mascot={message.mascot === 'otto' ? 'otto' : 'frieda'}
               side="bottom"
+              style={resolvedLayout.figureStyle}
+              imgStyle={resolvedLayout.imgStyle}
             />
           ) : message.placement === 'left' || message.placement === 'right' ? (
             <MascotFigure
               mascot={message.mascot === 'otto' ? 'otto' : 'frieda'}
               side={message.placement}
+              style={resolvedLayout.figureStyle}
+              imgStyle={resolvedLayout.imgStyle}
             />
           ) : null}
 
           <p
             id="coach-peek-text"
             className={`sn-dialog-bubble sn-dialog-bubble--tail-${tail} sn-coach-peek__bubble`}
-            style={{ borderColor: `${accent}33` }}
+            style={bubbleStyle}
           >
             {message.text}
           </p>

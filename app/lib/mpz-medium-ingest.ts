@@ -90,7 +90,7 @@ export async function persistFile(source: IngestSource, destPath: string): Promi
   await copyFile(source.sourcePath, destPath)
 }
 
-function uniqueDiskPath(destDir: string, filename: string): string {
+export function uniqueDiskPath(destDir: string, filename: string): string {
   const ext = extname(filename)
   const stem = filename.slice(0, filename.length - ext.length)
   let candidate = filename
