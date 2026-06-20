@@ -23,7 +23,7 @@ Turnhalle und Schulhof als Wegweiser-Schildarme am Hub-Portal; zwölfte Station 
 
 - ADR: [020-hub-wegweiser-aussen-stationen.md](../../adr/020-hub-wegweiser-aussen-stationen.md)
 - Ergänzt [ADR-016](../../adr/016-hub-frontansicht-39gs.md)
-- Plan: `.cursor/plans/hub_wegweiser_slots_c7386ac9.plan.md`
+- Plan: `.cursor/plans/archiv/2026-06/hub_wegweiser_slots_c7386ac9.plan.md`
 
 ## Checkliste (Epic)
 

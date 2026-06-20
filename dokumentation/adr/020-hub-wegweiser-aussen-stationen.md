@@ -62,5 +62,5 @@ Fenster-, Portal- und Deko-Slots bleiben unverändert (nur `frame`).
 
 ## Bezug
 
-- Plan: `.cursor/plans/hub_wegweiser_slots_c7386ac9.plan.md`
+- Plan: `.cursor/plans/archiv/2026-06/hub_wegweiser_slots_c7386ac9.plan.md`
 - Vorgänger: [ADR-016](./016-hub-frontansicht-39gs.md)

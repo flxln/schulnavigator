@@ -78,7 +78,7 @@ Interaktiv: [mpz-studio-prototype/MPZ Studio.html](../design/mpz-studio-claude-d
 - [mpz-studio.md](../../../spezifikationen/mpz-studio.md) (IA Gesamtbild)
 - [mpz-studio-hotspot-editor.md](../../../spezifikationen/mpz-studio-hotspot-editor.md) (#165–#167)
 - [epic-mpz-studio.md](./epic-mpz-studio.md) (v0, abgeschlossen)
-- Implementierungsplan: [.cursor/plans/mpz_studio_v1.plan.md](../../.cursor/plans/mpz_studio_v1.plan.md)
+- Implementierungsplan: [.cursor/plans/archiv/2026-06/mpz_studio_v1.plan.md](../../.cursor/plans/archiv/2026-06/mpz_studio_v1.plan.md)
 
 ## Checkliste (Epic)
 
