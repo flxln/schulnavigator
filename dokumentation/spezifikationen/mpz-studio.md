@@ -428,7 +428,7 @@ v2.1 schließt die Lücke zwischen Metadaten-PATCH (#171) und vollständigem Med
 | In v2.1 geplant | Bewusst nicht v2.1 (v3) |
 |-----------------|-------------------------|
 | `replaceStationMediumFile` + API `POST …/file` (#187) **erledigt** 2026-06-20 | Markdown-WYSIWYG |
-| UI „Datei ersetzen“ (#188) | YouTube-`quelle` (ADR-004) |
+| UI „Datei ersetzen“ (#188) **erledigt** 2026-06-20 | YouTube-`quelle` (ADR-004) |
 | Thumbnail-/Poster-Upload (#189) | Batch-Import `auftraggeber/` |
 | Doku (#190) | Lehrkräfte-Admin (Directus #47) |
 

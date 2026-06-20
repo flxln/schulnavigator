@@ -1,8 +1,17 @@
 import type { NextConfig } from 'next'
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import {
   buildContentSecurityPolicy,
   buildPermissionsPolicy,
 } from './lib/security-headers'
+
+// next.config.ts wird als CJS kompiliert, daher ist __dirname verfügbar.
+// Der fileURLToPath-Fallback sichert ESM-Kompatibilität für künftige Migrationen.
+const projectRoot =
+  typeof __dirname !== 'undefined'
+    ? __dirname
+    : dirname(fileURLToPath(import.meta.url))
 
 const allowedDevOrigins = process.env.ALLOWED_DEV_ORIGINS?.split(',')
   .map((origin) => origin.trim())
@@ -10,6 +19,13 @@ const allowedDevOrigins = process.env.ALLOWED_DEV_ORIGINS?.split(',')
 
 const nextConfig: NextConfig = {
   output: 'standalone',
+  turbopack: {
+    // Expliziter Root verhindert, dass Turbopack wegen des package-lock.json
+    // im Elternverzeichnis (schulnavigator/) fälschlicherweise dessen Root wählt
+    // und CSS-Imports (z. B. ./gs39-tokens.css) vom falschen Basisverzeichnis
+    // auflöst.
+    root: projectRoot,
+  },
   ...(allowedDevOrigins?.length ? { allowedDevOrigins } : {}),
   async headers() {
     return [
