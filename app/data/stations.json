@@ -73,6 +73,16 @@
       ]
     },
     {
+      "slug": "musik",
+      "titel": "Musikzimmer",
+      "beschreibung": "Willkommen im Musikzimmer! Hier singen wir, trommeln wir und spielen Instrumente. Manchmal klingt es wunderschön und manchmal klingt es … naja … kreativ. Aber Spaß macht es immer!",
+      "viewer": "equirectangular",
+      "panorama360": "/stations/360/musik.jpg",
+      "bild": "/stations/musik.jpg",
+      "medien": [],
+      "hotspots360": []
+    },
+    {
       "slug": "daz",
       "titel": "DaZ-Zimmer",
       "beschreibung": "Hi! Im DaZ-Zimmer lernen Kinder aus vielen Ländern Deutsch. Wir üben Wörter, Sätze und manchmal auch, wie man \"Schmetterling\" ohne Knoten in der Zunge sagt. Schön, dass Sie vorbeischauen!",
@@ -177,6 +187,14 @@
           }
         ]
       }
+    },
+    {
+      "slug": "kunst",
+      "titel": "Kunstzimmer",
+      "beschreibung": "Willkommen im Kunstzimmer! Hier malen wir, basteln wir und kleben manchmal aus Versehen unsere Finger zusammen. Aber keine Sorge – die Kunstwerke sind trotzdem wunderschön.",
+      "bild": "/stations/kunst.jpg",
+      "medien": [],
+      "startPanX": 0.6673
     },
     {
       "slug": "pc-raum",
@@ -291,41 +309,6 @@
       }
     },
     {
-      "slug": "werken",
-      "titel": "Werkenzimmer",
-      "beschreibung": "Hallo! Im Werkenzimmer wird gesägt, gehämmert und gebaut. Manchmal sieht es hier aus wie in einer Erfinderwerkstatt und manchmal wie nach einem kleinen Wirbelsturm. Aber am Ende entsteht immer etwas Cooles!",
-      "viewer": "equirectangular",
-      "panorama360": "/stations/360/werken.jpg",
-      "bild": "/stations/werken.jpg",
-      "medien": []
-    },
-    {
-      "slug": "turnhalle",
-      "titel": "Turnhalle",
-      "beschreibung": "Willkommen in der Turnhalle! Hier rennen wir, springen wir und spielen Spiele, bei denen niemand weiß, wer eigentlich gewonnen hat, aber alle hatten Spaß. Viel Bewegung beim Zuhören!",
-      "viewer": "equirectangular",
-      "panorama360": "/stations/360/turnhalle.jpg",
-      "bild": "/stations/turnhalle.jpg",
-      "medien": []
-    },
-    {
-      "slug": "speiseraum",
-      "titel": "Speiseraum",
-      "beschreibung": "Hallo! Das ist unser Speiseraum. Hier essen wir zusammen, lachen viel und manchmal diskutieren wir, ob Brokkoli wirklich Gemüse ist. Wir finden: ja, aber lecker ist er trotzdem!",
-      "viewer": "equirectangular",
-      "panorama360": "/stations/360/speiseraum.jpg",
-      "bild": "/stations/speiseraum.jpg",
-      "medien": []
-    },
-    {
-      "slug": "kunst",
-      "titel": "Kunstzimmer",
-      "beschreibung": "Willkommen im Kunstzimmer! Hier malen wir, basteln wir und kleben manchmal aus Versehen unsere Finger zusammen. Aber keine Sorge – die Kunstwerke sind trotzdem wunderschön.",
-      "bild": "/stations/kunst.jpg",
-      "medien": [],
-      "startPanX": 0.6673
-    },
-    {
       "slug": "lesewelt",
       "titel": "Lesewelt",
       "beschreibung": "Psst … willkommen in der Lesewelt! Hier tauchen wir in Geschichten ein, reisen in andere Länder und treffen Drachen, Piraten und sprechende Tiere. Lesen ist wie Kino im Kopf, nur ohne Popcorn.",
@@ -352,6 +335,24 @@
       ]
     },
     {
+      "slug": "werken",
+      "titel": "Werkenzimmer",
+      "beschreibung": "Hallo! Im Werkenzimmer wird gesägt, gehämmert und gebaut. Manchmal sieht es hier aus wie in einer Erfinderwerkstatt und manchmal wie nach einem kleinen Wirbelsturm. Aber am Ende entsteht immer etwas Cooles!",
+      "viewer": "equirectangular",
+      "panorama360": "/stations/360/werken.jpg",
+      "bild": "/stations/werken.jpg",
+      "medien": []
+    },
+    {
+      "slug": "speiseraum",
+      "titel": "Speiseraum",
+      "beschreibung": "Hallo! Das ist unser Speiseraum. Hier essen wir zusammen, lachen viel und manchmal diskutieren wir, ob Brokkoli wirklich Gemüse ist. Wir finden: ja, aber lecker ist er trotzdem!",
+      "viewer": "equirectangular",
+      "panorama360": "/stations/360/speiseraum.jpg",
+      "bild": "/stations/speiseraum.jpg",
+      "medien": []
+    },
+    {
       "slug": "hort",
       "titel": "Hortzimmer",
       "beschreibung": "Hallo! Im Hortzimmer spielen wir, basteln wir und machen Hausaufgaben – manchmal sogar freiwillig. Hier ist es immer gemütlich und es gibt fast immer jemanden zum Quatschen.",
@@ -359,14 +360,13 @@
       "medien": []
     },
     {
-      "slug": "musik",
-      "titel": "Musikzimmer",
-      "beschreibung": "Willkommen im Musikzimmer! Hier singen wir, trommeln wir und spielen Instrumente. Manchmal klingt es wunderschön und manchmal klingt es … naja … kreativ. Aber Spaß macht es immer!",
+      "slug": "turnhalle",
+      "titel": "Turnhalle",
+      "beschreibung": "Willkommen in der Turnhalle! Hier rennen wir, springen wir und spielen Spiele, bei denen niemand weiß, wer eigentlich gewonnen hat, aber alle hatten Spaß. Viel Bewegung beim Zuhören!",
       "viewer": "equirectangular",
-      "panorama360": "/stations/360/musik.jpg",
-      "bild": "/stations/musik.jpg",
-      "medien": [],
-      "hotspots360": []
+      "panorama360": "/stations/360/turnhalle.jpg",
+      "bild": "/stations/turnhalle.jpg",
+      "medien": []
     },
     {
       "slug": "schulsozialarbeit",

@@ -2,7 +2,7 @@
 
 **Stand:** 2026-06-20 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
 
-**Letzter Abgleich:** 2026-06-20 — #187 Domain + API `replaceStationMediumFile` erledigt (Branch `mpz-studio-v2.1`).
+**Letzter Abgleich:** 2026-06-20 — #188 UI „Datei ersetzen" erledigt; Turbopack-Root-Bugfix (`next.config.ts`) (Branch `mpz-studio-v2.1`).
 
 Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren). Abgeschlossene Epics: [archiv/epics/](./archiv/epics/).
 

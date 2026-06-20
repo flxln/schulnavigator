@@ -47,7 +47,7 @@ Route: `/mpz/studio/stationen/[slug]?tab={stammdaten|medien|hotspots|dialog|dial
 | Tab | UI | Schreib-API |
 |-----|-----|-------------|
 | Stammdaten | `titel`, `beschreibung`, `viewer`; read-only: `slug`; Raumbild-Upload Flat/360° (#173) | `PATCH …/stammdaten`; `POST …/raumbild` |
-| Medien | Tabelle, Bearbeiten (PATCH #171), link/embed anlegen (#172), Ingest-Link, Entfernen (#161) | `PATCH`/`POST`/`DELETE` …/medien |
+| Medien | Tabelle, Bearbeiten (PATCH #171), Datei ersetzen (#188), link/embed anlegen (#172), Ingest-Link, Entfernen (#161) | `PATCH`/`POST`/`DELETE` …/medien |
 | Hotspots | Tabelle, Anlegen/Bearbeiten/Entfernen inkl. Dialog-Hotspot (#176), Kalibrier-Links (#162, #165–#168) | `POST`/`PATCH`/`DELETE` …/hotspots |
 | Dialog | Figuren, Segmente, Gruppen, `bubble` (#175) | `PATCH`/`POST`/`DELETE` …/dialog/* |
 | Dialog-Audio | Segment-Tabelle + Upload (#163) | `POST /api/mpz/dialog-audio/ingest` |

@@ -26,7 +26,7 @@ Leitplanken unverändert (ADR-022): nur `NODE_ENV=development`, `assertMpzStudio
 |-------|-----|-------|--------|-----------------|
 | **Epic (Parent)** | `#186` | MPZ Studio v2.1 — Medien-Datei ersetzen (ADR-022) | `tech` | — |
 | Unterissue | `#187` | Domain + API: `replaceStationMediumFile` **(erledigt 2026-06-20)** | `tech`, `blocker` | — |
-| Unterissue | `#188` | UI: „Datei ersetzen“ im Medien-Editor | `tech` | #187 |
+| Unterissue | `#188` | UI: „Datei ersetzen“ im Medien-Editor **(erledigt 2026-06-20)** | `tech` | #187 |
 | Unterissue | `#189` | Thumbnail- und Poster-Upload (Medien) | `tech` | #187 |
 | Unterissue | `#190` | Doku & Epic-Abschluss v2.1 | `tech`, `documentation` | #187–#189 |
 
@@ -185,7 +185,7 @@ Nach Upload: `thumbnail`/`poster` in JSON setzen (relativer Pfad `/media/…`). 
 - [x] GitHub Milestone „MPZ Studio v2.1“ angelegt (#10)
 - [x] Epic + Unterissues auf GitHub (#186–#190)
 - [x] Domain + API (#187)
-- [ ] UI Datei ersetzen
+- [x] UI Datei ersetzen (#188)
 - [ ] Thumbnail/Poster-Upload
 - [ ] Doku & Epic-Abschluss
 - [ ] Merge Branch `mpz-studio-v2.1` → `main`
