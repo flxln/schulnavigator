@@ -206,7 +206,7 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | **Querschnitt** | Hub-Slug-Map, Akzente, Icons | [#179](https://github.com/flxln/schulnavigator/issues/179) | ✓ | ja | `hub-slug-map.json` usw. |
 | **Querschnitt** | Brand-Uploads | [#180](https://github.com/flxln/schulnavigator/issues/180) | ✓ | ja | Dateien / Code |
 
-**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) **abgeschlossen** (2026-06-20, [PR #183](https://github.com/flxln/schulnavigator/pull/183)); Epic [#186](https://github.com/flxln/schulnavigator/issues/186) **abgeschlossen** (2026-06-20, Branch `mpz-studio-v2.1`).
+**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) **abgeschlossen** (2026-06-20, [PR #183](https://github.com/flxln/schulnavigator/pull/183)); Epic [#186](https://github.com/flxln/schulnavigator/issues/186) **abgeschlossen** (2026-06-20, [PR #194](https://github.com/flxln/schulnavigator/pull/194)).
 
 ---
 
