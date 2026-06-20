@@ -151,4 +151,4 @@ Fehlercodes (vor `writeStations`): `NOT_FOUND`, `DUPLICATE_ID`, `MEDIUM_NOT_FOUN
 - [epic-mpz-studio-v1.md](../planung/archiv/epics/epic-mpz-studio-v1.md)
 - [content-einpflegen.md](../../anleitungen/content-einpflegen.md) § Hotspots, Hotspot-Icons
 - [02-v0-screens-und-user-stories.md](../design/mpz-studio-claude-design/02-v0-screens-und-user-stories.md) § S7–S8
-- Implementierungsplan Cursor: [`.cursor/plans/mpz_studio_#165_8f3a2c1d.plan.md`](../../.cursor/plans/mpz_studio_#165_8f3a2c1d.plan.md) (wird an diese Spec angeglichen)
+- Implementierungsplan Cursor: [`.cursor/plans/archiv/2026-06/mpz_studio_#165_8f3a2c1d.plan.md`](../../.cursor/plans/archiv/2026-06/mpz_studio_#165_8f3a2c1d.plan.md) (wird an diese Spec angeglichen)

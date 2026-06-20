@@ -39,4 +39,4 @@ Landkarte der Projekt-Dokumentation. **Anleitungen** (How-to) liegen in [`anleit
 - **Feature-Idee** → `ideen/offen/`; nach Umsetzung nach `ideen/archiv/` mit Verweis auf ADR
 - **Issue-Spec** → GitHub führend; Repo: `planung/offen.md` + ggf. Epic in `planung/archiv/epics/`
 - **Spike / Meeting** → `archiv/projektmanagement/` mit Datum im Dateinamen
-- **Temporäre Agenten-Pläne** → `.cursor/plans/`; nach Merge Essenz in ADR oder Post-Mortem
+- **Temporäre Agenten-Pläne** → `.cursor/plans/` (aktiv); erledigte nach `.cursor/plans/archiv/YYYY-MM/`; nach Merge Essenz in ADR oder Post-Mortem

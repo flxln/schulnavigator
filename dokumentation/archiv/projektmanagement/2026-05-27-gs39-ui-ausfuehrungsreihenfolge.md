@@ -3,8 +3,8 @@
 Präzise Abfolge für die Umsetzung des Design-Konzepts „Virtueller Schulrundgang" in 5 PRs.
 Jeder Schritt referenziert den zugehörigen Plan und Abschnitt.
 
-- **Plan 1** = `.cursor/plans/gs39_ui_aus_design-konzept_936de8e3.plan.md` (technische Details)
-- **Plan 2** = `.cursor/plans/gs39_ui_phase_2_integration_7859e3c8.plan.md` (Governance + PR-Struktur)
+- **Plan 1** = `.cursor/plans/archiv/2026-06/gs39_ui_aus_design-konzept_936de8e3.plan.md` (technische Details)
+- **Plan 2** = `.cursor/plans/archiv/2026-06/gs39_ui_phase_2_integration_7859e3c8.plan.md` (Governance + PR-Struktur)
 
 ---
 

@@ -24,7 +24,7 @@ Fortschritts-getriggerte Maskottchen-Einblendungen (Frieda/Otto) getrennt vom Di
 ## Kontext
 
 - ADR: [019-coach-fortschritt-einblendung.md](../../adr/019-coach-fortschritt-einblendung.md)
-- Plan: `.cursor/plans/coach_sparkle_mvp_d9e82ce2.plan.md`, `.cursor/plans/raum-overlay-priorität_cc46226d.plan.md`
+- Plan: `.cursor/plans/archiv/2026-06/coach_sparkle_mvp_d9e82ce2.plan.md`, `.cursor/plans/archiv/2026-06/raum-overlay-priorität_cc46226d.plan.md`
 - Kurzidee: [maskottchen-fortschritt-einblendung.md](../../../ideen/archiv/maskottchen-fortschritt-einblendung.md)
 
 ## Checkliste (Epic)

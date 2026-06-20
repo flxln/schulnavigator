@@ -16,7 +16,7 @@ Rahmenbedingungen, die die Entscheidungen prägen:
 - **Zielgruppe Grundschulkinder** — tippen viel, schließen Overlays selten bewusst.
 - **Fest-Modus markiert Räume nicht beim Öffnen als „visited"** (`station-visit-recorder.tsx:25` — `if (mode === 'fest') return`); „visited" entsteht dort nur über den QR-Scanner.
 
-Detail-Umsetzung: [Coach-Sparkle-MVP-Plan](../../.cursor/plans/coach_sparkle_mvp_d9e82ce2.plan.md); Kurzidee: [`maskottchen-fortschritt-einblendung.md`](../ideen/archiv/maskottchen-fortschritt-einblendung.md).
+Detail-Umsetzung: [Coach-Sparkle-MVP-Plan](../../.cursor/plans/archiv/2026-06/coach_sparkle_mvp_d9e82ce2.plan.md); Kurzidee: [`maskottchen-fortschritt-einblendung.md`](../ideen/archiv/maskottchen-fortschritt-einblendung.md).
 
 ## Entscheidung
 

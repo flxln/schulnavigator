@@ -4,7 +4,7 @@ _Kurzfristige Idee — Umsetzung nach dem Maskottchen-Spike (`daz`), vor oder mi
 
 **Status:** ~ teilweise — Mitpan/Blase: [ADR-013](../../adr/013-dialog-blase-mitpan.md). Engere Maskottchen-Positionen: offen ([planung/offen.md](../../planung/offen.md)).
 
-**Bezug:** [Maskottchen-Hotspot-Dialog (Plan)](../../.cursor/plans/maskottchen-hotspot-dialog_f707411e.plan.md) · Spike-Stand in [Umsetzungsstand im Plan](../../.cursor/plans/maskottchen-hotspot-dialog_f707411e.plan.md#umsetzungsstand-2026-05-28)
+**Bezug:** [Maskottchen-Hotspot-Dialog (Plan)](../../.cursor/plans/archiv/2026-06/maskottchen-hotspot-dialog_f707411e.plan.md) · Spike-Stand in [Umsetzungsstand im Plan](../../.cursor/plans/archiv/2026-06/maskottchen-hotspot-dialog_f707411e.plan.md#umsetzungsstand-2026-05-28)
 
 ---
 

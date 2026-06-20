@@ -8,7 +8,7 @@
 **Quellen:**
 
 - [ADR-021](../../adr/021-zugangsmodus-konfigurierbar.md) (ergänzt [ADR-005](../../adr/005-zugangskontrolle-token.md), [ADR-007](../../adr/007-zugangskontrolle-cookie.md))
-- Umsetzungsplan: [`.cursor/plans/adr-021_zugangsmodus_c30df8a5.plan.md`](../../.cursor/plans/adr-021_zugangsmodus_c30df8a5.plan.md)
+- Umsetzungsplan: [`.cursor/plans/archiv/2026-06/adr-021_zugangsmodus_c30df8a5.plan.md`](../../.cursor/plans/archiv/2026-06/adr-021_zugangsmodus_c30df8a5.plan.md)
 
 ---
 
@@ -109,7 +109,7 @@ Neues Modul `access-config.ts` (`getAccessMode`, `isAccessGated`). `access-token
 - [ ] `qr-config.mjs` und `dev-unlock.ts` importieren Dev-Konstanten — keine Magic Strings `fest-2026`/`heft-2026-27`
 - [ ] Unit-Tests: Parser + Dev-Fallback + ENV-Parsing
 
-**Plan:** Schritt 1 in [adr-021_zugangsmodus-Plan](../../.cursor/plans/adr-021_zugangsmodus_c30df8a5.plan.md#1-access-config--token-refactoring)
+**Plan:** Schritt 1 in [adr-021_zugangsmodus-Plan](../../.cursor/plans/archiv/2026-06/adr-021_zugangsmodus_c30df8a5.plan.md#1-access-config--token-refactoring)
 
 ---
 

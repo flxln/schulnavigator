@@ -54,4 +54,4 @@ Alle Entscheidungen aus der Plan-Härtung (E1 bis E6) wurden präzise umgesetzt.
 
 - Vault: `wissen-ki-und-mehr/00_Meta/Runbook_Agentic_Projekte/`
 - Tool: `hilfreiche-tools/python/cursor-usage/`
-- Plan: `.cursor/plans/runbook_agentic_projekte_a5525f2f.plan.md`
+- Plan: `.cursor/plans/archiv/2026-06/runbook_agentic_projekte_a5525f2f.plan.md`
