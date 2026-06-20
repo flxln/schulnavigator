@@ -232,6 +232,27 @@ Produktion: Multi-Stage-Image wie in [`app/Dockerfile`](../app/Dockerfile), Heal
 
 Die App setzt **`robots.txt`** (`Disallow: /`) und **`noindex`** im Root-Layout (Phase 1, Issue #16), damit die Subdomain nicht in Suchmaschinen indexiert wird.
 
+### Security-Header (CSP, #143)
+
+In [`next.config.ts`](../app/next.config.ts) über [`lib/security-headers.ts`](../app/lib/security-headers.ts):
+
+| Header | Inhalt |
+|--------|--------|
+| `Content-Security-Policy` | `default-src 'self'`, `object-src 'none'`, Embed-`frame-src` (Allowlist), `worker-src blob:` (PSV), `script/style` mit `'unsafe-inline'` (Next.js) |
+| `Permissions-Policy` | `camera`, `gyroscope`, `accelerometer`, `magnetometer` für `(self)` — QR-Scan + Raum-Viewer |
+| `X-Content-Type-Options` | `nosniff` |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` |
+
+Nach Änderung an `data/embed-allowlist.json`: Dev-Server neu starten bzw. neu deployen — `frame-src` wird beim Build aus der Allowlist gelesen.
+
+**HSTS** (`Strict-Transport-Security`) setzt die App nicht selbst — liegt bei Coolify/Traefik (Proxy). Bei Bedarf mit Ops abstimmen.
+
+Smoke nach Deploy:
+
+```bash
+curl -sI https://schulnavigator.mpz.schule/ | grep -iE 'content-security|permissions-policy'
+```
+
 ### Git LFS — Raumbilder (`public/stations/*.jpg`)
 
 Panorama-Exporte unter `public/stations/` werden per [`.gitattributes`](../app/.gitattributes) als **Git LFS** versioniert. `npm run validate:stations` bricht den Build ab, wenn eine `.jpg` ein LFS-Pointer statt echter JPEG-Daten ist.

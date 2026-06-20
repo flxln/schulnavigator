@@ -1,27 +1,41 @@
 import { describe, expect, it } from 'vitest'
 import nextConfig from './next.config'
 
-describe('next.config CSP headers', () => {
-  it('setzt frame-src mit Delightex und Book Creator Apex und Wildcard', async () => {
+describe('next.config security headers', () => {
+  it('setzt erzwungene CSP mit Embed-Allowlist und Kern-Direktiven (#143)', async () => {
     const headersFn = nextConfig.headers
     expect(typeof headersFn).toBe('function')
     const routes = await headersFn!()
     const csp = routes[0]?.headers?.find(
       (h) => h.key === 'Content-Security-Policy',
     )?.value
+    expect(csp).toContain("default-src 'self'")
+    expect(csp).toContain("object-src 'none'")
+    expect(csp).toContain("base-uri 'self'")
+    expect(csp).toContain("script-src 'self' 'unsafe-inline'")
+    expect(csp).toContain("worker-src 'self' blob:")
     expect(csp).toContain("frame-src 'self'")
     expect(csp).toContain('https://*.delightex.com')
     expect(csp).toContain('https://delightex.com')
     expect(csp).toContain('https://*.bookcreator.com')
     expect(csp).toContain('https://bookcreator.com')
+    expect(csp).toContain("frame-ancestors 'none'")
   })
 
-  it('setzt frame-ancestors (Default none)', async () => {
+  it('setzt keine Report-Only-CSP mehr (in Enforcement gemerged)', async () => {
     const routes = await nextConfig.headers!()
-    const csp = routes[0]?.headers?.find(
-      (h) => h.key === 'Content-Security-Policy',
-    )?.value
-    expect(csp).toContain("frame-ancestors 'none'")
+    const reportOnly = routes[0]?.headers?.find(
+      (h) => h.key === 'Content-Security-Policy-Report-Only',
+    )
+    expect(reportOnly).toBeUndefined()
+  })
+
+  it('setzt Permissions-Policy für Scan und Gyro', async () => {
+    const routes = await nextConfig.headers!()
+    const pp = routes[0]?.headers?.find((h) => h.key === 'Permissions-Policy')
+      ?.value
+    expect(pp).toContain('camera=(self)')
+    expect(pp).toContain('gyroscope=(self)')
   })
 
   it('setzt kein X-Frame-Options', async () => {
@@ -39,18 +53,5 @@ describe('next.config CSP headers', () => {
     expect(headers.find((h) => h.key === 'Referrer-Policy')?.value).toBe(
       'strict-origin-when-cross-origin',
     )
-  })
-
-  it('setzt Report-Only-CSP mit strikter Basis-Policy (beobachtend, nicht erzwungen)', async () => {
-    const routes = await nextConfig.headers!()
-    const reportOnly = routes[0]?.headers?.find(
-      (h) => h.key === 'Content-Security-Policy-Report-Only',
-    )?.value
-    expect(reportOnly).toContain("default-src 'self'")
-    expect(reportOnly).toContain("object-src 'none'")
-    expect(reportOnly).toContain("base-uri 'self'")
-    // Frame-Allowlist bleibt konsistent mit der erzwungenen CSP.
-    expect(reportOnly).toContain('https://*.delightex.com')
-    expect(reportOnly).toContain("frame-ancestors 'none'")
   })
 })
