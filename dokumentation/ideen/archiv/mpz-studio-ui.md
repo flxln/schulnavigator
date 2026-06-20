@@ -2,15 +2,15 @@
 
 _Inhaltliche Kategorisierung für Feature-Planung und Issues — unabhängig von der UI-Navigation in der [Studio-Spezifikation](../../spezifikationen/mpz-studio.md)._
 
-**Status:** ✅ v0–v2 umgesetzt (Epic #170, [PR #183](https://github.com/flxln/schulnavigator/pull/183)). **v2.1 geplant** (Epic #186). v3 Polish offen.
+**Status:** ✅ v0–v2.1 umgesetzt (Epic #170 [PR #183](https://github.com/flxln/schulnavigator/pull/183), Epic #186 Branch `mpz-studio-v2.1`). v3 Polish offen.
 
-**Epics:** [v0 #144](https://github.com/flxln/schulnavigator/issues/144) · [v1 #158](https://github.com/flxln/schulnavigator/issues/158) · [v2 #170](https://github.com/flxln/schulnavigator/issues/170) **abgeschlossen** · [v2.1 #186](https://github.com/flxln/schulnavigator/issues/186) **geplant** (#187–#190) · v3 Polish nach Bedarf
+**Epics:** [v0 #144](https://github.com/flxln/schulnavigator/issues/144) · [v1 #158](https://github.com/flxln/schulnavigator/issues/158) · [v2 #170](https://github.com/flxln/schulnavigator/issues/170) **abgeschlossen** · [v2.1 #186](https://github.com/flxln/schulnavigator/issues/186) **abgeschlossen** (#187–#190) · v3 Polish nach Bedarf
 
-**Phasierung (Spec):** v2 erledigt — fehlende Content-Pflege + Betrieb · **v2.1** = Medien-Datei ersetzen + Thumbnail/Poster-Upload · v3 = Komfort-Editoren und Batch — siehe [Roadmap v2/v2.1/v3](#roadmap-v2--v21--v3) unten.
+**Phasierung (Spec):** v2 + v2.1 erledigt — Medien-CRUD vollständig · v3 = Komfort-Editoren und Batch — siehe [Roadmap v2/v2.1/v3](#roadmap-v2--v21--v3) unten.
 
 **Legende:** `Studio` = MPZ Studio (nur `npm run dev`) · `Plan A` = CLI, JSON, Snippets, Kalibrier-URLs · **Status** ✓ umgesetzt · ~ teilweise · — offen
 
-Detaillierte Issue-Listen: [epic-mpz-studio.md](../../planung/archiv/epics/epic-mpz-studio.md) · [epic-mpz-studio-v1.md](../../planung/archiv/epics/epic-mpz-studio-v1.md) · [epic-mpz-studio-v2.md](../../planung/archiv/epics/epic-mpz-studio-v2.md)
+Detaillierte Issue-Listen: [epic-mpz-studio.md](../../planung/archiv/epics/epic-mpz-studio.md) · [epic-mpz-studio-v1.md](../../planung/archiv/epics/epic-mpz-studio-v1.md) · [epic-mpz-studio-v2.md](../../planung/archiv/epics/epic-mpz-studio-v2.md) · [epic-mpz-studio-v2.1.md](../../planung/archiv/epics/epic-mpz-studio-v2.1.md)
 
 ---
 
@@ -43,8 +43,8 @@ Verknüpfung mit dem Raum erfolgt indirekt über **Hotspots** (oder Medienliste 
 ### bearbeiten
 
 - Metadaten (`id`, `untertitel`, `poster`, `thumbnail`, `embedAllow`, …)
-- **v2.1:** Datei-Inhalt ersetzen (`audio`, `video` upload, `foto`, `text`) bei gleicher `medium.id`
-- **v2.1:** Thumbnail/Poster per Upload (nicht nur Pfad)
+- Datei-Inhalt ersetzen (`audio`, `video` upload, `foto`, `text`) bei gleicher `medium.id` (#187–#188)
+- Thumbnail/Poster per Upload (#189)
 
 ### löschen
 
@@ -139,18 +139,20 @@ Alles, was zuvor **nur Plan A (JSON/CLI)** war und fürs Studio-Alltag sinnvoll 
 
 **Grober Umfang v2:** Epic mit 11 Unterissues (#171–#181) — abgeschlossen.
 
-### v2.1 — Medien-Datei ersetzen (Epic #186, geplant)
+### v2.1 — Medien-Datei ersetzen (Epic #186, erledigt 2026-06-20)
 
 Schließt die praktische Lücke nach v2 #171 (nur Metadaten-PATCH): Datei-Tausch ohne neue `medium.id`, Thumbnail/Poster-Upload.
 
 | Paket | Domäne | Was | Issue |
 |-------|--------|-----|-------|
-| **v2.1-A** | Medien | Domain + API `replaceStationMediumFile` | #187 **erledigt** |
+| **v2.1-A** | Medien | Domain + API `replaceStationMediumFile` | #187 |
 | **v2.1-B** | Medien | UI „Datei ersetzen“ | #188 |
 | **v2.1-C** | Medien | Thumbnail-/Poster-Upload | #189 |
 | **v2.1-D** | Doku | Spec, Entwickler-Doku, Epic-Abschluss | #190 |
 
-Spezifikation: [epic-mpz-studio-v2.1.md](../../planung/epic-mpz-studio-v2.1.md)
+**Grober Umfang v2.1:** Epic mit 4 Unterissues (#187–#190) — abgeschlossen.
+
+Spezifikation: [epic-mpz-studio-v2.1.md](../../planung/archiv/epics/epic-mpz-studio-v2.1.md)
 
 ### v3 — Polish (optional, nach Bedarf)
 
@@ -178,7 +180,7 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | **Medien** | erstellen (audio, video, foto, text) | [#147](https://github.com/flxln/schulnavigator/issues/147) | ✓ | ja (Upload) | `content:ingest` |
 | **Medien** | erstellen (link, embed) | [#172](https://github.com/flxln/schulnavigator/issues/172) | ✓ | ja (Modal) | JSON + Snippet |
 | **Medien** | bearbeiten (Metadaten) | [#171](https://github.com/flxln/schulnavigator/issues/171) | ✓ | ja | JSON |
-| **Medien** | Datei ersetzen + Thumbnail/Poster-Upload | [#186](https://github.com/flxln/schulnavigator/issues/186) (#187–#189) | — | geplant | Dateisystem / CLI |
+| **Medien** | Datei ersetzen + Thumbnail/Poster-Upload | [#186](https://github.com/flxln/schulnavigator/issues/186) (#187–#189) | ✓ | ja | Dateisystem / CLI |
 | **Medien** | löschen | [#161](https://github.com/flxln/schulnavigator/issues/161) | ✓ | ja | JSON |
 | **Medien** | Tabelle + Link zu Ingest | [#161](https://github.com/flxln/schulnavigator/issues/161) | ✓ | ja | — |
 | **Hotspots** | Medien-Hotspot erstellen | [#165](https://github.com/flxln/schulnavigator/issues/165) | ✓ | ja | JSON + Kalibrier-URL |
@@ -204,7 +206,7 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | **Querschnitt** | Hub-Slug-Map, Akzente, Icons | [#179](https://github.com/flxln/schulnavigator/issues/179) | ✓ | ja | `hub-slug-map.json` usw. |
 | **Querschnitt** | Brand-Uploads | [#180](https://github.com/flxln/schulnavigator/issues/180) | ✓ | ja | Dateien / Code |
 
-**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) **abgeschlossen** (2026-06-20) — auf `main` ([PR #183](https://github.com/flxln/schulnavigator/pull/183)).
+**Stand:** Epic [#170](https://github.com/flxln/schulnavigator/issues/170) **abgeschlossen** (2026-06-20, [PR #183](https://github.com/flxln/schulnavigator/pull/183)); Epic [#186](https://github.com/flxln/schulnavigator/issues/186) **abgeschlossen** (2026-06-20, Branch `mpz-studio-v2.1`).
 
 ---
 
@@ -216,7 +218,7 @@ Lehrkräfte-Admin, Multi-User, Git aus dem Studio, Production-Schreibzugriff —
 | `/mpz/studio/stationen` | #151 | Stations-Grid |
 | `/mpz/studio/stationen/[slug]` | #159 | Detail-Shell + Tabs |
 | Tab Stammdaten | #160, #173 | Titel, Beschreibung, Viewer, Raumbild-Upload |
-| Tab Medien | #161, #171, #172 | Liste, Bearbeiten (PATCH), Entfernen, Modal Ingest (alle Typen) |
+| Tab Medien | #161, #171, #172, #187–#189 | Liste, Bearbeiten (PATCH), Datei ersetzen, Thumbnail/Poster-Upload, Entfernen, Modal Ingest |
 | Tab Hotspots | #162, #165–#168 | CRUD, Kalibrier-Links |
 | Tab Dialog | #175 | Figuren, Segmente, Gruppen, bubble, Audio-Audit-Banner |
 | Tab Dialog-Audio | #163 | Upload + Segment-Audit |
