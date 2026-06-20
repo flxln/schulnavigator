@@ -8,7 +8,7 @@ Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eing
 
 ## Technik (MPZ / Viewer)
 
-*(keine offenen Startblick/Startpan-Issues — #185 erledigt 2026-06-20)*
+*(keine offenen Startblick/Startpan-Issues — #185 erledigt 2026-06-20; CSP-Enforcement #143 erledigt 2026-06-20)*
 
 ## GitHub — noch offen
 

@@ -330,3 +330,21 @@ Orchestriert Entry-Token-Rotation: Zufallstokens, `access-token-constants.mjs`, 
 - [x] `npm run rotate:access-tokens` (+ `--dry-run`, `--fest-only`, …)
 - [x] Beide PDF-Sets (`qr-*` + `qr-schulfest-*`) nach Lauf vorhanden (PDF-Cleanup preset-spezifisch)
 - [x] Doku und Vitest für Token-Gen/Template (`rotate-access-token-utils.test.ts`)
+
+---
+
+## Issue #143 — CSP-Enforcement schärfen
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/143 — **geschlossen** (2026-06-20)  
+**Milestone:** Phase 5 — Post-Fest  
+**Labels:** `tech`
+
+Report-Only-CSP in erzwungene Policy gemerged; `Permissions-Policy` für Kamera/Gyro; Modul `app/lib/security-headers.ts`. HSTS bleibt Proxy (Coolify/Traefik) — siehe [`anleitungen/fuer-entwickler.md`](../../anleitungen/fuer-entwickler.md).
+
+### Akzeptanzkriterien
+
+- [x] Erzwungene CSP: `default-src`, `object-src 'none'`, `base-uri`, `script-src` (mit `'unsafe-inline'` — Next.js)
+- [x] `Permissions-Policy`: `camera`, `gyroscope`, `accelerometer`, `magnetometer` für `(self)`
+- [x] Tests: `security-headers.test.ts`, `next.config.test.ts`
+- [x] Doku Entwickler-Runbook (Security-Header-Abschnitt)
+- [ ] Manueller Smoke nach Deploy (Scan, Flat, 360°, Embed) — Feldtest
