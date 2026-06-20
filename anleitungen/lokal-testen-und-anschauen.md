@@ -126,10 +126,35 @@ curl -X POST http://localhost:3000/api/mpz/view/flat \
 | Tab (`?tab=`) | Kurztest |
 |---------------|----------|
 | `stammdaten` (Default) | `titel`/`beschreibung` ändern → Speichern; Raumbild Flat/360° hochladen (#173) → Vorschau aktualisiert |
-| `medien` | **Bearbeiten** (PATCH Metadaten, #171); **link**/**embed** per Modal anlegen (#172); Ingest-Link; Entfernen mit Bestätigung |
+| `medien` | **Bearbeiten** (PATCH Metadaten, #171); **Datei ersetzen** (#188); **Thumbnail/Poster hochladen** (#189); **link**/**embed** per Modal anlegen (#172); Ingest-Link; Entfernen mit Bestätigung |
 | `hotspots` | Medien-Hotspot anlegen/bearbeiten/entfernen; Dialog-Hotspot mit Maskottchen (#176); Kalibrier-Link |
 | `dialog` | Nur `daz`/`pc-raum`: Segment-Text ändern, Gruppe anlegen, `bubble`-Felder (#175) |
 | `dialog-audio` | Segment-Upload wie globale Dialog-Audio-Seite (#163) |
+
+**MPZ Studio v2.1 — Medien-Datei ersetzen (#187–#189).** Nach `/mpz/unlock`: [`/mpz/studio/stationen/klassenzimmer?tab=medien`](https://localhost:3000/mpz/studio/stationen/klassenzimmer?tab=medien) (oder andere Station mit audio/foto/video-Medien).
+
+| Kurztest | Erwartung |
+|----------|-----------|
+| **Datei ersetzen** (#188) | Medium **Bearbeiten** → Datei wählen → **Datei ersetzen** → Toast; `medium.id` unverändert; Hotspot spielt neues Asset |
+| **Thumbnail** (#189) | **Bild hochladen** neben Thumbnail-Pfad — nur wenn Formular **keine** ungespeicherten Änderungen hat (`isDirty`-Sperre) |
+| **Poster** (#189) | Bei `typ: video`: Poster-Upload; bei `videoSource: youtube`: kein Datei-Replace-Block, Poster-Upload erlaubt |
+| **YouTube-Video** | Kein Abschnitt „Datei ersetzen“; API `POST …/file` liefert `FIELD_NOT_ALLOWED` |
+
+Optional per `curl` (Secret aus `.env.local`):
+
+```bash
+# Datei ersetzen (Beispiel: audio-Medium)
+curl -X POST "http://localhost:3000/api/mpz/stations/klassenzimmer/medien/MEINE_MEDIUM_ID/file" \
+  -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET" \
+  -F "file=@/pfad/zur/neuen-datei.mp3"
+
+# Thumbnail hochladen
+curl -X POST "http://localhost:3000/api/mpz/stations/klassenzimmer/medien/MEINE_MEDIUM_ID/thumbnail" \
+  -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET" \
+  -F "file=@/pfad/zum/thumbnail.jpg"
+```
+
+API-Referenz: [fuer-entwickler.md](./fuer-entwickler.md) (Abschnitt MPZ Studio).
 
 Stammdaten-API (optional):
 

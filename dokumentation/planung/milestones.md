@@ -70,8 +70,8 @@ Der Fortschrittsbalken in GitHub ergibt sich automatisch aus den geschlossenen I
 
 ## MPZ Studio v2.1 — Medien-Datei ersetzen (ADR-022)
 
-**Fällig:** 31.08.2026 · **Status:** in Arbeit (#187–#189 erledigt) · **GitHub-Milestone:** [#10](https://github.com/flxln/schulnavigator/milestone/10)
-**Beschreibung:** Datei-Inhalt für `audio`/`video`/`foto`/`text` im Studio ersetzen (gleiche `medium.id`), Thumbnail-/Poster-Upload. Schließt v2-Lücke nach #171 (nur Metadaten-PATCH). Epic [#186](https://github.com/flxln/schulnavigator/issues/186); Unterissues #187–#190 — [epic-mpz-studio-v2.1.md](./epic-mpz-studio-v2.1.md). **#190** (Doku & Merge) nach Epic [#191](https://github.com/flxln/schulnavigator/issues/191) (Coach). **Nicht:** Markdown-Editor, YouTube (v3).
+**Fällig:** 31.08.2026 · **Status:** abgeschlossen (2026-06-20) · **GitHub-Milestone:** [#10](https://github.com/flxln/schulnavigator/milestone/10)
+**Beschreibung:** Datei-Inhalt für `audio`/`video`/`foto`/`text` im Studio ersetzen (gleiche `medium.id`), Thumbnail-/Poster-Upload. Schließt v2-Lücke nach #171 (nur Metadaten-PATCH). Epic [#186](https://github.com/flxln/schulnavigator/issues/186) geschlossen; Unterissues #187–#190 erledigt — [epic-mpz-studio-v2.1.md](./archiv/epics/epic-mpz-studio-v2.1.md). Branch `mpz-studio-v2.1` (Merge nach `main` ausstehend). **Nicht:** Markdown-Editor, YouTube (v3).
 
 ---
 

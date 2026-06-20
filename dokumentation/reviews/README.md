@@ -19,6 +19,7 @@ Kurze Risiko- und Abschluss-Notizen zu größeren Issues (v. a. MPZ Studio v2).
 | #179 Hub-Config | [pre-mortem-179](./pre-mortem/pre-mortem-179-2026-06-19.md) | [post-mortem-179](./post-mortem/post-mortem-179-2026-06-20.md) |
 | #180 Brand-Uploads | [pre-mortem-180](./pre-mortem/pre-mortem-180-2026-06-20.md) | [post-mortem-180](./post-mortem/post-mortem-180-2026-06-20.md) |
 | #181 Epic-Abschluss v2 | — | [post-mortem-181](./post-mortem/post-mortem-181-2026-06-20.md) |
+| #190 Epic-Abschluss v2.1 | — | [post-mortem-190](./post-mortem/post-mortem-190-2026-06-20.md) |
 | #185 MPZ Flat-Startpan | [pre-mortem-185](./pre-mortem/pre-mortem-185-2026-06-20.md) | [post-mortem-185](./post-mortem/post-mortem-185-2026-06-20.md) |
 | #187 Medien-Datei ersetzen | [pre-mortem-187](./pre-mortem/pre-mortem-187-2026-06-20.md) | [post-mortem-187](./post-mortem/post-mortem-187-2026-06-20.md) |
 | #189 Thumbnail-/Poster-Upload | [pre-mortem-189](./pre-mortem/pre-mortem-189-2026-06-20.md) | [post-mortem-189](./post-mortem/post-mortem-189-2026-06-20.md) |

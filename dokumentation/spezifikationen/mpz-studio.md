@@ -332,7 +332,7 @@ Abgeleitet aus zwei unabhängigen Plan-Reviews (SE-15: Codex, GLM-5.1). v0 ist *
 | **Plan B — Projekttag** | Studio v0: Medien-Upload + Hotspots (nur lokal) | optional bis ~22.06.2026 |
 | **v1 — Post-Fest** | Station-Detail, Stammdaten, Medien-/Hotspot-Tabellen, Dialog-Audio-Tab | **erledigt** 2026-06-18 (Epic #158) |
 | **v2 — Betrieb** | Coach, Embed-Allowlist, Brand-Uploads, Hub/Icons, Deploy-Tab, Dialog-Editor, Raumbild-Upload | **erledigt** 2026-06-20 (Epic #170) |
-| **v2.1 — Medien-CRUD** | Datei ersetzen (audio/video/foto/text), Thumbnail-/Poster-Upload | geplant (Epic #186, #187–#190) |
+| **v2.1 — Medien-CRUD** | Datei ersetzen (audio/video/foto/text), Thumbnail-/Poster-Upload | **erledigt** 2026-06-20 (Epic #186) |
 | **v3 — Polish** | Markdown-Editor, Dialog-Bubble-Visual-Editor, Batch-Import aus `auftraggeber/` | nach Bedarf |
 
 **Projekttag-Minimum (v0):** Was Kinder liefern — Audio, Video, Foto, Text, ggf. Hotspots. Coach, Hub, Tokens sind am Projekttag selten zeitkritisch.
@@ -378,7 +378,7 @@ Nach Directus-Migration: Studio einfrieren oder nur noch für Migration/Massenim
 3. Stationen-Editor v0 (Medien-Upload, Hotspot-Rückschreibung)
 4. Parallel: `embed-allowlist.json` extrahieren (v1)
 5. API: Datei-Upload + `validate:stations` nach Save
-6. Doku: Abschnitt in [fuer-entwickler.md](../../anleitungen/fuer-entwickler.md) wenn v0 steht — **erledigt** v0 (#145); **v1 Station-Detail** ergänzt (#164, Epic [#158](../planung/archiv/epics/epic-mpz-studio-v1.md)); **v2 Content & Betrieb** ergänzt (#181, Epic [#170](../planung/archiv/epics/epic-mpz-studio-v2.md))
+6. Doku: Abschnitt in [fuer-entwickler.md](../../anleitungen/fuer-entwickler.md) wenn v0 steht — **erledigt** v0 (#145); **v1 Station-Detail** ergänzt (#164, Epic [#158](../planung/archiv/epics/epic-mpz-studio-v1.md)); **v2 Content & Betrieb** ergänzt (#181, Epic [#170](../planung/archiv/epics/epic-mpz-studio-v2.md)); **v2.1 Medien-CRUD** ergänzt (#190, Epic [#186](../planung/archiv/epics/epic-mpz-studio-v2.1.md))
 
 ---
 
@@ -421,16 +421,18 @@ Entwickler-Doku: [fuer-entwickler.md](../../anleitungen/fuer-entwickler.md) (Abs
 
 ## v2.1 — Medien-Datei ersetzen (Epic #186)
 
-**Status:** geplant (Milestone „MPZ Studio v2.1“, GitHub #10).
+**Status:** umgesetzt 2026-06-20 (Branch `mpz-studio-v2.1`, Milestone „MPZ Studio v2.1“).
 
-v2.1 schließt die Lücke zwischen Metadaten-PATCH (#171) und vollständigem Medien-CRUD: **Datei-Inhalt tauschen** bei gleicher `medium.id` (Hotspots bleiben), plus **Thumbnail-/Poster-Upload**. Spezifikation: [epic-mpz-studio-v2.1.md](../planung/epic-mpz-studio-v2.1.md).
+v2.1 schließt die Lücke zwischen Metadaten-PATCH (#171) und vollständigem Medien-CRUD: **Datei-Inhalt tauschen** bei gleicher `medium.id` (Hotspots bleiben), plus **Thumbnail-/Poster-Upload**. Spezifikation: [epic-mpz-studio-v2.1.md](../planung/archiv/epics/epic-mpz-studio-v2.1.md).
 
-| In v2.1 geplant | Bewusst nicht v2.1 (v3) |
-|-----------------|-------------------------|
-| `replaceStationMediumFile` + API `POST …/file` (#187) **erledigt** 2026-06-20 | Markdown-WYSIWYG |
-| UI „Datei ersetzen“ (#188) **erledigt** 2026-06-20 | YouTube-`quelle` (ADR-004) |
-| Thumbnail-/Poster-Upload (#189) **erledigt** 2026-06-20 | Batch-Import `auftraggeber/` |
-| Doku (#190) | Lehrkräfte-Admin (Directus #47) |
+| In v2.1 umgesetzt | Bewusst nicht v2.1 (v3) |
+|-------------------|-------------------------|
+| `replaceStationMediumFile` + API `POST …/file` (#187) | Markdown-WYSIWYG |
+| UI „Datei ersetzen“ (#188) | YouTube-`quelle` (ADR-004) |
+| Thumbnail-/Poster-Upload (#189) | Batch-Import `auftraggeber/` |
+| Doku & Epic-Abschluss (#190) | Lehrkräfte-Admin (Directus #47) |
+
+Entwickler-Doku: [fuer-entwickler.md](../../anleitungen/fuer-entwickler.md) (Abschnitt MPZ Studio), Testrouten: [lokal-testen-und-anschauen.md](../../anleitungen/lokal-testen-und-anschauen.md).
 
 ---
 
