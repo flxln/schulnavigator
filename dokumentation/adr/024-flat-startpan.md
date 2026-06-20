@@ -29,7 +29,7 @@ Pro Station mit `viewer` fehlend oder `'flat'` darf optional ein Feld gesetzt we
 - Bei `viewer: 'equirectangular'` lehnt der Validator ab ([ADR-023](./023-sphere-startblick.md) für Sphere).
 - Beim Laden: `panPx` aus `startPanX`, `effectiveDisplayW`, `containerW` und `maxPan` berechnen.
 - **`recenterView()`** springt auf **`startPanX`** (nicht mehr pauschal `centeredPanPx` / 0), sofern `startPanX` gesetzt; fehlt das Feld → bisheriges Recenter-Verhalten beibehalten.
-- **Gyro-Neutral:** Nach dem Setzen von `startPanX` beim Load erfolgt die Orientierungs-Neutral-Kalibrierung wie heute; der Startausschnitt ist der **Pan-Baseline**, Gyro addiert darauf.
+- **Gyro-Neutral:** Nach dem Setzen von `startPanX` beim Load erfolgt die Orientierungs-Neutral-Kalibrierung wie heute; der Startausschnitt ist der **Pan-Baseline**. „Gyro addiert darauf" bedeutet in der Implementierung **Neutral-Re-Anchoring** via `neutralAngleForPan` (nicht literale Pan-Addition). Der realisierbare `startPanX`-Bereich ist geräteabhängig geclampt — empfohlen für Content-Pflege: Werte in `[0,1 … 0,9]`.
 
 **Pflege:**
 

@@ -35,9 +35,12 @@ import {
 } from '@/lib/raum-viewer/pan-from-orientation'
 import { panPxAfterRecenter } from '@/lib/raum-viewer/recenter-pan'
 import { roomPanZoom } from '@/lib/raum-viewer/room-pan-zoom'
+import {
+  normalizedViewportCenter,
+  panPxFromStartPanX,
+} from '@/lib/raum-viewer/viewport-center'
 import { isMascotDialogHotspot } from '@/lib/dialog-hotspot'
 import { hitTestHotspot } from '@/lib/raum-viewer/hit-test-hotspot'
-import { normalizedViewportCenter } from '@/lib/raum-viewer/viewport-center'
 import { HotspotOverlay } from '@/components/raum-viewer/hotspot-overlay'
 import { PanOnboardingOverlay } from '@/components/raum-viewer/pan-onboarding-overlay'
 import { useDeviceOrientation } from '@/components/raum-viewer/use-device-orientation'
@@ -61,6 +64,8 @@ export type RoomImagePaneProps = {
   ) => void
   layout?: RaumViewerLayout
   orientationEnabled?: boolean
+  /** Optionaler horizontaler Startausschnitt 0…1 (ADR-024). */
+  startPanX?: number
   onViewerCoachGateChange?: (blocksCoach: boolean) => void
 }
 
@@ -108,6 +113,7 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
       onPanChange,
       layout = 'default',
       orientationEnabled = true,
+      startPanX,
       onViewerCoachGateChange,
     },
     ref,
@@ -163,6 +169,7 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
   const betaRef = useRef<number | null>(null)
   const gammaRef = useRef<number | null>(null)
   const panAngleRef = useRef<number | null>(null)
+  const startPanApplied = useRef(false)
 
   const {
     state: orientState,
@@ -239,6 +246,32 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
     panPxRef.current = panPx
   }, [panPx])
 
+  useEffect(() => {
+    startPanApplied.current = false
+  }, [src, startPanX])
+
+  useEffect(() => {
+    if (
+      startPanX === undefined ||
+      startPanApplied.current ||
+      maxPan <= 0 ||
+      containerW <= 0 ||
+      effectiveDisplayW <= 0
+    ) {
+      return
+    }
+    const next = panPxFromStartPanX(
+      startPanX,
+      containerW,
+      effectiveDisplayW,
+      maxPan,
+    )
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- apply-once nach Layout-Messung (ADR-024)
+    setPanPx(next)
+    panPxRef.current = next
+    startPanApplied.current = true
+    setNeutralEpoch((e) => e + 1)
+  }, [startPanX, maxPan, containerW, effectiveDisplayW])
 
   useEffect(() => {
     // Pan nach maxPan-Änderung (Resize) begrenzen
@@ -324,24 +357,63 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
     const axis = panAxisRef.current
     const timer = window.setTimeout(() => {
       if (axis === 'alpha') {
-        neutralAlpha.current =
+        const meanAlpha =
           alphaSamples.current.length > 0 ? mean(alphaSamples.current) : 0
-        neutralGamma.current =
+        const meanGamma =
           gammaSamples.current.length > 0 ? mean(gammaSamples.current) : 0
         const betaMean =
           betaSamples.current.length > 0 ? mean(betaSamples.current) : 90
         lockedRef.current = portraitLock(betaMean, false)
+
+        if (startPanX !== undefined) {
+          const locked = lockedRef.current
+          const targetPan = panPxRef.current
+          if (locked) {
+            neutralGamma.current = neutralAngleForPan(
+              meanGamma,
+              targetPan,
+              maxPan,
+              'centered',
+              false,
+              GAMMA_FALLBACK_OPTS,
+            )
+          } else {
+            neutralAlpha.current = neutralAngleForPan(
+              meanAlpha,
+              targetPan,
+              maxPan,
+              'centered',
+              false,
+            )
+          }
+          neutralCalibrated.current = true
+        } else {
+          neutralAlpha.current = meanAlpha
+          neutralGamma.current = meanGamma
+          neutralCalibrated.current = true
+          if (maxPan > 0 && !dragging.current && panPxRef.current === 0) {
+            setPanPx(centeredPanPx(maxPan))
+          }
+        }
       } else {
-        neutralGamma.current =
+        const meanGamma =
           gammaSamples.current.length > 0 ? mean(gammaSamples.current) : 0
-      }
-      neutralCalibrated.current = true
-      if (axis === 'alpha' && maxPan > 0) {
-        setPanPx(centeredPanPx(maxPan))
+        if (startPanX !== undefined) {
+          neutralGamma.current = neutralAngleForPan(
+            meanGamma,
+            panPxRef.current,
+            maxPan,
+            panMode,
+            useCircularDelta,
+          )
+        } else {
+          neutralGamma.current = meanGamma
+        }
+        neutralCalibrated.current = true
       }
     }, NEUTRAL_CALIB_MS)
     return () => window.clearTimeout(timer)
-  }, [orientState, neutralEpoch, axisEpoch, maxPan])
+  }, [orientState, neutralEpoch, axisEpoch, maxPan, startPanX, panMode, useCircularDelta])
 
   useEffect(() => {
     if (orientState !== 'active' || neutralCalibrated.current) {
@@ -620,8 +692,67 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
     [alpha, beta, gamma, panAngle, maxPan, panAxis, panMode, useCircularDelta],
   )
 
+  const reAnchorNeutralAtPan = useCallback(
+    (targetPan: number) => {
+      if (maxPan <= 0) {
+        return
+      }
+      if (
+        panAxis === 'alpha' &&
+        alpha !== null &&
+        beta !== null &&
+        gamma !== null
+      ) {
+        const locked = portraitLock(beta, lockedRef.current)
+        lockedRef.current = locked
+        const activeRaw = locked ? gamma : alpha
+        const opts = locked ? GAMMA_FALLBACK_OPTS : undefined
+        const reAnchored = neutralAngleForPan(
+          activeRaw,
+          targetPan,
+          maxPan,
+          'centered',
+          false,
+          opts,
+        )
+        if (locked) {
+          neutralGamma.current = reAnchored
+        } else {
+          neutralAlpha.current = reAnchored
+        }
+        neutralCalibrated.current = true
+        return
+      }
+      const landscapeAngle = panAngle ?? gamma
+      if (landscapeAngle !== null) {
+        neutralGamma.current = neutralAngleForPan(
+          landscapeAngle,
+          targetPan,
+          maxPan,
+          panMode,
+          useCircularDelta,
+        )
+        neutralCalibrated.current = true
+      }
+    },
+    [alpha, beta, gamma, panAngle, maxPan, panAxis, panMode, useCircularDelta],
+  )
+
   const recenterView = useCallback(() => {
-    setPanPx(panPxAfterRecenter(maxPan, panAxis))
+    const targetPan = panPxAfterRecenter(
+      maxPan,
+      panAxis,
+      startPanX,
+      containerW,
+      effectiveDisplayW,
+    )
+    setPanPx(targetPan)
+
+    if (startPanX !== undefined) {
+      reAnchorNeutralAtPan(targetPan)
+      return
+    }
+
     if (
       panAxis === 'alpha' &&
       alpha !== null &&
@@ -642,7 +773,17 @@ export const RoomImagePane = forwardRef<RoomImagePaneHandle, RoomImagePaneProps>
       neutralGamma.current = gamma
       neutralCalibrated.current = true
     }
-  }, [alpha, beta, gamma, maxPan, panAxis])
+  }, [
+    alpha,
+    beta,
+    gamma,
+    maxPan,
+    panAxis,
+    startPanX,
+    containerW,
+    effectiveDisplayW,
+    reAnchorNeutralAtPan,
+  ])
 
   useImperativeHandle(ref, () => ({ recenterView }), [recenterView])
 
