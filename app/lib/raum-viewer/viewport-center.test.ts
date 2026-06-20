@@ -2,7 +2,19 @@ import { describe, expect, it } from 'vitest'
 import {
   normalizedViewportCenter,
   panPxFromStartPanX,
+  startPanXFromPanChange,
 } from '@/lib/raum-viewer/viewport-center'
+
+describe('startPanXFromPanChange', () => {
+  it('mappt onPanChange-Args auf normalizedViewportCenter.x', () => {
+    const panPx = -200
+    const containerW = 400
+    const effectiveDisplayW = 2000
+    const viaAdapter = startPanXFromPanChange(panPx, effectiveDisplayW, containerW)
+    const { x } = normalizedViewportCenter(panPx, containerW, effectiveDisplayW)
+    expect(viaAdapter).toBe(x)
+  })
+})
 
 describe('panPxFromStartPanX', () => {
   const containerW = 400

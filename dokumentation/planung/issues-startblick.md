@@ -62,7 +62,7 @@
 - [x] `Station`: optionales `startPanX` (0…1); nur bei Flat; Validator
 - [x] `RoomImagePane`: Initial-`panPx` aus `startPanX`; `recenterView()` respektiert Feld
 - [x] Tests: `recenter-pan`, Pane-Init
-- [ ] Optional: MPZ Startpan persistieren ([#185](https://github.com/flxln/schulnavigator/issues/185)) — Button auf `/mpz/calib/flat/{slug}`; **nicht** Erweiterung von #149 (Hotspot-only)
+- [x] Optional: MPZ Startpan persistieren ([#185](https://github.com/flxln/schulnavigator/issues/185)) — Button auf `/mpz/calib/flat/{slug}`; **nicht** Erweiterung von #149 (Hotspot-only)
 
 **Priorität:** Niedriger als #152 — die meisten Live-Stationen sind `equirectangular`.
 
@@ -74,12 +74,14 @@
 
 **Akzeptanz:**
 
-- [ ] `POST /api/mpz/view/flat`: `{ slug, startPanX }` + `withMpzStudioAccess`
-- [ ] Domain `applyFlatStartPan` in `mpz-view-ingest.ts`
-- [ ] UI auf `/mpz/calib/flat/{slug}`: `RaumViewer` + Button **„Als Startpan übernehmen“** (Produktions-Geometrie, nicht Hotspot-contain)
-- [ ] Route-Tests Guard 401/422
+- [x] `POST /api/mpz/view/flat`: `{ slug, startPanX }` + `withMpzStudioAccess`
+- [x] Domain `applyFlatStartPan` in `mpz-view-ingest.ts`
+- [x] UI auf `/mpz/calib/flat/{slug}`: `RaumViewer` + Button **„Als Startpan übernehmen“** (Produktions-Geometrie, nicht Hotspot-contain)
+- [x] Route-Tests Guard 401/422
 
 **Blockiert durch:** #154 (Runtime) — erledigt.
+
+**Umgesetzt:** 2026-06-20 auf `main` — Post-Mortem [post-mortem-185-2026-06-20.md](../reviews/post-mortem/post-mortem-185-2026-06-20.md).
 
 **Plan:** [flat-startpan_mpz_#185.plan.md](../../.cursor/plans/flat-startpan_mpz_%23185.plan.md)
 

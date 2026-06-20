@@ -102,7 +102,7 @@ curl -X POST "http://localhost:3000/api/mpz/dialog-audio/ingest" \
 **Hotspot-Kalibrierung (Issue #149).** Zuerst `/mpz/unlock`. Im Studio: **Dashboard** (`/mpz/studio`) oder **Stationen** (`/mpz/studio/stationen`) — dort Vorschau und Kalibrier-Links je Station.
 
 - **Sphere:** `/raum/{slug}?hotspot-calib=1` (z. B. `daz`, `klassenzimmer`) → Hotspot-ID wählen, auf Ankerpunkt klicken → **In stations.json übernehmen** (oder JSON kopieren). **Startblick (#153):** Panorama zur Einstiegsansicht drehen → **Als Startblick übernehmen** (aktuelle Kamera, nicht Hotspot-Klick). Nach Reload gilt der neue Startblick (#152). Nach Browser-Zurück und erneutem Aufruf bleibt das Overlay sichtbar (reagiert auf URL via `useSearchParams`).
-- **Flat:** `/mpz/calib/flat/kunst` (Station mit `bild`, kein `equirectangular`) → Klick setzt `x`/`y` → Übernehmen. Hotspot muss bereits in `hotspots[]` existieren.
+- **Flat:** `/mpz/calib/flat/kunst` (Station mit `bild`, kein `equirectangular`) → Tab **Hotspots**: Klick setzt `x`/`y` → Übernehmen. Tab **Startpan** (#185): Panorama wischen → **Als Startpan übernehmen** (`POST /api/mpz/view/flat`). Hotspot muss bereits in `hotspots[]` existieren.
 
 ```bash
 curl -X POST http://localhost:3000/api/mpz/hotspots/sphere \
@@ -114,6 +114,11 @@ curl -X POST http://localhost:3000/api/mpz/view/sphere \
   -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET" \
   -H "content-type: application/json" \
   -d '{"slug":"daz","startYaw":-30,"startPitch":-10}'
+
+curl -X POST http://localhost:3000/api/mpz/view/flat \
+  -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET" \
+  -H "content-type: application/json" \
+  -d '{"slug":"kunst","startPanX":0.45}'
 ```
 
 **Station-Detail (v1 #158, v2 #171–#176).** Nach `/mpz/unlock`: [https://localhost:3000/mpz/studio/stationen](https://localhost:3000/mpz/studio/stationen) → **Bearbeiten** auf einer Kachel oder direkt z. B. [https://localhost:3000/mpz/studio/stationen/kunst](https://localhost:3000/mpz/studio/stationen/kunst).

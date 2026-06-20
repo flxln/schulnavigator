@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { FlatHotspotCalib } from '@/components/mpz-studio/flat-hotspot-calib'
+import { FlatCalibShell } from '@/components/mpz-studio/flat-calib-shell'
 import { getStationBySlug } from '@/lib/stations'
 
 type PageProps = {
@@ -44,11 +44,12 @@ export default async function MpzFlatCalibPage({ params }: PageProps) {
   }
 
   return (
-    <FlatHotspotCalib
+    <FlatCalibShell
       slug={station.slug}
       titel={station.titel}
       bild={station.bild}
       hotspots={station.hotspots ?? []}
+      startPanX={station.startPanX}
     />
   )
 }
