@@ -105,7 +105,10 @@
         }
       ],
       "dialog": {
-        "figuren": ["frieda", "otto"],
+        "figuren": [
+          "frieda",
+          "otto"
+        ],
         "gruppen": [
           {
             "id": "gruesse",
@@ -225,7 +228,10 @@
         }
       ],
       "dialog": {
-        "figuren": ["frieda", "otto"],
+        "figuren": [
+          "frieda",
+          "otto"
+        ],
         "segmente": [
           {
             "id": "p1",
@@ -316,7 +322,8 @@
       "titel": "Kunstzimmer",
       "beschreibung": "Willkommen im Kunstzimmer! Hier malen wir, basteln wir und kleben manchmal aus Versehen unsere Finger zusammen. Aber keine Sorge – die Kunstwerke sind trotzdem wunderschön.",
       "bild": "/stations/kunst.jpg",
-      "medien": []
+      "medien": [],
+      "startPanX": 0.6673
     },
     {
       "slug": "lesewelt",
