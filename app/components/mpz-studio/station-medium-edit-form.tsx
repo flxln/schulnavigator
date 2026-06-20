@@ -8,11 +8,19 @@ import {
   type LinkEmbedFormValues,
 } from '@/components/mpz-studio/medium-link-embed-fields'
 import {
+  FOTO_RULE,
+  MediumAssetUploadField,
+} from '@/components/mpz-studio/medium-asset-upload-field'
+import {
   markMpzStudioDirty,
   useStudioValidation,
 } from '@/components/mpz-studio/studio-validation-context'
 import { isUploadTyp, UPLOAD_RULES } from '@/lib/mpz-upload-rules'
+import type { MediumAssetField } from '@/lib/mpz-medium-asset-upload'
 import type { Medium } from '@/lib/types'
+
+const UPLOAD_DIRTY_HINT =
+  'Bitte zuerst Änderungen speichern, bevor ein Bild hochgeladen wird.'
 
 export type StationMediumEditFormProps = {
   slug: string
@@ -136,6 +144,9 @@ export function StationMediumEditForm({
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [fileReplaceBusy, setFileReplaceBusy] = useState(false)
   const [fileError, setFileError] = useState<string | null>(null)
+  const [assetUploadBusy, setAssetUploadBusy] = useState(false)
+  const [thumbnailUploadError, setThumbnailUploadError] = useState<string | null>(null)
+  const [posterUploadError, setPosterUploadError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [isPending, startTransition] = useTransition()
 
@@ -146,6 +157,17 @@ export function StationMediumEditForm({
     medium.typ === 'video' &&
     medium.videoSource === 'youtube' &&
     form.videoSource === 'upload'
+
+  const isDirty = Object.keys(buildDiff(medium, form, globalSuffixes)).length > 0
+  const assetUploadDisabled = isDirty
+
+  const thumbnailAssetUpload = {
+    uploadDisabled: assetUploadDisabled,
+    uploadDisabledHint: assetUploadDisabled ? UPLOAD_DIRTY_HINT : undefined,
+    onPickFile: (file: File) => void handleAssetUpload('thumbnail', file),
+    busy: assetUploadBusy,
+    uploadError: thumbnailUploadError,
+  }
 
   useEffect(() => {
     setForm(mediumToForm(medium, globalSuffixes))
@@ -212,6 +234,65 @@ export function StationMediumEditForm({
     }
   }
 
+  async function handleAssetUpload(field: MediumAssetField, file: File) {
+    const setError = field === 'thumbnail' ? setThumbnailUploadError : setPosterUploadError
+    setError(null)
+
+    if (assetUploadDisabled) {
+      setError(UPLOAD_DIRTY_HINT)
+      return
+    }
+
+    if (file.size > FOTO_RULE.maxBytes) {
+      setError(`Datei zu groß (max. ${formatMaxBytes(FOTO_RULE.maxBytes)}).`)
+      return
+    }
+
+    setAssetUploadBusy(true)
+    try {
+      const formData = new FormData()
+      formData.set('file', file)
+
+      const res = await fetch(
+        `/api/mpz/stations/${encodeURIComponent(slug)}/medien/${encodeURIComponent(medium.id)}/${field}`,
+        { method: 'POST', body: formData },
+      )
+      const json = (await res.json()) as {
+        path?: string
+        field?: MediumAssetField
+        message?: string
+        error?: string
+      }
+
+      if (!res.ok) {
+        setError(json.message ?? json.error ?? `Fehler (${res.status})`)
+        return
+      }
+
+      if (json.path) {
+        if (field === 'thumbnail') {
+          updateField('thumbnail', json.path)
+        } else {
+          updateField('poster', json.path)
+        }
+      }
+
+      const label = field === 'thumbnail' ? 'Thumbnail' : 'Poster'
+      onSuccess(
+        `${label} für Medium „${medium.id}" gesetzt (${json.path ?? ''}). Für /raum/${slug} ggf. Dev-Server neu starten (Modul-Cache).`,
+      )
+      markMpzStudioDirty()
+      await validateNow()
+      startTransition(() => {
+        router.refresh()
+      })
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Netzwerkfehler')
+    } finally {
+      setAssetUploadBusy(false)
+    }
+  }
+
   async function handleFileReplace() {
     setFileError(null)
 
@@ -275,7 +356,7 @@ export function StationMediumEditForm({
     medium.typ === 'foto' ||
     medium.typ === 'text'
 
-  const busy = isPending || fileReplaceBusy
+  const busy = isPending || fileReplaceBusy || assetUploadBusy
 
   return (
     <div className="flex flex-col gap-4 border-t border-border-1 bg-bg-1 p-4">
@@ -346,6 +427,7 @@ export function StationMediumEditForm({
                 values={form}
                 onChange={updateLinkEmbedField}
                 idPrefix={`edit-med-${medium.id}`}
+                thumbnailAssetUpload={thumbnailAssetUpload}
               />
             </div>
           )}
@@ -368,44 +450,34 @@ export function StationMediumEditForm({
                   <option value="youtube">youtube</option>
                 </select>
               </div>
-              <div>
-                <label htmlFor={`edit-med-poster-${medium.id}`} className={labelClassName()}>
-                  poster (optional)
-                </label>
-                <input
-                  id={`edit-med-poster-${medium.id}`}
-                  type="text"
-                  value={form.poster}
-                  onChange={(e) => updateField('poster', e.target.value)}
-                  placeholder="/media/…"
-                  className={`${fieldClassName()} font-mono text-xs`}
-                />
-                <p className="mt-1 text-xs text-fg-3">
-                  Pfad unter <code className="font-mono">/media/{slug}/</code> oder anderem
-                  öffentlichen Pfad.
-                </p>
-              </div>
+              <MediumAssetUploadField
+                field="poster"
+                slug={slug}
+                value={form.poster}
+                onPathChange={(path) => updateField('poster', path)}
+                uploadDisabled={assetUploadDisabled}
+                uploadDisabledHint={assetUploadDisabled ? UPLOAD_DIRTY_HINT : undefined}
+                onPickFile={(file) => void handleAssetUpload('poster', file)}
+                busy={assetUploadBusy}
+                idPrefix={`edit-med-${medium.id}`}
+                uploadError={posterUploadError}
+              />
             </>
           )}
 
           {quelleReadOnly && (
-            <div className="sm:col-span-2">
-              <label htmlFor={`edit-med-thumbnail-${medium.id}`} className={labelClassName()}>
-                thumbnail (optional)
-              </label>
-              <input
-                id={`edit-med-thumbnail-${medium.id}`}
-                type="text"
-                value={form.thumbnail}
-                onChange={(e) => updateField('thumbnail', e.target.value)}
-                placeholder="/media/…"
-                className={`${fieldClassName()} font-mono text-xs`}
-              />
-              <p className="mt-1 text-xs text-fg-3">
-                Pfad unter <code className="font-mono">/media/{slug}/</code> oder anderem öffentlichen
-                Pfad.
-              </p>
-            </div>
+            <MediumAssetUploadField
+              field="thumbnail"
+              slug={slug}
+              value={form.thumbnail}
+              onPathChange={(path) => updateField('thumbnail', path)}
+              uploadDisabled={assetUploadDisabled}
+              uploadDisabledHint={assetUploadDisabled ? UPLOAD_DIRTY_HINT : undefined}
+              onPickFile={(file) => void handleAssetUpload('thumbnail', file)}
+              busy={assetUploadBusy}
+              idPrefix={`edit-med-${medium.id}`}
+              uploadError={thumbnailUploadError}
+            />
           )}
         </div>
 

@@ -261,3 +261,75 @@ describe('StationMediumEditForm — Datei ersetzen', () => {
     expect((await screen.findByRole('alert')).textContent).toContain('UNAUTHORIZED')
   })
 })
+
+describe('StationMediumEditForm — Thumbnail/Poster-Upload', () => {
+  beforeEach(() => {
+    validateNow.mockClear()
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          path: '/media/klassenzimmer/fotos/thumb.jpg',
+          field: 'thumbnail',
+        }),
+      }),
+    )
+  })
+
+  afterEach(() => {
+    cleanup()
+    vi.restoreAllMocks()
+    vi.unstubAllGlobals()
+  })
+
+  it('Audio: Bild-hochladen-Button sichtbar', () => {
+    const station = getStationBySlug('klassenzimmer')!
+    const medium = station.medien.find((m) => m.id === 'demo-audio')!
+    renderForm(medium)
+
+    expect(screen.getAllByRole('button', { name: 'Bild hochladen' }).length).toBeGreaterThan(0)
+  })
+
+  it('bei isDirty: Upload-Button deaktiviert', () => {
+    const station = getStationBySlug('klassenzimmer')!
+    const medium = station.medien.find((m) => m.id === 'demo-audio')!
+    renderForm(medium)
+
+    fireEvent.change(screen.getByLabelText('Untertitel (optional)'), {
+      target: { value: 'Neuer Untertitel' },
+    })
+
+    const uploadButtons = screen.getAllByRole('button', { name: 'Bild hochladen' })
+    for (const btn of uploadButtons) {
+      expect((btn as HTMLButtonElement).disabled).toBe(true)
+    }
+    expect(
+      screen.getAllByText(
+        'Bitte zuerst Änderungen speichern, bevor ein Bild hochgeladen wird.',
+      ).length,
+    ).toBeGreaterThan(0)
+  })
+
+  it('erfolgreicher Thumbnail-Upload: POST auf …/thumbnail', async () => {
+    const station = getStationBySlug('klassenzimmer')!
+    const medium = station.medien.find((m) => m.id === 'demo-audio')!
+    const onSuccess = vi.fn()
+    renderForm(medium, onSuccess)
+
+    const fileInput = document.getElementById('edit-med-demo-audio-thumbnail-file')!
+    fireEvent.change(fileInput, {
+      target: { files: [new File(['img'], 'thumb.jpg', { type: 'image/jpeg' })] },
+    })
+
+    await waitFor(() => {
+      expect(vi.mocked(fetch)).toHaveBeenCalledWith(
+        '/api/mpz/stations/klassenzimmer/medien/demo-audio/thumbnail',
+        expect.objectContaining({ method: 'POST' }),
+      )
+    })
+    await waitFor(() => {
+      expect(onSuccess).toHaveBeenCalledWith(expect.stringContaining('thumb.jpg'))
+    })
+  })
+})
