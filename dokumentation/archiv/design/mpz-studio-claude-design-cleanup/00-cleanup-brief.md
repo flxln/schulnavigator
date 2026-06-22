@@ -65,16 +65,18 @@ Alle folgenden Bereiche sind **implementiert** und sollen im Redesign **berücks
 1. Dashboard — Validierung, Stationen mit Fehlern
 2. Stationen — 12 Kacheln (Hub-Nr, Viewer, Ampel)
 3. Medien hochladen — Modal (globaler Einstieg)
-4. Dialog-Audio — globaler Bereich
-5. Coach — `coach-messages.json`
-6. Embeds & Links — globale Allowlist
-7. Hub-Karte — Slug ↔ Slot, Akzente, Icons
-8. Brand & Design — Logos, Maskottchen
-9. Deploy — Env, QR, Token, validate-all
+4. Coach — `coach-messages.json`
+5. Embeds & Links — globale Allowlist
+6. Hub-Karte — Slug ↔ Slot, Akzente, Icons
+7. Brand & Design — Logos, Maskottchen
+8. Deploy — Env, QR, Token, validate-all
+
+**Nicht global:** Dialog-Audio — fest an Dialog-Segmente gekoppelt (siehe `15-dialog-segment-zeilenmodell.md`).
 
 ### Pro Station (`/mpz/studio/stationen/[slug]`)
 
-- Tabs: Stammdaten, Medien, Hotspots, Dialog, Dialog-Audio (letztere nur bei `dialog`)
+- Tabs: Stammdaten, Medien, Hotspots, **Dialog** (immer sichtbar — mit oder ohne `dialog` in JSON)
+- Im Tab **Dialog:** ohne Dialog → „Dialog hinzufügen“; mit Dialog → Segment-Zeile (Text + Audio: Upload, Abspielen, Löschen)
 - Vorschau als externer Link `↗ /raum/{slug}`
 
 ### Sonderseiten
@@ -89,7 +91,7 @@ Details: `02-screens-v2.1-und-user-stories.md`, Probleme: `08-bekannte-ui-proble
 ## Design-Ziele (Cleanup)
 
 1. **Gruppierung** — Domänen statt 9 flacher Nav-Punkte (z. B. Inhalt / Station / Global / Betrieb)
-2. **Redundanzen auflösen** — Dialog-Audio global vs. Station-Tab; Medien-Upload Modal vs. Route
+2. **Redundanzen auflösen** — Dialog-Audio in Segment-Zeilen integrieren (kein globaler Nav-Punkt, kein eigener Tab); Medien-Upload Modal vs. Route
 3. **Station Detail entlasten** — Dialog-Editor ist komplex; klare Unterstruktur oder Sub-Navigation
 4. **Konsistente Muster** — Tabellen, Formulare, Upload-Flows, Fehlerzustände einheitlich
 5. **Save & Validate** — globaler CTA bleibt, aber visuell klar im Workflow verankert
@@ -100,7 +102,7 @@ Details: `02-screens-v2.1-und-user-stories.md`, Probleme: `08-bekannte-ui-proble
 ## Kern-User-Stories
 
 1. **Medien ingestieren** — Audio/Video/Foto/Text/link/embed → korrekte Pfade → Validierung grün → Vorschau
-2. **Hotspot kalibrieren** — Flat: `/mpz/calib/flat/{slug}`; Sphere: Kalibrier-Link → Koordinaten übernehmen
+2. **Hotspot kalibrieren** — Flat: `/mpz/calib/flat/{slug}`; Sphere: **`/mpz/calib/sphere/{slug}`** (geplant, symmetrisch zu Flat — siehe `16-sphere-calib-screen.md`)
 3. **Dialog pflegen** — Segmente, Gruppen, Bubble, WAV-Clips — ohne JSON-Editor
 4. **Coach-Nachricht** — Trigger-Typ wählen, Text, Speichern
 5. **Deploy vorbereiten** — validate-all, QR, Token, Env prüfen

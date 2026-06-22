@@ -2,7 +2,8 @@
 
 **Datum:** 2026-06-22  
 **Zweck:** UI-Aufräumen und Neu-Strukturierung der **vollständigen** MPZ-Studio-Oberfläche (Epic v2/v2.1 umgesetzt)  
-**Vorgänger:** [`../mpz-studio-claude-design/`](../mpz-studio-claude-design/) (nur v0-Scope, Juni 2026)
+**Vorgänger:** [`../mpz-studio-claude-design/`](../mpz-studio-claude-design/) (nur v0-Scope, Juni 2026)  
+**Roadmap + Navigation:** [`ROADMAP.md`](./ROADMAP.md)
 
 ---
 
@@ -22,6 +23,8 @@
 | [`CLAUDE-DESIGN-PROMPT.md`](./CLAUDE-DESIGN-PROMPT.md) | **Kopier-Prompt für Claude Design** | ✅ |
 | [`02-screens-v2.1-und-user-stories.md`](./02-screens-v2.1-und-user-stories.md) | Screen-Inventar S1–S24, Zustände, Flows | ✅ |
 | [`08-bekannte-ui-probleme.md`](./08-bekannte-ui-probleme.md) | Ist-Zustand: Durcheinander, Redundanzen | ✅ |
+| [`15-dialog-segment-zeilenmodell.md`](./15-dialog-segment-zeilenmodell.md) | **Entscheidung:** Dialog-Audio pro Segment-Zeile | ✅ |
+| [`16-sphere-calib-screen.md`](./16-sphere-calib-screen.md) | **Entscheidung:** Sphere-Kalibrierung eigener MPZ-Screen (Option A) | ✅ geplant |
 | [`03-design-system-gs39-tokens.css`](./03-design-system-gs39-tokens.css) | Farben, Typo, Spacing | ✅ |
 | [`04-stations-schema.json`](./04-stations-schema.json) | JSON-Schema → Formularfelder | ✅ |
 | [`05-typendefinitionen.md`](./05-typendefinitionen.md) | TypeScript-Modell (Auszug, v2.1) | ✅ |

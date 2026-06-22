@@ -30,20 +30,22 @@ Quellen: [mpz-studio.md](../../spezifikationen/mpz-studio.md), [mpz-studio-ui.md
 | S11 | Tab Hotspots | Flat + 360° Tabellen, CRUD, Kalibrier-Links | empty, list, dialog-hotspot |
 | S12 | Hotspot anlegen/bearbeiten | Formular + Icon-Upload | medium, dialog |
 | S13 | Flat-Kalibrierung `/mpz/calib/flat/[slug]` | Klick → x/y | idle, marker, applied |
-| S14 | Sphere-Kalibrierung (Hinweis) | Link + JSON-Rückschreibung | info-panel |
-| S15 | Tab Dialog | Figuren, Segmente, Gruppen, Bubble | empty, filled, segment-form |
-| S16 | Tab Dialog-Audio (Station) | WAV-Liste, Upload, fehlende Clips | list, warning |
+| S14 | Sphere-Kalibrierung `/mpz/calib/sphere/[slug]` | Klick → yaw/pitch; Layout wie S13 | idle, marker, applied, startblick |
+| S15 | Tab Dialog | **alle Stationen** — Empty „Dialog hinzufügen“ oder Segment-Zeilen (Text + Audio), Gruppen, Bubble | no-dialog, empty-segments, filled, row-upload-play |
 
 ### Globale Module (Sidebar)
 
 | # | Route / Screen | Zweck | Pflicht-Zustände |
 |---|----------------|-------|------------------|
-| S17 | Dialog-Audio (global) `/mpz/studio/dialog-audio` | Alle Dialog-Stationen, Clips | list, missing |
-| S18 | Coach `/mpz/studio/coach` | CRUD coach-messages | empty, list, form |
-| S19 | Embeds & Links `/mpz/studio/embeds` | Globale Allowlist + Medien-Übersicht | list, edit-suffix |
-| S20 | Hub-Karte `/mpz/studio/hub` | Slug↔Slot, Akzente, Lucide-Icons | grid, edit |
-| S21 | Brand & Design `/mpz/studio/brand` | Logos, Maskottchen, Motive | upload, preview |
-| S22 | Deploy `/mpz/studio/deploy` | Env, QR, Token, validate-all, Vorschau-Links | ok, warnings |
+| S17 | Coach `/mpz/studio/coach` | CRUD coach-messages | empty, list, form |
+| S18 | Embeds & Links `/mpz/studio/embeds` | Globale Allowlist + Medien-Übersicht | list, edit-suffix |
+| S19 | Hub-Karte → Tab in `/mpz/studio/design` | Slug↔Slot, Akzente, Lucide-Icons | grid, edit |
+| S20 | Brand & Design → Tab in `/mpz/studio/design` | Logos, Maskottchen, Motive | upload, preview |
+| S21 | Deploy `/mpz/studio/deploy` | Env, QR, Token, validate-all, Vorschau-Links | ok, warnings |
+
+**Entfällt im Cleanup:** ehem. S17 Dialog-Audio global, ehem. S16 Tab dialog-audio — siehe [`15-dialog-segment-zeilenmodell.md`](./15-dialog-segment-zeilenmodell.md).
+
+**Zusammengelegt (Entscheidung 3.5):** S19 (Hub) + S20 (Brand) leben unter **einer** Route `/mpz/studio/design` als zwei Tabs; `/mpz/studio/hub` + `/mpz/studio/brand` werden Redirects. Inhalt/Mockups bleiben, der Container ändert sich — siehe [`ROADMAP.md`](./ROADMAP.md).
 
 ### Sonstiges
 
@@ -58,12 +60,12 @@ Quellen: [mpz-studio.md](../../spezifikationen/mpz-studio.md), [mpz-studio-ui.md
 
 **Layout:** Links Sidebar (240 px), rechts Content mit Top-Bar.
 
-**Sidebar (Ist — 9 Einträge, flach):**
+**Sidebar (Ist — 9 Einträge, einer überflüssig ⚠️):**
 
 - Dashboard
 - Stationen
 - Medien hochladen (öffnet Modal, keine Route)
-- Dialog-Audio
+- Dialog-Audio ← **entfällt** (kein globaler Inhalt)
 - Coach
 - Embeds & Links
 - Hub-Karte
@@ -124,39 +126,60 @@ Grid: 3 Spalten Desktop, 2 Tablet, 1 Mobil.
 
 ---
 
-## S11–S14 — Hotspots
+## S11–S14 — Hotspots & Kalibrierung
 
-- **Medien-Hotspot:** mediumId, x/y oder yaw/pitch, icon, iconSize
+- **Medien-Hotspot:** mediumId, x/y (flat) oder yaw/pitch (360°), icon, iconSize
 - **Dialog-Hotspot:** action dialog, mascot, mascotSize
-- Kalibrier-Buttons: Flat → S13; Sphere → S14 (externe Besucher-App)
+- Kalibrier-Buttons: Flat → **S13**; Sphere → **S14** (eigener MPZ-Screen, symmetrisch zu Flat)
+
+Details Sphere: [`16-sphere-calib-screen.md`](./16-sphere-calib-screen.md)
+
+### S13 — Flat-Kalibrierung (umgesetzt)
+
+Route `/mpz/calib/flat/[slug]`. Nur `viewer: flat`.
+
+### S14 — Sphere-Kalibrierung (geplant, Option A)
+
+Route **`/mpz/calib/sphere/[slug]`** — noch **nicht** implementiert.
+
+- Gleiche Shell-Idee wie Flat: Top-Bar, Tabs Hotspots / Startblick, Panorama links, Seitenpanel rechts
+- APIs bestehend: `POST /api/mpz/hotspots/sphere`, `POST /api/mpz/view/sphere`
+- **Ersetzt** primären Workflow über `/raum/{slug}?hotspot-calib=1`
 
 ---
 
-## S15 — Dialog-Editor
+## S15 — Dialog-Editor (alle Stationen)
 
-Nur Stationen mit `dialog` (z. B. `daz`, `pc-raum`). Mock: `07-referenz-station-daz.json`.
+**Tab Dialog ist bei jeder Station sichtbar** — auch ohne bestehenden `dialog`-Block in `stations.json`.
 
-Blöcke:
+### Zustand A — Kein Dialog (`no-dialog`)
+
+Station z. B. `klassenzimmer` (Mock: `06-referenz-station-klassenzimmer.json`).
+
+- Erklärung: Maskottchen-Dialog optional pro Raum
+- CTA: **Dialog hinzufügen** → `dialog`-Block anlegen (Figuren vorausgewählt, leere `segmente[]`)
+- Kein Wechsel zu anderer Station nötig
+
+> **Hinweis (Pre-Mortem 1a #1):** Anlegen braucht einen **neuen** `POST /api/mpz/stations/[slug]/dialog`; der bestehende `PATCH` deckt das nicht ab. Feature, kein Refactor — siehe [`15-dialog-segment-zeilenmodell.md`](./15-dialog-segment-zeilenmodell.md).
+
+### Zustand B — Dialog vorhanden (`filled`)
+
+Station z. B. `daz`, `pc-raum` (Mock: `07-referenz-station-daz.json`).
+
+**Domänenregel:** Jedes Segment = ein Sprechertext + eine Audiodatei — alles in **einer Tabellenzeile**.
+
+Blöcke im Tab Dialog:
 
 - Figuren (Frieda/Otto)
-- Segmente (id, rolle, text, quelle, gruppe, tail)
-- Gruppen
-- Sprechblasen-Layout (`bubble`: y, x, maxWidth, fontSize, followPan)
+- **Segmente** — Tabelle: Nr, ID, Rolle, **Sprechertext**, Gruppe, **Audio** (Status, Abspielen), Aktionen (**Upload**, Bearbeiten, Löschen)
+- Gruppen (optional)
+- Sprechblasen-Layout (`bubble`)
 
-**Design-Aufgabe:** Komplexität reduzieren — Sub-Tabs, Accordion, oder Wizard?
+Vollständige Spezifikation: [`15-dialog-segment-zeilenmodell.md`](./15-dialog-segment-zeilenmodell.md)
 
----
+**Design-Aufgabe:** Gruppen/Bubble als Sub-Bereich; Segment-Tabelle zentral — kein separater Audio-Tab.
 
-## S17 vs. S16 — Dialog-Audio (Redundanz)
-
-- **S16:** Tab innerhalb Station Detail
-- **S17:** eigener Sidebar-Eintrag, alle Stationen
-
-**Design-Aufgabe:** Ein klares Modell — nicht beides gleichwertig.
-
----
-
-## S18 — Coach
+## S17 — Coach
 
 Trigger-Typen:
 
@@ -170,14 +193,14 @@ Mock: `13-coach-messages-auszug.json`.
 
 ---
 
-## S19 — Embeds & Links
+## S18 — Embeds & Links
 
 - Globale Domain-Suffixe (`14-embed-allowlist.json`)
 - Übersicht aller embed/link-Medien über Stationen
 
 ---
 
-## S20 — Hub-Karte
+## S19 — Hub-Karte
 
 - Slug ↔ Hub-Slot (12 feste Slots)
 - Akzentfarbe pro Station
@@ -187,13 +210,13 @@ Slot-Geometrie bleibt Code — read-only Hinweis.
 
 ---
 
-## S21 — Brand & Design
+## S20 — Brand & Design
 
 Upload-Bereiche: Logos, Maskottchen, optionale Motive unter `public/brand/`.
 
 ---
 
-## S22 — Deploy
+## S21 — Deploy
 
 - `.env.local`-Werte anzeigen/ändern
 - QR-Generierung, Token-Rotation (Dry-Run)
@@ -209,17 +232,17 @@ Upload-Bereiche: Logos, Maskottchen, optionale Motive unter `public/brand/`.
 | Medien ingestieren | S5 → S8 → S9 → S3 → Vorschau |
 | Medien bearbeiten/ersetzen | S5 → S8 → S10 → S3 |
 | Hotspot Flat | S5 → S11 → S13 → S3 |
-| Hotspot Sphere | S5 → S11 → S14 → S3 |
-| Dialog pflegen | S5 → S15 → S16 → S3 |
-| Coach-Nachricht | S18 → S3 |
-| Deploy prüfen | S22 → S3 |
+| Hotspot Sphere | S5 → S11 → **S14** → S3 |
+| Dialog pflegen | S5 → S15 (Segment-Zeile: Text + Audio) → S3 |
+| Coach-Nachricht | S17 → S3 |
+| Deploy prüfen | S21 → S3 |
 | Validierung fehlgeschlagen | S3 (error + rollback) |
 
 ---
 
 ## Zustände pro Screen (Pflicht)
 
-Jeder Screen S1–S22 mindestens:
+Jeder Screen S1–S21 mindestens:
 
 - **Empty** — wenig/noch keine Daten
 - **Filled** — realistische Mock-Daten

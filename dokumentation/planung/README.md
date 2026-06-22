@@ -11,6 +11,7 @@ Abgleich mit [flxln/schulnavigator](https://github.com/flxln/schulnavigator). **
 | [labels.md](./labels.md) | Label-Konventionen |
 | [issues-schulfest-gs39-nachtrag.md](./issues-schulfest-gs39-nachtrag.md) | Epic **#86** — Schulfest/Hof-QR/Content |
 | [issues-startblick.md](./issues-startblick.md) | Startblick Sphere (#152–#153) und Flat-Startpan (#154, #185) |
+| [epic-mpz-studio-ui-cleanup.md](./epic-mpz-studio-ui-cleanup.md) | Epic **#195** — MPZ Studio UI-Cleanup (#196–#204) |
 
 ## Archiv
 

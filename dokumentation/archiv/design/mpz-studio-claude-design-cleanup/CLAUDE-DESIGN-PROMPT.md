@@ -40,25 +40,24 @@ Lies die hochgeladenen Dateien vollständig. Verbindlich:
 Beantworte explizit die Probleme in `08-bekannte-ui-probleme.md`:
 
 1. Flache 9-Punkte-Navigation → gruppierte IA
-2. Dialog-Audio doppelt (global + Station-Tab) → ein klares Modell
+2. Dialog-Audio ist **kein globaler Inhalt** — Segment-Zeilenmodell (`15-dialog-segment-zeilenmodell.md`): Text + Audio pro Zeile, kein globaler Nav/Tab
 3. Medien-Upload (Modal vs. Route vs. Tab) → einheitlicher Einstieg
-4. Brand vs. Hub aufgeteilt → sinnvolle Bündelung
+4. Brand vs. Hub aufgeteilt → **entschieden:** zusammenlegen zu einer Route `/mpz/studio/design` (Tabs Hub + Brand)
 5. Dialog-Editor überladen → Sub-Navigation oder vergleichbare Entlastung
 6. Save & Validate — Dirty-State und Feedback klarer
 7. Mobile Sidebar scanbar machen
+8. Sphere-Kalibrierung asymmetrisch zu Flat → **S14** `/mpz/calib/sphere/{slug}` (`16-sphere-calib-screen.md`)
 
 ## Screens — vollständig v2.1 (jeden mit Empty, Filled, Error, Loading)
 
 **Shell:** S1 Studio-Shell, S2 Plan-A-Banner, S3 Save & Validate, S4 Dashboard
 
-**Stationen:** S5 Grid, S6 Detail-Header, S7 Stammdaten, S8 Medien, S9 Upload-Modal, S10 Medien bearbeiten, S11 Hotspots, S12 Hotspot-Formular, S13 Flat-Kalibrierung, S14 Sphere-Hinweis, S15 Dialog-Editor, S16 Dialog-Audio (Station)
-
-**Global:** S17 Dialog-Audio (global), S18 Coach, S19 Embeds, S20 Hub, S21 Brand, S22 Deploy
+**Stationen:** S5 Grid … **S13 Flat-Kalibrierung** · **S14 Sphere-Kalibrierung** (Layout wie S13) · **S15 Dialog (alle Stationen: no-dialog + Segment-Zeile)** · **Global:** S17–S21
 
 ## Kern-User-Stories (jeweils Interaktionsfluss + Fehlerpfad)
 
 1. Medien ingestieren (alle 6 Typen) → Validierung → Vorschau
-2. Hotspot kalibrieren (Flat/Sphere)
+2. Hotspot kalibrieren (Flat **S13** + Sphere **S14** — gleiches Vollbild-Layout)
 3. Dialog pflegen (Segmente, Gruppen, Bubble, Audio)
 4. Coach-Nachricht anlegen
 5. Deploy vorbereiten (validate-all, QR, Token)

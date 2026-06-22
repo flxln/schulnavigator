@@ -28,12 +28,14 @@ Kurzfassung aus [`dokumentation/spezifikationen/mpz-studio.md`](../../spezifikat
 │       ├── Dialog
 │       └── Vorschau
 ├── Coach
-├── Dialog-Audio
 ├── Embeds & Links
-├── Brand & Design
-├── Hub-Karte
+├── Design & Hub          ← Brand + Hub-Karte zusammengelegt (Route /mpz/studio/design)
 └── Deploy
 ```
+
+**Design & Hub:** „Brand & Design“ und „Hub-Karte“ werden zu **einem** Sidebar-Punkt unter der Route `/mpz/studio/design` zusammengelegt (alte Pfade `/hub`, `/brand` per Redirect). Entscheidung 3.5 — siehe [`ROADMAP.md`](./ROADMAP.md) (Abschnitt „Pre-Mortem-Härtung“).
+
+**Dialog-Audio** gehört **nicht** in die Sidebar — nur im Tab Dialog pro Segment-Zeile (`15-dialog-segment-zeilenmodell.md`).
 
 **Cleanup-Aufgabe:** Ist-Navigation (9 flache Punkte, Dialog-Audio doppelt) an sinnvolle IA anpassen — Spec als Referenz, nicht als starres Korsett.
 
@@ -44,7 +46,7 @@ Kurzfassung aus [`dokumentation/spezifikationen/mpz-studio.md`](../../spezifikat
 | `typ` | Pflichtfelder | Upload/Auto |
 |-------|---------------|-------------|
 | `audio` | id, untertitel, quelle | → `media/{slug}/audio/` |
-| `video` | videoSource, quelle | MP4 oder YouTube |
+| `video` | quelle | videoSource optional (Default `upload`), MP4 oder YouTube |
 | `foto` | quelle | → `fotos/` |
 | `text` | quelle | → `texte/` |
 | `link` | quelle (HTTPS), openIn | URL |
@@ -59,7 +61,8 @@ Zusatz v2.1: Datei ersetzen, Thumbnail/Poster-Upload.
 - **Medien-Hotspot:** mediumId, x/y (flat) oder yaw/pitch (360°)
 - **Dialog-Hotspot:** action dialog, mascot
 - **Flat-Kalibrierung:** `/mpz/calib/flat/{slug}`
-- **Sphere:** `?hotspot-calib=1` in Besucher-App
+- **Sphere-Kalibrierung (geplant):** `/mpz/calib/sphere/{slug}` — symmetrisch zu Flat; siehe [`16-sphere-calib-screen.md`](./16-sphere-calib-screen.md)
+- **Sphere (Ist):** `?hotspot-calib=1` in Besucher-App — wird durch Studio-Screen ersetzt
 
 ---
 

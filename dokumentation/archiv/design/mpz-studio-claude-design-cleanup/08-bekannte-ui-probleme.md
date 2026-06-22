@@ -21,18 +21,19 @@ Dashboard | Stationen | Medien hochladen | Dialog-Audio | Coach | Embeds | Hub |
 
 ---
 
-## 2. Dialog-Audio doppelt
+## 2. Dialog-Audio fälschlich global und ausgelagert
 
-**Problem:** Gleiche Funktion an zwei Stellen:
+**Problem:** Dialog-Audio ist **kein globaler Inhalt**, sondern 1:1 an Dialog-Segmente gekoppelt (je Segment: Sprechertext + WAV). Trotzdem gibt es drei getrennte UI-Einstiege:
 
-| Ort | Route / UI |
-|-----|------------|
-| Sidebar | `/mpz/studio/dialog-audio` (global) |
-| Station Detail | Tab `?tab=dialog-audio` (nur Dialog-Stationen) |
+| Ort | Route / UI | Problem |
+|-----|------------|---------|
+| Sidebar | `/mpz/studio/dialog-audio` | suggeriert globalen Inhalt |
+| Station Detail | Tab `?tab=dialog-audio` | trennt Audio vom Segment |
+| Tab Dialog | Segment-Tabelle | nur Badge, kein Upload/Play in der Zeile |
 
-Nutzer wissen nicht, welcher Einstieg „richtig“ ist.
+**Entscheidung (2026-06-22):** Alles in **einer Segment-Zeile** — Sprechertext, Audio hochladen, abspielen, löschen. Details: [`15-dialog-segment-zeilenmodell.md`](./15-dialog-segment-zeilenmodell.md).
 
-**Design-Aufgabe:** Ein primärer Ort + optional Kontext-Link (z. B. von Dialog-Tab aus).
+**Design-Aufgabe:** Segment-Tabelle im Tab Dialog erweitern; globalen Nav-Punkt und Tab `dialog-audio` streichen.
 
 ---
 
@@ -46,6 +47,8 @@ Nutzer wissen nicht, welcher Einstieg „richtig“ ist.
 
 Drei Wege, ein Flow — uneinheitlich in der Navigation.
 
+**Entscheidung (2026-06-22):** Nur **Modal** aus Tab Medien; `/mpz/studio/ingest` + Sidebar-Eintrag „Medien hochladen“ entfallen (Redirect → Stationen). Siehe [`ROADMAP.md`](./ROADMAP.md) 3.2.
+
 ---
 
 ## 4. Brand vs. Hub — aufgeteilte Design-Konfiguration
@@ -57,6 +60,8 @@ Drei Wege, ein Flow — uneinheitlich in der Navigation.
 
 Schwer zu finden, was wo gehört.
 
+**Entscheidung (2026-06-22):** Zusammenlegen zu **einer** Route `/mpz/studio/design` (Tabs Hub + Brand); Redirects für `/hub` + `/brand`. **Technik-Hinweis (Pre-Mortem 1a #4):** Die Sidebar setzt ihren Aktiv-Zustand über `pathname.startsWith`, Brand/Hub sind getrennte `GLOBAL_ITEMS` — beim Mergen müssen Route, Aktiv-State **und** Redirects zusammen geändert werden, sonst brechen Navigation-State und Alt-Links. Details: [`ROADMAP.md`](./ROADMAP.md).
+
 ---
 
 ## 5. Veralteter Sidebar-Block „v1 / v2“
@@ -65,15 +70,25 @@ Schwer zu finden, was wo gehört.
 
 ---
 
-## 6. Station Detail — überladene Tabs
+## 6. Station Detail — Dialog-Tab versteckt
 
-**Problem:** Bis zu 5 Tabs (Stammdaten, Medien, Hotspots, Dialog, Dialog-Audio). Tab **Dialog** enthält viele Subformulare (Segmente, Gruppen, Bubble) ohne eigene Unter-Navigation.
+**Problem:** Tab **Dialog** erscheint nur, wenn `dialog` in `stations.json` existiert (`hidden: !hasDialog`). Neue Dialoge lassen sich so nicht von der Station aus starten.
 
-**Besonders schwer:** Dialog-Editor für `daz` / `pc-raum`.
+**Entscheidung (2026-06-22):** Tab **Dialog bei allen 12 Stationen**; Empty-State mit **„Dialog hinzufügen“**. Details: [`15-dialog-segment-zeilenmodell.md`](./15-dialog-segment-zeilenmodell.md).
+
+**Technik-Hinweis (Pre-Mortem 1a #1 / 1b #3 — verifiziert):** Das ist ein **Feature, kein Refactor** — es existiert **kein** Endpoint zum Anlegen eines Dialog-Blocks; `patchDialogMeta` wirft `NO_DIALOG`, solange `segmente` leer ist. Nötig: neuer `POST /api/mpz/stations/[slug]/dialog`. Siehe [`ROADMAP.md`](./ROADMAP.md) Phase 4.3.
 
 ---
 
-## 7. Vorschau nicht als Tab
+## 7. Station Detail — überladene Tabs (ehem. 6)
+
+**Problem:** Bis zu 4 Tabs; Tab **Dialog** enthält viele Subformulare (Segmente, Gruppen, Bubble) ohne eigene Unter-Navigation. (Tab `dialog-audio` entfällt.)
+
+**Besonders schwer:** Dialog-Editor für Stationen mit vielen Segmenten (`daz`, `pc-raum`).
+
+---
+
+## 8. Vorschau nicht als Tab (ehem. 7)
 
 **Problem:** Spec listet „Vorschau“ unter Station Detail. Implementierung: nur externer Link `↗ /raum/{slug}` im Header.
 
@@ -81,7 +96,7 @@ Kein Fehler per se — aber uneinheitlich zur Spec und leicht zu übersehen.
 
 ---
 
-## 8. Save & Validate — global, Kontext unklar
+## 9. Save & Validate (ehem. 8)
 
 **Problem:** Ein Button in der Top-Bar für alle Bereiche. Nutzer unsicher, ob Änderungen in Coach/Deploy/Station bereits „gespeichert“ sind oder erst nach Klick.
 
@@ -89,7 +104,7 @@ Kein Fehler per se — aber uneinheitlich zur Spec und leicht zu übersehen.
 
 ---
 
-## 9. Uneinheitliche Formular-Muster
+## 10. Uneinheitliche Formular-Muster (ehem. 9)
 
 **Problem:** Mix aus Tabellen + Inline-Formularen + Modals + separaten Kalibrier-Seiten. Kein durchgängiges Muster für:
 
@@ -99,9 +114,21 @@ Kein Fehler per se — aber uneinheitlich zur Spec und leicht zu übersehen.
 
 ---
 
-## 10. Mobile Sidebar
+## 11. Mobile Sidebar (ehem. 10)
 
 **Problem:** Horizontal scrollbare Nav auf schmalen Viewports — 9 Items schwer scanbar.
+
+---
+
+## 12. Sphere-Kalibrierung außerhalb des Studio-Chrome
+
+**Problem:** Flat-Hotspots nutzen einen dedizierten MPZ-Vollbild-Screen (`/mpz/calib/flat/{slug}`). 360°-Hotspots laufen über die **Besucher-Raumseite** mit Query-Parameter `?hotspot-calib=1` und schwebendem Bottom-Panel — inkonsistent, verwirrend, kein gleiches Layout wie Flat.
+
+**Entscheidung (2026-06-22, Option A):** Eigener MPZ-Screen **`/mpz/calib/sphere/{slug}`** — symmetrisch zu Flat (Top-Bar, Tabs Hotspots/Startblick, Panorama links, Seitenpanel rechts). Details: [`16-sphere-calib-screen.md`](./16-sphere-calib-screen.md).
+
+**Design-Aufgabe:** S14 mockuppen wie S13; Hotspots-Tab verlinkt auf neuen Screen statt Besucher-App.
+
+**Technik-Hinweis (Pre-Mortem 1a #3 — verifiziert):** In `station-hotspots-table.tsx` öffnen 360°-Links heute hartcodiert `target="_blank"`/`rel="noopener noreferrer"` (Z. 134-135, 210-211, Label „↗ Sphere-App“). Bei der Umstellung müssen `_blank`/`rel` entfernt, das Label auf die interne Route gesetzt und der statische `?hotspot-calib=1`-Info-Text gelöscht werden — sonst öffnet der neue Screen weiter einen externen Tab.
 
 ---
 
@@ -112,14 +139,14 @@ Kein Fehler per se — aber uneinheitlich zur Spec und leicht zu übersehen.
 - Plan-A-Banner als Fallback-Hinweis
 - Stationen-Grid mit Ampel und Hub-Nr
 - Flat-Kalibrierung als Vollbild-Seite
+- Sphere-Kalibrierung (geplant): gleiches Muster wie Flat — [`16-sphere-calib-screen.md`](./16-sphere-calib-screen.md)
 - Save & Validate mit Rollback-Feedback (rot/grün Panel)
 
 ---
 
-## Offene Fragen für Claude Design (max. 3)
+## Offene Fragen für Claude Design (max. 2)
 
-1. Dialog-Audio: globaler Hub oder nur pro Station?
-2. Medien-Upload: immer Modal oder eigene Seite bei komplexen Flows (link/embed)?
-3. Dialog-Editor: Sub-Tabs, Accordion oder Stepper?
-
-Diese Fragen explizit im Konzept beantworten — nicht offen lassen.
+1. ~~Dialog-Audio: globaler Hub oder nur pro Station?~~ → **entschieden:** nur im Tab Dialog, Segment-Zeile ([`15-dialog-segment-zeilenmodell.md`](./15-dialog-segment-zeilenmodell.md))
+2. ~~Sphere-Kalibrierung: Besucher-App oder Studio-Screen?~~ → **entschieden:** Option A, `/mpz/calib/sphere/{slug}` ([`16-sphere-calib-screen.md`](./16-sphere-calib-screen.md))
+3. ~~Medien-Upload: immer Modal oder eigene Seite bei komplexen Flows (link/embed)?~~ → **entschieden:** nur Modal aus Tab Medien; `/ingest` + Sidebar-Eintrag entfallen ([`ROADMAP.md`](./ROADMAP.md) 3.2)
+4. ~~Dialog-Editor: Sub-Tabs für Gruppen/Bubble?~~ → **entschieden:** Gruppen/Bubble als einklappbare Bereiche **unter** der Segment-Tabelle, kein Sub-Tab ([`ROADMAP.md`](./ROADMAP.md) 3.3)

@@ -79,3 +79,10 @@ Der Fortschrittsbalken in GitHub ergibt sich automatisch aus den geschlossenen I
 
 **Fällig:** 31.07.2026 · **Status:** abgeschlossen (2026-06-20) · **GitHub-Milestone:** [#11](https://github.com/flxln/schulnavigator/milestone/11)
 **Beschreibung:** Layout pro Coach-Message (Figur + Sprechblase, Blase relativ zur Figur) und optionales Audio mit Autoplay. Epic [#191](https://github.com/flxln/schulnavigator/issues/191) geschlossen; Unterissues #192–#193 erledigt — [epic-coach-erweiterungen.md](./archiv/epics/epic-coach-erweiterungen.md). Gemerged nach `main` ([PR #194](https://github.com/flxln/schulnavigator/pull/194), 2026-06-20).
+
+---
+
+## MPZ Studio UI-Cleanup — IA & Navigation (ADR-022)
+
+**Fällig:** 31.07.2026 · **Status:** offen (2026-06-22) · **GitHub-Milestone:** [#12](https://github.com/flxln/schulnavigator/milestone/12)
+**Beschreibung:** Refactor der Studio-Oberfläche bei voller v2.1-Funktionsabdeckung: gruppierte Sidebar, Redundanzen entfernen, Dialog-Lifecycle (Create-API), Sphere-Kalibrierung ins MPZ-Tool, Formular-Patterns, Mobile. Epic [#195](https://github.com/flxln/schulnavigator/issues/195), Unterissues #196–#204 — [epic-mpz-studio-ui-cleanup.md](./epic-mpz-studio-ui-cleanup.md). Roadmap: [ROADMAP.md](../archiv/design/mpz-studio-claude-design-cleanup/ROADMAP.md). **Nicht:** v3 Polish, Directus.
