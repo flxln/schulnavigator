@@ -248,3 +248,5 @@ Jeder Screen S1–S21 mindestens:
 - **Filled** — realistische Mock-Daten
 - **Error** — Validierungs- oder Upload-Fehler
 - **Loading** — wo asynchron (Save, Upload, validate-all)
+
+Einzelprompts pro Screen/Zustand: [`18-mockup-prompts.md`](./18-mockup-prompts.md)

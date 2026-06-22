@@ -104,16 +104,18 @@ Farben/Typo/Spacing **ausschließlich** aus 05-DESIGN-SYSTEM.md (GS39-Tokens). K
 ## Cleanup-Pflicht (03-SCREENS-UND-PROBLEME.md)
 
 1. 9-Punkte-Nav → gruppierte IA
-2. Dialog-Audio doppelt → ein Modell
+2. Dialog-Audio: **Segment-Zeilenmodell** in 03 — kein globaler Nav, Text+Audio pro Zeile (Upload/Play/Löschen)
 3. Medien-Upload → einheitlicher Einstieg
 4. Brand vs. Hub → sinnvolle Bündelung
 5. Dialog-Editor entlasten
 6. Save & Validate — Dirty-State klarer
 7. Mobile Sidebar scanbar
 
+8. Sphere-Kalibrierung: S14 wie S13 — siehe Abschnitt in 03
+
 ## Screens v2.1 (Empty, Filled, Error, Loading)
 
-Shell S1–S4 · Stationen S5–S16 · Global S17–S22 (Details in 03)
+**Stationen:** S5–S15 inkl. Dialog-Segment-Zeile · **Global:** S17–S21 · **Kein** Dialog-Audio-Sidebar
 
 ## Kern-User-Stories + Fehlerpfade
 
@@ -166,12 +168,24 @@ write(
     ),
 )
 
-// 03 — screens + problems
+// 03 — screens + problems + dialog zeilenmodell
 write(
   '03-SCREENS-UND-PROBLEME.md',
   `# MPZ Studio v2.1 — Screens, User-Stories und Ist-Probleme
 
 ${read('02-screens-v2.1-und-user-stories.md').replace(/^# .+\n\n/, '')}
+
+---
+
+# Dialog — Segment-Zeilenmodell (entschieden)
+
+${read('15-dialog-segment-zeilenmodell.md').replace(/^# .+\n\n/, '')}
+
+---
+
+# Sphere-Kalibrierung — eigener MPZ-Screen (Option A, geplant)
+
+${read('16-sphere-calib-screen.md').replace(/^# .+\n\n/, '')}
 
 ---
 

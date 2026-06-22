@@ -90,6 +90,8 @@ WCAG 2.1 AA wo praktikabel: Touch-Targets ≥ 44 px, Fehler mit Text + Farbe, lo
 
 ## Optional: Kurz-Prompt (Folge-Iteration)
 
+Einzelprompts für jeden Screen und Zustand: [`18-mockup-prompts.md`](./18-mockup-prompts.md) (47 Pflicht + 1 optional).
+
 ```
 Überarbeite nur [z. B. S15 Dialog-Editor / neue Sidebar-IA] aus MPZ Studio Cleanup v2.1.
 

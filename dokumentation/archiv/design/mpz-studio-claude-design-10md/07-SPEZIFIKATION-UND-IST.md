@@ -28,12 +28,14 @@ Kurzfassung aus [`dokumentation/spezifikationen/mpz-studio.md`](../../spezifikat
 │       ├── Dialog
 │       └── Vorschau
 ├── Coach
-├── Dialog-Audio
 ├── Embeds & Links
-├── Brand & Design
-├── Hub-Karte
+├── Design & Hub          ← Brand + Hub-Karte zusammengelegt (Route /mpz/studio/design)
 └── Deploy
 ```
+
+**Verbindlich:** [`NAVIGATION-SOLL.md`](./NAVIGATION-SOLL.md) (#196)
+
+**Dialog-Audio** gehört **nicht** in die Sidebar — nur im Tab Dialog pro Segment-Zeile (`15-dialog-segment-zeilenmodell.md`).
 
 **Cleanup-Aufgabe:** Ist-Navigation (9 flache Punkte, Dialog-Audio doppelt) an sinnvolle IA anpassen — Spec als Referenz, nicht als starres Korsett.
 
@@ -44,7 +46,7 @@ Kurzfassung aus [`dokumentation/spezifikationen/mpz-studio.md`](../../spezifikat
 | `typ` | Pflichtfelder | Upload/Auto |
 |-------|---------------|-------------|
 | `audio` | id, untertitel, quelle | → `media/{slug}/audio/` |
-| `video` | videoSource, quelle | MP4 oder YouTube |
+| `video` | quelle | videoSource optional (Default `upload`), MP4 oder YouTube |
 | `foto` | quelle | → `fotos/` |
 | `text` | quelle | → `texte/` |
 | `link` | quelle (HTTPS), openIn | URL |
@@ -59,7 +61,8 @@ Zusatz v2.1: Datei ersetzen, Thumbnail/Poster-Upload.
 - **Medien-Hotspot:** mediumId, x/y (flat) oder yaw/pitch (360°)
 - **Dialog-Hotspot:** action dialog, mascot
 - **Flat-Kalibrierung:** `/mpz/calib/flat/{slug}`
-- **Sphere:** `?hotspot-calib=1` in Besucher-App
+- **Sphere-Kalibrierung (geplant):** `/mpz/calib/sphere/{slug}` — symmetrisch zu Flat; siehe [`16-sphere-calib-screen.md`](./16-sphere-calib-screen.md)
+- **Sphere (Ist):** `?hotspot-calib=1` in Besucher-App — wird durch Studio-Screen ersetzt
 
 ---
 
@@ -152,12 +155,15 @@ Dient Claude Design als Referenz, was heute existiert — **nicht** als Vorgabe 
 | `flat-calib-shell.tsx` | S13 |
 | `flat-hotspot-calib.tsx` | S13 |
 | `flat-startpan-calib.tsx` | S13 (Startblick) |
+| `sphere-hotspot-calib-overlay.tsx` | S14 (Ist: Overlay auf `/raum`) |
+| `sphere-calib-shell.tsx` | **S14 (geplant)** — analog `flat-calib-shell` |
+| `sphere-hotspot-calib.tsx` | **S14 (geplant)** — eingebettetes Panel |
 | `station-dialog-panel.tsx` | S15 |
 | `station-dialog-segment-form.tsx` | S15 |
 | `station-dialog-gruppe-form.tsx` | S15 |
 | `station-dialog-bubble-form.tsx` | S15 |
-| `dialog-audio-panel.tsx` | S16 |
-| `dialog-audio-status-badges.tsx` | S16 |
+| `dialog-audio-panel.tsx` | ~~S16/S17~~ → in S15 Segment-Zeile integrieren |
+| `dialog-audio-status-badges.tsx` | S15 (Segment-Zeile) |
 
 ---
 
@@ -165,14 +171,13 @@ Dient Claude Design als Referenz, was heute existiert — **nicht** als Vorgabe 
 
 | Komponente | Screen |
 |------------|--------|
-| `dialog-audio-panel.tsx` | S17 (wiederverwendet) |
-| `coach-panel.tsx` | S18 |
-| `coach-message-form.tsx` | S18 |
-| `coach-audio-status-badges.tsx` | S18 |
-| `embeds-panel.tsx` | S19 |
-| `hub-panel.tsx` | S20 |
-| `brand-panel.tsx` | S21 |
-| `deploy-tab.tsx` | S22 |
+| `coach-panel.tsx` | S17 |
+| `coach-message-form.tsx` | S17 |
+| `coach-audio-status-badges.tsx` | S17 |
+| `embeds-panel.tsx` | S18 |
+| `hub-panel.tsx` | S19 |
+| `brand-panel.tsx` | S20 |
+| `deploy-tab.tsx` | S21 |
 
 ---
 
@@ -184,13 +189,14 @@ Dient Claude Design als Referenz, was heute existiert — **nicht** als Vorgabe 
 | `/mpz/studio/stationen` | `app/app/mpz/studio/stationen/page.tsx` |
 | `/mpz/studio/stationen/[slug]` | `app/app/mpz/studio/stationen/[slug]/page.tsx` |
 | `/mpz/studio/ingest` | `app/app/mpz/studio/ingest/page.tsx` |
-| `/mpz/studio/dialog-audio` | `app/app/mpz/studio/dialog-audio/page.tsx` |
+| `/mpz/studio/dialog-audio` | ~~global~~ → **entfernen** im Cleanup |
 | `/mpz/studio/coach` | `app/app/mpz/studio/coach/page.tsx` |
 | `/mpz/studio/embeds` | `app/app/mpz/studio/embeds/page.tsx` |
 | `/mpz/studio/hub` | `app/app/mpz/studio/hub/page.tsx` |
 | `/mpz/studio/brand` | `app/app/mpz/studio/brand/page.tsx` |
 | `/mpz/studio/deploy` | `app/app/mpz/studio/deploy/page.tsx` |
 | `/mpz/calib/flat/[slug]` | `app/app/mpz/calib/flat/[slug]/page.tsx` |
+| `/mpz/calib/sphere/[slug]` | **geplant** — siehe [`16-sphere-calib-screen.md`](./16-sphere-calib-screen.md) |
 | Layout | `app/app/mpz/studio/layout.tsx` |
 
 ---
