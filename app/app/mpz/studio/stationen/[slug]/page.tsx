@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import { Suspense } from 'react'
 import { StationDetailShell } from '@/components/mpz-studio/station-detail-shell'
 import { createMpzContentIo, MpzContentIoError } from '@/lib/mpz-content-io'
@@ -8,12 +8,23 @@ import type { Station } from '@/lib/types'
 
 type PageProps = {
   params: Promise<{ slug: string }>
+  searchParams: Promise<{ tab?: string }>
 }
 
-export default async function MpzStationDetailPage({ params }: PageProps) {
+export default async function MpzStationDetailPage({
+  params,
+  searchParams,
+}: PageProps) {
   const { slug } = await params
   if (!isHubSlug(slug)) {
     notFound()
+  }
+
+  const { tab } = await searchParams
+  if (tab === 'dialog-audio') {
+    redirect(
+      `/mpz/studio/stationen/${encodeURIComponent(slug)}?tab=dialog`,
+    )
   }
 
   const hubNr = getHubSlugMap()[slug]!.nr

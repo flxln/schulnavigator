@@ -78,4 +78,14 @@ describe('next.config redirects', () => {
       permanent: true,
     })
   })
+
+  it('leitet /mpz/studio/dialog-audio permanent auf /mpz/studio/stationen um (REDIR-02, NAV-03)', async () => {
+    const redirects = await nextConfig.redirects!()
+    const dialogAudio = redirects.find((r) => r.source === '/mpz/studio/dialog-audio')
+    expect(dialogAudio).toEqual({
+      source: '/mpz/studio/dialog-audio',
+      destination: '/mpz/studio/stationen',
+      permanent: true,
+    })
+  })
 })

@@ -77,8 +77,7 @@ Internes Dev-only-Ingest-Tool — **nie** auf Coolify, in Production 404.
 
 **Speichern & Validieren (#150, #155).** Nach Uploads/Kalibrierung zeigt das Dashboard den Status (debounced, ≥ 800 ms). Button oben rechts **Speichern & Validieren** normalisiert die Hub-Reihenfolge in `stations.json` und prüft Struktur + Dateireferenzen. Schreiben läuft über Temp-Datei → Validierung → `rename` (kein invalider Zustand bei Abbruch). Nach Medien-/Dialog-Upload liefert die API `validation` + `mtime` direkt; bei Fehlern: rotes Panel, ggf. Rollback aus `.bak`.
 
-**Medien hochladen (Issue #147).** Im Studio „Medien hochladen (Test)“ oder direkt
-[/mpz/studio/ingest](https://localhost:3000/mpz/studio/ingest): Station + Typ + Datei wählen → Upload. Die Datei landet unter `public/media/{slug}/{ordner}/` und der `medien[]`-Eintrag wird in `data/stations.json` ergänzt (gleicher Pfad wie die CLI). Regeln: Magic-Byte- und Größenprüfung je Typ (audio 25 MB, video 150 MB, foto 8 MB, text 512 KB); HEIC wird abgelehnt — bitte als JPG exportieren. Bei Dateinamen-/`id`-Kollision benennt die API automatisch um (`-2`, `-3`, …).
+**Medien hochladen (Issue #147).** Im Studio: Station öffnen → Tab **Medien** → **Medien hinzufügen** (Modal). Legacy-Route [`/mpz/studio/ingest`](https://localhost:3000/mpz/studio/ingest) leitet auf die Stationsliste um; mit `?slug=werken` auf [`/mpz/studio/stationen/werken?tab=medien`](https://localhost:3000/mpz/studio/stationen/werken?tab=medien). Die Datei landet unter `public/media/{slug}/{ordner}/` und der `medien[]`-Eintrag wird in `data/stations.json` ergänzt (gleicher Pfad wie die CLI). Regeln: Magic-Byte- und Größenprüfung je Typ (audio 25 MB, video 150 MB, foto 8 MB, text 512 KB); HEIC wird abgelehnt — bitte als JPG exportieren. Bei Dateinamen-/`id`-Kollision benennt die API automatisch um (`-2`, `-3`, …).
 
 curl-Beispiel (multipart, Cookie- oder Header-Auth):
 
@@ -89,8 +88,7 @@ curl -X POST http://localhost:3000/api/mpz/media/ingest \
   -F "file=@./foto.jpg"
 ```
 
-**Dialog-Audio (Issue #148).** Im Studio „Dialog-Audio (Test)“ oder
-[/mpz/studio/dialog-audio](https://localhost:3000/mpz/studio/dialog-audio): Station `daz` oder `pc-raum` wählen → Segment-Tabelle zeigt fehlende Clips → WAV hochladen. Datei landet unter `content/dialog-audio/{slug}/NN-rolle.wav`; `dialog.segmente[i].quelle` wird auf `/api/dialog/{slug}/…` gesetzt. Nur echte WAV (max. 15 MB); Reihenfolge der `dialog.segmente[]` ist immutabel (siehe [content-einpflegen.md](./content-einpflegen.md)).
+**Dialog-Audio (Issue #148).** Studio-UI für WAV-Upload folgt mit Issue #200. Bis dahin per curl (oder CLI `content:ingest-dialog`). Datei landet unter `content/dialog-audio/{slug}/NN-rolle.wav`; `dialog.segmente[i].quelle` wird auf `/api/dialog/{slug}/…` gesetzt. Nur echte WAV (max. 15 MB); Reihenfolge der `dialog.segmente[]` ist immutabel (siehe [content-einpflegen.md](./content-einpflegen.md)). Legacy-Route `/mpz/studio/dialog-audio` leitet auf die Stationsliste um.
 
 ```bash
 curl -X POST "http://localhost:3000/api/mpz/dialog-audio/ingest" \
@@ -126,10 +124,9 @@ curl -X POST http://localhost:3000/api/mpz/view/flat \
 | Tab (`?tab=`) | Kurztest |
 |---------------|----------|
 | `stammdaten` (Default) | `titel`/`beschreibung` ändern → Speichern; Raumbild Flat/360° hochladen (#173) → Vorschau aktualisiert |
-| `medien` | **Bearbeiten** (PATCH Metadaten, #171); **Datei ersetzen** (#188); **Thumbnail/Poster hochladen** (#189); **link**/**embed** per Modal anlegen (#172); Ingest-Link; Entfernen mit Bestätigung |
+| `medien` | **Bearbeiten** (PATCH Metadaten, #171); **Datei ersetzen** (#188); **Thumbnail/Poster hochladen** (#189); **link**/**embed** per Modal anlegen (#172); **Medien hinzufügen** (Modal); Entfernen mit Bestätigung |
 | `hotspots` | Medien-Hotspot anlegen/bearbeiten/entfernen; Dialog-Hotspot mit Maskottchen (#176); Kalibrier-Link |
-| `dialog` | Nur `daz`/`pc-raum`: Segment-Text ändern, Gruppe anlegen, `bubble`-Felder (#175) |
-| `dialog-audio` | Segment-Upload wie globale Dialog-Audio-Seite (#163) |
+| `dialog` | Nur `daz`/`pc-raum`: Segment-Text ändern, Gruppe anlegen, `bubble`-Felder (#175); Dialog-WAV-Upload im Studio folgt #200 |
 
 **MPZ Studio v2.1 — Medien-Datei ersetzen (#187–#189).** Nach `/mpz/unlock`: [`/mpz/studio/stationen/klassenzimmer?tab=medien`](https://localhost:3000/mpz/studio/stationen/klassenzimmer?tab=medien) (oder andere Station mit audio/foto/video-Medien).
 

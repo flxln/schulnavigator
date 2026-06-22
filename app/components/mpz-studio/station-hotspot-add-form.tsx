@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState, useTransition } from 'react'
-import { useMediaIngest } from '@/components/mpz-studio/media-ingest-modal-context'
 import {
   markMpzStudioDirty,
   useStudioValidation,
@@ -66,7 +65,6 @@ export function StationHotspotAddForm({
   uploadedIconPath,
 }: StationHotspotAddFormProps) {
   const router = useRouter()
-  const { openMediaIngest } = useMediaIngest()
   const { validateNow } = useStudioValidation()
   const viewer = station.viewer ?? 'flat'
   const isSphere = viewer === 'equirectangular'
@@ -138,13 +136,12 @@ export function StationHotspotAddForm({
           Medien oder Maskottchen mit Positionen im Raum.
         </p>
         <div className="flex flex-wrap gap-3">
-          <button
-            type="button"
-            onClick={() => openMediaIngest({ slug })}
+          <Link
+            href={`/mpz/studio/stationen/${encodeURIComponent(slug)}?tab=medien`}
             className="inline-block rounded-gs39-sm bg-accent px-4 py-2 font-semibold text-white"
           >
             Medium hinzufügen
-          </button>
+          </Link>
           <Link
             href={`/mpz/studio/stationen/${encodeURIComponent(slug)}?tab=dialog`}
             className="inline-block rounded-gs39-sm border border-border-1 px-4 py-2 font-semibold text-fg-2"

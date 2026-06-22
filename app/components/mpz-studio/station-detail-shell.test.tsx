@@ -109,7 +109,7 @@ describe('StationDetailShell', () => {
     expect(screen.queryByRole('link', { name: 'Dialog-Audio' })).toBeNull()
   })
 
-  it('rendert Dialog- und Dialog-Audio-Tabs für daz wenn hasDialog', () => {
+  it('rendert nur Dialog-Tab für daz wenn hasDialog', () => {
     mocks.searchParams = new URLSearchParams()
     setReport('daz', true)
     const station = getStationBySlug('daz')!
@@ -117,10 +117,10 @@ describe('StationDetailShell', () => {
     render(<StationDetailShell station={station} slug="daz" hubNr={3} globalSuffixes={GLOBAL_SUFFIXES} />)
 
     expect(screen.getByRole('link', { name: 'Dialog' })).toBeTruthy()
-    expect(screen.getByRole('link', { name: 'Dialog-Audio' })).toBeTruthy()
+    expect(screen.queryByRole('link', { name: 'Dialog-Audio' })).toBeNull()
   })
 
-  it('Dialog-Audio-Tab zeigt Segment-Tabelle für daz', async () => {
+  it('mappt tab=dialog-audio clientseitig auf Dialog-Panel', async () => {
     mocks.searchParams = new URLSearchParams('tab=dialog-audio')
     setReport('daz', true)
     const station = getStationBySlug('daz')!
@@ -131,19 +131,7 @@ describe('StationDetailShell', () => {
         ok: true,
         json: async () => ({
           slug: 'daz',
-          segments: [
-            {
-              segmentIndex: 0,
-              segmentId: 'd1',
-              rolle: 'frieda',
-              textPreview: 'Hallo, willkommen',
-              expectedClip: '01-frieda.wav',
-              quelle: '/api/dialog/daz/01-frieda.wav',
-              fileExists: true,
-              quelleMatchesConvention: true,
-              state: 'ok',
-            },
-          ],
+          segments: [],
           orphans: [],
           missingCount: 0,
           driftCount: 0,
@@ -153,10 +141,8 @@ describe('StationDetailShell', () => {
 
     render(<StationDetailShell station={station} slug="daz" hubNr={3} globalSuffixes={GLOBAL_SUFFIXES} />)
 
-    expect(screen.queryByText('Dialog-Audio-Tab folgt in #163.')).toBeNull()
-    expect(await screen.findByText('Clip')).toBeTruthy()
-    expect(screen.getByText('Status')).toBeTruthy()
-    expect(screen.getByText('01-frieda.wav')).toBeTruthy()
+    expect(screen.queryByRole('link', { name: 'Dialog-Audio' })).toBeNull()
+    expect(await screen.findByText('Figuren')).toBeTruthy()
   })
 
   it('Tab-Links enthalten korrektes ?tab=', () => {

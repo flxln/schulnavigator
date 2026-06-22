@@ -39,6 +39,11 @@ const nextConfig: NextConfig = {
         destination: '/mpz/studio/design?tab=brand',
         permanent: true,
       },
+      {
+        source: '/mpz/studio/dialog-audio',
+        destination: '/mpz/studio/stationen',
+        permanent: true,
+      },
     ]
   },
   async headers() {

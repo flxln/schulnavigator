@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState, useTransition } from 'react'
 import { DialogAudioStateBadge } from '@/components/mpz-studio/dialog-audio-status-badges'
@@ -171,7 +170,6 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
   }
 
   const gruppen = dialog.gruppen ?? []
-  const baseHref = `/mpz/studio/stationen/${encodeURIComponent(slug)}`
 
   return (
     <div className="flex flex-col gap-8">
@@ -193,12 +191,8 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
               `${audioStatus.missingCount} fehlende WAV-Clip(s). `}
             {audioStatus.driftCount > 0 &&
               `${audioStatus.driftCount} Clip(s) mit Drift. `}
-            <Link
-              href={`${baseHref}?tab=dialog-audio`}
-              className="font-semibold text-accent underline-offset-2 hover:underline"
-            >
-              → Dialog-Audio-Tab
-            </Link>
+            Dialog-Audio-Upload folgt mit #200. Bis dahin via CLI/curl (siehe
+            Entwickler-Doku).
           </p>
         </div>
       )}

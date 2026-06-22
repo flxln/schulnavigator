@@ -5,12 +5,11 @@ import { useSearchParams } from 'next/navigation'
 import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
 import { StationStammdatenForm } from '@/components/mpz-studio/station-stammdaten-form'
 import { StationHotspotsTable } from '@/components/mpz-studio/station-hotspots-table'
-import { DialogAudioPanel } from '@/components/mpz-studio/dialog-audio-panel'
 import { StationDialogPanel } from '@/components/mpz-studio/station-dialog-panel'
 import { StationMedienTable } from '@/components/mpz-studio/station-medien-table'
 import type { Station, ViewerMode } from '@/lib/types'
 
-const VALID_TABS = ['stammdaten', 'medien', 'hotspots', 'dialog', 'dialog-audio'] as const
+const VALID_TABS = ['stammdaten', 'medien', 'hotspots', 'dialog'] as const
 type DetailTab = (typeof VALID_TABS)[number]
 
 export type StationDetailShellProps = {
@@ -31,6 +30,7 @@ function healthDotClass(health: 'ok' | 'warn' | 'error'): string {
 }
 
 function resolveTab(raw: string | null): DetailTab {
+  if (raw === 'dialog-audio') return 'dialog'
   if (raw && VALID_TABS.includes(raw as DetailTab)) {
     return raw as DetailTab
   }
@@ -67,11 +67,6 @@ export function StationDetailShell({
       {
         id: 'dialog',
         label: 'Dialog',
-        hidden: !hasDialog,
-      },
-      {
-        id: 'dialog-audio',
-        label: 'Dialog-Audio',
         hidden: !hasDialog,
       },
     ]
@@ -173,12 +168,6 @@ export function StationDetailShell({
       {activeTab === 'dialog' && hasDialog && (
         <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5">
           <StationDialogPanel slug={slug} station={station} />
-        </section>
-      )}
-
-      {activeTab === 'dialog-audio' && hasDialog && (
-        <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5">
-          <DialogAudioPanel slug={slug} />
         </section>
       )}
     </div>

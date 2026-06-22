@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { useMediaIngest } from '@/components/mpz-studio/media-ingest-modal-context'
 import type { MpzValidationReport } from '@/lib/mpz-studio-overview'
 import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
 
@@ -14,7 +13,6 @@ function formatGermanDate(iso: string | null): string {
 }
 
 export function StudioDashboard() {
-  const { openMediaIngest } = useMediaIngest()
   const { report, loading, error, validateNow } = useStudioValidation()
 
   const problemStations =
@@ -93,19 +91,6 @@ export function StudioDashboard() {
           Werkzeuge
         </h2>
         <div className="flex flex-col gap-2 text-sm">
-          <button
-            type="button"
-            onClick={() => openMediaIngest()}
-            className="text-left font-semibold text-accent underline-offset-2 hover:underline"
-          >
-            Medien hochladen
-          </button>
-          <Link
-            href="/mpz/studio/dialog-audio"
-            className="font-semibold text-accent underline-offset-2 hover:underline"
-          >
-            Dialog-Audio
-          </Link>
           <Link
             href="/mpz/studio/coach"
             className="font-semibold text-accent underline-offset-2 hover:underline"

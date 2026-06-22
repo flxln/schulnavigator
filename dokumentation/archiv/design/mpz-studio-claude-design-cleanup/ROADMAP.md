@@ -46,7 +46,7 @@ flowchart LR
 | **1 — Design-Briefing** | ✅ abgeschlossen | `00-cleanup-brief`, `08-bekannte-ui-probleme`, Screen-Inventar S1–S24 |
 | **2 — Claude Design** | ✅ abgeschlossen | Stitch-HTML [`mockups/`](./mockups/) (52 Screens, bekannt inkonsistent) |
 | **3 — Design-Freeze** | ✅ abgeschlossen | [`NAVIGATION-SOLL.md`](./NAVIGATION-SOLL.md) + [#196](https://github.com/flxln/schulnavigator/issues/196) |
-| **4 — Implementierung** | 🔄 begonnen | #197 Shell ✅; #198–#204 offen |
+| **4 — Implementierung** | 🔄 begonnen | #197 Shell ✅; #198 Redundanzen ✅; #199–#204 offen |
 | **5 — Abnahme** | ⏳ offen | Manuelle Tests, `npm run build`, Kurz-Doku |
 
 ---

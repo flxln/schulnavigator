@@ -37,20 +37,19 @@ Nur bei `NODE_ENV=development` erreichbar; in Production liefern `/mpz/*` und `/
 2. Dev-Server starten: `npm run dev`.
 3. Browser: [`/mpz/unlock`](http://localhost:3000/mpz/unlock) — Secret eingeben → Session-Cookie.
 4. [`/mpz/studio`](http://localhost:3000/mpz/studio) — Dashboard mit Validierungsstatus und Links zu allen 12 Stationen.
-5. **Station-Detail (v1 #158, v2 #171–#176, v2.1 #187–#189):** [`/mpz/studio/stationen`](http://localhost:3000/mpz/studio/stationen) → Kachel **Bearbeiten** oder direkt [`/mpz/studio/stationen/{slug}`](http://localhost:3000/mpz/studio/stationen/kunst) — Tabs **Stammdaten**, **Medien**, **Hotspots**, **Dialog**, **Dialog-Audio** (letztere nur Stationen mit `dialog`).
+5. **Station-Detail (v1 #158, v2 #171–#176, v2.1 #187–#189):** [`/mpz/studio/stationen`](http://localhost:3000/mpz/studio/stationen) → Kachel **Bearbeiten** oder direkt [`/mpz/studio/stationen/{slug}`](http://localhost:3000/mpz/studio/stationen/kunst) — Tabs **Stammdaten**, **Medien**, **Hotspots**, **Dialog** (letzterer nur Stationen mit `dialog`).
 6. **Querschnitt (v2 #174–#180):** Coach, Embeds & Links, Hub-Karte, Brand & Design, Deploy — jeweils eigene Navigationspunkte in der Studio-Shell.
 
 **Station-Detail (#159–#176)**
 
-Route: `/mpz/studio/stationen/[slug]?tab={stammdaten|medien|hotspots|dialog|dialog-audio}` (Default: `stammdaten`). Shell: [`StationDetailShell`](../app/components/mpz-studio/station-detail-shell.tsx).
+Route: `/mpz/studio/stationen/[slug]?tab={stammdaten|medien|hotspots|dialog}` (Default: `stammdaten`). Shell: [`StationDetailShell`](../app/components/mpz-studio/station-detail-shell.tsx). Medien-Upload nur über Tab **Medien** (Modal). Legacy-Routen `/mpz/studio/ingest` und `/mpz/studio/dialog-audio` leiten um (#198).
 
 | Tab | UI | Schreib-API |
 |-----|-----|-------------|
 | Stammdaten | `titel`, `beschreibung`, `viewer`; read-only: `slug`; Raumbild-Upload Flat/360° (#173) | `PATCH …/stammdaten`; `POST …/raumbild` |
-| Medien | Tabelle, Bearbeiten (PATCH #171), Datei ersetzen (#188), Thumbnail/Poster hochladen (#189), link/embed anlegen (#172), Ingest-Link, Entfernen (#161) | `PATCH`/`POST`/`DELETE` …/medien; `POST` …/file`, `…/thumbnail`, `…/poster` |
+| Medien | Tabelle, Bearbeiten (PATCH #171), Datei ersetzen (#188), Thumbnail/Poster hochladen (#189), link/embed anlegen (#172, Modal), Entfernen (#161) | `PATCH`/`POST`/`DELETE` …/medien; `POST` …/file`, `…/thumbnail`, `…/poster`; `POST /api/mpz/media/ingest` |
 | Hotspots | Tabelle, Anlegen/Bearbeiten/Entfernen inkl. Dialog-Hotspot (#176), Kalibrier-Links (#162, #165–#168) | `POST`/`PATCH`/`DELETE` …/hotspots |
-| Dialog | Figuren, Segmente, Gruppen, `bubble` (#175) | `PATCH`/`POST`/`DELETE` …/dialog/* |
-| Dialog-Audio | Segment-Tabelle + Upload (#163) | `POST /api/mpz/dialog-audio/ingest` |
+| Dialog | Figuren, Segmente, Gruppen, `bubble` (#175); Dialog-WAV-Upload im Studio folgt #200 — bis dahin CLI/curl | `PATCH`/`POST`/`DELETE` …/dialog/*; `POST /api/mpz/dialog-audio/ingest` |
 
 **Stammdaten-Flow:** Formular sendet partielles JSON (`titel`, `beschreibung`, `viewer`). Domain: [`patchStationStammdaten`](../app/lib/mpz-station-stammdaten.ts) in `withMpzWriteLock` → `writeStations({ strict: true, postValidate: true })`. Bei Erfolg: `markMpzStudioDirty()` → `validateNow()` → `router.refresh()`. `viewer`-Wechsel mit bestehenden Hotspots zeigt Warnung; blockierende Konstellationen werden serverseitig abgelehnt.
 

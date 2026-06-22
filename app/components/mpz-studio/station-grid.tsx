@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useMediaIngest } from '@/components/mpz-studio/media-ingest-modal-context'
 import { mpzStationCalibHref } from '@/lib/mpz-studio-calib'
 import type { MpzStationOverview, MpzValidationReport } from '@/lib/mpz-studio-overview'
 
@@ -17,7 +16,6 @@ function viewerLabel(viewer: MpzStationOverview['viewer']): string {
 }
 
 export function StationGrid() {
-  const { openMediaIngest } = useMediaIngest()
   const [report, setReport] = useState<MpzValidationReport | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -119,13 +117,12 @@ export function StationGrid() {
                         : 'Hotspot kalibrieren'}
                     </Link>
                   )}
-                  <button
-                    type="button"
-                    onClick={() => openMediaIngest({ slug: st.slug })}
+                  <Link
+                    href={`/mpz/studio/stationen/${encodeURIComponent(st.slug)}?tab=medien`}
                     className="text-fg-2 underline-offset-2 hover:text-accent hover:underline"
                   >
                     Medien hochladen
-                  </button>
+                  </Link>
                 </div>
               </article>
             )

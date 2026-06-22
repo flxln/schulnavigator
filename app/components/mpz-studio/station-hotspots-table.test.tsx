@@ -102,7 +102,10 @@ describe('StationHotspotsTable', () => {
 
     render(<StationHotspotsTable slug="kunst" station={station} />)
 
-    expect(screen.getByRole('button', { name: 'Medium hinzufügen' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Medium hinzufügen' })).toBeTruthy()
+    expect(
+      screen.getByRole('link', { name: 'Medium hinzufügen' }).getAttribute('href'),
+    ).toBe('/mpz/studio/stationen/kunst?tab=medien')
     expect(screen.queryByRole('button', { name: 'Hotspot anlegen' })).toBeNull()
 
     vi.unstubAllGlobals()

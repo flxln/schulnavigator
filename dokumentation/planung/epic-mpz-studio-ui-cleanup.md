@@ -26,7 +26,7 @@ Leitplanken unverändert (ADR-022): nur `NODE_ENV=development`, `assertMpzStudio
 | **Epic (Parent)** | `#195` | MPZ Studio UI-Cleanup — IA & Navigation (ADR-022) | `tech`, `design` | — |
 | Unterissue | `#196` | Design-Freeze: Soll-Navigation & Claude-Design-Abnahme | `design`, `documentation` | — — **erledigt** (2026-06-22) |
 | Unterissue | `#197` | Studio-Shell: gruppierte Sidebar + Design-&-Hub-Route | `tech`, `blocker` | #196 — **erledigt** (2026-06-22, Post-Mortem unten) |
-| Unterissue | `#198` | Redundanzen: Medien-Modal, `/ingest`, Dialog-Audio global | `tech` | #197 |
+| Unterissue | `#198` | Redundanzen: Medien-Modal, `/ingest`, Dialog-Audio global | `tech` | #197 — **erledigt** (2026-06-22, Post-Mortem unten) |
 | Unterissue | `#199` | Dialog-Lifecycle: Tab immer + Create-API | `tech`, `blocker` | #197 |
 | Unterissue | `#200` | Dialog-Editor: Segment-Audio-Zeile + einklappbare Sub-Bereiche | `tech` | #199, #198 |
 | Unterissue | `#201` | Sphere-Kalibrierung `/mpz/calib/sphere/[slug]` (S14) | `tech` | #197 |
@@ -59,7 +59,7 @@ Leitplanken unverändert (ADR-022): nur `NODE_ENV=development`, `assertMpzStudio
 |-------|--------|--------|
 | **2–3** | Claude Design + Design-Freeze IA ([`NAVIGATION-SOLL`](../archiv/design/mpz-studio-claude-design-cleanup/NAVIGATION-SOLL.md)) | #196 ✅ |
 | **4.1** | `studio-shell.tsx` — gruppierte Nav, Top-Bar, `/design` | #197 ✅ |
-| **4.2** | Redundanzen entfernen | Redundanzen |
+| **4.2** | Redundanzen entfernen | #198 ✅ |
 | **4.3** ⚠️ Feature | Dialog Gating + Empty-State + Create-API | Dialog-Lifecycle |
 | **4.4** | Dialog Sub-IA (Gruppen/Bubble unter Segment-Tabelle) | Dialog-Editor |
 | **4.5–4.6** | Formular-Patterns, Dirty-State | Patterns |
@@ -90,7 +90,7 @@ Details: [ROADMAP.md — Pre-Mortem-Härtung](../archiv/design/mpz-studio-claude
 
 - [x] Sidebar: 4 Gruppen, 6 Einträge (ohne Dialog-Audio, ohne globalen Medien-Upload) — **#197**
 - [x] `/mpz/studio/design` mit Tabs Hub + Brand; `/hub` und `/brand` redirecten — **#197**
-- [ ] `/mpz/studio/ingest` und `/mpz/studio/dialog-audio` redirecten oder entfallen
+- [x] `/mpz/studio/ingest` und `/mpz/studio/dialog-audio` redirecten oder entfallen — **#198**
 
 **Station Detail**
 
@@ -144,7 +144,7 @@ Details: [ROADMAP.md — Pre-Mortem-Härtung](../archiv/design/mpz-studio-claude
 - [x] Epic + Unterissues auf GitHub (#195–#204)
 - [x] Design-Freeze IA ([`NAVIGATION-SOLL.md`](../archiv/design/mpz-studio-claude-design-cleanup/NAVIGATION-SOLL.md)) — Mockups Stitch-HTML, bekannt inkonsistent ([#196](../reviews/post-mortem-196-2026-06-22.md))
 - [x] Shell + Design-Route (#197, Post-Mortem: [post-mortem-197-2026-06-22.md](../reviews/post-mortem-197-2026-06-22.md))
-- [ ] Redundanzen
+- [x] Redundanzen (#198, Post-Mortem: [post-mortem-198-2026-06-22.md](../reviews/post-mortem-198-2026-06-22.md))
 - [ ] Dialog-Lifecycle (Feature)
 - [ ] Dialog-Editor
 - [ ] Sphere-Kalibrierung

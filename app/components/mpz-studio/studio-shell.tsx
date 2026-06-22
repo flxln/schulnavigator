@@ -57,10 +57,6 @@ function breadcrumb(
   }
   if (pathname === '/mpz/studio') return { title: 'Dashboard' }
   if (pathname.startsWith('/mpz/studio/stationen')) return { title: 'Stationen' }
-  if (pathname.startsWith('/mpz/studio/ingest'))
-    return { title: 'Medien hochladen' }
-  if (pathname.startsWith('/mpz/studio/dialog-audio'))
-    return { title: 'Dialog-Audio' }
   if (pathname.startsWith('/mpz/studio/coach')) return { title: 'Coach' }
   if (pathname.startsWith('/mpz/studio/embeds'))
     return { title: 'Embeds & Links' }
