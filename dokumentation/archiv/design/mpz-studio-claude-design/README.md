@@ -4,6 +4,10 @@ Bundle für **Schritt 2b (SE 13)** — UI-Konzept und Mockups in Claude Design.
 
 **Claude Design Export v1:** [`version_1/mpz-studio-prototype/`](./version_1/README.md) — `MPZ Studio.html`
 
+**Cleanup v2.1 (Juni 2026):** [`../mpz-studio-claude-design-cleanup/`](../mpz-studio-claude-design-cleanup/README.md) — vollständiges Studio, IA-Aufräumen
+
+**Cleanup — 10 MD für Claude Design:** [`../mpz-studio-claude-design-10md/`](../mpz-studio-claude-design-10md/) — Upload-limit-konform (genau 10 `.md`)
+
 **GitHub-Meilenstein:** MPZ Studio (Plan B, v0 optional bis ~22.06.2026)
 
 ---
