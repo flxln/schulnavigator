@@ -44,9 +44,9 @@ flowchart LR
 |-------|--------|----------|
 | **0 — Foundation** | ✅ abgeschlossen | Studio v2.1 live in `app/components/mpz-studio/` |
 | **1 — Design-Briefing** | ✅ abgeschlossen | `00-cleanup-brief`, `08-bekannte-ui-probleme`, Screen-Inventar S1–S24 |
-| **2 — Claude Design** | 🔄 **begonnen** | 10-MD-Paket hochgeladen / Konzept in Arbeit |
-| **3 — Design-Freeze** | ⏳ offen | IA-SOLL, Mockups, 3 offene Fragen beantwortet |
-| **4 — Implementierung** | ⏳ offen | Refactor ohne Verlust der Domänen-CRUD-Funktion |
+| **2 — Claude Design** | ✅ abgeschlossen | Stitch-HTML [`mockups/`](./mockups/) (52 Screens, bekannt inkonsistent) |
+| **3 — Design-Freeze** | ✅ abgeschlossen | [`NAVIGATION-SOLL.md`](./NAVIGATION-SOLL.md) + [#196](https://github.com/flxln/schulnavigator/issues/196) |
+| **4 — Implementierung** | 🔄 begonnen | #197 Shell ✅; #198–#204 offen |
 | **5 — Abnahme** | ⏳ offen | Manuelle Tests, `npm run build`, Kurz-Doku |
 
 ---
@@ -60,7 +60,7 @@ flowchart LR
 | 2.1 | Upload-Paket (10 MD) | ✅ | `mpz-studio-claude-design-10md/` |
 | 2.2 | Screenshots Ist-UI | 🔄 optional | PNG laut `10-SCREENSHOTS.md` |
 | 2.3 | Prompt + Konzept-Generierung | 🔄 | Claude Design Ausgabe |
-| 2.4 | Mockups S1–S22 | ⏳ | High-Fidelity, Empty/Filled/Error |
+| 2.4 | Mockups S1–S22 | ✅ | Stitch-HTML + [`SCREEN-MATRIX.md`](./mockups/SCREEN-MATRIX.md); S8 empty fehlt |
 
 **Exit-Kriterium:** Lieferformat aus `00-cleanup-brief.md` vollständig (IA, Lösungen, Komponenten, Flows, Mockups).
 
@@ -76,7 +76,7 @@ flowchart LR
 | 3.6 | Sphere-Kalibrierung: eigener MPZ-Screen (Option A) | ✅ [`16-sphere-calib-screen.md`](./16-sphere-calib-screen.md) |
 | 3.7 | Sidebar-Gruppen (finale Benennung) | ✅ **Default** = Gruppen der Soll-Navigation (Übersicht · Stationen · Globaler Inhalt · Erscheinungsbild · Betrieb); Feinschliff Claude Design ⁵ |
 
-**Exit-Kriterium:** `NAVIGATION-SOLL.md` (oder Abschnitt in dieser Datei) mit finalem Mermaid — keine offenen IA-Fragen.
+**Exit-Kriterium:** ✅ [`NAVIGATION-SOLL.md`](./NAVIGATION-SOLL.md) + Mockup-Abnahme [#196](../../../reviews/post-mortem-196-2026-06-22.md) (Mockups nutzbar, nicht pixel-homogen).
 
 ### Phase 4 — Implementierung (geschätzte Reihenfolge)
 
@@ -198,106 +198,11 @@ flowchart TB
 
 ---
 
-## Navigation — Soll (Arbeitsvorschlag, Phase 3)
+## Navigation — Soll (verbindlich)
 
-Ziel: max. 2 Ebenen, Domänen gruppiert. **Dialog-Audio** nur im Tab Dialog (Segment-Zeile) — siehe [`15-dialog-segment-zeilenmodell.md`](./15-dialog-segment-zeilenmodell.md).
+**Quelle:** [`NAVIGATION-SOLL.md`](./NAVIGATION-SOLL.md) — Mermaid, Ist→Soll-Tabelle, Nav-Matrix, Redirects, Abnahme-Regeln.
 
-```mermaid
-flowchart TB
-  subgraph shell2 ["Studio-Shell"]
-    TB2["Top-Bar + Dirty-Badge + Speichern und Validieren"]
-    PB2["Plan-A-Banner"]
-  end
-
-  subgraph grp_ueber ["Übersicht"]
-    G1["Dashboard"]
-  end
-
-  subgraph grp_station ["Stationen"]
-    G2["Alle Stationen - Grid"]
-    G2D["Station - Detail"]
-  end
-
-  subgraph grp_global ["Globaler Inhalt"]
-    G3["Coach"]
-    G4["Embeds und Links"]
-  end
-
-  subgraph grp_design ["Erscheinungsbild"]
-    G6["Design und Hub<br/>Brand, Slug-Map, Akzente, Icons"]
-  end
-
-  subgraph grp_betrieb ["Betrieb"]
-    G7["Deploy"]
-  end
-
-  subgraph detail2 ["Station Detail"]
-    direction TB
-    D0["Header: Ampel, Viewer, Vorschau"]
-    D1["Stammdaten"]
-    D2["Medien + Modal"]
-    D3["Hotspots"]
-    D4["Dialog immer<br/>ohne Dialog: hinzufügen"]
-  end
-
-  subgraph modal2 ["Overlay"]
-    M2["Medien-Modal"]
-  end
-
-  subgraph calib2 ["Vollbild-Kalibrierung"]
-    CALF["Flat S13<br/>/mpz/calib/flat/slug"]
-    CALS["Sphere S14<br/>/mpz/calib/sphere/slug"]
-  end
-
-  G1 --> shell2
-  G2 --> G2D --> detail2
-  G3 --> shell2
-  G4 --> shell2
-  G6 --> shell2
-  G7 --> shell2
-
-  D2 --> M2
-  D3 --> CALF
-  D3 --> CALS
-
-  style G6 fill:#a6d08a,color:#082a50
-  style D2 fill:#a6d08a,color:#082a50
-  style D4 fill:#a6d08a,color:#082a50
-```
-
-**Änderungen gegenüber Ist:**
-
-| Thema | Ist | Soll |
-|-------|-----|------|
-| Sidebar | 9 flache Punkte | 4 Gruppen, **6 Einträge** (ohne Dialog-Audio) |
-| Dialog-Audio | global + eigener Tab + Badge in Dialog | **nur Segment-Zeile** im Tab Dialog |
-| Medien hochladen | Sidebar + Tab + `/ingest` | nur Tab Medien (+ Modal) |
-| Brand / Hub | getrennt | **Design & Hub** |
-| Dialog-Tab | nur bei `hasDialog` | **immer** + „Dialog hinzufügen“ |
-| Sphere-Kalibrierung | `/raum/{slug}?hotspot-calib=1` (Besucher-App) | **`/mpz/calib/sphere/{slug}`** (wie Flat) |
-| Vorschau | Link im Header | unverändert |
-
----
-
-## Navigations-Matrix (Routen)
-
-| Route | Ist-Nav | Soll-Nav (Vorschlag) | Screen |
-|-------|---------|----------------------|--------|
-| `/mpz/studio` | Dashboard | Übersicht → Dashboard | S4 |
-| `/mpz/studio/stationen` | Stationen | Stationen → Grid | S5 |
-| `/mpz/studio/stationen/[slug]` | — | Stationen → Detail | S6–S15 |
-| `/mpz/studio/stationen/[slug]?tab=…` | Tabs | ohne `dialog-audio`; Dialog = Segment-Zeile | S7–S15 |
-| `/mpz/studio/coach` | Coach | Global → Coach | S17 |
-| `/mpz/studio/embeds` | Embeds | Global → Embeds | S18 |
-| `/mpz/studio/dialog-audio` | Dialog-Audio | **entfernen** (Redirect Stationen) | — |
-| `/mpz/studio/design` | — | **neu** — Container „Design & Hub“ (Tabs Hub + Brand) ⁹ | S19/S20 |
-| `/mpz/studio/hub` | Hub-Karte | **Redirect → `/mpz/studio/design`** (Tab Hub) | S19 |
-| `/mpz/studio/brand` | Brand | **Redirect → `/mpz/studio/design`** (Tab Brand) | S20 |
-| `/mpz/studio/deploy` | Deploy | Betrieb → Deploy | S21 |
-| `/mpz/studio/ingest` | Deep-Link | entfernen oder Redirect → Stationen | S23 |
-| `/mpz/calib/flat/[slug]` | von Hotspots | unverändert | S13 |
-| `/mpz/calib/sphere/[slug]` | — (Ist: Besucher-App `?hotspot-calib=1`) | von Hotspots (360°) | S14 |
-| Modal Medien | Sidebar-Button | nur von Tab Medien | S9 |
+Kurzfassung: 4 Sidebar-Gruppen, 6 Einträge; Design & Hub unter `/mpz/studio/design?tab=hub|brand`; Dialog-Audio nur in Segment-Zeile; Medien-Modal nur aus Tab Medien.
 
 ---
 
@@ -331,7 +236,7 @@ Zeiten sind Schätzungen — abhängig von Claude-Design-Lieferung und verfügba
 
 1. **Claude Design** — Konzept + Mockups mit 10-MD-Paket fertigstellen
 2. **Screenshots** — optional Ist-UI (`10-SCREENSHOTS.md`) nachreichen
-3. **Design-Freeze** — Soll-Navigation in diesem Dokument finalisieren (Abschnitt oben ersetzen)
+3. **Design-Freeze** — ✅ IA + Mockups ([#196](../../../reviews/post-mortem-196-2026-06-22.md))
 4. ~~**Issue anlegen**~~ — Epic [#195](https://github.com/flxln/schulnavigator/issues/195), Milestone [#12](https://github.com/flxln/schulnavigator/milestone/12), Doku [`epic-mpz-studio-ui-cleanup.md`](../../../planung/epic-mpz-studio-ui-cleanup.md)
 5. **Implementierung** — mit `studio-shell.tsx` starten (Phase 4.1)
 
@@ -401,6 +306,8 @@ Annahmen (siehe Faktenkorrekturen).
 
 | Datum | Änderung |
 |-------|----------|
+| 2026-06-22 | Mockups Stitch-HTML, SCREEN-MATRIX, #196 abgeschlossen |
+| 2026-06-22 | `NAVIGATION-SOLL.md` + `17-komponenteninventar-soll.md` (#196 IA-Freeze) |
 | 2026-06-22 | Plan-Härtung nach Pre-Mortem 1a/1b (Entscheidungen + Änderungslog ¹–¹³) |
 | 2026-06-22 | Mermaid-Syntax bereinigt (Navigation + Gantt) |
 | 2026-06-22 | Tab Dialog bei allen Stationen + „Dialog hinzufügen“ |

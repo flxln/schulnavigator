@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MPZ Studio - Save &amp; Validate Idle</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "background": "#faf9f5",
+                        "on-primary-fixed-variant": "#1d5200",
+                        "inverse-on-surface": "#f2f1ed",
+                        "tertiary": "#425d86",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#40493a",
+                        "on-secondary-fixed": "#001c3b",
+                        "primary-fixed": "#a2f876",
+                        "surface-container-highest": "#e3e2df",
+                        "surface-container-low": "#f4f4f0",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed": "#d5e3ff",
+                        "on-tertiary-fixed": "#001c3b",
+                        "surface-container": "#efeeea",
+                        "surface": "#faf9f5",
+                        "surface-variant": "#e3e2df",
+                        "secondary-fixed": "#d5e3ff",
+                        "on-secondary-container": "#003e76",
+                        "outline": "#717a68",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#1b1c1a",
+                        "outline-variant": "#c0cab5",
+                        "primary": "#276a00",
+                        "tertiary-fixed-dim": "#acc8f6",
+                        "primary-container": "#37850a",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#87db5d",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#286c00",
+                        "on-secondary-fixed-variant": "#004786",
+                        "on-tertiary-container": "#fefcff",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#dbdad6",
+                        "secondary": "#045faf",
+                        "primary-fixed-dim": "#87db5d",
+                        "on-background": "#1b1c1a",
+                        "inverse-surface": "#2f312e",
+                        "secondary-fixed-dim": "#a6c8ff",
+                        "secondary-container": "#6daaff",
+                        "on-primary-fixed": "#072100",
+                        "surface-container-high": "#e9e8e4",
+                        "on-primary-container": "#f8ffee",
+                        "surface-bright": "#faf9f5",
+                        "tertiary-container": "#5b76a0",
+                        "on-tertiary-fixed-variant": "#2c476f",
+                        "error-container": "#ffdad6",
+                        "brand-navy": "#082a50",
+                        "paper": "#fcfbf7",
+                        "paper-50": "#f5f2ea"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "topbar-height": "56px",
+                        "stack-lg": "24px",
+                        "card-padding": "20px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "sidebar-width": "240px",
+                        "gutter": "16px",
+                        "container-padding": "24px"
+                    },
+                    "fontFamily": {
+                        "sidebar-header": ["Nunito Sans"],
+                        "h2": ["Nunito Sans"],
+                        "h1": ["Nunito Sans"],
+                        "body-md": ["Nunito Sans"],
+                        "code": ["monospace"],
+                        "body-lg": ["Nunito Sans"],
+                        "caption": ["Nunito Sans"]
+                    },
+                    "fontSize": {
+                        "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #fcfbf7;
+            font-family: 'Nunito Sans', sans-serif;
+            color: #1b1c1a;
+            margin: 0;
+            overflow: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="flex min-h-screen w-[1280px] mx-auto shadow-2xl bg-paper">
+<!-- SideNavBar Component -->
+<aside class="fixed left-0 top-0 h-full w-[240px] bg-[#082a50] flex flex-col z-50">
+<div class="px-6 py-8">
+<div class="flex items-center gap-3 mb-8">
+<div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-2xl" data-icon="token">token</span>
+</div>
+<div>
+<h1 class="text-white font-h2 text-h2 leading-none">MPZ Studio</h1>
+<p class="text-white/50 text-[10px] uppercase tracking-widest mt-1">Admin Dashboard</p>
+</div>
+</div>
+<nav class="space-y-6">
+<!-- Group: Übersicht -->
+<div>
+<h3 class="text-sidebar-header font-sidebar-header text-white/55 uppercase mb-3">Übersicht</h3>
+<div class="space-y-1">
+<!-- Dashboard (Active) -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary border-l-4 border-primary bg-white/10 transition-transform duration-200 scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="dashboard">dashboard</span>
+<span class="text-body-md font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="location_on">location_on</span>
+<span class="text-body-md font-body-md">Alle Stationen</span>
+</a>
+</div>
+</div>
+<!-- Group: Tools -->
+<div>
+<h3 class="text-sidebar-header font-sidebar-header text-white/55 uppercase mb-3">Produktion</h3>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="school">school</span>
+<span class="text-body-md font-body-md">Coach</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="link">link</span>
+<span class="text-body-md font-body-md">Embeds &amp; Links</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="palette">palette</span>
+<span class="text-body-md font-body-md">Design &amp; Hub</span>
+</a>
+</div>
+</div>
+<!-- Group: System -->
+<div>
+<h3 class="text-sidebar-header font-sidebar-header text-white/55 uppercase mb-3">System</h3>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="rocket_launch">rocket_launch</span>
+<span class="text-body-md font-body-md">Deploy</span>
+</a>
+</div>
+</div>
+</nav>
+</div>
+<div class="mt-auto p-6 border-t border-white/10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-white/20">
+<img class="w-full h-full object-cover" data-alt="A professional studio admin portrait in a clean, high-key corporate style. The user is a mid-40s professional with a neutral expression, wearing a navy polo shirt. Background is a blurred modern office space with warm lighting and wooden accents, consistent with the MPZ Studio aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3_JLmKyrpduucuO_pCq_fAh8jVs3WuTmXBuRVALLrjiJbV5mzy6k1Eg59b7jrUZQSz3WzMw9IQURdC5DjJ9x3X2b530hweBWx_qIMmaU9mFZwaS2RzuRK6Ej8E5OTbMRl9PhX4FHa6CDbU_ZdhVntd9wArEAwFWbNGzlNBiEgn_gSqlECvzw-DsW1Zg4HlRGc3AxyvxCrTcg4Y8WcwF4P0Ai17o21FLGpXAUR4_CdZZv_FjQgP_r3tqoEvrRX4T0OUYuf4QE7wXY"/>
+</div>
+<div class="flex-1 overflow-hidden">
+<p class="text-white text-xs font-bold truncate">Admin User</p>
+<p class="text-white/50 text-[10px] truncate">admin@mpz-studio.de</p>
+</div>
+<span class="material-symbols-outlined text-white/40 text-sm" data-icon="settings">settings</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-[240px] flex flex-col h-screen overflow-hidden">
+<!-- TopNavBar Component -->
+<header class="h-[56px] bg-surface-container-lowest border-b border-outline-variant/30 flex items-center justify-between px-container-padding shrink-0 z-40">
+<div class="flex items-center gap-4">
+<span class="text-on-surface-variant font-body-lg text-body-lg">Stationen › Klassenzimmer</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-low text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-outline-variant"></span>
+<span class="text-body-md font-body-md">Nur lokal</span>
+</div>
+<button class="opacity-50 cursor-not-allowed bg-primary text-on-primary px-5 py-2 rounded-full text-body-md font-bold flex items-center gap-2 transition-all" disabled="">
+<span class="material-symbols-outlined text-[18px]" data-icon="verified">verified</span>
+                    Speichern &amp; Validieren
+                </button>
+</div>
+</header>
+<!-- Canvas Content -->
+<div class="flex-1 overflow-y-auto custom-scrollbar bg-paper p-container-padding space-y-stack-lg">
+<!-- Welcome Section -->
+<div class="flex justify-between items-end mb-4">
+<div>
+<h2 class="text-h1 font-h1 text-on-surface mb-1">Guten Tag, Administrator</h2>
+<p class="text-body-lg text-on-surface-variant">Hier ist die aktuelle Übersicht für das Projekt <span class="font-bold text-on-surface">Klassenzimmer</span>.</p>
+</div>
+<div class="flex gap-2">
+<button class="p-2 rounded-lg border border-outline-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined" data-icon="refresh">refresh</span>
+</button>
+<button class="p-2 rounded-lg border border-outline-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Bento Grid Stats -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Main Status Card -->
+<div class="col-span-8 bg-white rounded-xl border border-[rgba(8,42,80,0.1)] p-card-padding flex flex-col justify-between relative overflow-hidden">
+<!-- Subtle background decoration -->
+<div class="absolute top-0 right-0 w-32 h-32 opacity-5 translate-x-8 -translate-y-8">
+<span class="material-symbols-outlined text-[120px]" data-icon="check_circle">check_circle</span>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<div class="flex items-center gap-2 mb-4">
+<div class="bg-primary/10 p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary" data-icon="task_alt">task_alt</span>
+</div>
+<h3 class="text-h2 font-h2 text-on-surface">Validierung abgeschlossen</h3>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1 bg-[#f1f8ed] text-primary rounded-full border border-primary/20">
+<span class="material-symbols-outlined text-[16px]" data-icon="done_all">done_all</span>
+<span class="text-caption font-bold uppercase">Alle Checks bestanden</span>
+</div>
+<span class="text-caption text-on-surface-variant">Letzte Prüfung: Heute, 14:22 Uhr</span>
+</div>
+<p class="text-body-md text-on-surface-variant max-w-md">
+                                    Ihre Station "Klassenzimmer" ist bereit für den Export. Alle Asset-Referenzen sind valide und die Metadaten sind vollständig gepflegt.
+                                </p>
+</div>
+</div>
+</div>
+<div class="mt-8 grid grid-cols-3 gap-4 border-t border-outline-variant/20 pt-6">
+<div class="text-center">
+<p class="text-caption text-on-surface-variant uppercase font-bold mb-1">Medien</p>
+<p class="text-h2 font-h2 text-on-surface">12 / 12</p>
+</div>
+<div class="text-center border-x border-outline-variant/20">
+<p class="text-caption text-on-surface-variant uppercase font-bold mb-1">Links</p>
+<p class="text-h2 font-h2 text-on-surface">5 / 5</p>
+</div>
+<div class="text-center">
+<p class="text-caption text-on-surface-variant uppercase font-bold mb-1">Struktur</p>
+<p class="text-h2 font-h2 text-on-surface">Valide</p>
+</div>
+</div>
+</div>
+<!-- Secondary Metric Card -->
+<div class="col-span-4 bg-white rounded-xl border border-[rgba(8,42,80,0.1)] p-card-padding flex flex-col">
+<h3 class="text-sidebar-header font-sidebar-header text-on-surface-variant uppercase mb-4">Stations-Vorschau</h3>
+<div class="flex-1 rounded-lg bg-paper-50 overflow-hidden relative group">
+<img class="w-full h-full object-cover" data-alt="A clean, minimalist 3D rendering of a modern classroom interior, featuring light wood textures, large windows with soft daylight, and organized educational technology. The visual style is architectural, warm, and highly professional, matching the MPZ Studio aesthetic of clarity and tactile utility." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBv_raNdIbZ11CqsiuG01pKV67S9ZfyW3OmGF6NKVQWNrV0hWDORmO6vczpAvher261LYpoYHYx32he5rFhGfA5a-rhphHsoOq3qidk0d7VkOy4RcMJufLqysYxKGb4IP5eUEPScNLJtQ29BWTZTXdCFR9qC_g0U4uX-bi4engjtqztNz57yL_jjaWWU_t_gaCpOHj-vhpOzUi5LEsR_UI3Db_OS6qKE7O_Ypbr306rjcgq9WuQFVzbzd3uW3EHE7e5UkLVOX50HTU"/>
+<div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="bg-white text-brand-navy px-4 py-2 rounded-full text-body-md font-bold shadow-lg">Editor öffnen</button>
+</div>
+</div>
+<div class="mt-4 flex justify-between items-center">
+<div>
+<p class="text-body-md font-bold text-on-surface">Klassenzimmer V2</p>
+<p class="text-caption text-on-surface-variant">Update vor 2 Std.</p>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="open_in_new">open_in_new</span>
+</div>
+</div>
+</div>
+<!-- Bottom Row: Activity & System Info -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Recent Activity List -->
+<div class="col-span-7 bg-white rounded-xl border border-[rgba(8,42,80,0.1)] overflow-hidden">
+<div class="px-card-padding py-4 border-b border-outline-variant/20 flex justify-between items-center">
+<h3 class="text-h2 font-h2 text-on-surface">Letzte Aktivitäten</h3>
+<a class="text-primary text-body-md hover:underline" href="#">Alle anzeigen</a>
+</div>
+<div class="divide-y divide-outline-variant/10">
+<!-- Activity Item 1 -->
+<div class="px-card-padding py-4 flex items-center gap-4 hover:bg-surface-container-low transition-colors">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]" data-icon="edit">edit</span>
+</div>
+<div class="flex-1">
+<p class="text-body-md font-bold text-on-surface">Inhalt aktualisiert</p>
+<p class="text-caption text-on-surface-variant">Sektion "Interaktive Tafel" wurde von Admin User bearbeitet.</p>
+</div>
+<span class="text-caption text-on-surface-variant">14:15 Uhr</span>
+</div>
+<!-- Activity Item 2 -->
+<div class="px-card-padding py-4 flex items-center gap-4 hover:bg-surface-container-low transition-colors">
+<div class="w-10 h-10 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]" data-icon="publish">publish</span>
+</div>
+<div class="flex-1">
+<p class="text-body-md font-bold text-on-surface">Lokaler Build erstellt</p>
+<p class="text-caption text-on-surface-variant">Ein lokaler Snapshot wurde erfolgreich generiert.</p>
+</div>
+<span class="text-caption text-on-surface-variant">12:30 Uhr</span>
+</div>
+<!-- Activity Item 3 -->
+<div class="px-card-padding py-4 flex items-center gap-4 hover:bg-surface-container-low transition-colors">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]" data-icon="image">image</span>
+</div>
+<div class="flex-1">
+<p class="text-body-md font-bold text-on-surface">Asset hochgeladen</p>
+<p class="text-caption text-on-surface-variant">3 neue hochauflösende Texturen wurden dem Projekt hinzugefügt.</p>
+</div>
+<span class="text-caption text-on-surface-variant">Gestern</span>
+</div>
+</div>
+</div>
+<!-- Info Cards Column -->
+<div class="col-span-5 space-y-6">
+<!-- Project Info -->
+<div class="bg-white rounded-xl border border-[rgba(8,42,80,0.1)] p-card-padding">
+<h3 class="text-sidebar-header font-sidebar-header text-on-surface-variant uppercase mb-4">Projekt-Details</h3>
+<div class="space-y-4">
+<div class="flex justify-between items-center py-2 border-b border-outline-variant/10">
+<span class="text-body-md text-on-surface-variant">ID</span>
+<span class="font-code text-code bg-surface-container px-2 py-0.5 rounded">#S3-KL-2024</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-outline-variant/10">
+<span class="text-body-md text-on-surface-variant">Typ</span>
+<span class="text-body-md font-bold">Lernstation</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-outline-variant/10">
+<span class="text-body-md text-on-surface-variant">Inhalt</span>
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full border-2 border-white bg-blue-100 flex items-center justify-center text-[10px] font-bold">VR</div>
+<div class="w-6 h-6 rounded-full border-2 border-white bg-green-100 flex items-center justify-center text-[10px] font-bold">3D</div>
+<div class="w-6 h-6 rounded-full border-2 border-white bg-amber-100 flex items-center justify-center text-[10px] font-bold">QA</div>
+</div>
+</div>
+<div class="flex justify-between items-center py-2">
+<span class="text-body-md text-on-surface-variant">Letzte Änderung</span>
+<span class="text-body-md">24. Mai 2024</span>
+</div>
+</div>
+</div>
+<!-- Help Card -->
+<div class="bg-brand-navy rounded-xl p-card-padding text-white">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="support_agent">support_agent</span>
+<h3 class="text-body-lg font-bold">Support &amp; Hilfe</h3>
+</div>
+<p class="text-body-md text-white/70 mb-4">Probleme beim Validieren? Unser technischer Support hilft Ihnen gerne weiter.</p>
+<button class="w-full py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-body-md font-bold transition-colors">Dokumentation öffnen</button>
+</div>
+</div>
+</div>
+</div>
+<!-- System Message Bar (Subtle) -->
+<footer class="h-8 bg-surface-container px-container-padding flex items-center justify-between text-caption text-on-surface-variant shrink-0 border-t border-outline-variant/10">
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-green-500"></span> System Bereit</span>
+<span>Version 1.4.2-stable</span>
+</div>
+<div>© 2024 MPZ Studio Analytics</div>
+</footer>
+</main>
+<script>
+        // Micro-interaction for hover states
+        document.querySelectorAll('.hover\\:bg-white\\/5').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                el.style.transform = 'translateX(4px)';
+                el.style.transition = 'all 0.2s ease-out';
+            });
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = 'translateX(0)';
+            });
+        });
+
+        // Dashboard active state animation simulation
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('MPZ Studio Dashboard Loaded (Idle State)');
+        });
+    </script>
+</body></html>

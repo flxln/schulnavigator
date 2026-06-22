@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MPZ Studio - Station: Klassenzimmer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#425d86",
+                    "on-primary-fixed-variant": "#1d5200",
+                    "surface-variant": "#e3e2df",
+                    "secondary-fixed": "#d5e3ff",
+                    "surface-dim": "#dbdad6",
+                    "on-surface": "#1b1c1a",
+                    "surface-container-low": "#f4f4f0",
+                    "surface-container": "#efeeea",
+                    "inverse-surface": "#2f312e",
+                    "outline": "#717a68",
+                    "primary-fixed-dim": "#87db5d",
+                    "on-secondary-fixed-variant": "#004786",
+                    "on-secondary-fixed": "#001c3b",
+                    "on-error": "#ffffff",
+                    "secondary": "#045faf",
+                    "surface-bright": "#faf9f5",
+                    "tertiary-container": "#5b76a0",
+                    "surface-container-highest": "#e3e2df",
+                    "tertiary-fixed": "#d5e3ff",
+                    "tertiary-fixed-dim": "#acc8f6",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#37850a",
+                    "on-tertiary-fixed": "#001c3b",
+                    "on-primary-container": "#f8ffee",
+                    "on-primary-fixed": "#072100",
+                    "on-tertiary-container": "#fefcff",
+                    "on-error-container": "#93000a",
+                    "surface": "#faf9f5",
+                    "secondary-fixed-dim": "#a6c8ff",
+                    "on-tertiary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-secondary-container": "#003e76",
+                    "on-surface-variant": "#40493a",
+                    "inverse-primary": "#87db5d",
+                    "primary-fixed": "#a2f876",
+                    "on-background": "#1b1c1a",
+                    "primary": "#276a00",
+                    "surface-container-high": "#e9e8e4",
+                    "on-tertiary-fixed-variant": "#2c476f",
+                    "error": "#ba1a1a",
+                    "secondary-container": "#6daaff",
+                    "inverse-on-surface": "#f2f1ed",
+                    "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "surface-tint": "#286c00",
+                    "outline-variant": "#c0cab5",
+                    "background": "#faf9f5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "16px",
+                    "gutter": "16px",
+                    "container-padding": "24px",
+                    "topbar-height": "56px",
+                    "sidebar-width": "240px",
+                    "card-padding": "20px",
+                    "stack-lg": "24px",
+                    "stack-sm": "8px"
+            },
+            "fontFamily": {
+                    "h1": ["Nunito Sans"],
+                    "body-lg": ["Nunito Sans"],
+                    "code": ["monospace"],
+                    "caption": ["Nunito Sans"],
+                    "sidebar-header": ["Nunito Sans"],
+                    "body-md": ["Nunito Sans"],
+                    "h2": ["Nunito Sans"]
+            },
+            "fontSize": {
+                    "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #fcfbf7;
+            font-family: 'Nunito Sans', sans-serif;
+            color: #1b1c1a;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .sidebar-active {
+            border-left: 4px solid #a2f876;
+            background-color: rgba(227, 226, 223, 0.1);
+            color: #ffffff;
+            opacity: 1 !important;
+        }
+        .card-border {
+            border: 1px solid rgba(8, 42, 80, 0.1);
+        }
+        .transition-standard {
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-background min-h-screen">
+<!-- Fixed SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-[240px] bg-secondary flex flex-col py-stack-lg z-50">
+<div class="px-6 mb-10">
+<h1 class="font-h1 text-h1 text-on-secondary">MPZ Studio</h1>
+<p class="font-sidebar-header text-sidebar-header text-on-secondary opacity-60 uppercase tracking-widest mt-1">Admin Console</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center px-6 py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-standard" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="dashboard">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center px-6 py-3 sidebar-active transition-standard" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="analytics">analytics</span>
+<span class="font-body-md">Alle Stationen</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-standard" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="psychology">psychology</span>
+<span class="font-body-md">Coach</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-standard" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="link">link</span>
+<span class="font-body-md">Embeds &amp; Links</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-standard" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="palette">palette</span>
+<span class="font-body-md">Design &amp; Hub</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-standard" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="rocket_launch">rocket_launch</span>
+<span class="font-body-md">Deploy</span>
+</a>
+</nav>
+<div class="mt-auto px-6 pt-6 border-t border-white/10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-bold text-xs">MA</div>
+<div class="overflow-hidden">
+<p class="text-on-secondary text-sm font-bold truncate">MPZ Studio Admin</p>
+<p class="text-on-secondary/60 text-[10px] truncate">admin@mpz-studio.de</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-240px)] h-[56px] bg-surface flex justify-between items-center px-container-padding border-b border-outline-variant z-40">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+<span class="font-body-md">Zurück zur Übersicht</span>
+</div>
+<nav class="flex gap-6 h-full">
+<a class="flex items-center h-full text-on-surface-variant font-body-md hover:text-primary transition-colors duration-150" href="#">Dashboard</a>
+<a class="flex items-center h-full text-primary font-bold border-b-2 border-primary transition-colors duration-150" href="#">Stationen</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1 text-on-surface-variant px-3 py-1 rounded-full bg-surface-container-low text-xs font-semibold">
+<span class="material-symbols-outlined text-sm">sync</span>
+                Auto-Save aktiv
+            </div>
+<button class="bg-primary hover:bg-[#3d7e1b] text-on-primary font-bold py-2 px-6 rounded-full text-sm transition-standard shadow-sm">
+                Speichern &amp; Validieren
+            </button>
+</div>
+</header>
+<!-- Content Canvas -->
+<main class="ml-[240px] pt-[56px] min-h-screen">
+<div class="p-container-padding max-w-6xl mx-auto">
+<!-- Station Header & Tabs -->
+<div class="mb-stack-lg">
+<div class="flex items-baseline gap-3 mb-6">
+<h2 class="font-h1 text-h1 text-on-surface">Station: Klassenzimmer</h2>
+<span class="text-on-surface-variant font-body-md opacity-60">#ST-204</span>
+</div>
+<!-- Tab Row -->
+<div class="flex border-b border-outline-variant gap-8">
+<button class="pb-3 text-on-surface-variant font-body-md hover:text-primary transition-standard relative">
+                        Inhalt &amp; Medien
+                    </button>
+<button class="pb-3 text-on-surface-variant font-body-md hover:text-primary transition-standard relative">
+                        Interaktionen
+                    </button>
+<button class="pb-3 text-primary font-bold relative">
+                        Dialog
+                        <span class="absolute bottom-0 left-0 w-full h-[2px] bg-primary"></span>
+</button>
+<button class="pb-3 text-on-surface-variant font-body-md hover:text-primary transition-standard relative">
+                        Einstellungen
+                    </button>
+</div>
+</div>
+<!-- Main Content Area: Bento Grid Layout for Context -->
+<div class="grid grid-cols-12 gap-stack-lg">
+<!-- Left Sidebar / Info Panel -->
+<div class="col-span-3 space-y-stack-md">
+<div class="bg-white p-card-padding rounded-lg card-border">
+<h3 class="font-h2 text-h2 mb-4">Status</h3>
+<div class="flex items-center gap-2 mb-4">
+<div class="w-2 h-2 rounded-full bg-tertiary"></div>
+<span class="font-body-md">In Bearbeitung</span>
+</div>
+<div class="space-y-3 pt-4 border-t border-outline-variant/30">
+<p class="font-caption text-caption text-on-surface-variant">Zuletzt geändert: Heute, 14:20</p>
+<p class="font-caption text-caption text-on-surface-variant">Autor: Admin-Team</p>
+</div>
+</div>
+<div class="bg-surface-container-low p-card-padding rounded-lg border border-dashed border-outline-variant">
+<p class="font-caption text-caption text-on-surface-variant leading-relaxed">
+                            Der Maskottchen-Dialog wird ausgelöst, wenn die Station zum ersten Mal betreten wird. Frieda und Otto geben hilfreiche Tipps zum Kontext des historischen Klassenzimmers.
+                        </p>
+</div>
+</div>
+<!-- Center Content: Empty State Dialog -->
+<div class="col-span-9">
+<div class="bg-white rounded-lg card-border min-h-[500px] flex flex-col items-center justify-center relative overflow-hidden">
+<!-- Atmospheric Shader Background (Subtle) -->
+
+<div class="z-10 flex flex-col items-center text-center max-w-md px-6">
+<!-- Mascot Illustration Placeholder -->
+<div class="relative w-64 h-48 mb-8 flex items-center justify-center">
+<!-- Frieda Mascot -->
+<div class="absolute left-4 bottom-4 w-32 h-32 opacity-20 transform -rotate-6 transition-all duration-700 hover:rotate-0 hover:opacity-40">
+<img class="w-full h-full object-contain" data-alt="A friendly, minimalist digital illustration of Frieda, a smart and curious mascot character for a school studio application. She has a clean, geometric design with soft green accents and large expressive eyes. The style is modern corporate flat-art, fitting into a professional light-mode UI, appearing as a subtle, watermark-like background element." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-pBizbrRDC8sbRVnsx4gFjVvW1fACyh2Yf-VSX3UelzV5MuqHwekhF9xdpw_CmG-Ke7HnTjBAY7Fw0O6bB7w0ZAObRDsPXJW9tknMw1vUK_8SH5t7Vql5e94XeHmkmlydQKVwHfZGlsv5WAhlFu9-6nQxfWIpxTmfsktHe0GsKEX44cZoalvg8oOT457PlzOz-ems9NCrNA5QKWBJ5ntFJp2aW6hwL7ypN3IIOJFru3CWtCOW1ZPKt5GCWV0DOAqdeRpGcInW-xw"/>
+</div>
+<!-- Otto Mascot -->
+<div class="absolute right-4 top-4 w-32 h-32 opacity-20 transform rotate-12 transition-all duration-700 hover:rotate-0 hover:opacity-40">
+<img class="w-full h-full object-contain" data-alt="A friendly, minimalist digital illustration of Otto, a jovial and helpful mascot character for a school studio application. He is designed with clean geometric shapes and soft blue-navy accents to match a modern corporate aesthetic. He appears as a subtle, high-legibility background character in a light-mode studio environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAU4BWuytcng5JFdG9NJNZw_uEP4Ow2JoOKRPnHH_u47XxmxLgKsFHBQSUwSTGeqxOXjGVZMPq09nN3QLh9QIpk8IrpF2Uzokp90MHoNgmQiYoBbv5YHKwqmaAMuu7_QXLPOJIa0_mV_c5712vw-Eb_aLCfDSzPSOHQysMdQ8J5IkFLhoJv_DdQsLP7vJian4-ox9_8J_0cjXs_debIg-pYSkCMSDQj6Ngl3JPTYOkSjAoli6iHbr5FVgypt91sj6RBJJAIbBzzoxM"/>
+</div>
+<!-- Icon Overlay -->
+<div class="relative z-20 bg-surface-container-high/50 p-6 rounded-full backdrop-blur-sm shadow-sm border border-white">
+<span class="material-symbols-outlined text-primary text-5xl" style="font-variation-settings: 'FILL' 1;">chat_bubble_outline</span>
+</div>
+</div>
+<h3 class="font-h1 text-h1 text-on-surface mb-3">Kein Dialog vorhanden</h3>
+<p class="font-body-lg text-on-surface-variant mb-8">
+                                Noch kein Maskottchen-Dialog für diese Station hinterlegt. Füge einen Dialog hinzu, um Frieda &amp; Otto zum Leben zu erwecken.
+                            </p>
+<button class="group flex items-center gap-3 bg-primary hover:bg-[#3d7e1b] text-on-primary font-bold py-4 px-10 rounded-full text-lg transition-standard shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+<span class="material-symbols-outlined group-hover:rotate-90 transition-transform duration-300">add</span>
+                                Dialog hinzufügen
+                            </button>
+</div>
+<!-- Level -1 (Inset) Decorative Elements -->
+<div class="absolute bottom-0 right-0 p-8 opacity-10">
+<span class="material-symbols-outlined text-[120px]" data-icon="school">school</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Micro-interaction Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('button.group');
+            if (btn) {
+                btn.addEventListener('mousedown', () => {
+                    btn.classList.add('scale-95');
+                });
+                btn.addEventListener('mouseup', () => {
+                    btn.classList.remove('scale-95');
+                });
+            }
+
+            // Subtle parallax for the mascot placeholders
+            document.addEventListener('mousemove', (e) => {
+                const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+                const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+                
+                const mascots = document.querySelectorAll('img[data-alt*="mascot"]');
+                mascots.forEach((m, index) => {
+                    const factor = index === 0 ? 1 : -1;
+                    m.parentElement.style.transform = `translate(${moveX * factor}px, ${moveY * factor}px) rotate(${index === 0 ? -6 : 12}deg)`;
+                });
+            });
+        });
+    </script>
+</body></html>

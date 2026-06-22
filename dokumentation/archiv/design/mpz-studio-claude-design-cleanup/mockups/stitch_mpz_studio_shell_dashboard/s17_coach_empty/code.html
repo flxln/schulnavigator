@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MPZ Studio - Coach</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary": "#425d86",
+                      "on-primary-fixed-variant": "#1d5200",
+                      "surface-variant": "#e3e2df",
+                      "secondary-fixed": "#d5e3ff",
+                      "surface-dim": "#dbdad6",
+                      "on-surface": "#1b1c1a",
+                      "surface-container-low": "#f4f4f0",
+                      "surface-container": "#efeeea",
+                      "inverse-surface": "#2f312e",
+                      "outline": "#717a68",
+                      "primary-fixed-dim": "#87db5d",
+                      "on-secondary-fixed-variant": "#004786",
+                      "on-secondary-fixed": "#001c3b",
+                      "on-error": "#ffffff",
+                      "secondary": "#045faf",
+                      "surface-bright": "#faf9f5",
+                      "tertiary-container": "#5b76a0",
+                      "surface-container-highest": "#e3e2df",
+                      "tertiary-fixed": "#d5e3ff",
+                      "tertiary-fixed-dim": "#acc8f6",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-container": "#37850a",
+                      "on-tertiary-fixed": "#001c3b",
+                      "on-primary-container": "#f8ffee",
+                      "on-primary-fixed": "#072100",
+                      "on-tertiary-container": "#fefcff",
+                      "on-error-container": "#93000a",
+                      "surface": "#faf9f5",
+                      "secondary-fixed-dim": "#a6c8ff",
+                      "on-tertiary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "on-secondary-container": "#003e76",
+                      "on-surface-variant": "#40493a",
+                      "inverse-primary": "#87db5d",
+                      "primary-fixed": "#a2f876",
+                      "on-background": "#1b1c1a",
+                      "primary": "#276a00",
+                      "surface-container-high": "#e9e8e4",
+                      "on-tertiary-fixed-variant": "#2c476f",
+                      "error": "#ba1a1a",
+                      "secondary-container": "#6daaff",
+                      "inverse-on-surface": "#f2f1ed",
+                      "on-primary": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "surface-tint": "#286c00",
+                      "outline-variant": "#c0cab5",
+                      "background": "#faf9f5"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-md": "16px",
+                      "gutter": "16px",
+                      "container-padding": "24px",
+                      "topbar-height": "56px",
+                      "sidebar-width": "240px",
+                      "card-padding": "20px",
+                      "stack-lg": "24px",
+                      "stack-sm": "8px"
+              },
+              "fontFamily": {
+                      "h1": ["Nunito Sans"],
+                      "body-lg": ["Nunito Sans"],
+                      "code": ["monospace"],
+                      "caption": ["Nunito Sans"],
+                      "sidebar-header": ["Nunito Sans"],
+                      "body-md": ["Nunito Sans"],
+                      "h2": ["Nunito Sans"]
+              },
+              "fontSize": {
+                      "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                      "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                      "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #fcfbf7; /* Level 0 (Floor) from Design System */
+        }
+        .sidebar-active-indicator {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #a2f876; /* primary-fixed / Brand Green */
+        }
+        .canvas-inset {
+            background-color: #f5f2ea; /* Level -1 (Inset) */
+        }
+    </style>
+</head>
+<body class="flex min-h-screen overflow-hidden font-body-md text-on-surface">
+<!-- SideNavBar (Authority: Shared Components JSON) -->
+<aside class="fixed left-0 top-0 h-full w-[240px] bg-secondary flex flex-col py-stack-lg transition-all duration-200 ease-in-out">
+<!-- Brand Logo -->
+<div class="px-container-padding mb-8">
+<h1 class="font-h1 text-h1 text-on-secondary tracking-tight">MPZ Studio</h1>
+<p class="font-sidebar-header text-sidebar-header uppercase opacity-50 text-on-secondary">Admin Console</p>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 space-y-1">
+<!-- Dashboard -->
+<a class="relative flex items-center px-container-padding py-3 transition-all duration-200 ease-in-out text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 group" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="dashboard">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<!-- Alle Stationen -->
+<a class="relative flex items-center px-container-padding py-3 transition-all duration-200 ease-in-out text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 group" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="analytics">analytics</span>
+<span class="font-body-md">Alle Stationen</span>
+</a>
+<!-- Coach (ACTIVE) -->
+<a class="relative flex items-center px-container-padding py-3 transition-all duration-200 ease-in-out text-on-secondary border-l-4 border-primary-fixed bg-surface-container-highest/10 opacity-100" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="psychology" style="font-variation-settings: 'FILL' 1;">psychology</span>
+<span class="font-body-md">Coach</span>
+</a>
+<!-- Embeds & Links -->
+<a class="relative flex items-center px-container-padding py-3 transition-all duration-200 ease-in-out text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 group" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="link">link</span>
+<span class="font-body-md">Embeds &amp; Links</span>
+</a>
+<!-- Design & Hub -->
+<a class="relative flex items-center px-container-padding py-3 transition-all duration-200 ease-in-out text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 group" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="palette">palette</span>
+<span class="font-body-md">Design &amp; Hub</span>
+</a>
+<!-- Deploy -->
+<a class="relative flex items-center px-container-padding py-3 transition-all duration-200 ease-in-out text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 group" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="rocket_launch">rocket_launch</span>
+<span class="font-body-md">Deploy</span>
+</a>
+</nav>
+<!-- Footer Avatar -->
+<div class="px-container-padding mt-auto flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a corporate administrator in a modern office environment. High-quality corporate photography style with soft natural lighting and a neutral blurred background, matching the clean minimalist aesthetic of MPZ Studio." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2LWCaoGMrUX7hU3VlN3OrZ4d0JtAWaTNRuxAjKxheR8YCNvBh_ogR3bjbxhp7CmvQa-reYPIUL3ape8n-SbkaxuasMW2xjSM6vdm2yhX_DKmQcjVxB7VM8pGc5XGyBLdSYMatGpUUFnyxOGGZLw_KBayvxGGvSV86TDV6_fj1327o1W-06n2iQT4_DVCj35f2ujOLSG0O9CaePVo9xbhf9T-_aJ28NA-cAD8Gxe01YUHOBwVQ7xe9JMx8deP72Q21aEPkquw-ius"/>
+</div>
+<div class="overflow-hidden">
+<p class="text-on-secondary font-bold text-caption truncate">MPZ Studio Admin</p>
+<p class="text-on-secondary opacity-60 text-caption truncate">Administrator</p>
+</div>
+</div>
+</aside>
+<!-- Content Area -->
+<main class="ml-[240px] flex-1 flex flex-col min-h-screen">
+<!-- TopNavBar (Authority: Shared Components JSON) -->
+<header class="fixed top-0 right-0 w-[calc(100%-240px)] h-[56px] bg-surface border-b border-outline-variant flex justify-between items-center px-container-padding z-10 transition-colors duration-150">
+<div class="flex items-center gap-stack-md">
+<span class="font-h2 text-h2 text-primary">Coach</span>
+<span class="text-outline-variant">/</span>
+<span class="font-body-md text-on-surface-variant opacity-60">Nachrichtenverwaltung</span>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="bg-primary hover:bg-[#3d7e1b] text-white px-4 py-2 rounded-full font-body-md font-bold transition-all flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+                    Speichern &amp; Validieren
+                </button>
+</div>
+</header>
+<!-- Canvas -->
+<div class="mt-[56px] p-container-padding flex-1 overflow-y-auto">
+<!-- Page Header Section -->
+<div class="mb-stack-lg flex justify-between items-end">
+<div>
+<h2 class="font-h1 text-h1 text-on-surface mb-1">Coach-Konfiguration</h2>
+<p class="font-body-md text-on-surface-variant max-w-2xl">
+                        Verwalten Sie hier die automatisierten Coach-Nachrichten für Ihre MPZ-Stationen. Definieren Sie Trigger-Events und personalisierte Rückmeldungen für Ihre Nutzer.
+                    </p>
+</div>
+</div>
+<!-- Bento Empty State Layout -->
+<div class="grid grid-cols-12 gap-stack-lg">
+<!-- Main Empty State Card (7 Cols) -->
+<div class="col-span-12 lg:col-span-8">
+<div class="bg-white border border-black/10 rounded-lg p-12 flex flex-col items-center justify-center min-h-[400px] text-center shadow-sm">
+<div class="w-24 h-24 rounded-full bg-surface-container flex items-center justify-center mb-6 relative">
+
+<span class="material-symbols-outlined text-[48px] text-primary relative z-10" data-icon="forum">forum</span>
+</div>
+<h3 class="font-h2 text-h2 text-on-surface mb-2">Noch keine Coach-Nachrichten</h3>
+<p class="font-body-md text-on-surface-variant max-w-md mb-8">
+                            Ihr Coach ist derzeit noch still. Beginnen Sie damit, Ihre erste Nachricht zu erstellen, um Nutzer während ihrer Stationen zu unterstützen.
+                        </p>
+<button class="bg-primary hover:bg-[#3d7e1b] text-white px-8 py-3 rounded-full font-body-lg font-bold transition-all flex items-center gap-2 transform active:scale-95 shadow-md">
+<span class="material-symbols-outlined" data-icon="add_comment">add_comment</span>
+                            Nachricht hinzufügen
+                        </button>
+</div>
+</div>
+<!-- Contextual Side Cards (4 Cols) -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-stack-lg">
+<!-- Insight Card -->
+<div class="bg-white border border-black/10 rounded-lg p-card-padding shadow-sm">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary" data-icon="lightbulb">lightbulb</span>
+<span class="font-sidebar-header text-sidebar-header uppercase text-outline">Coach Tipps</span>
+</div>
+<p class="font-body-md text-on-surface mb-4">
+                            Gute Coach-Nachrichten sind kurz, motivierend und direkt auf den Kontext der Station bezogen.
+                        </p>
+<div class="space-y-3">
+<div class="flex gap-3 p-3 bg-surface rounded-lg">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="check_circle">check_circle</span>
+<span class="text-caption">Nutzen Sie Platzhalter für Namen</span>
+</div>
+<div class="flex gap-3 p-3 bg-surface rounded-lg">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="check_circle">check_circle</span>
+<span class="text-caption">Definieren Sie klare Trigger</span>
+</div>
+</div>
+</div>
+<!-- Statistics Card -->
+<div class="bg-secondary rounded-lg p-card-padding text-white overflow-hidden relative">
+<!-- Subtle Background Pattern -->
+<div class="absolute inset-0 opacity-10 pointer-events-none">
+<div class="w-full h-full bg-repeat opacity-20" data-alt="A subtle geometric technical pattern with thin white lines on a dark navy background, representing data connectivity and structured systems. The style is abstract and architectural, providing texture without distracting from the foreground content." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDHzODPmvzG7mI6_xlj0LF-ywCZj09E9Y3sVXiFG5KRz12wXwOGGoBuNcj_dLwqFUppMgVjgC8rhRtiOrAT4Rwjl3k7GtBSF67dWbNPy8h-amTuYFfVVn18J7MTPMCc07bvvo8-LtkV5cAc3uia2LDhGRs8CutWMICqPpRToLertT68kY06hygDUryCgpHMJQ7P83g7DN2uZKU0V3QGKNBMwU-fVT-HnDpqZ-E86IcB0WrBWrQBLoyTwz10dP2kpnHESTgTIHRAOIs')"></div>
+</div>
+<div class="relative z-10">
+<span class="font-sidebar-header text-sidebar-header uppercase text-on-secondary/60">Aktueller Status</span>
+<div class="mt-4 flex items-baseline gap-2">
+<span class="text-4xl font-h1">0</span>
+<span class="text-on-secondary/60 font-body-md">Nachrichten aktiv</span>
+</div>
+<div class="mt-6 pt-6 border-t border-white/10 flex justify-between items-center">
+<span class="text-caption text-on-secondary/80 italic">Warten auf Initialisierung...</span>
+<span class="material-symbols-outlined text-on-secondary/40" data-icon="sync">sync</span>
+</div>
+</div>
+</div>
+<!-- Help Card -->
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-lg p-card-padding">
+<h4 class="font-body-lg font-bold text-on-surface mb-2">Hilfe &amp; Dokumentation</h4>
+<p class="text-caption text-on-surface-variant mb-4">Erfahren Sie mehr darüber, wie Sie den Coach optimal für Ihre Besucher einsetzen können.</p>
+<a class="text-primary font-bold text-caption flex items-center gap-1 hover:underline" href="#">
+                            Zum Handbuch
+                            <span class="material-symbols-outlined text-[14px]" data-icon="open_in_new">open_in_new</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Bottom Validation Bar (Design System "Validation Card") -->
+<div class="mt-stack-lg p-4 bg-[#f8ffee] border-l-4 border-primary rounded-r-lg flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<p class="font-body-md font-bold text-on-primary-fixed-variant">System bereit</p>
+<p class="text-caption text-on-primary-fixed-variant opacity-80">Der Coach-Dienst ist online und wartet auf Konfiguration.</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-1.5 text-caption font-bold text-primary hover:bg-primary/5 rounded-full transition-all">Details</button>
+<button class="px-4 py-1.5 text-caption font-bold text-on-surface-variant opacity-40 cursor-not-allowed">Protokoll</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Micro-interaction Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hover effect for the empty state button
+            const mainBtn = document.querySelector('button.bg-primary');
+            if(mainBtn) {
+                mainBtn.addEventListener('mouseenter', () => {
+                    mainBtn.style.transform = 'translateY(-2px)';
+                });
+                mainBtn.addEventListener('mouseleave', () => {
+                    mainBtn.style.transform = 'translateY(0)';
+                });
+            }
+        });
+    </script>
+</body></html>

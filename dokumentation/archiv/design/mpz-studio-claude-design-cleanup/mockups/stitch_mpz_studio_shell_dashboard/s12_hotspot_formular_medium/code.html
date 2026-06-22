@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MPZ Studio - Hotspot bearbeiten</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#a6c8ff",
+                        "outline": "#717a68",
+                        "on-secondary-fixed-variant": "#004786",
+                        "on-surface-variant": "#40493a",
+                        "surface-container-high": "#e9e8e4",
+                        "on-tertiary-fixed-variant": "#2c476f",
+                        "surface-container-highest": "#e3e2df",
+                        "inverse-surface": "#2f312e",
+                        "tertiary-fixed-dim": "#acc8f6",
+                        "on-tertiary-container": "#fefcff",
+                        "on-error": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-bright": "#faf9f5",
+                        "tertiary-fixed": "#d5e3ff",
+                        "on-surface": "#1b1c1a",
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#c0cab5",
+                        "surface": "#faf9f5",
+                        "tertiary": "#425d86",
+                        "surface-dim": "#dbdad6",
+                        "primary-fixed": "#a2f876",
+                        "on-secondary-fixed": "#001c3b",
+                        "secondary-fixed": "#d5e3ff",
+                        "on-background": "#1b1c1a",
+                        "surface-container": "#efeeea",
+                        "on-primary-fixed": "#072100",
+                        "on-secondary-container": "#003e76",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#045faf",
+                        "inverse-on-surface": "#f2f1ed",
+                        "on-tertiary-fixed": "#001c3b",
+                        "primary-fixed-dim": "#87db5d",
+                        "inverse-primary": "#87db5d",
+                        "surface-tint": "#286c00",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f4f4f0",
+                        "primary": "#276a00",
+                        "primary-container": "#37850a",
+                        "tertiary-container": "#5b76a0",
+                        "secondary-container": "#6daaff",
+                        "on-primary-container": "#f8ffee",
+                        "surface-variant": "#e3e2df",
+                        "on-tertiary": "#ffffff",
+                        "background": "#faf9f5",
+                        "on-primary-fixed-variant": "#1d5200",
+                        "paper": "#fcfbf7",
+                        "paper-50": "#f5f2ea",
+                        "navy-header": "#082a50",
+                        "brand-green": "#4b9a23",
+                        "brand-green-hover": "#3d7e1b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "sidebar-width": "240px",
+                        "gutter": "16px",
+                        "container-padding": "24px",
+                        "card-padding": "20px",
+                        "stack-sm": "8px",
+                        "stack-lg": "24px",
+                        "topbar-height": "56px"
+                    },
+                    "fontFamily": {
+                        "sidebar-header": ["Nunito Sans"],
+                        "body-lg": ["Nunito Sans"],
+                        "body-md": ["Nunito Sans"],
+                        "h1": ["Nunito Sans"],
+                        "h2": ["Nunito Sans"],
+                        "caption": ["Nunito Sans"],
+                        "code": ["monospace"]
+                    },
+                    "fontSize": {
+                        "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                        "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Nunito Sans', sans-serif; background-color: #fcfbf7; color: #1b1c1a; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+        .sidebar-active { border-left: 4px solid #a2f876; background-color: rgba(109, 170, 255, 0.1); }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+        .card-shadow { box-shadow: 0 1px 3px rgba(8,42,80,0.1); border: 1px solid rgba(8,42,80,0.1); }
+    </style>
+</head>
+<body class="overflow-hidden">
+<!-- Fixed Sidebar -->
+<aside class="fixed left-0 top-0 h-full w-[240px] bg-[#045faf] dark:bg-on-secondary-fixed flex flex-col text-white z-50">
+<div class="px-6 py-8">
+<h1 class="font-h1 text-h1 font-bold text-white mb-1">MPZ Studio</h1>
+<p class="font-sidebar-header text-sidebar-header text-white/60 uppercase tracking-widest">Admin Dashboard</p>
+</div>
+<nav class="flex-1 px-2 space-y-1 overflow-y-auto custom-scrollbar">
+<!-- Nav Items from JSON Mapping -->
+<a class="flex items-center px-4 py-3 text-white/80 hover:bg-white/10 transition-colors rounded-sm group" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]" data-icon="dashboard">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<!-- Active Item: Alle Stationen -->
+<a class="flex items-center px-4 py-3 text-white border-l-4 border-primary-fixed bg-secondary-container/10 transition-all scale-[0.98]" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]" data-icon="location_on">location_on</span>
+<span class="font-body-md text-body-md font-bold">Alle Stationen</span>
+</a>
+<a class="flex items-center px-4 py-3 text-white/80 hover:bg-white/10 transition-colors rounded-sm" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]" data-icon="school">school</span>
+<span class="font-body-md text-body-md">Coach</span>
+</a>
+<a class="flex items-center px-4 py-3 text-white/80 hover:bg-white/10 transition-colors rounded-sm" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]" data-icon="link">link</span>
+<span class="font-body-md text-body-md">Embeds &amp; Links</span>
+</a>
+<a class="flex items-center px-4 py-3 text-white/80 hover:bg-white/10 transition-colors rounded-sm" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]" data-icon="palette">palette</span>
+<span class="font-body-md text-body-md">Design &amp; Hub</span>
+</a>
+<a class="flex items-center px-4 py-3 text-white/80 hover:bg-white/10 transition-colors rounded-sm" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]" data-icon="rocket_launch">rocket_launch</span>
+<span class="font-body-md text-body-md">Deploy</span>
+</a>
+</nav>
+<div class="p-6 border-t border-white/10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-bold text-xs">AU</div>
+<div class="overflow-hidden">
+<p class="text-xs font-bold truncate">Admin User</p>
+<p class="text-[10px] text-white/60 truncate">v2.4.0-stable</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[240px] flex flex-col min-h-screen bg-paper w-[calc(100%-240px)]">
+<!-- Top Bar -->
+<header class="h-[56px] bg-white border-b border-outline-variant/30 flex items-center justify-between px-6 sticky top-0 z-40">
+<div class="flex items-center gap-2">
+<span class="text-on-surface-variant font-body-md text-body-md">Stationen</span>
+<span class="material-symbols-outlined text-[16px] text-outline-variant" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-bold font-body-md text-body-md">Klassenzimmer</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-on-surface-variant font-caption text-caption">Nur lokal · development</span>
+<button class="bg-brand-green hover:bg-brand-green-hover text-white px-5 py-1.5 rounded-full font-body-md text-body-md transition-all active:scale-95 shadow-sm">
+                    Speichern &amp; Validieren
+                </button>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="flex-1 p-stack-lg max-w-[1040px] mx-auto w-full">
+<!-- Page Header -->
+<div class="mb-stack-lg flex justify-between items-end">
+<div>
+<h2 class="font-h1 text-h1 text-navy-header mb-1">Hotspot bearbeiten</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Konfigurieren Sie die Details für den interaktiven Punkt in der 360°-Ansicht.</p>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center gap-1 px-3 py-1.5 border border-outline-variant rounded-lg text-on-surface-variant font-body-md text-body-md hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="visibility">visibility</span>
+                        Vorschau
+                    </button>
+</div>
+</div>
+<!-- Main Form Grid (Bento Style) -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Basic Info Card -->
+<div class="col-span-8 bg-white rounded-lg card-shadow p-card-padding">
+<h3 class="font-h2 text-h2 text-navy-header mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="edit_note">edit_note</span>
+                        Allgemeine Details
+                    </h3>
+<div class="space-y-6">
+<div class="flex flex-col gap-2">
+<label class="font-sidebar-header text-sidebar-header text-on-surface-variant uppercase">Label</label>
+<input class="w-full bg-white border border-outline-variant rounded-lg px-4 py-2.5 font-body-md text-body-md focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none" placeholder="Name des Hotspots..." type="text" value="Tafel"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-sidebar-header text-sidebar-header text-on-surface-variant uppercase">Medium</label>
+<div class="relative">
+<select class="w-full appearance-none bg-white border border-outline-variant rounded-lg px-4 py-2.5 font-body-md text-body-md focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none">
+<option value="none">Kein Medium</option>
+<option selected="" value="demo-video">demo-video</option>
+<option value="image">Bildgalerie</option>
+<option value="audio">Audio-Guide</option>
+<option value="text">Infotext</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<div class="pt-2">
+<label class="font-sidebar-header text-sidebar-header text-on-surface-variant uppercase mb-4 block">360° Koordinaten</label>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-paper-50 p-4 rounded-lg border border-outline-variant/20">
+<div class="flex items-center justify-between mb-2">
+<span class="font-body-md text-body-md font-bold text-navy-header">Yaw</span>
+<span class="text-[10px] text-on-surface-variant bg-white px-1.5 py-0.5 rounded border border-outline-variant/30">HORIZONTAL</span>
+</div>
+<input class="w-full bg-white border border-outline-variant rounded-md px-3 py-1.5 font-code text-code focus:ring-1 focus:ring-secondary outline-none" step="0.1" type="number" value="184.1"/>
+</div>
+<div class="bg-paper-50 p-4 rounded-lg border border-outline-variant/20">
+<div class="flex items-center justify-between mb-2">
+<span class="font-body-md text-body-md font-bold text-navy-header">Pitch</span>
+<span class="text-[10px] text-on-surface-variant bg-white px-1.5 py-0.5 rounded border border-outline-variant/30">VERTIKAL</span>
+</div>
+<input class="w-full bg-white border border-outline-variant rounded-md px-3 py-1.5 font-code text-code focus:ring-1 focus:ring-secondary outline-none" step="0.1" type="number" value="2.0"/>
+</div>
+</div>
+<p class="font-caption text-caption text-on-surface-variant mt-2 italic">Tipp: Sie können den Hotspot auch direkt in der Vorschau verschieben.</p>
+</div>
+</div>
+</div>
+<!-- Icon Settings Card -->
+<div class="col-span-4 space-y-6">
+<div class="bg-white rounded-lg card-shadow p-card-padding">
+<h3 class="font-h2 text-h2 text-navy-header mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="image">image</span>
+                            Icon &amp; Stil
+                        </h3>
+<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-2">
+<label class="font-sidebar-header text-sidebar-header text-on-surface-variant uppercase">Vorschau</label>
+<div class="w-full aspect-square bg-paper-50 rounded-xl border-2 border-dashed border-outline-variant/40 flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer hover:border-brand-green transition-colors">
+<div class="text-center z-10 p-4">
+<span class="material-symbols-outlined text-[48px] text-brand-green mb-2" data-icon="info" data-weight="fill" style="font-variation-settings: 'FILL' 1;">info</span>
+<p class="text-[10px] font-bold text-navy-header">INFO_ICON_WHITE.SVG</p>
+<p class="text-[10px] text-on-surface-variant">24 KB · 512x512</p>
+</div>
+<div class="absolute inset-0 bg-navy-header/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="bg-white px-3 py-1.5 rounded-full text-xs font-bold text-navy-header shadow-md">Datei ändern</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-2 mt-2">
+<div class="flex justify-between items-center">
+<label class="font-sidebar-header text-sidebar-header text-on-surface-variant uppercase">Icon Größe</label>
+<span class="font-code text-code text-primary font-bold">1.2x</span>
+</div>
+<input class="w-full h-1.5 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-brand-green" max="3" min="0.5" step="0.1" type="range" value="1.2"/>
+<div class="flex justify-between text-[10px] text-on-surface-variant">
+<span>Klein</span>
+<span>Standard</span>
+<span>Groß</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Validation Card -->
+<div class="bg-[#f8ffee] border border-[#a2f876]/30 rounded-lg p-card-padding">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-brand-green" data-icon="check_circle">check_circle</span>
+<div>
+<h4 class="font-body-md text-body-md font-bold text-primary">Alle Checks bestanden</h4>
+<p class="font-caption text-caption text-on-primary-fixed-variant mt-1">Dieser Hotspot ist korrekt konfiguriert und bereit für das Deployment.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Actions Bar (Bottom) -->
+<div class="col-span-12 flex items-center justify-end gap-4 pt-4 border-t border-outline-variant/20 mt-4">
+<button class="px-6 py-2.5 rounded-full font-body-md text-body-md text-on-surface-variant hover:bg-surface-container-low transition-colors">
+                        Abbrechen
+                    </button>
+<button class="bg-brand-green hover:bg-brand-green-hover text-white px-10 py-2.5 rounded-full font-body-md text-body-md font-bold shadow-md transition-all active:scale-[0.98]">
+                        Speichern
+                    </button>
+</div>
+</div>
+<!-- Visualization Section -->
+<div class="mt-stack-lg">
+<div class="relative w-full h-[320px] rounded-xl overflow-hidden shadow-lg border border-outline-variant/30">
+<div class="w-full h-full bg-cover bg-center" data-alt="A high-resolution 360-degree panorama of a modern, bright classroom at MPZ Studio. The room features white walls, warm wooden furniture, and large windows letting in soft natural light. In the center of the image, a green interactive hotspot icon is positioned over a digital chalkboard. The aesthetic is clean, professional, and educational, consistent with a high-end web management tool." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCOBkzrWb50G4PV-OEvC4FsTkIuacz4256dqWFt5Ay35B0GL_N2tsLOjL146hLKBCflwbKNRO75eXtBrZb52wR6otgrrgxJQX-MbrP_b3IHV3DnAh3RFveqzjDL8NFB39sV_uIsyM2Ti1p3Lwj6IQ9WnIxOcEIBGCKAyRs7IqACa9gCE0jDFKZx80Afu68LQggis8k5Hnf-ABIEYrWhLDABc7cRPub7aM7HP2ErxSxRbhjlFmiKG-o9kxoiSuX03ot-lyGUOgve5Po')"></div>
+<div class="absolute inset-0 bg-black/10 pointer-events-none"></div>
+<!-- Floating Hotspot Indicator -->
+<div class="absolute top-[48%] left-[52%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+<div class="w-10 h-10 bg-brand-green text-white rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(75,154,35,0.6)] animate-pulse">
+<span class="material-symbols-outlined" data-icon="info">info</span>
+</div>
+<div class="mt-2 bg-navy-header/90 text-white text-[10px] px-2 py-1 rounded backdrop-blur-sm border border-white/20">
+                            Yaw: 184.1 | Pitch: 2.0
+                         </div>
+</div>
+<div class="absolute bottom-4 right-4 bg-white/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-outline-variant/30 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-navy-header" data-icon="360">360</span>
+<span class="font-caption text-caption font-bold text-navy-header">Interaktive Vorschau</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="mt-auto px-6 py-4 border-t border-outline-variant/10 text-on-surface-variant flex justify-between items-center">
+<span class="font-caption text-caption">© 2024 MPZ Studio · Internes Management-Tool</span>
+<div class="flex gap-4">
+<a class="font-caption text-caption hover:text-primary transition-colors" href="#">Hilfe-Center</a>
+<a class="font-caption text-caption hover:text-primary transition-colors" href="#">Dokumentation</a>
+</div>
+</footer>
+</main>
+<script>
+        // Simple micro-interaction for the range slider
+        const range = document.querySelector('input[type="range"]');
+        const rangeLabel = document.querySelector('.font-code.text-code.text-primary');
+        
+        if (range && rangeLabel) {
+            range.addEventListener('input', (e) => {
+                rangeLabel.textContent = `${e.target.value}x`;
+            });
+        }
+
+        // Active state scale simulation
+        const buttons = document.querySelectorAll('button, a');
+        buttons.forEach(btn => {
+            btn.addEventListener('mousedown', () => {
+                btn.style.transform = 'scale(0.98)';
+            });
+            btn.addEventListener('mouseup', () => {
+                btn.style.transform = 'scale(1)';
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

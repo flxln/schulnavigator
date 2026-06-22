@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MPZ Studio - Admin Console</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#425d86",
+                    "on-primary-fixed-variant": "#1d5200",
+                    "surface-variant": "#e3e2df",
+                    "secondary-fixed": "#d5e3ff",
+                    "surface-dim": "#dbdad6",
+                    "on-surface": "#1b1c1a",
+                    "surface-container-low": "#f4f4f0",
+                    "surface-container": "#efeeea",
+                    "inverse-surface": "#2f312e",
+                    "outline": "#717a68",
+                    "primary-fixed-dim": "#87db5d",
+                    "on-secondary-fixed-variant": "#004786",
+                    "on-secondary-fixed": "#001c3b",
+                    "on-error": "#ffffff",
+                    "secondary": "#045faf",
+                    "surface-bright": "#faf9f5",
+                    "tertiary-container": "#5b76a0",
+                    "surface-container-highest": "#e3e2df",
+                    "tertiary-fixed": "#d5e3ff",
+                    "tertiary-fixed-dim": "#acc8f6",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#37850a",
+                    "on-tertiary-fixed": "#001c3b",
+                    "on-primary-container": "#f8ffee",
+                    "on-primary-fixed": "#072100",
+                    "on-tertiary-container": "#fefcff",
+                    "on-error-container": "#93000a",
+                    "surface": "#faf9f5",
+                    "secondary-fixed-dim": "#a6c8ff",
+                    "on-tertiary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-secondary-container": "#003e76",
+                    "on-surface-variant": "#40493a",
+                    "inverse-primary": "#87db5d",
+                    "primary-fixed": "#a2f876",
+                    "on-background": "#1b1c1a",
+                    "primary": "#276a00",
+                    "surface-container-high": "#e9e8e4",
+                    "on-tertiary-fixed-variant": "#2c476f",
+                    "error": "#ba1a1a",
+                    "secondary-container": "#6daaff",
+                    "inverse-on-surface": "#f2f1ed",
+                    "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "surface-tint": "#286c00",
+                    "outline-variant": "#c0cab5",
+                    "background": "#faf9f5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "16px",
+                    "gutter": "16px",
+                    "container-padding": "24px",
+                    "topbar-height": "56px",
+                    "sidebar-width": "240px",
+                    "card-padding": "20px",
+                    "stack-lg": "24px",
+                    "stack-sm": "8px"
+            },
+            "fontFamily": {
+                    "h1": ["Nunito Sans"],
+                    "body-lg": ["Nunito Sans"],
+                    "code": ["monospace"],
+                    "caption": ["Nunito Sans"],
+                    "sidebar-header": ["Nunito Sans"],
+                    "body-md": ["Nunito Sans"],
+                    "h2": ["Nunito Sans"]
+            },
+            "fontSize": {
+                    "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #fcfbf7; /* Level 0 Paper */
+            color: #1b1c1a;
+        }
+        .sidebar-active-indicator {
+            border-left: 4px solid #a2f876;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f5f2ea;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c0cab5;
+            border-radius: 2px;
+        }
+        .waveform-bar {
+            transition: height 0.2s ease-in-out;
+        }
+    </style>
+</head>
+<body class="font-body-md overflow-hidden">
+<!-- Fixed Sidebar -->
+<aside class="fixed left-0 top-0 h-full w-[240px] bg-secondary flex flex-col py-stack-lg z-50">
+<div class="px-6 mb-8">
+<h1 class="font-h1 text-h1 text-on-secondary mb-1">MPZ Studio</h1>
+<p class="font-sidebar-header text-sidebar-header text-on-secondary opacity-60 uppercase">Admin Console</p>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Sidebar Items from JSON -->
+<a class="flex items-center px-6 py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-secondary border-l-4 border-primary-fixed bg-surface-container-highest/10 opacity-100 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3">analytics</span>
+<span class="font-body-md">Alle Stationen</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3">psychology</span>
+<span class="font-body-md">Coach</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3">link</span>
+<span class="font-body-md">Embeds &amp; Links</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3">palette</span>
+<span class="font-body-md">Design &amp; Hub</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3">rocket_launch</span>
+<span class="font-body-md">Deploy</span>
+</a>
+</nav>
+<div class="px-6 mt-auto">
+<div class="flex items-center gap-3 p-3 rounded-lg bg-surface-container-highest/10">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold">MS</div>
+<div>
+<p class="text-caption font-bold text-white leading-none">MPZ Admin</p>
+<p class="text-[10px] text-white/60">System Administrator</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="ml-[240px] flex flex-col h-screen">
+<!-- Top Navigation Bar -->
+<header class="h-[56px] bg-surface flex justify-between items-center px-container-padding border-b border-outline-variant sticky top-0 z-40">
+<div class="flex items-center gap-6">
+<span class="font-h2 text-h2 text-primary">Stationen</span>
+<nav class="hidden md:flex gap-4">
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors duration-150" href="#">Dashboard</a>
+<a class="text-primary font-bold border-b-2 border-primary transition-colors duration-150" href="#">Stationen</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-4 py-1.5 rounded-full border border-outline text-on-surface hover:bg-surface-container transition-colors font-body-md">
+                    Abbrechen
+                </button>
+<button class="px-4 py-1.5 rounded-full bg-primary text-on-primary hover:bg-[#3d7e1b] transition-colors font-body-md flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+                    Speichern &amp; Validieren
+                </button>
+</div>
+</header>
+<!-- Main Workspace -->
+<main class="flex-1 overflow-y-auto p-container-padding custom-scrollbar">
+<!-- Breadcrumbs / Context -->
+<div class="flex items-center gap-2 mb-stack-lg text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">home</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="font-caption">Audioguide Projekt Alpha</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="font-body-md font-semibold text-on-surface">Audiosegmente</span>
+</div>
+<!-- Bento Grid Header -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-stack-md mb-stack-lg">
+<div class="md:col-span-2 bg-white border border-[rgba(8,42,80,0.1)] rounded-xl p-stack-md flex items-center justify-between">
+<div>
+<h2 class="font-h1 text-h1 text-on-surface">Station 01: Frieda</h2>
+<p class="font-body-md text-on-surface-variant">Zentraler Audioguide-Eintrag für den Haupteingang.</p>
+</div>
+<div class="bg-primary/10 px-4 py-2 rounded-lg border border-primary/20 flex flex-col items-end">
+<span class="text-caption font-bold text-primary uppercase">Status</span>
+<span class="font-h2 text-primary">Alle Checks bestanden</span>
+</div>
+</div>
+<div class="bg-white border border-[rgba(8,42,80,0.1)] rounded-xl p-stack-md flex flex-col justify-center">
+<span class="text-caption text-on-surface-variant mb-1">Letzte Änderung</span>
+<span class="font-body-lg text-on-surface">Heute, 14:32 Uhr</span>
+<span class="text-caption text-on-surface-variant">von Admin Karl</span>
+</div>
+</div>
+<!-- Segment Rows Area -->
+<div class="space-y-stack-md">
+<!-- ROW 01 (EXPANDED) -->
+<div class="bg-white border-2 border-primary/30 rounded-xl overflow-hidden shadow-sm transition-all duration-300">
+<!-- Row Header -->
+<div class="px-container-padding py-4 flex items-center justify-between bg-primary/5 cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold">01</div>
+<span class="font-h2 text-on-surface">frieda</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="px-3 py-1 rounded-full bg-primary-container/20 text-on-primary-fixed-variant text-caption font-bold flex items-center gap-1 border border-primary/20">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                Clip ok
+                            </span>
+<span class="material-symbols-outlined text-on-surface-variant">expand_less</span>
+</div>
+</div>
+<!-- Expanded Content -->
+<div class="px-container-padding py-stack-lg border-t border-primary/10 grid grid-cols-1 lg:grid-cols-12 gap-stack-lg">
+<!-- Left: Audio Player & Waveform -->
+<div class="lg:col-span-7 space-y-stack-md">
+<div class="bg-surface-container-low rounded-lg p-stack-md border border-outline-variant">
+<div class="flex items-center gap-4 mb-4">
+<button class="w-12 h-12 rounded-full bg-primary text-on-primary flex items-center justify-center hover:bg-[#3d7e1b] transition-all shadow-md group">
+<span class="material-symbols-outlined text-[28px] group-active:scale-90 transition-transform" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<div class="flex-1">
+<div class="flex justify-between items-end mb-1">
+<span class="text-caption font-bold text-on-surface">01-frieda.wav</span>
+<span class="text-caption text-on-surface-variant font-code">02:45 / 03:12</span>
+</div>
+<!-- Waveform Visualizer -->
+<div class="h-16 flex items-end gap-[2px] w-full overflow-hidden" id="waveform-container">
+<!-- Generated via JS for realism -->
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex-1 h-1 bg-outline-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[85%]"></div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">volume_up</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-stack-md">
+<div class="bg-white border border-outline-variant rounded-lg p-4 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">description</span>
+<div>
+<p class="text-caption text-on-surface-variant leading-none">Dateigröße</p>
+<p class="font-body-md font-bold">12.4 MB</p>
+</div>
+</div>
+<div class="bg-white border border-outline-variant rounded-lg p-4 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">equalizer</span>
+<div>
+<p class="text-caption text-on-surface-variant leading-none">Samplerate</p>
+<p class="font-body-md font-bold">48 kHz / 24 bit</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Upload Zone & Actions -->
+<div class="lg:col-span-5 flex flex-col gap-stack-md">
+<label class="group cursor-pointer">
+<div class="border-2 border-dashed border-outline-variant rounded-xl p-8 flex flex-col items-center justify-center bg-surface-bright group-hover:border-primary group-hover:bg-primary/5 transition-all">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant group-hover:text-primary mb-3">cloud_upload</span>
+<p class="font-body-md font-bold text-on-surface">WAV ersetzen</p>
+<p class="text-caption text-on-surface-variant text-center mt-1">(01-frieda.wav)</p>
+<input class="hidden" type="file"/>
+</div>
+</label>
+<div class="bg-surface-container-highest/20 rounded-xl p-4 border border-outline-variant/30">
+<h4 class="text-caption font-bold uppercase text-on-surface-variant mb-3">Bearbeitungs-Tools</h4>
+<div class="space-y-2">
+<button class="w-full text-left px-3 py-2 rounded-lg hover:bg-white flex items-center justify-between text-body-md text-on-surface transition-colors">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">content_cut</span>
+                                            Clip zuschneiden
+                                        </span>
+<span class="material-symbols-outlined text-xs text-outline">chevron_right</span>
+</button>
+<button class="w-full text-left px-3 py-2 rounded-lg hover:bg-white flex items-center justify-between text-body-md text-on-surface transition-colors">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">auto_fix</span>
+                                            Normalisieren (LUFS)
+                                        </span>
+<span class="material-symbols-outlined text-xs text-outline">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ROW 02 (COLLAPSED) -->
+<div class="bg-white border border-[rgba(8,42,80,0.1)] rounded-xl overflow-hidden hover:border-primary/20 transition-colors">
+<div class="px-container-padding py-4 flex items-center justify-between cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center font-bold">02</div>
+<span class="font-h2 text-on-surface-variant">hinterhof</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface-variant text-caption font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">history</span>
+                                Wartend
+                            </span>
+<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+</div>
+</div>
+</div>
+<!-- ROW 03 (COLLAPSED) -->
+<div class="bg-white border border-[rgba(8,42,80,0.1)] rounded-xl overflow-hidden hover:border-primary/20 transition-colors">
+<div class="px-container-padding py-4 flex items-center justify-between cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center font-bold">03</div>
+<span class="font-h2 text-on-surface-variant">werkstatt</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="px-3 py-1 rounded-full bg-error-container text-on-error-container text-caption font-bold flex items-center gap-1 border border-error/10">
+<span class="material-symbols-outlined text-[14px]">error</span>
+                                Clip fehlt
+                            </span>
+<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Additional Help / Info Inset -->
+<div class="mt-stack-lg p-stack-lg bg-[#f5f2ea] rounded-xl border border-[rgba(8,42,80,0.05)]">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary mt-1">info</span>
+<div>
+<h4 class="font-h2 text-on-surface mb-1">Audio-Richtlinien</h4>
+<p class="text-body-md text-on-surface-variant max-w-2xl">
+                            Bitte stellen Sie sicher, dass alle Clips im WAV-Format hochgeladen werden. Die Ziel-Lautstärke sollte bei -14 LUFS (+/- 1) liegen, um ein konsistentes Hörerlebnis an allen Stationen zu gewährleisten.
+                        </p>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual FAB (Hidden on detail pages but demonstrated as requested in rules) -->
+<!-- Suppressed per rule "FABs are highly contextual... Suppress on Details" -->
+</div>
+<script>
+        // Generate a mock waveform
+        const container = document.getElementById('waveform-container');
+        const barCount = 100;
+        
+        for (let i = 0; i < barCount; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'waveform-bar w-[3px] bg-primary-container rounded-full opacity-60';
+            
+            // Random height with some "wave" pattern logic
+            const baseHeight = Math.sin(i * 0.1) * 20 + 30;
+            const randomExtra = Math.random() * 20;
+            const heightPercent = Math.min(100, baseHeight + randomExtra);
+            
+            bar.style.height = `${heightPercent}%`;
+            
+            // Interaction: Change color based on "playback" position
+            if (i < 85) {
+                bar.classList.add('bg-primary');
+                bar.classList.remove('opacity-60');
+            }
+            
+            container.appendChild(bar);
+        }
+
+        // Micro-interaction for play button
+        const playBtn = document.querySelector('.group');
+        let playing = false;
+        playBtn.addEventListener('click', () => {
+            playing = !playing;
+            const icon = playBtn.querySelector('.material-symbols-outlined');
+            icon.innerText = playing ? 'pause' : 'play_arrow';
+            
+            // Simple visual animation for waveform
+            const bars = document.querySelectorAll('.waveform-bar');
+            bars.forEach(b => {
+                if(playing) {
+                    b.style.transition = 'height 0.15s ease-in-out';
+                    setInterval(() => {
+                        if(playing) b.style.height = (20 + Math.random() * 60) + '%';
+                    }, 150);
+                }
+            });
+        });
+    </script>
+</body></html>

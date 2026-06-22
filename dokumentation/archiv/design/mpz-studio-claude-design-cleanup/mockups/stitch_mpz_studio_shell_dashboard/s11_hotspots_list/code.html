@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MPZ Studio - Hotspots</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#6daaff",
+                        "on-surface": "#1b1c1a",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#a2f876",
+                        "on-surface-variant": "#40493a",
+                        "on-background": "#1b1c1a",
+                        "surface-tint": "#286c00",
+                        "inverse-primary": "#87db5d",
+                        "primary-container": "#37850a",
+                        "outline": "#717a68",
+                        "surface-dim": "#dbdad6",
+                        "secondary": "#045faf",
+                        "on-tertiary-container": "#fefcff",
+                        "on-error": "#ffffff",
+                        "tertiary": "#425d86",
+                        "on-primary-fixed": "#072100",
+                        "surface-container-high": "#e9e8e4",
+                        "secondary-fixed-dim": "#a6c8ff",
+                        "outline-variant": "#c0cab5",
+                        "primary": "#276a00",
+                        "on-tertiary-fixed": "#001c3b",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#efeeea",
+                        "surface-container-low": "#f4f4f0",
+                        "surface-bright": "#faf9f5",
+                        "surface-variant": "#e3e2df",
+                        "on-primary-container": "#f8ffee",
+                        "on-primary": "#ffffff",
+                        "background": "#faf9f5",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#001c3b",
+                        "inverse-surface": "#2f312e",
+                        "on-tertiary-fixed-variant": "#2c476f",
+                        "on-error-container": "#93000a",
+                        "on-secondary-container": "#003e76",
+                        "tertiary-fixed-dim": "#acc8f6",
+                        "primary-fixed-dim": "#87db5d",
+                        "on-primary-fixed-variant": "#1d5200",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#5b76a0",
+                        "surface": "#faf9f5",
+                        "surface-container-highest": "#e3e2df",
+                        "inverse-on-surface": "#f2f1ed",
+                        "secondary-fixed": "#d5e3ff",
+                        "on-secondary-fixed-variant": "#004786",
+                        "tertiary-fixed": "#d5e3ff",
+                        "error-container": "#ffdad6",
+                        "paper": "#fcfbf7",
+                        "paper-50": "#f5f2ea",
+                        "navy-sidebar": "#082a50"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "sidebar-width": "240px",
+                        "card-padding": "20px",
+                        "topbar-height": "56px",
+                        "gutter": "16px",
+                        "container-padding": "24px",
+                        "stack-lg": "24px"
+                    },
+                    "fontFamily": {
+                        "h1": ["Nunito Sans"],
+                        "h2": ["Nunito Sans"],
+                        "caption": ["Nunito Sans"],
+                        "sidebar-header": ["Nunito Sans"],
+                        "code": ["monospace"],
+                        "body-lg": ["Nunito Sans"],
+                        "body-md": ["Nunito Sans"]
+                    },
+                    "fontSize": {
+                        "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                        "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Nunito Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-tab-border {
+            position: relative;
+        }
+        .active-tab-border::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #276a00;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-paper text-on-surface flex min-h-screen overflow-hidden">
+<!-- Sidebar (Shared Component: SideNavBar) -->
+<aside class="docked fixed h-full w-[240px] left-0 top-0 bg-navy-sidebar text-white flex flex-col z-50">
+<!-- Logo Area -->
+<div class="px-6 py-8 flex flex-col">
+<span class="font-h1 text-h1 font-bold text-white tracking-tight">MPZ Studio</span>
+<span class="font-sidebar-header text-sidebar-header text-white/55 mt-1">ADMIN DASHBOARD</span>
+</div>
+<!-- Navigation Groups -->
+<nav class="flex-1 overflow-y-auto custom-scrollbar">
+<!-- Group 1: General -->
+<div class="mb-6">
+<p class="px-6 font-sidebar-header text-sidebar-header opacity-55 mb-2">SYSTEM</p>
+<a class="flex items-center text-white/80 px-6 py-3 hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center text-white border-l-4 border-primary-fixed bg-white/10 px-[20px] py-3" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]">location_on</span>
+<span class="font-body-md text-body-md">Alle Stationen</span>
+</a>
+</div>
+<!-- Group 2: Learning -->
+<div class="mb-6">
+<p class="px-6 font-sidebar-header text-sidebar-header opacity-55 mb-2">EDUCATION</p>
+<a class="flex items-center text-white/80 px-6 py-3 hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]">school</span>
+<span class="font-body-md text-body-md">Coach</span>
+</a>
+</div>
+<!-- Group 3: Assets -->
+<div class="mb-6">
+<p class="px-6 font-sidebar-header text-sidebar-header opacity-55 mb-2">RESOURCES</p>
+<a class="flex items-center text-white/80 px-6 py-3 hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]">link</span>
+<span class="font-body-md text-body-md">Embeds &amp; Links</span>
+</a>
+<a class="flex items-center text-white/80 px-6 py-3 hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]">palette</span>
+<span class="font-body-md text-body-md">Design &amp; Hub</span>
+</a>
+</div>
+<!-- Group 4: Delivery -->
+<div class="mb-6">
+<p class="px-6 font-sidebar-header text-sidebar-header opacity-55 mb-2">PUBLISHING</p>
+<a class="flex items-center text-white/80 px-6 py-3 hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]">rocket_launch</span>
+<span class="font-body-md text-body-md">Deploy</span>
+</a>
+</div>
+</nav>
+<!-- Sidebar Footer -->
+<div class="p-6 border-t border-white/10 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">person</span>
+</div>
+<div>
+<p class="font-body-md text-body-md font-bold">Admin User</p>
+<p class="text-caption font-caption opacity-60">Online</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[240px] flex-1 flex flex-col h-screen overflow-hidden">
+<!-- TopAppBar (Shared Component: TopNavBar) -->
+<header class="flex justify-between items-center h-[56px] px-container-padding bg-surface border-b border-outline-variant/30 sticky top-0 z-40">
+<!-- Breadcrumbs -->
+<div class="flex items-center gap-2 font-body-md text-body-md">
+<span class="text-on-surface-variant">Stationen</span>
+<span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span>
+<span class="font-bold text-on-surface">Klassenzimmer</span>
+<!-- Dirty Dot Indicator -->
+<div class="w-2 h-2 rounded-full bg-orange-500 ml-1 shadow-sm" title="Unsaved changes"></div>
+</div>
+<!-- Actions -->
+<div class="flex items-center gap-4">
+<div class="flex items-center bg-surface-container-low px-3 py-1 rounded-full border border-outline-variant/20">
+<div class="w-2 h-2 rounded-full bg-blue-400 mr-2"></div>
+<span class="text-caption font-caption text-on-surface-variant">Nur lokal · development</span>
+</div>
+<button class="bg-primary hover:bg-[#3d7e1b] text-white px-5 py-2 rounded-full text-body-md font-bold shadow-sm transition-all active:scale-95 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+                    Speichern &amp; Validieren
+                </button>
+</div>
+</header>
+<!-- Scrollable Content Canvas -->
+<div class="flex-1 overflow-y-auto p-container-padding">
+<!-- Page Header & Tabs -->
+<div class="max-w-[1000px] mx-auto">
+<div class="mb-8">
+<h1 class="font-h1 text-h1 text-on-surface mb-6">Klassenzimmer</h1>
+<!-- Tabs -->
+<div class="flex border-b border-outline-variant/30 gap-8">
+<button class="pb-3 text-body-md text-on-surface-variant hover:text-primary transition-colors">Stammdaten</button>
+<button class="pb-3 text-body-md text-on-surface-variant hover:text-primary transition-colors">Medien</button>
+<button class="pb-3 text-body-md font-bold text-primary active-tab-border">Hotspots</button>
+<button class="pb-3 text-body-md text-on-surface-variant hover:text-primary transition-colors">Aufgaben</button>
+<button class="pb-3 text-body-md text-on-surface-variant hover:text-primary transition-colors">Einstellungen</button>
+</div>
+</div>
+<!-- Section: Hotspots Table -->
+<div class="bg-white rounded-xl border border-[rgba(8,42,80,0.1)] shadow-sm overflow-hidden mb-8">
+<div class="px-card-padding py-4 border-b border-outline-variant/30 flex justify-between items-center bg-white">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">view_in_ar</span>
+<h2 class="font-h2 text-h2">Hotspots 360°</h2>
+</div>
+<button class="text-primary font-bold text-body-md flex items-center gap-1 hover:underline">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                            Neuer Hotspot
+                        </button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-paper-50 h-[44px]">
+<th class="px-card-padding font-sidebar-header text-sidebar-header text-on-surface-variant uppercase">Label</th>
+<th class="px-card-padding font-sidebar-header text-sidebar-header text-on-surface-variant uppercase">Medium ID</th>
+<th class="px-card-padding font-sidebar-header text-sidebar-header text-on-surface-variant uppercase">Yaw / Pitch</th>
+<th class="px-card-padding font-sidebar-header text-sidebar-header text-on-surface-variant uppercase text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+<!-- Row 1 -->
+<tr class="h-[44px] hover:bg-surface-container-low transition-colors group">
+<td class="px-card-padding text-body-md font-semibold text-on-surface">Korkpinnwand</td>
+<td class="px-card-padding">
+<code class="font-code text-code bg-surface-container px-2 py-0.5 rounded">hs-text</code>
+</td>
+<td class="px-card-padding text-body-md text-on-surface-variant">12.4 / -5.2</td>
+<td class="px-card-padding text-right">
+<div class="flex justify-end gap-4">
+<button class="text-primary hover:text-surface-tint font-bold text-caption transition-colors">Bearbeiten</button>
+<button class="text-error hover:text-error/80 font-bold text-caption transition-colors">Löschen</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="h-[44px] hover:bg-surface-container-low transition-colors group">
+<td class="px-card-padding text-body-md font-semibold text-on-surface">Tafel</td>
+<td class="px-card-padding">
+<code class="font-code text-code bg-surface-container px-2 py-0.5 rounded">hs-video</code>
+</td>
+<td class="px-card-padding text-body-md text-on-surface-variant">184.1 / 2.0</td>
+<td class="px-card-padding text-right">
+<div class="flex justify-end gap-4">
+<button class="text-primary hover:text-surface-tint font-bold text-caption transition-colors">Bearbeiten</button>
+<button class="text-error hover:text-error/80 font-bold text-caption transition-colors">Löschen</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="h-[44px] hover:bg-surface-container-low transition-colors group">
+<td class="px-card-padding text-body-md font-semibold text-on-surface">Klassentische</td>
+<td class="px-card-padding">
+<code class="font-code text-code bg-surface-container px-2 py-0.5 rounded">hs-audio</code>
+</td>
+<td class="px-card-padding text-body-md text-on-surface-variant">90.0 / -45.5</td>
+<td class="px-card-padding text-right">
+<div class="flex justify-end gap-4">
+<button class="text-primary hover:text-surface-tint font-bold text-caption transition-colors">Bearbeiten</button>
+<button class="text-error hover:text-error/80 font-bold text-caption transition-colors">Löschen</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-card-padding py-4 border-t border-outline-variant/30 flex justify-between items-center bg-surface-bright">
+<a class="text-primary hover:underline font-bold text-body-md flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[20px]">straighten</span>
+                            Sphere kalibrieren
+                        </a>
+<span class="text-caption text-on-surface-variant italic">3 Hotspots definiert</span>
+</div>
+</div>
+<!-- Visual Preview Card (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
+<div class="relative rounded-xl border border-[rgba(8,42,80,0.1)] overflow-hidden h-64 bg-surface-container group">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="A cinematic, wide-angle 360-degree equirectangular panorama of a modern, well-lit elementary school classroom. The room features large windows with soft daylight, wooden desks arranged in groups, and a large blackboard. The aesthetic is clean, professional, and slightly warm, aligning with a high-fidelity educational software interface." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB9-fubsqWOVt7zrGu0E4a5nHoTdSlEnYu_NcLh8Y5GFF-TKyFgrq28M7pTDTaS4CuYD75NTFLnkZkneCKNU-GlHdVvasMv58zpQP3TDfJA02zfaViJm03AVC-5hb8JNkIMWlS-QOqSrWA4WpYojGIecHnuufXGbOZ0R-Iyr_vsRUFp3DvH7dN-_VyL-_G39Lm5rKUUbWctk4YX7OXe7JjEf0e4jfeb65ct7Q45ZTflqElbhMLtrkWeT8HWVKeEZU1d-la0aLVkf6g')"></div>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
+<div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-caption font-bold shadow-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary">panorama_photosphere</span>
+                            360° Vorschau
+                        </div>
+<div class="absolute inset-0 flex items-center justify-center">
+<button class="bg-white/20 hover:bg-white/40 backdrop-blur-xl p-4 rounded-full border border-white/30 text-white transition-all transform hover:scale-110 active:scale-90">
+<span class="material-symbols-outlined text-[32px]">play_arrow</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col gap-stack-md">
+<div class="bg-white p-card-padding rounded-xl border border-[rgba(8,42,80,0.1)] shadow-sm">
+<h3 class="font-h2 text-h2 mb-2">Editor Tipps</h3>
+<p class="text-body-md text-on-surface-variant">Hotspots können durch Klicken in die 360°-Ansicht platziert werden. Die Koordinaten werden automatisch berechnet.</p>
+<ul class="mt-4 space-y-2">
+<li class="flex items-start gap-2 text-caption text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-[16px]">info</span>
+                                    Yaw steuert die horizontale Rotation (0-360°)
+                                </li>
+<li class="flex items-start gap-2 text-caption text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-[16px]">info</span>
+                                    Pitch steuert den vertikalen Winkel (-90 bis 90°)
+                                </li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Validation Footer Status -->
+<footer class="h-12 bg-white border-t border-outline-variant/30 px-container-padding flex items-center justify-between">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-body-md font-bold">Struktur-Check bereit</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-1 text-caption text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">cloud_done</span>
+                    Zuletzt gespeichert: Vor 2 Min.
+                </div>
+<div class="h-4 w-px bg-outline-variant/30"></div>
+<div class="flex items-center gap-1 text-caption text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">storage</span>
+                    DB v2.4.0
+                </div>
+</div>
+</footer>
+</main>
+<!-- Interactive Micro-Interactions -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Row hover animation effect (subtle scale)
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                row.addEventListener('mousedown', () => {
+                    row.style.transform = 'scale(0.995)';
+                    row.style.transition = 'transform 0.1s';
+                });
+                row.addEventListener('mouseup', () => {
+                    row.style.transform = 'scale(1)';
+                });
+            });
+
+            // Button active state logic
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.addEventListener('mousedown', () => btn.classList.add('scale-95'));
+                btn.addEventListener('mouseup', () => btn.classList.remove('scale-95'));
+                btn.addEventListener('mouseleave', () => btn.classList.remove('scale-95'));
+            });
+        });
+    </script>
+</body></html>

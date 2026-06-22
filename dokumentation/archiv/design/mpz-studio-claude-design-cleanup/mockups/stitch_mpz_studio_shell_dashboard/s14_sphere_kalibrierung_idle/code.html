@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sphere-Kalibrierung · MPZ Studio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Shared Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed-variant": "#1d5200",
+                    "error": "#ba1a1a",
+                    "surface-container-highest": "#e3e2df",
+                    "inverse-on-surface": "#f2f1ed",
+                    "tertiary-container": "#5b76a0",
+                    "surface": "#faf9f5",
+                    "tertiary-fixed": "#d5e3ff",
+                    "secondary-fixed": "#d5e3ff",
+                    "on-secondary-fixed-variant": "#004786",
+                    "error-container": "#ffdad6",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed": "#001c3b",
+                    "inverse-surface": "#2f312e",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed-variant": "#2c476f",
+                    "tertiary-fixed-dim": "#acc8f6",
+                    "primary-fixed-dim": "#87db5d",
+                    "on-secondary-container": "#003e76",
+                    "surface-variant": "#e3e2df",
+                    "on-primary-container": "#f8ffee",
+                    "surface-bright": "#faf9f5",
+                    "background": "#faf9f5",
+                    "on-primary": "#ffffff",
+                    "outline-variant": "#c0cab5",
+                    "surface-container": "#efeeea",
+                    "primary": "#276a00",
+                    "on-tertiary-fixed": "#001c3b",
+                    "on-secondary": "#ffffff",
+                    "surface-container-low": "#f4f4f0",
+                    "tertiary": "#425d86",
+                    "on-primary-fixed": "#072100",
+                    "surface-container-high": "#e9e8e4",
+                    "secondary-fixed-dim": "#a6c8ff",
+                    "outline": "#717a68",
+                    "secondary": "#045faf",
+                    "surface-dim": "#dbdad6",
+                    "on-tertiary-container": "#fefcff",
+                    "on-error": "#ffffff",
+                    "secondary-container": "#6daaff",
+                    "on-surface": "#1b1c1a",
+                    "surface-tint": "#286c00",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed": "#a2f876",
+                    "on-surface-variant": "#40493a",
+                    "on-background": "#1b1c1a",
+                    "primary-container": "#37850a",
+                    "inverse-primary": "#87db5d"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "16px",
+                    "sidebar-width": "240px",
+                    "card-padding": "20px",
+                    "stack-sm": "8px",
+                    "stack-lg": "24px",
+                    "topbar-height": "56px",
+                    "gutter": "16px",
+                    "container-padding": "24px"
+            },
+            "fontFamily": {
+                    "h1": ["Nunito Sans"],
+                    "sidebar-header": ["Nunito Sans"],
+                    "h2": ["Nunito Sans"],
+                    "caption": ["Nunito Sans"],
+                    "body-md": ["Nunito Sans"],
+                    "code": ["monospace"],
+                    "body-lg": ["Nunito Sans"]
+            },
+            "fontSize": {
+                    "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #faf9f5; /* surface */
+            font-family: 'Nunito Sans', sans-serif;
+            color: #1b1c1a; /* on-surface */
+            overflow: hidden;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
+        .panorama-container {
+            mask-image: radial-gradient(circle at center, black 60%, transparent 100%);
+            perspective: 1000px;
+        }
+
+        .panorama-view {
+            transform: scale(1.05) rotateX(2deg);
+            transition: transform 0.3s ease-out;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c0cab5;
+            border-radius: 10px;
+        }
+
+        .active-tab-indicator {
+            position: absolute;
+            bottom: -1px;
+            height: 2px;
+            background-color: #276a00; /* primary */
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen">
+<!-- Top Bar -->
+<header class="h-[56px] w-full bg-surface-container-lowest flex items-center px-container-padding border-b border-outline-variant/30 z-50">
+<div class="flex items-center gap-4 w-full max-w-[1280px] mx-auto">
+<button class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors font-body-md">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+<span>Zurück</span>
+</button>
+<div class="h-4 w-[1px] bg-outline-variant/50 mx-2"></div>
+<h1 class="font-h2 text-h2 text-on-surface flex items-center gap-2">
+                Sphere-Kalibrierung <span class="text-on-surface-variant font-normal">· musik</span>
+</h1>
+<div class="ml-4 px-2 py-0.5 rounded bg-surface-container-high border border-outline-variant/50 text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">
+                calib · nur lokal
+            </div>
+<div class="flex-grow"></div>
+<div class="flex items-center gap-2">
+<div class="h-8 w-8 rounded-full bg-secondary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-[18px]">admin_panel_settings</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Secondary Nav / Tabs -->
+<nav class="h-[48px] w-full bg-surface-container-lowest flex items-center px-container-padding border-b border-outline-variant/20 z-40">
+<div class="flex items-center gap-8 h-full max-w-[1280px] mx-auto w-full">
+<button class="h-full relative flex items-center gap-2 px-1 text-primary font-bold font-body-md group">
+<span class="material-symbols-outlined text-[20px]">ads_click</span>
+                Hotspots
+                <div class="active-tab-indicator"></div>
+</button>
+<button class="h-full relative flex items-center gap-2 px-1 text-on-surface-variant font-body-md hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+                Startblick
+            </button>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-grow flex w-full max-w-[1280px] mx-auto overflow-hidden bg-surface">
+<!-- Panorama Viewport (Left) -->
+<section class="w-[1008px] h-full relative bg-[#000] overflow-hidden group cursor-crosshair">
+<!-- Panorama Image -->
+<div class="w-full h-full flex items-center justify-center panorama-container">
+<div class="w-full h-full bg-cover bg-center panorama-view opacity-80 group-hover:opacity-100 transition-opacity duration-700" data-alt="A professional high-resolution equirectangular 360-degree panorama of a modern, high-end music studio classroom. The room is filled with acoustic panels in neutral tones, a grand piano in the corner, and several music stands arranged in a semicircle. Large windows allow soft daylight to illuminate the warm wood flooring and clean white walls. The style is crisp and documentary-like, emphasizing Studio Precision and professional audio engineering environments." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAQub3WZvRcV_MJ6OtSZSPxJwQyOQ3TJM3DFtVNi-Url85ckzUHjunbrpwSYDZdKgqfyZrLcjhZNI74o9NnVra0XA52bYrgfPOq4R5veBCrPj6RRdn5_KZRja0SLf_xYZFhMfT-GhkaSIg5VM9xYemeZ3wavbFl-7yjgRijXyjM1y_oGGCJ0Cmr5IO05YcgedJ18ORikzaRWln1Je7PnA_gQ_A7paf4iAPyLwKH6f2gOsKU6cglQ9KhBp8RLYAk931fqKNM01TyMO8')">
+</div>
+</div>
+<!-- Interaction Layer Overlays -->
+<div class="absolute inset-0 pointer-events-none flex flex-col justify-between p-6">
+<div class="flex justify-between items-start">
+<div class="bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 text-white font-code text-code">
+                        FOV: 75.0° | Yaw: 0.00 | Pitch: 0.00
+                    </div>
+<div class="flex gap-2">
+<button class="p-2 bg-black/40 backdrop-blur-md rounded-full border border-white/10 text-white pointer-events-auto hover:bg-white/20 transition-colors">
+<span class="material-symbols-outlined">zoom_in</span>
+</button>
+<button class="p-2 bg-black/40 backdrop-blur-md rounded-full border border-white/10 text-white pointer-events-auto hover:bg-white/20 transition-colors">
+<span class="material-symbols-outlined">zoom_out</span>
+</button>
+<button class="p-2 bg-black/40 backdrop-blur-md rounded-full border border-white/10 text-white pointer-events-auto hover:bg-white/20 transition-colors">
+<span class="material-symbols-outlined">fullscreen</span>
+</button>
+</div>
+</div>
+<div class="self-center flex flex-col items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+<div class="w-8 h-8 rounded-full border-2 border-primary/50 flex items-center justify-center">
+<div class="w-1 h-1 bg-primary rounded-full"></div>
+</div>
+<span class="text-[10px] uppercase font-bold tracking-widest text-white/70 drop-shadow-md">Crosshair Active</span>
+</div>
+<div class="text-white/40 text-caption font-caption italic">
+                    Spherical Projection · v2.4-stable
+                </div>
+</div>
+</section>
+<!-- Configuration Panel (Right) -->
+<aside class="w-[272px] h-full bg-[#f5f2ea] border-l border-outline-variant/30 flex flex-col">
+<div class="p-6 flex flex-col gap-6 overflow-y-auto custom-scrollbar flex-grow">
+<!-- Dropdown Section -->
+<div class="space-y-2">
+<label class="font-sidebar-header text-sidebar-header text-on-surface-variant uppercase">Konfiguration</label>
+<div class="relative group">
+<select class="w-full h-10 pl-3 pr-10 bg-surface-container-lowest border border-outline-variant/50 rounded-lg text-body-md font-body-md appearance-none focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
+<option value="">Hotspot wählen</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">
+                            expand_more
+                        </span>
+</div>
+<p class="text-caption font-caption text-on-surface-variant leading-relaxed italic">
+                        Noch keine Hotspots in <span class="font-code text-[11px] bg-white/50 px-1 rounded">stations.json</span> definiert.
+                    </p>
+</div>
+<div class="h-[1px] bg-outline-variant/20"></div>
+<!-- Helper Text -->
+<div class="bg-surface-container-low/50 border border-outline-variant/30 rounded-xl p-4 flex gap-3">
+<span class="material-symbols-outlined text-primary text-[20px] shrink-0">info</span>
+<p class="text-body-md font-body-md text-on-surface-variant leading-tight">
+                        Klicke ins Panorama um Koordinaten zu setzen
+                    </p>
+</div>
+<!-- Coordinates Display (Idle State) -->
+<div class="space-y-3">
+<div class="flex justify-between items-center px-1">
+<span class="text-caption font-bold text-on-surface-variant">Yaw</span>
+<span class="font-code text-code text-on-surface-variant/50">—</span>
+</div>
+<div class="w-full h-1.5 bg-outline-variant/20 rounded-full overflow-hidden">
+<div class="h-full w-0 bg-primary"></div>
+</div>
+<div class="flex justify-between items-center px-1">
+<span class="text-caption font-bold text-on-surface-variant">Pitch</span>
+<span class="font-code text-code text-on-surface-variant/50">—</span>
+</div>
+<div class="w-full h-1.5 bg-outline-variant/20 rounded-full overflow-hidden">
+<div class="h-full w-0 bg-primary"></div>
+</div>
+</div>
+</div>
+<!-- Fixed Footer Action -->
+<div class="p-6 bg-[#efeeea] border-t border-outline-variant/30">
+<button class="w-full py-3 px-4 bg-outline-variant/30 text-on-surface-variant rounded-full font-bold text-body-md cursor-not-allowed flex items-center justify-center gap-2 opacity-50 grayscale transition-all" disabled="">
+<span class="material-symbols-outlined text-[18px]">save</span>
+                    In stations.json übernehmen
+                </button>
+<p class="mt-3 text-center text-[11px] text-on-surface-variant/60 font-caption">
+                    Vorschau der Änderungen in Echtzeit.
+                </p>
+</div>
+</aside>
+</main>
+<!-- Micro-interactions Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const panView = document.querySelector('.panorama-view');
+            const panContainer = document.querySelector('.panorama-container');
+            
+            // Subtle parallax effect on mouse move in panorama
+            panContainer.addEventListener('mousemove', (e) => {
+                const rect = panContainer.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width;
+                const y = (e.clientY - rect.top) / rect.height;
+                
+                const moveX = (x - 0.5) * 10;
+                const moveY = (y - 0.5) * 5;
+                
+                panView.style.transform = `scale(1.05) translate(${moveX}px, ${moveY}px) rotateX(${2 + moveY/2}deg)`;
+            });
+
+            panContainer.addEventListener('mouseleave', () => {
+                panView.style.transform = `scale(1.05) rotateX(2deg)`;
+            });
+
+            // Simulate loading state of panorama
+            setTimeout(() => {
+                panView.classList.remove('opacity-80');
+            }, 500);
+        });
+    </script>
+</body></html>

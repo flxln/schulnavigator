@@ -3,7 +3,7 @@
 **Datum:** 2026-06-22  
 **Zweck:** UI-Aufräumen und Neu-Strukturierung der **vollständigen** MPZ-Studio-Oberfläche (Epic v2/v2.1 umgesetzt)  
 **Vorgänger:** [`../mpz-studio-claude-design/`](../mpz-studio-claude-design/) (nur v0-Scope, Juni 2026)  
-**Roadmap + Navigation:** [`ROADMAP.md`](./ROADMAP.md)
+**Roadmap + Navigation:** [`ROADMAP.md`](./ROADMAP.md) · **Soll-IA:** [`NAVIGATION-SOLL.md`](./NAVIGATION-SOLL.md)
 
 ---
 
@@ -11,7 +11,7 @@
 
 1. **Gesamten Ordner** `mpz-studio-claude-design-cleanup/` in Claude Design hochladen (alle Dateien unten).
 2. Optional: Screenshots in [`assets/`](./assets/) ergänzen (siehe `assets/README.md`) und erneut hochladen.
-3. **Prompt kopieren:** [`CLAUDE-DESIGN-PROMPT.md`](./CLAUDE-DESIGN-PROMPT.md) — vollständig in Claude Design einfügen.
+3. **Prompt kopieren:** [`CLAUDE-DESIGN-PROMPT.md`](./CLAUDE-DESIGN-PROMPT.md) — Gesamtauftrag, oder pro Screen: [`18-mockup-prompts.md`](./18-mockup-prompts.md)
 
 ---
 
@@ -25,6 +25,9 @@
 | [`08-bekannte-ui-probleme.md`](./08-bekannte-ui-probleme.md) | Ist-Zustand: Durcheinander, Redundanzen | ✅ |
 | [`15-dialog-segment-zeilenmodell.md`](./15-dialog-segment-zeilenmodell.md) | **Entscheidung:** Dialog-Audio pro Segment-Zeile | ✅ |
 | [`16-sphere-calib-screen.md`](./16-sphere-calib-screen.md) | **Entscheidung:** Sphere-Kalibrierung eigener MPZ-Screen (Option A) | ✅ geplant |
+| [`NAVIGATION-SOLL.md`](./NAVIGATION-SOLL.md) | **Verbindliche Soll-IA** (#196) | ✅ |
+| [`17-komponenteninventar-soll.md`](./17-komponenteninventar-soll.md) | Soll-Komponenten ↔ Screens | ✅ |
+| [`18-mockup-prompts.md`](./18-mockup-prompts.md) | **Standalone-Prompts** pro Screen & Zustand (53) — `node build-mockup-prompts.mjs` | ✅ |
 | [`03-design-system-gs39-tokens.css`](./03-design-system-gs39-tokens.css) | Farben, Typo, Spacing | ✅ |
 | [`04-stations-schema.json`](./04-stations-schema.json) | JSON-Schema → Formularfelder | ✅ |
 | [`05-typendefinitionen.md`](./05-typendefinitionen.md) | TypeScript-Modell (Auszug, v2.1) | ✅ |
@@ -37,7 +40,7 @@
 | [`12-komponenten-inventar-ist.md`](./12-komponenten-inventar-ist.md) | Aktuelle React-Komponenten ↔ Screens | empfohlen |
 | [`13-coach-messages-auszug.json`](./13-coach-messages-auszug.json) | Coach-Panel Mock-Daten | optional |
 | [`14-embed-allowlist.json`](./14-embed-allowlist.json) | Embeds-Tab Mock | optional |
-| [`assets/`](./assets/) | Screenshots aktueller UI (manuell) | optional |
+| [`mockups/`](./mockups/) | Stitch-HTML-Mockups S1–S24 + [`SCREEN-MATRIX.md`](./mockups/SCREEN-MATRIX.md) | ✅ (#196) |
 
 ---
 

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MPZ Studio - Klassenzimmer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#1b1c1a",
+                        "surface": "#faf9f5",
+                        "tertiary-fixed": "#d5e3ff",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#87db5d",
+                        "primary-container": "#37850a",
+                        "outline-variant": "#c0cab5",
+                        "secondary-fixed-dim": "#a6c8ff",
+                        "primary-fixed-dim": "#87db5d",
+                        "on-primary-container": "#f8ffee",
+                        "inverse-on-surface": "#f2f1ed",
+                        "surface-container": "#efeeea",
+                        "on-background": "#1b1c1a",
+                        "secondary-fixed": "#d5e3ff",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#faf9f5",
+                        "secondary": "#045faf",
+                        "tertiary-fixed-dim": "#acc8f6",
+                        "inverse-surface": "#2f312e",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a",
+                        "tertiary": "#425d86",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#5b76a0",
+                        "on-tertiary-fixed-variant": "#2c476f",
+                        "on-secondary-fixed": "#001c3b",
+                        "on-primary-fixed": "#072100",
+                        "surface-container-low": "#f4f4f0",
+                        "outline": "#717a68",
+                        "surface-tint": "#286c00",
+                        "on-tertiary-container": "#fefcff",
+                        "on-tertiary-fixed": "#001c3b",
+                        "on-secondary-fixed-variant": "#004786",
+                        "surface-container-high": "#e9e8e4",
+                        "on-error-container": "#93000a",
+                        "on-secondary-container": "#003e76",
+                        "secondary-container": "#6daaff",
+                        "on-surface-variant": "#40493a",
+                        "on-primary-fixed-variant": "#1d5200",
+                        "surface-variant": "#e3e2df",
+                        "on-tertiary": "#ffffff",
+                        "background": "#faf9f5",
+                        "surface-container-highest": "#e3e2df",
+                        "primary-fixed": "#a2f876",
+                        "surface-dim": "#dbdad6",
+                        "primary": "#276a00",
+                        "error-container": "#ffdad6",
+                        "paper": "#fcfbf7",
+                        "paper-50": "#f5f2ea"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "card-padding": "20px",
+                        "stack-sm": "8px",
+                        "container-padding": "24px",
+                        "stack-lg": "24px",
+                        "topbar-height": "56px",
+                        "stack-md": "16px",
+                        "sidebar-width": "240px"
+                    },
+                    "fontFamily": {
+                        "sidebar-header": ["Nunito Sans"],
+                        "h1": ["Nunito Sans"],
+                        "caption": ["Nunito Sans"],
+                        "body-lg": ["Nunito Sans"],
+                        "code": ["monospace"],
+                        "body-md": ["Nunito Sans"],
+                        "h2": ["Nunito Sans"]
+                    },
+                    "fontSize": {
+                        "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #fcfbf7;
+            font-family: 'Nunito Sans', sans-serif;
+            color: #1b1c1a;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .sidebar-active {
+            border-left: 4px solid #276a00;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff !important;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased">
+<!-- Sidebar -->
+<aside class="fixed left-0 top-0 h-full w-[240px] bg-[#082a50] flex flex-col z-50 overflow-y-auto hide-scrollbar">
+<div class="px-6 py-8">
+<h1 class="text-h2 font-h2 text-white">MPZ Studio</h1>
+<p class="text-caption text-white/60">Admin Dashboard</p>
+</div>
+<nav class="flex-1 px-2 space-y-1">
+<div class="px-4 py-2 text-sidebar-header font-sidebar-header text-white/50 uppercase tracking-wider">Management</div>
+<a class="flex items-center gap-3 px-4 py-3 text-white/80 hover:bg-white/5 transition-colors rounded-r-lg group" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-body-md font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-white sidebar-active rounded-r-lg group" href="#">
+<span class="material-symbols-outlined text-[20px]">location_on</span>
+<span class="text-body-md font-body-md">Alle Stationen</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-white/80 hover:bg-white/5 transition-colors rounded-r-lg group" href="#">
+<span class="material-symbols-outlined text-[20px]">school</span>
+<span class="text-body-md font-body-md">Coach</span>
+</a>
+<div class="px-4 py-2 mt-6 text-sidebar-header font-sidebar-header text-white/50 uppercase tracking-wider">Tools</div>
+<a class="flex items-center gap-3 px-4 py-3 text-white/80 hover:bg-white/5 transition-colors rounded-r-lg group" href="#">
+<span class="material-symbols-outlined text-[20px]">link</span>
+<span class="text-body-md font-body-md">Embeds &amp; Links</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-white/80 hover:bg-white/5 transition-colors rounded-r-lg group" href="#">
+<span class="material-symbols-outlined text-[20px]">palette</span>
+<span class="text-body-md font-body-md">Design &amp; Hub</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-white/80 hover:bg-white/5 transition-colors rounded-r-lg group" href="#">
+<span class="material-symbols-outlined text-[20px]">rocket_launch</span>
+<span class="text-body-md font-body-md">Deploy</span>
+</a>
+</nav>
+<div class="p-6 mt-auto border-t border-white/10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary text-[12px] font-bold">MPZ</div>
+<div class="overflow-hidden">
+<p class="text-body-md font-bold text-white truncate">MPZ Studio Logo</p>
+<p class="text-caption text-white/60">Version 2.4.0</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Top Navigation -->
+<header class="fixed top-0 right-0 left-[240px] h-[56px] bg-white border-b border-black/[0.1] z-40 flex items-center justify-between px-container-padding">
+<div class="flex items-center gap-4">
+<nav class="flex items-center text-body-md font-body-md text-on-surface-variant">
+<span>Stationen</span>
+<span class="mx-2 text-outline-variant">›</span>
+<span class="text-primary font-bold">Klassenzimmer</span>
+</nav>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-caption text-on-surface-variant font-bold border border-outline-variant/30 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                Nur lokal · development
+            </span>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-4 py-2 text-body-md font-bold text-secondary hover:bg-surface-container transition-colors rounded-full">
+                Nur lokal
+            </button>
+<button class="px-6 py-2 bg-primary hover:bg-[#3d7e1b] text-white text-body-md font-bold rounded-full transition-all active:scale-95 shadow-sm">
+                Speichern &amp; Validieren
+            </button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-[240px] mt-[56px] p-container-padding max-w-5xl mx-auto">
+<!-- Header Section -->
+<div class="flex items-end justify-between mb-8">
+<div class="space-y-1">
+<div class="flex items-center gap-3">
+<h2 class="text-h1 font-h1 text-on-surface">Klassenzimmer</h2>
+<span class="px-2 py-0.5 rounded bg-tertiary text-white text-caption font-bold">Hub 1</span>
+<span class="px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed-variant text-caption font-bold uppercase tracking-tight">360°</span>
+<div class="w-3 h-3 rounded-full bg-primary ring-4 ring-primary/20 ml-1" title="Online / Aktiv"></div>
+</div>
+<p class="text-body-md text-on-surface-variant">Konfiguration der Station und ihrer Panorama-Inhalte.</p>
+</div>
+<a class="flex items-center gap-1 text-primary font-bold hover:underline" href="#">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+                Vorschau /raum/klassenzimmer
+            </a>
+</div>
+<!-- Tabs Navigation -->
+<div class="flex border-b border-outline-variant mb-6">
+<button class="px-6 py-3 text-body-md font-bold border-b-2 border-primary text-primary">Stammdaten</button>
+<button class="px-6 py-3 text-body-md font-bold text-on-surface-variant hover:text-on-surface transition-colors">Medien</button>
+<button class="px-6 py-3 text-body-md font-bold text-on-surface-variant hover:text-on-surface transition-colors">Hotspots</button>
+<button class="px-6 py-3 text-body-md font-bold text-on-surface-variant hover:text-on-surface transition-colors">Dialog</button>
+</div>
+<!-- Form Card -->
+<div class="bg-white rounded-xl border border-black/[0.1] shadow-sm overflow-hidden">
+<div class="p-card-padding space-y-stack-lg">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
+<!-- Title & Slug -->
+<div class="space-y-4">
+<div class="space-y-1.5">
+<label class="text-caption font-bold text-on-surface-variant uppercase tracking-wider">Interner Slug (URL-Name)</label>
+<input class="w-full bg-surface-container-low border-outline-variant text-on-surface-variant font-code cursor-not-allowed rounded-lg px-4 py-2.5 outline-none" readonly="" type="text" value="klassenzimmer"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-caption font-bold text-on-surface-variant uppercase tracking-wider">Öffentlicher Titel</label>
+<input class="w-full bg-white border border-outline-variant focus:border-secondary focus:ring-2 focus:ring-secondary/20 rounded-lg px-4 py-2.5 transition-all outline-none" type="text" value="Klassenzimmer"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-caption font-bold text-on-surface-variant uppercase tracking-wider">Viewer Typ</label>
+<select class="w-full bg-white border border-outline-variant focus:border-secondary rounded-lg px-4 py-2.5 outline-none appearance-none">
+<option selected="">360° (Equirectangular)</option>
+<option>Flachbild (2D)</option>
+<option>Video 360°</option>
+</select>
+</div>
+</div>
+<!-- Description -->
+<div class="space-y-1.5">
+<label class="text-caption font-bold text-on-surface-variant uppercase tracking-wider">Beschreibung</label>
+<textarea class="w-full h-full bg-white border border-outline-variant focus:border-secondary focus:ring-2 focus:ring-secondary/20 rounded-lg px-4 py-3 transition-all outline-none resize-none text-body-md leading-relaxed" rows="8">In diesem Klassenzimmer erwacht die Geschichte zum Leben. Die Lernenden können verschiedene historische Objekte untersuchen und interaktive Dialoge mit dem Lehrer führen. Das Panorama zeigt den Zustand von 1920 mit originalgetreuer Möblierung und Lehrmitteln.</textarea>
+</div>
+</div>
+<hr class="border-outline-variant/30"/>
+<!-- Panorama & Image Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
+<!-- Panorama 360 -->
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<label class="text-caption font-bold text-on-surface-variant uppercase tracking-wider">Panorama 360° Bild</label>
+<span class="text-caption text-secondary font-code">/stations/360/klassenzimmer.jpg</span>
+</div>
+<div class="relative aspect-[2/1] rounded-xl overflow-hidden bg-surface-container group cursor-pointer border-2 border-dashed border-outline-variant hover:border-secondary transition-all">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A wide equirectangular 360-degree panorama of a vintage 1920s classroom with wooden desks, a large blackboard with chalk writing, and large windows casting soft morning light. The style is hyper-realistic with a professional museum-quality photography feel, using a warm and academic color palette of deep browns and soft creams." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsx0sND5RtadzWzEwhC27qOQ_Uu65lMxiwZMjQteBcAVQSl_TA1uoJVchoNdJJU5-GZLxdu53EK0CN8FNSnhsC2_AHht_EBW5n0tTiQ_6fcerZgYn2HvdvxvskLY9Icws1qFZ11vo87TSY0JgYe5Rj6oTZOqLtCr7KTBKb8QnBJ7ydrFoRXRrEHHLEGQo5bHQltyHp4HKKvCZlWsTnzbLFj7ZrcI53ZDTLS6Yk9csLepA9ld8pHmhPTgnBE1cHugyV4LjFOjPtkZ8"/>
+<div class="absolute inset-0 flex flex-col items-center justify-center bg-black/20 group-hover:bg-black/10 transition-colors">
+<span class="material-symbols-outlined text-white text-4xl mb-2 drop-shadow-md">upload</span>
+<span class="text-white font-bold text-body-md drop-shadow-sm">Neues Panorama hochladen</span>
+</div>
+<div class="absolute bottom-4 right-4 px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-on-surface text-[16px]">panorama_photosphere</span>
+<span class="text-caption font-bold text-on-surface">360° Preview</span>
+</div>
+</div>
+</div>
+<!-- Thumbnails / Preview -->
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<label class="text-caption font-bold text-on-surface-variant uppercase tracking-wider">Vorschaubild (Flat)</label>
+<span class="text-caption text-secondary font-code">/stations/klassenzimmer.jpg</span>
+</div>
+<div class="relative aspect-[2/1] rounded-xl overflow-hidden bg-surface-container group cursor-pointer border-2 border-dashed border-outline-variant hover:border-secondary transition-all">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A high-quality 2D flat thumbnail of a historic classroom scene. A wooden teacher's desk with an old inkwell and a stack of papers sits in focus, with rows of student desks in the soft-focus background. The lighting is warm and cinematic, emphasizing textures of old wood and paper in a clean, professional aesthetic matching a modern studio UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjXeIU00MX6SMUYegS5SG5TDKpkBvrJ_SsKNUCLZuVsHWYZFYANFYV2mfXObTK5Fv8OxyJL9sO54ro_4SxnOKWw40YtQmDLUuUB1U0NxSfY2kszbLuvrkIG4tENEvmgeVYH2EfowBNuh1U9EHP335FZJFCcrI_KnpIFUAwOiw9irgEvCbt8htHVuIzT8kr199aHlQXNUxfWUQv47nrXx5DOtiQvJh_LE16852MFHaPHWb3qMRDDBaIB8VH9ywCvN0pjRGosXhKiY0"/>
+<div class="absolute inset-0 flex flex-col items-center justify-center bg-black/20 group-hover:bg-black/10 transition-colors">
+<span class="material-symbols-outlined text-white text-4xl mb-2 drop-shadow-md">image</span>
+<span class="text-white font-bold text-body-md drop-shadow-sm">Bild ersetzen</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Validation Status -->
+<div class="mt-8 p-4 bg-primary/5 border border-primary/20 rounded-xl flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div>
+<h4 class="text-body-md font-bold text-primary">Alle Checks bestanden</h4>
+<p class="text-caption text-on-surface-variant">Die Station ist vollständig konfiguriert und bereit für das Deployment.</p>
+</div>
+<div class="ml-auto">
+<span class="text-caption font-code text-on-surface-variant/60">Zuletzt gespeichert: Vor 3 Min.</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Simple micro-interactions
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('mousedown', () => {
+                el.style.transform = 'scale(0.98)';
+            });
+            el.addEventListener('mouseup', () => {
+                el.style.transform = 'scale(1)';
+            });
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = 'scale(1)';
+            });
+        });
+
+        // Hover effect for file zones
+        const uploadZones = document.querySelectorAll('.group.cursor-pointer');
+        uploadZones.forEach(zone => {
+            zone.addEventListener('mouseenter', () => {
+                zone.classList.add('border-primary');
+            });
+            zone.addEventListener('mouseleave', () => {
+                zone.classList.remove('border-primary');
+            });
+        });
+    </script>
+</body></html>

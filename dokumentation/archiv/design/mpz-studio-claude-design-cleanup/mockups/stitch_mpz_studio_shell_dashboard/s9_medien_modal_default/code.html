@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-container": "#5b76a0",
+                    "secondary-fixed": "#d5e3ff",
+                    "tertiary-fixed": "#d5e3ff",
+                    "on-surface": "#1b1c1a",
+                    "background": "#fcfbf7",
+                    "inverse-surface": "#2f312e",
+                    "on-tertiary-fixed": "#001c3b",
+                    "inverse-on-surface": "#f2f1ed",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed-variant": "#2c476f",
+                    "on-background": "#1b1c1a",
+                    "surface-dim": "#dbdad6",
+                    "primary-fixed-dim": "#87db5d",
+                    "surface-container-low": "#f4f4f0",
+                    "surface-bright": "#faf9f5",
+                    "on-secondary-container": "#003e76",
+                    "primary": "#276a00",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-highest": "#e3e2df",
+                    "on-primary-fixed": "#072100",
+                    "tertiary": "#425d86",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed-dim": "#acc8f6",
+                    "outline": "#717a68",
+                    "surface-variant": "#e3e2df",
+                    "surface": "#faf9f5",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed": "#001c3b",
+                    "surface-container": "#efeeea",
+                    "primary-container": "#37850a",
+                    "on-surface-variant": "#40493a",
+                    "on-primary": "#ffffff",
+                    "on-primary-container": "#f8ffee",
+                    "secondary-fixed-dim": "#a6c8ff",
+                    "secondary": "#045faf",
+                    "on-tertiary-container": "#fefcff",
+                    "on-error": "#ffffff",
+                    "outline-variant": "#c0cab5",
+                    "on-primary-fixed-variant": "#1d5200",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#004786",
+                    "primary-fixed": "#a2f876",
+                    "on-tertiary": "#ffffff",
+                    "secondary-container": "#6daaff",
+                    "surface-tint": "#286c00",
+                    "surface-container-high": "#e9e8e4",
+                    "inverse-primary": "#87db5d"
+            },
+            "borderRadius": {
+                    "DEFAULT": "4px",
+                    "lg": "8px",
+                    "xl": "12px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "topbar-height": "56px",
+                    "stack-sm": "8px",
+                    "gutter": "16px",
+                    "container-padding": "24px",
+                    "stack-md": "16px",
+                    "sidebar-width": "240px",
+                    "card-padding": "20px",
+                    "stack-lg": "24px"
+            },
+            "fontFamily": {
+                    "h1": ["Nunito Sans"],
+                    "body-lg": ["Nunito Sans"],
+                    "caption": ["Nunito Sans"],
+                    "sidebar-header": ["Nunito Sans"],
+                    "h2": ["Nunito Sans"],
+                    "code": ["monospace"],
+                    "body-md": ["Nunito Sans"]
+            },
+            "fontSize": {
+                    "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Nunito Sans', sans-serif; background-color: #fcfbf7; color: #1b1c1a; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .sidebar-item-active { border-left: 4px solid #4b9a23; background-color: rgba(255,255,255,0.1); }
+        .modal-overlay { background-color: rgba(8, 42, 80, 0.45); }
+        .media-grid-item { border: 1px solid rgba(8,42,80,0.1); transition: all 0.2s ease; }
+        .media-grid-item.selected { border-color: #4b9a23; background-color: #f8ffee; }
+    </style>
+</head>
+<body class="overflow-hidden">
+<!-- Sidebar Shell -->
+<aside class="fixed left-0 top-0 h-full w-[240px] bg-[#082a50] flex flex-col z-10">
+<div class="p-6 flex flex-col gap-1">
+<h1 class="text-h2 font-h2 text-white">MPZ Studio</h1>
+<p class="text-sidebar-header font-sidebar-header text-white/55 uppercase tracking-wider">Admin Dashboard</p>
+</div>
+<nav class="flex-1 mt-4">
+<div class="flex items-center gap-3 px-4 py-3 text-white/80 hover:bg-white/5 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-body-md font-body-md">Dashboard</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-white border-l-4 border-[#4b9a23] bg-white/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">location_on</span>
+<span class="text-body-md font-body-md">Alle Stationen</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-white/80 hover:bg-white/5 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">school</span>
+<span class="text-body-md font-body-md">Coach</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-white/80 hover:bg-white/5 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">link</span>
+<span class="text-body-md font-body-md">Embeds &amp; Links</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-white/80 hover:bg-white/5 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">palette</span>
+<span class="text-body-md font-body-md">Design &amp; Hub</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-white/80 hover:bg-white/5 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">rocket_launch</span>
+<span class="text-body-md font-body-md">Deploy</span>
+</div>
+</nav>
+<div class="p-4 mt-auto">
+<div class="flex items-center gap-3 text-white/60 text-caption font-caption">
+<div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">person</span>
+</div>
+<span>Administrator</span>
+</div>
+</div>
+</aside>
+<!-- Top Bar Shell -->
+<header class="fixed top-0 right-0 h-[56px] left-[240px] bg-white border-b border-outline-variant flex items-center justify-between px-6 z-10">
+<div class="flex items-center gap-2">
+<span class="text-on-surface-variant text-body-md font-body-md">Stationen</span>
+<span class="text-on-surface-variant text-body-md font-body-md">›</span>
+<span class="text-primary font-bold text-body-md font-body-md">Klassenzimmer</span>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-4 py-1.5 rounded-full text-secondary font-bold text-body-md font-body-md hover:bg-surface-container-low transition-colors">Nur lokal</button>
+<button class="px-4 py-1.5 rounded-full bg-[#4b9a23] text-white font-bold text-body-md font-body-md hover:brightness-95 transition-colors shadow-sm">Speichern &amp; Validieren</button>
+</div>
+</header>
+<!-- Main Content (Obscured) -->
+<main class="ml-[240px] pt-[56px] min-h-screen bg-[#fcfbf7] p-container-padding">
+<div class="flex items-center justify-between mb-8">
+<h1 class="text-h1 font-h1 text-[#082a50]">Medienverwaltung</h1>
+<button class="bg-[#4b9a23] text-white px-6 py-2 rounded-full font-bold text-body-md flex items-center gap-2">
+<span class="material-symbols-outlined">add</span>
+                Medium hinzufügen
+            </button>
+</div>
+<div class="grid grid-cols-12 gap-6">
+<!-- Sidebar within Content -->
+<div class="col-span-3 space-y-4">
+<div class="bg-white border border-black/10 p-card-padding rounded-lg">
+<h3 class="text-sidebar-header font-sidebar-header text-on-surface-variant uppercase mb-4">Ordner</h3>
+<ul class="space-y-2">
+<li class="flex items-center gap-2 text-primary font-bold text-body-md"><span class="material-symbols-outlined text-[20px]">folder_open</span> Alle Medien</li>
+<li class="flex items-center gap-2 text-on-surface-variant text-body-md"><span class="material-symbols-outlined text-[20px]">image</span> Fotos</li>
+<li class="flex items-center gap-2 text-on-surface-variant text-body-md"><span class="material-symbols-outlined text-[20px]">videocam</span> Videos</li>
+<li class="flex items-center gap-2 text-on-surface-variant text-body-md"><span class="material-symbols-outlined text-[20px]">mic</span> Audio</li>
+</ul>
+</div>
+</div>
+<!-- Media Grid -->
+<div class="col-span-9 grid grid-cols-4 gap-4">
+<div class="aspect-square bg-white border border-black/10 rounded-lg p-2 flex flex-col items-center justify-center gap-2">
+<div class="w-full h-full bg-surface-container-low rounded-md overflow-hidden relative">
+<img class="w-full h-full object-cover opacity-30" data-alt="A professional architectural photograph of a modern classroom with bright lighting, natural wood desks, and large windows. The scene is shot in a clean, minimalist style with soft shadows, fitting a high-end educational tool aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYgmtX0n_W_sqIn9DbAaAE7icbbIfSESCOWpJcPIl85ujeBjtcvQ6rNmzcoVmVTz5QO9Dl4NcR_ctqDpTKnhr7yAAw0rJMPBkjzOohFdoc0QxszNCFbTtzwy-MEiqiGJ36siNGxNPUpOy6ldr64KTyXN09K2ouBUXX8wE7Hexh9VR6VNfC8mcngvlUnqBpxwcyJOeDe_LIArm6tpeQNUDVjgr9uhn2rURgDJ-a3M9Z8gjauBqJ-I4X9SzXisOJg-CRUmVRLJ4i2jw"/>
+</div>
+</div>
+<div class="aspect-square bg-white border border-black/10 rounded-lg p-2 flex flex-col items-center justify-center gap-2" v-for="i in 7">
+<div class="w-full h-full bg-surface-container-low rounded-md flex items-center justify-center">
+<span class="material-symbols-outlined text-outline-variant text-[48px]">image</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Modal Overlay -->
+<div class="fixed inset-0 modal-overlay z-20 flex items-center justify-center">
+<!-- Modal Card -->
+<div class="w-[560px] bg-white rounded-lg shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in duration-300">
+<!-- Modal Header -->
+<div class="px-6 py-5 flex items-center justify-between border-b border-black/[0.05]">
+<h2 class="text-h2 font-h2 text-[#082a50]">Medium hinzufügen</h2>
+<button class="text-on-surface-variant hover:bg-surface-container-low p-1 rounded-full transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Modal Body -->
+<div class="p-6 flex flex-col gap-6">
+<!-- Media Type Grid -->
+<div class="grid grid-cols-3 gap-3">
+<!-- Audio -->
+<div class="media-grid-item rounded-lg p-4 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-surface-container-low">
+<span class="material-symbols-outlined text-[#082a50]">audio_file</span>
+<span class="text-body-md font-body-md text-[#082a50]">audio</span>
+</div>
+<!-- Video -->
+<div class="media-grid-item rounded-lg p-4 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-surface-container-low">
+<span class="material-symbols-outlined text-[#082a50]">videocam</span>
+<span class="text-body-md font-body-md text-[#082a50]">video</span>
+</div>
+<!-- Foto (Selected) -->
+<div class="media-grid-item selected rounded-lg p-4 flex flex-col items-center justify-center gap-2 cursor-pointer">
+<span class="material-symbols-outlined text-[#4b9a23]" style="font-variation-settings: 'FILL' 1;">photo_library</span>
+<span class="text-body-md font-body-md text-[#4b9a23] font-bold">foto</span>
+</div>
+<!-- Text -->
+<div class="media-grid-item rounded-lg p-4 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-surface-container-low">
+<span class="material-symbols-outlined text-[#082a50]">article</span>
+<span class="text-body-md font-body-md text-[#082a50]">text</span>
+</div>
+<!-- Link -->
+<div class="media-grid-item rounded-lg p-4 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-surface-container-low">
+<span class="material-symbols-outlined text-[#082a50]">link</span>
+<span class="text-body-md font-body-md text-[#082a50]">link</span>
+</div>
+<!-- Embed -->
+<div class="media-grid-item rounded-lg p-4 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-surface-container-low">
+<span class="material-symbols-outlined text-[#082a50]">code</span>
+<span class="text-body-md font-body-md text-[#082a50]">embed</span>
+</div>
+</div>
+<!-- Drop Zone -->
+<div class="border-2 border-dashed border-[#4b9a23]/30 bg-[#fcfbf7] rounded-lg py-12 flex flex-col items-center justify-center gap-3 cursor-pointer hover:border-[#4b9a23] hover:bg-[#f8ffee] transition-all">
+<span class="material-symbols-outlined text-[#4b9a23] text-[32px]">cloud_upload</span>
+<p class="text-body-md font-body-md text-on-surface-variant">Datei hierher ziehen oder klicken</p>
+</div>
+<!-- Path Preview -->
+<div class="bg-surface-container-low px-4 py-3 rounded border border-black/[0.05]">
+<span class="text-caption font-code text-[#082a50]/70">Dateipfad: /media/{slug}/fotos/...</span>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="px-6 py-4 bg-surface-container-low/30 border-t border-black/[0.05] flex items-center justify-end gap-3">
+<button class="px-4 py-2 text-on-surface-variant font-bold text-body-md hover:bg-surface-container-low rounded-md transition-colors">Abbrechen</button>
+<button class="px-6 py-2 bg-[#4b9a23] text-white font-bold text-body-md rounded-full shadow-sm hover:brightness-95 active:scale-95 transition-all">Hinzufügen</button>
+</div>
+</div>
+</div>
+<script>
+        // Simple micro-interaction for the grid items
+        document.querySelectorAll('.media-grid-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.media-grid-item').forEach(el => {
+                    el.classList.remove('selected');
+                    el.classList.remove('bg-[#f8ffee]');
+                    el.classList.remove('border-[#4b9a23]');
+                    const icon = el.querySelector('.material-symbols-outlined');
+                    icon.style.color = '#082a50';
+                    icon.style.fontVariationSettings = "'FILL' 0";
+                    const label = el.querySelector('span:last-child');
+                    label.style.color = '#082a50';
+                    label.classList.remove('font-bold');
+                });
+                
+                this.classList.add('selected');
+                this.classList.add('border-[#4b9a23]');
+                this.classList.add('bg-[#f8ffee]');
+                const activeIcon = this.querySelector('.material-symbols-outlined');
+                activeIcon.style.color = '#4b9a23';
+                activeIcon.style.fontVariationSettings = "'FILL' 1";
+                const activeLabel = this.querySelector('span:last-child');
+                activeLabel.style.color = '#4b9a23';
+                activeLabel.classList.add('font-bold');
+            });
+        });
+    </script>
+</body></html>

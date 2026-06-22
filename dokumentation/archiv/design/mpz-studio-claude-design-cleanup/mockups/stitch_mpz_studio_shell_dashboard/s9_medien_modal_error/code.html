@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MPZ Studio - Media Modal Error State</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-tint": "#286c00",
+                    "secondary": "#045faf",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed-dim": "#acc8f6",
+                    "tertiary-container": "#5b76a0",
+                    "on-background": "#1b1c1a",
+                    "inverse-surface": "#2f312e",
+                    "on-primary-fixed": "#072100",
+                    "surface-container": "#efeeea",
+                    "on-primary-fixed-variant": "#1d5200",
+                    "surface-variant": "#e3e2df",
+                    "secondary-fixed": "#d5e3ff",
+                    "on-secondary-container": "#003e76",
+                    "secondary-container": "#6daaff",
+                    "error": "#ba1a1a",
+                    "on-tertiary-container": "#fefcff",
+                    "on-primary-container": "#f8ffee",
+                    "surface-bright": "#faf9f5",
+                    "on-secondary-fixed": "#001c3b",
+                    "on-tertiary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "surface-container-lowest": "#ffffff",
+                    "outline": "#717a68",
+                    "primary-fixed-dim": "#87db5d",
+                    "surface-dim": "#dbdad6",
+                    "surface-container-high": "#e9e8e4",
+                    "on-surface": "#1b1c1a",
+                    "background": "#faf9f5",
+                    "on-surface-variant": "#40493a",
+                    "secondary-fixed-dim": "#a6c8ff",
+                    "tertiary-fixed": "#d5e3ff",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed": "#001c3b",
+                    "primary-container": "#37850a",
+                    "primary-fixed": "#a2f876",
+                    "inverse-on-surface": "#f2f1ed",
+                    "surface-container-low": "#f4f4f0",
+                    "surface": "#faf9f5",
+                    "on-error": "#ffffff",
+                    "primary": "#276a00",
+                    "on-tertiary-fixed-variant": "#2c476f",
+                    "tertiary": "#425d86",
+                    "outline-variant": "#c0cab5",
+                    "inverse-primary": "#87db5d",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#004786",
+                    "surface-container-highest": "#e3e2df",
+                    "brand-navy": "#082a50",
+                    "brand-green": "#276a00",
+                    "brand-green-hover": "#3d7e1b",
+                    "paper": "#fcfbf7",
+                    "paper-50": "#f5f2ea"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-lg": "24px",
+                    "card-padding": "20px",
+                    "gutter": "16px",
+                    "stack-sm": "8px",
+                    "sidebar-width": "240px",
+                    "container-padding": "24px",
+                    "topbar-height": "56px",
+                    "stack-md": "16px"
+            },
+            "fontFamily": {
+                    "h2": ["Nunito Sans"],
+                    "h1": ["Nunito Sans"],
+                    "body-md": ["Nunito Sans"],
+                    "sidebar-header": ["Nunito Sans"],
+                    "code": ["monospace"],
+                    "caption": ["Nunito Sans"],
+                    "body-lg": ["Nunito Sans"]
+            },
+            "fontSize": {
+                    "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: #faf9f5;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(8, 42, 80, 0.1);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="overflow-hidden">
+<!-- Background Shell (Dimmed) -->
+<div class="flex h-screen w-full relative">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-[240px] bg-[#082a50] flex flex-col z-0">
+<div class="p-6">
+<div class="text-h2 font-h2 text-on-primary">MPZ Studio</div>
+<div class="text-caption text-on-primary/60">Admin Dashboard</div>
+</div>
+<nav class="flex-1 overflow-y-auto mt-4">
+<!-- Active Tab: Alle Stationen (Assuming context is content management) -->
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-body-md font-body-md">Dashboard</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary border-l-4 border-primary bg-white/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">location_on</span>
+<span class="text-body-md font-body-md">Alle Stationen</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">school</span>
+<span class="text-body-md font-body-md">Coach</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">link</span>
+<span class="text-body-md font-body-md">Embeds &amp; Links</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">palette</span>
+<span class="text-body-md font-body-md">Design &amp; Hub</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">rocket_launch</span>
+<span class="text-body-md font-body-md">Deploy</span>
+</div>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[240px] flex-1 flex flex-col bg-paper">
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 h-[56px] left-[240px] bg-surface-container-lowest border-b border-outline-variant flex items-center justify-between px-container-padding z-0">
+<div class="flex items-center gap-2">
+<span class="text-on-surface-variant text-body-md">Stationen › Klassenzimmer</span>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="text-body-md font-body-md font-bold text-on-surface-variant hover:bg-surface-container-low px-3 py-1.5 rounded transition-colors">Nur lokal</button>
+<button class="bg-primary hover:bg-brand-green-hover text-on-primary text-body-md font-bold px-4 py-1.5 rounded-full transition-colors">Speichern &amp; Validieren</button>
+</div>
+</header>
+<!-- Background Content Mockup -->
+<div class="mt-[56px] p-container-padding grid grid-cols-12 gap-gutter opacity-40 grayscale-[0.2]">
+<!-- Station Details Placeholder -->
+<div class="col-span-12 bg-white border border-black/10 rounded-lg p-card-padding">
+<div class="flex items-center justify-between mb-stack-lg">
+<div class="h-8 w-64 bg-surface-container rounded"></div>
+<div class="h-8 w-24 bg-surface-container rounded"></div>
+</div>
+<div class="grid grid-cols-3 gap-stack-md">
+<div class="h-32 bg-surface-container-low rounded-lg"></div>
+<div class="h-32 bg-surface-container-low rounded-lg"></div>
+<div class="h-32 bg-surface-container-low rounded-lg"></div>
+</div>
+</div>
+<div class="col-span-8 space-y-gutter">
+<div class="bg-white border border-black/10 rounded-lg p-card-padding h-64"></div>
+<div class="bg-white border border-black/10 rounded-lg p-card-padding h-48"></div>
+</div>
+<div class="col-span-4 bg-white border border-black/10 rounded-lg p-card-padding h-full"></div>
+</div>
+</main>
+<!-- Navy Overlay -->
+<div class="absolute inset-0 bg-[#082a50]/45 z-40 backdrop-blur-[1px]"></div>
+<!-- Modal Centerer -->
+<div class="absolute inset-0 flex items-center justify-center z-50 p-6">
+<!-- Modal (560px width) -->
+<div class="bg-white w-[560px] rounded-xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in duration-300">
+<!-- Modal Header -->
+<div class="px-6 py-5 border-b border-outline-variant/30 flex items-center justify-between">
+<h2 class="text-h2 font-h2 text-brand-navy">Medium hinzufügen</h2>
+<button class="text-on-surface-variant hover:bg-surface-container-low p-1.5 rounded-full transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Modal Body -->
+<div class="p-8 space-y-8">
+<!-- Media Type Grid (2x3) -->
+<div class="grid grid-cols-3 gap-4">
+<!-- Image -->
+<div class="flex flex-col items-center justify-center p-4 border border-outline-variant rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors group">
+<span class="material-symbols-outlined text-brand-navy/60 group-hover:text-brand-navy mb-2">image</span>
+<span class="text-caption font-bold text-brand-navy/80">Bild</span>
+</div>
+<!-- Video -->
+<div class="flex flex-col items-center justify-center p-4 border border-outline-variant rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors group">
+<span class="material-symbols-outlined text-brand-navy/60 group-hover:text-brand-navy mb-2">movie</span>
+<span class="text-caption font-bold text-brand-navy/80">Video</span>
+</div>
+<!-- Audio -->
+<div class="flex flex-col items-center justify-center p-4 border border-outline-variant rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors group">
+<span class="material-symbols-outlined text-brand-navy/60 group-hover:text-brand-navy mb-2">audiotrack</span>
+<span class="text-caption font-bold text-brand-navy/80">Audio</span>
+</div>
+<!-- Embed (SELECTED) -->
+<div class="flex flex-col items-center justify-center p-4 border-2 border-primary bg-primary/5 rounded-lg cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-primary mb-2" style="font-variation-settings: 'FILL' 1;">code</span>
+<span class="text-caption font-bold text-primary">Embed</span>
+</div>
+<!-- PDF -->
+<div class="flex flex-col items-center justify-center p-4 border border-outline-variant rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors group">
+<span class="material-symbols-outlined text-brand-navy/60 group-hover:text-brand-navy mb-2">picture_as_pdf</span>
+<span class="text-caption font-bold text-brand-navy/80">PDF</span>
+</div>
+<!-- Link -->
+<div class="flex flex-col items-center justify-center p-4 border border-outline-variant rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors group">
+<span class="material-symbols-outlined text-brand-navy/60 group-hover:text-brand-navy mb-2">open_in_new</span>
+<span class="text-caption font-bold text-brand-navy/80">Link</span>
+</div>
+</div>
+<!-- Input Section -->
+<div class="space-y-stack-sm">
+<label class="block text-sidebar-header text-brand-navy/70 uppercase">Embed URL oder Code</label>
+<div class="relative">
+<!-- Error Highlight Border #ef3a37 -->
+<input class="w-full bg-paper px-4 py-3 rounded-lg border-2 border-[#ef3a37] text-body-md focus:outline-none transition-all" placeholder="https://..." type="text" value="https://untrusted-domain.com/widget/v2"/>
+</div>
+<!-- Error Message -->
+<div class="flex items-center gap-1.5 mt-2">
+<span class="material-symbols-outlined text-[#ef3a37] text-[18px]">error</span>
+<span class="text-[#ef3a37] text-caption font-bold">Domain nicht in der Allowlist</span>
+</div>
+<p class="text-caption text-on-surface-variant/80 mt-3 leading-relaxed">
+                            Aus Sicherheitsgründen können nur Inhalte von vertrauenswürdigen Quellen (z.B. YouTube, Vimeo, H5P) eingebettet werden. Bitte kontaktieren Sie die Administration für neue Domains.
+                        </p>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="px-8 py-6 bg-surface-container-low flex items-center justify-end gap-4">
+<button class="text-body-md font-bold text-brand-navy/60 hover:text-brand-navy transition-colors">Abbrechen</button>
+<!-- Disabled State -->
+<button class="bg-outline-variant text-on-surface-variant/50 cursor-not-allowed text-body-md font-bold px-8 py-2.5 rounded-full transition-all" disabled="">
+                        Hinzufügen
+                    </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Micro-interaction for closing (visual only) -->
+<script>
+        document.querySelectorAll('.material-symbols-outlined').forEach(icon => {
+            if(icon.innerText === 'close') {
+                icon.parentElement.addEventListener('click', () => {
+                    document.querySelector('.absolute.inset-0.flex').style.opacity = '0';
+                    document.querySelector('.absolute.inset-0.bg-\\[\\#082a50\\]\\/45').style.opacity = '0';
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 500);
+                });
+            }
+        });
+    </script>
+</body></html>

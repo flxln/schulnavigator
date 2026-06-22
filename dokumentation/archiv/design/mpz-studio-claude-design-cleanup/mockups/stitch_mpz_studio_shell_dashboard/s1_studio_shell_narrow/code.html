@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MPZ Studio - Dashboard</title>
+<!-- Google Fonts: Nunito Sans -->
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200..1000;1,200..1000&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed": "#d5e3ff",
+                    "on-surface": "#1b1c1a",
+                    "outline-variant": "#c0cab5",
+                    "surface": "#faf9f5",
+                    "tertiary": "#425d86",
+                    "inverse-surface": "#2f312e",
+                    "surface-container-highest": "#e3e2df",
+                    "surface-container-high": "#e9e8e4",
+                    "on-tertiary-fixed-variant": "#2c476f",
+                    "on-tertiary-container": "#fefcff",
+                    "tertiary-fixed-dim": "#acc8f6",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "surface-bright": "#faf9f5",
+                    "outline": "#717a68",
+                    "on-secondary-fixed-variant": "#004786",
+                    "on-surface-variant": "#40493a",
+                    "error": "#ba1a1a",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed-dim": "#a6c8ff",
+                    "primary-container": "#37850a",
+                    "secondary-container": "#6daaff",
+                    "tertiary-container": "#5b76a0",
+                    "on-primary-container": "#f8ffee",
+                    "on-tertiary": "#ffffff",
+                    "surface-variant": "#e3e2df",
+                    "on-primary-fixed-variant": "#1d5200",
+                    "background": "#faf9f5",
+                    "on-tertiary-fixed": "#001c3b",
+                    "secondary": "#045faf",
+                    "inverse-on-surface": "#f2f1ed",
+                    "surface-tint": "#286c00",
+                    "inverse-primary": "#87db5d",
+                    "primary-fixed-dim": "#87db5d",
+                    "primary": "#276a00",
+                    "surface-container-low": "#f4f4f0",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed": "#d5e3ff",
+                    "on-background": "#1b1c1a",
+                    "on-secondary-container": "#003e76",
+                    "surface-container": "#efeeea",
+                    "on-primary-fixed": "#072100",
+                    "on-secondary": "#ffffff",
+                    "surface-dim": "#dbdad6",
+                    "on-secondary-fixed": "#001c3b",
+                    "primary-fixed": "#a2f876",
+                    "brand-navy": "#082a50",
+                    "brand-green": "#4b9a23",
+                    "brand-paper": "#fcfbf7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "topbar-height": "56px",
+                    "stack-lg": "24px",
+                    "card-padding": "20px",
+                    "container-padding": "24px",
+                    "gutter": "16px",
+                    "stack-sm": "8px",
+                    "stack-md": "16px",
+                    "sidebar-width": "240px"
+            },
+            "fontFamily": {
+                    "body-md": ["Nunito Sans"],
+                    "body-lg": ["Nunito Sans"],
+                    "sidebar-header": ["Nunito Sans"],
+                    "h2": ["Nunito Sans"],
+                    "h1": ["Nunito Sans"],
+                    "caption": ["Nunito Sans"],
+                    "code": ["monospace"]
+            },
+            "fontSize": {
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: #fcfbf7;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .sidebar-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="flex min-h-screen text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Left Sidebar -->
+<aside class="fixed left-0 top-0 h-full w-[56px] bg-brand-navy flex flex-col z-50 text-white shadow-xl transition-all duration-300">
+<!-- Logo/Header -->
+<div class="h-[56px] flex items-center justify-center border-b border-white/10 cursor-pointer hover:bg-white/5"><span class="material-symbols-outlined">menu</span></div>
+<!-- Navigation -->
+<nav class="flex-1 overflow-y-auto sidebar-scroll pb-10"><div class="mt-4 flex flex-col items-center gap-2"><a class="w-10 h-10 flex items-center justify-center rounded bg-white/10 border-l-4 border-brand-green text-on-primary" href="#"><span class="material-symbols-outlined">dashboard</span></a><a class="w-10 h-10 flex items-center justify-center rounded text-white/80 hover:bg-white/5 hover:text-white" href="#"><span class="material-symbols-outlined">location_on</span></a><a class="w-10 h-10 flex items-center justify-center rounded text-white/80 hover:bg-white/5 hover:text-white" href="#"><span class="material-symbols-outlined">school</span></a><div class="w-8 h-px bg-white/10 my-2"></div><a class="w-10 h-10 flex items-center justify-center rounded text-white/80 hover:bg-white/5 hover:text-white" href="#"><span class="material-symbols-outlined">link</span></a><a class="w-10 h-10 flex items-center justify-center rounded text-white/80 hover:bg-white/5 hover:text-white" href="#"><span class="material-symbols-outlined">palette</span></a><a class="w-10 h-10 flex items-center justify-center rounded text-white/80 hover:bg-white/5 hover:text-white" href="#"><span class="material-symbols-outlined">rocket_launch</span></a></div></nav>
+<!-- Footer Avatar -->
+<div class="p-4 border-t border-white/10 flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden mx-auto"><img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0Gi2WvNKlIb2TZvyA-WnGAD6pFbX_RxCBoOnhjsOgriknPPZT7L0_wdyWqIB5G9PVb7NftdADCJUFeEwFrtH9iaUt4z7FxAzNZT0tq99Y4NogklL4svXFxTXbsLdDLLI0LmMo7grUM4jvndU7npT5lRJCOLLbsxhjYDHA_CfyCh_zc-tEI5R1XYPaSyAcpTqTUTAcgxUtxvW_APcTgXCLnFncJCmILGeLfOlwsh176dHMEjK7VYqZbfuOnnEsZyoruJcAwOWIhds"/></div></div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-[56px] flex flex-col min-h-screen transition-all duration-300">
+<!-- Top Bar -->
+<header class="fixed top-0 right-0 h-[56px] left-[56px] bg-white border-b border-brand-navy/10 flex items-center justify-between px-6 z-40 transition-all duration-300">
+<div class="flex items-center gap-2 text-brand-navy">
+<span class="text-body-md opacity-60">Stationen</span>
+<span class="material-symbols-outlined text-[16px] opacity-40">chevron_right</span>
+<span class="text-body-md font-bold">Klassenzimmer</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.5)]"></div>
+<span class="text-caption text-on-surface-variant">Nur lokal · development</span>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-4 py-1.5 rounded-full text-body-md font-bold text-brand-navy hover:bg-surface-container transition-colors">
+                        Nur lokal
+                    </button>
+<button class="px-6 py-1.5 rounded-full bg-brand-green text-white text-body-md font-bold shadow-sm hover:bg-[#3d7e1b] active:scale-[0.98] transition-all">
+                        Speichern &amp; Validieren
+                    </button>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<section class="mt-[56px] p-container-padding max-w-[1280px] w-full mx-auto"><div class="mb-8 flex justify-between items-end"><h1 class="text-h1 font-h1 text-brand-navy">Stationen-Übersicht</h1><div class="flex gap-2"><button class="p-2 rounded border border-brand-navy/10 hover:bg-surface-container"><span class="material-symbols-outlined">grid_view</span></button><button class="p-2 rounded border border-brand-navy/10 hover:bg-surface-container"><span class="material-symbols-outlined">list</span></button></div></div><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"><div class="bg-white border border-brand-navy/10 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow cursor-pointer"><div class="flex justify-between items-start mb-4"><span class="text-caption font-bold text-brand-navy/40">#01</span><div class="w-2 h-2 rounded-full bg-brand-green"></div></div><h3 class="text-h2 font-h2 text-brand-navy mb-2">Klassenzimmer</h3><div class="flex gap-2"><span class="px-2 py-0.5 bg-surface-container-highest text-[10px] font-bold rounded uppercase">360°</span><span class="px-2 py-0.5 bg-brand-green/10 text-brand-green text-[10px] font-bold rounded uppercase">Aktiv</span></div></div><div class="bg-white border border-brand-navy/10 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow cursor-pointer"><div class="flex justify-between items-start mb-4"><span class="text-caption font-bold text-brand-navy/40">#02</span><div class="w-2 h-2 rounded-full bg-orange-500"></div></div><h3 class="text-h2 font-h2 text-brand-navy mb-2">Pausenhof</h3><div class="flex gap-2"><span class="px-2 py-0.5 bg-surface-container-highest text-[10px] font-bold rounded uppercase">Flat</span><span class="px-2 py-0.5 bg-yellow-500/10 text-yellow-600 text-[10px] font-bold rounded uppercase">Entwurf</span></div></div><div class="bg-white border border-brand-navy/10 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow cursor-pointer"><div class="flex justify-between items-start mb-4"><span class="text-caption font-bold text-brand-navy/40">#03</span><div class="w-2 h-2 rounded-full bg-brand-green"></div></div><h3 class="text-h2 font-h2 text-brand-navy mb-2">Lehrerzimmer</h3><div class="flex gap-2"><span class="px-2 py-0.5 bg-surface-container-highest text-[10px] font-bold rounded uppercase">360°</span><span class="px-2 py-0.5 bg-brand-green/10 text-brand-green text-[10px] font-bold rounded uppercase">Aktiv</span></div></div></div></section>
+<!-- Tooltip/Floating Element Simulation -->
+<div class="fixed bottom-6 right-6 translate-y-20 opacity-0 bg-brand-navy text-white px-6 py-3 rounded-lg shadow-2xl flex items-center gap-3 transition-all duration-300" id="save-toast">
+<span class="material-symbols-outlined text-brand-green">cloud_done</span>
+<p class="text-body-md">Änderungen wurden lokal gespeichert.</p>
+</div>
+</main>
+<script>
+        // Micro-interaction for the primary CTA
+        const cta = document.querySelector('button.bg-brand-green');
+        const toast = document.getElementById('save-toast');
+
+        cta.addEventListener('click', () => {
+            // Simulate save effect
+            cta.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">sync</span> Speichern...';
+            cta.disabled = true;
+            
+            setTimeout(() => {
+                cta.innerHTML = 'Speichern & Validieren';
+                cta.disabled = false;
+                
+                // Show toast
+                toast.classList.remove('translate-y-20', 'opacity-0');
+                
+                setTimeout(() => {
+                    toast.classList.add('translate-y-20', 'opacity-0');
+                }, 3000);
+            }, 1500);
+        });
+
+        // Hover effect for table rows
+        document.querySelectorAll('tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.transform = 'translateX(4px)';
+                row.style.transition = 'transform 0.2s ease';
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.transform = 'translateX(0px)';
+            });
+        });
+    </script>
+</body></html>

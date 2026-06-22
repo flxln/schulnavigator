@@ -24,7 +24,7 @@ Leitplanken unverändert (ADR-022): nur `NODE_ENV=development`, `assertMpzStudio
 | Rolle | Nr. | Titel | Labels | Blockiert durch |
 |-------|-----|-------|--------|-----------------|
 | **Epic (Parent)** | `#195` | MPZ Studio UI-Cleanup — IA & Navigation (ADR-022) | `tech`, `design` | — |
-| Unterissue | `#196` | Design-Freeze: Soll-Navigation & Claude-Design-Abnahme | `design`, `documentation` | — |
+| Unterissue | `#196` | Design-Freeze: Soll-Navigation & Claude-Design-Abnahme | `design`, `documentation` | — — **erledigt** (2026-06-22) |
 | Unterissue | `#197` | Studio-Shell: gruppierte Sidebar + Design-&-Hub-Route | `tech`, `blocker` | #196 — **erledigt** (2026-06-22, Post-Mortem unten) |
 | Unterissue | `#198` | Redundanzen: Medien-Modal, `/ingest`, Dialog-Audio global | `tech` | #197 |
 | Unterissue | `#199` | Dialog-Lifecycle: Tab immer + Create-API | `tech`, `blocker` | #197 |
@@ -57,8 +57,8 @@ Leitplanken unverändert (ADR-022): nur `NODE_ENV=development`, `assertMpzStudio
 
 | Phase | Inhalt | Issues |
 |-------|--------|--------|
-| **2–3** | Claude Design + Design-Freeze IA ([`NAVIGATION-SOLL`](../archiv/design/mpz-studio-claude-design-cleanup/NAVIGATION-SOLL.md)) | #196 (Mockups offen) |
-| **4.1** | `studio-shell.tsx` — gruppierte Nav, Top-Bar, `/design` | Shell |
+| **2–3** | Claude Design + Design-Freeze IA ([`NAVIGATION-SOLL`](../archiv/design/mpz-studio-claude-design-cleanup/NAVIGATION-SOLL.md)) | #196 ✅ |
+| **4.1** | `studio-shell.tsx` — gruppierte Nav, Top-Bar, `/design` | #197 ✅ |
 | **4.2** | Redundanzen entfernen | Redundanzen |
 | **4.3** ⚠️ Feature | Dialog Gating + Empty-State + Create-API | Dialog-Lifecycle |
 | **4.4** | Dialog Sub-IA (Gruppen/Bubble unter Segment-Tabelle) | Dialog-Editor |
@@ -142,7 +142,7 @@ Details: [ROADMAP.md — Pre-Mortem-Härtung](../archiv/design/mpz-studio-claude
 
 - [x] GitHub Milestone „MPZ Studio UI-Cleanup“ angelegt (#12)
 - [x] Epic + Unterissues auf GitHub (#195–#204)
-- [ ] Design-Freeze IA ([`NAVIGATION-SOLL.md`](../archiv/design/mpz-studio-claude-design-cleanup/NAVIGATION-SOLL.md) ✅) — Mockups + #196-Abschluss offen
+- [x] Design-Freeze IA ([`NAVIGATION-SOLL.md`](../archiv/design/mpz-studio-claude-design-cleanup/NAVIGATION-SOLL.md)) — Mockups Stitch-HTML, bekannt inkonsistent ([#196](../reviews/post-mortem-196-2026-06-22.md))
 - [x] Shell + Design-Route (#197, Post-Mortem: [post-mortem-197-2026-06-22.md](../reviews/post-mortem-197-2026-06-22.md))
 - [ ] Redundanzen
 - [ ] Dialog-Lifecycle (Feature)

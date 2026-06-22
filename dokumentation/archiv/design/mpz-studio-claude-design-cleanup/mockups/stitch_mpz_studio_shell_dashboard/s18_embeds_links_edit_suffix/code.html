@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MPZ Studio - Allowlist Edit</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: #faf9f5;
+            color: #1b1c1a;
+        }
+        .sidebar-active {
+            border-left-width: 4px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#425d86",
+                        "on-primary-fixed-variant": "#1d5200",
+                        "surface-variant": "#e3e2df",
+                        "secondary-fixed": "#d5e3ff",
+                        "surface-dim": "#dbdad6",
+                        "on-surface": "#1b1c1a",
+                        "surface-container-low": "#f4f4f0",
+                        "surface-container": "#efeeea",
+                        "inverse-surface": "#2f312e",
+                        "outline": "#717a68",
+                        "primary-fixed-dim": "#87db5d",
+                        "on-secondary-fixed-variant": "#004786",
+                        "on-secondary-fixed": "#001c3b",
+                        "on-error": "#ffffff",
+                        "secondary": "#045faf",
+                        "surface-bright": "#faf9f5",
+                        "tertiary-container": "#5b76a0",
+                        "surface-container-highest": "#e3e2df",
+                        "tertiary-fixed": "#d5e3ff",
+                        "tertiary-fixed-dim": "#acc8f6",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#37850a",
+                        "on-tertiary-fixed": "#001c3b",
+                        "on-primary-container": "#f8ffee",
+                        "on-primary-fixed": "#072100",
+                        "on-tertiary-container": "#fefcff",
+                        "on-error-container": "#93000a",
+                        "surface": "#faf9f5",
+                        "secondary-fixed-dim": "#a6c8ff",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#003e76",
+                        "on-surface-variant": "#40493a",
+                        "inverse-primary": "#87db5d",
+                        "primary-fixed": "#a2f876",
+                        "on-background": "#1b1c1a",
+                        "primary": "#276a00",
+                        "surface-container-high": "#e9e8e4",
+                        "on-tertiary-fixed-variant": "#2c476f",
+                        "error": "#ba1a1a",
+                        "secondary-container": "#6daaff",
+                        "inverse-on-surface": "#f2f1ed",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#286c00",
+                        "outline-variant": "#c0cab5",
+                        "background": "#faf9f5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "gutter": "16px",
+                        "container-padding": "24px",
+                        "topbar-height": "56px",
+                        "sidebar-width": "240px",
+                        "card-padding": "20px",
+                        "stack-lg": "24px",
+                        "stack-sm": "8px"
+                    },
+                    "fontFamily": {
+                        "h1": ["Nunito Sans"],
+                        "body-lg": ["Nunito Sans"],
+                        "code": ["monospace"],
+                        "caption": ["Nunito Sans"],
+                        "sidebar-header": ["Nunito Sans"],
+                        "body-md": ["Nunito Sans"],
+                        "h2": ["Nunito Sans"]
+                    },
+                    "fontSize": {
+                        "h1": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "code": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+                        "sidebar-header": ["11px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "h2": ["18px", { "lineHeight": "24px", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface flex overflow-hidden h-screen">
+<!-- SideNavBar Anchor -->
+<aside class="fixed left-0 top-0 h-full w-[240px] bg-secondary flex flex-col py-stack-lg transition-all duration-200 ease-in-out">
+<div class="px-6 mb-8">
+<h1 class="font-h1 text-h1 text-on-secondary">MPZ Studio</h1>
+<p class="font-sidebar-header text-sidebar-header text-on-secondary opacity-60 uppercase tracking-widest mt-1">Admin Console</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center px-6 py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-all" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-secondary border-l-4 border-primary-fixed bg-surface-container-highest/10 opacity-100" href="#">
+<span class="material-symbols-outlined mr-3">analytics</span>
+<span class="font-body-md">Alle Stationen</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-all" href="#">
+<span class="material-symbols-outlined mr-3">psychology</span>
+<span class="font-body-md">Coach</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-all" href="#">
+<span class="material-symbols-outlined mr-3">link</span>
+<span class="font-body-md">Embeds &amp; Links</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-all" href="#">
+<span class="material-symbols-outlined mr-3">palette</span>
+<span class="font-body-md">Design &amp; Hub</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-all" href="#">
+<span class="material-symbols-outlined mr-3">rocket_launch</span>
+<span class="font-body-md">Deploy</span>
+</a>
+</nav>
+<div class="px-6 pt-6 border-t border-white/10 mt-auto">
+<div class="flex items-center space-x-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-bold text-xs">
+                    MS
+                </div>
+<div class="overflow-hidden">
+<p class="font-body-md text-on-secondary truncate">MPZ Studio Admin</p>
+<p class="font-caption text-on-secondary opacity-60">v1.2.4-stable</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[240px] flex-1 flex flex-col min-h-screen">
+<!-- TopNavBar Anchor -->
+<header class="h-[56px] bg-surface flex justify-between items-center px-container-padding border-b border-outline-variant sticky top-0 z-10">
+<div class="flex items-center gap-6">
+<span class="font-h2 text-h2 text-primary">Stationen</span>
+<nav class="flex gap-4 h-full items-center">
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="text-primary font-bold border-b-2 border-primary h-[56px] flex items-center" href="#">Stationen</a>
+</nav>
+</div>
+<button class="bg-primary hover:bg-primary-container text-on-primary px-4 py-1.5 rounded-full font-body-md font-semibold transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+                Speichern &amp; Validieren
+            </button>
+</header>
+<!-- Canvas Content -->
+<div class="p-container-padding max-w-5xl mx-auto w-full space-y-stack-lg">
+<!-- Breadcrumbs / Section Header -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 text-on-surface-variant font-caption">
+<span>Stationen</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span>Medien-Hub Alpha</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary font-semibold">Allowlist</span>
+</div>
+<h2 class="font-h1 text-h1">Domain-Sicherheit (Allowlist)</h2>
+<p class="text-on-surface-variant font-body-md">Verwalten Sie die vertrauenswürdigen Domains, die Inhalte in diesem Hub einbetten oder darauf zugreifen dürfen.</p>
+</div>
+<!-- Bento Layout / Content Grid -->
+<div class="grid grid-cols-1 gap-stack-lg">
+<!-- Main Configuration Card -->
+<section class="bg-white rounded-lg border border-[rgba(8,42,80,0.1)] overflow-hidden">
+<div class="px-card-padding py-4 bg-surface-container-low border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-h2 text-h2 text-on-surface">Aktive Einträge</h3>
+<div class="flex gap-2">
+<button class="text-primary font-body-md font-semibold hover:bg-primary/5 px-3 py-1 rounded transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                                Neue Domain
+                            </button>
+</div>
+</div>
+<div class="divide-y divide-outline-variant">
+<!-- Row 1: Static -->
+<div class="px-card-padding py-stack-md flex items-center justify-between group hover:bg-surface-bright transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-surface-container flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-primary">globe</span>
+</div>
+<div>
+<p class="font-body-md font-semibold">mpz-digital.de</p>
+<p class="font-caption text-on-surface-variant">System-Domain (Nicht editierbar)</p>
+</div>
+</div>
+<div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container rounded cursor-not-allowed">lock</span>
+</div>
+</div>
+<!-- Row 2: INLINE EDIT MODE (Target of Task) -->
+<div class="px-card-padding py-4 bg-primary/5 flex items-center justify-between border-l-4 border-primary shadow-sm animate-pulse-subtle">
+<div class="flex-1 flex items-center gap-3 mr-8">
+<div class="w-8 h-8 bg-primary/10 flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">edit</span>
+</div>
+<div class="relative w-full max-w-md">
+<input autofocus="" class="w-full bg-white border-2 border-primary rounded-lg px-3 py-2 font-body-md focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-inner" type="text" value="bookcreator.com"/>
+<div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 text-primary">
+<span class="text-[10px] uppercase font-bold tracking-tighter">Edit Mode</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="bg-surface-container hover:bg-surface-container-high text-on-surface font-body-md font-semibold px-4 py-2 rounded-lg transition-all border border-outline-variant">
+                                    Abbrechen
+                                </button>
+<button class="bg-primary hover:bg-primary-container text-on-primary font-body-md font-semibold px-6 py-2 rounded-lg shadow-md transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">save</span>
+                                    Speichern
+                                </button>
+</div>
+</div>
+<!-- Row 3: Static -->
+<div class="px-card-padding py-stack-md flex items-center justify-between group hover:bg-surface-bright transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-surface-container flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-on-surface-variant">globe</span>
+</div>
+<div>
+<p class="font-body-md font-semibold">youtube.com</p>
+<p class="font-caption text-on-surface-variant">Zuletzt geändert: vor 3 Tagen</p>
+</div>
+</div>
+<div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-primary/10 hover:text-primary rounded-full transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-2 hover:bg-error/10 hover:text-error rounded-full transition-colors">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Validation & Info Section (Bento Bottom) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
+<div class="bg-white p-card-padding rounded-lg border border-[rgba(8,42,80,0.1)] flex flex-col gap-3">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="font-h2 text-h2">Sicherheits-Check</span>
+</div>
+<p class="text-on-surface-variant font-body-md">Alle aktuell gelisteten Domains wurden erfolgreich auf SSL-Zertifikate und Head-Anfragen validiert.</p>
+<div class="mt-2 py-2 px-3 bg-primary/10 rounded flex items-center gap-2 border border-primary/20">
+<span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+<span class="font-caption text-primary font-bold">ALLE CHECKS BESTANDEN</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-card-padding rounded-lg border border-outline-variant relative overflow-hidden group">
+<!-- Subtle Background Graphic -->
+<div class="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-[120px]">security</span>
+</div>
+<h4 class="font-h2 text-h2 text-on-surface mb-2">Wildcard Support</h4>
+<p class="text-on-surface-variant font-body-md mb-4">Verwenden Sie Asterisks (*) für Subdomain-Matching (z.B. *.cloud.com).</p>
+<a class="text-secondary font-body-md font-semibold flex items-center gap-1 hover:underline" href="#">
+                            Dokumentation ansehen
+                            <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Simple Micro-Interaction Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Focus on the input when in edit mode
+            const editInput = document.querySelector('input[autofocus]');
+            if(editInput) {
+                editInput.setSelectionRange(0, editInput.value.indexOf('.'));
+            }
+
+            // Keyboard shortcut for saving (Ctrl+S)
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                    e.preventDefault();
+                    console.log('Saving changes...');
+                    // Logic for saving would go here
+                }
+            });
+        });
+    </script>
+<style>
+        @keyframes pulse-subtle {
+            0%, 100% { opacity: 1; }
+            50% { background-color: rgba(39, 106, 0, 0.08); }
+        }
+        .animate-pulse-subtle {
+            animation: pulse-subtle 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</body></html>

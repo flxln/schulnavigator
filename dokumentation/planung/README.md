@@ -30,6 +30,6 @@ Domänen-Matrix MPZ Studio: [ideen/archiv/mpz-studio-ui.md](../ideen/archiv/mpz-
 
 Vollständiger Abgleich-Log (bis 2026-06-20): [archiv/sync-log-2026-06.md](./archiv/sync-log-2026-06.md).
 
-**Letzter dokumentierter Abgleich:** 2026-06-22 — #197 Shell + Design-Route umgesetzt; Issue geschlossen; Post-Mortem [post-mortem-197-2026-06-22.md](../reviews/post-mortem-197-2026-06-22.md).
+**Letzter dokumentierter Abgleich:** 2026-06-22 — #196 Design-Freeze + Mockups; #197 Shell — Post-Mortems [196](../reviews/post-mortem-196-2026-06-22.md), [197](../reviews/post-mortem-197-2026-06-22.md).
 
 Siehe auch [entscheidungen.md](../entscheidungen.md), [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren).
