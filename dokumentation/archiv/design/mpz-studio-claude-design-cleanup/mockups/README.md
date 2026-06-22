@@ -10,12 +10,12 @@
 
 | Zweck | Vorgehen |
 |-------|----------|
-| Screen ansehen | `stitch_mpz_studio_shell_dashboard/<ordner>/code.html` im Browser öffnen |
+| Screen ansehen | `screen.png` (Vorschau) oder `code.html` im Browser |
 | Abgleich Spec ↔ Mockup ↔ Code | [`SCREEN-MATRIX.md`](./SCREEN-MATRIX.md) |
 | Neue Mockups erzeugen | Prompt aus `18-mockup-prompts.md`; Regenerierung: `node build-mockup-prompts.mjs` |
 | Verbindliche IA | [`NAVIGATION-SOLL.md`](../NAVIGATION-SOLL.md) — **gewinnt bei Widersprüchen** |
 
-**Kein PNG-Archiv:** Der ursprüngliche Plan (`s1-shell-default.png` usw.) wurde durch Stitch-HTML ersetzt. Optional können Screenshots aus dem Browser nach `assets/` exportiert werden.
+**Format:** Pro Screen ein Ordner mit `screen.png` + `code.html` (Stitch-Export). Der frühere Plan reiner PNG-Namen (`s1-shell-default.png`) ist durch diese Ordnerstruktur ersetzt.
 
 ---
 
