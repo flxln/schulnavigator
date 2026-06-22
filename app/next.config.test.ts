@@ -55,3 +55,27 @@ describe('next.config security headers', () => {
     )
   })
 })
+
+describe('next.config redirects', () => {
+  it('leitet /mpz/studio/hub permanent auf /mpz/studio/design?tab=hub um (REDIR-01, NAV-03)', async () => {
+    const redirectsFn = nextConfig.redirects
+    expect(typeof redirectsFn).toBe('function')
+    const redirects = await redirectsFn!()
+    const hub = redirects.find((r) => r.source === '/mpz/studio/hub')
+    expect(hub).toEqual({
+      source: '/mpz/studio/hub',
+      destination: '/mpz/studio/design?tab=hub',
+      permanent: true,
+    })
+  })
+
+  it('leitet /mpz/studio/brand permanent auf /mpz/studio/design?tab=brand um (REDIR-01, NAV-03)', async () => {
+    const redirects = await nextConfig.redirects!()
+    const brand = redirects.find((r) => r.source === '/mpz/studio/brand')
+    expect(brand).toEqual({
+      source: '/mpz/studio/brand',
+      destination: '/mpz/studio/design?tab=brand',
+      permanent: true,
+    })
+  })
+})

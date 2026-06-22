@@ -171,8 +171,8 @@ curl -X PATCH "http://localhost:3000/api/mpz/stations/kunst/stammdaten" \
 |-------|----------|
 | [`/mpz/studio/coach`](https://localhost:3000/mpz/studio/coach) (#177, Layout #192, Audio #193) | Nachricht anlegen → optional Layout/Audio → speichern → Hub/Raum prüfen (Autoplay nach Scan auf iPhone testen) |
 | [`/mpz/studio/embeds`](https://localhost:3000/mpz/studio/embeds) (#178) | Domain zur Allowlist hinzufügen; Übersicht link/embed-Medien aus `stations.json` |
-| [`/mpz/studio/hub`](https://localhost:3000/mpz/studio/hub) (#179) | Slug einem Fenster-Slot zuweisen; Akzentfarbe und Lucide-Icon ändern → speichern |
-| [`/mpz/studio/brand`](https://localhost:3000/mpz/studio/brand) (#180) | Slot-Datei ersetzen → Vorschau mit Cache-Bust (`?t=mtime`) |
+| [`/mpz/studio/design`](https://localhost:3000/mpz/studio/design) (#179, Tab Hub-Karte) | Slug einem Fenster-Slot zuweisen; Akzentfarbe und Lucide-Icon ändern → speichern |
+| [`/mpz/studio/design?tab=brand`](https://localhost:3000/mpz/studio/design?tab=brand) (#180) | Slot-Datei ersetzen → Vorschau mit Cache-Bust (`?t=mtime`) |
 | [`/mpz/studio/deploy`](https://localhost:3000/mpz/studio/deploy) (#174) | **Validate-all** → grün; QR **Dry-Run**; Env lesen (Änderungen an `NEXT_PUBLIC_*` → Dev-Server neu starten) |
 
 Details und API-Referenz: [fuer-entwickler.md](./fuer-entwickler.md) (Abschnitt MPZ Studio).

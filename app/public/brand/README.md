@@ -33,7 +33,7 @@ Design-System-Doku: `auftraggeber/material/UI-Vorschläge/UI-vorschlag-website.m
 
 Bei Aktualisierung durch die Schule: Dateien hier ersetzen, Commit im Hauptrepo, erneut deployen. Submodule allein reichen nicht für Production.
 
-**MPZ Studio (lokal, #180):** [`/mpz/studio/brand`](../../anleitungen/fuer-entwickler.md) — slot-basiertes Ersetzen der Dateien unten.
+**MPZ Studio (lokal, #180):** [`/mpz/studio/design?tab=brand`](../../anleitungen/fuer-entwickler.md) — slot-basiertes Ersetzen der Dateien unten.
 
 ### Upload-Slots (Studio)
 

@@ -130,23 +130,24 @@ Diese Bereiche stehen in der Doku unter „nur mit Code-Änderung“. Für volls
 
 ## Informationsarchitektur (Navigation)
 
+**Verbindliche Soll-IA (UI-Cleanup):** [`NAVIGATION-SOLL.md`](../archiv/design/mpz-studio-claude-design-cleanup/NAVIGATION-SOLL.md)
+
 ```
 /mpz/studio
 ├── Dashboard          # Validierungsstatus, letzte Änderungen, Quick-Deploy-Hinweis
 ├── Stationen          # 12 Slugs als Kacheln (Hub-Nr, Viewer-Typ, Vollständigkeit)
 │   └── /stationen/[slug]
 │       ├── Stammdaten     (titel, beschreibung, viewer, bild, panorama360)
-│       ├── Medien         (alle 6 Typen, bedingte Felder)
+│       ├── Medien         (alle 6 Typen, Modal-Upload)
 │       ├── Hotspots       (Flat + 360°, Kalibrierung)
-│       ├── Dialog         (segmente, gruppen, bubble, Audio-Verknüpfung)
-│       └── Vorschau
+│       └── Dialog         (immer sichtbar; segmente, gruppen, bubble, Audio in Segment-Zeile)
 ├── Coach              # coach-messages.json
-├── Dialog-Audio       # Dateien pro Slug, fehlende Clips warnen
 ├── Embeds & Links     # globale Allowlist + Übersicht embed/link-Medien
-├── Brand & Design     # Logos, Maskottchen, Tokens, Akzente, Hub-Icons
-├── Hub-Karte          # Slug↔Slot, Slot-Geometrie read-only, Icon/Akzent
+├── Design & Hub       # /mpz/studio/design — Tabs Hub-Karte + Brand & Design
 └── Deploy             # Env, QR, Token, validate-all
 ```
+
+**Entfällt im Cleanup:** globaler Sidebar-Punkt Dialog-Audio, Sidebar „Medien hochladen“, getrennte Routen `/hub` und `/brand` (Redirects auf `/design`).
 
 ---
 
@@ -166,7 +167,7 @@ Diese Bereiche stehen in der Doku unter „nur mit Code-Änderung“. Für volls
 | `typ` | Pflichtfelder im Studio | Upload/Auto |
 |-------|-------------------------|-------------|
 | `audio` | `id`, `untertitel`, `quelle` | → `media/{slug}/audio/` |
-| `video` | `videoSource` (`upload`/`youtube`), `quelle`, optional `poster` | MP4 oder YouTube-ID |
+| `video` | `quelle`, optional `videoSource` (`upload`/`youtube`, Default `upload`), optional `poster` | MP4 oder YouTube-ID |
 | `foto` | `quelle` | → `fotos/` |
 | `text` | `quelle` | → `texte/` (.md/.txt), optional Inline-Editor |
 | `link` | `quelle` (HTTPS), `openIn`, optional `thumbnail` | URL-Validator |

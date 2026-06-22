@@ -2,9 +2,8 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, Plus, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { useEffect, useState, type ReactNode } from 'react'
-import { useMediaIngest } from '@/components/mpz-studio/media-ingest-modal-context'
 import { PlanABanner } from '@/components/mpz-studio/plan-a-banner'
 import { SaveValidatePanel } from '@/components/mpz-studio/save-validate-panel'
 import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
@@ -17,12 +16,13 @@ import type {
 
 type GlobalNavItem = { href: string; label: string }
 
-const GLOBAL_ITEMS: GlobalNavItem[] = [
-  { href: '/mpz/studio/dialog-audio', label: 'Dialog-Audio' },
+const GLOBALER_INHALT_ITEMS: GlobalNavItem[] = [
   { href: '/mpz/studio/coach', label: 'Coach' },
   { href: '/mpz/studio/embeds', label: 'Embeds & Links' },
-  { href: '/mpz/studio/hub', label: 'Hub-Karte' },
-  { href: '/mpz/studio/brand', label: 'Brand & Design' },
+]
+
+const ERSCHEINUNGSBILD_ITEMS: GlobalNavItem[] = [
+  { href: '/mpz/studio/design', label: 'Design & Hub' },
 ]
 
 const BETRIEB_ITEMS: GlobalNavItem[] = [
@@ -64,8 +64,7 @@ function breadcrumb(
   if (pathname.startsWith('/mpz/studio/coach')) return { title: 'Coach' }
   if (pathname.startsWith('/mpz/studio/embeds'))
     return { title: 'Embeds & Links' }
-  if (pathname.startsWith('/mpz/studio/hub')) return { title: 'Hub-Karte' }
-  if (pathname.startsWith('/mpz/studio/brand')) return { title: 'Brand & Design' }
+  if (pathname.startsWith('/mpz/studio/design')) return { title: 'Design & Hub' }
   if (pathname.startsWith('/mpz/studio/deploy')) return { title: 'Deploy' }
   return { title: 'MPZ Studio' }
 }
@@ -76,7 +75,6 @@ export type StudioShellProps = {
 
 export function StudioShell({ children }: StudioShellProps) {
   const pathname = usePathname()
-  const { openMediaIngest } = useMediaIngest()
   const {
     dirty,
     loading,
@@ -139,22 +137,13 @@ export function StudioShell({ children }: StudioShellProps) {
           </button>
         </div>
 
-        <button
-          type="button"
-          onClick={() => {
-            closeNav()
-            openMediaIngest()
-          }}
-          className="mx-3 mt-3 inline-flex min-h-11 items-center justify-center gap-2 rounded-gs39-sm border border-white/20 bg-white/5 px-3 text-sm font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
-        >
-          <Plus className="size-4" aria-hidden />
-          Medien hinzufügen
-        </button>
-
         <nav
           aria-label="Studio-Navigation"
           className="flex flex-1 flex-col gap-0.5 overflow-y-auto px-2 py-3"
         >
+          <GroupLabel>
+            <span>Übersicht</span>
+          </GroupLabel>
           <NavLink
             href="/mpz/studio"
             label="Dashboard"
@@ -181,9 +170,22 @@ export function StudioShell({ children }: StudioShellProps) {
           />
 
           <GroupLabel>
-            <span>Global</span>
+            <span>Globaler Inhalt</span>
           </GroupLabel>
-          {GLOBAL_ITEMS.map((item) => (
+          {GLOBALER_INHALT_ITEMS.map((item) => (
+            <NavLink
+              key={item.href}
+              href={item.href}
+              label={item.label}
+              active={pathname.startsWith(item.href)}
+              onNavigate={closeNav}
+            />
+          ))}
+
+          <GroupLabel>
+            <span>Erscheinungsbild</span>
+          </GroupLabel>
+          {ERSCHEINUNGSBILD_ITEMS.map((item) => (
             <NavLink
               key={item.href}
               href={item.href}

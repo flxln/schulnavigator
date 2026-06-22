@@ -5,7 +5,7 @@
 **GitHub Epic:** [#195](https://github.com/flxln/schulnavigator/issues/195)
 **Parent:** Epic [#186](./archiv/epics/epic-mpz-studio-v2.1.md) (v2.1 abgeschlossen)
 
-**Roadmap:** [ROADMAP.md](../archiv/design/mpz-studio-claude-design-cleanup/ROADMAP.md) · **Brief:** [00-cleanup-brief.md](../archiv/design/mpz-studio-claude-design-cleanup/00-cleanup-brief.md) · **Spec:** [mpz-studio.md](../spezifikationen/mpz-studio.md)
+**Roadmap:** [ROADMAP.md](../archiv/design/mpz-studio-claude-design-cleanup/ROADMAP.md) · **Soll-IA:** [NAVIGATION-SOLL.md](../archiv/design/mpz-studio-claude-design-cleanup/NAVIGATION-SOLL.md) · **Brief:** [00-cleanup-brief.md](../archiv/design/mpz-studio-claude-design-cleanup/00-cleanup-brief.md) · **Spec:** [mpz-studio.md](../spezifikationen/mpz-studio.md)
 
 ---
 
@@ -25,7 +25,7 @@ Leitplanken unverändert (ADR-022): nur `NODE_ENV=development`, `assertMpzStudio
 |-------|-----|-------|--------|-----------------|
 | **Epic (Parent)** | `#195` | MPZ Studio UI-Cleanup — IA & Navigation (ADR-022) | `tech`, `design` | — |
 | Unterissue | `#196` | Design-Freeze: Soll-Navigation & Claude-Design-Abnahme | `design`, `documentation` | — |
-| Unterissue | `#197` | Studio-Shell: gruppierte Sidebar + Design-&-Hub-Route | `tech`, `blocker` | #196 |
+| Unterissue | `#197` | Studio-Shell: gruppierte Sidebar + Design-&-Hub-Route | `tech`, `blocker` | #196 — **erledigt** (2026-06-22, Post-Mortem unten) |
 | Unterissue | `#198` | Redundanzen: Medien-Modal, `/ingest`, Dialog-Audio global | `tech` | #197 |
 | Unterissue | `#199` | Dialog-Lifecycle: Tab immer + Create-API | `tech`, `blocker` | #197 |
 | Unterissue | `#200` | Dialog-Editor: Segment-Audio-Zeile + einklappbare Sub-Bereiche | `tech` | #199, #198 |
@@ -57,7 +57,7 @@ Leitplanken unverändert (ADR-022): nur `NODE_ENV=development`, `assertMpzStudio
 
 | Phase | Inhalt | Issues |
 |-------|--------|--------|
-| **2–3** | Claude Design + Design-Freeze (`NAVIGATION-SOLL`) | Design-Freeze |
+| **2–3** | Claude Design + Design-Freeze IA ([`NAVIGATION-SOLL`](../archiv/design/mpz-studio-claude-design-cleanup/NAVIGATION-SOLL.md)) | #196 (Mockups offen) |
 | **4.1** | `studio-shell.tsx` — gruppierte Nav, Top-Bar, `/design` | Shell |
 | **4.2** | Redundanzen entfernen | Redundanzen |
 | **4.3** ⚠️ Feature | Dialog Gating + Empty-State + Create-API | Dialog-Lifecycle |
@@ -88,8 +88,8 @@ Details: [ROADMAP.md — Pre-Mortem-Härtung](../archiv/design/mpz-studio-claude
 
 **Navigation & IA**
 
-- [ ] Sidebar: 4 Gruppen, 6 Einträge (ohne Dialog-Audio, ohne globalen Medien-Upload)
-- [ ] `/mpz/studio/design` mit Tabs Hub + Brand; `/hub` und `/brand` redirecten
+- [x] Sidebar: 4 Gruppen, 6 Einträge (ohne Dialog-Audio, ohne globalen Medien-Upload) — **#197**
+- [x] `/mpz/studio/design` mit Tabs Hub + Brand; `/hub` und `/brand` redirecten — **#197**
 - [ ] `/mpz/studio/ingest` und `/mpz/studio/dialog-audio` redirecten oder entfallen
 
 **Station Detail**
@@ -135,14 +135,15 @@ Details: [ROADMAP.md — Pre-Mortem-Härtung](../archiv/design/mpz-studio-claude
 - [08-bekannte-ui-probleme.md](../archiv/design/mpz-studio-claude-design-cleanup/08-bekannte-ui-probleme.md)
 - [15-dialog-segment-zeilenmodell.md](../archiv/design/mpz-studio-claude-design-cleanup/15-dialog-segment-zeilenmodell.md)
 - [16-sphere-calib-screen.md](../archiv/design/mpz-studio-claude-design-cleanup/16-sphere-calib-screen.md)
+- [NAVIGATION-SOLL.md](../archiv/design/mpz-studio-claude-design-cleanup/NAVIGATION-SOLL.md)
 - Code: `app/components/mpz-studio/*`
 
 ## Checkliste (Epic)
 
 - [x] GitHub Milestone „MPZ Studio UI-Cleanup“ angelegt (#12)
 - [x] Epic + Unterissues auf GitHub (#195–#204)
-- [ ] Design-Freeze
-- [ ] Shell + Design-Route
+- [ ] Design-Freeze IA ([`NAVIGATION-SOLL.md`](../archiv/design/mpz-studio-claude-design-cleanup/NAVIGATION-SOLL.md) ✅) — Mockups + #196-Abschluss offen
+- [x] Shell + Design-Route (#197, Post-Mortem: [post-mortem-197-2026-06-22.md](../reviews/post-mortem-197-2026-06-22.md))
 - [ ] Redundanzen
 - [ ] Dialog-Lifecycle (Feature)
 - [ ] Dialog-Editor

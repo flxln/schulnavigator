@@ -193,7 +193,7 @@ Orientierung: Eintrag `klassenzimmer` in `stations.json` (Issue **#93**).
 | `poster` | nein | Nur bei `typ: video` — Vorschaubild-Pfad |
 | `embedAllow` | bei `embed` | Optional; nur Subset der globalen Liste in `data/embed-allowlist.json` — verengen erlaubt; neue Domains über MPZ Studio (#178) |
 
-**Hub-Konfiguration (#179):** Slug↔Slot-Zuordnung, Akzentfarben und Lucide-Icons pro Station liegen in `data/hub-slug-map.json`, `data/station-accents.json` und `data/station-icons.json` — bearbeitbar über MPZ Studio [`/mpz/studio/hub`](http://localhost:3000/mpz/studio/hub). Slot-Geometrie (`HUB_SLOTS` in Code) bleibt unverändert.
+**Hub-Konfiguration (#179):** Slug↔Slot-Zuordnung, Akzentfarben und Lucide-Icons pro Station liegen in `data/hub-slug-map.json`, `data/station-accents.json` und `data/station-icons.json` — bearbeitbar über MPZ Studio [`/mpz/studio/design`](http://localhost:3000/mpz/studio/design) (Tab Hub-Karte). Slot-Geometrie (`HUB_SLOTS` in Code) bleibt unverändert.
 
 ### Video-Modi (`videoSource`)
 

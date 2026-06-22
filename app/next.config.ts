@@ -27,6 +27,20 @@ const nextConfig: NextConfig = {
     root: projectRoot,
   },
   ...(allowedDevOrigins?.length ? { allowedDevOrigins } : {}),
+  async redirects() {
+    return [
+      {
+        source: '/mpz/studio/hub',
+        destination: '/mpz/studio/design?tab=hub',
+        permanent: true,
+      },
+      {
+        source: '/mpz/studio/brand',
+        destination: '/mpz/studio/design?tab=brand',
+        permanent: true,
+      },
+    ]
+  },
   async headers() {
     return [
       {
