@@ -1,5 +1,10 @@
 'use client'
 
+import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
+import {
+  mpzFieldClassName,
+  mpzLabelClassName,
+} from '@/components/mpz-studio/mpz-form-primitives'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState, useTransition } from 'react'
 import {
@@ -107,14 +112,6 @@ function buildLayoutPayload(state: LayoutFormState): CoachMessageLayout | undefi
     layout.mascotFlipY = true
   }
   return Object.keys(layout).length > 0 ? layout : undefined
-}
-
-function fieldClassName(): string {
-  return 'w-full rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1'
-}
-
-function labelClassName(): string {
-  return 'mb-1 block text-xs font-semibold text-fg-3'
 }
 
 export function CoachMessageForm({
@@ -392,12 +389,12 @@ export function CoachMessageForm({
     <form onSubmit={handleSubmit} className="rounded-gs39-sm border border-border-1 bg-bg-1 p-4">
       {mode === 'add' && (
         <div className="mb-3">
-          <label className={labelClassName()} htmlFor="coach-id">
+          <label className={mpzLabelClassName()} htmlFor="coach-id">
             ID
           </label>
           <input
             id="coach-id"
-            className={fieldClassName()}
+            className={mpzFieldClassName()}
             value={id}
             onChange={(e) => setId(e.target.value)}
             placeholder="hub-milestone-3"
@@ -408,12 +405,12 @@ export function CoachMessageForm({
 
       {mode === 'add' && (
         <div className="mb-3">
-          <label className={labelClassName()} htmlFor="coach-trigger">
+          <label className={mpzLabelClassName()} htmlFor="coach-trigger">
             Trigger
           </label>
           <select
             id="coach-trigger"
-            className={fieldClassName()}
+            className={mpzFieldClassName()}
             value={trigger}
             onChange={(e) => setTrigger(e.target.value as CoachTrigger)}
           >
@@ -434,12 +431,12 @@ export function CoachMessageForm({
 
       <div className="mb-3 grid gap-3 sm:grid-cols-2">
         <div>
-          <label className={labelClassName()} htmlFor="coach-mascot">
+          <label className={mpzLabelClassName()} htmlFor="coach-mascot">
             Maskottchen
           </label>
           <select
             id="coach-mascot"
-            className={fieldClassName()}
+            className={mpzFieldClassName()}
             value={mascot}
             onChange={(e) => setMascot(e.target.value as CoachMascot)}
           >
@@ -451,12 +448,12 @@ export function CoachMessageForm({
           </select>
         </div>
         <div>
-          <label className={labelClassName()} htmlFor="coach-placement">
+          <label className={mpzLabelClassName()} htmlFor="coach-placement">
             Placement
           </label>
           <select
             id="coach-placement"
-            className={fieldClassName()}
+            className={mpzFieldClassName()}
             value={placement}
             onChange={(e) => setPlacement(e.target.value as CoachPlacement)}
             disabled={mascot === 'duo'}
@@ -472,7 +469,7 @@ export function CoachMessageForm({
 
       {trigger === 'hub-milestone' && (
         <div className="mb-3">
-          <label className={labelClassName()} htmlFor="coach-milestone">
+          <label className={mpzLabelClassName()} htmlFor="coach-milestone">
             Milestone (0–{stationCount - 1})
           </label>
           <input
@@ -480,7 +477,7 @@ export function CoachMessageForm({
             type="number"
             min={0}
             max={stationCount - 1}
-            className={fieldClassName()}
+            className={mpzFieldClassName()}
             value={milestone}
             onChange={(e) => setMilestone(e.target.value)}
             required
@@ -490,12 +487,12 @@ export function CoachMessageForm({
 
       {trigger === 'room-first' && (
         <div className="mb-3">
-          <label className={labelClassName()} htmlFor="coach-slug">
+          <label className={mpzLabelClassName()} htmlFor="coach-slug">
             Station (slug)
           </label>
           <select
             id="coach-slug"
-            className={fieldClassName()}
+            className={mpzFieldClassName()}
             value={slug}
             onChange={(e) => setSlug(e.target.value)}
           >
@@ -509,7 +506,7 @@ export function CoachMessageForm({
       )}
 
       <div className="mb-3">
-        <span className={labelClassName()}>Modi (leer = fest + heft)</span>
+        <span className={mpzLabelClassName()}>Modi (leer = fest + heft)</span>
         <div className="flex gap-4">
           <label className="flex items-center gap-2 text-sm text-fg-1">
             <input
@@ -531,12 +528,12 @@ export function CoachMessageForm({
       </div>
 
       <div className="mb-3">
-        <label className={labelClassName()} htmlFor="coach-text">
+        <label className={mpzLabelClassName()} htmlFor="coach-text">
           Text
         </label>
         <textarea
           id="coach-text"
-          className={`${fieldClassName()} min-h-[5rem]`}
+          className={`${mpzFieldClassName()} min-h-[5rem]`}
           value={text}
           onChange={(e) => setText(e.target.value)}
           required
@@ -651,7 +648,7 @@ export function CoachMessageForm({
                 const clamp = COACH_LAYOUT_CLAMPS[key]
                 return (
                   <div key={key}>
-                    <label className={labelClassName()} htmlFor={`coach-layout-${key}`}>
+                    <label className={mpzLabelClassName()} htmlFor={`coach-layout-${key}`}>
                       {label}
                     </label>
                     <input
@@ -660,7 +657,7 @@ export function CoachMessageForm({
                       step={step}
                       min={clamp.min}
                       max={clamp.max}
-                      className={fieldClassName()}
+                      className={mpzFieldClassName()}
                       value={layoutFields.fields[key]}
                       onChange={(e) =>
                         setLayoutFields((prev) => ({
@@ -695,7 +692,7 @@ export function CoachMessageForm({
         </p>
       )}
 
-      {error && <p className="mb-2 text-sm text-brand-red">{error}</p>}
+      {error && <MpzFormAlert variant="error">{error}</MpzFormAlert>}
       <div className="flex gap-2">
         <button
           type="submit"

@@ -4,9 +4,16 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useMemo, useState, useTransition } from 'react'
 import {
-  markMpzStudioDirty,
-  useStudioValidation,
-} from '@/components/mpz-studio/studio-validation-context'
+  MpzDataTable,
+  MpzDataTableBody,
+  MpzDataTableHead,
+} from '@/components/mpz-studio/mpz-data-table'
+import { MpzDraftNotice, MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
+import {
+  mpzFieldClassName,
+  mpzLabelClassName,
+} from '@/components/mpz-studio/mpz-form-primitives'
+import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
 import { LUCIDE_ICON_NAMES } from '@/lib/lucide-icon-registry'
 
 export type AssignableSlotInfo = {
@@ -29,14 +36,6 @@ export type HubStationRow = {
 export type HubPanelProps = {
   rows: readonly HubStationRow[]
   assignableSlots: readonly AssignableSlotInfo[]
-}
-
-function fieldClassName(): string {
-  return 'w-full rounded-gs39-sm border border-border-1 bg-bg-1 px-2 py-1.5 text-sm text-fg-1'
-}
-
-function labelClassName(): string {
-  return 'mb-1 block text-xs font-semibold text-fg-3'
 }
 
 function formatFrame(frame: readonly [number, number, number, number]): string {
@@ -91,7 +90,6 @@ export function HubPanel({ rows, assignableSlots }: HubPanelProps) {
           setError(json.message ?? 'Speichern fehlgeschlagen.')
           return
         }
-        markMpzStudioDirty()
         await validateNow()
         router.refresh()
         setSuccess('Hub-Konfiguration gespeichert.')
@@ -120,109 +118,99 @@ export function HubPanel({ rows, assignableSlots }: HubPanelProps) {
         </p>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[960px] border-collapse text-sm">
-          <thead>
-            <tr className="border-b border-border-1 text-left text-xs font-semibold uppercase tracking-wide text-fg-3">
-              <th className="px-2 py-2">Nr</th>
-              <th className="px-2 py-2">Slug</th>
-              <th className="px-2 py-2">Titel</th>
-              <th className="px-2 py-2">Slot</th>
-              <th className="px-2 py-2">Geometrie (read-only)</th>
-              <th className="px-2 py-2">Akzent</th>
-              <th className="px-2 py-2">Icon</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sortedDraft.map((row) => {
-              const slot = slotById.get(row.slotId)
-              return (
-                <tr key={row.slug} className="border-b border-border-1/60 align-top">
-                  <td className="px-2 py-3">
-                    <input
-                      type="number"
-                      min={1}
-                      max={12}
-                      className={`${fieldClassName()} w-16`}
-                      value={row.nr}
-                      onChange={(e) =>
-                        updateRow(row.slug, { nr: Number.parseInt(e.target.value, 10) || 1 })
-                      }
-                    />
-                  </td>
-                  <td className="px-2 py-3 font-mono text-xs text-fg-2">{row.slug}</td>
-                  <td className="px-2 py-3 text-fg-1">{row.titel}</td>
-                  <td className="px-2 py-3">
-                    <select
-                      className={fieldClassName()}
-                      value={row.slotId}
-                      onChange={(e) => updateRow(row.slug, { slotId: e.target.value })}
-                    >
-                      {assignableSlots.map((s) => (
-                        <option key={s.id} value={s.id}>
-                          {s.id} ({s.kind})
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                  <td className="px-2 py-3 font-mono text-[11px] leading-relaxed text-fg-3">
-                    {slot ? (
-                      <>
-                        <div>frame: [{formatFrame(slot.frame)}]</div>
-                        <div>hit: [{formatFrame(slot.hitFrame)}]</div>
-                        {slot.rotation !== undefined && <div>rot: {slot.rotation}°</div>}
-                      </>
-                    ) : (
-                      '—'
-                    )}
-                  </td>
-                  <td className="px-2 py-3">
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="color"
-                        value={row.accent}
-                        onChange={(e) => updateRow(row.slug, { accent: e.target.value })}
-                        className="size-8 cursor-pointer rounded border border-border-1 bg-bg-1"
-                        aria-label={`Akzent ${row.slug}`}
-                      />
-                      <input
-                        type="text"
-                        className={`${fieldClassName()} w-24 font-mono text-xs`}
-                        value={row.accent}
-                        onChange={(e) => updateRow(row.slug, { accent: e.target.value })}
-                      />
-                    </div>
-                  </td>
-                  <td className="px-2 py-3">
-                    <select
-                      className={fieldClassName()}
-                      value={row.iconName}
-                      onChange={(e) => updateRow(row.slug, { iconName: e.target.value })}
-                    >
-                      {LUCIDE_ICON_NAMES.map((name) => (
-                        <option key={name} value={name}>
-                          {name}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </div>
+      {dirty && <MpzDraftNotice />}
 
-      {error && (
-        <p className="rounded-gs39-sm border border-brand-red/30 bg-brand-red/10 px-3 py-2 text-sm text-brand-red">
-          {error}
-        </p>
-      )}
-      {success && (
-        <p className="rounded-gs39-sm border border-brand-green/30 bg-brand-green/10 px-3 py-2 text-sm text-brand-green">
-          {success}
-        </p>
-      )}
+      <MpzDataTable minWidth="min-w-[960px]">
+        <MpzDataTableHead>
+          <th className="px-2 py-2">Nr</th>
+          <th className="px-2 py-2">Slug</th>
+          <th className="px-2 py-2">Titel</th>
+          <th className="px-2 py-2">Slot</th>
+          <th className="px-2 py-2">Geometrie (read-only)</th>
+          <th className="px-2 py-2">Akzent</th>
+          <th className="px-2 py-2">Icon</th>
+        </MpzDataTableHead>
+        <MpzDataTableBody>
+          {sortedDraft.map((row) => {
+            const slot = slotById.get(row.slotId)
+            return (
+              <tr key={row.slug} className="border-b border-border-1/60 align-top">
+                <td className="px-2 py-3">
+                  <input
+                    type="number"
+                    min={1}
+                    max={12}
+                    className={`${mpzFieldClassName()} w-16`}
+                    value={row.nr}
+                    onChange={(e) =>
+                      updateRow(row.slug, { nr: Number.parseInt(e.target.value, 10) || 1 })
+                    }
+                  />
+                </td>
+                <td className="px-2 py-3 font-mono text-xs text-fg-2">{row.slug}</td>
+                <td className="px-2 py-3 text-fg-1">{row.titel}</td>
+                <td className="px-2 py-3">
+                  <select
+                    className={mpzFieldClassName()}
+                    value={row.slotId}
+                    onChange={(e) => updateRow(row.slug, { slotId: e.target.value })}
+                  >
+                    {assignableSlots.map((s) => (
+                      <option key={s.id} value={s.id}>
+                        {s.id} ({s.kind})
+                      </option>
+                    ))}
+                  </select>
+                </td>
+                <td className="px-2 py-3 font-mono text-[11px] leading-relaxed text-fg-3">
+                  {slot ? (
+                    <>
+                      <div>frame: [{formatFrame(slot.frame)}]</div>
+                      <div>hit: [{formatFrame(slot.hitFrame)}]</div>
+                      {slot.rotation !== undefined && <div>rot: {slot.rotation}°</div>}
+                    </>
+                  ) : (
+                    '—'
+                  )}
+                </td>
+                <td className="px-2 py-3">
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="color"
+                      value={row.accent}
+                      onChange={(e) => updateRow(row.slug, { accent: e.target.value })}
+                      className="size-8 cursor-pointer rounded border border-border-1 bg-bg-1"
+                      aria-label={`Akzent ${row.slug}`}
+                    />
+                    <input
+                      type="text"
+                      className={`${mpzFieldClassName()} w-24 font-mono text-xs`}
+                      value={row.accent}
+                      onChange={(e) => updateRow(row.slug, { accent: e.target.value })}
+                    />
+                  </div>
+                </td>
+                <td className="px-2 py-3">
+                  <select
+                    className={mpzFieldClassName()}
+                    value={row.iconName}
+                    onChange={(e) => updateRow(row.slug, { iconName: e.target.value })}
+                  >
+                    {LUCIDE_ICON_NAMES.map((name) => (
+                      <option key={name} value={name}>
+                        {name}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+              </tr>
+            )
+          })}
+        </MpzDataTableBody>
+      </MpzDataTable>
+
+      {error && <MpzFormAlert variant="error">{error}</MpzFormAlert>}
+      {success && <MpzFormAlert variant="success">{success}</MpzFormAlert>}
 
       <button
         type="button"
@@ -231,7 +219,7 @@ export function HubPanel({ rows, assignableSlots }: HubPanelProps) {
         className={`rounded-gs39-sm px-4 py-2 text-sm font-semibold transition-colors ${
           !dirty || isPending
             ? 'cursor-not-allowed border border-border-1 bg-bg-2 text-fg-3'
-            : 'border border-brand-green bg-brand-green text-fg-on-dark hover:opacity-90'
+            : 'border border-accent bg-accent text-fg-on-dark hover:bg-accent-hover'
         }`}
       >
         {isPending ? 'Speichere…' : 'Hub-Konfiguration speichern'}

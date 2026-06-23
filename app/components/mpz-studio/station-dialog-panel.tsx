@@ -3,6 +3,12 @@
 import { useRouter } from 'next/navigation'
 import { Fragment, useCallback, useEffect, useMemo, useState, useTransition } from 'react'
 import { DialogAudioStateBadge } from '@/components/mpz-studio/dialog-audio-status-badges'
+import {
+  MpzDataTable,
+  MpzDataTableBody,
+  MpzDataTableHead,
+} from '@/components/mpz-studio/mpz-data-table'
+import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
 import { StationDialogBubbleForm } from '@/components/mpz-studio/station-dialog-bubble-form'
 import { StationDialogGruppeForm } from '@/components/mpz-studio/station-dialog-gruppe-form'
 import { StationDialogSegmentAudioRow } from '@/components/mpz-studio/station-dialog-segment-audio-row'
@@ -237,11 +243,7 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
   if (!dialog) {
     return (
       <div className="flex flex-col gap-4">
-        {error && (
-          <p className="rounded-gs39-sm border border-brand-red/30 bg-brand-red/10 px-3 py-2 text-sm text-fg-1">
-            {error}
-          </p>
-        )}
+        {error && <MpzFormAlert variant="error">{error}</MpzFormAlert>}
         <p className="text-sm text-fg-2">
           Maskottchen-Dialog mit Frieda und Otto für diese Station — Sprechertexte und Audio pro
           Segment im Dialog-Tab pflegen.
@@ -262,16 +264,8 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
 
   return (
     <div className="flex flex-col gap-8">
-      {error && (
-        <p className="rounded-gs39-sm border border-brand-red/30 bg-brand-red/10 px-3 py-2 text-sm text-fg-1">
-          {error}
-        </p>
-      )}
-      {success && (
-        <p className="rounded-gs39-sm border border-brand-green/30 bg-brand-green/10 px-3 py-2 text-sm text-fg-1">
-          {success}
-        </p>
-      )}
+      {error && <MpzFormAlert variant="error">{error}</MpzFormAlert>}
+      {success && <MpzFormAlert variant="success">{success}</MpzFormAlert>}
 
       {audioStatus &&
         (audioStatus.orphans.length > 0 ||
@@ -298,7 +292,7 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
             type="button"
             disabled={isPending}
             onClick={() => void deleteDialogBlock()}
-            className="rounded-gs39-sm border border-brand-red/40 px-3 py-1.5 text-sm font-semibold text-brand-red disabled:opacity-50"
+            className="rounded-gs39-sm border border-error/40 px-3 py-1.5 text-sm font-semibold text-error disabled:opacity-50"
           >
             Dialog entfernen
           </button>
@@ -360,20 +354,17 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
           </div>
         )}
 
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[40rem] border-collapse text-left text-sm">
-            <thead>
-              <tr className="border-b border-border-1 text-fg-3">
-                <th className="py-2 pr-2 font-semibold">Nr</th>
-                <th className="py-2 pr-2 font-semibold">ID</th>
-                <th className="py-2 pr-2 font-semibold">Rolle</th>
-                <th className="py-2 pr-2 font-semibold">Text</th>
-                <th className="py-2 pr-2 font-semibold">Gruppe</th>
-                <th className="py-2 pr-2 font-semibold">Audio</th>
-                <th className="py-2 font-semibold" />
-              </tr>
-            </thead>
-            <tbody>
+        <MpzDataTable minWidth="min-w-[40rem]">
+          <MpzDataTableHead>
+            <th className="px-2 py-2">Nr</th>
+            <th className="px-2 py-2">ID</th>
+            <th className="px-2 py-2">Rolle</th>
+            <th className="px-2 py-2">Text</th>
+            <th className="px-2 py-2">Gruppe</th>
+            <th className="px-2 py-2">Audio</th>
+            <th className="px-2 py-2" />
+          </MpzDataTableHead>
+          <MpzDataTableBody>
               {dialog.segmente.map((seg, index) => {
                 const audit = audioBySegmentId.get(seg.id)
                 const audioExpanded = expandedAudioSegmentId === seg.id
@@ -427,7 +418,7 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
                             type="button"
                             disabled={isPending || dialog.segmente.length <= 1}
                             onClick={() => void deleteSegment(seg.id)}
-                            className="rounded-gs39-sm border border-brand-red/40 px-2 py-1 text-xs font-semibold text-brand-red disabled:opacity-50"
+                            className="rounded-gs39-sm border border-error/40 px-2 py-1 text-xs font-semibold text-error disabled:opacity-50"
                           >
                             Löschen
                           </button>
@@ -449,9 +440,8 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
                   </Fragment>
                 )
               })}
-            </tbody>
-          </table>
-        </div>
+          </MpzDataTableBody>
+        </MpzDataTable>
 
         {editingSegmentId && (
           <div className="mt-4">

@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 import { useEffect, useState, type ReactNode } from 'react'
 import { PlanABanner } from '@/components/mpz-studio/plan-a-banner'
+import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
 import { SaveValidatePanel } from '@/components/mpz-studio/save-validate-panel'
 import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
 
@@ -96,7 +97,7 @@ export function StudioShell({ children }: StudioShellProps) {
   }, [navOpen])
 
   const summaries = report?.stationSummaries ?? []
-  const buttonDisabled = loading || (!dirty && report?.ok === true)
+  const buttonDisabled = loading || !dirty
 
   return (
     <div className="relative flex min-h-screen w-full">
@@ -244,6 +245,12 @@ export function StudioShell({ children }: StudioShellProps) {
             onClick={() => void saveAndValidate()}
           />
         </header>
+
+        {error && (
+          <div className="border-b border-border-1 px-4 py-2 md:px-6">
+            <MpzFormAlert variant="error">{error}</MpzFormAlert>
+          </div>
+        )}
 
         {saveFeedback && (
           <SaveValidatePanel
@@ -474,10 +481,17 @@ function SaveControl({
   return (
     <div className="flex items-center gap-2.5">
       {dirty && !loading && (
-        <span className="hidden items-center gap-1.5 text-xs font-semibold text-fg-3 sm:flex">
-          <span className="size-1.5 rounded-full bg-warn" aria-hidden />
-          Ungespeichert
-        </span>
+        <>
+          <span
+            className="size-1.5 shrink-0 rounded-full bg-warn sm:hidden"
+            title="Ungespeichert"
+            aria-hidden
+          />
+          <span className="hidden items-center gap-1.5 text-xs font-semibold text-fg-3 sm:flex">
+            <span className="size-1.5 rounded-full bg-warn" aria-hidden />
+            Ungespeichert
+          </span>
+        </>
       )}
       <button
         type="button"

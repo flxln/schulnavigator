@@ -1,5 +1,10 @@
 'use client'
 
+import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
+import {
+  mpzFieldClassName,
+  mpzLabelClassName,
+} from '@/components/mpz-studio/mpz-form-primitives'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState, useTransition } from 'react'
 import {
@@ -19,14 +24,6 @@ export type StationDialogSegmentFormProps = {
 
 const ROLLEN: DialogRolle[] = ['frieda', 'otto', 'beide']
 const TAILS: DialogBubbleTail[] = ['left', 'right', 'center']
-
-function fieldClassName(): string {
-  return 'w-full rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1'
-}
-
-function labelClassName(): string {
-  return 'mb-1 block text-xs font-semibold text-fg-3'
-}
 
 export function StationDialogSegmentForm({
   slug,
@@ -112,12 +109,12 @@ export function StationDialogSegmentForm({
     <form onSubmit={handleSubmit} className="rounded-gs39-sm border border-border-1 bg-bg-1 p-4">
       {mode === 'add' && (
         <div className="mb-3">
-          <label className={labelClassName()} htmlFor="segment-id">
+          <label className={mpzLabelClassName()} htmlFor="segment-id">
             ID (optional, Auto wenn leer)
           </label>
           <input
             id="segment-id"
-            className={fieldClassName()}
+            className={mpzFieldClassName()}
             value={id}
             onChange={(e) => setId(e.target.value)}
             placeholder="d10"
@@ -126,12 +123,12 @@ export function StationDialogSegmentForm({
       )}
       <div className="mb-3 grid gap-3 sm:grid-cols-2">
         <div>
-          <label className={labelClassName()} htmlFor="segment-rolle">
+          <label className={mpzLabelClassName()} htmlFor="segment-rolle">
             Rolle
           </label>
           <select
             id="segment-rolle"
-            className={fieldClassName()}
+            className={mpzFieldClassName()}
             value={rolle}
             onChange={(e) => setRolle(e.target.value as DialogRolle)}
           >
@@ -143,12 +140,12 @@ export function StationDialogSegmentForm({
           </select>
         </div>
         <div>
-          <label className={labelClassName()} htmlFor="segment-gruppe">
+          <label className={mpzLabelClassName()} htmlFor="segment-gruppe">
             Gruppe
           </label>
           <select
             id="segment-gruppe"
-            className={fieldClassName()}
+            className={mpzFieldClassName()}
             value={gruppe}
             onChange={(e) => setGruppe(e.target.value)}
           >
@@ -162,12 +159,12 @@ export function StationDialogSegmentForm({
         </div>
       </div>
       <div className="mb-3">
-        <label className={labelClassName()} htmlFor="segment-tail">
+        <label className={mpzLabelClassName()} htmlFor="segment-tail">
           tail
         </label>
         <select
           id="segment-tail"
-          className={fieldClassName()}
+          className={mpzFieldClassName()}
           value={tail}
           onChange={(e) => setTail(e.target.value)}
         >
@@ -180,17 +177,17 @@ export function StationDialogSegmentForm({
         </select>
       </div>
       <div className="mb-3">
-        <label className={labelClassName()} htmlFor="segment-text">
+        <label className={mpzLabelClassName()} htmlFor="segment-text">
           Text
         </label>
         <textarea
           id="segment-text"
-          className={`${fieldClassName()} min-h-[5rem]`}
+          className={`${mpzFieldClassName()} min-h-[5rem]`}
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
       </div>
-      {error && <p className="mb-2 text-sm text-brand-red">{error}</p>}
+      {error && <MpzFormAlert variant="error">{error}</MpzFormAlert>}
       <div className="flex gap-2">
         <button
           type="submit"

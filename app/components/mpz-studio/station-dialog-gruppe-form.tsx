@@ -1,5 +1,10 @@
 'use client'
 
+import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
+import {
+  mpzFieldClassName,
+  mpzLabelClassName,
+} from '@/components/mpz-studio/mpz-form-primitives'
 import { useRouter } from 'next/navigation'
 import { useState, useTransition } from 'react'
 import {
@@ -14,14 +19,6 @@ export type StationDialogGruppeFormProps = {
   initialText?: string
   onCancel: () => void
   onSuccess: (message: string) => void
-}
-
-function fieldClassName(): string {
-  return 'w-full rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1'
-}
-
-function labelClassName(): string {
-  return 'mb-1 block text-xs font-semibold text-fg-3'
 }
 
 export function StationDialogGruppeForm({
@@ -74,12 +71,12 @@ export function StationDialogGruppeForm({
     <form onSubmit={handleSubmit} className="rounded-gs39-sm border border-border-1 bg-bg-1 p-4">
       {mode === 'add' && (
         <div className="mb-3">
-          <label className={labelClassName()} htmlFor="gruppe-id">
+          <label className={mpzLabelClassName()} htmlFor="gruppe-id">
             ID
           </label>
           <input
             id="gruppe-id"
-            className={fieldClassName()}
+            className={mpzFieldClassName()}
             value={id}
             onChange={(e) => setId(e.target.value)}
             placeholder="gruesse"
@@ -88,18 +85,18 @@ export function StationDialogGruppeForm({
         </div>
       )}
       <div className="mb-3">
-        <label className={labelClassName()} htmlFor="gruppe-text">
+        <label className={mpzLabelClassName()} htmlFor="gruppe-text">
           Gruppentext
         </label>
         <textarea
           id="gruppe-text"
-          className={`${fieldClassName()} min-h-[4rem]`}
+          className={`${mpzFieldClassName()} min-h-[4rem]`}
           value={text}
           onChange={(e) => setText(e.target.value)}
           required
         />
       </div>
-      {error && <p className="mb-2 text-sm text-brand-red">{error}</p>}
+      {error && <MpzFormAlert variant="error">{error}</MpzFormAlert>}
       <div className="flex gap-2">
         <button
           type="submit"

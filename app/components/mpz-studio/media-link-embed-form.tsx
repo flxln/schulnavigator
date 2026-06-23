@@ -1,5 +1,10 @@
 'use client'
 
+import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
+import {
+  mpzFieldClassName,
+  mpzLabelClassName,
+} from '@/components/mpz-studio/mpz-form-primitives'
 import { useRouter } from 'next/navigation'
 import { useState, useTransition } from 'react'
 import {
@@ -18,14 +23,6 @@ export type MediaLinkEmbedFormProps = {
   typ: 'link' | 'embed'
   globalSuffixes: readonly string[]
   onSuccess?: (message: string) => void
-}
-
-function fieldClassName(): string {
-  return 'w-full rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1'
-}
-
-function labelClassName(): string {
-  return 'mb-1 block text-xs font-semibold text-fg-3'
 }
 
 export function MediaLinkEmbedForm({
@@ -119,7 +116,7 @@ export function MediaLinkEmbedForm({
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div>
-        <label htmlFor="med-create-id" className={labelClassName()}>
+        <label htmlFor="med-create-id" className={mpzLabelClassName()}>
           ID (optional)
         </label>
         <input
@@ -129,7 +126,7 @@ export function MediaLinkEmbedForm({
           placeholder={`${slug}-${typ}`}
           value={mediumId}
           onChange={(e) => setMediumId(e.target.value)}
-          className={fieldClassName()}
+          className={mpzFieldClassName()}
         />
         <p className="mt-1 text-xs text-fg-3">
           Leer lassen für automatische ID (z. B. <code className="font-mono">{slug}-{typ}</code>).
@@ -153,14 +150,7 @@ export function MediaLinkEmbedForm({
         {isPending ? 'Speichert …' : typ === 'link' ? 'Link anlegen' : 'Embed anlegen'}
       </button>
 
-      {error && (
-        <p
-          role="alert"
-          className="rounded-gs39-sm border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800"
-        >
-          {error}
-        </p>
-      )}
+      {error && <MpzFormAlert variant="error">{error}</MpzFormAlert>}
     </form>
   )
 }

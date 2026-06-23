@@ -1,5 +1,10 @@
 'use client'
 
+import {
+  mpzFieldClassName,
+  mpzLabelClassName,
+} from '@/components/mpz-studio/mpz-form-primitives'
+import { MpzDraftNotice, MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState, useTransition } from 'react'
 import {
@@ -47,14 +52,6 @@ export function canReplaceMediumFile(
     return medium.videoSource !== 'youtube' && formVideoSource !== 'youtube'
   }
   return true
-}
-
-function fieldClassName(): string {
-  return 'w-full rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1'
-}
-
-function labelClassName(): string {
-  return 'mb-1 block text-xs font-semibold text-fg-3'
 }
 
 function mediumToForm(
@@ -363,9 +360,11 @@ export function StationMediumEditForm({
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <p className="text-xs font-semibold uppercase tracking-wide text-fg-3">Medium bearbeiten</p>
 
+        {isDirty && <MpzDraftNotice />}
+
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor={`edit-med-id-${medium.id}`} className={labelClassName()}>
+            <label htmlFor={`edit-med-id-${medium.id}`} className={mpzLabelClassName()}>
               ID (read-only)
             </label>
             <input
@@ -373,12 +372,12 @@ export function StationMediumEditForm({
               type="text"
               readOnly
               value={medium.id}
-              className={`${fieldClassName()} bg-bg-2 text-fg-3`}
+              className={`${mpzFieldClassName()} bg-bg-2 text-fg-3`}
             />
           </div>
 
           <div>
-            <label htmlFor={`edit-med-typ-${medium.id}`} className={labelClassName()}>
+            <label htmlFor={`edit-med-typ-${medium.id}`} className={mpzLabelClassName()}>
               Typ (read-only)
             </label>
             <input
@@ -386,14 +385,14 @@ export function StationMediumEditForm({
               type="text"
               readOnly
               value={medium.typ}
-              className={`${fieldClassName()} bg-bg-2 text-fg-3`}
+              className={`${mpzFieldClassName()} bg-bg-2 text-fg-3`}
             />
           </div>
 
           {quelleReadOnly ? (
             <>
               <div className="sm:col-span-2">
-                <label htmlFor={`edit-med-untertitel-${medium.id}`} className={labelClassName()}>
+                <label htmlFor={`edit-med-untertitel-${medium.id}`} className={mpzLabelClassName()}>
                   Untertitel (optional)
                 </label>
                 <input
@@ -401,12 +400,12 @@ export function StationMediumEditForm({
                   type="text"
                   value={form.untertitel}
                   onChange={(e) => updateField('untertitel', e.target.value)}
-                  className={fieldClassName()}
+                  className={mpzFieldClassName()}
                 />
               </div>
 
               <div className="sm:col-span-2">
-                <label htmlFor={`edit-med-quelle-ro-${medium.id}`} className={labelClassName()}>
+                <label htmlFor={`edit-med-quelle-ro-${medium.id}`} className={mpzLabelClassName()}>
                   Quelle (read-only)
                 </label>
                 <input
@@ -414,7 +413,7 @@ export function StationMediumEditForm({
                   type="text"
                   readOnly
                   value={medium.quelle}
-                  className={`${fieldClassName()} bg-bg-2 font-mono text-xs text-fg-3`}
+                  className={`${mpzFieldClassName()} bg-bg-2 font-mono text-xs text-fg-3`}
                 />
               </div>
             </>
@@ -435,7 +434,7 @@ export function StationMediumEditForm({
           {medium.typ === 'video' && (
             <>
               <div>
-                <label htmlFor={`edit-med-video-source-${medium.id}`} className={labelClassName()}>
+                <label htmlFor={`edit-med-video-source-${medium.id}`} className={mpzLabelClassName()}>
                   videoSource
                 </label>
                 <select
@@ -444,7 +443,7 @@ export function StationMediumEditForm({
                   onChange={(e) =>
                     updateField('videoSource', e.target.value as 'upload' | 'youtube')
                   }
-                  className={fieldClassName()}
+                  className={mpzFieldClassName()}
                 >
                   <option value="upload">upload</option>
                   <option value="youtube">youtube</option>
@@ -499,14 +498,7 @@ export function StationMediumEditForm({
           </button>
         </div>
 
-        {error && (
-          <p
-            role="alert"
-            className="rounded-gs39-sm border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800"
-          >
-            {error}
-          </p>
-        )}
+        {error && <MpzFormAlert variant="error">{error}</MpzFormAlert>}
       </form>
 
       {replaceAllowed && uploadRule && uploadTyp && (
@@ -515,7 +507,7 @@ export function StationMediumEditForm({
           <p className="text-sm text-fg-2">
             Medium-ID und Hotspot-Verknüpfungen bleiben erhalten.
           </p>
-          <label htmlFor={`edit-med-file-${medium.id}`} className={labelClassName()}>
+          <label htmlFor={`edit-med-file-${medium.id}`} className={mpzLabelClassName()}>
             Neue Datei
           </label>
           <input
@@ -541,14 +533,7 @@ export function StationMediumEditForm({
           >
             {fileReplaceBusy ? 'Ersetzt …' : 'Datei ersetzen'}
           </button>
-          {fileError && (
-            <p
-              role="alert"
-              className="rounded-gs39-sm border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800"
-            >
-              {fileError}
-            </p>
-          )}
+          {fileError && <MpzFormAlert variant="error">{fileError}</MpzFormAlert>}
         </section>
       )}
 

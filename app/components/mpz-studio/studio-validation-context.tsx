@@ -44,8 +44,8 @@ export function markMpzStudioDirty(): void {
 
 export function StudioValidationProvider({ children }: { children: ReactNode }) {
   const [report, setReport] = useState<MpzValidationReport | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [dirty, setDirty] = useState(true)
+  const [loading, setLoading] = useState(true)
+  const [dirty, setDirty] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [saveFeedback, setSaveFeedback] = useState<SaveValidateFeedback | null>(
     null,

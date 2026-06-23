@@ -1,5 +1,10 @@
 'use client'
 
+import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
+import {
+  mpzFieldClassName,
+  mpzLabelClassName,
+} from '@/components/mpz-studio/mpz-form-primitives'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState, useTransition } from 'react'
 import {
@@ -22,14 +27,6 @@ export type StationHotspotEditFormProps = {
   uploadedIconPath?: string | null
   onCancel: () => void
   onSuccess: (message: string) => void
-}
-
-function fieldClassName(): string {
-  return 'w-full rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1'
-}
-
-function labelClassName(): string {
-  return 'mb-1 block text-xs font-semibold text-fg-3'
 }
 
 function hotspotToForm(hotspot: Hotspot | Hotspot360) {
@@ -219,7 +216,7 @@ export function StationHotspotEditForm({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor={`edit-hs-id-${hotspot.id}`} className={labelClassName()}>
+          <label htmlFor={`edit-hs-id-${hotspot.id}`} className={mpzLabelClassName()}>
             ID (read-only)
           </label>
           <input
@@ -227,12 +224,12 @@ export function StationHotspotEditForm({
             type="text"
             readOnly
             value={hotspot.id}
-            className={`${fieldClassName()} bg-bg-2 text-fg-3`}
+            className={`${mpzFieldClassName()} bg-bg-2 text-fg-3`}
           />
         </div>
 
         <div>
-          <label htmlFor={`edit-hs-label-${hotspot.id}`} className={labelClassName()}>
+          <label htmlFor={`edit-hs-label-${hotspot.id}`} className={mpzLabelClassName()}>
             Label (optional)
           </label>
           <input
@@ -240,14 +237,14 @@ export function StationHotspotEditForm({
             type="text"
             value={form.label}
             onChange={(e) => updateField('label', e.target.value)}
-            className={fieldClassName()}
+            className={mpzFieldClassName()}
           />
         </div>
 
         {isDialog ? (
           <>
             <div className="sm:col-span-2">
-              <label htmlFor={`edit-hs-mascot-${hotspot.id}`} className={labelClassName()}>
+              <label htmlFor={`edit-hs-mascot-${hotspot.id}`} className={mpzLabelClassName()}>
                 Maskottchen
               </label>
               <select
@@ -255,7 +252,7 @@ export function StationHotspotEditForm({
                 required
                 value={'mascot' in form ? form.mascot : 'frieda'}
                 onChange={(e) => updateField('mascot' as keyof typeof form, e.target.value)}
-                className={fieldClassName()}
+                className={mpzFieldClassName()}
               >
                 {dialogFiguren.map((figur) => (
                   <option key={figur} value={figur}>
@@ -266,7 +263,7 @@ export function StationHotspotEditForm({
             </div>
 
             <div>
-              <label htmlFor={`edit-hs-mascot-size-${hotspot.id}`} className={labelClassName()}>
+              <label htmlFor={`edit-hs-mascot-size-${hotspot.id}`} className={mpzLabelClassName()}>
                 mascotSize (optional)
               </label>
               <input
@@ -278,7 +275,7 @@ export function StationHotspotEditForm({
                 placeholder="leer = Viewer-Default"
                 value={'mascotSize' in form ? form.mascotSize : ''}
                 onChange={(e) => updateField('mascotSize' as keyof typeof form, e.target.value)}
-                className={fieldClassName()}
+                className={mpzFieldClassName()}
               />
             </div>
 
@@ -297,7 +294,7 @@ export function StationHotspotEditForm({
 
             {isSphere && (
               <div>
-                <label htmlFor={`edit-hs-bubble-${hotspot.id}`} className={labelClassName()}>
+                <label htmlFor={`edit-hs-bubble-${hotspot.id}`} className={mpzLabelClassName()}>
                   bubblePitchOffset (optional, °)
                 </label>
                 <input
@@ -311,7 +308,7 @@ export function StationHotspotEditForm({
                   onChange={(e) =>
                     updateField('bubblePitchOffset' as keyof typeof form, e.target.value)
                   }
-                  className={fieldClassName()}
+                  className={mpzFieldClassName()}
                 />
               </div>
             )}
@@ -319,7 +316,7 @@ export function StationHotspotEditForm({
         ) : (
           <>
             <div className="sm:col-span-2">
-              <label htmlFor={`edit-hs-medium-${hotspot.id}`} className={labelClassName()}>
+              <label htmlFor={`edit-hs-medium-${hotspot.id}`} className={mpzLabelClassName()}>
                 Medium
               </label>
               <select
@@ -327,7 +324,7 @@ export function StationHotspotEditForm({
                 required
                 value={'mediumId' in form ? form.mediumId : ''}
                 onChange={(e) => updateField('mediumId' as keyof typeof form, e.target.value)}
-                className={fieldClassName()}
+                className={mpzFieldClassName()}
               >
                 {medien.map((m) => (
                   <option key={m.id} value={m.id}>
@@ -338,14 +335,14 @@ export function StationHotspotEditForm({
             </div>
 
             <div>
-              <label htmlFor={`edit-hs-icon-${hotspot.id}`} className={labelClassName()}>
+              <label htmlFor={`edit-hs-icon-${hotspot.id}`} className={mpzLabelClassName()}>
                 Icon (optional)
               </label>
               <select
                 id={`edit-hs-icon-${hotspot.id}`}
                 value={'icon' in form ? form.icon : ''}
                 onChange={(e) => updateField('icon' as keyof typeof form, e.target.value)}
-                className={fieldClassName()}
+                className={mpzFieldClassName()}
               >
                 <option value="">(keins — Viewer-Fallback)</option>
                 {iconPaths.map((path) => (
@@ -362,7 +359,7 @@ export function StationHotspotEditForm({
             </div>
 
             <div>
-              <label htmlFor={`edit-hs-icon-size-${hotspot.id}`} className={labelClassName()}>
+              <label htmlFor={`edit-hs-icon-size-${hotspot.id}`} className={mpzLabelClassName()}>
                 iconSize (optional)
               </label>
               <input
@@ -374,7 +371,7 @@ export function StationHotspotEditForm({
                 placeholder="leer = Viewer-Default"
                 value={'iconSize' in form ? form.iconSize : ''}
                 onChange={(e) => updateField('iconSize' as keyof typeof form, e.target.value)}
-                className={fieldClassName()}
+                className={mpzFieldClassName()}
               />
             </div>
           </>
@@ -383,7 +380,7 @@ export function StationHotspotEditForm({
         {isSphere ? (
           <>
             <div>
-              <label htmlFor={`edit-hs-yaw-${hotspot.id}`} className={labelClassName()}>
+              <label htmlFor={`edit-hs-yaw-${hotspot.id}`} className={mpzLabelClassName()}>
                 yaw (°)
               </label>
               <input
@@ -395,11 +392,11 @@ export function StationHotspotEditForm({
                 max={180}
                 value={'yaw' in form ? form.yaw : '0'}
                 onChange={(e) => updateField('yaw' as keyof typeof form, e.target.value)}
-                className={fieldClassName()}
+                className={mpzFieldClassName()}
               />
             </div>
             <div>
-              <label htmlFor={`edit-hs-pitch-${hotspot.id}`} className={labelClassName()}>
+              <label htmlFor={`edit-hs-pitch-${hotspot.id}`} className={mpzLabelClassName()}>
                 pitch (°)
               </label>
               <input
@@ -411,14 +408,14 @@ export function StationHotspotEditForm({
                 max={90}
                 value={'pitch' in form ? form.pitch : '0'}
                 onChange={(e) => updateField('pitch' as keyof typeof form, e.target.value)}
-                className={fieldClassName()}
+                className={mpzFieldClassName()}
               />
             </div>
           </>
         ) : (
           <>
             <div>
-              <label htmlFor={`edit-hs-x-${hotspot.id}`} className={labelClassName()}>
+              <label htmlFor={`edit-hs-x-${hotspot.id}`} className={mpzLabelClassName()}>
                 x
               </label>
               <input
@@ -430,11 +427,11 @@ export function StationHotspotEditForm({
                 max={1}
                 value={'x' in form ? form.x : '0'}
                 onChange={(e) => updateField('x' as keyof typeof form, e.target.value)}
-                className={fieldClassName()}
+                className={mpzFieldClassName()}
               />
             </div>
             <div>
-              <label htmlFor={`edit-hs-y-${hotspot.id}`} className={labelClassName()}>
+              <label htmlFor={`edit-hs-y-${hotspot.id}`} className={mpzLabelClassName()}>
                 y
               </label>
               <input
@@ -446,7 +443,7 @@ export function StationHotspotEditForm({
                 max={1}
                 value={'y' in form ? form.y : '0'}
                 onChange={(e) => updateField('y' as keyof typeof form, e.target.value)}
-                className={fieldClassName()}
+                className={mpzFieldClassName()}
               />
               <p className="mt-1 text-xs text-fg-3">
                 Sichtbarer Ausschnitt: y ≈ 0,33–0,67 liegt meist im Bild.
@@ -474,14 +471,7 @@ export function StationHotspotEditForm({
         </button>
       </div>
 
-      {error && (
-        <p
-          role="alert"
-          className="rounded-gs39-sm border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800"
-        >
-          {error}
-        </p>
-      )}
+      {error && <MpzFormAlert variant="error">{error}</MpzFormAlert>}
     </form>
   )
 }

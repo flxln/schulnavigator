@@ -1,5 +1,10 @@
 'use client'
 
+import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
+import {
+  mpzFieldClassName,
+  mpzLabelClassName,
+} from '@/components/mpz-studio/mpz-form-primitives'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState, useTransition } from 'react'
@@ -27,14 +32,6 @@ export type StationHotspotAddFormProps = {
   slug: string
   station: Station
   uploadedIconPath?: string | null
-}
-
-function fieldClassName(): string {
-  return 'w-full rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1'
-}
-
-function labelClassName(): string {
-  return 'mb-1 block text-xs font-semibold text-fg-3'
 }
 
 function resetForm(viewer: ViewerMode, action: HotspotActionKind, defaults: {
@@ -266,14 +263,14 @@ export function StationHotspotAddForm({
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div>
-          <label htmlFor="hs-action" className={labelClassName()}>
+          <label htmlFor="hs-action" className={mpzLabelClassName()}>
             Typ
           </label>
           <select
             id="hs-action"
             value={form.action}
             onChange={(e) => handleActionChange(e.target.value as HotspotActionKind)}
-            className={fieldClassName()}
+            className={mpzFieldClassName()}
           >
             {canAddMedium && <option value="medium">Medien-Hotspot</option>}
             {canAddDialog && <option value="dialog">Dialog-Hotspot (Maskottchen)</option>}
@@ -282,7 +279,7 @@ export function StationHotspotAddForm({
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="hs-id" className={labelClassName()}>
+            <label htmlFor="hs-id" className={mpzLabelClassName()}>
               ID
             </label>
             <input
@@ -293,12 +290,12 @@ export function StationHotspotAddForm({
               placeholder="hs-video"
               value={form.id}
               onChange={(e) => updateField('id', e.target.value)}
-              className={fieldClassName()}
+              className={mpzFieldClassName()}
             />
           </div>
 
           <div>
-            <label htmlFor="hs-label" className={labelClassName()}>
+            <label htmlFor="hs-label" className={mpzLabelClassName()}>
               Label (optional)
             </label>
             <input
@@ -306,14 +303,14 @@ export function StationHotspotAddForm({
               type="text"
               value={form.label}
               onChange={(e) => updateField('label', e.target.value)}
-              className={fieldClassName()}
+              className={mpzFieldClassName()}
             />
           </div>
 
           {isDialog ? (
             <>
               <div className="sm:col-span-2">
-                <label htmlFor="hs-mascot" className={labelClassName()}>
+                <label htmlFor="hs-mascot" className={mpzLabelClassName()}>
                   Maskottchen
                 </label>
                 <select
@@ -321,7 +318,7 @@ export function StationHotspotAddForm({
                   required
                   value={form.mascot}
                   onChange={(e) => updateField('mascot', e.target.value as DialogFigure)}
-                  className={fieldClassName()}
+                  className={mpzFieldClassName()}
                 >
                   {dialogFiguren.map((figur) => (
                     <option key={figur} value={figur}>
@@ -332,7 +329,7 @@ export function StationHotspotAddForm({
               </div>
 
               <div>
-                <label htmlFor="hs-mascot-size" className={labelClassName()}>
+                <label htmlFor="hs-mascot-size" className={mpzLabelClassName()}>
                   mascotSize (optional)
                 </label>
                 <input
@@ -344,7 +341,7 @@ export function StationHotspotAddForm({
                   placeholder={`Default ${DEFAULT_MASCOT_SIZE_NORM}`}
                   value={form.mascotSize}
                   onChange={(e) => updateField('mascotSize', e.target.value)}
-                  className={fieldClassName()}
+                  className={mpzFieldClassName()}
                 />
               </div>
 
@@ -361,7 +358,7 @@ export function StationHotspotAddForm({
 
               {isSphere && (
                 <div>
-                  <label htmlFor="hs-bubble-pitch" className={labelClassName()}>
+                  <label htmlFor="hs-bubble-pitch" className={mpzLabelClassName()}>
                     bubblePitchOffset (optional, °)
                   </label>
                   <input
@@ -373,7 +370,7 @@ export function StationHotspotAddForm({
                     placeholder="leer = Viewer-Default"
                     value={form.bubblePitchOffset}
                     onChange={(e) => updateField('bubblePitchOffset', e.target.value)}
-                    className={fieldClassName()}
+                    className={mpzFieldClassName()}
                   />
                 </div>
               )}
@@ -381,7 +378,7 @@ export function StationHotspotAddForm({
           ) : (
             <>
               <div className="sm:col-span-2">
-                <label htmlFor="hs-medium" className={labelClassName()}>
+                <label htmlFor="hs-medium" className={mpzLabelClassName()}>
                   Medium
                 </label>
                 <select
@@ -389,7 +386,7 @@ export function StationHotspotAddForm({
                   required
                   value={form.mediumId}
                   onChange={(e) => updateField('mediumId', e.target.value)}
-                  className={fieldClassName()}
+                  className={mpzFieldClassName()}
                 >
                   {medien.map((m) => (
                     <option key={m.id} value={m.id}>
@@ -400,14 +397,14 @@ export function StationHotspotAddForm({
               </div>
 
               <div>
-                <label htmlFor="hs-icon" className={labelClassName()}>
+                <label htmlFor="hs-icon" className={mpzLabelClassName()}>
                   Icon (optional)
                 </label>
                 <select
                   id="hs-icon"
                   value={form.icon}
                   onChange={(e) => updateField('icon', e.target.value)}
-                  className={fieldClassName()}
+                  className={mpzFieldClassName()}
                 >
                   <option value="">(keins — Viewer-Fallback)</option>
                   {iconPaths.map((path) => (
@@ -424,7 +421,7 @@ export function StationHotspotAddForm({
               </div>
 
               <div>
-                <label htmlFor="hs-icon-size" className={labelClassName()}>
+                <label htmlFor="hs-icon-size" className={mpzLabelClassName()}>
                   iconSize (optional)
                 </label>
                 <input
@@ -436,7 +433,7 @@ export function StationHotspotAddForm({
                   placeholder="leer = Viewer-Default"
                   value={form.iconSize}
                   onChange={(e) => updateField('iconSize', e.target.value)}
-                  className={fieldClassName()}
+                  className={mpzFieldClassName()}
                 />
               </div>
             </>
@@ -445,7 +442,7 @@ export function StationHotspotAddForm({
           {isSphere ? (
             <>
               <div>
-                <label htmlFor="hs-yaw" className={labelClassName()}>
+                <label htmlFor="hs-yaw" className={mpzLabelClassName()}>
                   yaw (°)
                 </label>
                 <input
@@ -457,11 +454,11 @@ export function StationHotspotAddForm({
                   max={180}
                   value={form.yaw}
                   onChange={(e) => updateField('yaw', e.target.value)}
-                  className={fieldClassName()}
+                  className={mpzFieldClassName()}
                 />
               </div>
               <div>
-                <label htmlFor="hs-pitch" className={labelClassName()}>
+                <label htmlFor="hs-pitch" className={mpzLabelClassName()}>
                   pitch (°)
                 </label>
                 <input
@@ -473,14 +470,14 @@ export function StationHotspotAddForm({
                   max={90}
                   value={form.pitch}
                   onChange={(e) => updateField('pitch', e.target.value)}
-                  className={fieldClassName()}
+                  className={mpzFieldClassName()}
                 />
               </div>
             </>
           ) : (
             <>
               <div>
-                <label htmlFor="hs-x" className={labelClassName()}>
+                <label htmlFor="hs-x" className={mpzLabelClassName()}>
                   x
                 </label>
                 <input
@@ -492,11 +489,11 @@ export function StationHotspotAddForm({
                   max={1}
                   value={form.x}
                   onChange={(e) => updateField('x', e.target.value)}
-                  className={fieldClassName()}
+                  className={mpzFieldClassName()}
                 />
               </div>
               <div>
-                <label htmlFor="hs-y" className={labelClassName()}>
+                <label htmlFor="hs-y" className={mpzLabelClassName()}>
                   y
                 </label>
                 <input
@@ -508,7 +505,7 @@ export function StationHotspotAddForm({
                   max={1}
                   value={form.y}
                   onChange={(e) => updateField('y', e.target.value)}
-                  className={fieldClassName()}
+                  className={mpzFieldClassName()}
                 />
                 <p className="mt-1 text-xs text-fg-3">
                   Sichtbarer Ausschnitt: y ≈ 0,33–0,67 liegt meist im Bild.
@@ -538,14 +535,7 @@ export function StationHotspotAddForm({
           )}
         </div>
 
-        {error && (
-          <p
-            role="alert"
-            className="rounded-gs39-sm border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800"
-          >
-            {error}
-          </p>
-        )}
+        {error && <MpzFormAlert variant="error">{error}</MpzFormAlert>}
 
         {success && (
           <p className="rounded-gs39-sm border border-green-300 bg-green-50 px-3 py-2 text-sm text-green-900">

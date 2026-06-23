@@ -1,5 +1,6 @@
 'use client'
 
+import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
 import { useState } from 'react'
 import { MPZ_HUB_SLUGS } from '@/lib/schoolhouse-hub-map'
 import type { MpzValidationReport } from '@/lib/mpz-studio-overview'
@@ -153,14 +154,7 @@ export function MediaIngestForm({
         {busy ? 'Lädt hoch …' : 'Hochladen'}
       </button>
 
-      {error && (
-        <p
-          role="alert"
-          className="rounded-gs39-sm border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800"
-        >
-          {error}
-        </p>
-      )}
+      {error && <MpzFormAlert variant="error">{error}</MpzFormAlert>}
 
       {success && !onSuccess && (
         <div className="rounded-gs39-sm border border-green-300 bg-green-50 px-3 py-2 text-sm text-green-900">

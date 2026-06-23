@@ -1,5 +1,9 @@
 'use client'
 
+import {
+  mpzFieldClassName,
+  mpzLabelClassName,
+} from '@/components/mpz-studio/mpz-form-primitives'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState, useTransition } from 'react'
 import {
@@ -27,14 +31,6 @@ export type StationDialogBubbleFormProps = {
   bubble: DialogBubbleLayout | undefined
   onSuccess: (message: string) => void
   onError: (message: string) => void
-}
-
-function fieldClassName(): string {
-  return 'w-full rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1'
-}
-
-function labelClassName(): string {
-  return 'mb-1 block text-xs font-semibold text-fg-3'
 }
 
 function bubbleToForm(bubble: DialogBubbleLayout | undefined) {
@@ -127,7 +123,7 @@ export function StationDialogBubbleForm({
       </p>
       <div className="grid gap-3 sm:grid-cols-2">
         <div>
-          <label className={labelClassName()} htmlFor="bubble-y">
+          <label className={mpzLabelClassName()} htmlFor="bubble-y">
             y ({MIN_BUBBLE_Y}–{MAX_BUBBLE_Y})
           </label>
           <input
@@ -136,13 +132,13 @@ export function StationDialogBubbleForm({
             step="0.01"
             min={MIN_BUBBLE_Y}
             max={MAX_BUBBLE_Y}
-            className={fieldClassName()}
+            className={mpzFieldClassName()}
             value={form.y}
             onChange={(e) => setForm((p) => ({ ...p, y: e.target.value }))}
           />
         </div>
         <div>
-          <label className={labelClassName()} htmlFor="bubble-x">
+          <label className={mpzLabelClassName()} htmlFor="bubble-x">
             x ({MIN_BUBBLE_X}–{MAX_BUBBLE_X})
           </label>
           <input
@@ -151,13 +147,13 @@ export function StationDialogBubbleForm({
             step="0.01"
             min={MIN_BUBBLE_X}
             max={MAX_BUBBLE_X}
-            className={fieldClassName()}
+            className={mpzFieldClassName()}
             value={form.x}
             onChange={(e) => setForm((p) => ({ ...p, x: e.target.value }))}
           />
         </div>
         <div>
-          <label className={labelClassName()} htmlFor="bubble-maxWidth">
+          <label className={mpzLabelClassName()} htmlFor="bubble-maxWidth">
             maxWidth ({MIN_BUBBLE_MAX_WIDTH}–{MAX_BUBBLE_MAX_WIDTH})
           </label>
           <input
@@ -166,13 +162,13 @@ export function StationDialogBubbleForm({
             step="0.01"
             min={MIN_BUBBLE_MAX_WIDTH}
             max={MAX_BUBBLE_MAX_WIDTH}
-            className={fieldClassName()}
+            className={mpzFieldClassName()}
             value={form.maxWidth}
             onChange={(e) => setForm((p) => ({ ...p, maxWidth: e.target.value }))}
           />
         </div>
         <div>
-          <label className={labelClassName()} htmlFor="bubble-fontSize">
+          <label className={mpzLabelClassName()} htmlFor="bubble-fontSize">
             fontSize ({MIN_BUBBLE_FONT_SIZE}–{MAX_BUBBLE_FONT_SIZE})
           </label>
           <input
@@ -181,7 +177,7 @@ export function StationDialogBubbleForm({
             step="0.0001"
             min={MIN_BUBBLE_FONT_SIZE}
             max={MAX_BUBBLE_FONT_SIZE}
-            className={fieldClassName()}
+            className={mpzFieldClassName()}
             value={form.fontSize}
             onChange={(e) => setForm((p) => ({ ...p, fontSize: e.target.value }))}
           />

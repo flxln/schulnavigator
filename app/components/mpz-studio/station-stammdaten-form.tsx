@@ -1,5 +1,6 @@
 'use client'
 
+import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
@@ -271,19 +272,10 @@ export function StationStammdatenForm({ slug, station }: StationStammdatenFormPr
       </button>
 
       {fieldErrors.form && (
-        <p
-          role="alert"
-          className="rounded-gs39-sm border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800"
-        >
-          {fieldErrors.form}
-        </p>
+        <MpzFormAlert variant="error">{fieldErrors.form}</MpzFormAlert>
       )}
 
-      {success && (
-        <p className="rounded-gs39-sm border border-green-300 bg-green-50 px-3 py-2 text-sm text-green-900">
-          {success}
-        </p>
-      )}
+      {success && <MpzFormAlert variant="success">{success}</MpzFormAlert>}
     </form>
   )
 }

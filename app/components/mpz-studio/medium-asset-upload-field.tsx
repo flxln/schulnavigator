@@ -1,5 +1,10 @@
 'use client'
 
+import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
+import {
+  mpzFieldClassName,
+  mpzLabelClassName,
+} from '@/components/mpz-studio/mpz-form-primitives'
 import { useRef } from 'react'
 import { UPLOAD_RULES } from '@/lib/mpz-upload-rules'
 import type { MediumAssetField } from '@/lib/mpz-medium-asset-upload'
@@ -11,14 +16,6 @@ const FOTO_RULE = UPLOAD_RULES.foto
 function formatMaxBytes(bytes: number): string {
   if (bytes >= MB) return `${Math.round(bytes / MB)} MB`
   return `${Math.round(bytes / KB)} KB`
-}
-
-function fieldClassName(): string {
-  return 'w-full rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1'
-}
-
-function labelClassName(): string {
-  return 'mb-1 block text-xs font-semibold text-fg-3'
 }
 
 export type MediumAssetUploadFieldProps = {
@@ -60,7 +57,7 @@ export function MediumAssetUploadField({
 
   return (
     <div className="sm:col-span-2">
-      <label htmlFor={`${idPrefix}-${field}`} className={labelClassName()}>
+      <label htmlFor={`${idPrefix}-${field}`} className={mpzLabelClassName()}>
         {label}
       </label>
       <input
@@ -69,7 +66,7 @@ export function MediumAssetUploadField({
         value={value}
         onChange={(e) => onPathChange(e.target.value)}
         placeholder="/media/…"
-        className={`${fieldClassName()} font-mono text-xs`}
+        className={`${mpzFieldClassName()} font-mono text-xs`}
       />
       <p className="mt-1 text-xs text-fg-3">
         Pfad unter <code className="font-mono">/media/{slug}/</code> oder anderem öffentlichen

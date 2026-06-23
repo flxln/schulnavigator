@@ -1,5 +1,6 @@
 'use client'
 
+import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
 import { markMpzStudioDirty } from '@/components/mpz-studio/studio-validation-context'
@@ -112,7 +113,7 @@ export function SphereHotspotCalib({
 
       {message ? <p className="text-sm text-brand-green">{message}</p> : null}
       {error ? (
-        <p className="text-sm text-brand-red">
+        <MpzFormAlert variant="error">
           {error}
           {error.includes('/mpz/unlock') ? (
             <>
@@ -122,7 +123,7 @@ export function SphereHotspotCalib({
               </Link>
             </>
           ) : null}
-        </p>
+        </MpzFormAlert>
       ) : null}
     </aside>
   )

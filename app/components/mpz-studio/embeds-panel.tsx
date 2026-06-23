@@ -4,9 +4,16 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState, useTransition } from 'react'
 import {
-  markMpzStudioDirty,
-  useStudioValidation,
-} from '@/components/mpz-studio/studio-validation-context'
+  MpzDataTable,
+  MpzDataTableBody,
+  MpzDataTableHead,
+} from '@/components/mpz-studio/mpz-data-table'
+import { MpzDraftNotice, MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
+import {
+  mpzFieldClassName,
+  mpzLabelClassName,
+} from '@/components/mpz-studio/mpz-form-primitives'
+import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
 
 export type LinkEmbedMediumRow = {
   slug: string
@@ -21,14 +28,6 @@ export type LinkEmbedMediumRow = {
 export type EmbedsPanelProps = {
   suffixes: readonly string[]
   mediaRows: readonly LinkEmbedMediumRow[]
-}
-
-function fieldClassName(): string {
-  return 'w-full rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1'
-}
-
-function labelClassName(): string {
-  return 'mb-1 block text-xs font-semibold text-fg-3'
 }
 
 export function EmbedsPanel({ suffixes, mediaRows }: EmbedsPanelProps) {
@@ -82,7 +81,6 @@ export function EmbedsPanel({ suffixes, mediaRows }: EmbedsPanelProps) {
           }
           return
         }
-        markMpzStudioDirty()
         await validateNow()
         router.refresh()
         setSuccess('Globale Embed-Allowlist gespeichert.')
@@ -103,19 +101,10 @@ export function EmbedsPanel({ suffixes, mediaRows }: EmbedsPanelProps) {
           Dev-Server-Neustart oder <code className="font-mono text-xs">npm run build</code>.
         </p>
 
-        {error && (
-          <p
-            role="alert"
-            className="rounded-gs39-sm border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800"
-          >
-            {error}
-          </p>
-        )}
-        {success && (
-          <p className="rounded-gs39-sm border border-brand-green/30 bg-brand-green/10 px-3 py-2 text-sm text-fg-1">
-            {success}
-          </p>
-        )}
+        {dirty && <MpzDraftNotice />}
+
+        {error && <MpzFormAlert variant="error">{error}</MpzFormAlert>}
+        {success && <MpzFormAlert variant="success">{success}</MpzFormAlert>}
 
         <ul className="flex flex-col gap-2">
           {draft.map((suffix) => (
@@ -127,7 +116,7 @@ export function EmbedsPanel({ suffixes, mediaRows }: EmbedsPanelProps) {
               <button
                 type="button"
                 onClick={() => removeSuffix(suffix)}
-                className="text-xs font-semibold text-brand-red hover:underline"
+                className="text-xs font-semibold text-error hover:underline"
               >
                 Entfernen
               </button>
@@ -137,7 +126,7 @@ export function EmbedsPanel({ suffixes, mediaRows }: EmbedsPanelProps) {
 
         <div className="flex flex-wrap items-end gap-2">
           <div className="min-w-[200px] flex-1">
-            <label htmlFor="embed-suffix-new" className={labelClassName()}>
+            <label htmlFor="embed-suffix-new" className={mpzLabelClassName()}>
               Suffix hinzufügen
             </label>
             <input
@@ -146,7 +135,7 @@ export function EmbedsPanel({ suffixes, mediaRows }: EmbedsPanelProps) {
               value={newSuffix}
               onChange={(e) => setNewSuffix(e.target.value)}
               placeholder="example.com"
-              className={`${fieldClassName()} font-mono text-xs`}
+              className={`${mpzFieldClassName()} font-mono text-xs`}
             />
           </div>
           <button
@@ -160,7 +149,7 @@ export function EmbedsPanel({ suffixes, mediaRows }: EmbedsPanelProps) {
             type="button"
             disabled={isPending || !dirty}
             onClick={() => void handleSave()}
-            className="rounded-gs39-sm bg-accent px-4 py-2 text-sm font-semibold text-white disabled:opacity-50"
+            className="rounded-gs39-sm bg-accent px-4 py-2 text-sm font-semibold text-fg-on-dark disabled:opacity-50"
           >
             {isPending ? 'Speichert …' : 'Allowlist speichern'}
           </button>
@@ -172,43 +161,39 @@ export function EmbedsPanel({ suffixes, mediaRows }: EmbedsPanelProps) {
         {mediaRows.length === 0 ? (
           <p className="text-sm text-fg-3">Keine link/embed-Medien in stations.json.</p>
         ) : (
-          <div className="overflow-x-auto rounded-gs39-md border border-border-1">
-            <table className="min-w-full text-left text-sm">
-              <thead className="border-b border-border-1 bg-bg-2 text-xs font-semibold uppercase tracking-wide text-fg-3">
-                <tr>
-                  <th className="px-3 py-2">Station</th>
-                  <th className="px-3 py-2">Medium</th>
-                  <th className="px-3 py-2">Typ</th>
-                  <th className="px-3 py-2">Quelle</th>
-                  <th className="px-3 py-2">embedAllow / openIn</th>
+          <MpzDataTable className="rounded-gs39-md border border-border-1">
+            <MpzDataTableHead>
+              <th className="px-3 py-2">Station</th>
+              <th className="px-3 py-2">Medium</th>
+              <th className="px-3 py-2">Typ</th>
+              <th className="px-3 py-2">Quelle</th>
+              <th className="px-3 py-2">embedAllow / openIn</th>
+            </MpzDataTableHead>
+            <MpzDataTableBody>
+              {mediaRows.map((row) => (
+                <tr key={`${row.slug}-${row.mediumId}`} className="border-b border-border-1">
+                  <td className="px-3 py-2">
+                    <Link
+                      href={`/mpz/studio/stationen/${row.slug}?tab=medien`}
+                      className="font-medium text-accent hover:underline"
+                    >
+                      {row.stationTitle}
+                    </Link>
+                  </td>
+                  <td className="px-3 py-2 font-mono text-xs">{row.mediumId}</td>
+                  <td className="px-3 py-2">{row.typ}</td>
+                  <td className="max-w-xs truncate px-3 py-2 font-mono text-xs" title={row.quelle}>
+                    {row.quelle}
+                  </td>
+                  <td className="px-3 py-2 font-mono text-xs text-fg-3">
+                    {row.typ === 'embed'
+                      ? row.embedAllow?.join(', ') ?? '(Standard-Allowlist)'
+                      : row.openIn ?? '—'}
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {mediaRows.map((row) => (
-                  <tr key={`${row.slug}-${row.mediumId}`} className="border-b border-border-1">
-                    <td className="px-3 py-2">
-                      <Link
-                        href={`/mpz/studio/stationen/${row.slug}?tab=medien`}
-                        className="font-medium text-accent hover:underline"
-                      >
-                        {row.stationTitle}
-                      </Link>
-                    </td>
-                    <td className="px-3 py-2 font-mono text-xs">{row.mediumId}</td>
-                    <td className="px-3 py-2">{row.typ}</td>
-                    <td className="max-w-xs truncate px-3 py-2 font-mono text-xs" title={row.quelle}>
-                      {row.quelle}
-                    </td>
-                    <td className="px-3 py-2 font-mono text-xs text-fg-3">
-                      {row.typ === 'embed'
-                        ? row.embedAllow?.join(', ') ?? '(Standard-Allowlist)'
-                        : row.openIn ?? '—'}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </MpzDataTableBody>
+          </MpzDataTable>
         )}
       </section>
     </div>

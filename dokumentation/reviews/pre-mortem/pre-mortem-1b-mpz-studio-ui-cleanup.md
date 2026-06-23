@@ -14,6 +14,8 @@ Das API-Fehlerformat ist über alle MPZ-Routen einheitlich als `{ error: SCREAMI
 
 ## Fund 1 — `videoSource`: Spec deklariert Pflicht-Unterscheidung, Code ignoriert das Feld komplett
 
+> **Status 2026-06-23 (#202):** Entschieden — `videoSource` **optional**, Default `upload` in UI/Renderer (`?? 'upload'`). [`mpz-studio.md`](../../spezifikationen/mpz-studio.md) und [`01-spezifikation-auszug.md`](../../archiv/design/mpz-studio-claude-design-cleanup/01-spezifikation-auszug.md) korrigiert. Kein Schema-`required`, keine Migration. Pre-Mortem-1b-Annahme „0 Treffer“ war zum Prüfzeitpunkt veraltet (Code nutzt das Feld seit v2.1).
+
 **Was widersprüchlich ist:**
 - `05-typendefinitionen.md:14` deklariert `VideoSource = 'upload' | 'youtube'` als eigenes Enum.
 - `01-spezifikation-auszug.md:49` listet für `video` das Pflichtfeld `videoSource`.

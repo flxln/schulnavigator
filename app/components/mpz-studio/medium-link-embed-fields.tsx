@@ -1,5 +1,9 @@
 'use client'
 
+import {
+  mpzFieldClassName,
+  mpzLabelClassName,
+} from '@/components/mpz-studio/mpz-form-primitives'
 import { MediumAssetUploadField } from '@/components/mpz-studio/medium-asset-upload-field'
 import {
   isEmbedEnabled,
@@ -35,14 +39,6 @@ export type MediumLinkEmbedFieldsProps = {
   ) => void
   idPrefix: string
   thumbnailAssetUpload?: ThumbnailAssetUploadProps
-}
-
-function fieldClassName(): string {
-  return 'w-full rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1'
-}
-
-function labelClassName(): string {
-  return 'mb-1 block text-xs font-semibold text-fg-3'
 }
 
 export function defaultLinkEmbedFormValues(
@@ -97,7 +93,7 @@ export function MediumLinkEmbedFields({
   return (
     <div className="grid gap-4 sm:grid-cols-2">
       <div className="sm:col-span-2">
-        <label htmlFor={`${idPrefix}-quelle`} className={labelClassName()}>
+        <label htmlFor={`${idPrefix}-quelle`} className={mpzLabelClassName()}>
           Quelle (https)
         </label>
         <input
@@ -106,7 +102,7 @@ export function MediumLinkEmbedFields({
           required
           value={values.quelle}
           onChange={(e) => onChange('quelle', e.target.value)}
-          className={`${fieldClassName()} font-mono text-xs`}
+          className={`${mpzFieldClassName()} font-mono text-xs`}
         />
         {quelleTrimmed && !httpsOk && (
           <p role="alert" className="mt-1 text-xs text-brand-red">
@@ -121,7 +117,7 @@ export function MediumLinkEmbedFields({
       </div>
 
       <div className="sm:col-span-2">
-        <label htmlFor={`${idPrefix}-untertitel`} className={labelClassName()}>
+        <label htmlFor={`${idPrefix}-untertitel`} className={mpzLabelClassName()}>
           Untertitel (optional)
         </label>
         <input
@@ -129,7 +125,7 @@ export function MediumLinkEmbedFields({
           type="text"
           value={values.untertitel}
           onChange={(e) => onChange('untertitel', e.target.value)}
-          className={fieldClassName()}
+          className={mpzFieldClassName()}
         />
       </div>
 
@@ -148,7 +144,7 @@ export function MediumLinkEmbedFields({
         />
       ) : (
         <div className="sm:col-span-2">
-          <label htmlFor={`${idPrefix}-thumbnail`} className={labelClassName()}>
+          <label htmlFor={`${idPrefix}-thumbnail`} className={mpzLabelClassName()}>
             thumbnail (optional)
           </label>
           <input
@@ -157,7 +153,7 @@ export function MediumLinkEmbedFields({
             value={values.thumbnail}
             onChange={(e) => onChange('thumbnail', e.target.value)}
             placeholder="/media/…"
-            className={`${fieldClassName()} font-mono text-xs`}
+            className={`${mpzFieldClassName()} font-mono text-xs`}
           />
           <p className="mt-1 text-xs text-fg-3">
             Pfad unter <code className="font-mono">/media/{slug}/</code> oder anderem öffentlichen
@@ -182,7 +178,7 @@ export function MediumLinkEmbedFields({
       {typ === 'embed' && (
         <>
           <div className="sm:col-span-2">
-            <span className={labelClassName()}>embedAllow (optional)</span>
+            <span className={mpzLabelClassName()}>embedAllow (optional)</span>
             <div className="flex flex-col gap-2">
               {globalSuffixes.map((suffix) => (
                 <label key={suffix} className="flex items-center gap-2 text-sm text-fg-2">

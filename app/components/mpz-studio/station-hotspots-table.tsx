@@ -1,5 +1,11 @@
 'use client'
 
+import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
+import {
+  MpzDataTable,
+  MpzDataTableBody,
+  MpzDataTableHead,
+} from '@/components/mpz-studio/mpz-data-table'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Fragment, useEffect, useState, useTransition } from 'react'
@@ -153,7 +159,7 @@ export function StationHotspotsTable({ slug, station }: StationHotspotsTableProp
                 type="button"
                 disabled={rowBusy || isEditing}
                 onClick={() => handleRemove(hs.id)}
-                className="font-semibold text-brand-red disabled:opacity-50"
+                className="font-semibold text-error disabled:opacity-50"
               >
                 {rowBusy ? 'Entfernt …' : 'Entfernen'}
               </button>
@@ -237,38 +243,23 @@ export function StationHotspotsTable({ slug, station }: StationHotspotsTableProp
           )}
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-gs39-md border border-border-1">
-          <table className="min-w-full text-left text-sm">
-            <thead className="border-b border-border-1 bg-bg-1 text-xs font-semibold uppercase tracking-wide text-fg-3">
-              <tr>
-                <th className="px-3 py-2">ID</th>
-                <th className="px-3 py-2">Label</th>
-                <th className="px-3 py-2">Koordinaten</th>
-                <th className="px-3 py-2">Verknüpfung</th>
-                <th className="px-3 py-2">
-                  <span className="sr-only">Aktionen</span>
-                </th>
-              </tr>
-            </thead>
-            <tbody>{hotspots.map(renderRow)}</tbody>
-          </table>
-        </div>
+        <MpzDataTable className="rounded-gs39-md border border-border-1">
+          <MpzDataTableHead>
+            <th className="px-3 py-2">ID</th>
+            <th className="px-3 py-2">Label</th>
+            <th className="px-3 py-2">Koordinaten</th>
+            <th className="px-3 py-2">Verknüpfung</th>
+            <th className="px-3 py-2">
+              <span className="sr-only">Aktionen</span>
+            </th>
+          </MpzDataTableHead>
+          <MpzDataTableBody>{hotspots.map(renderRow)}</MpzDataTableBody>
+        </MpzDataTable>
       )}
 
-      {error && (
-        <p
-          role="alert"
-          className="rounded-gs39-sm border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800"
-        >
-          {error}
-        </p>
-      )}
+      {error && <MpzFormAlert variant="error">{error}</MpzFormAlert>}
 
-      {success && (
-        <p className="rounded-gs39-sm border border-green-300 bg-green-50 px-3 py-2 text-sm text-green-900">
-          {success}
-        </p>
-      )}
+      {success && <MpzFormAlert variant="success">{success}</MpzFormAlert>}
     </div>
   )
 }

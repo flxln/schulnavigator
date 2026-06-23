@@ -1,5 +1,11 @@
 'use client'
 
+import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
+import {
+  MpzDataTable,
+  MpzDataTableBody,
+  MpzDataTableHead,
+} from '@/components/mpz-studio/mpz-data-table'
 import { useRouter } from 'next/navigation'
 import { Fragment, useEffect, useState, useTransition } from 'react'
 import { useMediaIngest } from '@/components/mpz-studio/media-ingest-modal-context'
@@ -174,20 +180,17 @@ export function StationMedienTable({ slug, station, globalSuffixes }: StationMed
           </button>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-gs39-md border border-border-1">
-          <table className="min-w-full text-left text-sm">
-            <thead className="border-b border-border-1 bg-bg-1 text-xs font-semibold uppercase tracking-wide text-fg-3">
-              <tr>
-                <th className="px-3 py-2">Typ</th>
-                <th className="px-3 py-2">ID</th>
-                <th className="px-3 py-2">Untertitel</th>
-                <th className="px-3 py-2">Quelle</th>
-                <th className="px-3 py-2">
-                  <span className="sr-only">Aktionen</span>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
+        <MpzDataTable className="rounded-gs39-md border border-border-1">
+          <MpzDataTableHead>
+            <th className="px-3 py-2">Typ</th>
+            <th className="px-3 py-2">ID</th>
+            <th className="px-3 py-2">Untertitel</th>
+            <th className="px-3 py-2">Quelle</th>
+            <th className="px-3 py-2">
+              <span className="sr-only">Aktionen</span>
+            </th>
+          </MpzDataTableHead>
+          <MpzDataTableBody>
               {medien.map((medium) => {
                 const block = hotspotBlockMessage(stationRef, medium.id)
                 const isEditing = editingId === medium.id
@@ -227,7 +230,7 @@ export function StationMedienTable({ slug, station, globalSuffixes }: StationMed
                               type="button"
                               disabled={rowBusy || isEditing}
                               onClick={() => handleRemove(medium)}
-                              className="font-semibold text-brand-red disabled:opacity-50"
+                              className="font-semibold text-error disabled:opacity-50"
                             >
                               {rowBusy ? 'Entfernt …' : 'Entfernen'}
                             </button>
@@ -254,19 +257,11 @@ export function StationMedienTable({ slug, station, globalSuffixes }: StationMed
                   </Fragment>
                 )
               })}
-            </tbody>
-          </table>
-        </div>
+          </MpzDataTableBody>
+        </MpzDataTable>
       )}
 
-      {error && (
-        <p
-          role="alert"
-          className="rounded-gs39-sm border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800"
-        >
-          {error}
-        </p>
-      )}
+      {error && <MpzFormAlert variant="error">{error}</MpzFormAlert>}
 
       {success && (
         <p className="rounded-gs39-sm border border-green-300 bg-green-50 px-3 py-2 text-sm text-green-900">
