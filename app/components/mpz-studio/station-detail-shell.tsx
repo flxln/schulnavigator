@@ -182,9 +182,9 @@ export function StationDetailShell({
       )}
 
       {activeTab === 'hotspots' && (
-        <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5">
+        <MpzCard>
           <StationHotspotsTable slug={slug} station={station} />
-        </section>
+        </MpzCard>
       )}
 
       {activeTab === 'dialog' && (

@@ -59,7 +59,7 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 | Unterissue | `#211` | C1: Stammdaten-Formular | `design`, `tech` | #210 — **erledigt** (2026-06-23, Post-Mortem unten) |
 | Unterissue | `#212` | C2: Medien Empty, Tabelle, Modal | `design`, `tech` | #210 — **erledigt** (2026-06-24, Post-Mortem unten) |
 | Unterissue | `#215` | C3: Medien bearbeiten | `design`, `tech` | #212 — **erledigt** (2026-06-24, Post-Mortem unten) |
-| Unterissue | `#213` | C4: Hotspots Empty, Tabelle, Formulare | `design`, `tech` | #210 |
+| Unterissue | `#213` | C4: Hotspots Empty, Tabelle, Formulare | `design`, `tech` | #210 — **erledigt** (2026-06-24, Post-Mortem unten) |
 | Unterissue | `#216` | C5: Dialog-Tab Layout | `design`, `tech` | #210 |
 | Unterissue | `#218` | D1: Design & Hub (Tabs, Tabelle, Brand) | `design`, `tech` | #207 |
 | Unterissue | `#219` | D2: Coach, Embeds, Deploy | `design`, `tech` | #207 |
@@ -97,7 +97,7 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 | #211 | S7 | `station-stammdaten-form.tsx`, `station-raumbild-upload.tsx` |
 | #212 | S8, S9 | `station-medien-table.tsx`, `media-ingest-modal.tsx` — **erledigt** (2026-06-24) |
 | #215 | S10 | `station-medium-edit-form.tsx` — **erledigt** (2026-06-24) |
-| #213 | S11, S12 | `station-hotspots-table.tsx`, `station-hotspot-*-form.tsx` |
+| #213 | S11, S12 | `station-hotspots-table.tsx`, `station-hotspot-*-form.tsx` — **erledigt** (2026-06-24) |
 | #216 | S15 | `station-dialog-panel.tsx`, `station-dialog-segment-audio-row.tsx` |
 
 ### Phase D — Querschnitt
@@ -172,6 +172,17 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 - [x] #211 C1 Stammdaten-Formular (Post-Mortem: [post-mortem-211-2026-06-23.md](../reviews/post-mortem/post-mortem-211-2026-06-23.md))
 - [x] #212 C2 Medien Empty, Tabelle, Modal (Post-Mortem: [post-mortem-212-2026-06-24.md](../reviews/post-mortem/post-mortem-212-2026-06-24.md))
 - [x] #215 C3 Medien bearbeiten (Post-Mortem: [post-mortem-215-2026-06-24.md](../reviews/post-mortem/post-mortem-215-2026-06-24.md))
+- [x] #213 C4 Hotspots Empty, Tabelle, Formulare (Post-Mortem: [post-mortem-213-2026-06-24.md](../reviews/post-mortem/post-mortem-213-2026-06-24.md))
+
+### Archiv — Plan-Härtung #213 (2026-06-24)
+
+Plan (lokal): `.cursor/plans/#213_hotspots_s11_s12_3d33134e.plan.md` · Pre-Mortems [1a](../reviews/pre-mortem/pre-mortem-1a-213-codepraxis.md) / [1b](../reviews/pre-mortem/pre-mortem-1b-213-hotspots-s11-s12-2026-06-24.md)
+
+- ✅ **S11 Tabelle:** Viewer-Label, Empty als `<tr colSpan={5}>`, `mpzButton`, `min-h-11`, Sphere-Label „Sphere kalibrieren“.
+- ✅ **S12 Add-Form:** 2 Typ-Karten mit State-Merge (kein Datenverlust), disabled-Karte + CTA, `MpzFormAlert`, Kalibrier-Link ohne `target="_blank"`.
+- ✅ **S12 Edit/Icon:** `mpzButton` primary/secondary, semantische Fehler (`text-error`, `MpzFormAlert`).
+- ✅ **Shell:** Hotspots-Tab auf `MpzCard` umgestellt.
+- 🔁 **Folge-Scope (bewusst offen):** Icon-Reset 2. Hotspot (1a#3), Icon-Fetch-Dedupe (1a#4); Error-Notice-Card/Tab-Fehlerpunkte (#210/#211); S14-Layout (#217).
 
 ### Archiv — Plan-Härtung #215 (2026-06-24)
 

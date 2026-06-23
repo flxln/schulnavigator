@@ -6,6 +6,7 @@ import {
   MpzDataTableBody,
   MpzDataTableHead,
 } from '@/components/mpz-studio/mpz-data-table'
+import { mpzButtonClassName } from '@/components/mpz-studio/mpz-form-primitives'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Fragment, useEffect, useState, useTransition } from 'react'
@@ -29,10 +30,12 @@ export type StationHotspotsTableProps = {
   station: Station | null
 }
 
+function viewerSectionLabel(viewer: ViewerMode): string {
+  return viewer === 'equirectangular' ? 'Hotspots 360°' : 'Hotspots (Flat)'
+}
+
 function calibLabel(viewer: ViewerMode): string {
-  return viewer === 'equirectangular'
-    ? 'Kalibrieren (Hotspots + Startblick)'
-    : 'Hotspot kalibrieren'
+  return viewer === 'equirectangular' ? 'Sphere kalibrieren' : 'Hotspot kalibrieren'
 }
 
 function buildConfirmMessage(hotspotId: string): string {
@@ -61,11 +64,7 @@ export function StationHotspotsTable({ slug, station }: StationHotspotsTableProp
   }, [station])
 
   if (!station) {
-    return (
-      <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5 text-sm text-fg-2">
-        <p role="alert">Station fehlt in stations.json.</p>
-      </section>
-    )
+    return <MpzFormAlert variant="error">Station fehlt in stations.json.</MpzFormAlert>
   }
 
   const activeStation = station
@@ -127,13 +126,13 @@ export function StationHotspotsTable({ slug, station }: StationHotspotsTableProp
     return (
       <Fragment key={hs.id}>
         <tr className="border-b border-border-1 last:border-b-0">
-          <td className="px-3 py-2 font-mono text-xs text-fg-1">{hs.id}</td>
-          <td className="px-3 py-2 text-fg-2">{hs.label ?? '—'}</td>
-          <td className="px-3 py-2 font-mono text-xs text-fg-2">{coords}</td>
-          <td className="px-3 py-2 font-mono text-xs text-fg-2">
+          <td className="min-h-11 px-3 py-2 font-mono text-xs text-fg-1">{hs.id}</td>
+          <td className="min-h-11 px-3 py-2 text-fg-2">{hs.label ?? '—'}</td>
+          <td className="min-h-11 px-3 py-2 font-mono text-xs text-fg-2">{coords}</td>
+          <td className="min-h-11 px-3 py-2 font-mono text-xs text-fg-2">
             {formatHotspotRowLink(hs)}
           </td>
-          <td className="px-3 py-2">
+          <td className="min-h-11 px-3 py-2">
             <div className="flex flex-wrap items-center gap-3">
               {calib && (
                 <Link
@@ -188,21 +187,11 @@ export function StationHotspotsTable({ slug, station }: StationHotspotsTableProp
   }
 
   return (
-    <div className="flex flex-col gap-4 text-sm">
-      <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-4">
-        <h3 className="mb-3 font-semibold text-fg-1">Hotspot-Icons</h3>
-        <HotspotIconUpload slug={slug} onUploaded={setUploadedIconPath} />
-      </section>
-
-      <StationHotspotAddForm
-        slug={slug}
-        station={activeStation}
-        uploadedIconPath={uploadedIconPath}
-      />
-
+    <div className="flex flex-col gap-6 text-sm">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-fg-2">
+          <h3 className="font-semibold text-fg-1">{viewerSectionLabel(viewer)}</h3>
+          <p className="mt-1 text-fg-2">
             {hotspots.length}{' '}
             {hotspots.length === 1 ? 'Hotspot' : 'Hotspots'} in{' '}
             <code className="font-mono text-xs">{arrayLabel}</code>
@@ -210,10 +199,7 @@ export function StationHotspotsTable({ slug, station }: StationHotspotsTableProp
           <p className="mt-1 text-xs text-fg-3">{coordHint}</p>
         </div>
         {calib ? (
-          <Link
-            href={calib}
-            className="rounded-gs39-sm bg-accent px-3 py-2 font-semibold text-white"
-          >
+          <Link href={calib} className={mpzButtonClassName('primary')}>
             {calibLabel(viewer)}
           </Link>
         ) : (
@@ -225,37 +211,39 @@ export function StationHotspotsTable({ slug, station }: StationHotspotsTableProp
         )}
       </div>
 
-      {hotspots.length === 0 ? (
-        <div className="rounded-gs39-md border border-dashed border-border-1 bg-bg-1 px-4 py-8 text-center">
-          <p className="mb-3 font-semibold text-fg-1">Keine Hotspots</p>
-          <p className="mb-4 text-fg-3">
-            {isSphere
-              ? 'Klicke auf Kalibrieren, um Koordinaten direkt im 360°-Panorama zu setzen.'
-              : 'Klicke auf Kalibrieren, um Koordinaten direkt im Panorama zu setzen.'}
-          </p>
-          {calib && (
-            <Link
-              href={calib}
-              className="inline-block rounded-gs39-sm bg-accent px-4 py-2 font-semibold text-white"
-            >
-              {calibLabel(viewer)}
-            </Link>
+      <div className="border-t border-border-1 pt-6">
+        <h3 className="mb-3 font-semibold text-fg-1">Hotspot-Icons</h3>
+        <HotspotIconUpload slug={slug} onUploaded={setUploadedIconPath} />
+      </div>
+
+      <StationHotspotAddForm
+        slug={slug}
+        station={activeStation}
+        uploadedIconPath={uploadedIconPath}
+      />
+
+      <MpzDataTable className="rounded-gs39-md border border-border-1">
+        <MpzDataTableHead>
+          <th className="px-3 py-2">ID</th>
+          <th className="px-3 py-2">Label</th>
+          <th className="px-3 py-2">Koordinaten</th>
+          <th className="px-3 py-2">Verknüpfung</th>
+          <th className="px-3 py-2">
+            <span className="sr-only">Aktionen</span>
+          </th>
+        </MpzDataTableHead>
+        <MpzDataTableBody>
+          {hotspots.length === 0 ? (
+            <tr>
+              <td colSpan={5} className="px-3 py-8 text-center text-fg-3">
+                Noch keine Hotspots. Kalibrierung nutzen oder unten anlegen.
+              </td>
+            </tr>
+          ) : (
+            hotspots.map(renderRow)
           )}
-        </div>
-      ) : (
-        <MpzDataTable className="rounded-gs39-md border border-border-1">
-          <MpzDataTableHead>
-            <th className="px-3 py-2">ID</th>
-            <th className="px-3 py-2">Label</th>
-            <th className="px-3 py-2">Koordinaten</th>
-            <th className="px-3 py-2">Verknüpfung</th>
-            <th className="px-3 py-2">
-              <span className="sr-only">Aktionen</span>
-            </th>
-          </MpzDataTableHead>
-          <MpzDataTableBody>{hotspots.map(renderRow)}</MpzDataTableBody>
-        </MpzDataTable>
-      )}
+        </MpzDataTableBody>
+      </MpzDataTable>
 
       {error && <MpzFormAlert variant="error">{error}</MpzFormAlert>}
 

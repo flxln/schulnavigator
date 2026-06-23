@@ -187,7 +187,7 @@ describe('StationDetailShell', () => {
     )
 
     expect(screen.getByRole('button', { name: 'Dialog hinzufügen' })).toBeTruthy()
-    expect(screen.getByText(/Maskottchen-Dialog mit Frieda und Otto/)).toBeTruthy()
+    expect(screen.getByText(/Noch kein Maskottchen-Dialog für diese Station/)).toBeTruthy()
   })
 
   it('Tab-Links enthalten korrektes ?tab=', () => {
@@ -371,7 +371,7 @@ describe('StationDetailShell', () => {
     expect(screen.getByText('hs-text')).toBeTruthy()
     expect(screen.getByText('hs-foto')).toBeTruthy()
     expect(
-      screen.getByRole('link', { name: 'Kalibrieren (Hotspots + Startblick)' }).getAttribute('href'),
+      screen.getByRole('link', { name: 'Sphere kalibrieren' }).getAttribute('href'),
     ).toBe('/mpz/calib/sphere/klassenzimmer')
   })
 
@@ -386,7 +386,7 @@ describe('StationDetailShell', () => {
 
     render(<StationDetailShell station={station} slug="kunst" hubNr={4} globalSuffixes={GLOBAL_SUFFIXES} />)
 
-    expect(screen.getByText('Keine Hotspots')).toBeTruthy()
+    expect(screen.getByText(/Noch keine Hotspots/)).toBeTruthy()
   })
 
   it('station null zeigt slug als Titel-Fallback', () => {

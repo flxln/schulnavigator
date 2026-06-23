@@ -68,19 +68,66 @@ describe('StationHotspotAddForm', () => {
     }
     render(<StationHotspotAddForm slug="daz" station={station} />)
 
-    expect(screen.getByLabelText('Typ')).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Dialog-Hotspot (Maskottchen)' })).toBeTruthy()
     expect(screen.getByLabelText('Maskottchen')).toBeTruthy()
     expect(screen.queryByLabelText('Medium')).toBeNull()
+    expect(screen.getByRole('link', { name: 'Zuerst Medium anlegen' })).toBeTruthy()
   })
 
-  it('mit Medien und Dialog: Typ-Umschaltung', () => {
+  it('mit Medien und Dialog: Typ-Umschaltung per Karten', () => {
     const station = getStationBySlug('pc-raum')!
     render(<StationHotspotAddForm slug="pc-raum" station={station} />)
 
     expect(screen.getByLabelText('Medium')).toBeTruthy()
-    fireEvent.change(screen.getByLabelText('Typ'), { target: { value: 'dialog' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Dialog-Hotspot (Maskottchen)' }))
     expect(screen.getByLabelText('Maskottchen')).toBeTruthy()
     expect(screen.queryByLabelText('Medium')).toBeNull()
+  })
+
+  it('Typwechsel behält id und Koordinaten', () => {
+    const station = getStationBySlug('pc-raum')!
+    render(<StationHotspotAddForm slug="pc-raum" station={station} />)
+
+    fireEvent.change(screen.getByLabelText('ID'), { target: { value: 'hs-test' } })
+    fireEvent.change(screen.getByLabelText('yaw (°)'), { target: { value: '42' } })
+    fireEvent.change(screen.getByLabelText('pitch (°)'), { target: { value: '-12' } })
+
+    fireEvent.click(screen.getByRole('button', { name: 'Dialog-Hotspot (Maskottchen)' }))
+    expect((screen.getByLabelText('ID') as HTMLInputElement).value).toBe('hs-test')
+    expect((screen.getByLabelText('yaw (°)') as HTMLInputElement).value).toBe('42')
+    expect((screen.getByLabelText('pitch (°)') as HTMLInputElement).value).toBe('-12')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Medien-Hotspot' }))
+    expect((screen.getByLabelText('ID') as HTMLInputElement).value).toBe('hs-test')
+    expect((screen.getByLabelText('yaw (°)') as HTMLInputElement).value).toBe('42')
+    expect((screen.getByLabelText('pitch (°)') as HTMLInputElement).value).toBe('-12')
+  })
+
+  it('nur Medien: Dialog-Karte disabled mit CTA, kein POST beim Klick', () => {
+    const station = getStationBySlug('klassenzimmer')!
+    render(<StationHotspotAddForm slug="klassenzimmer" station={station} />)
+
+    expect(screen.getByRole('button', { name: 'Medien-Hotspot' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Zuerst Dialog-Figur anlegen' })).toBeTruthy()
+    expect(screen.queryByRole('button', { name: 'Dialog-Hotspot (Maskottchen)' })).toBeNull()
+
+    const postCallsBefore = vi.mocked(fetch).mock.calls.filter(
+      ([url, init]) =>
+        typeof url === 'string' &&
+        url.includes('/hotspots') &&
+        (init as RequestInit | undefined)?.method === 'POST',
+    ).length
+
+    fireEvent.click(screen.getByRole('link', { name: 'Zuerst Dialog-Figur anlegen' }))
+
+    const postCallsAfter = vi.mocked(fetch).mock.calls.filter(
+      ([url, init]) =>
+        typeof url === 'string' &&
+        url.includes('/hotspots') &&
+        (init as RequestInit | undefined)?.method === 'POST',
+    ).length
+
+    expect(postCallsAfter).toBe(postCallsBefore)
   })
 
   it('mit Medien: zeigt Formularfelder für Sphere', async () => {
@@ -91,6 +138,11 @@ describe('StationHotspotAddForm', () => {
     expect(screen.getByLabelText('yaw (°)')).toBeTruthy()
     expect(screen.getByLabelText('pitch (°)')).toBeTruthy()
     expect(screen.queryByLabelText('x')).toBeNull()
+
+    const calibLink = screen.getByRole('link', { name: 'Kalibrieren' })
+    expect(calibLink.getAttribute('href')).toBe('/mpz/calib/sphere/klassenzimmer')
+    expect(calibLink.getAttribute('target')).toBeNull()
+
     await waitFor(() => {
       expect(vi.mocked(fetch)).toHaveBeenCalledWith(
         '/api/mpz/stations/klassenzimmer/hotspot-icons',

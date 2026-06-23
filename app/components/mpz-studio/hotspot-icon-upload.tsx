@@ -1,5 +1,7 @@
 'use client'
 
+import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
+import { mpzButtonClassName } from '@/components/mpz-studio/mpz-form-primitives'
 import { useCallback, useEffect, useState } from 'react'
 
 export type HotspotIconUploadProps = {
@@ -86,8 +88,10 @@ export function HotspotIconUpload({ slug, onUploaded }: HotspotIconUploadProps) 
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap items-center gap-3">
-        <label className="inline-flex cursor-pointer items-center gap-2 rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 font-semibold text-fg-1 hover:bg-bg-2">
-          <span>{busy ? 'Lädt …' : 'Icon hochladen'}</span>
+        <label className="inline-flex cursor-pointer">
+          <span className={mpzButtonClassName('secondary')}>
+            {busy ? 'Lädt …' : 'Icon hochladen'}
+          </span>
           <input
             type="file"
             accept=".svg,.png,.webp,image/svg+xml,image/png,image/webp"
@@ -99,17 +103,9 @@ export function HotspotIconUpload({ slug, onUploaded }: HotspotIconUploadProps) 
         <span className="text-xs text-fg-3">SVG, PNG oder WebP · max. 2 MB</span>
       </div>
 
-      {loadError && (
-        <p role="alert" className="text-sm text-brand-red">
-          {loadError}
-        </p>
-      )}
+      {loadError && <MpzFormAlert variant="error">{loadError}</MpzFormAlert>}
 
-      {uploadError && (
-        <p role="alert" className="text-sm text-brand-red">
-          {uploadError}
-        </p>
-      )}
+      {uploadError && <MpzFormAlert variant="error">{uploadError}</MpzFormAlert>}
 
       {paths.length > 0 && (
         <ul className="flex flex-col gap-2 rounded-gs39-md border border-border-1 bg-bg-1 p-3">

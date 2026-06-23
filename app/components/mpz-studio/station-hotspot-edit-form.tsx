@@ -2,6 +2,7 @@
 
 import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
 import {
+  mpzButtonClassName,
   mpzFieldClassName,
   mpzLabelClassName,
 } from '@/components/mpz-studio/mpz-form-primitives'
@@ -352,7 +353,7 @@ export function StationHotspotEditForm({
                 ))}
               </select>
               {iconLoadError && (
-                <p role="alert" className="mt-1 text-xs text-brand-red">
+                <p role="alert" className="mt-1 text-xs text-error">
                   {iconLoadError}
                 </p>
               )}
@@ -457,7 +458,7 @@ export function StationHotspotEditForm({
         <button
           type="submit"
           disabled={isPending}
-          className="rounded-gs39-sm bg-accent px-4 py-2 font-semibold text-white disabled:opacity-50"
+          className={mpzButtonClassName('primary')}
         >
           {isPending ? 'Speichert …' : 'Änderungen speichern'}
         </button>
@@ -465,7 +466,7 @@ export function StationHotspotEditForm({
           type="button"
           disabled={isPending}
           onClick={onCancel}
-          className="rounded-gs39-sm border border-border-1 px-4 py-2 font-semibold text-fg-2 disabled:opacity-50"
+          className={mpzButtonClassName('secondary')}
         >
           Abbrechen
         </button>

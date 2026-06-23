@@ -52,7 +52,7 @@ describe('StationHotspotsTable', () => {
     expect(screen.getByText('hs-foto')).toBeTruthy()
     expect(screen.getByText('demo-text')).toBeTruthy()
     expect(
-      screen.getByRole('link', { name: 'Kalibrieren (Hotspots + Startblick)' }).getAttribute('href'),
+      screen.getByRole('link', { name: 'Sphere kalibrieren' }).getAttribute('href'),
     ).toBe('/mpz/calib/sphere/klassenzimmer')
   })
 
@@ -60,7 +60,8 @@ describe('StationHotspotsTable', () => {
     const station = { ...getStationBySlug('kunst')!, hotspots: undefined, hotspots360: undefined }
     render(<StationHotspotsTable slug="kunst" station={station} />)
 
-    expect(screen.getByText('Keine Hotspots')).toBeTruthy()
+    expect(screen.getByText(/Noch keine Hotspots/)).toBeTruthy()
+    expect(screen.getByRole('columnheader', { name: 'ID' })).toBeTruthy()
     const calibLinks = screen.getAllByRole('link', { name: 'Hotspot kalibrieren' })
     expect(calibLinks.some((el) => el.getAttribute('href') === '/mpz/calib/flat/kunst')).toBe(
       true,

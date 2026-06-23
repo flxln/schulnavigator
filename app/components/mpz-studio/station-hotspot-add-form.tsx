@@ -2,6 +2,7 @@
 
 import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
 import {
+  mpzButtonClassName,
   mpzFieldClassName,
   mpzLabelClassName,
 } from '@/components/mpz-studio/mpz-form-primitives'
@@ -54,6 +55,18 @@ function resetForm(viewer: ViewerMode, action: HotspotActionKind, defaults: {
     icon: '',
     iconSize: '',
   }
+}
+
+function typCardClassName(selected: boolean, disabled: boolean): string {
+  const base =
+    'flex min-h-11 flex-col items-center justify-center gap-1 rounded-gs39-sm border px-3 py-4 text-sm transition-colors'
+  if (disabled) {
+    return `${base} cursor-not-allowed border-border-1 opacity-50`
+  }
+  if (selected) {
+    return `${base} border-accent bg-accent/10 font-semibold text-accent`
+  }
+  return `${base} border-border-1 text-fg-1 hover:bg-bg-2`
 }
 
 export function StationHotspotAddForm({
@@ -131,7 +144,7 @@ export function StationHotspotAddForm({
 
   if (!canAddMedium && !canAddDialog) {
     return (
-      <section className="rounded-gs39-md border border-dashed border-border-1 bg-bg-1 px-4 py-6 text-sm">
+      <div className="rounded-gs39-md border border-dashed border-border-1 bg-bg-1 px-4 py-6 text-sm">
         <p className="mb-2 font-semibold text-fg-1">Hotspot hinzufügen</p>
         <p className="mb-4 text-fg-3">
           Zuerst mindestens ein Medium oder einen Dialog-Block anlegen — Hotspots verknüpfen
@@ -140,18 +153,18 @@ export function StationHotspotAddForm({
         <div className="flex flex-wrap gap-3">
           <Link
             href={`/mpz/studio/stationen/${encodeURIComponent(slug)}?tab=medien`}
-            className="inline-block rounded-gs39-sm bg-accent px-4 py-2 font-semibold text-white"
+            className={mpzButtonClassName('primary')}
           >
             Medium hinzufügen
           </Link>
           <Link
             href={`/mpz/studio/stationen/${encodeURIComponent(slug)}?tab=dialog`}
-            className="inline-block rounded-gs39-sm border border-border-1 px-4 py-2 font-semibold text-fg-2"
+            className={mpzButtonClassName('secondary')}
           >
             Dialog-Tab öffnen
           </Link>
         </div>
-      </section>
+      </div>
     )
   }
 
@@ -160,12 +173,16 @@ export function StationHotspotAddForm({
   }
 
   function handleActionChange(nextAction: HotspotActionKind) {
-    setForm(
-      resetForm(viewer, nextAction, {
-        mediumId: defaultMediumId,
-        mascot: defaultMascot,
-      }),
-    )
+    if (nextAction === form.action) return
+    if (nextAction === 'medium' && !canAddMedium) return
+    if (nextAction === 'dialog' && !canAddDialog) return
+
+    setForm((prev) => ({
+      ...prev,
+      action: nextAction,
+      mediumId: defaultMediumId,
+      mascot: defaultMascot,
+    }))
     setError(null)
     setSuccess(null)
   }
@@ -257,24 +274,65 @@ export function StationHotspotAddForm({
     }
   }
 
+  const medienTabHref = `/mpz/studio/stationen/${encodeURIComponent(slug)}?tab=medien`
+  const dialogTabHref = `/mpz/studio/stationen/${encodeURIComponent(slug)}?tab=dialog`
+
   return (
-    <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-4 text-sm">
+    <div className="border-t border-border-1 pt-6 text-sm">
       <h3 className="mb-3 font-semibold text-fg-1">Hotspot hinzufügen</h3>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div>
-          <label htmlFor="hs-action" className={mpzLabelClassName()}>
-            Typ
-          </label>
-          <select
-            id="hs-action"
-            value={form.action}
-            onChange={(e) => handleActionChange(e.target.value as HotspotActionKind)}
-            className={mpzFieldClassName()}
-          >
-            {canAddMedium && <option value="medium">Medien-Hotspot</option>}
-            {canAddDialog && <option value="dialog">Dialog-Hotspot (Maskottchen)</option>}
-          </select>
+          <span className={`${mpzLabelClassName()} uppercase tracking-[0.05em]`}>
+            Typ wählen
+          </span>
+          <div className="mt-2 grid grid-cols-2 gap-3">
+            {canAddMedium ? (
+              <button
+                type="button"
+                onClick={() => handleActionChange('medium')}
+                className={typCardClassName(form.action === 'medium', false)}
+              >
+                Medien-Hotspot
+              </button>
+            ) : (
+              <div
+                aria-disabled="true"
+                className={typCardClassName(false, true)}
+              >
+                <span>Medien-Hotspot</span>
+                <Link
+                  href={medienTabHref}
+                  className="text-xs font-semibold text-accent underline-offset-2 hover:underline"
+                >
+                  Zuerst Medium anlegen
+                </Link>
+              </div>
+            )}
+
+            {canAddDialog ? (
+              <button
+                type="button"
+                onClick={() => handleActionChange('dialog')}
+                className={typCardClassName(form.action === 'dialog', false)}
+              >
+                Dialog-Hotspot (Maskottchen)
+              </button>
+            ) : (
+              <div
+                aria-disabled="true"
+                className={typCardClassName(false, true)}
+              >
+                <span>Dialog-Hotspot (Maskottchen)</span>
+                <Link
+                  href={dialogTabHref}
+                  className="text-xs font-semibold text-accent underline-offset-2 hover:underline"
+                >
+                  Zuerst Dialog-Figur anlegen
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
@@ -414,7 +472,7 @@ export function StationHotspotAddForm({
                   ))}
                 </select>
                 {iconLoadError && (
-                  <p role="alert" className="mt-1 text-xs text-brand-red">
+                  <p role="alert" className="mt-1 text-xs text-error">
                     {iconLoadError}
                   </p>
                 )}
@@ -519,30 +577,24 @@ export function StationHotspotAddForm({
           <button
             type="submit"
             disabled={isPending}
-            className="rounded-gs39-sm bg-accent px-4 py-2 font-semibold text-white disabled:opacity-50"
+            className={mpzButtonClassName('primary')}
           >
             {isPending ? 'Speichert …' : 'Hotspot anlegen'}
           </button>
           {calib && (
             <Link
               href={calib}
-              target={isSphere ? '_blank' : undefined}
-              rel={isSphere ? 'noopener noreferrer' : undefined}
               className="text-sm font-semibold text-accent underline-offset-2 hover:underline"
             >
-              {isSphere ? '↗ Kalibrieren' : 'Kalibrieren'}
+              Kalibrieren
             </Link>
           )}
         </div>
 
         {error && <MpzFormAlert variant="error">{error}</MpzFormAlert>}
 
-        {success && (
-          <p className="rounded-gs39-sm border border-green-300 bg-green-50 px-3 py-2 text-sm text-green-900">
-            {success}
-          </p>
-        )}
+        {success && <MpzFormAlert variant="success">{success}</MpzFormAlert>}
       </form>
-    </section>
+    </div>
   )
 }
