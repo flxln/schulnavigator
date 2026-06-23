@@ -1,0 +1,169 @@
+# Epic: MPZ Studio v3 — Visual Polish
+
+**Milestone:** [MPZ Studio v3 Visual Polish](https://github.com/flxln/schulnavigator/milestone/13) (GitHub #13)
+**Status:** offen (2026-06-23)
+**GitHub Epic:** [#205](https://github.com/flxln/schulnavigator/issues/205)
+**Parent:** abgeschlossenes Epic [#195](./epic-mpz-studio-ui-cleanup.md) (IA & Navigation)
+
+**Design-Quellen:** [SCREEN-MATRIX.md](../archiv/design/mpz-studio-claude-design-cleanup/mockups/SCREEN-MATRIX.md) · [studio_precision/DESIGN.md](../archiv/design/mpz-studio-claude-design-cleanup/mockups/stitch_mpz_studio_shell_dashboard/studio_precision/DESIGN.md) · [mockups/README.md](../archiv/design/mpz-studio-claude-design-cleanup/mockups/README.md)
+
+---
+
+## Ziel
+
+MPZ Studio soll sich wie ein **zusammenhängendes GS39-Werkzeug** anfühlen (Mockup-Niveau S4–S11, S13–S14) — **nur visuell**, ohne neue Domänen-Features und ohne IA-Änderungen.
+
+Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**, Cards, Sidebar/Top-Bar, verfeinerte Tabellen/Formulare.
+
+---
+
+## Scope — drin / draußen
+
+| In Epic | **Nicht** in Epic (bewusst ausgeschlossen) |
+|---------|---------------------------------------------|
+| Design-Tokens & Primitives (Cards, Sidebar-Item, Inputs) | **Markdown-WYSIWYG** für Text-Medien |
+| Shell, Dashboard, Stationen-Grid, Detail-Header | **Dialog-Bubble visueller Editor** (Drag auf Raum) |
+| Medien/Hotspots/Dialog Layout (S8–S15) | **Hub Mockup-Karten-Grid** — Hub bleibt **Tabelle** (`hub-panel.tsx`) |
+| Save-Validate Zustände (S3) | YouTube-Pflege im Studio (ADR-004) |
+| Kalibrier-Shells S13/S14 | Batch-Import `auftraggeber/` |
+| Design & Hub: Tabs + Tabelle/Brand-Panel optisch | Directus / Lehrkräfte-Admin |
+| Coach / Embeds / Deploy optisch | IA-Änderungen (NAVIGATION-SOLL frozen) |
+| Unlock (optional D3) | Hub-Slot-Geometrie (bleibt Code) |
+
+**Leitplanken (ADR-022):** nur `development`, Guard, `writeStations` — **kein** Verhalten/API ändern.
+
+---
+
+## Verbindliche Entscheidungen
+
+| Thema | Entscheidung |
+|-------|--------------|
+| Farben | GS39 (`gs39-tokens.css`) — keine MD3-Stitch-Palette |
+| Shell-Referenz | `s11_hotspots_empty` (Gold-Mockup) |
+| Hub-Tab | **Tabelle beibehalten** — kein Karten-Grid aus S19 |
+| Bubble-Layout | JSON-Felder im Formular — kein Drag-Editor |
+| Text-Medien | Datei-Upload/Replace wie v2.1 — kein Markdown-Editor |
+
+---
+
+## Übersicht Unterissues
+
+| Rolle | Nr. | Titel | Labels | Blockiert durch |
+|-------|-----|-------|--------|-----------------|
+| **Epic (Parent)** | `#205` | MPZ Studio v3 — Visual Polish | `design`, `tech` | — |
+| Unterissue | `#206` | A1: Studio Design Tokens + Primitives | `design`, `tech`, `blocker` | — — **erledigt** (2026-06-23, Post-Mortem unten) |
+| Unterissue | `#207` | A2: Shell visuell (Sidebar, Top-Bar) | `design`, `tech` | #206 |
+| Unterissue | `#208` | A3: Save-Validate & Dashboard | `design`, `tech` | #206 |
+| Unterissue | `#209` | B1: Stationen-Grid Kacheln | `design`, `tech` | #207 |
+| Unterissue | `#210` | B2: Station-Detail-Header | `design`, `tech` | #207 |
+| Unterissue | `#211` | C1: Stammdaten-Formular | `design`, `tech` | #210 |
+| Unterissue | `#212` | C2: Medien Empty, Tabelle, Modal | `design`, `tech` | #210 |
+| Unterissue | `#215` | C3: Medien bearbeiten | `design`, `tech` | #212 |
+| Unterissue | `#213` | C4: Hotspots Empty, Tabelle, Formulare | `design`, `tech` | #210 |
+| Unterissue | `#216` | C5: Dialog-Tab Layout | `design`, `tech` | #210 |
+| Unterissue | `#218` | D1: Design & Hub (Tabs, Tabelle, Brand) | `design`, `tech` | #207 |
+| Unterissue | `#219` | D2: Coach, Embeds, Deploy | `design`, `tech` | #207 |
+| Unterissue | `#220` | D3: Unlock-Screen (optional) | `design`, `tech` | #206 |
+| Unterissue | `#214` | E1: Flat-Kalibrierung Layout | `design`, `tech` | #210 |
+| Unterissue | `#217` | E2: Sphere-Kalibrierung Layout | `design`, `tech` | #210 |
+
+**Empfohlene Reihenfolge:** A1 (`blocker`) → A2 ∥ A3 → B1/B2 → C2/C4/C5/C1/C3 → D → E
+
+**Pilot (~1 Woche):** #206 → #207 → #209 → #213
+
+---
+
+## Phasen (Detail)
+
+### Phase A — Foundation
+
+| Issue | Screens | Dateien |
+|-------|---------|---------|
+| #206 | Querschnitt | `mpz-studio-tokens.css`, `mpz-form-primitives.ts`, `mpz-card.tsx` — **erledigt** (2026-06-23) |
+| #207 | S1, S11 | `studio-shell.tsx` |
+| #208 | S3, S4 | `save-validate-panel.tsx`, `studio-dashboard.tsx` |
+
+### Phase B — Stationen
+
+| Issue | Screens | Dateien |
+|-------|---------|---------|
+| #209 | S5 | `station-grid.tsx` |
+| #210 | S6 | `station-detail-shell.tsx` |
+
+### Phase C — Station Detail
+
+| Issue | Screens | Dateien |
+|-------|---------|---------|
+| #211 | S7 | `station-stammdaten-form.tsx`, `station-raumbild-upload.tsx` |
+| #212 | S8, S9 | `station-medien-table.tsx`, `media-ingest-modal.tsx` |
+| #215 | S10 | `station-medium-edit-form.tsx` |
+| #213 | S11, S12 | `station-hotspots-table.tsx`, `station-hotspot-*-form.tsx` |
+| #216 | S15 | `station-dialog-panel.tsx`, `station-dialog-segment-audio-row.tsx` |
+
+### Phase D — Querschnitt
+
+| Issue | Screens | Dateien |
+|-------|---------|---------|
+| #218 | S19, S20 | `design-page-shell.tsx`, `hub-panel.tsx`, `brand-panel.tsx` |
+| #219 | S17, S18, S21 | `coach-panel.tsx`, `embeds-panel.tsx`, `deploy-tab.tsx` |
+| #220 | S24 | `app/mpz/unlock/page.tsx` |
+
+### Phase E — Kalibrierung
+
+| Issue | Screens | Dateien |
+|-------|---------|---------|
+| #214 | S13 | `flat-calib-shell.tsx`, `flat-hotspot-calib.tsx` |
+| #217 | S14 | `sphere-calib-shell.tsx`, `sphere-hotspot-calib.tsx` |
+
+---
+
+## Akzeptanzkriterien (Epic)
+
+**Querschnitt**
+
+- [ ] Sidebar: 240px, Navy, Gruppenlabels, aktiver Streifen (wie `s11`)
+- [ ] Top-Bar: 56px, weiß, Breadcrumb + Save
+- [ ] Cards: 8px Radius, Border, Padding 20px
+- [ ] Hub-Tab: **Tabelle** — optisch poliert, kein Grid-Layout
+
+**Screens**
+
+- [ ] S4, S5, S6, S8–S11, S15, S13/S14 — Screenshot-Abgleich mit Mockups
+
+**Technik**
+
+- [ ] `cd app && npm test && npm run build` grün
+- [ ] NAV-01–07 unverändert
+- [ ] `validate:tokens` grün
+
+---
+
+## Aufwand (grob)
+
+| Paket | Personentage |
+|-------|--------------|
+| Pilot (#206–#207, #209, #213) | 5–7 |
+| MVP (A + B + C) | 12–16 |
+| Voll (+ D + E) | 18–22 |
+
+---
+
+## GitHub-Links
+
+| Issue | URL |
+|-------|-----|
+| #205 | https://github.com/flxln/schulnavigator/issues/205 |
+| #206–#220 | siehe Tabelle oben |
+
+---
+
+## Verwandte Dokumente
+
+- [epic-mpz-studio-ui-cleanup.md](./epic-mpz-studio-ui-cleanup.md) — IA (#195) ✅
+- [mpz-studio.md](../spezifikationen/mpz-studio.md) — Phasierung v3b
+- [NAVIGATION-SOLL.md](../archiv/design/mpz-studio-claude-design-cleanup/NAVIGATION-SOLL.md)
+
+## Fortschritt
+
+- [x] #206 A1 Studio Tokens + Primitives (Post-Mortem: [post-mortem-206-2026-06-23.md](../reviews/post-mortem/post-mortem-206-2026-06-23.md))
+- [ ] #207 A2 Shell visuell (nächster Schritt)

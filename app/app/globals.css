@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import './gs39-tokens.css';
+@import './mpz-studio-tokens.css';
 @import './sn-theme.css';
 
 /*
@@ -58,6 +59,13 @@ body {
   --radius-gs39-sm: var(--r-sm);
   --radius-gs39-md: var(--r-md);
   --radius-gs39-lg: var(--r-lg);
+
+  --radius-mpz-card: var(--mpz-r-card);
+  --radius-mpz-button-pill: var(--mpz-r-button-pill);
+  --spacing-mpz-card-padding: var(--mpz-card-padding);
+  --spacing-mpz-container-padding: var(--mpz-container-padding);
+  --spacing-mpz-sidebar: var(--mpz-sidebar-width);
+  --spacing-mpz-topbar: var(--mpz-topbar-height);
 }
 
 body {

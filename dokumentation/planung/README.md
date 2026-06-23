@@ -11,7 +11,8 @@ Abgleich mit [flxln/schulnavigator](https://github.com/flxln/schulnavigator). **
 | [labels.md](./labels.md) | Label-Konventionen |
 | [issues-schulfest-gs39-nachtrag.md](./issues-schulfest-gs39-nachtrag.md) | Epic **#86** — Schulfest/Hof-QR/Content |
 | [issues-startblick.md](./issues-startblick.md) | Startblick Sphere (#152–#153) und Flat-Startpan (#154, #185) |
-| [epic-mpz-studio-ui-cleanup.md](./epic-mpz-studio-ui-cleanup.md) | Epic **#195** — MPZ Studio UI-Cleanup (#196–#204) |
+| [epic-mpz-studio-ui-cleanup.md](./epic-mpz-studio-ui-cleanup.md) | Epic **#195** — MPZ Studio UI-Cleanup (#196–#204) ✅ abgeschlossen |
+| [epic-mpz-studio-v3-visual-polish.md](./epic-mpz-studio-v3-visual-polish.md) | Epic **#205** — MPZ Studio v3 Visual Polish (#206–#220) |
 
 ## Archiv
 
@@ -30,6 +31,6 @@ Domänen-Matrix MPZ Studio: [ideen/archiv/mpz-studio-ui.md](../ideen/archiv/mpz-
 
 Vollständiger Abgleich-Log (bis 2026-06-20): [archiv/sync-log-2026-06.md](./archiv/sync-log-2026-06.md).
 
-**Letzter dokumentierter Abgleich:** 2026-06-23 — #203 Mobile Sidebar erledigt; Post-Mortem [203](../reviews/post-mortem/post-mortem-203-2026-06-23.md) (nach #202).
+**Letzter dokumentierter Abgleich:** 2026-06-23 — #206 Studio Tokens erledigt; Post-Mortem [206](../reviews/post-mortem/post-mortem-206-2026-06-23.md).
 
 Siehe auch [entscheidungen.md](../entscheidungen.md), [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren).
