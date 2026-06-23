@@ -52,23 +52,17 @@ export function StationDetailShell({
   const viewer = station?.viewer ?? summary?.viewer ?? 'flat'
   const health = summary?.health ?? (station ? 'ok' : 'error')
   const issues = summary?.issues ?? []
-  const hasDialog = summary?.hasDialog ?? false
   const medienCount = station?.medien?.length ?? summary?.medienCount ?? 0
   const hotspotCount =
     (station?.hotspots?.length ?? 0) + (station?.hotspots360?.length ?? 0) ||
     summary?.hotspotCount ||
     0
 
-  const tabs: { id: DetailTab; label: string; badge?: number; hidden?: boolean }[] =
-    [
+  const tabs: { id: DetailTab; label: string; badge?: number }[] = [
       { id: 'stammdaten', label: 'Stammdaten' },
       { id: 'medien', label: 'Medien', badge: medienCount },
       { id: 'hotspots', label: 'Hotspots', badge: hotspotCount || undefined },
-      {
-        id: 'dialog',
-        label: 'Dialog',
-        hidden: !hasDialog,
-      },
+      { id: 'dialog', label: 'Dialog' },
     ]
 
   const baseHref = `/mpz/studio/stationen/${encodeURIComponent(slug)}`
@@ -119,9 +113,7 @@ export function StationDetailShell({
         className="mb-6 flex flex-wrap gap-1 border-b border-border-1"
         aria-label="Station bearbeiten"
       >
-        {tabs
-          .filter((tab) => !tab.hidden)
-          .map((tab) => {
+        {tabs.map((tab) => {
             const active = activeTab === tab.id
             const href =
               tab.id === 'stammdaten' ? baseHref : `${baseHref}?tab=${tab.id}`
@@ -165,7 +157,7 @@ export function StationDetailShell({
         </section>
       )}
 
-      {activeTab === 'dialog' && hasDialog && (
+      {activeTab === 'dialog' && (
         <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5">
           <StationDialogPanel slug={slug} station={station} />
         </section>

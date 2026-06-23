@@ -697,7 +697,6 @@ function validateDialog(raw: unknown, prefix: string): Dialog {
     }
   }
   assert(Array.isArray(raw.segmente), `${prefix}: segmente muss Array sein`)
-  assert(raw.segmente.length > 0, `${prefix}: segmente ist leer`)
   const segmentIds = new Set<string>()
   const segmente: DialogSegment[] = []
   for (let i = 0; i < raw.segmente.length; i++) {

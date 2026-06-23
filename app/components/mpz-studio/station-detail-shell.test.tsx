@@ -92,7 +92,7 @@ afterEach(() => {
 })
 
 describe('StationDetailShell', () => {
-  it('rendert drei Tabs ohne Dialog für klassenzimmer', () => {
+  it('rendert vier Tabs inkl. Dialog für klassenzimmer', () => {
     mocks.searchParams = new URLSearchParams()
     setReport('klassenzimmer', false)
     const station = getStationBySlug('klassenzimmer')!
@@ -105,7 +105,7 @@ describe('StationDetailShell', () => {
     expect(screen.getByRole('link', { name: /Medien/ })).toBeTruthy()
     const nav = screen.getByRole('navigation', { name: 'Station bearbeiten' })
     expect(within(nav).getByRole('link', { name: /Hotspots/ })).toBeTruthy()
-    expect(screen.queryByRole('link', { name: 'Dialog' })).toBeNull()
+    expect(within(nav).getByRole('link', { name: 'Dialog' })).toBeTruthy()
     expect(screen.queryByRole('link', { name: 'Dialog-Audio' })).toBeNull()
   })
 
@@ -145,6 +145,19 @@ describe('StationDetailShell', () => {
     expect(await screen.findByText('Figuren')).toBeTruthy()
   })
 
+  it('Dialog-Tab Empty-State mit CTA für klassenzimmer', () => {
+    mocks.searchParams = new URLSearchParams('tab=dialog')
+    setReport('klassenzimmer', false)
+    const station = getStationBySlug('klassenzimmer')!
+
+    render(
+      <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} globalSuffixes={GLOBAL_SUFFIXES} />,
+    )
+
+    expect(screen.getByRole('button', { name: 'Dialog hinzufügen' })).toBeTruthy()
+    expect(screen.getByText(/Maskottchen-Dialog mit Frieda und Otto/)).toBeTruthy()
+  })
+
   it('Tab-Links enthalten korrektes ?tab=', () => {
     mocks.searchParams = new URLSearchParams()
     setReport('klassenzimmer', false)
@@ -161,6 +174,9 @@ describe('StationDetailShell', () => {
     expect(
       within(nav).getByRole('link', { name: /Hotspots/ }).getAttribute('href'),
     ).toBe('/mpz/studio/stationen/klassenzimmer?tab=hotspots')
+    expect(within(nav).getByRole('link', { name: 'Dialog' }).getAttribute('href')).toBe(
+      '/mpz/studio/stationen/klassenzimmer?tab=dialog',
+    )
   })
 
   it('Medien-Tab zeigt Tabelle für klassenzimmer', () => {

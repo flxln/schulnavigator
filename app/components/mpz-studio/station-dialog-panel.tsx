@@ -85,6 +85,36 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
     })
   }
 
+  const dialogHotspotCount = useMemo(() => {
+    const flat = station?.hotspots?.filter((h) => h.action === 'dialog').length ?? 0
+    const sphere = station?.hotspots360?.filter((h) => h.action === 'dialog').length ?? 0
+    return flat + sphere
+  }, [station])
+
+  async function createDialogBlock() {
+    setError(null)
+    setSuccess(null)
+    startTransition(async () => {
+      try {
+        const res = await fetch(`/api/mpz/stations/${encodeURIComponent(slug)}/dialog`, {
+          method: 'POST',
+        })
+        const json = (await res.json()) as { message?: string }
+        if (!res.ok) {
+          setError(json.message ?? `Fehler (${res.status})`)
+          return
+        }
+        markMpzStudioDirty()
+        await validateNow()
+        router.refresh()
+        setAddingSegment(true)
+        setSuccess('Dialog angelegt — erstes Segment hinzufügen.')
+      } catch {
+        setError('Dialog konnte nicht angelegt werden.')
+      }
+    })
+  }
+
   async function saveFiguren() {
     setError(null)
     setSuccess(null)
@@ -138,6 +168,40 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
     })
   }
 
+  async function deleteDialogBlock() {
+    const hotspotHint =
+      dialogHotspotCount > 0
+        ? ` Die Station hat ${dialogHotspotCount} Dialog-Hotspot(s) — Entfernen schlägt fehl, solange diese existieren.`
+        : ''
+    if (
+      !window.confirm(
+        `Dialog für diese Station wirklich entfernen? Segmente, Gruppen und bubble-Einstellungen werden gelöscht.${hotspotHint}`,
+      )
+    ) {
+      return
+    }
+    setError(null)
+    setSuccess(null)
+    startTransition(async () => {
+      try {
+        const res = await fetch(`/api/mpz/stations/${encodeURIComponent(slug)}/dialog`, {
+          method: 'DELETE',
+        })
+        const json = (await res.json()) as { message?: string }
+        if (!res.ok) {
+          setError(json.message ?? `Fehler (${res.status})`)
+          return
+        }
+        markMpzStudioDirty()
+        await validateNow()
+        router.refresh()
+        setSuccess('Dialog entfernt.')
+      } catch {
+        setError('Dialog konnte nicht entfernt werden.')
+      }
+    })
+  }
+
   async function deleteGruppe(gruppeId: string) {
     if (!window.confirm(`Gruppe „${gruppeId}" wirklich löschen?`)) return
     setError(null)
@@ -165,7 +229,25 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
 
   if (!dialog) {
     return (
-      <p className="text-sm text-fg-2">Kein Dialog für diese Station.</p>
+      <div className="flex flex-col gap-4">
+        {error && (
+          <p className="rounded-gs39-sm border border-brand-red/30 bg-brand-red/10 px-3 py-2 text-sm text-fg-1">
+            {error}
+          </p>
+        )}
+        <p className="text-sm text-fg-2">
+          Maskottchen-Dialog mit Frieda und Otto für diese Station — Sprechertexte und Audio pro
+          Segment im Dialog-Tab pflegen.
+        </p>
+        <button
+          type="button"
+          disabled={isPending}
+          onClick={() => void createDialogBlock()}
+          className="w-fit rounded-gs39-sm bg-accent px-4 py-2 text-sm font-semibold text-white disabled:opacity-50"
+        >
+          Dialog hinzufügen
+        </button>
+      </div>
     )
   }
 
@@ -198,9 +280,19 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
       )}
 
       <section>
-        <h3 className="mb-3 text-sm font-bold uppercase tracking-wide text-fg-3">
-          Figuren
-        </h3>
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+          <h3 className="text-sm font-bold uppercase tracking-wide text-fg-3">
+            Figuren
+          </h3>
+          <button
+            type="button"
+            disabled={isPending}
+            onClick={() => void deleteDialogBlock()}
+            className="rounded-gs39-sm border border-brand-red/40 px-3 py-1.5 text-sm font-semibold text-brand-red disabled:opacity-50"
+          >
+            Dialog entfernen
+          </button>
+        </div>
         <div className="flex flex-wrap items-center gap-4">
           {(['frieda', 'otto'] as const).map((figur) => (
             <label key={figur} className="flex items-center gap-2 text-sm text-fg-1">

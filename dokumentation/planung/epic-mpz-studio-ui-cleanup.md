@@ -27,7 +27,7 @@ Leitplanken unverändert (ADR-022): nur `NODE_ENV=development`, `assertMpzStudio
 | Unterissue | `#196` | Design-Freeze: Soll-Navigation & Claude-Design-Abnahme | `design`, `documentation` | — — **erledigt** (2026-06-22) |
 | Unterissue | `#197` | Studio-Shell: gruppierte Sidebar + Design-&-Hub-Route | `tech`, `blocker` | #196 — **erledigt** (2026-06-22, Post-Mortem unten) |
 | Unterissue | `#198` | Redundanzen: Medien-Modal, `/ingest`, Dialog-Audio global | `tech` | #197 — **erledigt** (2026-06-22, Post-Mortem unten) |
-| Unterissue | `#199` | Dialog-Lifecycle: Tab immer + Create-API | `tech`, `blocker` | #197 |
+| Unterissue | `#199` | Dialog-Lifecycle: Tab immer + Create-API | `tech`, `blocker` | #197 — **erledigt** (2026-06-23, Post-Mortem unten) |
 | Unterissue | `#200` | Dialog-Editor: Segment-Audio-Zeile + einklappbare Sub-Bereiche | `tech` | #199, #198 |
 | Unterissue | `#201` | Sphere-Kalibrierung `/mpz/calib/sphere/[slug]` (S14) | `tech` | #197 |
 | Unterissue | `#202` | Formular-Patterns, Dirty-State, Save-Feedback | `tech` | #197 |
@@ -60,7 +60,7 @@ Leitplanken unverändert (ADR-022): nur `NODE_ENV=development`, `assertMpzStudio
 | **2–3** | Claude Design + Design-Freeze IA ([`NAVIGATION-SOLL`](../archiv/design/mpz-studio-claude-design-cleanup/NAVIGATION-SOLL.md)) | #196 ✅ |
 | **4.1** | `studio-shell.tsx` — gruppierte Nav, Top-Bar, `/design` | #197 ✅ |
 | **4.2** | Redundanzen entfernen | #198 ✅ |
-| **4.3** ⚠️ Feature | Dialog Gating + Empty-State + Create-API | Dialog-Lifecycle |
+| **4.3** ⚠️ Feature | Dialog Gating + Empty-State + Create-API | #199 ✅ |
 | **4.4** | Dialog Sub-IA (Gruppen/Bubble unter Segment-Tabelle) | Dialog-Editor |
 | **4.5–4.6** | Formular-Patterns, Dirty-State | Patterns |
 | **4.7** | Mobile Sidebar | Mobile |
@@ -94,8 +94,8 @@ Details: [ROADMAP.md — Pre-Mortem-Härtung](../archiv/design/mpz-studio-claude
 
 **Station Detail**
 
-- [ ] Tab Dialog bei jeder Station sichtbar; ohne Dialog → „Dialog hinzufügen“
-- [ ] Dialog-Lifecycle E2E: anlegen → Segment → Dialog-Hotspot → Save-Validate grün
+- [x] Tab Dialog bei jeder Station sichtbar; ohne Dialog → „Dialog hinzufügen“ — **#199**
+- [x] Dialog-Lifecycle E2E: anlegen → Segment → Dialog-Hotspot → Save-Validate grün — **#199**
 - [ ] Audio Upload/Play nur in Segment-Zeile
 
 **Kalibrierung**
@@ -145,7 +145,7 @@ Details: [ROADMAP.md — Pre-Mortem-Härtung](../archiv/design/mpz-studio-claude
 - [x] Design-Freeze IA ([`NAVIGATION-SOLL.md`](../archiv/design/mpz-studio-claude-design-cleanup/NAVIGATION-SOLL.md)) — Mockups Stitch-HTML, bekannt inkonsistent ([#196](../reviews/post-mortem-196-2026-06-22.md))
 - [x] Shell + Design-Route (#197, Post-Mortem: [post-mortem-197-2026-06-22.md](../reviews/post-mortem-197-2026-06-22.md))
 - [x] Redundanzen (#198, Post-Mortem: [post-mortem-198-2026-06-22.md](../reviews/post-mortem-198-2026-06-22.md))
-- [ ] Dialog-Lifecycle (Feature)
+- [x] Dialog-Lifecycle (#199, Post-Mortem: [post-mortem-199-2026-06-23.md](../reviews/post-mortem-199-2026-06-23.md))
 - [ ] Dialog-Editor
 - [ ] Sphere-Kalibrierung
 - [ ] Patterns + Dirty-State

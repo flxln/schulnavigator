@@ -168,7 +168,7 @@ export async function auditDialogAudioForSlug(
     throw new MpzUploadError('VALIDATION', `Station "${slug}" nicht gefunden.`)
   }
   if (!station.dialog?.segmente?.length) {
-    throw new MpzUploadError('VALIDATION', `Station "${slug}" hat keinen Dialog.`)
+    return { segments: [], orphans: [] }
   }
   const { appRoot } = io.getPaths()
   const base = auditDialogAudio(station, appRoot)

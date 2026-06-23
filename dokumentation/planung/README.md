@@ -30,6 +30,6 @@ Domänen-Matrix MPZ Studio: [ideen/archiv/mpz-studio-ui.md](../ideen/archiv/mpz-
 
 Vollständiger Abgleich-Log (bis 2026-06-20): [archiv/sync-log-2026-06.md](./archiv/sync-log-2026-06.md).
 
-**Letzter dokumentierter Abgleich:** 2026-06-22 — #198 Redundanzen; Post-Mortem [198](../reviews/post-mortem-198-2026-06-22.md) (nach #196/#197).
+**Letzter dokumentierter Abgleich:** 2026-06-23 — #199 Dialog-Lifecycle; Post-Mortem [199](../reviews/post-mortem-199-2026-06-23.md) (nach #196–#198).
 
 Siehe auch [entscheidungen.md](../entscheidungen.md), [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren).

@@ -37,7 +37,7 @@ Nur bei `NODE_ENV=development` erreichbar; in Production liefern `/mpz/*` und `/
 2. Dev-Server starten: `npm run dev`.
 3. Browser: [`/mpz/unlock`](http://localhost:3000/mpz/unlock) — Secret eingeben → Session-Cookie.
 4. [`/mpz/studio`](http://localhost:3000/mpz/studio) — Dashboard mit Validierungsstatus und Links zu allen 12 Stationen.
-5. **Station-Detail (v1 #158, v2 #171–#176, v2.1 #187–#189):** [`/mpz/studio/stationen`](http://localhost:3000/mpz/studio/stationen) → Kachel **Bearbeiten** oder direkt [`/mpz/studio/stationen/{slug}`](http://localhost:3000/mpz/studio/stationen/kunst) — Tabs **Stammdaten**, **Medien**, **Hotspots**, **Dialog** (letzterer nur Stationen mit `dialog`).
+5. **Station-Detail (v1 #158, v2 #171–#176, v2.1 #187–#189):** [`/mpz/studio/stationen`](http://localhost:3000/mpz/studio/stationen) → Kachel **Bearbeiten** oder direkt [`/mpz/studio/stationen/{slug}`](http://localhost:3000/mpz/studio/stationen/kunst) — Tabs **Stammdaten**, **Medien**, **Hotspots**, **Dialog** (Tab Dialog bei allen Hub-Stationen; ohne `dialog`-Block: Empty-State „Dialog hinzufügen“, #199).
 6. **Querschnitt (v2 #174–#180):** Coach, Embeds & Links, Hub-Karte, Brand & Design, Deploy — jeweils eigene Navigationspunkte in der Studio-Shell.
 
 **Station-Detail (#159–#176)**
@@ -49,7 +49,7 @@ Route: `/mpz/studio/stationen/[slug]?tab={stammdaten|medien|hotspots|dialog}` (D
 | Stammdaten | `titel`, `beschreibung`, `viewer`; read-only: `slug`; Raumbild-Upload Flat/360° (#173) | `PATCH …/stammdaten`; `POST …/raumbild` |
 | Medien | Tabelle, Bearbeiten (PATCH #171), Datei ersetzen (#188), Thumbnail/Poster hochladen (#189), link/embed anlegen (#172, Modal), Entfernen (#161) | `PATCH`/`POST`/`DELETE` …/medien; `POST` …/file`, `…/thumbnail`, `…/poster`; `POST /api/mpz/media/ingest` |
 | Hotspots | Tabelle, Anlegen/Bearbeiten/Entfernen inkl. Dialog-Hotspot (#176), Kalibrier-Links (#162, #165–#168) | `POST`/`PATCH`/`DELETE` …/hotspots |
-| Dialog | Figuren, Segmente, Gruppen, `bubble` (#175); Dialog-WAV-Upload im Studio folgt #200 — bis dahin CLI/curl | `PATCH`/`POST`/`DELETE` …/dialog/*; `POST /api/mpz/dialog-audio/ingest` |
+| Dialog | Figuren, Segmente, Gruppen, `bubble` (#175); anlegen/entfernen (#199); Dialog-WAV-Upload im Studio folgt #200 — bis dahin CLI/curl | `POST`/`DELETE` …/dialog; `PATCH`/`POST`/`DELETE` …/dialog/*; `POST /api/mpz/dialog-audio/ingest` |
 
 **Stammdaten-Flow:** Formular sendet partielles JSON (`titel`, `beschreibung`, `viewer`). Domain: [`patchStationStammdaten`](../app/lib/mpz-station-stammdaten.ts) in `withMpzWriteLock` → `writeStations({ strict: true, postValidate: true })`. Bei Erfolg: `markMpzStudioDirty()` → `validateNow()` → `router.refresh()`. `viewer`-Wechsel mit bestehenden Hotspots zeigt Warnung; blockierende Konstellationen werden serverseitig abgelehnt.
 
@@ -69,6 +69,7 @@ Route: `/mpz/studio/stationen/[slug]?tab={stammdaten|medien|hotspots|dialog}` (D
 - `POST /api/mpz/stations/[slug]/medien/[mediumId]/file` — Mediendatei ersetzen bei gleicher `medium.id` (#187, v2.1). **POST** `multipart/form-data`: `file` (Pflicht). Domain: [`mpz-medium-replace.ts`](../app/lib/mpz-medium-replace.ts). Erfolg **200** `{ medium, quelle, previousQuelle, fileReplaced, previousFileDeleted, mtime, validation? }`. `MISSING_FILE` → **400**; `NOT_FOUND` → **404**; `FIELD_NOT_ALLOWED` (link/embed/YouTube) / `VALIDATION` → **422**; `IO` → **500**.
 - `POST /api/mpz/stations/[slug]/medien/[mediumId]/thumbnail` — Thumbnail-Bild hochladen (#189, v2.1). **POST** `multipart/form-data`: `file` (Pflicht). Domain: [`mpz-medium-asset-upload.ts`](../app/lib/mpz-medium-asset-upload.ts) mit `UPLOAD_RULES.foto` → `/media/{slug}/fotos/…`. Erfolg **200** `{ medium, field, path, previousPath, previousFileDeleted, mtime, validation? }`. Für alle `MediumTyp`-Werte. `MISSING_FILE` → **400**; `NOT_FOUND` → **404**; `VALIDATION` → **422**; `IO` → **500**.
 - `POST /api/mpz/stations/[slug]/medien/[mediumId]/poster` — Poster-Bild hochladen (#189, v2.1). Wie Thumbnail, nur `typ: video` (unabhängig von `videoSource`, auch YouTube). `FIELD_NOT_ALLOWED` bei anderen Typen → **422**.
+- `POST` / `DELETE` `/api/mpz/stations/[slug]/dialog` — Dialog-Block anlegen bzw. entfernen (#199). **POST** legt `{ figuren: ['frieda','otto'], segmente: [], gruppen: [] }` an. **DELETE** entfernt den Block; `DIALOG_IN_USE` wenn Dialog-Hotspots existieren → **400**.
 - `PATCH /api/mpz/stations/[slug]/dialog` — `figuren`, `bubble` (#175).
 - `POST` / `PATCH` / `DELETE` `/api/mpz/stations/[slug]/dialog/segmente` bzw. `…/segmente/[segmentId]` — Dialog-Segmente (#175). Strukturelle Änderungen (Löschen, `rolle`) renummerieren WAV-Clips unter `content/dialog-audio/{slug}/`.
 - `POST` / `PATCH` / `DELETE` `/api/mpz/stations/[slug]/dialog/gruppen` bzw. `…/gruppen/[gruppeId]` — Dialog-Gruppen (#175).

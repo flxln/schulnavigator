@@ -42,6 +42,19 @@ describe('validateStationsFile Hub (ADR-016)', () => {
     expect(station?.dialog?.gruppen?.[0]?.id).toBe('gruesse')
   })
 
+  it('akzeptiert dialog mit leerem segmente-Array (Entwurf)', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const kz = data.stations.find((s) => s.slug === 'klassenzimmer') as Record<string, unknown>
+    kz.dialog = {
+      figuren: ['frieda', 'otto'],
+      segmente: [],
+      gruppen: [],
+    }
+    const stations = validateStationsFile(data as unknown)
+    const station = stations.find((s) => s.slug === 'klassenzimmer')
+    expect(station?.dialog?.segmente).toEqual([])
+  })
+
   it('wirft wenn beide in figuren steht', () => {
     const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
     const daz = data.stations.find((s) => s.slug === 'daz') as Record<string, unknown>

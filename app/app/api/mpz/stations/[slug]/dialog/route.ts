@@ -1,10 +1,12 @@
 import { NextResponse, type NextRequest } from 'next/server'
-import { withMpzStudioAccess } from '@/lib/mpz-studio-guard'
 import { MpzContentIoError } from '@/lib/mpz-content-io'
+import { withMpzStudioAccess } from '@/lib/mpz-studio-guard'
 import {
+  createDialog,
   MpzStationDialogError,
   mapDialogError,
   patchDialogMeta,
+  removeDialog,
   type DialogMetaPatch,
 } from '@/lib/mpz-station-dialog'
 import type { DialogBubbleLayout, DialogFigure } from '@/lib/types'
@@ -70,6 +72,47 @@ export function parsePatch(body: unknown): DialogMetaPatch | null {
 
 export { mapDialogError }
 
+function mapContentIoError(err: MpzContentIoError): { status: number; body: { error: string; message: string } } {
+  const error = err.code === 'VALIDATION' ? 'VALIDATION_FAILED' : err.code
+  const status = err.code === 'VALIDATION' ? 422 : 500
+  return { status, body: { error, message: err.message } }
+}
+
+function handleDialogRouteError(err: unknown, fallbackMessage: string): NextResponse {
+  if (err instanceof MpzStationDialogError) {
+    const mapped = mapDialogError(err)
+    return NextResponse.json(mapped.body, { status: mapped.status })
+  }
+  if (err instanceof MpzContentIoError) {
+    const mapped = mapContentIoError(err)
+    return NextResponse.json(mapped.body, { status: mapped.status })
+  }
+  return NextResponse.json(
+    { error: 'INTERNAL_ERROR', message: fallbackMessage },
+    { status: 500 },
+  )
+}
+
+export const POST = withMpzStudioAccess(async (_req: NextRequest, context) => {
+  const { slug = '' } = await context!.params
+  try {
+    const result = await createDialog(slug)
+    return NextResponse.json(result, { status: 200 })
+  } catch (err) {
+    return handleDialogRouteError(err, 'Unerwarteter Fehler beim Anlegen des Dialogs.')
+  }
+})
+
+export const DELETE = withMpzStudioAccess(async (_req: NextRequest, context) => {
+  const { slug = '' } = await context!.params
+  try {
+    const result = await removeDialog(slug)
+    return NextResponse.json(result, { status: 200 })
+  } catch (err) {
+    return handleDialogRouteError(err, 'Unerwarteter Fehler beim Entfernen des Dialogs.')
+  }
+})
+
 export const PATCH = withMpzStudioAccess(async (req: NextRequest, context) => {
   const { slug = '' } = await context!.params
   let body: unknown
@@ -97,17 +140,6 @@ export const PATCH = withMpzStudioAccess(async (req: NextRequest, context) => {
     const result = await patchDialogMeta(slug, patch)
     return NextResponse.json(result, { status: 200 })
   } catch (err) {
-    if (err instanceof MpzStationDialogError) {
-      const mapped = mapDialogError(err)
-      return NextResponse.json(mapped.body, { status: mapped.status })
-    }
-    if (err instanceof MpzContentIoError) {
-      const status = err.code === 'VALIDATION' ? 422 : 500
-      return NextResponse.json({ error: err.code, message: err.message }, { status })
-    }
-    return NextResponse.json(
-      { error: 'INTERNAL_ERROR', message: 'Unerwarteter Fehler beim Bearbeiten des Dialogs.' },
-      { status: 500 },
-    )
+    return handleDialogRouteError(err, 'Unerwarteter Fehler beim Bearbeiten des Dialogs.')
   }
 })
