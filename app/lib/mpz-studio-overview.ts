@@ -28,6 +28,7 @@ export type MpzStationOverview = {
   hotspotCount: number
   hasDialog: boolean
   hasBild: boolean
+  hasPanorama360: boolean
   health: StationHealth
   issues: string[]
 }
@@ -145,6 +146,7 @@ export function buildStationOverviews(
         (station?.hotspots360?.length ?? 0),
       hasDialog: !!station?.dialog?.segmente?.length,
       hasBild: !!station?.bild?.trim(),
+      hasPanorama360: !!station?.panorama360?.trim(),
       health,
       issues,
     }

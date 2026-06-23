@@ -4,6 +4,10 @@ import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import type { Hotspot360 } from '@/lib/types'
 import { sphereCalibFromClick } from '@/lib/raum-viewer/sphere-hotspot-calibration'
+import {
+  persistSphereHotspot,
+  persistSphereStartView,
+} from '@/lib/mpz-sphere-calib-persist'
 import { markMpzStudioDirty } from '@/components/mpz-studio/studio-validation-context'
 
 const CALIB_VIEW_POLL_MS = 200
@@ -101,30 +105,18 @@ export function SphereHotspotCalibOverlay({
     setMessage(null)
     setError(null)
     try {
-      const res = await fetch('/api/mpz/hotspots/sphere', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          slug: stationSlug,
-          hotspotId: selectedId,
-          yaw: snippet.yawDeg,
-          pitch: snippet.pitchDeg,
-        }),
+      const result = await persistSphereHotspot({
+        slug: stationSlug,
+        hotspotId: selectedId,
+        yaw: snippet.yawDeg,
+        pitch: snippet.pitchDeg,
       })
-      const json = (await res.json()) as { message?: string }
-      if (!res.ok) {
-        if (res.status === 401) {
-          setError('Nicht angemeldet — zuerst /mpz/unlock aufrufen.')
-        } else {
-          setError(json.message ?? `Fehler (${res.status})`)
-        }
+      if (!result.ok) {
+        setError(result.message)
         return
       }
-      setMessage(
-        `Übernommen: ${selectedId} → yaw=${snippet.yawDeg}°, pitch=${snippet.pitchDeg}°`,
-      )
-    } catch {
-      setError('Netzwerkfehler beim Speichern.')
+      markMpzStudioDirty()
+      setMessage(result.message)
     } finally {
       setBusy(false)
     }
@@ -140,30 +132,17 @@ export function SphereHotspotCalibOverlay({
     setStartMessage(null)
     setStartError(null)
     try {
-      const res = await fetch('/api/mpz/view/sphere', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          slug: stationSlug,
-          startYaw: view.yawDeg,
-          startPitch: view.pitchDeg,
-        }),
+      const result = await persistSphereStartView({
+        slug: stationSlug,
+        startYaw: view.yawDeg,
+        startPitch: view.pitchDeg,
       })
-      const json = (await res.json()) as { message?: string }
-      if (!res.ok) {
-        if (res.status === 401) {
-          setStartError('Nicht angemeldet — zuerst /mpz/unlock aufrufen.')
-        } else {
-          setStartError(json.message ?? `Fehler (${res.status})`)
-        }
+      if (!result.ok) {
+        setStartError(result.message)
         return
       }
       markMpzStudioDirty()
-      setStartMessage(
-        `Startblick übernommen: yaw=${view.yawDeg}°, pitch=${view.pitchDeg}° (Reload für Vorschau)`,
-      )
-    } catch {
-      setStartError('Netzwerkfehler beim Speichern.')
+      setStartMessage(result.message)
     } finally {
       setStartBusy(false)
     }

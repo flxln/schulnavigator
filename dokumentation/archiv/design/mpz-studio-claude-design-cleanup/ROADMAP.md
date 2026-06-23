@@ -113,7 +113,7 @@ flowchart TD
 - [ ] Alle 12 Stationen im Grid erreichbar
 - [ ] Medien ingestieren (6 Typen) + Validierung
 - [ ] Hotspot Flat-Kalibrierung
-- [ ] Hotspot Sphere-Kalibrierung (`/mpz/calib/sphere/{slug}` — Phase 4.8)
+- [x] Hotspot Sphere-Kalibrierung (`/mpz/calib/sphere/{slug}` — Phase 4.8, #201)
 - [ ] Dialog-Station `daz` vollständig pflegbar
 - [ ] **Dialog-Lifecycle E2E:** Station ohne Dialog → „Dialog hinzufügen“ → erstes Segment anlegen → Dialog-Hotspot setzen → Save-Validate grün ⁸
 - [ ] Coach, Embeds, Hub, Brand, Deploy unverändert funktional (`/hub` + `/brand` → Redirect auf `/design`)

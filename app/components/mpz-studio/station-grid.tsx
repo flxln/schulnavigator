@@ -53,6 +53,7 @@ export function StationGrid() {
               viewer: st.viewer,
               slug: st.slug,
               hasBild: st.hasBild,
+              hasPanorama360: st.hasPanorama360,
             })
             return (
               <article

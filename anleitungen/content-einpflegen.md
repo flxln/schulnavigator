@@ -297,7 +297,7 @@ Optionaler Block; fehlt er, bleibt die Blase wie bisher (`max-w-md`, 15 px Schri
 
 ## Schritt 3 — Hotspots platzieren
 
-**MPZ Studio (Dev, #149):** Sphere — `/raum/{slug}?hotspot-calib=1` mit „In stations.json übernehmen“; Flat — `/mpz/calib/flat/{slug}` (nach `/mpz/unlock`). Sonst: Koordinaten in JSON setzen und am Gerät nachjustieren.
+**MPZ Studio (Dev, #149, #201):** Sphere — `/mpz/calib/sphere/{slug}` mit Tabs Hotspots und Startblick (nach `/mpz/unlock`); Flat — `/mpz/calib/flat/{slug}`. Legacy: `/raum/{slug}?hotspot-calib=1`. Sonst: Koordinaten in JSON setzen und am Gerät nachjustieren.
 
 ### Koordinaten-System
 

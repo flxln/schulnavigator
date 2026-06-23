@@ -102,7 +102,7 @@ curl -X DELETE "http://localhost:3000/api/mpz/dialog-audio/clip?slug=daz&segment
 
 **Hotspot-Kalibrierung (Issue #149).** Zuerst `/mpz/unlock`. Im Studio: **Dashboard** (`/mpz/studio`) oder **Stationen** (`/mpz/studio/stationen`) — dort Vorschau und Kalibrier-Links je Station.
 
-- **Sphere:** `/raum/{slug}?hotspot-calib=1` (z. B. `daz`, `klassenzimmer`) → Hotspot-ID wählen, auf Ankerpunkt klicken → **In stations.json übernehmen** (oder JSON kopieren). **Startblick (#153):** Panorama zur Einstiegsansicht drehen → **Als Startblick übernehmen** (aktuelle Kamera, nicht Hotspot-Klick). Nach Reload gilt der neue Startblick (#152). Nach Browser-Zurück und erneutem Aufruf bleibt das Overlay sichtbar (reagiert auf URL via `useSearchParams`).
+- **Sphere:** `/mpz/calib/sphere/{slug}` (z. B. `daz`, `klassenzimmer`) → Tab **Hotspots**: Hotspot-ID wählen, auf Ankerpunkt klicken → **In stations.json übernehmen**. Tab **Startblick** (#153): Panorama zur Einstiegsansicht drehen → **Als Startblick übernehmen** (aktuelle Kamera, nicht Hotspot-Klick). Nach Reload gilt der neue Startblick (#152). Legacy-Fallback: `/raum/{slug}?hotspot-calib=1` (Overlay in der Besucher-App, Dev-only).
 - **Flat:** `/mpz/calib/flat/kunst` (Station mit `bild`, kein `equirectangular`) → Tab **Hotspots**: Klick setzt `x`/`y` → Übernehmen. Tab **Startpan** (#185): Panorama wischen → **Als Startpan übernehmen** (`POST /api/mpz/view/flat`). Hotspot muss bereits in `hotspots[]` existieren.
 
 ```bash

@@ -60,6 +60,7 @@ Route: `/mpz/studio/stationen/[slug]?tab={stammdaten|medien|hotspots|dialog}` (D
 **API (Auswahl):**
 
 - `POST /api/mpz/view/sphere` — Body `{ slug, startYaw, startPitch }` schreibt den Sphere-Startblick in `stations.json` (#153, ADR-023).
+- `POST /api/mpz/hotspots/sphere` — Body `{ slug, hotspotId, yaw, pitch }` schreibt Sphere-Hotspot-Koordinaten (#149). Kalibrier-UI: `/mpz/calib/sphere/{slug}` (#201, Tabs Hotspots \| Startblick); Flat: `/mpz/calib/flat/{slug}`.
 - `POST` / `PATCH` / `DELETE` `/api/mpz/stations/[slug]/hotspots` bzw. `…/hotspots/[hotspotId]` — Hotspot anlegen (#165), bearbeiten (#167), entfernen (#162). Fehler-Mapping: `NOT_FOUND` → 404; Client-Domain-Codes (`DUPLICATE_ID`, `INVALID_COORDS`, …) → 400; `NOT_EDITABLE` nur bei PATCH → 403 (#168).
 - `PATCH /api/mpz/stations/[slug]/stammdaten` — Stammdaten (`titel`, `beschreibung`, `viewer`) (#160).
 - `POST /api/mpz/stations/[slug]/raumbild` — Raumbild Flat oder 360° (#173, `public/stations/` bzw. `public/stations/360/`). **POST** `multipart/form-data`: `variant` (`flat` \| `pano360`), `file`, optional `collision` (`reject` \| `replace`, Default `reject`). Erfolg **200** `{ path, variant }`. `MISSING_FILE`, `MISSING_FIELDS` → **400**; `VALIDATION` → **422**; `COLLISION` → **409**.

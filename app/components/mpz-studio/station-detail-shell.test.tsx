@@ -259,7 +259,7 @@ describe('StationDetailShell', () => {
     expect(screen.getByText('hs-foto')).toBeTruthy()
     expect(
       screen.getByRole('link', { name: 'Kalibrieren (Hotspots + Startblick)' }).getAttribute('href'),
-    ).toBe('/raum/klassenzimmer?hotspot-calib=1')
+    ).toBe('/mpz/calib/sphere/klassenzimmer')
   })
 
   it('Hotspots-Tab Empty-State für kunst', () => {

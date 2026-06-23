@@ -68,6 +68,7 @@ export function StationHotspotsTable({ slug, station }: StationHotspotsTableProp
     viewer,
     slug,
     hasBild: !!activeStation.bild,
+    hasPanorama360: !!activeStation.panorama360,
   })
   const isSphere = viewer === 'equirectangular'
   const hotspots = isSphere ? (activeStation.hotspots360 ?? []) : (activeStation.hotspots ?? [])
@@ -131,11 +132,9 @@ export function StationHotspotsTable({ slug, station }: StationHotspotsTableProp
               {calib && (
                 <Link
                   href={calib}
-                  target={isSphere ? '_blank' : undefined}
-                  rel={isSphere ? 'noopener noreferrer' : undefined}
                   className="font-semibold text-accent underline-offset-2 hover:underline"
                 >
-                  {isSphere ? '↗ Sphere-App' : 'Kalibrieren'}
+                  Kalibrieren
                 </Link>
               )}
               <button
@@ -207,14 +206,16 @@ export function StationHotspotsTable({ slug, station }: StationHotspotsTableProp
         {calib ? (
           <Link
             href={calib}
-            target={isSphere ? '_blank' : undefined}
-            rel={isSphere ? 'noopener noreferrer' : undefined}
             className="rounded-gs39-sm bg-accent px-3 py-2 font-semibold text-white"
           >
             {calibLabel(viewer)}
           </Link>
         ) : (
-          <p className="text-xs text-fg-3">Raumbild fehlt — Kalibrierung nicht verfügbar.</p>
+          <p className="text-xs text-fg-3">
+            {isSphere
+              ? 'Panorama fehlt — Kalibrierung nicht verfügbar.'
+              : 'Raumbild fehlt — Kalibrierung nicht verfügbar.'}
+          </p>
         )}
       </div>
 
@@ -223,14 +224,12 @@ export function StationHotspotsTable({ slug, station }: StationHotspotsTableProp
           <p className="mb-3 font-semibold text-fg-1">Keine Hotspots</p>
           <p className="mb-4 text-fg-3">
             {isSphere
-              ? 'Koordinaten über die Sphere-Kalibrierung in der Besucher-App setzen.'
+              ? 'Klicke auf Kalibrieren, um Koordinaten direkt im 360°-Panorama zu setzen.'
               : 'Klicke auf Kalibrieren, um Koordinaten direkt im Panorama zu setzen.'}
           </p>
           {calib && (
             <Link
               href={calib}
-              target={isSphere ? '_blank' : undefined}
-              rel={isSphere ? 'noopener noreferrer' : undefined}
               className="inline-block rounded-gs39-sm bg-accent px-4 py-2 font-semibold text-white"
             >
               {calibLabel(viewer)}
@@ -254,13 +253,6 @@ export function StationHotspotsTable({ slug, station }: StationHotspotsTableProp
             <tbody>{hotspots.map(renderRow)}</tbody>
           </table>
         </div>
-      )}
-
-      {isSphere && hotspots.length > 0 && (
-        <p className="text-xs text-fg-3">
-          Sphere-Kalibrierung:{' '}
-          <code className="font-mono">/raum/{slug}?hotspot-calib=1</code>
-        </p>
       )}
 
       {error && (

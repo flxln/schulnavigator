@@ -53,7 +53,7 @@ describe('StationHotspotsTable', () => {
     expect(screen.getByText('demo-text')).toBeTruthy()
     expect(
       screen.getByRole('link', { name: 'Kalibrieren (Hotspots + Startblick)' }).getAttribute('href'),
-    ).toBe('/raum/klassenzimmer?hotspot-calib=1')
+    ).toBe('/mpz/calib/sphere/klassenzimmer')
   })
 
   it('Empty-State für kunst ohne Hotspots', () => {

@@ -31,6 +31,14 @@ describe('mpz-studio-overview', () => {
     const klassenzimmer = summaries.find((s) => s.slug === 'klassenzimmer')
     expect(klassenzimmer?.hubNr).toBe(1)
     expect(klassenzimmer?.viewer).toBe('equirectangular')
+    expect(klassenzimmer?.hasPanorama360).toBe(true)
+  })
+
+  it('buildStationOverviews: flat ohne panorama360', () => {
+    const summaries = buildStationOverviews(fixture, {}, '/tmp/app')
+    const kunst = summaries.find((s) => s.slug === 'kunst')
+    expect(kunst?.viewer).toBe('flat')
+    expect(kunst?.hasPanorama360).toBe(false)
   })
 
   it('fehlende Station → error', () => {

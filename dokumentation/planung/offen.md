@@ -2,7 +2,7 @@
 
 **Stand:** 2026-06-22 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
 
-**Letzter Abgleich:** 2026-06-23 — MPZ Studio UI-Cleanup Epic #195; #197 Shell, #198 Redundanzen, #199 Dialog-Lifecycle, #200 Dialog-Editor erledigt.
+**Letzter Abgleich:** 2026-06-23 — MPZ Studio UI-Cleanup Epic #195; #197 Shell, #198 Redundanzen, #199 Dialog-Lifecycle, #200 Dialog-Editor, #201 Sphere-Kalibrierung erledigt.
 
 Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren). Abgeschlossene Epics: [archiv/epics/](./archiv/epics/).
 

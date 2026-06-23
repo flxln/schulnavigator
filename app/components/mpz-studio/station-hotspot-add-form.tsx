@@ -125,7 +125,12 @@ export function StationHotspotAddForm({
     setSuccess(null)
   }, [slug, viewer, defaultMediumId, defaultMascot, canAddMedium])
 
-  const calib = mpzStationCalibHref({ viewer, slug, hasBild: !!station.bild })
+  const calib = mpzStationCalibHref({
+    viewer,
+    slug,
+    hasBild: !!station.bild,
+    hasPanorama360: !!station.panorama360,
+  })
 
   if (!canAddMedium && !canAddDialog) {
     return (
