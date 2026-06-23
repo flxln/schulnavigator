@@ -1,7 +1,7 @@
 # MPZ Studio — Spezifikation (Zwischenergebnis)
 
 **Datum:** 2026-06-16  
-**Status:** geplant (Spezifikation); **Plan A umgesetzt** (CLI, Schema, Snippets)  
+**Status:** ✅ umgesetzt (v0–v2.1 + UI-Cleanup #195, 2026-06-23)  
 **Kontext:** Projekttag 24./25.06.2026, Schulfest 26.06.2026
 
 **Projekttag-Anleitung (Plan A):** [projekttag-content-ingest.md](../../anleitungen/projekttag-content-ingest.md)  
@@ -33,7 +33,7 @@ Nach Sparring (Zeitdruck 8 Tage, Single-Point-of-Failure): **Plan A ist der krit
 | | **Plan A — Pflicht** | **Plan B — optional** |
 |---|----------------------|------------------------|
 | **Ziel** | Stabiler Ingest ohne neues UI | Medien-Upload + Hotspot-Kalibrierung per lokalem UI |
-| **Status** | **umgesetzt** (2026-06-16) | geplant |
+| **Status** | **umgesetzt** (2026-06-16) | **umgesetzt** (v0–v2.1 + UI-Cleanup #195) |
 | **Werkzeuge** | `npm run content:ingest`, JSON-Schema, VS-Code-Snippets `sn-*`, `?hotspot-calib=1`, Git-Commit pro Station | `/mpz/studio` nur `npm run dev` auf dem Laptop |
 | **Production** | Kein Schreib-Tool auf Coolify | Studio **nie** auf Coolify aktivieren |
 | **Fallback** | Immer JSON + CLI | Bei Instabilität: sofort Plan A |
@@ -89,7 +89,7 @@ Alles aus [pflege-uebersicht.md](../content/pflege-uebersicht.md), im Studio abg
 | **Hotspots Flat** | `hotspots[]` | Kalibrier-UI (neu, analog Sphere `?hotspot-calib=1`) |
 | **Hotspots 360°** | `hotspots360[]` | Einbindung bestehender Sphere-Kalibrierung |
 | **Dialog** | `dialog` in `stations.json` | Segmente, Gruppen, Bubble-Layout, Figuren |
-| **Dialog-Audio** | `app/content/dialog-audio/{slug}/` | WAV-Upload mit Namenskonvention `01-frieda.wav` |
+| **Dialog-Audio** | `app/content/dialog-audio/{slug}/` | WAV-Upload in Segment-Zeile (Tab Dialog, #200) |
 | **Coach** | `app/content/coach-messages.json` | CRUD aller Trigger-Typen |
 
 ### B — Dateien ohne JSON (Asset-Manager)
@@ -180,7 +180,7 @@ Querschnitt: `thumbnail`, Hotspot-`icon` / `iconSize` — Verknüpfung mit Hotsp
 - **Medien-Hotspot:** `mediumId` aus Dropdown der Station
 - **Dialog-Hotspot:** `action: "dialog"`, `mascot`, `mascotSize`, `mascotFlipX`
 - **Flat:** `x`, `y`, optional `radius`, `icon`, `iconSize` — neue Kalibrier-Route `/mpz/calib/flat/{slug}` (Klick → Koordinaten)
-- **360°:** Wiederverwendung `?hotspot-calib=1` oder eingebettet mit JSON-Rückschreibung
+- **360°:** Primär `/mpz/calib/sphere/{slug}` (#201); Legacy-Fallback `?hotspot-calib=1` in der Besucher-App (Dev-only)
 - **Sphere-only:** `bubblePitchOffset` für Dialog-Bubbles
 
 ### Dialog (aktuell `daz`, `pc-raum`)
@@ -285,8 +285,8 @@ Abgeleitet aus zwei unabhängigen Plan-Reviews (SE-15: Codex, GLM-5.1). v0 ist *
 
 **Funktional**
 
-- [x] Lokale Medien-Uploads der 4 Projekttag-Typen (`audio`, `video`, `foto`, `text`) erzeugen den korrekten Pfad unter `app/public/media/{slug}/…` **und** den passenden `medien[]`-Eintrag in `stations.json`. Umgesetzt #147 (`lib/mpz-medium-ingest`, API, Mini-UI `/mpz/studio/ingest`).
-- [x] Dialog-Audio-Upload benennt die Datei nach Konvention (`01-frieda.wav`, `DIALOG_CLIP_RE`) und verknüpft das Segment (`quelle: "/api/dialog/{slug}/…"`). Umgesetzt #148 (`lib/mpz-dialog-audio-ingest`, API, Mini-UI `/mpz/studio/dialog-audio`).
+- [x] Lokale Medien-Uploads der 4 Projekttag-Typen (`audio`, `video`, `foto`, `text`) erzeugen den korrekten Pfad unter `app/public/media/{slug}/…` **und** den passenden `medien[]`-Eintrag in `stations.json`. Umgesetzt #147; Einstieg nur Tab Medien (Modal), nicht mehr `/mpz/studio/ingest`.
+- [x] Dialog-Audio-Upload benennt die Datei nach Konvention (`01-frieda.wav`, `DIALOG_CLIP_RE`) und verknüpft das Segment (`quelle: "/api/dialog/{slug}/…"`). Umgesetzt #148; UI nur in Segment-Zeile (#200), kein globaler Tab.
 - [x] Hotspots (Flat `x`/`y` ∈ [0,1]; 360° `yaw` ∈ [-180,180], `pitch` ∈ [-90,90]) werden **schema-konform** in `stations.json` zurückgeschrieben.
 - [x] Pro Station existiert ein Vorschau-Link (`/raum/{slug}`). Umgesetzt #151 (Stationen-Grid).
 
@@ -334,7 +334,9 @@ Abgeleitet aus zwei unabhängigen Plan-Reviews (SE-15: Codex, GLM-5.1). v0 ist *
 | **v1 — Post-Fest** | Station-Detail, Stammdaten, Medien-/Hotspot-Tabellen, Dialog-Audio-Tab | **erledigt** 2026-06-18 (Epic #158) |
 | **v2 — Betrieb** | Coach, Embed-Allowlist, Brand-Uploads, Hub/Icons, Deploy-Tab, Dialog-Editor, Raumbild-Upload | **erledigt** 2026-06-20 (Epic #170) |
 | **v2.1 — Medien-CRUD** | Datei ersetzen (audio/video/foto/text), Thumbnail-/Poster-Upload | **erledigt** 2026-06-20 (Epic #186) |
-| **v3 — Polish** | Markdown-Editor, Dialog-Bubble-Visual-Editor, Batch-Import aus `auftraggeber/` | nach Bedarf |
+| **v4 — UI-Cleanup** | Gruppierte Sidebar, Design-Route, Dialog-Lifecycle, Sphere-Calib, Formular-Patterns, Mobile | **erledigt** 2026-06-23 (Epic [#195](../planung/epic-mpz-studio-ui-cleanup.md), #197–#204) |
+| **v3b — Visual Polish** | Mockup-Nähe (Shell, Cards, Station-Detail) — Epic [#205](https://github.com/flxln/schulnavigator/issues/205); Foundation [#206](https://github.com/flxln/schulnavigator/issues/206) ✅, Shell [#207](https://github.com/flxln/schulnavigator/issues/207) ✅ | in Arbeit 2026-06-23 |
+| **v3 — Komfort** | Markdown-Editor, Dialog-Bubble-Drag-Editor, Batch-Import — **nicht** in #205 | nach Bedarf |
 
 **Projekttag-Minimum (v0):** Was Kinder liefern — Audio, Video, Foto, Text, ggf. Hotspots. Coach, Hub, Tokens sind am Projekttag selten zeitkritisch.
 
@@ -372,14 +374,7 @@ Nach Directus-Migration: Studio einfrieren oder nur noch für Migration/Massenim
 
 **Plan A:** erledigt — siehe [projekttag-content-ingest.md](../../anleitungen/projekttag-content-ingest.md).
 
-**Plan B (Studio, optional):**
-
-1. Guard + Route-Skeleton `/mpz/studio` (nur `development`)
-2. `lib/mpz-content-io` mit `readStations` / `writeStations` + Backup
-3. Stationen-Editor v0 (Medien-Upload, Hotspot-Rückschreibung)
-4. Parallel: `embed-allowlist.json` extrahieren (v1)
-5. API: Datei-Upload + `validate:stations` nach Save
-6. Doku: Abschnitt in [fuer-entwickler.md](../../anleitungen/fuer-entwickler.md) wenn v0 steht — **erledigt** v0 (#145); **v1 Station-Detail** ergänzt (#164, Epic [#158](../planung/archiv/epics/epic-mpz-studio-v1.md)); **v2 Content & Betrieb** ergänzt (#181, Epic [#170](../planung/archiv/epics/epic-mpz-studio-v2.md)); **v2.1 Medien-CRUD** ergänzt (#190, Epic [#186](../planung/archiv/epics/epic-mpz-studio-v2.1.md))
+**Plan B (Studio):** erledigt — v0 (#145) bis v2.1 (#186) und UI-Cleanup (#195). Entwickler-Doku: [fuer-entwickler.md](../../anleitungen/fuer-entwickler.md), Testrouten: [lokal-testen-und-anschauen.md](../../anleitungen/lokal-testen-und-anschauen.md).
 
 ---
 
@@ -387,7 +382,7 @@ Nach Directus-Migration: Studio einfrieren oder nur noch für Migration/Massenim
 
 **Status:** umgesetzt 2026-06-18 (Branch `mpz-studio-v1`, Milestone „MPZ Studio v1“).
 
-v1 schließt die Lücke zwischen Stations-Grid und Einzelwerkzeugen: pro Station eine Detail-Ansicht unter `/mpz/studio/stationen/[slug]` mit Tabs Stammdaten, Medien, Hotspots und Dialog-Audio. Spezifikation: [epic-mpz-studio-v1.md](../planung/archiv/epics/epic-mpz-studio-v1.md), Hotspot-Editor: [mpz-studio-hotspot-editor.md](./mpz-studio-hotspot-editor.md).
+v1 schließt die Lücke zwischen Stations-Grid und Einzelwerkzeugen: pro Station eine Detail-Ansicht unter `/mpz/studio/stationen/[slug]` mit Tabs Stammdaten, Medien, Hotspots und Dialog. Spezifikation: [epic-mpz-studio-v1.md](../planung/archiv/epics/epic-mpz-studio-v1.md), Hotspot-Editor: [mpz-studio-hotspot-editor.md](./mpz-studio-hotspot-editor.md). *(Historisch: Dialog-Audio als eigener Tab #163 — ersetzt durch Tab Dialog mit Segment-Zeile, UI-Cleanup #200.)*
 
 | In v1 umgesetzt | Bewusst nicht v1 (v2) |
 |-----------------|----------------------|
@@ -432,6 +427,25 @@ v2.1 schließt die Lücke zwischen Metadaten-PATCH (#171) und vollständigem Med
 | UI „Datei ersetzen“ (#188) | YouTube-`quelle` (ADR-004) |
 | Thumbnail-/Poster-Upload (#189) | Batch-Import `auftraggeber/` |
 | Doku & Epic-Abschluss (#190) | Lehrkräfte-Admin (Directus #47) |
+
+Entwickler-Doku: [fuer-entwickler.md](../../anleitungen/fuer-entwickler.md) (Abschnitt MPZ Studio), Testrouten: [lokal-testen-und-anschauen.md](../../anleitungen/lokal-testen-und-anschauen.md).
+
+---
+
+## v4 — UI-Cleanup (Epic #195)
+
+**Status:** umgesetzt 2026-06-23 (#197–#204).
+
+Refactor der Studio-Oberfläche bei voller v2.1-Funktionsabdeckung: gruppierte Sidebar, Redundanzen entfernt, Dialog-Lifecycle vervollständigt, Sphere-Kalibrierung ins MPZ-Tool, einheitliche Formular-Patterns, Mobile Sidebar. Spezifikation: [epic-mpz-studio-ui-cleanup.md](../planung/epic-mpz-studio-ui-cleanup.md), Soll-IA: [NAVIGATION-SOLL.md](../archiv/design/mpz-studio-claude-design-cleanup/NAVIGATION-SOLL.md).
+
+| In v4 umgesetzt | Bewusst nicht v4 (v3) |
+|-----------------|----------------------|
+| Gruppierte Sidebar + Design-Route (#197) | Markdown-WYSIWYG |
+| Medien nur Modal, Dialog-Audio in Segment-Zeile (#198, #200) | YouTube im Studio |
+| Dialog Create-API + Empty-State (#199) | Directus / Lehrkräfte-Admin |
+| Sphere-Calib `/mpz/calib/sphere/[slug]` (#201) | Production-Studio |
+| Dirty-State, Formular-Patterns (#202) | |
+| Mobile Sidebar Drawer + Icon-Rail (#203) | |
 
 Entwickler-Doku: [fuer-entwickler.md](../../anleitungen/fuer-entwickler.md) (Abschnitt MPZ Studio), Testrouten: [lokal-testen-und-anschauen.md](../../anleitungen/lokal-testen-und-anschauen.md).
 

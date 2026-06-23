@@ -94,7 +94,9 @@ describe('mpzButtonClassName', () => {
 describe('mpzSidebarGroupLabelClassName', () => {
   it('rendert Gruppenlabel-Stil', () => {
     expect(mpzSidebarGroupLabelClassName()).toContain('uppercase')
-    expect(mpzSidebarGroupLabelClassName()).toContain('text-white/35')
+    expect(mpzSidebarGroupLabelClassName()).toContain('text-white/55')
+    expect(mpzSidebarGroupLabelClassName()).toContain('tracking-[0.05em]')
+    expect(mpzSidebarGroupLabelClassName()).not.toContain('tracking-wider')
   })
 
   it('collapsed blendet auf lg ein', () => {
@@ -120,6 +122,14 @@ describe('mpzSidebarNavItemClassName', () => {
     expect(
       mpzSidebarNavItemClassName({ active: false, collapsed: true }),
     ).toContain('lg:justify-center')
+  })
+
+  it('density room nutzt kompaktes Layout', () => {
+    const cls = mpzSidebarNavItemClassName({ active: false, density: 'room' })
+    expect(cls).toContain('min-h-[40px]')
+    expect(cls).toContain('gap-2.5')
+    expect(cls).toContain('text-[13px]')
+    expect(cls).not.toContain('min-h-11')
   })
 })
 

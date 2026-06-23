@@ -52,7 +52,7 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 |-------|-----|-------|--------|-----------------|
 | **Epic (Parent)** | `#205` | MPZ Studio v3 — Visual Polish | `design`, `tech` | — |
 | Unterissue | `#206` | A1: Studio Design Tokens + Primitives | `design`, `tech`, `blocker` | — — **erledigt** (2026-06-23, Post-Mortem unten) |
-| Unterissue | `#207` | A2: Shell visuell (Sidebar, Top-Bar) | `design`, `tech` | #206 |
+| Unterissue | `#207` | A2: Shell visuell (Sidebar, Top-Bar) | `design`, `tech` | #206 — **erledigt** (2026-06-23, Post-Mortem unten) |
 | Unterissue | `#208` | A3: Save-Validate & Dashboard | `design`, `tech` | #206 |
 | Unterissue | `#209` | B1: Stationen-Grid Kacheln | `design`, `tech` | #207 |
 | Unterissue | `#210` | B2: Station-Detail-Header | `design`, `tech` | #207 |
@@ -166,4 +166,5 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 ## Fortschritt
 
 - [x] #206 A1 Studio Tokens + Primitives (Post-Mortem: [post-mortem-206-2026-06-23.md](../reviews/post-mortem/post-mortem-206-2026-06-23.md))
-- [ ] #207 A2 Shell visuell (nächster Schritt)
+- [x] #207 A2 Shell visuell (Post-Mortem: [post-mortem-207-2026-06-23.md](../reviews/post-mortem/post-mortem-207-2026-06-23.md))
+- [ ] #209 B1 Stationen-Grid Kacheln (nächster Pilot-Schritt; parallel #208)

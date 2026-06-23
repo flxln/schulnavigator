@@ -18,6 +18,11 @@ import {
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { PlanABanner } from '@/components/mpz-studio/plan-a-banner'
 import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
+import {
+  mpzButtonClassName,
+  mpzSidebarGroupLabelClassName,
+  mpzSidebarNavItemClassName,
+} from '@/components/mpz-studio/mpz-form-primitives'
 import { SaveValidatePanel } from '@/components/mpz-studio/save-validate-panel'
 import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
 
@@ -179,8 +184,8 @@ export function StudioShell({ children }: StudioShellProps) {
 
       <aside
         id="studio-nav"
-        className={`fixed inset-y-0 left-0 z-40 flex w-72 flex-col bg-bg-dark text-fg-on-dark transition-[width,transform] duration-200 ease-out motion-reduce:transition-none lg:sticky lg:top-0 lg:z-auto lg:h-screen lg:translate-x-0 ${
-          navCollapsed ? 'lg:w-14 lg:items-center' : 'lg:w-64'
+        className={`fixed inset-y-0 left-0 z-40 flex w-mpz-sidebar flex-col bg-bg-dark text-fg-on-dark transition-[width,transform] duration-200 ease-out motion-reduce:transition-none lg:sticky lg:top-0 lg:z-auto lg:h-screen lg:translate-x-0 ${
+          navCollapsed ? 'lg:w-14 lg:items-center' : 'lg:w-mpz-sidebar'
         } ${navOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div
@@ -317,7 +322,7 @@ export function StudioShell({ children }: StudioShellProps) {
 
       <div className="flex min-h-screen min-w-0 flex-1 flex-col">
         <PlanABanner />
-        <header className="sticky top-0 z-20 flex flex-wrap items-center gap-3 border-b border-border-1 bg-bg-1/95 px-4 py-3 backdrop-blur md:px-6">
+        <header className="sticky top-0 z-20 flex h-mpz-topbar flex-wrap items-center gap-3 border-b border-border-1 bg-bg-1 px-4 md:px-mpz-container-padding">
           <button
             ref={menuButtonRef}
             type="button"
@@ -362,7 +367,7 @@ export function StudioShell({ children }: StudioShellProps) {
           />
         )}
 
-        <div className="flex-1 px-4 py-6 md:px-8">{children}</div>
+        <div className="flex-1 px-4 py-6 md:px-mpz-container-padding">{children}</div>
       </div>
     </div>
   )
@@ -378,9 +383,7 @@ function GroupLabel({
   if (collapsed) {
     return (
       <>
-        <p className="mt-4 flex items-center justify-between gap-2 px-3 pb-1 text-[10px] font-bold uppercase tracking-wider text-white/35 lg:hidden">
-          {children}
-        </p>
+        <p className={mpzSidebarGroupLabelClassName(collapsed)}>{children}</p>
         <hr
           className="mx-2 my-2 hidden border-white/10 lg:block"
           aria-hidden
@@ -388,11 +391,7 @@ function GroupLabel({
       </>
     )
   }
-  return (
-    <p className="mt-4 flex items-center justify-between gap-2 px-3 pb-1 text-[10px] font-bold uppercase tracking-wider text-white/35">
-      {children}
-    </p>
-  )
+  return <p className={mpzSidebarGroupLabelClassName(collapsed)}>{children}</p>
 }
 
 function NavLink({
@@ -416,22 +415,10 @@ function NavLink({
       onClick={onNavigate}
       title={collapsed ? label : undefined}
       aria-current={active ? 'page' : undefined}
-      className={`flex min-h-11 items-center rounded-gs39-sm border-l-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${
-        collapsed ? 'lg:justify-center lg:px-0 px-3' : 'px-3'
-      } ${
-        active
-          ? 'border-white bg-white/10 text-white'
-          : 'border-transparent text-white/65 hover:bg-white/5 hover:text-white'
-      }`}
+      className={mpzSidebarNavItemClassName({ active, collapsed })}
     >
-      {collapsed ? (
-        <>
-          <Icon className="hidden size-5 shrink-0 lg:block" aria-hidden />
-          <span className="lg:sr-only">{label}</span>
-        </>
-      ) : (
-        label
-      )}
+      <Icon className="size-5 shrink-0" aria-hidden />
+      <span className={collapsed ? 'lg:sr-only' : undefined}>{label}</span>
     </Link>
   )
 }
@@ -495,11 +482,7 @@ function RoomRoster({
               href={`/mpz/studio/stationen/${st.slug}`}
               onClick={onNavigate}
               aria-current={active ? 'page' : undefined}
-              className={`flex min-h-[40px] items-center gap-2.5 rounded-gs39-sm border-l-2 px-3 py-1.5 text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${
-                active
-                  ? 'border-white bg-white/10 text-white'
-                  : 'border-transparent text-white/60 hover:bg-white/5 hover:text-white'
-              }`}
+              className={mpzSidebarNavItemClassName({ active, density: 'room' })}
             >
               <span
                 className={`w-5 shrink-0 text-right font-black tabular-nums ${
@@ -634,11 +617,7 @@ function SaveControl({
         disabled={disabled}
         onClick={onClick}
         title={disabled && !loading ? 'Keine ausstehenden Änderungen' : undefined}
-        className={`inline-flex min-h-11 items-center rounded-gs39-sm px-3.5 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
-          disabled
-            ? 'cursor-not-allowed border border-border-1 bg-bg-2 text-fg-3'
-            : 'border border-accent bg-accent text-fg-on-dark hover:bg-accent-hover'
-        }`}
+        className={`${mpzButtonClassName('primary')} disabled:cursor-not-allowed disabled:border-border-1 disabled:bg-bg-2 disabled:text-fg-3 disabled:opacity-100 disabled:hover:bg-bg-2`}
       >
         {loading ? 'Prüft Struktur und Dateien…' : 'Speichern & Validieren'}
       </button>

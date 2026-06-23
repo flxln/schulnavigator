@@ -10,6 +10,14 @@ const mocks = vi.hoisted(() => ({
   loading: true,
   error: null as string | null,
   saveFeedback: null,
+  report: null as {
+    stationSummaries: Array<{
+      slug: string
+      hubNr: number
+      titel: string
+      health: 'ok' | 'warn' | 'error'
+    }>
+  } | null,
   saveAndValidate: vi.fn(),
 }))
 
@@ -78,7 +86,7 @@ vi.mock('@/components/mpz-studio/plan-a-banner', () => ({
 
 vi.mock('@/components/mpz-studio/studio-validation-context', () => ({
   useStudioValidation: () => ({
-    report: null,
+    report: mocks.report,
     loading: mocks.loading,
     dirty: mocks.dirty,
     error: mocks.error,
@@ -98,6 +106,7 @@ beforeEach(() => {
   mocks.dirty = false
   mocks.error = null
   mocks.saveFeedback = null
+  mocks.report = null
   document.body.style.overflow = ''
 })
 
@@ -140,6 +149,19 @@ describe('StudioShell SaveControl', () => {
       </StudioShell>,
     )
     expect(screen.getByRole('alert').textContent).toContain('/mpz/unlock')
+  })
+
+  it('behält Pill-Radius bei deaktiviertem Save', () => {
+    mocks.loading = false
+    mocks.dirty = false
+    render(
+      <StudioShell>
+        <p>Inhalt</p>
+      </StudioShell>,
+    )
+    const btn = screen.getByRole('button', { name: 'Speichern & Validieren' })
+    expect(btn.className).toContain('rounded-mpz-button-pill')
+    expect((btn as HTMLButtonElement).disabled).toBe(true)
   })
 })
 
@@ -210,5 +232,67 @@ describe('StudioShell Navigation', () => {
 
     expect(menu.getAttribute('aria-expanded')).toBe('false')
     expect(document.body.style.overflow).toBe('')
+  })
+})
+
+describe('StudioShell #207 Shell-Chrome', () => {
+  it('nutzt lg:w-mpz-sidebar im expanded Zustand', () => {
+    mocks.loading = false
+    const { container } = render(
+      <StudioShell>
+        <p>Inhalt</p>
+      </StudioShell>,
+    )
+    const aside = container.querySelector('#studio-nav')
+    expect(aside?.className).toContain('w-mpz-sidebar')
+    expect(aside?.className).toContain('lg:w-mpz-sidebar')
+    expect(aside?.className).not.toContain('lg:w-64')
+    expect(aside?.className).not.toContain('w-72')
+  })
+
+  it('markiert aktiven Nav-Eintrag mit border-accent', () => {
+    mocks.loading = false
+    render(
+      <StudioShell>
+        <p>Inhalt</p>
+      </StudioShell>,
+    )
+    const dashboard = screen.getByRole('link', { name: 'Dashboard' })
+    expect(dashboard.className).toContain('border-accent')
+    expect(dashboard.className).not.toContain('border-white')
+  })
+
+  it('zeigt Nav-Icon im Drawer auch bei persistiertem collapsed', () => {
+    mocks.loading = false
+    storage.set(NAV_COLLAPSED_KEY, 'true')
+    const { container } = render(
+      <StudioShell>
+        <p>Inhalt</p>
+      </StudioShell>,
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Navigation öffnen' }))
+    const dashboard = screen.getByRole('link', { name: 'Dashboard' })
+    const icon = dashboard.querySelector('svg.size-5')
+    expect(icon).not.toBeNull()
+    expect(icon?.classList.contains('hidden')).toBe(false)
+    expect(container.querySelector('#studio-nav')?.className).toContain('lg:w-14')
+  })
+
+  it('nutzt RoomRoster density room mit min-h-[40px]', () => {
+    mocks.loading = false
+    mocks.report = {
+      stationSummaries: [
+        { slug: 'musik', hubNr: 1, titel: 'Musikraum', health: 'ok' },
+      ],
+    }
+    render(
+      <StudioShell>
+        <p>Inhalt</p>
+      </StudioShell>,
+    )
+    const roomLink = screen.getByRole('link', { name: /Musikraum/ })
+    expect(roomLink.className).toContain('min-h-[40px]')
+    expect(roomLink.className).toContain('border-l-4')
+    expect(roomLink.className).not.toContain('min-h-11')
   })
 })

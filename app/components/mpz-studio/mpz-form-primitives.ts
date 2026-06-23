@@ -40,23 +40,30 @@ export function mpzButtonClassName(variant: MpzButtonVariant = 'primary'): strin
 
 export function mpzSidebarGroupLabelClassName(collapsed = false): string {
   if (collapsed) {
-    return 'mt-4 flex items-center justify-between gap-2 px-3 pb-1 text-[10px] font-bold uppercase tracking-wider text-white/35 lg:hidden'
+    return 'mt-4 flex items-center justify-between gap-2 px-3 pb-1 text-[11px] font-bold uppercase tracking-[0.05em] text-white/55 lg:hidden'
   }
-  return 'mt-4 flex items-center justify-between gap-2 px-3 pb-1 text-[10px] font-bold uppercase tracking-wider text-white/35'
+  return 'mt-4 flex items-center justify-between gap-2 px-3 pb-1 text-[11px] font-bold uppercase tracking-[0.05em] text-white/55'
 }
 
 export type MpzSidebarNavItemOptions = {
   active: boolean
   collapsed?: boolean
+  density?: 'nav' | 'room'
 }
 
 export function mpzSidebarNavItemClassName({
   active,
   collapsed = false,
+  density = 'nav',
 }: MpzSidebarNavItemOptions): string {
+  const size =
+    density === 'room'
+      ? 'min-h-[40px] gap-2.5 py-1.5 text-[13px]'
+      : 'min-h-11 text-sm'
+
   const layout = collapsed
-    ? 'flex min-h-11 items-center rounded-gs39-sm border-l-4 px-3 text-sm font-medium transition-colors lg:justify-center lg:px-0'
-    : 'flex min-h-11 items-center rounded-gs39-sm border-l-4 px-3 text-sm font-medium transition-colors'
+    ? `flex ${size} items-center rounded-gs39-sm border-l-4 px-3 font-medium transition-colors lg:justify-center lg:px-0`
+    : `flex ${size} items-center rounded-gs39-sm border-l-4 px-3 font-medium transition-colors`
 
   const focus =
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60'

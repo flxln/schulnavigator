@@ -75,6 +75,21 @@ Internes Dev-only-Ingest-Tool — **nie** auf Coolify, in Production 404.
 3. [https://localhost:3000/mpz/studio](https://localhost:3000/mpz/studio) öffnen → Redirect zu `/mpz/unlock`, Secret eintragen → Cookie-Session → Dashboard.
 4. API-Check (optional): `curl -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET" http://localhost:3000/api/mpz/health`
 
+**Navigation & Shell (UI-Cleanup #195, Mobile #203, Visual Polish #207).** Sidebar: 4 Gruppen, 6 Haupt-Einträge (Dashboard, Alle Stationen, Coach, Embeds & Links, Design & Hub, Deploy) — kein globaler Medien-Upload, kein Dialog-Audio. **Shell-Chrome (#207):** Sidebar 240px (`w-mpz-sidebar`), grüner Active-Stripe (`border-accent`), Nav-Icons + Label, Top-Bar 56px, Save als Pill-Button. Design & Hub: [`/mpz/studio/design`](https://localhost:3000/mpz/studio/design) mit Tabs `hub` und `brand`. Unter `lg` (< 1024 px): Hamburger öffnet Overlay-Drawer; ab `lg`: Collapse-Toggle schaltet Icon-Rail (`w-14`), Präferenz in `localStorage` (`mpz-studio:nav-collapsed`). **Hinweis:** Station-Detail/Tabs/Cards sind noch v2.1 — Mockup-Nähe folgt mit #209+.
+
+**Legacy-Redirects (Kurztest):**
+
+| Aufruf | Erwartung |
+|--------|-----------|
+| `/mpz/studio/hub` | → `/mpz/studio/design?tab=hub` |
+| `/mpz/studio/brand` | → `/mpz/studio/design?tab=brand` |
+| `/mpz/studio/dialog-audio` | → `/mpz/studio/stationen` |
+| `/mpz/studio/ingest` | → `/mpz/studio/stationen` |
+| `/mpz/studio/ingest?slug=werken` | → `/mpz/studio/stationen/werken?tab=medien` |
+| `/mpz/studio/stationen/kunst?tab=dialog-audio` | → `?tab=dialog` |
+
+**Dialog-Lifecycle E2E (#199).** Station ohne `dialog`-Block (z. B. [`klassenzimmer`](https://localhost:3000/mpz/studio/stationen/klassenzimmer?tab=dialog)): Tab **Dialog** → **Dialog hinzufügen** → Segment anlegen → Tab **Hotspots** → Dialog-Hotspot setzen → **Speichern & Validieren** grün. Vollständiger Dialog-Content: [`daz`](https://localhost:3000/mpz/studio/stationen/daz?tab=dialog).
+
 **Speichern & Validieren (#150, #155).** Nach Uploads/Kalibrierung zeigt das Dashboard den Status (debounced, ≥ 800 ms). Button oben rechts **Speichern & Validieren** normalisiert die Hub-Reihenfolge in `stations.json` und prüft Struktur + Dateireferenzen. Schreiben läuft über Temp-Datei → Validierung → `rename` (kein invalider Zustand bei Abbruch). Nach Medien-/Dialog-Upload liefert die API `validation` + `mtime` direkt; bei Fehlern: rotes Panel, ggf. Rollback aus `.bak`.
 
 **Medien hochladen (Issue #147).** Im Studio: Station öffnen → Tab **Medien** → **Medien hinzufügen** (Modal). Legacy-Route [`/mpz/studio/ingest`](https://localhost:3000/mpz/studio/ingest) leitet auf die Stationsliste um; mit `?slug=werken` auf [`/mpz/studio/stationen/werken?tab=medien`](https://localhost:3000/mpz/studio/stationen/werken?tab=medien). Die Datei landet unter `public/media/{slug}/{ordner}/` und der `medien[]`-Eintrag wird in `data/stations.json` ergänzt (gleicher Pfad wie die CLI). Regeln: Magic-Byte- und Größenprüfung je Typ (audio 25 MB, video 150 MB, foto 8 MB, text 512 KB); HEIC wird abgelehnt — bitte als JPG exportieren. Bei Dateinamen-/`id`-Kollision benennt die API automatisch um (`-2`, `-3`, …).

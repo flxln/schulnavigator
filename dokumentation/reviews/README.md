@@ -27,3 +27,4 @@ Kurze Risiko- und Abschluss-Notizen zu größeren Issues (v. a. MPZ Studio v2).
 | #193 Coach-Audio | [pre-mortem-193-1a](./pre-mortem/pre-mortem-193-1a.md) | [post-mortem-193](./post-mortem/post-mortem-193-2026-06-20.md) |
 | #143 CSP-Enforcement | — | [post-mortem-143](./post-mortem/post-mortem-143-2026-06-20.md) |
 | Runbook Agentic (Vault) | [pre-mortem-runbook-1a](./pre-mortem/pre-mortem-runbook-agentic-projekte-1a.md) | [post-mortem-runbook](./post-mortem/post-mortem-runbook-agentic-projekte-2026-06-20.md) |
+| #207 Shell visuell (v3) | [pre-mortem-1a-207](./pre-mortem/pre-mortem-1a-207-2026-06-23.md), [pre-mortem-1b-207](./pre-mortem/pre-mortem-1b-207-2026-06-23.md) | [post-mortem-207](./post-mortem/post-mortem-207-2026-06-23.md) |
