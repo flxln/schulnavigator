@@ -8,6 +8,7 @@ const NAV_COLLAPSED_KEY = 'mpz-studio:nav-collapsed'
 const mocks = vi.hoisted(() => ({
   dirty: false,
   loading: true,
+  saveInProgress: false,
   error: null as string | null,
   saveFeedback: null,
   report: null as {
@@ -88,6 +89,7 @@ vi.mock('@/components/mpz-studio/studio-validation-context', () => ({
   useStudioValidation: () => ({
     report: mocks.report,
     loading: mocks.loading,
+    saveInProgress: mocks.saveInProgress,
     dirty: mocks.dirty,
     error: mocks.error,
     saveFeedback: mocks.saveFeedback,
@@ -103,6 +105,7 @@ beforeEach(() => {
   installMatchMedia()
   installLocalStorage()
   mocks.loading = true
+  mocks.saveInProgress = false
   mocks.dirty = false
   mocks.error = null
   mocks.saveFeedback = null
@@ -162,6 +165,23 @@ describe('StudioShell SaveControl', () => {
     const btn = screen.getByRole('button', { name: 'Speichern & Validieren' })
     expect(btn.className).toContain('rounded-mpz-button-pill')
     expect((btn as HTMLButtonElement).disabled).toBe(true)
+  })
+
+  it('zeigt Speichert-Label und running-Panel bei saveInProgress', () => {
+    mocks.loading = true
+    mocks.saveInProgress = true
+    mocks.saveFeedback = null
+    render(
+      <StudioShell>
+        <p>Inhalt</p>
+      </StudioShell>,
+    )
+    expect(
+      screen.getByRole('button', { name: 'Speichert…' }),
+    ).toBeTruthy()
+    expect(screen.getByRole('status').textContent).toContain(
+      'Speichern & Validieren läuft',
+    )
   })
 })
 

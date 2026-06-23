@@ -28,5 +28,6 @@ Kurze Risiko- und Abschluss-Notizen zu größeren Issues (v. a. MPZ Studio v2).
 | #143 CSP-Enforcement | — | [post-mortem-143](./post-mortem/post-mortem-143-2026-06-20.md) |
 | Runbook Agentic (Vault) | [pre-mortem-runbook-1a](./pre-mortem/pre-mortem-runbook-agentic-projekte-1a.md) | [post-mortem-runbook](./post-mortem/post-mortem-runbook-agentic-projekte-2026-06-20.md) |
 | #207 Shell visuell (v3) | [pre-mortem-1a-207](./pre-mortem/pre-mortem-1a-207-2026-06-23.md), [pre-mortem-1b-207](./pre-mortem/pre-mortem-1b-207-2026-06-23.md) | [post-mortem-207](./post-mortem/post-mortem-207-2026-06-23.md) |
+| #208 Save-Validate & Dashboard (v3) | [pre-mortem-1a-208](./pre-mortem/pre-mortem-1a-208-save-dashboard-2026-06-23.md), [pre-mortem-1b-208](./pre-mortem/pre-mortem-1b-208-save-dashboard-2026-06-23.md) | [post-mortem-208](./post-mortem/post-mortem-208-2026-06-24.md) |
 | #209 Stationen-Grid (v3) | [pre-mortem-1a-209](./pre-mortem/pre-mortem-1a-209-2026-06-23.md), [pre-mortem-1b-209](./pre-mortem/pre-mortem-1b-209-stationen-grid-2026-06-23.md) | [post-mortem-209](./post-mortem/post-mortem-209-2026-06-23.md) |
 | #210 Detail-Header (v3) | [pre-mortem-1a-210](./pre-mortem/pre-mortem-1a-210-2026-06-23.md), [pre-mortem-1b-210](./pre-mortem/pre-mortem-1b-210-detail-header-2026-06-23.md) | [post-mortem-210](./post-mortem/post-mortem-210-2026-06-23.md) |

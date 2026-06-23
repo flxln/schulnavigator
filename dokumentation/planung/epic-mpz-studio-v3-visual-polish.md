@@ -53,7 +53,7 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 | **Epic (Parent)** | `#205` | MPZ Studio v3 — Visual Polish | `design`, `tech` | — |
 | Unterissue | `#206` | A1: Studio Design Tokens + Primitives | `design`, `tech`, `blocker` | — — **erledigt** (2026-06-23, Post-Mortem unten) |
 | Unterissue | `#207` | A2: Shell visuell (Sidebar, Top-Bar) | `design`, `tech` | #206 — **erledigt** (2026-06-23, Post-Mortem unten) |
-| Unterissue | `#208` | A3: Save-Validate & Dashboard | `design`, `tech` | #206 |
+| Unterissue | `#208` | A3: Save-Validate & Dashboard | `design`, `tech` | #206 — **erledigt** (2026-06-24, Post-Mortem unten) |
 | Unterissue | `#209` | B1: Stationen-Grid Kacheln | `design`, `tech` | #207 |
 | Unterissue | `#210` | B2: Station-Detail-Header | `design`, `tech` | #207 — **erledigt** (2026-06-23, Post-Mortem unten) |
 | Unterissue | `#211` | C1: Stammdaten-Formular | `design`, `tech` | #210 — **erledigt** (2026-06-23, Post-Mortem unten) |
@@ -81,7 +81,7 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 |-------|---------|---------|
 | #206 | Querschnitt | `mpz-studio-tokens.css`, `mpz-form-primitives.ts`, `mpz-card.tsx` — **erledigt** (2026-06-23) |
 | #207 | S1, S11 | `studio-shell.tsx` |
-| #208 | S3, S4 | `save-validate-panel.tsx`, `studio-dashboard.tsx` |
+| #208 | S3, S4 | `save-validate-panel.tsx`, `studio-dashboard.tsx` — **erledigt** (2026-06-24) |
 
 ### Phase B — Stationen
 
@@ -167,6 +167,7 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 
 - [x] #206 A1 Studio Tokens + Primitives (Post-Mortem: [post-mortem-206-2026-06-23.md](../reviews/post-mortem/post-mortem-206-2026-06-23.md))
 - [x] #207 A2 Shell visuell (Post-Mortem: [post-mortem-207-2026-06-23.md](../reviews/post-mortem/post-mortem-207-2026-06-23.md))
+- [x] #208 A3 Save-Validate & Dashboard (Post-Mortem: [post-mortem-208-2026-06-24.md](../reviews/post-mortem/post-mortem-208-2026-06-24.md))
 - [x] #209 B1 Stationen-Grid Kacheln (Post-Mortem: [post-mortem-209-2026-06-23.md](../reviews/post-mortem/post-mortem-209-2026-06-23.md))
 - [x] #210 B2 Station-Detail-Header (Post-Mortem: [post-mortem-210-2026-06-23.md](../reviews/post-mortem/post-mortem-210-2026-06-23.md))
 - [x] #211 C1 Stammdaten-Formular (Post-Mortem: [post-mortem-211-2026-06-23.md](../reviews/post-mortem/post-mortem-211-2026-06-23.md))
@@ -174,6 +175,14 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 - [x] #215 C3 Medien bearbeiten (Post-Mortem: [post-mortem-215-2026-06-24.md](../reviews/post-mortem/post-mortem-215-2026-06-24.md))
 - [x] #213 C4 Hotspots Empty, Tabelle, Formulare (Post-Mortem: [post-mortem-213-2026-06-24.md](../reviews/post-mortem/post-mortem-213-2026-06-24.md))
 - [x] #216 C5 Dialog-Tab Layout (Post-Mortem: [post-mortem-216-2026-06-24.md](../reviews/post-mortem/post-mortem-216-2026-06-24.md))
+
+### Archiv — Plan-Härtung #208 (2026-06-24)
+
+Plan (lokal): `.cursor/plans/#208_save_dashboard_6181c036.plan.md` · Pre-Mortems [1a](../reviews/pre-mortem/pre-mortem-1a-208-save-dashboard-2026-06-23.md) / [1b](../reviews/pre-mortem/pre-mortem-1b-208-save-dashboard-2026-06-23.md)
+
+- ✅ **S3:** `saveInProgress` im Context; `SaveValidatePanel` mit 4 Zuständen (Custom-Tint-Banner, running-first); `SaveControl` Spinner + Label-Split.
+- ✅ **S4:** Dashboard auf `MpzCard`; Hero ok/error; Skeleton nur Initial-Load; Refresh gated bei `saveInProgress`.
+- 🔁 **Folge-Scope (bewusst offen):** `MpzCard` `validation`→`accented`-Rename (Carry-over aus #209-Scope-Reduktion); `validate:coach` / `welcome-hub.wav` Altschuld beim Build.
 
 ### Archiv — Plan-Härtung #216 (2026-06-24)
 
