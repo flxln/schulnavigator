@@ -7,6 +7,7 @@ import {
   mpzSidebarGroupLabelClassName,
   mpzSidebarNavItemClassName,
   mpzStackClassName,
+  mpzTabLinkClassName,
   mpzTextareaClassName,
 } from '@/components/mpz-studio/mpz-form-primitives'
 
@@ -130,6 +131,25 @@ describe('mpzSidebarNavItemClassName', () => {
     expect(cls).toContain('gap-2.5')
     expect(cls).toContain('text-[13px]')
     expect(cls).not.toContain('min-h-11')
+  })
+})
+
+describe('mpzTabLinkClassName', () => {
+  it('active nutzt border-accent, text-accent und font-semibold', () => {
+    const cls = mpzTabLinkClassName({ active: true })
+    expect(cls).toContain('border-b-2')
+    expect(cls).toContain('border-accent')
+    expect(cls).toContain('text-accent')
+    expect(cls).toContain('font-semibold')
+    expect(cls).not.toContain('font-bold')
+  })
+
+  it('inactive nutzt text-fg-3 und font-semibold', () => {
+    const cls = mpzTabLinkClassName({ active: false })
+    expect(cls).toContain('text-fg-3')
+    expect(cls).toContain('hover:text-fg-1')
+    expect(cls).toContain('font-semibold')
+    expect(cls).not.toContain('font-bold')
   })
 })
 

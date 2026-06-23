@@ -55,7 +55,7 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 | Unterissue | `#207` | A2: Shell visuell (Sidebar, Top-Bar) | `design`, `tech` | #206 — **erledigt** (2026-06-23, Post-Mortem unten) |
 | Unterissue | `#208` | A3: Save-Validate & Dashboard | `design`, `tech` | #206 |
 | Unterissue | `#209` | B1: Stationen-Grid Kacheln | `design`, `tech` | #207 |
-| Unterissue | `#210` | B2: Station-Detail-Header | `design`, `tech` | #207 |
+| Unterissue | `#210` | B2: Station-Detail-Header | `design`, `tech` | #207 — **erledigt** (2026-06-23, Post-Mortem unten) |
 | Unterissue | `#211` | C1: Stammdaten-Formular | `design`, `tech` | #210 |
 | Unterissue | `#212` | C2: Medien Empty, Tabelle, Modal | `design`, `tech` | #210 |
 | Unterissue | `#215` | C3: Medien bearbeiten | `design`, `tech` | #212 |
@@ -88,7 +88,7 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 | Issue | Screens | Dateien |
 |-------|---------|---------|
 | #209 | S5 | `station-grid.tsx` |
-| #210 | S6 | `station-detail-shell.tsx` |
+| #210 | S6 | `station-detail-shell.tsx` — **erledigt** (2026-06-23) |
 
 ### Phase C — Station Detail
 
@@ -168,6 +168,16 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 - [x] #206 A1 Studio Tokens + Primitives (Post-Mortem: [post-mortem-206-2026-06-23.md](../reviews/post-mortem/post-mortem-206-2026-06-23.md))
 - [x] #207 A2 Shell visuell (Post-Mortem: [post-mortem-207-2026-06-23.md](../reviews/post-mortem/post-mortem-207-2026-06-23.md))
 - [x] #209 B1 Stationen-Grid Kacheln (Post-Mortem: [post-mortem-209-2026-06-23.md](../reviews/post-mortem/post-mortem-209-2026-06-23.md))
+- [x] #210 B2 Station-Detail-Header (Post-Mortem: [post-mortem-210-2026-06-23.md](../reviews/post-mortem/post-mortem-210-2026-06-23.md))
+
+### Archiv — Plan-Härtung #210 (2026-06-23)
+
+Plan (lokal): `.cursor/plans/#210_detail-header_1c8b4463.plan.md` · Pre-Mortems [1a](../reviews/pre-mortem/pre-mortem-1a-210-2026-06-23.md) / [1b](../reviews/pre-mortem/pre-mortem-1b-210-detail-header-2026-06-23.md)
+
+- ✅ **Health-Ampel:** Import aus `mpz-studio-health.ts` statt lokaler toter `brand-*`-Klassen.
+- ✅ **Issues-Zeile:** Neutrales health-getriebenes Label („Prüfung fehlgeschlagen“ / „Bitte prüfen“) statt numerischem Fehler-Count; Fallback „Validierungsstatus nicht verfügbar“ bei `error` ohne Issues.
+- ✅ **Tabs:** `mpzTabLinkClassName` (Underline, `font-semibold` in beiden Zuständen); Tab-Panels bewusst v2.1 (#211+).
+- 🔁 **Folge-Scope (#211):** Error-Notice-Card, Tab-Fehlerpunkte und numerischer Fehler-Count brauchen Report-Vertragserweiterung.
 
 ### Archiv — Plan-Härtung #209 (2026-06-23)
 

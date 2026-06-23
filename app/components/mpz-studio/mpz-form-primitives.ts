@@ -86,3 +86,18 @@ const MPZ_STACK_GAP: Record<MpzStackSize, string> = {
 export function mpzStackClassName(size: MpzStackSize = 'md'): string {
   return `flex flex-col ${MPZ_STACK_GAP[size]}`
 }
+
+export type MpzTabLinkOptions = {
+  active: boolean
+}
+
+export function mpzTabLinkClassName({ active }: MpzTabLinkOptions): string {
+  const base =
+    'relative -mb-px px-1 pb-3 text-sm font-semibold transition-colors'
+
+  if (active) {
+    return `${base} border-b-2 border-accent text-accent`
+  }
+
+  return `${base} text-fg-3 hover:text-fg-1`
+}
