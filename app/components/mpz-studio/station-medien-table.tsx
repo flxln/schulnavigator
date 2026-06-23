@@ -187,36 +187,46 @@ export function StationMedienTable({ slug, station, globalSuffixes }: StationMed
               const block = hotspotBlockMessage(stationRef, medium.id)
               const isEditing = editingId === medium.id
               const rowBusy = isPending || removingId === medium.id
+              const activeCellClass = isEditing ? 'bg-accent/5' : ''
+              const firstCellBorder = isEditing ? 'border-l-accent' : 'border-l-transparent'
               return (
                 <Fragment key={medium.id}>
                   <tr className="border-b border-border-1 last:border-b-0">
-                    <td className="min-h-11 px-3 py-2 font-mono text-xs text-fg-1">
+                    <td
+                      className={`min-h-11 border-l-4 px-3 py-2 font-mono text-xs text-fg-1 ${firstCellBorder} ${activeCellClass}`}
+                    >
                       {medium.id}
                     </td>
-                    <td className="min-h-11 px-3 py-2 text-fg-2">{medium.typ}</td>
-                    <td className="min-h-11 px-3 py-2 text-fg-2">
+                    <td className={`min-h-11 px-3 py-2 text-fg-2 ${activeCellClass}`}>
+                      {medium.typ}
+                    </td>
+                    <td className={`min-h-11 px-3 py-2 text-fg-2 ${activeCellClass}`}>
                       {medium.untertitel ?? '—'}
                     </td>
                     <td
-                      className="max-w-[14rem] truncate px-3 py-2 font-mono text-xs text-fg-2"
+                      className={`max-w-[14rem] truncate px-3 py-2 font-mono text-xs text-fg-2 ${activeCellClass}`}
                       title={medium.quelle}
                     >
                       {truncateQuelle(medium.quelle)}
                     </td>
-                    <td className="min-h-11 px-3 py-2">
+                    <td className={`min-h-11 px-3 py-2 ${activeCellClass}`}>
                       <div className="flex flex-wrap items-center gap-3">
-                        <button
-                          type="button"
-                          disabled={rowBusy || isEditing}
-                          onClick={() => {
-                            setError(null)
-                            setSuccess(null)
-                            setEditingId(medium.id)
-                          }}
-                          className="font-semibold text-accent disabled:opacity-50"
-                        >
-                          {isEditing ? 'Bearbeiten …' : 'Bearbeiten'}
-                        </button>
+                        {isEditing ? (
+                          <span className="text-xs text-fg-3">Wird bearbeitet</span>
+                        ) : (
+                          <button
+                            type="button"
+                            disabled={rowBusy}
+                            onClick={() => {
+                              setError(null)
+                              setSuccess(null)
+                              setEditingId(medium.id)
+                            }}
+                            className="font-semibold text-accent disabled:opacity-50"
+                          >
+                            Bearbeiten
+                          </button>
+                        )}
                         {block ? (
                           <span className="text-xs text-fg-3" title={block}>
                             Gesperrt

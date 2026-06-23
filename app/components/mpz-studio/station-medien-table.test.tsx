@@ -80,6 +80,24 @@ describe('StationMedienTable', () => {
     expect(screen.getByText('demo-video')).toBeTruthy()
   })
 
+  it('markiert aktive Zeile beim Bearbeiten', () => {
+    const station = getStationBySlug('klassenzimmer')!
+    render(
+      <StationMedienTable
+        slug="klassenzimmer"
+        station={station}
+        globalSuffixes={['bookcreator.com']}
+      />,
+    )
+
+    fireEvent.click(screen.getAllByRole('button', { name: 'Bearbeiten' })[1]!)
+    expect(screen.getByText('Wird bearbeitet')).toBeTruthy()
+    expect(screen.getByTestId('medium-edit-form')).toBeTruthy()
+
+    const row = screen.getByText('demo-video').closest('tr')
+    expect(row?.querySelector('td')?.className).toContain('border-l-accent')
+  })
+
   it('station null zeigt MpzFormAlert', () => {
     render(
       <StationMedienTable slug="kunst" station={null} globalSuffixes={['bookcreator.com']} />,

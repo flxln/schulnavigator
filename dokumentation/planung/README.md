@@ -31,6 +31,6 @@ Domänen-Matrix MPZ Studio: [ideen/archiv/mpz-studio-ui.md](../ideen/archiv/mpz-
 
 Vollständiger Abgleich-Log (bis 2026-06-20): [archiv/sync-log-2026-06.md](./archiv/sync-log-2026-06.md).
 
-**Letzter dokumentierter Abgleich:** 2026-06-24 — #212 C2 Medien Empty, Tabelle, Modal erledigt; Post-Mortem [212](../reviews/post-mortem/post-mortem-212-2026-06-24.md).
+**Letzter dokumentierter Abgleich:** 2026-06-24 — #215 C3 Medien bearbeiten (S10) erledigt; Post-Mortem [215](../reviews/post-mortem/post-mortem-215-2026-06-24.md).
 
 Siehe auch [entscheidungen.md](../entscheidungen.md), [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren).

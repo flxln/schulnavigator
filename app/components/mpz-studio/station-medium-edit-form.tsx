@@ -1,6 +1,7 @@
 'use client'
 
 import {
+  mpzButtonClassName,
   mpzFieldClassName,
   mpzLabelClassName,
 } from '@/components/mpz-studio/mpz-form-primitives'
@@ -192,6 +193,36 @@ export function StationMediumEditForm({
     setForm((prev) => ({ ...prev, [key]: value }))
   }
 
+  function pickReplaceFile(file: File) {
+    setFileError(null)
+    setSelectedFile(file)
+  }
+
+  function handleReplaceFileInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const picked = e.target.files?.[0]
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
+    if (picked) {
+      pickReplaceFile(picked)
+    }
+  }
+
+  function handleReplaceDragOver(e: React.DragEvent) {
+    e.preventDefault()
+    e.stopPropagation()
+  }
+
+  function handleReplaceDrop(e: React.DragEvent) {
+    e.preventDefault()
+    e.stopPropagation()
+    if (busy) return
+    const dropped = e.dataTransfer.files?.[0]
+    if (dropped) {
+      pickReplaceFile(dropped)
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
@@ -356,7 +387,7 @@ export function StationMediumEditForm({
   const busy = isPending || fileReplaceBusy || assetUploadBusy
 
   return (
-    <div className="flex flex-col gap-4 border-t border-border-1 bg-bg-1 p-4">
+    <div className="flex flex-col gap-4 border-t border-border-1 bg-bg-2 p-mpz-card-padding">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <p className="text-xs font-semibold uppercase tracking-wide text-fg-3">Medium bearbeiten</p>
 
@@ -372,7 +403,7 @@ export function StationMediumEditForm({
               type="text"
               readOnly
               value={medium.id}
-              className={`${mpzFieldClassName()} bg-bg-2 text-fg-3`}
+              className={`${mpzFieldClassName()} read-only:bg-bg-2 font-mono text-xs text-fg-3`}
             />
           </div>
 
@@ -385,7 +416,7 @@ export function StationMediumEditForm({
               type="text"
               readOnly
               value={medium.typ}
-              className={`${mpzFieldClassName()} bg-bg-2 text-fg-3`}
+              className={`${mpzFieldClassName()} read-only:bg-bg-2 text-fg-3`}
             />
           </div>
 
@@ -413,7 +444,7 @@ export function StationMediumEditForm({
                   type="text"
                   readOnly
                   value={medium.quelle}
-                  className={`${mpzFieldClassName()} bg-bg-2 font-mono text-xs text-fg-3`}
+                  className={`${mpzFieldClassName()} read-only:bg-bg-2 font-mono text-xs text-fg-3`}
                 />
               </div>
             </>
@@ -484,7 +515,7 @@ export function StationMediumEditForm({
           <button
             type="submit"
             disabled={busy}
-            className="rounded-gs39-sm bg-accent px-4 py-2 font-semibold text-white disabled:opacity-50"
+            className={mpzButtonClassName('primary')}
           >
             {isPending ? 'Speichert …' : 'Änderungen speichern'}
           </button>
@@ -492,7 +523,7 @@ export function StationMediumEditForm({
             type="button"
             disabled={busy}
             onClick={onCancel}
-            className="rounded-gs39-sm border border-border-1 px-4 py-2 font-semibold text-fg-2 disabled:opacity-50"
+            className={mpzButtonClassName('secondary')}
           >
             Abbrechen
           </button>
@@ -502,26 +533,52 @@ export function StationMediumEditForm({
       </form>
 
       {replaceAllowed && uploadRule && uploadTyp && (
-        <section className="flex flex-col gap-3 border-t border-border-1 pt-4">
+        <section className="relative flex flex-col gap-4 overflow-hidden rounded-gs39-md border-2 border-accent/20 bg-bg-1 p-mpz-card-padding">
+          <div className="absolute left-0 top-0 h-full w-1 bg-accent" aria-hidden />
           <p className="text-xs font-semibold uppercase tracking-wide text-fg-3">Datei ersetzen</p>
           <p className="text-sm text-fg-2">
-            Medium-ID und Hotspot-Verknüpfungen bleiben erhalten.
+            Medium-ID und Hotspot-Verknüpfungen bleiben erhalten. Der Dateipfad kann sich je nach
+            Dateityp/Namenskollision ändern.
           </p>
-          <label htmlFor={`edit-med-file-${medium.id}`} className={mpzLabelClassName()}>
-            Neue Datei
-          </label>
-          <input
-            id={`edit-med-file-${medium.id}`}
-            ref={fileInputRef}
-            type="file"
-            accept={uploadRule.extensions.join(',')}
-            disabled={busy}
-            onChange={(e) => {
-              setFileError(null)
-              setSelectedFile(e.target.files?.[0] ?? null)
-            }}
-            className="rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1 disabled:opacity-50"
-          />
+          <div>
+            <span className={mpzLabelClassName()}>Neue Datei</span>
+            <div
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  if (!busy) fileInputRef.current?.click()
+                }
+              }}
+              onClick={() => {
+                if (!busy) fileInputRef.current?.click()
+              }}
+              onDragOver={handleReplaceDragOver}
+              onDrop={handleReplaceDrop}
+              className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-gs39-md border-2 border-dashed border-border-1 bg-bg-1 px-4 py-10 text-center transition-colors hover:border-accent hover:bg-accent/5"
+            >
+              <p className="text-sm text-fg-2">
+                {selectedFile ? selectedFile.name : 'Datei hierher ziehen oder klicken'}
+              </p>
+              {selectedFile && (
+                <p className="text-xs text-fg-3">
+                  {(selectedFile.size / 1024).toFixed(0)} KB — andere Datei wählen
+                </p>
+              )}
+            </div>
+            <input
+              ref={fileInputRef}
+              id={`edit-med-file-${medium.id}`}
+              type="file"
+              accept={uploadRule.extensions.join(',')}
+              disabled={busy}
+              aria-label="Neue Datei"
+              tabIndex={-1}
+              onChange={handleReplaceFileInputChange}
+              className="sr-only"
+            />
+          </div>
           <p className="text-xs text-fg-3">
             Erlaubt: {uploadRule.extensions.join(', ')} · max. {formatMaxBytes(uploadRule.maxBytes)}
           </p>
@@ -529,7 +586,7 @@ export function StationMediumEditForm({
             type="button"
             disabled={busy}
             onClick={() => void handleFileReplace()}
-            className="w-fit rounded-gs39-sm bg-accent px-4 py-2 font-semibold text-white disabled:opacity-50"
+            className={mpzButtonClassName('primary')}
           >
             {fileReplaceBusy ? 'Ersetzt …' : 'Datei ersetzen'}
           </button>

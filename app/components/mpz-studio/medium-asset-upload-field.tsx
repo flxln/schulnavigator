@@ -2,6 +2,7 @@
 
 import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
 import {
+  mpzButtonClassName,
   mpzFieldClassName,
   mpzLabelClassName,
 } from '@/components/mpz-studio/mpz-form-primitives'
@@ -89,7 +90,7 @@ export function MediumAssetUploadField({
           type="button"
           disabled={busy || uploadDisabled}
           onClick={() => fileInputRef.current?.click()}
-          className="w-fit rounded-gs39-sm border border-border-1 bg-bg-1 px-4 py-2 text-sm font-semibold text-fg-1 disabled:opacity-50"
+          className={mpzButtonClassName('secondary')}
         >
           {busy ? 'Lädt hoch …' : 'Bild hochladen'}
         </button>
@@ -99,14 +100,7 @@ export function MediumAssetUploadField({
         {uploadDisabled && uploadDisabledHint && (
           <p className="text-xs text-fg-3">{uploadDisabledHint}</p>
         )}
-        {uploadError && (
-          <p
-            role="alert"
-            className="rounded-gs39-sm border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800"
-          >
-            {uploadError}
-          </p>
-        )}
+        {uploadError && <MpzFormAlert variant="error">{uploadError}</MpzFormAlert>}
       </div>
     </div>
   )
