@@ -6,6 +6,7 @@ import {
   MpzDataTableBody,
   MpzDataTableHead,
 } from '@/components/mpz-studio/mpz-data-table'
+import { mpzButtonClassName } from '@/components/mpz-studio/mpz-form-primitives'
 import { useRouter } from 'next/navigation'
 import { Fragment, useEffect, useState, useTransition } from 'react'
 import { useMediaIngest } from '@/components/mpz-studio/media-ingest-modal-context'
@@ -89,9 +90,7 @@ export function StationMedienTable({ slug, station, globalSuffixes }: StationMed
 
   if (!station) {
     return (
-      <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5 text-sm text-fg-2">
-        <p role="alert">Station fehlt in stations.json.</p>
-      </section>
+      <MpzFormAlert variant="error">Station fehlt in stations.json.</MpzFormAlert>
     )
   }
 
@@ -159,115 +158,108 @@ export function StationMedienTable({ slug, station, globalSuffixes }: StationMed
         <button
           type="button"
           onClick={() => openMediaIngest({ slug })}
-          className="rounded-gs39-sm bg-accent px-3 py-2 font-semibold text-white"
+          className={mpzButtonClassName('primary')}
         >
           Medien hinzufügen
         </button>
       </div>
 
-      {medien.length === 0 ? (
-        <div className="rounded-gs39-md border border-dashed border-border-1 bg-bg-1 px-4 py-8 text-center">
-          <p className="mb-3 font-semibold text-fg-1">Noch keine Medien</p>
-          <p className="mb-4 text-fg-3">
-            Füge Audio, Video, Foto, Text, Link oder Embed für diese Station hinzu.
-          </p>
-          <button
-            type="button"
-            onClick={() => openMediaIngest({ slug })}
-            className="inline-block rounded-gs39-sm bg-accent px-4 py-2 font-semibold text-white"
-          >
-            Erstes Medium hinzufügen
-          </button>
-        </div>
-      ) : (
-        <MpzDataTable className="rounded-gs39-md border border-border-1">
-          <MpzDataTableHead>
-            <th className="px-3 py-2">Typ</th>
-            <th className="px-3 py-2">ID</th>
-            <th className="px-3 py-2">Untertitel</th>
-            <th className="px-3 py-2">Quelle</th>
-            <th className="px-3 py-2">
-              <span className="sr-only">Aktionen</span>
-            </th>
-          </MpzDataTableHead>
-          <MpzDataTableBody>
-              {medien.map((medium) => {
-                const block = hotspotBlockMessage(stationRef, medium.id)
-                const isEditing = editingId === medium.id
-                const rowBusy = isPending || removingId === medium.id
-                return (
-                  <Fragment key={medium.id}>
-                    <tr className="border-b border-border-1 last:border-b-0">
-                      <td className="px-3 py-2 text-fg-2">{medium.typ}</td>
-                      <td className="px-3 py-2 font-mono text-xs text-fg-1">{medium.id}</td>
-                      <td className="px-3 py-2 text-fg-2">{medium.untertitel ?? '—'}</td>
-                      <td
-                        className="max-w-[14rem] truncate px-3 py-2 font-mono text-xs text-fg-2"
-                        title={medium.quelle}
-                      >
-                        {truncateQuelle(medium.quelle)}
-                      </td>
-                      <td className="px-3 py-2">
-                        <div className="flex flex-wrap items-center gap-3">
+      <MpzDataTable className="rounded-gs39-md border border-border-1">
+        <MpzDataTableHead>
+          <th className="px-3 py-2">ID</th>
+          <th className="px-3 py-2">Typ</th>
+          <th className="px-3 py-2">Untertitel</th>
+          <th className="px-3 py-2">Quelle</th>
+          <th className="px-3 py-2">
+            <span className="sr-only">Aktionen</span>
+          </th>
+        </MpzDataTableHead>
+        <MpzDataTableBody>
+          {medien.length === 0 ? (
+            <tr>
+              <td colSpan={5} className="px-3 py-8 text-center text-fg-3">
+                Noch keine Medien. Füge Audio, Video, Foto, Text, Link oder Embed für diese
+                Station hinzu.
+              </td>
+            </tr>
+          ) : (
+            medien.map((medium) => {
+              const block = hotspotBlockMessage(stationRef, medium.id)
+              const isEditing = editingId === medium.id
+              const rowBusy = isPending || removingId === medium.id
+              return (
+                <Fragment key={medium.id}>
+                  <tr className="border-b border-border-1 last:border-b-0">
+                    <td className="min-h-11 px-3 py-2 font-mono text-xs text-fg-1">
+                      {medium.id}
+                    </td>
+                    <td className="min-h-11 px-3 py-2 text-fg-2">{medium.typ}</td>
+                    <td className="min-h-11 px-3 py-2 text-fg-2">
+                      {medium.untertitel ?? '—'}
+                    </td>
+                    <td
+                      className="max-w-[14rem] truncate px-3 py-2 font-mono text-xs text-fg-2"
+                      title={medium.quelle}
+                    >
+                      {truncateQuelle(medium.quelle)}
+                    </td>
+                    <td className="min-h-11 px-3 py-2">
+                      <div className="flex flex-wrap items-center gap-3">
+                        <button
+                          type="button"
+                          disabled={rowBusy || isEditing}
+                          onClick={() => {
+                            setError(null)
+                            setSuccess(null)
+                            setEditingId(medium.id)
+                          }}
+                          className="font-semibold text-accent disabled:opacity-50"
+                        >
+                          {isEditing ? 'Bearbeiten …' : 'Bearbeiten'}
+                        </button>
+                        {block ? (
+                          <span className="text-xs text-fg-3" title={block}>
+                            Gesperrt
+                          </span>
+                        ) : (
                           <button
                             type="button"
                             disabled={rowBusy || isEditing}
-                            onClick={() => {
-                              setError(null)
-                              setSuccess(null)
-                              setEditingId(medium.id)
-                            }}
-                            className="font-semibold text-accent disabled:opacity-50"
+                            onClick={() => handleRemove(medium)}
+                            className="font-semibold text-error disabled:opacity-50"
                           >
-                            {isEditing ? 'Bearbeiten …' : 'Bearbeiten'}
+                            {rowBusy ? 'Entfernt …' : 'Entfernen'}
                           </button>
-                          {block ? (
-                            <span className="text-xs text-fg-3" title={block}>
-                              Gesperrt
-                            </span>
-                          ) : (
-                            <button
-                              type="button"
-                              disabled={rowBusy || isEditing}
-                              onClick={() => handleRemove(medium)}
-                              className="font-semibold text-error disabled:opacity-50"
-                            >
-                              {rowBusy ? 'Entfernt …' : 'Entfernen'}
-                            </button>
-                          )}
-                        </div>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                  {isEditing && (
+                    <tr>
+                      <td colSpan={5} className="p-0">
+                        <StationMediumEditForm
+                          slug={slug}
+                          medium={medium}
+                          globalSuffixes={globalSuffixes}
+                          onCancel={() => setEditingId(null)}
+                          onSuccess={(message) => {
+                            setSuccess(message)
+                            setEditingId(null)
+                          }}
+                        />
                       </td>
                     </tr>
-                    {isEditing && (
-                      <tr>
-                        <td colSpan={5} className="p-0">
-                          <StationMediumEditForm
-                            slug={slug}
-                            medium={medium}
-                            globalSuffixes={globalSuffixes}
-                            onCancel={() => setEditingId(null)}
-                            onSuccess={(message) => {
-                              setSuccess(message)
-                              setEditingId(null)
-                            }}
-                          />
-                        </td>
-                      </tr>
-                    )}
-                  </Fragment>
-                )
-              })}
-          </MpzDataTableBody>
-        </MpzDataTable>
-      )}
+                  )}
+                </Fragment>
+              )
+            })
+          )}
+        </MpzDataTableBody>
+      </MpzDataTable>
 
       {error && <MpzFormAlert variant="error">{error}</MpzFormAlert>}
 
-      {success && (
-        <p className="rounded-gs39-sm border border-green-300 bg-green-50 px-3 py-2 text-sm text-green-900">
-          {success}
-        </p>
-      )}
+      {success && <MpzFormAlert variant="success">{success}</MpzFormAlert>}
     </div>
   )
 }

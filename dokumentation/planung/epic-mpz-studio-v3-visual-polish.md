@@ -57,7 +57,7 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 | Unterissue | `#209` | B1: Stationen-Grid Kacheln | `design`, `tech` | #207 |
 | Unterissue | `#210` | B2: Station-Detail-Header | `design`, `tech` | #207 — **erledigt** (2026-06-23, Post-Mortem unten) |
 | Unterissue | `#211` | C1: Stammdaten-Formular | `design`, `tech` | #210 — **erledigt** (2026-06-23, Post-Mortem unten) |
-| Unterissue | `#212` | C2: Medien Empty, Tabelle, Modal | `design`, `tech` | #210 |
+| Unterissue | `#212` | C2: Medien Empty, Tabelle, Modal | `design`, `tech` | #210 — **erledigt** (2026-06-24, Post-Mortem unten) |
 | Unterissue | `#215` | C3: Medien bearbeiten | `design`, `tech` | #212 |
 | Unterissue | `#213` | C4: Hotspots Empty, Tabelle, Formulare | `design`, `tech` | #210 |
 | Unterissue | `#216` | C5: Dialog-Tab Layout | `design`, `tech` | #210 |
@@ -95,7 +95,7 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 | Issue | Screens | Dateien |
 |-------|---------|---------|
 | #211 | S7 | `station-stammdaten-form.tsx`, `station-raumbild-upload.tsx` |
-| #212 | S8, S9 | `station-medien-table.tsx`, `media-ingest-modal.tsx` |
+| #212 | S8, S9 | `station-medien-table.tsx`, `media-ingest-modal.tsx` — **erledigt** (2026-06-24) |
 | #215 | S10 | `station-medium-edit-form.tsx` |
 | #213 | S11, S12 | `station-hotspots-table.tsx`, `station-hotspot-*-form.tsx` |
 | #216 | S15 | `station-dialog-panel.tsx`, `station-dialog-segment-audio-row.tsx` |
@@ -170,6 +170,17 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 - [x] #209 B1 Stationen-Grid Kacheln (Post-Mortem: [post-mortem-209-2026-06-23.md](../reviews/post-mortem/post-mortem-209-2026-06-23.md))
 - [x] #210 B2 Station-Detail-Header (Post-Mortem: [post-mortem-210-2026-06-23.md](../reviews/post-mortem/post-mortem-210-2026-06-23.md))
 - [x] #211 C1 Stammdaten-Formular (Post-Mortem: [post-mortem-211-2026-06-23.md](../reviews/post-mortem/post-mortem-211-2026-06-23.md))
+- [x] #212 C2 Medien Empty, Tabelle, Modal (Post-Mortem: [post-mortem-212-2026-06-24.md](../reviews/post-mortem/post-mortem-212-2026-06-24.md))
+
+### Archiv — Plan-Härtung #212 (2026-06-24)
+
+Plan (lokal): `.cursor/plans/#212_medien_s8_s9_82f1fd9d.plan.md` · Pre-Mortems [1a](../reviews/pre-mortem/pre-mortem-1a-212-codepraxis.md) / [1b](../reviews/pre-mortem/pre-mortem-1b-212-medien-s8-s9-2026-06-23.md)
+
+- ✅ **S8 Tabelle:** Spalten `ID|Typ|…`, Empty als `<tr colSpan={5}>`, `MpzFormAlert`, `mpzButton`.
+- ✅ **S9 Modal:** Typ-Karten-Grid 2×3, Footer-Kontrakt (`formId`/`onStateChange`), kontrollierter File-State, Pfad-Vorschau.
+- ✅ **MpzModal:** Passives `footer`-Slot; `hidden open:flex` statt barem `flex` (Dialog sonst dauerhaft sichtbar).
+- ✅ **Shell:** Medien-Tab-Panel auf `MpzCard` umgestellt.
+- 🔁 **Folge-Scope (bewusst offen):** Inline-Bearbeiten (S10) in [#215](https://github.com/flxln/schulnavigator/issues/215); Error-Notice-Card/Tab-Fehlerpunkte aus #210/#211.
 
 ### Archiv — Plan-Härtung #211 (2026-06-23)
 

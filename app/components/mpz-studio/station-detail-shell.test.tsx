@@ -260,8 +260,10 @@ describe('StationDetailShell', () => {
 
     render(<StationDetailShell station={emptyHort} slug="hort" hubNr={9} globalSuffixes={GLOBAL_SUFFIXES} />)
 
-    expect(screen.getByText('Noch keine Medien')).toBeTruthy()
-    expect(screen.getByRole('button', { name: 'Erstes Medium hinzufügen' })).toBeTruthy()
+    expect(screen.getByText(/Noch keine Medien/)).toBeTruthy()
+    expect(screen.getByRole('table')).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Medien hinzufügen' })).toBeTruthy()
+    expect(screen.queryByRole('button', { name: 'Erstes Medium hinzufügen' })).toBeNull()
   })
 
   it('zeigt keine Zurück-Navigation zum Stations-Grid', () => {

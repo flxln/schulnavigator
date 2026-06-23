@@ -8,6 +8,7 @@ export type MpzModalProps = {
   titleId: string
   onClose: () => void
   children: ReactNode
+  footer?: ReactNode
   className?: string
 }
 
@@ -17,6 +18,7 @@ export function MpzModal({
   titleId,
   onClose,
   children,
+  footer,
   className = 'w-[min(100%,42rem)]',
 }: MpzModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null)
@@ -34,7 +36,7 @@ export function MpzModal({
   return (
     <dialog
       ref={dialogRef}
-      className={`fixed inset-0 z-50 m-auto max-h-[90vh] overflow-y-auto rounded-gs39-md border border-border-1 bg-bg-2 p-0 shadow-gs39-lg backdrop:bg-black/40 ${className}`}
+      className={`fixed inset-0 z-50 m-auto hidden max-h-[90vh] flex-col overflow-hidden rounded-gs39-md border border-border-1 bg-bg-2 p-0 shadow-gs39-lg backdrop:bg-black/40 open:flex ${className}`}
       aria-labelledby={titleId}
       onClose={onClose}
     >
@@ -51,7 +53,12 @@ export function MpzModal({
           ✕
         </button>
       </div>
-      <div className="flex flex-col gap-4 p-5">{children}</div>
+      <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-5">{children}</div>
+      {footer ? (
+        <div className="sticky bottom-0 border-t border-border-1 bg-bg-2 px-5 py-4">
+          {footer}
+        </div>
+      ) : null}
     </dialog>
   )
 }

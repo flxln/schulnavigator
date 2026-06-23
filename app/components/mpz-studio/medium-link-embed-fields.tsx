@@ -80,6 +80,9 @@ export function MediumLinkEmbedFields({
     quelleTrimmed === '' ||
     isEmbedUrlAllowed(quelleTrimmed, embedAllowlist)
 
+  const quelleInvalid =
+    quelleTrimmed.length > 0 && (!httpsOk || (typ === 'embed' && !embedUrlOk))
+
   function toggleEmbedAllow(suffix: string) {
     const has = values.embedAllow.includes(suffix)
     onChange(
@@ -102,15 +105,16 @@ export function MediumLinkEmbedFields({
           required
           value={values.quelle}
           onChange={(e) => onChange('quelle', e.target.value)}
-          className={`${mpzFieldClassName()} font-mono text-xs`}
+          aria-invalid={quelleInvalid || undefined}
+          className={`${mpzFieldClassName()} font-mono text-xs${quelleInvalid ? ' border-error' : ''}`}
         />
         {quelleTrimmed && !httpsOk && (
-          <p role="alert" className="mt-1 text-xs text-brand-red">
+          <p role="alert" className="mt-1 text-xs text-error">
             Muss eine gültige https-URL sein.
           </p>
         )}
         {typ === 'embed' && quelleTrimmed && httpsOk && !embedUrlOk && (
-          <p role="alert" className="mt-1 text-xs text-brand-red">
+          <p role="alert" className="mt-1 text-xs text-error">
             URL liegt nicht auf einer erlaubten Embed-Domain.
           </p>
         )}

@@ -1,10 +1,19 @@
 'use client'
 
 import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
-import { useState } from 'react'
-import { MPZ_HUB_SLUGS } from '@/lib/schoolhouse-hub-map'
+import {
+  mpzFieldClassName,
+  mpzLabelClassName,
+} from '@/components/mpz-studio/mpz-form-primitives'
+import {
+  markMpzStudioDirty,
+  useStudioValidation,
+} from '@/components/mpz-studio/studio-validation-context'
 import type { MpzValidationReport } from '@/lib/mpz-studio-overview'
-import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
+import { getUploadFolder, UPLOAD_RULES, type UploadTyp } from '@/lib/mpz-upload-rules'
+import { MPZ_HUB_SLUGS } from '@/lib/schoolhouse-hub-map'
+import { useRouter } from 'next/navigation'
+import { useEffect, useRef, useState, useTransition } from 'react'
 import type { MediumTyp } from '@/lib/types'
 
 const TYPEN = [
@@ -13,6 +22,11 @@ const TYPEN = [
   { value: 'foto', label: 'Foto (.jpg .jpeg .webp)' },
   { value: 'text', label: 'Text (.md .txt)' },
 ] as const
+
+export type MediaFormState = {
+  canSubmit: boolean
+  busy: boolean
+}
 
 interface SuccessState {
   slug: string
@@ -25,6 +39,9 @@ export type MediaIngestFormProps = {
   fixedTyp?: MediumTyp
   hideSlugSelect?: boolean
   hideTypSelect?: boolean
+  formId?: string
+  hideSubmit?: boolean
+  onStateChange?: (state: MediaFormState) => void
   onSuccess?: () => void
 }
 
@@ -33,24 +50,72 @@ export function MediaIngestForm({
   fixedTyp,
   hideSlugSelect = false,
   hideTypSelect = false,
+  formId,
+  hideSubmit = false,
+  onStateChange,
   onSuccess,
 }: MediaIngestFormProps) {
-  const { applyReport } = useStudioValidation()
+  const router = useRouter()
+  const { applyReport, validateNow } = useStudioValidation()
+  const [, startTransition] = useTransition()
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const defaultSlug =
     initialSlug && MPZ_HUB_SLUGS.includes(initialSlug as (typeof MPZ_HUB_SLUGS)[number])
       ? initialSlug
       : MPZ_HUB_SLUGS[0]
+  const uploadTyp = (fixedTyp ?? 'audio') as UploadTyp
+  const [file, setFile] = useState<File | null>(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<SuccessState | null>(null)
 
+  const pathPreview = `/media/${defaultSlug}/${getUploadFolder(uploadTyp)}/…`
+  const accept = UPLOAD_RULES[uploadTyp].extensions.join(',')
+
+  useEffect(() => {
+    onStateChange?.({ canSubmit: file !== null, busy })
+  }, [file, busy, onStateChange])
+
+  function pickFile(next: File) {
+    setFile(next)
+    setError(null)
+  }
+
+  function handleFileInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const picked = e.target.files?.[0]
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
+    if (picked) {
+      pickFile(picked)
+    }
+  }
+
+  function handleDragOver(e: React.DragEvent) {
+    e.preventDefault()
+    e.stopPropagation()
+  }
+
+  function handleDrop(e: React.DragEvent) {
+    e.preventDefault()
+    e.stopPropagation()
+    if (busy) return
+    const dropped = e.dataTransfer.files?.[0]
+    if (dropped) {
+      pickFile(dropped)
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    if (!file) return
+
     setError(null)
     setSuccess(null)
     setBusy(true)
     const form = e.currentTarget
     const data = new FormData(form)
+    data.set('file', file)
     const slug = String(data.get('slug') ?? defaultSlug)
     try {
       const res = await fetch('/api/mpz/media/ingest', {
@@ -75,8 +140,15 @@ export function MediaIngestForm({
       })
       if (json.validation) {
         applyReport(json.validation, json.mtime ?? json.validation.stationsModifiedAt)
+      } else {
+        await validateNow()
       }
+      markMpzStudioDirty()
+      setFile(null)
       form.reset()
+      startTransition(() => {
+        router.refresh()
+      })
       onSuccess?.()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Netzwerkfehler')
@@ -86,15 +158,18 @@ export function MediaIngestForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <form id={formId} onSubmit={handleSubmit} className="flex flex-col gap-4">
       {!hideSlugSelect && (
-        <label className="flex flex-col gap-1 text-sm">
-          <span className="font-semibold text-fg-2">Station (slug)</span>
+        <div>
+          <label htmlFor="media-ingest-slug" className={mpzLabelClassName()}>
+            Station (slug)
+          </label>
           <select
+            id="media-ingest-slug"
             name="slug"
             required
             defaultValue={defaultSlug}
-            className="rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1"
+            className={mpzFieldClassName()}
           >
             {MPZ_HUB_SLUGS.map((s) => (
               <option key={s} value={s}>
@@ -102,19 +177,22 @@ export function MediaIngestForm({
               </option>
             ))}
           </select>
-        </label>
+        </div>
       )}
 
       {hideSlugSelect && <input type="hidden" name="slug" value={defaultSlug} />}
 
       {!hideTypSelect && (
-        <label className="flex flex-col gap-1 text-sm">
-          <span className="font-semibold text-fg-2">Typ</span>
+        <div>
+          <label htmlFor="media-ingest-typ" className={mpzLabelClassName()}>
+            Typ
+          </label>
           <select
+            id="media-ingest-typ"
             name="typ"
             required
             defaultValue={fixedTyp ?? 'audio'}
-            className="rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1"
+            className={mpzFieldClassName()}
           >
             {TYPEN.map((t) => (
               <option key={t.value} value={t.value}>
@@ -122,46 +200,82 @@ export function MediaIngestForm({
               </option>
             ))}
           </select>
-        </label>
+        </div>
       )}
 
       {hideTypSelect && fixedTyp && <input type="hidden" name="typ" value={fixedTyp} />}
 
-      <label className="flex flex-col gap-1 text-sm">
-        <span className="font-semibold text-fg-2">Datei</span>
+      <div>
+        <span className={mpzLabelClassName()}>Datei</span>
+        <div
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              if (!busy) fileInputRef.current?.click()
+            }
+          }}
+          onClick={() => {
+            if (!busy) fileInputRef.current?.click()
+          }}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+          className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-gs39-md border-2 border-dashed border-border-1 bg-bg-1 px-4 py-10 text-center transition-colors hover:border-accent hover:bg-accent/5"
+        >
+          <p className="text-sm text-fg-2">
+            {file ? file.name : 'Datei hierher ziehen oder klicken'}
+          </p>
+          {file && (
+            <p className="text-xs text-fg-3">
+              {(file.size / 1024).toFixed(0)} KB — andere Datei wählen
+            </p>
+          )}
+        </div>
         <input
+          ref={fileInputRef}
           type="file"
-          name="file"
-          required
-          className="rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1"
+          accept={accept}
+          className="sr-only"
+          disabled={busy}
+          onChange={handleFileInputChange}
+          tabIndex={-1}
+          aria-hidden
         />
-      </label>
+      </div>
 
-      <label className="flex flex-col gap-1 text-sm">
-        <span className="font-semibold text-fg-2">Untertitel (optional)</span>
+      <div className="rounded-gs39-sm border border-border-1 bg-bg-2 px-3 py-2">
+        <span className="font-mono text-xs text-fg-3">Dateipfad: {pathPreview}</span>
+      </div>
+
+      <div>
+        <label htmlFor="media-ingest-untertitel" className={mpzLabelClassName()}>
+          Untertitel (optional)
+        </label>
         <input
+          id="media-ingest-untertitel"
           type="text"
           name="untertitel"
-          className="rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1"
+          className={mpzFieldClassName()}
         />
-      </label>
+      </div>
 
-      <button
-        type="submit"
-        disabled={busy}
-        className="rounded-gs39-sm bg-accent px-4 py-2 font-semibold text-white disabled:opacity-60"
-      >
-        {busy ? 'Lädt hoch …' : 'Hochladen'}
-      </button>
+      {!hideSubmit && (
+        <button
+          type="submit"
+          disabled={busy || !file}
+          className="rounded-gs39-sm bg-accent px-4 py-2 font-semibold text-white disabled:opacity-60"
+        >
+          {busy ? 'Lädt hoch …' : 'Hochladen'}
+        </button>
+      )}
 
       {error && <MpzFormAlert variant="error">{error}</MpzFormAlert>}
 
       {success && !onSuccess && (
-        <div className="rounded-gs39-sm border border-green-300 bg-green-50 px-3 py-2 text-sm text-green-900">
-          <p>
-            Hochgeladen: <code>{success.quelle}</code> (id <code>{success.id}</code>)
-          </p>
-        </div>
+        <MpzFormAlert variant="success">
+          Hochgeladen: <code>{success.quelle}</code> (id <code>{success.id}</code>)
+        </MpzFormAlert>
       )}
     </form>
   )
