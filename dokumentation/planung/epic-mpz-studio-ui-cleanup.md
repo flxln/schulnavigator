@@ -31,7 +31,7 @@ Leitplanken unverändert (ADR-022): nur `NODE_ENV=development`, `assertMpzStudio
 | Unterissue | `#200` | Dialog-Editor: Segment-Audio-Zeile + einklappbare Sub-Bereiche | `tech` | #199, #198 — **erledigt** (2026-06-23, Post-Mortem unten) |
 | Unterissue | `#201` | Sphere-Kalibrierung `/mpz/calib/sphere/[slug]` (S14) | `tech` | #197 — **erledigt** (2026-06-23, Post-Mortem unten) |
 | Unterissue | `#202` | Formular-Patterns, Dirty-State, Save-Feedback | `tech` | #197 — **erledigt** (2026-06-23, Post-Mortem unten) |
-| Unterissue | `#203` | Mobile Sidebar einklappbar | `tech`, `design` | #197 |
+| Unterissue | `#203` | Mobile Sidebar einklappbar | `tech`, `design` | #197 — **erledigt** (2026-06-23) |
 | Unterissue | `#204` | Abnahme & Doku | `tech`, `documentation` | #197–#203 |
 
 **Empfohlene Reihenfolge:** Design-Freeze → Shell (#blocker) → Redundanzen ∥ Dialog-Lifecycle → Dialog-Editor → Sphere ∥ Patterns ∥ Mobile → Abnahme
@@ -106,7 +106,7 @@ Details: [ROADMAP.md — Pre-Mortem-Härtung](../archiv/design/mpz-studio-claude
 **Querschnitt**
 
 - [x] Dirty-State sichtbar in Top-Bar — **#202**
-- [ ] Mobile: Sidebar einklappbar
+- [x] Mobile: Sidebar einklappbar (Drawer unter `lg`, Icon-Rail-Collapse ab `lg`) — **#203**
 - [ ] `cd app && npm run build` grün
 - [ ] `anleitungen/fuer-entwickler.md` — Studio-Abschnitt aktualisiert
 
@@ -136,8 +136,8 @@ Details: [ROADMAP.md — Pre-Mortem-Härtung](../archiv/design/mpz-studio-claude
 - [15-dialog-segment-zeilenmodell.md](../archiv/design/mpz-studio-claude-design-cleanup/15-dialog-segment-zeilenmodell.md)
 - [16-sphere-calib-screen.md](../archiv/design/mpz-studio-claude-design-cleanup/16-sphere-calib-screen.md)
 - [NAVIGATION-SOLL.md](../archiv/design/mpz-studio-claude-design-cleanup/NAVIGATION-SOLL.md)
-- **#202 Plan (lokal):** `.cursor/plans/formular-patterns_#202_297c649f.plan.md`
-- **#202 Pre-Mortem:** [1a](../reviews/pre-mortem/pre-mortem-1a-202-formular-patterns-2026-06-23.md) · [1b](../reviews/pre-mortem/pre-mortem-1b-202-formular-patterns-2026-06-23.md)
+- **#203 Plan (lokal):** `.cursor/plans/mobile-sidebar_#203_09012142.plan.md`
+- **#203 Pre-Mortem:** [1a](../reviews/pre-mortem/pre-mortem-1a-203-mobile-sidebar-2026-06-23.md) · [1b](../reviews/pre-mortem/pre-mortem-1b-203-mobile-sidebar-2026-06-23.md)
 - Code: `app/components/mpz-studio/*`
 
 ## Checkliste (Epic)
@@ -151,5 +151,5 @@ Details: [ROADMAP.md — Pre-Mortem-Härtung](../archiv/design/mpz-studio-claude
 - [x] Dialog-Editor (#200, Post-Mortem: [post-mortem-200-2026-06-23.md](../reviews/post-mortem/post-mortem-200-2026-06-23.md))
 - [x] Sphere-Kalibrierung (#201, Post-Mortem: [post-mortem-201-2026-06-23.md](../reviews/post-mortem/post-mortem-201-2026-06-23.md))
 - [x] Patterns + Dirty-State (#202, Post-Mortem: [post-mortem-202-2026-06-23.md](../reviews/post-mortem/post-mortem-202-2026-06-23.md))
-- [ ] Mobile Sidebar
+- [x] Mobile Sidebar (#203, Post-Mortem: [post-mortem-203-2026-06-23.md](../reviews/post-mortem/post-mortem-203-2026-06-23.md))
 - [ ] Abnahme & Doku

@@ -30,6 +30,6 @@ Domänen-Matrix MPZ Studio: [ideen/archiv/mpz-studio-ui.md](../ideen/archiv/mpz-
 
 Vollständiger Abgleich-Log (bis 2026-06-20): [archiv/sync-log-2026-06.md](./archiv/sync-log-2026-06.md).
 
-**Letzter dokumentierter Abgleich:** 2026-06-23 — #202 Formular-Patterns erledigt; Post-Mortem [202](../reviews/post-mortem/post-mortem-202-2026-06-23.md) (nach #201).
+**Letzter dokumentierter Abgleich:** 2026-06-23 — #203 Mobile Sidebar erledigt; Post-Mortem [203](../reviews/post-mortem/post-mortem-203-2026-06-23.md) (nach #202).
 
 Siehe auch [entscheidungen.md](../entscheidungen.md), [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren).

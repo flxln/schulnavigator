@@ -2,8 +2,20 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, X } from 'lucide-react'
-import { useEffect, useState, type ReactNode } from 'react'
+import {
+  LayoutDashboard,
+  Link2,
+  MapPin,
+  Menu,
+  MessageSquare,
+  PanelLeftClose,
+  PanelLeftOpen,
+  Palette,
+  Rocket,
+  X,
+  type LucideIcon,
+} from 'lucide-react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { PlanABanner } from '@/components/mpz-studio/plan-a-banner'
 import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
 import { SaveValidatePanel } from '@/components/mpz-studio/save-validate-panel'
@@ -15,22 +27,32 @@ import type {
   StationHealth,
 } from '@/lib/mpz-studio-overview'
 
-type GlobalNavItem = { href: string; label: string }
+const NAV_COLLAPSED_KEY = 'mpz-studio:nav-collapsed'
 
-const GLOBALER_INHALT_ITEMS: GlobalNavItem[] = [
-  { href: '/mpz/studio/coach', label: 'Coach' },
-  { href: '/mpz/studio/embeds', label: 'Embeds & Links' },
+type NavItem = { href: string; label: string; icon: LucideIcon }
+
+const GLOBALER_INHALT_ITEMS: NavItem[] = [
+  { href: '/mpz/studio/coach', label: 'Coach', icon: MessageSquare },
+  { href: '/mpz/studio/embeds', label: 'Embeds & Links', icon: Link2 },
 ]
 
-const ERSCHEINUNGSBILD_ITEMS: GlobalNavItem[] = [
-  { href: '/mpz/studio/design', label: 'Design & Hub' },
+const ERSCHEINUNGSBILD_ITEMS: NavItem[] = [
+  { href: '/mpz/studio/design', label: 'Design & Hub', icon: Palette },
 ]
 
-const BETRIEB_ITEMS: GlobalNavItem[] = [
-  { href: '/mpz/studio/deploy', label: 'Deploy' },
+const BETRIEB_ITEMS: NavItem[] = [
+  { href: '/mpz/studio/deploy', label: 'Deploy', icon: Rocket },
 ]
 
 const STATION_DETAIL_PATH_RE = /^\/mpz\/studio\/stationen\/([^/]+)$/
+
+function readNavCollapsed(): boolean {
+  try {
+    return localStorage.getItem(NAV_COLLAPSED_KEY) === 'true'
+  } catch {
+    return false
+  }
+}
 
 function healthDotClass(health: StationHealth): string {
   if (health === 'ok') return 'bg-accent'
@@ -83,18 +105,63 @@ export function StudioShell({ children }: StudioShellProps) {
   } = useStudioValidation()
 
   const [navOpen, setNavOpen] = useState(false)
+  const [navCollapsed, setNavCollapsed] = useState(false)
+  const menuButtonRef = useRef<HTMLButtonElement>(null)
   const crumb = breadcrumb(pathname, report)
-  const closeNav = () => setNavOpen(false)
 
-  // Close the mobile drawer on Escape. Navigation closes it via link handlers.
+  const closeNav = () => {
+    setNavOpen(false)
+    menuButtonRef.current?.focus()
+  }
+
+  const toggleNavCollapsed = () => {
+    setNavCollapsed((prev) => {
+      const next = !prev
+      try {
+        localStorage.setItem(NAV_COLLAPSED_KEY, String(next))
+      } catch {
+        /* Private Mode */
+      }
+      return next
+    })
+  }
+
+  useEffect(() => {
+    if (readNavCollapsed()) setNavCollapsed(true)
+  }, [])
+
   useEffect(() => {
     if (!navOpen) return
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setNavOpen(false)
+      if (e.key === 'Escape') {
+        setNavOpen(false)
+        menuButtonRef.current?.focus()
+      }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [navOpen])
+
+  useEffect(() => {
+    if (!navOpen) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [navOpen])
+
+  useEffect(() => {
+    const mql = window.matchMedia('(min-width: 1024px)')
+    const onChange = (e: MediaQueryListEvent) => {
+      if (e.matches) {
+        setNavOpen(false)
+        setNavCollapsed(readNavCollapsed())
+      }
+    }
+    mql.addEventListener('change', onChange)
+    return () => mql.removeEventListener('change', onChange)
+  }, [])
 
   const summaries = report?.stationSummaries ?? []
   const buttonDisabled = loading || !dirty
@@ -105,19 +172,23 @@ export function StudioShell({ children }: StudioShellProps) {
         <button
           type="button"
           aria-label="Navigation schließen"
-          onClick={() => setNavOpen(false)}
-          className="fixed inset-0 z-30 bg-brand-navy-300/40 md:hidden"
+          onClick={closeNav}
+          className="fixed inset-0 z-30 bg-brand-navy-300/40 lg:hidden"
         />
       )}
 
       <aside
         id="studio-nav"
-        className={`fixed inset-y-0 left-0 z-40 flex w-72 flex-col bg-bg-dark text-fg-on-dark transition-transform duration-200 ease-out motion-reduce:transition-none md:sticky md:top-0 md:z-auto md:h-screen md:w-64 md:translate-x-0 ${
-          navOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`fixed inset-y-0 left-0 z-40 flex w-72 flex-col bg-bg-dark text-fg-on-dark transition-[width,transform] duration-200 ease-out motion-reduce:transition-none lg:sticky lg:top-0 lg:z-auto lg:h-screen lg:translate-x-0 ${
+          navCollapsed ? 'lg:w-14 lg:items-center' : 'lg:w-64'
+        } ${navOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
-        <div className="flex items-start justify-between gap-2 border-b border-white/10 px-4 py-4">
-          <div>
+        <div
+          className={`flex items-start justify-between gap-2 border-b border-white/10 px-4 py-4 ${
+            navCollapsed ? 'lg:flex-col lg:items-center lg:px-2' : ''
+          }`}
+        >
+          <div className={navCollapsed ? 'lg:hidden' : undefined}>
             <p className="text-base font-black tracking-tight">MPZ Studio</p>
             <span className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-brand-sun/40 bg-brand-sun/15 px-2.5 py-0.5 text-[11px] font-semibold text-brand-sun">
               <span className="size-1.5 rounded-full bg-brand-sun" aria-hidden />
@@ -126,9 +197,22 @@ export function StudioShell({ children }: StudioShellProps) {
           </div>
           <button
             type="button"
+            aria-label={navCollapsed ? 'Navigation erweitern' : 'Navigation einklappen'}
+            onClick={toggleNavCollapsed}
+            className="hidden size-11 shrink-0 place-items-center rounded-gs39-sm text-white/70 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 lg:grid"
+          >
+            {navCollapsed ? (
+              <PanelLeftOpen className="size-5" aria-hidden />
+            ) : (
+              <PanelLeftClose className="size-5" aria-hidden />
+            )}
+          </button>
+
+          <button
+            type="button"
             aria-label="Navigation schließen"
-            onClick={() => setNavOpen(false)}
-            className="-mr-1 grid size-11 shrink-0 place-items-center rounded-gs39-sm text-white/70 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 md:hidden"
+            onClick={closeNav}
+            className="-mr-1 grid size-11 shrink-0 place-items-center rounded-gs39-sm text-white/70 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 lg:hidden"
           >
             <X className="size-5" aria-hidden />
           </button>
@@ -136,37 +220,45 @@ export function StudioShell({ children }: StudioShellProps) {
 
         <nav
           aria-label="Studio-Navigation"
-          className="flex flex-1 flex-col gap-0.5 overflow-y-auto px-2 py-3"
+          className={`flex flex-1 flex-col gap-0.5 overflow-y-auto py-3 ${
+            navCollapsed ? 'lg:px-1 px-2' : 'px-2'
+          }`}
         >
-          <GroupLabel>
+          <GroupLabel collapsed={navCollapsed}>
             <span>Übersicht</span>
           </GroupLabel>
           <NavLink
             href="/mpz/studio"
             label="Dashboard"
+            icon={LayoutDashboard}
             active={pathname === '/mpz/studio'}
+            collapsed={navCollapsed}
             onNavigate={closeNav}
           />
 
-          <GroupLabel>
+          <GroupLabel collapsed={navCollapsed}>
             <span>Stationen</span>
             <ReadinessCount summaries={summaries} />
           </GroupLabel>
           <NavLink
             href="/mpz/studio/stationen"
             label="Alle Stationen"
+            icon={MapPin}
             active={pathname === '/mpz/studio/stationen'}
+            collapsed={navCollapsed}
             onNavigate={closeNav}
           />
-          <RoomRoster
-            summaries={summaries}
-            pathname={pathname}
-            loading={loading && summaries.length === 0}
-            locked={!!error && !report}
-            onNavigate={closeNav}
-          />
+          <div className={navCollapsed ? 'lg:hidden' : undefined}>
+            <RoomRoster
+              summaries={summaries}
+              pathname={pathname}
+              loading={loading && summaries.length === 0}
+              locked={!!error && !report}
+              onNavigate={closeNav}
+            />
+          </div>
 
-          <GroupLabel>
+          <GroupLabel collapsed={navCollapsed}>
             <span>Globaler Inhalt</span>
           </GroupLabel>
           {GLOBALER_INHALT_ITEMS.map((item) => (
@@ -174,12 +266,14 @@ export function StudioShell({ children }: StudioShellProps) {
               key={item.href}
               href={item.href}
               label={item.label}
+              icon={item.icon}
               active={pathname.startsWith(item.href)}
+              collapsed={navCollapsed}
               onNavigate={closeNav}
             />
           ))}
 
-          <GroupLabel>
+          <GroupLabel collapsed={navCollapsed}>
             <span>Erscheinungsbild</span>
           </GroupLabel>
           {ERSCHEINUNGSBILD_ITEMS.map((item) => (
@@ -187,12 +281,14 @@ export function StudioShell({ children }: StudioShellProps) {
               key={item.href}
               href={item.href}
               label={item.label}
+              icon={item.icon}
               active={pathname.startsWith(item.href)}
+              collapsed={navCollapsed}
               onNavigate={closeNav}
             />
           ))}
 
-          <GroupLabel>
+          <GroupLabel collapsed={navCollapsed}>
             <span>Betrieb</span>
           </GroupLabel>
           {BETRIEB_ITEMS.map((item) => (
@@ -200,13 +296,19 @@ export function StudioShell({ children }: StudioShellProps) {
               key={item.href}
               href={item.href}
               label={item.label}
+              icon={item.icon}
               active={pathname.startsWith(item.href)}
+              collapsed={navCollapsed}
               onNavigate={closeNav}
             />
           ))}
         </nav>
 
-        <div className="border-t border-white/10 px-4 py-3 text-[11px] text-white/35">
+        <div
+          className={`border-t border-white/10 px-4 py-3 text-[11px] text-white/35 ${
+            navCollapsed ? 'lg:hidden' : ''
+          }`}
+        >
           39. Grundschule Dresden
           <br />
           <code className="text-[10px]">stations.json → git → Coolify</code>
@@ -217,12 +319,13 @@ export function StudioShell({ children }: StudioShellProps) {
         <PlanABanner />
         <header className="sticky top-0 z-20 flex flex-wrap items-center gap-3 border-b border-border-1 bg-bg-1/95 px-4 py-3 backdrop-blur md:px-6">
           <button
+            ref={menuButtonRef}
             type="button"
             aria-label="Navigation öffnen"
             aria-expanded={navOpen}
             aria-controls="studio-nav"
             onClick={() => setNavOpen(true)}
-            className="grid size-11 shrink-0 place-items-center rounded-gs39-sm border border-border-1 text-fg-1 hover:bg-bg-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent md:hidden"
+            className="grid size-11 shrink-0 place-items-center rounded-gs39-sm border border-border-1 text-fg-1 hover:bg-bg-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent lg:hidden"
           >
             <Menu className="size-5" aria-hidden />
           </button>
@@ -265,7 +368,26 @@ export function StudioShell({ children }: StudioShellProps) {
   )
 }
 
-function GroupLabel({ children }: { children: ReactNode }) {
+function GroupLabel({
+  children,
+  collapsed,
+}: {
+  children: ReactNode
+  collapsed?: boolean
+}) {
+  if (collapsed) {
+    return (
+      <>
+        <p className="mt-4 flex items-center justify-between gap-2 px-3 pb-1 text-[10px] font-bold uppercase tracking-wider text-white/35 lg:hidden">
+          {children}
+        </p>
+        <hr
+          className="mx-2 my-2 hidden border-white/10 lg:block"
+          aria-hidden
+        />
+      </>
+    )
+  }
   return (
     <p className="mt-4 flex items-center justify-between gap-2 px-3 pb-1 text-[10px] font-bold uppercase tracking-wider text-white/35">
       {children}
@@ -276,26 +398,40 @@ function GroupLabel({ children }: { children: ReactNode }) {
 function NavLink({
   href,
   label,
+  icon: Icon,
   active,
+  collapsed,
   onNavigate,
 }: {
   href: string
   label: string
+  icon: LucideIcon
   active: boolean
+  collapsed?: boolean
   onNavigate?: () => void
 }) {
   return (
     <Link
       href={href}
       onClick={onNavigate}
+      title={collapsed ? label : undefined}
       aria-current={active ? 'page' : undefined}
-      className={`flex min-h-11 items-center rounded-gs39-sm border-l-2 px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${
+      className={`flex min-h-11 items-center rounded-gs39-sm border-l-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${
+        collapsed ? 'lg:justify-center lg:px-0 px-3' : 'px-3'
+      } ${
         active
           ? 'border-white bg-white/10 text-white'
           : 'border-transparent text-white/65 hover:bg-white/5 hover:text-white'
       }`}
     >
-      {label}
+      {collapsed ? (
+        <>
+          <Icon className="hidden size-5 shrink-0 lg:block" aria-hidden />
+          <span className="lg:sr-only">{label}</span>
+        </>
+      ) : (
+        label
+      )}
     </Link>
   )
 }
