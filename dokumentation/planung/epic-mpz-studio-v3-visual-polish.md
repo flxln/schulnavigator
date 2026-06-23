@@ -56,7 +56,7 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 | Unterissue | `#208` | A3: Save-Validate & Dashboard | `design`, `tech` | #206 |
 | Unterissue | `#209` | B1: Stationen-Grid Kacheln | `design`, `tech` | #207 |
 | Unterissue | `#210` | B2: Station-Detail-Header | `design`, `tech` | #207 — **erledigt** (2026-06-23, Post-Mortem unten) |
-| Unterissue | `#211` | C1: Stammdaten-Formular | `design`, `tech` | #210 |
+| Unterissue | `#211` | C1: Stammdaten-Formular | `design`, `tech` | #210 — **erledigt** (2026-06-23, Post-Mortem unten) |
 | Unterissue | `#212` | C2: Medien Empty, Tabelle, Modal | `design`, `tech` | #210 |
 | Unterissue | `#215` | C3: Medien bearbeiten | `design`, `tech` | #212 |
 | Unterissue | `#213` | C4: Hotspots Empty, Tabelle, Formulare | `design`, `tech` | #210 |
@@ -169,6 +169,16 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 - [x] #207 A2 Shell visuell (Post-Mortem: [post-mortem-207-2026-06-23.md](../reviews/post-mortem/post-mortem-207-2026-06-23.md))
 - [x] #209 B1 Stationen-Grid Kacheln (Post-Mortem: [post-mortem-209-2026-06-23.md](../reviews/post-mortem/post-mortem-209-2026-06-23.md))
 - [x] #210 B2 Station-Detail-Header (Post-Mortem: [post-mortem-210-2026-06-23.md](../reviews/post-mortem/post-mortem-210-2026-06-23.md))
+- [x] #211 C1 Stammdaten-Formular (Post-Mortem: [post-mortem-211-2026-06-23.md](../reviews/post-mortem/post-mortem-211-2026-06-23.md))
+
+### Archiv — Plan-Härtung #211 (2026-06-23)
+
+Plan (lokal): `.cursor/plans/#211_stammdaten_s7_3da62894.plan.md` · Pre-Mortems [1a](../reviews/pre-mortem/pre-mortem-1a-211-2026-06-23.md) / [1b](../reviews/pre-mortem/pre-mortem-1b-211-stammdaten-s7-2026-06-23.md)
+
+- ✅ **Primitives:** `station-stammdaten-form.tsx` auf `mpz-form-primitives` migriert; Slug als `<input readOnly>` mit `read-only:bg-bg-2`.
+- ✅ **Raumbild S7:** Upload-Zonen mit konditionalem Grid; 360°-Zone nur bei `equirectangular` (Authoring-UX, kein Datenvertrag).
+- ✅ **Shell:** Stammdaten-Tab-Panel auf `MpzCard` umgestellt.
+- 🔁 **Folge-Scope (bewusst offen):** Error-Notice-Card, Tab-Fehlerpunkte, numerischer Fehler-Count — Report-Vertragserweiterung (aus #210 übernommen).
 
 ### Archiv — Plan-Härtung #210 (2026-06-23)
 

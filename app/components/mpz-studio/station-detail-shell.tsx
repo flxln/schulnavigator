@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
+import { MpzCard } from '@/components/mpz-studio/mpz-card'
 import {
   mpzStackClassName,
   mpzTabLinkClassName,
@@ -169,9 +170,9 @@ export function StationDetailShell({
       </nav>
 
       {activeTab === 'stammdaten' && (
-        <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5">
+        <MpzCard>
           <StationStammdatenForm slug={slug} station={station} />
-        </section>
+        </MpzCard>
       )}
 
       {activeTab === 'medien' && (

@@ -1,6 +1,15 @@
 'use client'
 
+import { MpzCard } from '@/components/mpz-studio/mpz-card'
 import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
+import {
+  mpzButtonClassName,
+  mpzFieldClassName,
+  mpzLabelClassName,
+  mpzSelectClassName,
+  mpzStackClassName,
+  mpzTextareaClassName,
+} from '@/components/mpz-studio/mpz-form-primitives'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
@@ -65,9 +74,9 @@ export function StationStammdatenForm({ slug, station }: StationStammdatenFormPr
 
   if (!station) {
     return (
-      <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5 text-sm text-fg-2">
-        <p role="alert">Station fehlt in stations.json.</p>
-      </section>
+      <MpzCard>
+        <MpzFormAlert variant="error">Station fehlt in stations.json.</MpzFormAlert>
+      </MpzCard>
     )
   }
 
@@ -172,102 +181,122 @@ export function StationStammdatenForm({ slug, station }: StationStammdatenFormPr
     }
   }
 
-  const inputClass =
-    'rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1 disabled:opacity-60'
-
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 text-sm">
-      <label className="flex flex-col gap-1">
-        <span className="font-semibold text-fg-2">Slug (read-only)</span>
-        <code className={`font-mono text-xs ${inputClass}`}>{slug}</code>
-      </label>
+    <form onSubmit={handleSubmit} className={`${mpzStackClassName('lg')} text-sm`}>
+      <div className="grid gap-4 md:grid-cols-2">
+        <div>
+          <label htmlFor="stammdaten-slug" className={mpzLabelClassName()}>
+            Slug
+          </label>
+          <input
+            id="stammdaten-slug"
+            type="text"
+            readOnly
+            value={slug}
+            className={`${mpzFieldClassName()} read-only:bg-bg-2 font-mono text-xs`}
+          />
+          <p className="mt-1 text-xs text-fg-3">
+            System-ID der Station, kann nicht nachträglich geändert werden.
+          </p>
+        </div>
 
-      <label className="flex flex-col gap-1">
-        <span className="font-semibold text-fg-2">Titel</span>
+        <div>
+          <label htmlFor="stammdaten-viewer" className={mpzLabelClassName()}>
+            Viewer
+          </label>
+          <select
+            id="stammdaten-viewer"
+            value={viewer}
+            onChange={(e) => setViewer(e.target.value as ViewerMode)}
+            disabled={viewerBlocked}
+            title={
+              viewerBlocked
+                ? 'Viewer-Wechsel gesperrt — diese Station hat Hotspots. Zuerst im Tab Hotspots entfernen.'
+                : undefined
+            }
+            className={mpzSelectClassName()}
+            aria-invalid={fieldErrors.viewer ? true : undefined}
+          >
+            <option value="flat">Flat</option>
+            <option value="equirectangular">360° (equirectangular)</option>
+          </select>
+          {viewerBlocked && (
+            <p className="mt-1 text-xs text-fg-3">
+              Viewer-Wechsel gesperrt — diese Station hat Hotspots.{' '}
+              <Link
+                href={`/mpz/studio/stationen/${encodeURIComponent(slug)}?tab=hotspots`}
+                className="font-semibold text-accent underline-offset-2 hover:underline"
+              >
+                Im Hotspots-Tab entfernen
+              </Link>
+              .
+            </p>
+          )}
+          {fieldErrors.viewer && (
+            <p className="mt-1 text-sm text-error" role="alert">
+              {fieldErrors.viewer}
+            </p>
+          )}
+        </div>
+      </div>
+
+      {viewerWarnings.length > 0 && (
+        <ul
+          className="rounded-gs39-sm border border-warn/50 bg-warn/15 px-3 py-2 text-sm text-fg-1"
+          role="status"
+        >
+          {viewerWarnings.map((w) => (
+            <li key={w.kind}>— {w.message}</li>
+          ))}
+        </ul>
+      )}
+
+      <div>
+        <label htmlFor="stammdaten-titel" className={mpzLabelClassName()}>
+          Titel
+        </label>
         <input
+          id="stammdaten-titel"
           type="text"
           value={titel}
           onChange={(e) => setTitel(e.target.value)}
-          className={inputClass}
+          className={mpzFieldClassName()}
           aria-invalid={fieldErrors.titel ? true : undefined}
         />
         {fieldErrors.titel && (
-          <span className="text-sm text-red-700" role="alert">
+          <p className="mt-1 text-sm text-error" role="alert">
             {fieldErrors.titel}
-          </span>
+          </p>
         )}
-      </label>
+      </div>
 
-      <label className="flex flex-col gap-1">
-        <span className="font-semibold text-fg-2">Beschreibung</span>
+      <div>
+        <label htmlFor="stammdaten-beschreibung" className={mpzLabelClassName()}>
+          Beschreibung
+        </label>
         <textarea
+          id="stammdaten-beschreibung"
           rows={5}
           value={beschreibung}
           onChange={(e) => setBeschreibung(e.target.value)}
-          className={inputClass}
+          className={mpzTextareaClassName()}
           aria-invalid={fieldErrors.beschreibung ? true : undefined}
         />
         {fieldErrors.beschreibung && (
-          <span className="text-sm text-red-700" role="alert">
+          <p className="mt-1 text-sm text-error" role="alert">
             {fieldErrors.beschreibung}
-          </span>
-        )}
-      </label>
-
-      <div className="flex flex-col gap-1">
-        <span className="font-semibold text-fg-2">Viewer</span>
-        <select
-          value={viewer}
-          onChange={(e) => setViewer(e.target.value as ViewerMode)}
-          disabled={viewerBlocked}
-          title={
-            viewerBlocked
-              ? 'Viewer-Wechsel gesperrt — diese Station hat Hotspots. Zuerst im Tab Hotspots entfernen.'
-              : undefined
-          }
-          className={inputClass}
-          aria-invalid={fieldErrors.viewer ? true : undefined}
-        >
-          <option value="flat">flat</option>
-          <option value="equirectangular">equirectangular (360°)</option>
-        </select>
-        {viewerBlocked && (
-          <p className="text-fg-3">
-            Viewer-Wechsel gesperrt — diese Station hat Hotspots.{' '}
-            <Link
-              href={`/mpz/studio/stationen/${encodeURIComponent(slug)}?tab=hotspots`}
-              className="font-semibold text-accent underline-offset-2 hover:underline"
-            >
-              Im Hotspots-Tab entfernen
-            </Link>
-            .
           </p>
-        )}
-        {fieldErrors.viewer && (
-          <span className="text-sm text-red-700" role="alert">
-            {fieldErrors.viewer}
-          </span>
-        )}
-        {viewerWarnings.length > 0 && (
-          <ul className="rounded-gs39-sm border border-amber-300 bg-amber-50 px-3 py-2 text-amber-950">
-            {viewerWarnings.map((w) => (
-              <li key={w.kind}>— {w.message}</li>
-            ))}
-          </ul>
         )}
       </div>
 
       <StationRaumbildUpload
         slug={slug}
         station={stationRef}
+        viewer={viewer}
         onStationUpdated={setLocalStation}
       />
 
-      <button
-        type="submit"
-        disabled={busy}
-        className="w-fit rounded-gs39-sm bg-accent px-4 py-2 font-semibold text-white disabled:opacity-60"
-      >
+      <button type="submit" disabled={busy} className={mpzButtonClassName('primary')}>
         {busy ? 'Speichert …' : 'Übernehmen'}
       </button>
 
