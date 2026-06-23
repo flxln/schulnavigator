@@ -60,7 +60,7 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 | Unterissue | `#212` | C2: Medien Empty, Tabelle, Modal | `design`, `tech` | #210 — **erledigt** (2026-06-24, Post-Mortem unten) |
 | Unterissue | `#215` | C3: Medien bearbeiten | `design`, `tech` | #212 — **erledigt** (2026-06-24, Post-Mortem unten) |
 | Unterissue | `#213` | C4: Hotspots Empty, Tabelle, Formulare | `design`, `tech` | #210 — **erledigt** (2026-06-24, Post-Mortem unten) |
-| Unterissue | `#216` | C5: Dialog-Tab Layout | `design`, `tech` | #210 |
+| Unterissue | `#216` | C5: Dialog-Tab Layout | `design`, `tech` | #210 — **erledigt** (2026-06-24, Post-Mortem unten) |
 | Unterissue | `#218` | D1: Design & Hub (Tabs, Tabelle, Brand) | `design`, `tech` | #207 |
 | Unterissue | `#219` | D2: Coach, Embeds, Deploy | `design`, `tech` | #207 |
 | Unterissue | `#220` | D3: Unlock-Screen (optional) | `design`, `tech` | #206 |
@@ -98,7 +98,7 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 | #212 | S8, S9 | `station-medien-table.tsx`, `media-ingest-modal.tsx` — **erledigt** (2026-06-24) |
 | #215 | S10 | `station-medium-edit-form.tsx` — **erledigt** (2026-06-24) |
 | #213 | S11, S12 | `station-hotspots-table.tsx`, `station-hotspot-*-form.tsx` — **erledigt** (2026-06-24) |
-| #216 | S15 | `station-dialog-panel.tsx`, `station-dialog-segment-audio-row.tsx` |
+| #216 | S15 | `station-dialog-panel.tsx`, `station-dialog-segment-audio-row.tsx` — **erledigt** (2026-06-24) |
 
 ### Phase D — Querschnitt
 
@@ -173,6 +173,17 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 - [x] #212 C2 Medien Empty, Tabelle, Modal (Post-Mortem: [post-mortem-212-2026-06-24.md](../reviews/post-mortem/post-mortem-212-2026-06-24.md))
 - [x] #215 C3 Medien bearbeiten (Post-Mortem: [post-mortem-215-2026-06-24.md](../reviews/post-mortem/post-mortem-215-2026-06-24.md))
 - [x] #213 C4 Hotspots Empty, Tabelle, Formulare (Post-Mortem: [post-mortem-213-2026-06-24.md](../reviews/post-mortem/post-mortem-213-2026-06-24.md))
+- [x] #216 C5 Dialog-Tab Layout (Post-Mortem: [post-mortem-216-2026-06-24.md](../reviews/post-mortem/post-mortem-216-2026-06-24.md))
+
+### Archiv — Plan-Härtung #216 (2026-06-24)
+
+Plan (lokal): `.cursor/plans/#216_dialog_s15_25cdfb74.plan.md` · Pre-Mortems [1a](../reviews/pre-mortem/pre-mortem-1a-216-dialog-s15-2026-06-24.md) / [1b](../reviews/pre-mortem/pre-mortem-1b-216-dialog-s15-2026-06-24.md)
+
+- ✅ **Shell:** Dialog-Tab auf `MpzCard` (`station-detail-shell.tsx`).
+- ✅ **S15 Panel:** Zentrierter Empty-State, `mpzButton`, Segment-Tabelle mit Empty-`<tr colSpan={7}>`, Akkordeon Chevron rechts, semantische Fehlerfarben.
+- ✅ **Audio-Zeile:** `mpzButton`, Upload-Label mit Dateiname, expandable Sub-Zeile beibehalten (#200).
+- ✅ **Kind-Formulare:** Segment/Gruppe/Bubble auf `mpzButtonClassName`.
+- 🔁 **Folge-Scope (bewusst offen):** `min-h-11` auf `<td>` wirkungslos (1a#2); leere Tabelle sichtbar während Segment-Add (1a#4); Badge-Label „ok“ vs. Mockup „Clip ok“; WAV-Orphans-Hinweis beim Dialog-Löschen (1b#4).
 
 ### Archiv — Plan-Härtung #213 (2026-06-24)
 

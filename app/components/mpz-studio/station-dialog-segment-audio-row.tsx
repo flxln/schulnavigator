@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { mpzButtonClassName } from '@/components/mpz-studio/mpz-form-primitives'
 import {
   markMpzStudioDirty,
   useStudioValidation,
@@ -32,6 +33,9 @@ export function StationDialogSegmentAudioRow({
   const [playError, setPlayError] = useState(false)
 
   const playUrl = audit.fileExists ? dialogPlayUrl(slug, audit.expectedClip) : null
+  const uploadLabel = audit.fileExists
+    ? `WAV ersetzen (${audit.expectedClip})`
+    : 'WAV hochladen'
 
   async function afterMutation() {
     markMpzStudioDirty()
@@ -122,7 +126,7 @@ export function StationDialogSegmentAudioRow({
   }
 
   return (
-    <div className="rounded-gs39-sm border border-border-1/60 bg-bg-2 px-4 py-3">
+    <div className="rounded-gs39-sm border border-border-1/60 bg-bg-1 px-4 py-3">
       <p className="mb-2 font-mono text-xs text-fg-3">
         Clip: <span className="text-fg-1">{audit.expectedClip}</span>
       </p>
@@ -139,7 +143,7 @@ export function StationDialogSegmentAudioRow({
             onLoadedData={() => setPlayError(false)}
           />
           {playError && (
-            <p className="mt-1 text-xs text-brand-red">
+            <p className="mt-1 text-xs text-error">
               Vorschau nicht abspielbar — Zugangstoken fehlt? /eintritt scannen (oder
               SN_DEV_UNLOCK_ALL in Dev).
             </p>
@@ -148,32 +152,31 @@ export function StationDialogSegmentAudioRow({
       ) : null}
 
       {rowError && (
-        <p className="mb-2 text-xs text-brand-red" role="alert">
+        <p className="mb-2 text-xs text-error" role="alert">
           {rowError}
         </p>
       )}
 
-      <div className="flex flex-wrap gap-2">
+      <button
+        type="button"
+        disabled={busy || disabled}
+        onClick={handleUploadClick}
+        className={`${mpzButtonClassName('primary')} mb-2 w-full !min-h-auto border-dashed py-3 text-xs`}
+      >
+        {uploadLabel}
+      </button>
+      <p className="mb-3 text-xs text-fg-3">Nur WAV, max. 15 MB.</p>
+
+      {audit.fileExists ? (
         <button
           type="button"
           disabled={busy || disabled}
-          onClick={handleUploadClick}
-          className="rounded-gs39-sm bg-accent px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-50"
+          onClick={() => void handleClipRemove()}
+          className={`${mpzButtonClassName('secondary')} !min-h-9 text-xs`}
         >
-          {audit.fileExists ? 'WAV ersetzen' : 'WAV hochladen'}
+          Clip entfernen
         </button>
-        {audit.fileExists ? (
-          <button
-            type="button"
-            disabled={busy || disabled}
-            onClick={() => void handleClipRemove()}
-            className="rounded-gs39-sm border border-border-1 px-3 py-1.5 text-xs font-semibold text-fg-2 disabled:opacity-50"
-          >
-            Clip entfernen
-          </button>
-        ) : null}
-      </div>
-      <p className="mt-2 text-xs text-fg-3">Nur WAV, max. 15 MB.</p>
+      ) : null}
     </div>
   )
 }

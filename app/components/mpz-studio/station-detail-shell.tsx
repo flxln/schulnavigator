@@ -188,9 +188,9 @@ export function StationDetailShell({
       )}
 
       {activeTab === 'dialog' && (
-        <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5">
+        <MpzCard>
           <StationDialogPanel slug={slug} station={station} />
-        </section>
+        </MpzCard>
       )}
     </div>
   )

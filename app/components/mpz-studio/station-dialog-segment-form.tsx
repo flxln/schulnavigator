@@ -2,6 +2,7 @@
 
 import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
 import {
+  mpzButtonClassName,
   mpzFieldClassName,
   mpzLabelClassName,
 } from '@/components/mpz-studio/mpz-form-primitives'
@@ -192,14 +193,14 @@ export function StationDialogSegmentForm({
         <button
           type="submit"
           disabled={isPending}
-          className="rounded-gs39-sm bg-accent px-3 py-1.5 text-sm font-semibold text-white disabled:opacity-50"
+          className={`${mpzButtonClassName('primary')} !min-h-9 px-3 py-1.5 text-sm`}
         >
           Speichern
         </button>
         <button
           type="button"
           onClick={onCancel}
-          className="rounded-gs39-sm border border-border-1 px-3 py-1.5 text-sm font-semibold text-fg-2"
+          className={`${mpzButtonClassName('secondary')} !min-h-9 px-3 py-1.5 text-sm`}
         >
           Abbrechen
         </button>

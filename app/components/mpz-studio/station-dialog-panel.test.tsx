@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { StationDialogPanel } from '@/components/mpz-studio/station-dialog-panel'
 import { getStationBySlug } from '@/lib/stations'
+import type { DialogFigure } from '@/lib/types'
 
 const mocks = vi.hoisted(() => ({
   refresh: vi.fn(),
@@ -33,7 +34,7 @@ describe('StationDialogPanel', () => {
     render(<StationDialogPanel slug="klassenzimmer" station={station} />)
 
     expect(screen.getByRole('button', { name: 'Dialog hinzufügen' })).toBeTruthy()
-    expect(screen.getByText(/Maskottchen-Dialog mit Frieda und Otto/)).toBeTruthy()
+    expect(screen.getByText(/Noch kein Maskottchen-Dialog für diese Station/)).toBeTruthy()
   })
 
   it('ruft POST beim Anlegen auf', async () => {
@@ -90,6 +91,26 @@ describe('StationDialogPanel', () => {
     expect(screen.getByRole('button', { name: 'Dialog entfernen' })).toBeTruthy()
     expect(screen.queryByText(/folgt mit #200/)).toBeNull()
     expect(screen.getAllByRole('button', { name: 'Audio' }).length).toBeGreaterThan(0)
+  })
+
+  it('zeigt leere Segment-Tabelle mit Hinweiszeile', () => {
+    const station = getStationBySlug('klassenzimmer')!
+    const withEmptyDialog = {
+      ...station,
+      dialog: { figuren: ['frieda', 'otto'] as DialogFigure[], segmente: [], gruppen: [] },
+    }
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ slug: 'klassenzimmer', segments: [], orphans: [], missingCount: 0, driftCount: 0 }),
+      }),
+    )
+
+    render(<StationDialogPanel slug="klassenzimmer" station={withEmptyDialog} />)
+
+    expect(screen.getByText('Noch keine Segmente')).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Erstes Segment anlegen' })).toBeTruthy()
   })
 
   it('klappt Gruppen-Bereich auf ohne verschachtelte Buttons', () => {

@@ -98,7 +98,7 @@ describe('StationDialogSegmentAudioRow', () => {
       />,
     )
 
-    fireEvent.click(screen.getByRole('button', { name: 'WAV ersetzen' }))
+    fireEvent.click(screen.getByRole('button', { name: /WAV ersetzen/ }))
 
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledWith(
