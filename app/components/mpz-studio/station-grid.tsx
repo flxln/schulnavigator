@@ -1,133 +1,159 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
+import { MpzCard } from '@/components/mpz-studio/mpz-card'
+import { mpzStackClassName } from '@/components/mpz-studio/mpz-form-primitives'
+import {
+  healthDotClass,
+  healthLabel,
+} from '@/components/mpz-studio/mpz-studio-health'
+import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
 import { mpzStationCalibHref } from '@/lib/mpz-studio-calib'
-import type { MpzStationOverview, MpzValidationReport } from '@/lib/mpz-studio-overview'
-
-function healthDotClass(health: MpzStationOverview['health']): string {
-  if (health === 'ok') return 'bg-brand-green'
-  if (health === 'warn') return 'bg-brand-sun'
-  return 'bg-brand-red'
-}
+import type { MpzStationOverview } from '@/lib/mpz-studio-overview'
 
 function viewerLabel(viewer: MpzStationOverview['viewer']): string {
   return viewer === 'equirectangular' ? '360°' : 'flat'
 }
 
-export function StationGrid() {
-  const [report, setReport] = useState<MpzValidationReport | null>(null)
-  const [loading, setLoading] = useState(true)
-
-  const load = useCallback(async () => {
-    setLoading(true)
-    try {
-      const res = await fetch('/api/mpz/validate')
-      if (res.ok) {
-        setReport((await res.json()) as MpzValidationReport)
-      }
-    } finally {
-      setLoading(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    void load()
-  }, [load])
-
-  const stations = report?.stationSummaries ?? []
+function StationCard({ st }: { st: MpzStationOverview }) {
+  const calib = mpzStationCalibHref({
+    viewer: st.viewer,
+    slug: st.slug,
+    hasBild: st.hasBild,
+    hasPanorama360: st.hasPanorama360,
+  })
+  const detailHref = `/mpz/studio/stationen/${encodeURIComponent(st.slug)}`
 
   return (
-    <div className="mx-auto max-w-5xl">
-      <p className="mb-6 text-sm text-fg-2">
-        12 Stationen · Schulrundgang GS39. Vorschau öffnet die Besucher-App in einem
-        neuen Tab.
-      </p>
+    <MpzCard
+      id={st.slug}
+      className="relative scroll-mt-24 transition-shadow hover:shadow-md"
+    >
+      <div className="mb-3 flex items-start justify-between gap-2">
+        <div>
+          <p className="text-[11px] font-bold uppercase tracking-wide text-fg-3">
+            #{String(st.hubNr).padStart(2, '0')}
+          </p>
+          <h2 className="text-base font-bold text-fg-1">{st.titel}</h2>
+          <p className="font-mono text-xs text-fg-3">{st.slug}</p>
+        </div>
+        <div className="flex shrink-0 items-center gap-1">
+          <span
+            className={`size-3 rounded-full ${healthDotClass(st.health)}`}
+            title={healthLabel(st.health)}
+            aria-hidden
+          />
+          <span className="sr-only">— {healthLabel(st.health)}</span>
+        </div>
+      </div>
 
-      {loading ? (
-        <p className="text-sm text-fg-2">Laden…</p>
+      <div className="mb-3">
+        <span className="rounded bg-bg-1 px-2 py-0.5 text-xs font-semibold text-fg-3">
+          {viewerLabel(st.viewer)}
+        </span>
+      </div>
+
+      {st.health !== 'ok' && st.issues.length > 0 && (
+        <ul className="mb-3 space-y-0.5 text-xs text-fg-3">
+          {st.issues.map((issue) => (
+            <li key={issue}>— {issue}</li>
+          ))}
+        </ul>
+      )}
+
+      <div className="flex flex-col gap-2 border-t border-border-1 pt-3 text-sm">
+        <Link
+          href={detailHref}
+          aria-label={`${st.titel} bearbeiten`}
+          className="font-semibold text-accent underline-offset-2 before:absolute before:inset-0 hover:underline"
+        >
+          Bearbeiten
+        </Link>
+        <Link
+          href={`/raum/${st.slug}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative z-10 font-semibold text-accent underline-offset-2 hover:underline"
+        >
+          ↗ Vorschau /raum/{st.slug}
+        </Link>
+        {calib && (
+          <Link
+            href={calib}
+            className="relative z-10 font-semibold text-accent underline-offset-2 hover:underline"
+          >
+            {st.viewer === 'equirectangular'
+              ? 'Kalibrieren (Hotspots + Startblick)'
+              : 'Hotspot kalibrieren'}
+          </Link>
+        )}
+        <Link
+          href={`${detailHref}?tab=medien`}
+          className="relative z-10 text-fg-2 underline-offset-2 hover:text-accent hover:underline"
+        >
+          Medien hochladen
+        </Link>
+      </div>
+    </MpzCard>
+  )
+}
+
+function StationGridSkeleton() {
+  return (
+    <div
+      className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+      aria-hidden
+    >
+      {Array.from({ length: 12 }).map((_, i) => (
+        <div
+          key={i}
+          className="h-48 animate-pulse rounded-mpz-card border border-border-1 bg-bg-2"
+        />
+      ))}
+    </div>
+  )
+}
+
+export function StationGrid() {
+  const { report, loading, error } = useStudioValidation()
+
+  const stations = report?.stationSummaries ?? []
+  const initialLoading = !report && loading
+  const refreshing = Boolean(report && loading)
+
+  return (
+    <div className={`mx-auto max-w-7xl ${mpzStackClassName('lg')}`}>
+      <header>
+        <h1 className="text-2xl font-semibold text-fg-1">Stationen</h1>
+        <p className="mt-1 max-w-3xl text-sm text-fg-2">
+          12 Stationen · Schulrundgang GS39. Kachel anklicken oder Bearbeiten
+          öffnet die Detailansicht. Vorschau startet die Besucher-App in einem
+          neuen Tab.
+        </p>
+      </header>
+
+      {error && (
+        <p className="rounded-gs39-md border border-error/30 bg-error/10 px-4 py-3 text-sm text-fg-1">
+          {error}{' '}
+          <Link href="/mpz/unlock" className="font-semibold text-accent underline">
+            Entsperren
+          </Link>
+        </p>
+      )}
+
+      {initialLoading ? (
+        <StationGridSkeleton />
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {stations.map((st) => {
-            const calib = mpzStationCalibHref({
-              viewer: st.viewer,
-              slug: st.slug,
-              hasBild: st.hasBild,
-              hasPanorama360: st.hasPanorama360,
-            })
-            return (
-              <article
-                key={st.slug}
-                id={st.slug}
-                className="scroll-mt-24 rounded-gs39-md border border-border-1 bg-bg-2 p-4 shadow-gs39-sm"
-              >
-                <div className="mb-2 flex items-start justify-between gap-2">
-                  <div>
-                    <p className="text-[11px] font-bold uppercase tracking-wide text-fg-3">
-                      #{st.hubNr}
-                    </p>
-                    <h2 className="text-base font-bold text-fg-1">{st.titel}</h2>
-                    <p className="font-mono text-xs text-fg-3">{st.slug}</p>
-                  </div>
-                  <span
-                    className={`mt-1 size-2.5 shrink-0 rounded-full ${healthDotClass(st.health)}`}
-                    title={st.health}
-                    aria-hidden
-                  />
-                </div>
-
-                <div className="mb-3 flex flex-wrap gap-2 text-xs">
-                  <span className="rounded-full border border-border-1 px-2 py-0.5 font-semibold text-fg-2">
-                    {viewerLabel(st.viewer)}
-                  </span>
-                  <span className="text-fg-3">
-                    {st.medienCount} Medien · {st.hotspotCount} Hotspots
-                  </span>
-                </div>
-
-                {st.issues.length > 0 && (
-                  <ul className="mb-3 space-y-0.5 text-xs text-fg-3">
-                    {st.issues.map((issue) => (
-                      <li key={issue}>— {issue}</li>
-                    ))}
-                  </ul>
-                )}
-
-                <div className="flex flex-col gap-2 border-t border-border-1 pt-3 text-sm">
-                  <Link
-                    href={`/mpz/studio/stationen/${encodeURIComponent(st.slug)}`}
-                    className="font-semibold text-accent underline-offset-2 hover:underline"
-                  >
-                    Bearbeiten
-                  </Link>
-                  <Link
-                    href={`/raum/${st.slug}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-semibold text-accent underline-offset-2 hover:underline"
-                  >
-                    ↗ Vorschau /raum/{st.slug}
-                  </Link>
-                  {calib && (
-                    <Link
-                      href={calib}
-                      className="font-semibold text-accent underline-offset-2 hover:underline"
-                    >
-                      {st.viewer === 'equirectangular'
-                        ? 'Kalibrieren (Hotspots + Startblick)'
-                        : 'Hotspot kalibrieren'}
-                    </Link>
-                  )}
-                  <Link
-                    href={`/mpz/studio/stationen/${encodeURIComponent(st.slug)}?tab=medien`}
-                    className="text-fg-2 underline-offset-2 hover:text-accent hover:underline"
-                  >
-                    Medien hochladen
-                  </Link>
-                </div>
-              </article>
-            )
-          })}
+        <div
+          className={
+            refreshing ? 'opacity-70 transition-opacity' : undefined
+          }
+        >
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {stations.map((st) => (
+              <StationCard key={st.slug} st={st} />
+            ))}
+          </div>
         </div>
       )}
     </div>

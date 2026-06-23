@@ -167,4 +167,13 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 
 - [x] #206 A1 Studio Tokens + Primitives (Post-Mortem: [post-mortem-206-2026-06-23.md](../reviews/post-mortem/post-mortem-206-2026-06-23.md))
 - [x] #207 A2 Shell visuell (Post-Mortem: [post-mortem-207-2026-06-23.md](../reviews/post-mortem/post-mortem-207-2026-06-23.md))
-- [ ] #209 B1 Stationen-Grid Kacheln (nächster Pilot-Schritt; parallel #208)
+- [x] #209 B1 Stationen-Grid Kacheln (Post-Mortem: [post-mortem-209-2026-06-23.md](../reviews/post-mortem/post-mortem-209-2026-06-23.md))
+
+### Archiv — Plan-Härtung #209 (2026-06-23)
+
+Plan (lokal): `.cursor/plans/#209_stationen-grid_744818b2.plan.md` · Pre-Mortems [1a](../reviews/pre-mortem/pre-mortem-1a-209-2026-06-23.md) / [1b](../reviews/pre-mortem/pre-mortem-1b-209-stationen-grid-2026-06-23.md)
+
+- ✅ **Positiver Befund (1b):** API-Fehlercode-Vertrag von `GET /api/mpz/validate` ist konsistent & Spec-konform (SCREAMING_SNAKE_CASE, kein `error`-vs-`code`-Widerspruch). Datenfluss über `useStudioValidation()` eliminiert den Doppel-Fetch zuverlässig — Epic-Leitplanke „keine API-Änderung" eingehalten.
+- 🔁 **Neues Shared-Modul `mpz-studio-health.ts`** (Ampel `healthDotClass`/`healthLabel`, aus `studio-shell.tsx` extrahiert) — **#210** (Detail-Header) und spätere Health-Consumer sollen dieses Modul importieren statt erneut zu kopieren. Behebt zugleich die toten `brand-green`/`brand-red`-Klassen (s. nächster Punkt).
+- 📉 **Scope-Reduktion in #209:** `MpzCard` `validation`→`accented`-Rename + Dashboard-Anpassung (Carry-over aus #208) **aus #209 herausgenommen** → eigener kleiner Folge-PR (orthogonal zum Grid; Grid nutzt `default`-Variante). Medien/Hotspot-Zähler pro Kachel **entfernt** (mockup-näher).
+- ⚠️ **Offener Latent-Bug (nicht #209):** tote `text-brand-green`/`text-brand-red`-KPI-Zahlen in `studio-dashboard.tsx` (Z. 238–247) — bekannter Bug, bewusst separater Fix, um Scope-Creep zu vermeiden.

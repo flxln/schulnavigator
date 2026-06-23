@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import {
   LayoutDashboard,
   Link2,
+  Loader2,
   MapPin,
   Menu,
   MessageSquare,
@@ -23,6 +24,10 @@ import {
   mpzSidebarGroupLabelClassName,
   mpzSidebarNavItemClassName,
 } from '@/components/mpz-studio/mpz-form-primitives'
+import {
+  healthDotClass,
+  healthLabel,
+} from '@/components/mpz-studio/mpz-studio-health'
 import { SaveValidatePanel } from '@/components/mpz-studio/save-validate-panel'
 import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
 
@@ -59,18 +64,6 @@ function readNavCollapsed(): boolean {
   }
 }
 
-function healthDotClass(health: StationHealth): string {
-  if (health === 'ok') return 'bg-accent'
-  if (health === 'warn') return 'bg-warn'
-  return 'bg-error'
-}
-
-function healthLabel(health: StationHealth): string {
-  if (health === 'ok') return 'Bereit'
-  if (health === 'warn') return 'Warnung'
-  return 'Fehler'
-}
-
 type Crumb = { group?: string; title: string }
 
 function breadcrumb(
@@ -105,6 +98,7 @@ export function StudioShell({ children }: StudioShellProps) {
     report,
     error,
     saveFeedback,
+    saveInProgress,
     saveAndValidate,
     clearSaveFeedback,
   } = useStudioValidation()
@@ -349,6 +343,7 @@ export function StudioShell({ children }: StudioShellProps) {
           <SaveControl
             dirty={dirty}
             loading={loading}
+            saveInProgress={saveInProgress}
             disabled={buttonDisabled}
             onClick={() => void saveAndValidate()}
           />
@@ -360,8 +355,9 @@ export function StudioShell({ children }: StudioShellProps) {
           </div>
         )}
 
-        {saveFeedback && (
+        {(saveInProgress || saveFeedback) && (
           <SaveValidatePanel
+            running={saveInProgress}
             feedback={saveFeedback}
             onDismiss={clearSaveFeedback}
           />
@@ -589,17 +585,26 @@ function ReadinessMeter({
 function SaveControl({
   dirty,
   loading,
+  saveInProgress,
   disabled,
   onClick,
 }: {
   dirty: boolean
   loading: boolean
+  saveInProgress: boolean
   disabled: boolean
   onClick: () => void
 }) {
+  const busy = loading || saveInProgress
+  const label = saveInProgress
+    ? 'Speichert…'
+    : loading
+      ? 'Prüft Struktur und Dateien…'
+      : 'Speichern & Validieren'
+
   return (
     <div className="flex items-center gap-2.5">
-      {dirty && !loading && (
+      {dirty && !busy && (
         <>
           <span
             className="size-1.5 shrink-0 rounded-full bg-warn sm:hidden"
@@ -616,10 +621,13 @@ function SaveControl({
         type="button"
         disabled={disabled}
         onClick={onClick}
-        title={disabled && !loading ? 'Keine ausstehenden Änderungen' : undefined}
+        title={disabled && !busy ? 'Keine ausstehenden Änderungen' : undefined}
         className={`${mpzButtonClassName('primary')} disabled:cursor-not-allowed disabled:border-border-1 disabled:bg-bg-2 disabled:text-fg-3 disabled:opacity-100 disabled:hover:bg-bg-2`}
       >
-        {loading ? 'Prüft Struktur und Dateien…' : 'Speichern & Validieren'}
+        {busy ? (
+          <Loader2 className="mr-2 size-4 shrink-0 animate-spin" aria-hidden />
+        ) : null}
+        {label}
       </button>
     </div>
   )

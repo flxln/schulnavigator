@@ -31,6 +31,6 @@ Domänen-Matrix MPZ Studio: [ideen/archiv/mpz-studio-ui.md](../ideen/archiv/mpz-
 
 Vollständiger Abgleich-Log (bis 2026-06-20): [archiv/sync-log-2026-06.md](./archiv/sync-log-2026-06.md).
 
-**Letzter dokumentierter Abgleich:** 2026-06-23 — #207 Shell visuell erledigt; Post-Mortem [207](../reviews/post-mortem/post-mortem-207-2026-06-23.md).
+**Letzter dokumentierter Abgleich:** 2026-06-23 — #209 B1 Stationen-Grid erledigt; Post-Mortem [209](../reviews/post-mortem/post-mortem-209-2026-06-23.md).
 
 Siehe auch [entscheidungen.md](../entscheidungen.md), [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren).
