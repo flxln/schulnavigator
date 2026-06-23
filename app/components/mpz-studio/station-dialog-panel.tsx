@@ -1,10 +1,11 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useCallback, useEffect, useMemo, useState, useTransition } from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useState, useTransition } from 'react'
 import { DialogAudioStateBadge } from '@/components/mpz-studio/dialog-audio-status-badges'
 import { StationDialogBubbleForm } from '@/components/mpz-studio/station-dialog-bubble-form'
 import { StationDialogGruppeForm } from '@/components/mpz-studio/station-dialog-gruppe-form'
+import { StationDialogSegmentAudioRow } from '@/components/mpz-studio/station-dialog-segment-audio-row'
 import { StationDialogSegmentForm } from '@/components/mpz-studio/station-dialog-segment-form'
 import {
   markMpzStudioDirty,
@@ -38,6 +39,9 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
   const [addingSegment, setAddingSegment] = useState(false)
   const [editingGruppeId, setEditingGruppeId] = useState<string | null>(null)
   const [addingGruppe, setAddingGruppe] = useState(false)
+  const [expandedAudioSegmentId, setExpandedAudioSegmentId] = useState<string | null>(null)
+  const [gruppenOpen, setGruppenOpen] = useState(false)
+  const [bubbleOpen, setBubbleOpen] = useState(false)
   const [isPending, startTransition] = useTransition()
 
   const audioBySegmentId = useMemo(() => {
@@ -68,6 +72,9 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
     setAddingSegment(false)
     setEditingGruppeId(null)
     setAddingGruppe(false)
+    setExpandedAudioSegmentId(null)
+    setGruppenOpen(false)
+    setBubbleOpen(false)
     setError(null)
     setSuccess(null)
   }, [dialog, slug])
@@ -266,15 +273,18 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
         </p>
       )}
 
-      {audioStatus && (audioStatus.missingCount > 0 || audioStatus.driftCount > 0) && (
+      {audioStatus &&
+        (audioStatus.orphans.length > 0 ||
+          audioStatus.driftCount > 0 ||
+          audioStatus.missingCount > 0) && (
         <div className="rounded-gs39-sm border border-brand-sun/40 bg-brand-sun/10 px-4 py-3 text-sm text-fg-1">
           <p>
             {audioStatus.missingCount > 0 &&
               `${audioStatus.missingCount} fehlende WAV-Clip(s). `}
             {audioStatus.driftCount > 0 &&
-              `${audioStatus.driftCount} Clip(s) mit Drift. `}
-            Dialog-Audio-Upload folgt mit #200. Bis dahin via CLI/curl (siehe
-            Entwickler-Doku).
+              `${audioStatus.driftCount} Clip(s) mit quelle-Drift. `}
+            {audioStatus.orphans.length > 0 &&
+              `Verwaiste WAVs: ${audioStatus.orphans.join(', ')}.`}
           </p>
         </div>
       )}
@@ -364,48 +374,81 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
               </tr>
             </thead>
             <tbody>
-              {dialog.segmente.map((seg, index) => (
-                <tr key={seg.id} className="border-b border-border-1/60 align-top">
-                  <td className="py-2 pr-2 font-mono text-fg-2">
-                    {String(index + 1).padStart(2, '0')}
-                  </td>
-                  <td className="py-2 pr-2 font-mono text-fg-1">{seg.id}</td>
-                  <td className="py-2 pr-2 capitalize text-fg-1">{seg.rolle}</td>
-                  <td className="max-w-[14rem] py-2 pr-2 text-fg-2" title={seg.text}>
-                    {seg.text.length > 60 ? `${seg.text.slice(0, 59)}…` : seg.text}
-                  </td>
-                  <td className="py-2 pr-2 text-fg-2">{seg.gruppe ?? '—'}</td>
-                  <td className="py-2 pr-2">
-                    {audioBySegmentId.get(seg.id) ? (
-                      <DialogAudioStateBadge state={audioBySegmentId.get(seg.id)!.state} />
-                    ) : (
-                      <span className="text-fg-3">—</span>
-                    )}
-                  </td>
-                  <td className="py-2 text-right">
-                    <div className="flex justify-end gap-1">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setEditingSegmentId(seg.id)
-                          setAddingSegment(false)
-                        }}
-                        className="rounded-gs39-sm border border-border-1 px-2 py-1 text-xs font-semibold text-fg-1"
-                      >
-                        Bearbeiten
-                      </button>
-                      <button
-                        type="button"
-                        disabled={isPending || dialog.segmente.length <= 1}
-                        onClick={() => void deleteSegment(seg.id)}
-                        className="rounded-gs39-sm border border-brand-red/40 px-2 py-1 text-xs font-semibold text-brand-red disabled:opacity-50"
-                      >
-                        Löschen
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+              {dialog.segmente.map((seg, index) => {
+                const audit = audioBySegmentId.get(seg.id)
+                const audioExpanded = expandedAudioSegmentId === seg.id
+                return (
+                  <Fragment key={seg.id}>
+                    <tr className="border-b border-border-1/60 align-top">
+                      <td className="py-2 pr-2 font-mono text-fg-2">
+                        {String(index + 1).padStart(2, '0')}
+                      </td>
+                      <td className="py-2 pr-2 font-mono text-fg-1">{seg.id}</td>
+                      <td className="py-2 pr-2 capitalize text-fg-1">{seg.rolle}</td>
+                      <td className="max-w-[14rem] py-2 pr-2 text-fg-2" title={seg.text}>
+                        {seg.text.length > 60 ? `${seg.text.slice(0, 59)}…` : seg.text}
+                      </td>
+                      <td className="py-2 pr-2 text-fg-2">{seg.gruppe ?? '—'}</td>
+                      <td className="py-2 pr-2">
+                        {audit ? (
+                          <DialogAudioStateBadge state={audit.state} />
+                        ) : (
+                          <span className="text-fg-3">—</span>
+                        )}
+                      </td>
+                      <td className="py-2 text-right">
+                        <div className="flex justify-end gap-1">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setExpandedAudioSegmentId((prev) =>
+                                prev === seg.id ? null : seg.id,
+                              )
+                            }
+                            className={`rounded-gs39-sm border px-2 py-1 text-xs font-semibold ${
+                              audioExpanded
+                                ? 'border-accent bg-accent/10 text-accent'
+                                : 'border-border-1 text-fg-1'
+                            }`}
+                          >
+                            Audio
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEditingSegmentId(seg.id)
+                              setAddingSegment(false)
+                            }}
+                            className="rounded-gs39-sm border border-border-1 px-2 py-1 text-xs font-semibold text-fg-1"
+                          >
+                            Bearbeiten
+                          </button>
+                          <button
+                            type="button"
+                            disabled={isPending || dialog.segmente.length <= 1}
+                            onClick={() => void deleteSegment(seg.id)}
+                            className="rounded-gs39-sm border border-brand-red/40 px-2 py-1 text-xs font-semibold text-brand-red disabled:opacity-50"
+                          >
+                            Löschen
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    {audioExpanded && audit ? (
+                      <tr className="border-b border-border-1/60">
+                        <td colSpan={7} className="py-2">
+                          <StationDialogSegmentAudioRow
+                            slug={slug}
+                            audit={audit}
+                            disabled={isPending}
+                            onMutated={loadAudioStatus}
+                          />
+                        </td>
+                      </tr>
+                    ) : null}
+                  </Fragment>
+                )
+              })}
             </tbody>
           </table>
         </div>
@@ -430,23 +473,34 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
 
       <section>
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-          <h3 className="text-sm font-bold uppercase tracking-wide text-fg-3">
-            Gruppen ({gruppen.length})
-          </h3>
-          {!addingGruppe && (
+          <div className="flex min-w-0 flex-1 items-center justify-between gap-2">
             <button
               type="button"
-              onClick={() => {
-                setAddingGruppe(true)
-                setEditingGruppeId(null)
-              }}
-              className="rounded-gs39-sm border border-border-1 px-3 py-1.5 text-sm font-semibold text-fg-1"
+              className="flex min-w-0 flex-1 items-center gap-2 text-left text-sm font-bold uppercase tracking-wide text-fg-3"
+              onClick={() => setGruppenOpen((open) => !open)}
+              aria-expanded={gruppenOpen}
             >
-              Gruppe hinzufügen
+              <span className="text-fg-2">{gruppenOpen ? '▾' : '▸'}</span>
+              Gruppen ({gruppen.length})
             </button>
-          )}
+            {!addingGruppe && (
+              <button
+                type="button"
+                onClick={() => {
+                  setAddingGruppe(true)
+                  setEditingGruppeId(null)
+                  setGruppenOpen(true)
+                }}
+                className="shrink-0 rounded-gs39-sm border border-border-1 px-3 py-1.5 text-sm font-semibold text-fg-1"
+              >
+                Gruppe hinzufügen
+              </button>
+            )}
+          </div>
         </div>
 
+        {gruppenOpen && (
+          <>
         {addingGruppe && (
           <div className="mb-4">
             <StationDialogGruppeForm
@@ -511,18 +565,28 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
             ))}
           </ul>
         )}
+          </>
+        )}
       </section>
 
       <section>
-        <h3 className="mb-3 text-sm font-bold uppercase tracking-wide text-fg-3">
+        <button
+          type="button"
+          className="mb-3 flex w-full items-center gap-2 text-left text-sm font-bold uppercase tracking-wide text-fg-3"
+          onClick={() => setBubbleOpen((open) => !open)}
+          aria-expanded={bubbleOpen}
+        >
+          <span className="text-fg-2">{bubbleOpen ? '▾' : '▸'}</span>
           Sprechblasen-Layout (bubble)
-        </h3>
+        </button>
+        {bubbleOpen && (
         <StationDialogBubbleForm
           slug={slug}
           bubble={dialog.bubble}
           onSuccess={setSuccess}
           onError={setError}
         />
+        )}
       </section>
     </div>
   )

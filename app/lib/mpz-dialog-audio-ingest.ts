@@ -338,6 +338,59 @@ export async function ingestDialogClip(
   return withMpzWriteLock(() => ingestDialogClipInner(input, io))
 }
 
+export interface RemoveDialogClipResult {
+  slug: string
+  segmentIndex: number
+  expectedClip: string
+  fileDeleted: boolean
+}
+
+// FIXME: MpzUploadError nutzt 'VALIDATION' statt 'VALIDATION_FAILED' (error-conventions.mdc).
+// Normalisierung mit #199-Tech-Debt — hier modul-konsistent mit ingestDialogClip belassen.
+
+export async function removeDialogClip(
+  slug: string,
+  segmentIndex: number,
+  io: MpzContentIo = createMpzContentIo(),
+): Promise<RemoveDialogClipResult> {
+  if (!isHubSlug(slug)) {
+    throw new MpzUploadError(
+      'VALIDATION',
+      `Unbekannter slug "${slug}". Erlaubt: ${getHubSlugOrder().join(', ')}.`,
+    )
+  }
+
+  const data = await io.readStations()
+  const station = data.stations.find((s) => s.slug === slug)
+  if (!station?.dialog?.segmente?.length) {
+    throw new MpzUploadError(
+      'VALIDATION',
+      `Station "${slug}" hat keinen Dialog (dialog.segmente).`,
+    )
+  }
+
+  const { segmente } = station.dialog
+  if (segmentIndex < 0 || segmentIndex >= segmente.length) {
+    throw new MpzUploadError(
+      'VALIDATION',
+      `segmentIndex ${segmentIndex} außerhalb (0–${segmente.length - 1}).`,
+    )
+  }
+
+  const segment = segmente[segmentIndex]!
+  const expectedClip = buildClipName(segmentIndex, segment.rolle)
+  const { appRoot } = io.getPaths()
+  const destPath = dialogAudioFsPath(appRoot, slug, expectedClip)
+
+  let fileDeleted = false
+  if (existsSync(destPath)) {
+    await unlink(destPath)
+    fileDeleted = true
+  }
+
+  return { slug, segmentIndex, expectedClip, fileDeleted }
+}
+
 /** Nur für Tests: Queue zurücksetzen. */
 export function resetDialogIngestLockForTests(): void {
   resetMpzWriteLockForTests()

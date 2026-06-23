@@ -1,4 +1,4 @@
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -8,6 +8,7 @@ import {
   auditDialogAudio,
   deriveSegmentState,
   ingestDialogClip,
+  removeDialogClip,
   resetDialogIngestLockForTests,
   validateDialogWavUpload,
 } from '@/lib/mpz-dialog-audio-ingest'
@@ -237,5 +238,56 @@ describe('mpz-dialog-audio-ingest · auditDialogAudio', () => {
     } finally {
       rmSync(root, { recursive: true, force: true })
     }
+  })
+})
+
+describe('mpz-dialog-audio-ingest · removeDialogClip', () => {
+  it('löscht WAV am Konventionspfad, quelle in JSON bleibt', async () => {
+    const root = setupTempApp()
+    const clipPath = join(root, 'content', 'dialog-audio', 'daz', '01-frieda.wav')
+    writeFileSync(clipPath, WAV_A)
+    const io = createMpzContentIo({
+      appRoot: root,
+      stationsPath: join(root, 'data', 'stations.json'),
+      backupPath: join(root, 'data', 'stations.json.bak'),
+    })
+
+    const result = await removeDialogClip('daz', 0, io)
+    expect(result).toMatchObject({
+      slug: 'daz',
+      segmentIndex: 0,
+      expectedClip: '01-frieda.wav',
+      fileDeleted: true,
+    })
+    expect(existsSync(clipPath)).toBe(false)
+
+    const data = JSON.parse(readFileSync(join(root, 'data', 'stations.json'), 'utf8')) as StationsFile
+    expect(dazStation(data).dialog?.segmente[0].quelle).toBe('/api/dialog/daz/01-frieda.wav')
+    rmSync(root, { recursive: true, force: true })
+  })
+
+  it('ist idempotent wenn Datei fehlt', async () => {
+    const root = setupTempApp()
+    const io = createMpzContentIo({
+      appRoot: root,
+      stationsPath: join(root, 'data', 'stations.json'),
+      backupPath: join(root, 'data', 'stations.json.bak'),
+    })
+
+    const result = await removeDialogClip('daz', 0, io)
+    expect(result.fileDeleted).toBe(false)
+    rmSync(root, { recursive: true, force: true })
+  })
+
+  it('wirft VALIDATION bei ungültigem segmentIndex', async () => {
+    const root = setupTempApp()
+    const io = createMpzContentIo({
+      appRoot: root,
+      stationsPath: join(root, 'data', 'stations.json'),
+      backupPath: join(root, 'data', 'stations.json.bak'),
+    })
+
+    await expect(removeDialogClip('daz', 99, io)).rejects.toMatchObject({ code: 'VALIDATION' })
+    rmSync(root, { recursive: true, force: true })
   })
 })

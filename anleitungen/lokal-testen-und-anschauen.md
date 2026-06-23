@@ -88,13 +88,16 @@ curl -X POST http://localhost:3000/api/mpz/media/ingest \
   -F "file=@./foto.jpg"
 ```
 
-**Dialog-Audio (Issue #148).** Studio-UI für WAV-Upload folgt mit Issue #200. Bis dahin per curl (oder CLI `content:ingest-dialog`). Datei landet unter `content/dialog-audio/{slug}/NN-rolle.wav`; `dialog.segmente[i].quelle` wird auf `/api/dialog/{slug}/…` gesetzt. Nur echte WAV (max. 15 MB); Reihenfolge der `dialog.segmente[]` ist immutabel (siehe [content-einpflegen.md](./content-einpflegen.md)). Legacy-Route `/mpz/studio/dialog-audio` leitet auf die Stationsliste um.
+**Dialog-Audio (Issue #148, Studio-UI #200).** Im Studio: Station öffnen → Tab **Dialog** → Segment-Zeile **Audio** aufklappen → WAV hochladen/ersetzen, Vorschau abspielen, Clip entfernen (nur Datei). Alternativ per curl oder CLI `content:ingest-dialog`. Datei landet unter `content/dialog-audio/{slug}/NN-rolle.wav`; `dialog.segmente[i].quelle` wird auf `/api/dialog/{slug}/…` gesetzt. Nur echte WAV (max. 15 MB); Reihenfolge der `dialog.segmente[]` ist immutabel (siehe [content-einpflegen.md](./content-einpflegen.md)). Legacy-Route `/mpz/studio/dialog-audio` leitet auf die Stationsliste um.
 
 ```bash
 curl -X POST "http://localhost:3000/api/mpz/dialog-audio/ingest" \
   -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET" \
   -F "slug=daz" -F "segmentIndex=0" -F "collision=replace" \
   -F "file=@./01-frieda.wav"
+
+curl -X DELETE "http://localhost:3000/api/mpz/dialog-audio/clip?slug=daz&segmentIndex=0" \
+  -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET"
 ```
 
 **Hotspot-Kalibrierung (Issue #149).** Zuerst `/mpz/unlock`. Im Studio: **Dashboard** (`/mpz/studio`) oder **Stationen** (`/mpz/studio/stationen`) — dort Vorschau und Kalibrier-Links je Station.
@@ -126,7 +129,7 @@ curl -X POST http://localhost:3000/api/mpz/view/flat \
 | `stammdaten` (Default) | `titel`/`beschreibung` ändern → Speichern; Raumbild Flat/360° hochladen (#173) → Vorschau aktualisiert |
 | `medien` | **Bearbeiten** (PATCH Metadaten, #171); **Datei ersetzen** (#188); **Thumbnail/Poster hochladen** (#189); **link**/**embed** per Modal anlegen (#172); **Medien hinzufügen** (Modal); Entfernen mit Bestätigung |
 | `hotspots` | Medien-Hotspot anlegen/bearbeiten/entfernen; Dialog-Hotspot mit Maskottchen (#176); Kalibrier-Link |
-| `dialog` | Nur `daz`/`pc-raum`: Segment-Text ändern, Gruppe anlegen, `bubble`-Felder (#175); Dialog-WAV-Upload im Studio folgt #200 |
+| `dialog` | Alle Stationen mit Dialog: Segmente, Gruppen, `bubble` (#175); Dialog anlegen/entfernen (#199); pro Segment-Zeile Audio: Upload, Vorschau, Clip entfernen (#200) |
 
 **MPZ Studio v2.1 — Medien-Datei ersetzen (#187–#189).** Nach `/mpz/unlock`: [`/mpz/studio/stationen/klassenzimmer?tab=medien`](https://localhost:3000/mpz/studio/stationen/klassenzimmer?tab=medien) (oder andere Station mit audio/foto/video-Medien).
 

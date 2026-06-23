@@ -117,7 +117,7 @@ Tab **Dialog** enthält dann u. a.:
 | `DialogAudioPanel` global | Logik in Segment-Zeile / Dialog-Tab integrieren |
 | Link „→ Dialog-Audio-Tab“ im Dialog-Panel | entfällt — Aktionen in der Zeile |
 
-API bleibt: `POST /api/mpz/dialog-audio/ingest`, `GET …/status` — nur UI-Einstieg ändert sich.
+API: `POST /api/mpz/dialog-audio/ingest`, `GET …/status`, `DELETE …/clip` (nur WAV-Datei löschen, kein JSON-Write) — UI-Einstieg in der Segment-Zeile (#200).
 
 ---
 

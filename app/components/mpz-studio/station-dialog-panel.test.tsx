@@ -63,12 +63,53 @@ describe('StationDialogPanel', () => {
       'fetch',
       vi.fn().mockResolvedValue({
         ok: true,
-        json: async () => ({ slug: 'daz', segments: [], orphans: [], missingCount: 0, driftCount: 0 }),
+        json: async () => ({
+          slug: 'daz',
+          segments: [
+            {
+              segmentIndex: 0,
+              segmentId: station.dialog!.segmente[0]!.id,
+              rolle: 'frieda',
+              textPreview: 'x',
+              expectedClip: '01-frieda.wav',
+              quelle: '/api/dialog/daz/01-frieda.wav',
+              fileExists: true,
+              quelleMatchesConvention: true,
+              state: 'ok',
+            },
+          ],
+          orphans: [],
+          missingCount: 0,
+          driftCount: 0,
+        }),
       }),
     )
 
     render(<StationDialogPanel slug="daz" station={station} />)
 
     expect(screen.getByRole('button', { name: 'Dialog entfernen' })).toBeTruthy()
+    expect(screen.queryByText(/folgt mit #200/)).toBeNull()
+    expect(screen.getAllByRole('button', { name: 'Audio' }).length).toBeGreaterThan(0)
+  })
+
+  it('klappt Gruppen-Bereich auf ohne verschachtelte Buttons', () => {
+    const station = getStationBySlug('daz')!
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ slug: 'daz', segments: [], orphans: [], missingCount: 0, driftCount: 0 }),
+      }),
+    )
+
+    render(<StationDialogPanel slug="daz" station={station} />)
+
+    const toggle = screen.getByRole('button', { name: /Gruppen/ })
+    const addButton = screen.getByRole('button', { name: 'Gruppe hinzufügen' })
+    expect(toggle).not.toBe(addButton)
+
+    fireEvent.click(toggle)
+    expect(toggle.getAttribute('aria-expanded')).toBe('true')
+    expect(screen.getByText(/Hello! · Hola!/)).toBeTruthy()
   })
 })
