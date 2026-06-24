@@ -443,7 +443,55 @@
       "viewer": "equirectangular",
       "panorama360": "/stations/360/werken.jpg",
       "bild": "/stations/werken.jpg",
-      "medien": []
+      "medien": [
+        {
+          "id": "werken-werken-elektrobaukasten",
+          "typ": "foto",
+          "quelle": "/media/werken/fotos/werken-elektrobaukasten.jpg",
+          "untertitel": "Elektrobaukasten"
+        },
+        {
+          "id": "werken-werkenzimmer-dinge-aus-dem-unterricht",
+          "typ": "foto",
+          "quelle": "/media/werken/fotos/werkenzimmer-dinge-aus-dem-unterricht.jpg",
+          "untertitel": "Dinge aus dem Unterricht"
+        },
+        {
+          "id": "werken-werken-das-kleine-quadrat",
+          "typ": "video",
+          "quelle": "/media/werken/video/werken-das-kleine-quadrat.mp4",
+          "untertitel": "Das kleine Quadrat",
+          "videoSource": "upload"
+        }
+      ],
+      "hotspots360": [
+        {
+          "id": "hs-elektrobaukasten",
+          "label": "Elektrobaukasten",
+          "yaw": 91.1,
+          "pitch": -19.2,
+          "mediumId": "werken-werken-elektrobaukasten",
+          "icon": "/media/werken/icons/werken-elektrobaukasten.png"
+        },
+        {
+          "id": "hs-dinge-aus-dem-unterricht",
+          "yaw": 62.1,
+          "pitch": -44.5,
+          "mediumId": "werken-werkenzimmer-dinge-aus-dem-unterricht",
+          "icon": "/media/werken/icons/werkenzimmer-dinge-aus-dem-unterricht.png",
+          "iconSize": 0.25
+        },
+        {
+          "id": "hs-das-kleine-quadrat",
+          "yaw": 63.1,
+          "pitch": 6.7,
+          "mediumId": "werken-werken-das-kleine-quadrat",
+          "icon": "/media/werken/icons/video.svg",
+          "iconSize": 0.25
+        }
+      ],
+      "startYaw": 65.7,
+      "startPitch": -8.4
     },
     {
       "slug": "speiseraum",
