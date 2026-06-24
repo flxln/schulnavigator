@@ -13,7 +13,7 @@ Coach (ADR-019) bietet text-only Einblendungen, ist aber **fortschritts-getrigge
 ## Entscheidung
 
 1. **Schema:** `DialogSegment.quelle` optional. Fehlt `quelle` → Text-only-Segment (kein Audio, kein Asset-Check).
-2. **Studio:** Checkbox „Mit Audio“; **Default aus** (neues Segment = nur Text). `hasAudio: true` setzt Konventions-`quelle` wie bisher.
+2. **Studio:** Checkbox „Mit Audio“; **Default aus** (neues Segment = nur Text). `hasAudio: true` ist Client-Hinweis für Chain-on-Save (WAV nach Segment-Save); **`quelle` setzt erst `ingestDialogClip`**, nicht das Segment-PATCH/POST — sonst blockiert postValidate vor dem Upload.
 3. **Viewer:** Text-only-Segmente zeigen Sprechblase ohne `audio.play()`. **Tap auf Blase** → nächstes Segment oder Dialog-Ende (kein Auto-Timer).
 4. **Gemischte Dialoge:** Audio-Segmente weiter per `ended`/`error` auto-advance; Clip-Namen weiter indexbasiert in `segmente[]`.
 5. **Build-Gate:** Fehlende WAV bei **gesetzter** `quelle` bleibt Deploy-Error (analog Coach ADR-025).

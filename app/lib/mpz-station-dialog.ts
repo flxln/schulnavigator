@@ -61,7 +61,7 @@ export type AddDialogSegmentInput = {
   text?: string
   gruppe?: string
   tail?: DialogBubbleTail
-  /** Default false — Segment ohne Audio (Text-only). */
+  /** Client-Hinweis für Chain-on-Save (WAV nach Segment-Save). Server setzt quelle erst per ingestDialogClip; nur `false` entfernt quelle beim Patch. */
   hasAudio?: boolean
 }
 
@@ -488,9 +488,6 @@ export async function addDialogSegment(
         rolle,
         text: input.text ?? '',
       }
-      if (input.hasAudio === true) {
-        segment.quelle = dialogApiQuelle(slug, buildClipName(index, rolle))
-      }
       if (input.gruppe !== undefined) {
         segment.gruppe = input.gruppe
       }
@@ -545,16 +542,8 @@ export async function patchDialogSegment(
       if (patch.rolle !== undefined) {
         segment.rolle = validateRolle(patch.rolle)
       }
-      if (patch.hasAudio !== undefined) {
-        if (patch.hasAudio) {
-          const index = dialog.segmente.findIndex((s) => s.id === segmentId)
-          segment.quelle = dialogApiQuelle(
-            slug,
-            buildClipName(index, segment.rolle),
-          )
-        } else {
-          delete segment.quelle
-        }
+      if (patch.hasAudio === false) {
+        delete segment.quelle
       }
     },
     needsAudioSync,

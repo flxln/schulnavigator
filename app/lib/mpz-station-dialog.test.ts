@@ -114,7 +114,7 @@ describe('addDialogSegment', () => {
     expect(last.quelle).toBeUndefined()
   })
 
-  it('hängt Audio-Segment mit quelle an', async () => {
+  it('legt Audio-Segment ohne quelle an (quelle erst nach WAV-Ingest)', async () => {
     const io = makeTempIo()
     const before = dazDialog(io).segmente.length
     const result = await addDialogSegment(
@@ -123,7 +123,8 @@ describe('addDialogSegment', () => {
       io,
     )
     const last = result.station.dialog!.segmente.at(-1)!
-    expect(last.quelle).toBe(`/api/dialog/daz/${String(before + 1).padStart(2, '0')}-frieda.wav`)
+    expect(last.quelle).toBeUndefined()
+    expect(result.station.dialog!.segmente).toHaveLength(before + 1)
   })
 })
 

@@ -17,6 +17,12 @@
             "bookcreator.com",
             "delightex.com"
           ]
+        },
+        {
+          "id": "klassenzimmer-klassenzimmer-tagesablauf-2",
+          "typ": "audio",
+          "quelle": "/media/klassenzimmer/audio/klassenzimmer-tagesablauf-2.mp3",
+          "untertitel": "Tagesablauf"
         }
       ],
       "hotspots360": [
@@ -27,8 +33,31 @@
           "mediumId": "dx-schule-zukunft",
           "icon": "/stations-icons/klassenzimmer/embed.svg",
           "iconSize": 0.24
+        },
+        {
+          "id": "hs-frieda-tagesablauf",
+          "action": "dialog",
+          "mascot": "frieda",
+          "yaw": 32.2,
+          "pitch": -43.2,
+          "mascotSize": 0.35
         }
-      ]
+      ],
+      "dialog": {
+        "figuren": [
+          "frieda",
+          "otto"
+        ],
+        "segmente": [
+          {
+            "id": "k1",
+            "rolle": "frieda",
+            "text": "",
+            "quelle": "/api/dialog/klassenzimmer/01-frieda.wav"
+          }
+        ],
+        "gruppen": []
+      }
     },
     {
       "slug": "musik",

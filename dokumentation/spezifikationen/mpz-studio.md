@@ -192,7 +192,7 @@ Querschnitt: `thumbnail`, Hotspot-`icon` / `iconSize` — Verknüpfung mit Hotsp
 | `gruppen[]` | Optionaler Gruppentext; auf Segmenten **jeder** Rolle referenzierbar (Validator erzwingt kein `beide`). Typischer Fall: gemeinsame `beide`-Sequenz wie `gruesse`. |
 | `bubble` | `y`, `x`, `maxWidth`, `fontSize`, `followPan` (ADR-015) |
 
-WAV-Upload erzeugt automatisch `quelle: "/api/dialog/{slug}/01-frieda.wav"` (Konvention `DIALOG_CLIP_RE`). Warnung bei fehlender Datei.
+WAV-Upload (Ingest) erzeugt automatisch `quelle: "/api/dialog/{slug}/01-frieda.wav"` (Konvention `DIALOG_CLIP_RE`). Segment-Save mit Häkchen „Mit Audio“ setzt `quelle` **nicht** vorab — Chain-on-Save: erst Segment speichern, dann Ingest (sonst postValidate „Datei fehlt“). Warnung bei fehlender Datei, wenn `quelle` gesetzt ist.
 
 ### Coach ([ADR-019](../adr/019-coach-fortschritt-einblendung.md))
 
