@@ -19,6 +19,8 @@ export interface ValidateStationAssetsResult {
 
 export interface ValidateStationAssetsOptions {
   appRoot: string
+  /** Default true — bei false nur Pfad-Auflösung, kein existsSync/Format-Check (Build ohne Medien). */
+  checkFiles?: boolean
 }
 
 function resolveAssetPath(appRoot: string, urlPath: string): string | null {
@@ -165,10 +167,14 @@ function checkPath(
   appRoot: string,
   errors: string[],
   warnings: string[],
+  checkFiles: boolean,
 ): void {
   const fsPath = resolveAssetPath(appRoot, urlPath)
   if (!fsPath) {
     errors.push(`${label}: ungültiger Pfad "${urlPath}"`)
+    return
+  }
+  if (!checkFiles) {
     return
   }
   if (!existsSync(fsPath)) {
@@ -193,7 +199,7 @@ function checkPath(
 
 export function validateStationAssets(
   stationsFile: StationsFile,
-  { appRoot }: ValidateStationAssetsOptions,
+  { appRoot, checkFiles = true }: ValidateStationAssetsOptions,
 ): ValidateStationAssetsResult {
   const errors: string[] = []
   const warnings: string[] = []
@@ -207,11 +213,15 @@ export function validateStationAssets(
   for (const st of stations) {
     const slug = typeof st.slug === 'string' ? st.slug : '?'
     if (typeof st.bild === 'string') {
-      checkPath(`Station ${slug} (bild)`, st.bild, appRoot, errors, warnings)
+      checkPath(`Station ${slug} (bild)`, st.bild, appRoot, errors, warnings, checkFiles)
     }
     if (st.viewer === 'equirectangular' && typeof st.panorama360 === 'string') {
       const fsPath = resolveAssetPath(appRoot, st.panorama360)
-      if (!fsPath || !existsSync(fsPath)) {
+      if (!fsPath) {
+        errors.push(`Station ${slug} (panorama360): ungültiger Pfad "${st.panorama360}"`)
+      } else if (!checkFiles) {
+        /* Struktur-Modus: Pfad-Auflösung reicht */
+      } else if (!existsSync(fsPath)) {
         errors.push(`Station ${slug} (panorama360): Datei fehlt — ${st.panorama360}`)
       } else if (/\.jpe?g$/i.test(fsPath)) {
         checkPanorama360Asset(
@@ -230,13 +240,13 @@ export function validateStationAssets(
           warnings,
         )
       } else {
-        checkPath(`Station ${slug} (panorama360)`, st.panorama360, appRoot, errors, warnings)
+        checkPath(`Station ${slug} (panorama360)`, st.panorama360, appRoot, errors, warnings, checkFiles)
       }
     }
     const medien = Array.isArray(st.medien) ? st.medien : []
     for (const m of medien) {
       if (m?.quelle && typeof m.quelle === 'string' && m.quelle.startsWith('/')) {
-        checkPath(`Station ${slug} (medium ${m.id ?? '?'})`, m.quelle, appRoot, errors, warnings)
+        checkPath(`Station ${slug} (medium ${m.id ?? '?'})`, m.quelle, appRoot, errors, warnings, checkFiles)
       }
       if (m?.poster && typeof m.poster === 'string' && m.poster.startsWith('/')) {
         checkPath(
@@ -245,6 +255,7 @@ export function validateStationAssets(
           appRoot,
           errors,
           warnings,
+          checkFiles,
         )
       }
       if (m?.thumbnail && typeof m.thumbnail === 'string' && m.thumbnail.startsWith('/')) {
@@ -254,13 +265,14 @@ export function validateStationAssets(
           appRoot,
           errors,
           warnings,
+          checkFiles,
         )
       }
     }
     const hotspots = Array.isArray(st.hotspots) ? st.hotspots : []
     for (const hs of hotspots) {
       if (hs?.icon && typeof hs.icon === 'string' && hs.icon.startsWith('/')) {
-        checkPath(`Station ${slug} (hotspot ${hs.id ?? '?'} icon)`, hs.icon, appRoot, errors, warnings)
+        checkPath(`Station ${slug} (hotspot ${hs.id ?? '?'} icon)`, hs.icon, appRoot, errors, warnings, checkFiles)
       }
     }
     const hotspots360 = Array.isArray(st.hotspots360) ? st.hotspots360 : []
@@ -272,6 +284,7 @@ export function validateStationAssets(
           appRoot,
           errors,
           warnings,
+          checkFiles,
         )
       }
     }
@@ -279,7 +292,7 @@ export function validateStationAssets(
     if (Array.isArray(dialogSegs)) {
       for (const seg of dialogSegs) {
         if (seg?.quelle && typeof seg.quelle === 'string' && seg.quelle.startsWith('/')) {
-          checkPath(`Station ${slug} (dialog ${seg.id ?? '?'})`, seg.quelle, appRoot, errors, warnings)
+          checkPath(`Station ${slug} (dialog ${seg.id ?? '?'})`, seg.quelle, appRoot, errors, warnings, checkFiles)
         }
       }
     }

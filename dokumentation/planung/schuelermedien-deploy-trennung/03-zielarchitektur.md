@@ -63,7 +63,7 @@ flowchart TB
 
 **Transport:** `rsync` über SSH (empfohlen) oder vergleichbares Tool — idempotent, nur geänderte Dateien.
 
-**Auslieferung:** unverändert über Next.js `public/` und API-Routen (`/api/dialog/…`, `/api/coach/…`).
+**Auslieferung:** Next.js `public/` (Bahn A) und API-Routen (`/api/dialog/…`, `/api/coach/…`). Bahn-B-Medien unter `/media/…` werden zur Laufzeit über [`app/media/[...path]/route.ts`](../../../app/app/media/[...path]/route.ts) aus dem Volume gestreamt (Standalone listet beim Build nur vorhandene `public/media`-Dateien).
 
 ## Docker / Coolify — technische Leitplanken
 

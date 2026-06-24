@@ -3,6 +3,7 @@ import { cleanup, render, screen, within } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { StationHotspotsTable } from '@/components/mpz-studio/station-hotspots-table'
 import { getStationBySlug } from '@/lib/stations'
+import { studioDemoKlassenzimmerStation } from '@/lib/test-fixtures/studio-demo-klassenzimmer'
 
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ refresh: vi.fn() }),
@@ -43,7 +44,7 @@ afterEach(() => {
 
 describe('StationHotspotsTable', () => {
   it('zeigt Sphere-Hotspots für klassenzimmer', () => {
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     render(<StationHotspotsTable slug="klassenzimmer" station={station} />)
 
     expect(screen.getByText('hs-text')).toBeTruthy()
@@ -74,7 +75,7 @@ describe('StationHotspotsTable', () => {
   })
 
   it('zeigt Add-Formular bei Station mit Medien', () => {
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     vi.stubGlobal(
       'fetch',
       vi.fn().mockResolvedValue({
@@ -92,7 +93,13 @@ describe('StationHotspotsTable', () => {
   })
 
   it('ohne Medien: Ingest-Hinweis statt Anlege-Button', () => {
-    const station = { ...getStationBySlug('kunst')!, medien: [] }
+    const station = {
+      ...getStationBySlug('kunst')!,
+      medien: [],
+      hotspots: undefined,
+      hotspots360: undefined,
+      dialog: undefined,
+    }
     vi.stubGlobal(
       'fetch',
       vi.fn().mockResolvedValue({

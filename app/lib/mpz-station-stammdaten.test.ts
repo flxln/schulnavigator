@@ -11,8 +11,9 @@ import {
   readStationStammdaten,
 } from '@/lib/mpz-station-stammdaten'
 import type { StationsFile } from '@/lib/types'
+import { studioDemoStationsFile } from '@/lib/test-fixtures/studio-demo-klassenzimmer'
 
-const fixture = raw as StationsFile
+const fixture = studioDemoStationsFile(raw as StationsFile)
 
 function makeTempIo(initial: StationsFile = fixture) {
   const appRoot = mkdtempSync(join(tmpdir(), 'mpz-stammdaten-'))
@@ -114,10 +115,10 @@ describe('mpz-station-stammdaten', () => {
     const io = makeTempIo()
     const { stationsPath, appRoot } = io.getPaths()
     temps.push(appRoot)
-    await patchStationStammdaten('werken', { viewer: 'flat' }, io)
+    await patchStationStammdaten('hort', { viewer: 'flat' }, io)
     const onDisk = JSON.parse(readFileSync(stationsPath, 'utf8')) as StationsFile
-    const werken = onDisk.stations.find((s) => s.slug === 'werken')
-    expect(werken?.viewer).toBeUndefined()
+    const hort = onDisk.stations.find((s) => s.slug === 'hort')
+    expect(hort?.viewer).toBeUndefined()
   })
 
   it('Viewer-Wechsel zu equirectangular ohne panorama360 → VALIDATION', async () => {

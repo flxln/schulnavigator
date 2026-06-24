@@ -205,7 +205,7 @@ Schüler-Medien **nie** per `git add` / `git push` auf GitHub legen. Sie werden 
 - Raumbilder `public/stations/` (LFS)
 - Generische Hotspot-Presets `public/stations-icons/{slug}/`
 
-`.gitignore` unter `app/` schützt Bahn B. Nach Studio-Upload zeigt `git status` Medien als ignoriert. Coolify-Build ohne Medien im Clone: Structure-Validatoren in #229.
+`.gitignore` unter `app/` schützt Bahn B. Nach Studio-Upload zeigt `git status` Medien als ignoriert. Der **Coolify-Build** nutzt `validate:stations:structure` und `validate:coach:structure` (kein `existsSync`); volle Validatoren laufen lokal vor rsync.
 
 Planung: [schuelermedien-deploy-trennung](../dokumentation/planung/schuelermedien-deploy-trennung/README.md) · Inventar: [07-inventar-github.md](../dokumentation/planung/schuelermedien-deploy-trennung/07-inventar-github.md)
 
@@ -330,6 +330,8 @@ curl -s https://schulnavigator.mpz.schule/stations/musik.jpg | head -c 2 | xxd  
 
 **Wenn Coolify-Build mit LFS-Fehler abbricht** (`ist ein Git-LFS-Pointer` in `validate:stations`):
 
+Dies betrifft nur noch **lokale** volle Validierung oder veraltete Build-Skripte. Der Standard-Build nutzt `:structure`-Validatoren ohne `existsSync`. Falls dennoch LFS-Fehler bei Raumbildern (`public/stations/`):
+
 1. Coolify: Build-Umgebung muss `git-lfs` haben und beim Clone smudgen (`git lfs pull` nach Checkout), **oder**
 2. Nixpacks/Pre-Build-Hook: `apk add git-lfs && git lfs pull` (Alpine) vor `docker build`.
 
@@ -439,6 +441,57 @@ Lokal entspricht Variante 1: `cd app && docker build -t schulnavigator-app .`
 6. **Health Check** (Coolify UI, bei Application-Typ): Pfad `/api/health`, erwarteter Status **200**. Zusätzlich enthält das Image einen Docker-`HEALTHCHECK` auf dieselbe URL.
 
 7. **Deploy** auslösen und Build-Logs bis „Running“ verfolgen.
+
+### Schüler-Medien: Persistent Volumes (Prod, #229)
+
+**Prod-Application** (`schulnavigator.mpz.schule`): drei Volume-Mounts — **Dev** zunächst ohne Mounts (Medien aus lokalem Clone/Branch).
+
+| Coolify-Name | Host-Pfad | Container-Pfad |
+|--------------|-----------|----------------|
+| media | `/data/schulnavigator/media` | `/app/public/media` |
+| dialog-audio | `/data/schulnavigator/dialog-audio` | `/app/content/dialog-audio` |
+| coach-audio | `/data/schulnavigator/coach-audio` | `/app/content/coach-audio` |
+
+**Einmalig auf dem VPS** (SSH als Admin):
+
+```bash
+sudo mkdir -p /data/schulnavigator/{media,dialog-audio,coach-audio}
+sudo chown -R 1001:1001 /data/schulnavigator
+sudo chmod -R u+rwX /data/schulnavigator
+```
+
+uid **1001** = User `nextjs` im [`app/Dockerfile`](../app/Dockerfile).
+
+**Initialbefüllung** vom MPZ-Rechner (nach lokalen Validatoren):
+
+```bash
+cd app
+npm run validate:stations && npm run validate:coach
+RSYNC_SSH="ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=10"
+rsync -avz --no-o --no-g --rsync-path="sudo rsync" -e "$RSYNC_SSH" public/media/         "${DEPLOY_SSH}:/data/schulnavigator/media/"
+rsync -avz --no-o --no-g --rsync-path="sudo rsync" -e "$RSYNC_SSH" content/dialog-audio/ "${DEPLOY_SSH}:/data/schulnavigator/dialog-audio/"
+rsync -avz --no-o --no-g --rsync-path="sudo rsync" -e "$RSYNC_SSH" content/coach-audio/  "${DEPLOY_SSH}:/data/schulnavigator/coach-audio/"
+ssh "${DEPLOY_SSH}" sudo chown -R 1001:1001 /data/schulnavigator
+```
+
+Kein `--delete` im Default. Automatisierung: [#230](https://github.com/flxln/schulnavigator/issues/230).
+
+**Build vs. lokale Validierung:**
+
+| npm-Script | Wann | Prüft Dateien auf Platte? |
+|------------|------|---------------------------|
+| `validate:stations:structure` | `npm run build` (Coolify) | Nein — nur JSON + Pfad-Wohlgeformtheit |
+| `validate:coach:structure` | `npm run build` (Coolify) | Nein |
+| `validate:stations` | Lokal / MPZ Deploy-Tab | Ja |
+| `validate:coach` | Lokal / MPZ Deploy-Tab | Ja |
+
+**Laufzeit-Auslieferung `/media/*`:** Next.js Standalone listet beim Build nur vorhandene `public/media`-Dateien. Volume-Medien werden deshalb über [`app/media/[...path]/route.ts`](../app/app/media/[...path]/route.ts) aus dem gemounteten Ordner gestreamt (Range-Requests für Video).
+
+**Rechte-Test** nach Deploy mit Mounts:
+
+```bash
+docker exec -u nextjs <container_id> test -r /app/public/media && echo OK
+```
 
 ### Fehler beim Clone: private Git-Submodule
 

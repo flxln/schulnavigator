@@ -2,11 +2,6 @@ import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const appRoot = join(__dirname, '..')
-const coachPath = join(appRoot, 'content', 'coach-messages.json')
-const stationsPath = join(appRoot, 'data', 'stations.json')
-
 const PLACEMENTS = new Set(['bottom', 'left', 'right', 'duo-split'])
 const TRIGGERS = new Set(['hub-milestone', 'hub-complete', 'room-first'])
 const MASCOTS = new Set(['frieda', 'otto', 'duo'])
@@ -36,7 +31,7 @@ const LAYOUT_CLAMPS = {
   bubbleFontSize: { min: 12, max: 20 },
 }
 
-function validateLayout(layout, ctx) {
+function validateLayout(layout, ctx, fail) {
   if (layout === undefined) {
     return
   }
@@ -72,150 +67,169 @@ function validateLayout(layout, ctx) {
   }
 }
 
-function fail(msg) {
-  console.error(`validate:coach: ${msg}`)
-  process.exitCode = 1
-}
+/**
+ * @param {{ appRoot: string, checkAudioFiles?: boolean }} options
+ * @returns {{ ok: boolean, messageCount: number, stationCount: number }}
+ */
+export function validateCoachMessages({ appRoot, checkAudioFiles = true }) {
+  const coachPath = join(appRoot, 'content', 'coach-messages.json')
+  const stationsPath = join(appRoot, 'data', 'stations.json')
+  let failed = false
 
-if (!existsSync(coachPath)) {
-  fail(`fehlende Datei ${coachPath}`)
-  process.exit(1)
-}
-
-const stationsFile = JSON.parse(readFileSync(stationsPath, 'utf8'))
-const stationSlugs = new Set(
-  (stationsFile.stations ?? []).map((s) => s.slug).filter(Boolean),
-)
-const stationCount = stationSlugs.size
-
-const coachFile = JSON.parse(readFileSync(coachPath, 'utf8'))
-const messages = coachFile.messages
-if (!Array.isArray(messages)) {
-  fail('coach-messages.json: messages muss ein Array sein')
-  process.exit(1)
-}
-
-const ids = new Set()
-let hubCompleteCount = 0
-let maxHubMilestone = -1
-
-for (const [index, raw] of messages.entries()) {
-  const ctx = `messages[${index}]`
-  if (typeof raw !== 'object' || raw === null) {
-    fail(`${ctx}: kein Objekt`)
-    continue
-  }
-  const m = raw
-
-  if (typeof m.id !== 'string' || m.id.trim() === '') {
-    fail(`${ctx}: id fehlt`)
-  } else if (ids.has(m.id)) {
-    fail(`${ctx}: doppelte id "${m.id}"`)
-  } else {
-    ids.add(m.id)
+  const fail = (msg) => {
+    console.error(`validate:coach: ${msg}`)
+    failed = true
   }
 
-  if (!TRIGGERS.has(m.trigger)) {
-    fail(`${ctx}: ungültiger trigger "${m.trigger}"`)
+  if (!existsSync(coachPath)) {
+    fail(`fehlende Datei ${coachPath}`)
+    return { ok: false, messageCount: 0, stationCount: 0 }
   }
 
-  if (!MASCOTS.has(m.mascot)) {
-    fail(`${ctx}: ungültiger mascot "${m.mascot}"`)
+  const stationsFile = JSON.parse(readFileSync(stationsPath, 'utf8'))
+  const stationSlugs = new Set(
+    (stationsFile.stations ?? []).map((s) => s.slug).filter(Boolean),
+  )
+  const stationCount = stationSlugs.size
+
+  const coachFile = JSON.parse(readFileSync(coachPath, 'utf8'))
+  const messages = coachFile.messages
+  if (!Array.isArray(messages)) {
+    fail('coach-messages.json: messages muss ein Array sein')
+    return { ok: false, messageCount: 0, stationCount }
   }
 
-  if (!PLACEMENTS.has(m.placement)) {
-    fail(`${ctx}: ungültiger placement "${m.placement}"`)
-  }
+  const ids = new Set()
+  let hubCompleteCount = 0
+  let maxHubMilestone = -1
 
-  if (m.mascot === 'duo' && m.placement !== 'duo-split') {
-    fail(`${ctx}: mascot "duo" erfordert placement "duo-split"`)
-  }
-  if (m.placement === 'duo-split' && m.mascot !== 'duo') {
-    fail(`${ctx}: placement "duo-split" erfordert mascot "duo"`)
-  }
+  for (const [index, raw] of messages.entries()) {
+    const ctx = `messages[${index}]`
+    if (typeof raw !== 'object' || raw === null) {
+      fail(`${ctx}: kein Objekt`)
+      continue
+    }
+    const m = raw
 
-  if (typeof m.text !== 'string' || m.text.trim() === '') {
-    fail(`${ctx}: text fehlt`)
-  }
-
-  if (m.modes !== undefined) {
-    if (!Array.isArray(m.modes) || m.modes.length === 0) {
-      fail(`${ctx}: modes muss ein nicht-leeres Array sein`)
+    if (typeof m.id !== 'string' || m.id.trim() === '') {
+      fail(`${ctx}: id fehlt`)
+    } else if (ids.has(m.id)) {
+      fail(`${ctx}: doppelte id "${m.id}"`)
     } else {
-      for (const mode of m.modes) {
-        if (!MODES.has(mode)) {
-          fail(`${ctx}: ungültiger mode "${mode}"`)
-        }
-      }
+      ids.add(m.id)
     }
-  }
 
-  if (m.trigger === 'hub-milestone') {
-    if (typeof m.milestone !== 'number' || !Number.isInteger(m.milestone)) {
-      fail(`${ctx}: hub-milestone braucht ganzzahliges milestone`)
-    } else if (m.milestone < 0 || m.milestone >= stationCount) {
-      fail(
-        `${ctx}: milestone ${m.milestone} außerhalb 0–${stationCount - 1}`,
-      )
-    } else if (m.milestone > maxHubMilestone) {
-      maxHubMilestone = m.milestone
+    if (!TRIGGERS.has(m.trigger)) {
+      fail(`${ctx}: ungültiger trigger "${m.trigger}"`)
     }
-    if (m.slug !== undefined) {
-      fail(`${ctx}: hub-milestone darf kein slug haben`)
-    }
-  }
 
-  if (m.trigger === 'hub-complete') {
-    hubCompleteCount += 1
-    if (m.milestone !== undefined) {
-      fail(`${ctx}: hub-complete darf kein milestone haben`)
+    if (!MASCOTS.has(m.mascot)) {
+      fail(`${ctx}: ungültiger mascot "${m.mascot}"`)
     }
-    if (m.slug !== undefined) {
-      fail(`${ctx}: hub-complete darf kein slug haben`)
-    }
-  }
 
-  if (m.trigger === 'room-first') {
-    if (typeof m.slug !== 'string' || !stationSlugs.has(m.slug)) {
-      fail(`${ctx}: room-first slug "${m.slug}" unbekannt in stations.json`)
+    if (!PLACEMENTS.has(m.placement)) {
+      fail(`${ctx}: ungültiger placement "${m.placement}"`)
     }
-    if (m.milestone !== undefined) {
-      fail(`${ctx}: room-first darf kein milestone haben`)
+
+    if (m.mascot === 'duo' && m.placement !== 'duo-split') {
+      fail(`${ctx}: mascot "duo" erfordert placement "duo-split"`)
     }
-  }
+    if (m.placement === 'duo-split' && m.mascot !== 'duo') {
+      fail(`${ctx}: placement "duo-split" erfordert mascot "duo"`)
+    }
 
-  validateLayout(m.layout, ctx)
+    if (typeof m.text !== 'string' || m.text.trim() === '') {
+      fail(`${ctx}: text fehlt`)
+    }
 
-  if (typeof m.id === 'string' && m.id.trim() !== '') {
-    if (m.quelle !== undefined) {
-      if (typeof m.quelle !== 'string') {
-        fail(`${ctx}: quelle muss String sein`)
-      } else if (!m.quelle.startsWith('/')) {
-        fail(`${ctx}: quelle muss mit / beginnen`)
-      } else if (m.quelle !== `/api/coach/${m.id}`) {
-        fail(`${ctx}: quelle muss "/api/coach/${m.id}" sein`)
+    if (m.modes !== undefined) {
+      if (!Array.isArray(m.modes) || m.modes.length === 0) {
+        fail(`${ctx}: modes muss ein nicht-leeres Array sein`)
       } else {
-        const wavPath = join(appRoot, 'content', 'coach-audio', `${m.id}.wav`)
-        if (!existsSync(wavPath)) {
-          fail(`${ctx}: quelle gesetzt, aber content/coach-audio/${m.id}.wav fehlt`)
+        for (const mode of m.modes) {
+          if (!MODES.has(mode)) {
+            fail(`${ctx}: ungültiger mode "${mode}"`)
+          }
+        }
+      }
+    }
+
+    if (m.trigger === 'hub-milestone') {
+      if (typeof m.milestone !== 'number' || !Number.isInteger(m.milestone)) {
+        fail(`${ctx}: hub-milestone braucht ganzzahliges milestone`)
+      } else if (m.milestone < 0 || m.milestone >= stationCount) {
+        fail(
+          `${ctx}: milestone ${m.milestone} außerhalb 0–${stationCount - 1}`,
+        )
+      } else if (m.milestone > maxHubMilestone) {
+        maxHubMilestone = m.milestone
+      }
+      if (m.slug !== undefined) {
+        fail(`${ctx}: hub-milestone darf kein slug haben`)
+      }
+    }
+
+    if (m.trigger === 'hub-complete') {
+      hubCompleteCount += 1
+      if (m.milestone !== undefined) {
+        fail(`${ctx}: hub-complete darf kein milestone haben`)
+      }
+      if (m.slug !== undefined) {
+        fail(`${ctx}: hub-complete darf kein slug haben`)
+      }
+    }
+
+    if (m.trigger === 'room-first') {
+      if (typeof m.slug !== 'string' || !stationSlugs.has(m.slug)) {
+        fail(`${ctx}: room-first slug "${m.slug}" unbekannt in stations.json`)
+      }
+      if (m.milestone !== undefined) {
+        fail(`${ctx}: room-first darf kein milestone haben`)
+      }
+    }
+
+    validateLayout(m.layout, ctx, fail)
+
+    if (typeof m.id === 'string' && m.id.trim() !== '') {
+      if (m.quelle !== undefined) {
+        if (typeof m.quelle !== 'string') {
+          fail(`${ctx}: quelle muss String sein`)
+        } else if (!m.quelle.startsWith('/')) {
+          fail(`${ctx}: quelle muss mit / beginnen`)
+        } else if (m.quelle !== `/api/coach/${m.id}`) {
+          fail(`${ctx}: quelle muss "/api/coach/${m.id}" sein`)
+        } else if (checkAudioFiles) {
+          const wavPath = join(appRoot, 'content', 'coach-audio', `${m.id}.wav`)
+          if (!existsSync(wavPath)) {
+            fail(`${ctx}: quelle gesetzt, aber content/coach-audio/${m.id}.wav fehlt`)
+          }
         }
       }
     }
   }
+
+  if (hubCompleteCount !== 1) {
+    fail(`genau eine hub-complete-Message erwartet, gefunden: ${hubCompleteCount}`)
+  }
+
+  if (maxHubMilestone >= stationCount) {
+    fail(`höchste hub-milestone (${maxHubMilestone}) muss < ${stationCount} sein`)
+  }
+
+  return { ok: !failed, messageCount: messages.length, stationCount }
 }
 
-if (hubCompleteCount !== 1) {
-  fail(`genau eine hub-complete-Message erwartet, gefunden: ${hubCompleteCount}`)
-}
+const isMain =
+  process.argv[1] &&
+  fileURLToPath(import.meta.url) === process.argv[1]
 
-if (maxHubMilestone >= stationCount) {
-  fail(`höchste hub-milestone (${maxHubMilestone}) muss < ${stationCount} sein`)
+if (isMain) {
+  const appRoot = join(dirname(fileURLToPath(import.meta.url)), '..')
+  const result = validateCoachMessages({ appRoot, checkAudioFiles: true })
+  if (!result.ok) {
+    process.exit(1)
+  }
+  console.log(
+    `validate:coach OK (${result.messageCount} Messages, ${result.stationCount} Stationen)`,
+  )
 }
-
-if (process.exitCode === 1) {
-  process.exit(1)
-}
-
-console.log(
-  `validate:coach OK (${messages.length} Messages, ${stationCount} Stationen)`,
-)
