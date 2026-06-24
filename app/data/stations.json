@@ -313,7 +313,8 @@
           "action": "dialog",
           "mascot": "frieda",
           "x": 0.4835,
-          "y": 0.9871
+          "y": 0.9871,
+          "mascotSize": 0.4
         },
         {
           "id": "safia-bild-1",
@@ -334,7 +335,8 @@
           "action": "dialog",
           "mascot": "otto",
           "x": 0.3697,
-          "y": 0.7564
+          "y": 0.7564,
+          "mascotSize": 0.2
         }
       ]
     },
