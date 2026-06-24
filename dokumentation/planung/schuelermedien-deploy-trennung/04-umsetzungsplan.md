@@ -76,22 +76,23 @@ Kein `--delete` im Default — Löschen auf dem Server bei unvollständigem loka
 
 ## Phase 4 — Doku & Compliance
 
-| # | Aufgabe |
-|---|---------|
-| 4.1 | ADR-027 Status → **entschieden** |
-| 4.2 | `dsgvo.md`: Speicherorte GitHub vs. Hetzner |
-| 4.3 | AVV-Anhang falls nötig (Subprozessor GitHub nur für Code) |
-| 4.4 | GitHub Issue/Epic abhaken — Epic [#226](https://github.com/flxln/schulnavigator/issues/226), Milestone [#14](https://github.com/flxln/schulnavigator/milestone/14) |
+| # | Aufgabe | Status |
+|---|---------|--------|
+| 4.1 | ADR-027 Status → **entschieden** | ✅ #231 |
+| 4.2 | `dsgvo.md`: Speicherorte GitHub vs. Hetzner | ✅ #231 |
+| 4.3 | AVV-Anhang (Subprozessor GitHub nur für Code) — Textbaustein in `dsgvo.md` | ✅ #231 |
+| 4.4 | GitHub Issue/Epic abhaken — Epic [#226](https://github.com/flxln/schulnavigator/issues/226), Milestone [#14](https://github.com/flxln/schulnavigator/milestone/14) | ✅ #231 |
 
 ## Akzeptanzkriterien (Gesamt)
 
 - [x] `git ls-files public/media content/dialog-audio content/coach-audio` liefert nach Phase 1 **nur** `.gitkeep` — keine Schüler-Dateien mehr getrackt ⁴⁹
 - [x] Coolify-Build grün **ohne** Medien im Clone, weil `build` nur die `:structure`-Validatoren ausführt ⁵ *(lokal verifiziert 2026-06-24; Coolify auf `kunde/39-gs`)*
-- [ ] Hotspot-Icons live erreichbar (kein 404): `public/stations-icons/` aus Git, Bahn-B-Icons via rsync ² *(nach Redeploy `kunde/39-gs` — `main` eingefroren)*
+- [x] Hotspot-Icons live erreichbar (kein 404): `public/stations-icons/` aus Git, Bahn-B-Icons via rsync ² *(Prod-Smoke `39-gs.mpz.schule`, 2026-06-24)*
 - [x] `rsync` Initialbefüllung auf Hetzner-Volumes (2026-06-24)
 - [x] `git status` nach Studio-Upload zeigt Medien als ignoriert (oder nicht trackbar)
 - [x] MPZ-Anleitung in ≤ 1 Seite beschreibt den Alltags-Workflow (#230, 2026-06-24)
-- [ ] Smoke: `/api/health`, eine Raum-URL mit Video, eine mit Dialog-Audio, eine Coach-Message mit gesetzter `quelle` (`/api/coach/{id}`) ⁶ *(nach Prod-Deploy)*
+- [x] ADR-027 **entschieden**; `dsgvo.md` aktualisiert (#231, 2026-06-24)
+- [x] Smoke: `/api/health`, Raum-URL mit Video, Dialog-Audio, Coach mit `quelle` ⁶ *(Prod-Smoke `39-gs.mpz.schule`, 2026-06-24)*
 
 ## Grobe Aufwandsschätzung
 

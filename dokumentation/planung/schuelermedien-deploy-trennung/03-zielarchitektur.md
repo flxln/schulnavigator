@@ -1,7 +1,7 @@
 # Zielarchitektur — Zwei Bahnen
 
 **Stand:** 2026-06-24  
-**Status:** Planungsziel (Entwurf)
+**Status:** Planungsziel **umgesetzt** (#228–#231, 2026-06-24)
 
 ## Übersicht
 

@@ -14,7 +14,7 @@ Abgleich mit [flxln/schulnavigator](https://github.com/flxln/schulnavigator). **
 | [epic-mpz-studio-ui-cleanup.md](./epic-mpz-studio-ui-cleanup.md) | Epic **#195** — MPZ Studio UI-Cleanup (#196–#204) ✅ abgeschlossen |
 | [epic-mpz-studio-v3-visual-polish.md](./epic-mpz-studio-v3-visual-polish.md) | Epic **#205** — MPZ Studio v3 Visual Polish (#206–#220) |
 | [epic-schuelermedien-deploy-trennung.md](./epic-schuelermedien-deploy-trennung.md) | Epic **#226** — Schüler-Medien Deploy-Trennung (#227–#232) |
-| [schuelermedien-deploy-trennung/](./schuelermedien-deploy-trennung/README.md) | Planungsdoku — Schüler-Medien nicht auf GitHub; Code via Coolify, Medien via rsync (ADR-027, offen) |
+| [schuelermedien-deploy-trennung/](./schuelermedien-deploy-trennung/README.md) | Planungsdoku — Schüler-Medien Deploy-Trennung abgeschlossen (#226, ADR-027 entschieden); History [#232](https://github.com/flxln/schulnavigator/issues/232) offen |
 
 ## Archiv
 
@@ -33,6 +33,6 @@ Domänen-Matrix MPZ Studio: [ideen/archiv/mpz-studio-ui.md](../ideen/archiv/mpz-
 
 Vollständiger Abgleich-Log (bis 2026-06-20): [archiv/sync-log-2026-06.md](./archiv/sync-log-2026-06.md).
 
-**Letzter dokumentierter Abgleich:** 2026-06-24 — Phase 3 Schüler-Medien (#230). Nächstes: [#231](https://github.com/flxln/schulnavigator/issues/231).
+**Letzter dokumentierter Abgleich:** 2026-06-24 — Epic #226 Schüler-Medien Deploy-Trennung abgeschlossen (#231); ADR-027 entschieden.
 
 Siehe auch [entscheidungen.md](../entscheidungen.md), [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren).

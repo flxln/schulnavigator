@@ -1,21 +1,21 @@
 # ADR-027 — Schüler-Medien nicht in Git (Deploy-Trennung)
 
 **Datum:** 2026-06-24  
-**Status:** offen
+**Status:** entschieden
 
 ## Kontext
 
-Der MVP speichert alle Inhalte — einschließlich Fotos, Videos und Dialog-Audio mit Kinderstimmen — im gleichen Git-Repository unter `app/public/media/` und `app/content/dialog-audio/`. `git push` legt diese Dateien auf GitHub (teils Git LFS). Für die 39. Grundschule Dresden ist das **unzulässig**: Schüler-Inhalte dürfen **nicht** auf GitHub liegen.
+Der MVP speicherte zunächst alle Inhalte — einschließlich Fotos, Videos und Dialog-Audio mit Kinderstimmen — im gleichen Git-Repository unter `app/public/media/` und `app/content/dialog-audio/`. `git push` legte diese Dateien auf GitHub (teils Git LFS). Für die 39. Grundschule Dresden ist das **unzulässig**: Schüler-Inhalte dürfen **nicht** auf GitHub liegen.
 
 Gleichzeitig soll der Betrieb **nah am Ist-Zustand** bleiben: **Code** über GitHub und **Coolify**; **Medien** vom MPZ-Rechner möglichst **automatisiert** beim Deploy auf den MPZ-Hetzner-Server (Deutschland).
 
 Ausführliche Planung: [`dokumentation/planung/schuelermedien-deploy-trennung/`](../planung/schuelermedien-deploy-trennung/README.md).
 
-## Entscheidung (Vorschlag)
+## Entscheidung
 
-1. **Bahn A — Code:** Weiter versionieren in GitHub; Coolify baut die App ohne Schüler-Binärdateien im Clone.
-2. **Bahn B — Schüler-Medien:** **Nicht** in Git; Sync vom MPZ-Laptop per **rsync/SSH** auf **Persistent Volumes** am Server, zur Laufzeit in den Container gemountet (`/app/public/media`, `/app/content/dialog-audio`, ggf. `coach-audio`).
-3. **Deploy:** Ein dokumentiertes Skript (später optional MPZ Studio Deploy-Tab) führt lokal Validierung, optional `git push`, Medien-Sync und Coolify-Redeploy aus.
+1. **Bahn A — Code:** Weiter versionieren in GitHub; Coolify baut die App ohne Schüler-Binärdateien im Clone (`validate:stations:structure` und `validate:coach:structure` im Build).
+2. **Bahn B — Schüler-Medien:** **Nicht** in Git; Sync vom MPZ-Laptop per **rsync/SSH** auf **Persistent Volumes** am Server, zur Laufzeit in den Container gemountet (`/app/public/media`, `/app/content/dialog-audio`, `/app/content/coach-audio`).
+3. **Deploy:** [`app/scripts/deploy-content.sh`](../../app/scripts/deploy-content.sh) (`npm run deploy:content`) und MPZ-Studio-Deploy-Tab führen lokal Vollvalidierung, optional `git push`, Medien-Sync und optional Coolify-Redeploy aus. Anleitung: [`anleitungen/fuer-entwickler.md`](../../anleitungen/fuer-entwickler.md) (Abschnitt „Alltags-Deploy").
 4. **`stations.json`:** Weiter in Git (DSB **Option A**, 2026-06-24) — nur Schüler-**Binärmedien** werden aus GitHub entfernt; Texte/Namen in JSON bleiben versioniert. Details: [05-offene-punkte.md](../planung/schuelermedien-deploy-trennung/05-offene-punkte.md) O1.
 
 ## Begründung
@@ -34,8 +34,7 @@ Ausführliche Planung: [`dokumentation/planung/schuelermedien-deploy-trennung/`]
 
 ## Konsequenzen
 
-- `.gitignore`, Dockerfile, `validate:stations` und Coolify-Volumes anpassen (siehe [04-umsetzungsplan.md](../planung/schuelermedien-deploy-trennung/04-umsetzungsplan.md)).
-- Git LFS-Regeln für ausgelagerte Pfade entfallen oder schrumpfen.
-- MPZ-Anleitungen und Deploy-Tab dokumentieren Zwei-Bahnen-Workflow.
-- **Bestehende Git/LFS-History** mit Schüler-Medien: separates Bereinigungsvorhaben mit DSB.
+- **Umgesetzt (#228–#230):** `.gitignore`, `git rm --cached`, `.gitkeep`, Icon-Umzug nach `public/stations-icons/`, LFS-Bereinigung für Bahn-B-Pfade, Coolify-Volumes, `:structure`-Validatoren im Build, [`deploy-content.sh`](../../app/scripts/deploy-content.sh), MPZ-Studio-Deploy-Tab. Details: [04-umsetzungsplan.md](../planung/schuelermedien-deploy-trennung/04-umsetzungsplan.md).
+- MPZ-Anleitung und Deploy-Tab dokumentieren den Zwei-Bahnen-Workflow.
+- **Bestehende Git/LFS-History** mit Schüler-Medien: separates Bereinigungsvorhaben [#232](https://github.com/flxln/schulnavigator/issues/232) mit DSB.
 - Ergänzt ADR-003 (Content), ADR-004 (Video auf MPZ), ADR-022 (MPZ Studio lokal) — widerspricht ihnen nicht.

@@ -2,7 +2,7 @@
 
 **Stand:** 2026-06-24 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
 
-**Letzter Abgleich:** 2026-06-24 — GS39-Prod **`39-gs.mpz.schule`** (Volumes an App `jjgl5…`, Branch `kunde/39-gs`); #230 ✅; Teil-Smoke Epic [#226](https://github.com/flxln/schulnavigator/issues/226) grün; **nächstes:** [#231](https://github.com/flxln/schulnavigator/issues/231), vollständiger Epic-Smoke vor Schulfest.
+**Letzter Abgleich:** 2026-06-24 — Epic [#226](https://github.com/flxln/schulnavigator/issues/226) Schüler-Medien Deploy-Trennung abgeschlossen (#231); ADR-027 entschieden. Separat offen: [#232](https://github.com/flxln/schulnavigator/issues/232) Git-History.
 
 Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren). Abgeschlossene Epics: [archiv/epics/](./archiv/epics/).
 
@@ -10,9 +10,7 @@ Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eing
 
 ## Technik (MPZ / Viewer)
 
-| Thema | Planung |
-|-------|---------|
-| Schüler-Medien nicht auf GitHub | Epic [#226](https://github.com/flxln/schulnavigator/issues/226) — [epic-schuelermedien-deploy-trennung.md](./epic-schuelermedien-deploy-trennung.md); ADR-027 (offen) |
+*(Schüler-Medien Deploy-Trennung Epic #226 abgeschlossen 2026-06-24 — [ADR-027](../adr/027-schuelermedien-nicht-in-git.md) entschieden; History-Bereinigung [#232](https://github.com/flxln/schulnavigator/issues/232) separat offen)*
 
 *(keine offenen Startblick/Startpan-Issues — #185 erledigt 2026-06-20; CSP-Enforcement #143 erledigt 2026-06-20)*
 
@@ -20,7 +18,7 @@ Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eing
 
 | Issue | Thema | Hinweis |
 |-------|--------|---------|
-| Epic [#226](https://github.com/flxln/schulnavigator/issues/226) | Schüler-Medien Deploy-Trennung | #231, #232; [#227](https://github.com/flxln/schulnavigator/issues/227)–[#230](https://github.com/flxln/schulnavigator/issues/230) ✅; GS39-Live `39-gs.mpz.schule` mit Volumes; Teil-Smoke OK; [epic-schuelermedien-deploy-trennung.md](./epic-schuelermedien-deploy-trennung.md); **nächstes:** [#231](https://github.com/flxln/schulnavigator/issues/231) |
+| [#232](https://github.com/flxln/schulnavigator/issues/232) | Git-History: Schüler-Medien aus LFS/GitHub | separates Vorhaben (Epic #226 Nacharbeit); [07-inventar-github.md](./schuelermedien-deploy-trennung/07-inventar-github.md) |
 | Epic [#205](https://github.com/flxln/schulnavigator/issues/205) | MPZ Studio v3 Visual Polish | #214, #217–#220; [epic-mpz-studio-v3-visual-polish.md](./epic-mpz-studio-v3-visual-polish.md); nächstes: [#218](https://github.com/flxln/schulnavigator/issues/218) Design & Hub oder [#214](https://github.com/flxln/schulnavigator/issues/214) Flat-Kalibrierung (`#206`–`#216` ✅) |
 | [#17](https://github.com/flxln/schulnavigator/issues/17) | Raumbilder liefern (extern) | 8/11; fehlen: `kunst`, `hort`, `schulsozialarbeit` |
 | Epic [#86](https://github.com/flxln/schulnavigator/issues/86) | Schulfest GS39 Nachtrag | bis #90/#91; Details [issues-schulfest-gs39-nachtrag.md](./issues-schulfest-gs39-nachtrag.md) |

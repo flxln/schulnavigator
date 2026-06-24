@@ -1,7 +1,7 @@
 # Schüler-Medien: Trennung GitHub / Deploy
 
 **Stand:** 2026-06-24  
-**Status:** Phase 3 Deploy-Automatisierung erledigt (#230, 2026-06-24) — nächstes #231  
+**Status:** Epic abgeschlossen (#231, 2026-06-24); ADR-027 entschieden — separates Vorhaben [#232](https://github.com/flxln/schulnavigator/issues/232) (Git-History)  
 **Auslöser:** MPZ Studio schreibt Medien lokal ins Repo; `git push` legt Kinder-Inhalte (Fotos, Videos, Dialog-WAVs) auf GitHub — datenschutzrechtlich nicht akzeptabel.
 
 ## Ziel in einem Satz
@@ -29,7 +29,7 @@
 |------------|--------|
 | [ADR-004 — Video-Hosting MPZ](../../adr/004-video-hosting-mpz.md) | Auslieferung an Besucher aus DE — bleibt gültig |
 | [ADR-022 — MPZ Studio](../../adr/022-mpz-studio-internes-ingest-tool.md) | Lokales Ingest — bleibt; Deploy-Pfad wird ergänzt |
-| [ADR-027 — Schüler-Medien nicht in Git](../../adr/027-schuelermedien-nicht-in-git.md) | Architekturentscheidung (Status: **offen**) |
+| [ADR-027 — Schüler-Medien nicht in Git](../../adr/027-schuelermedien-nicht-in-git.md) | Architekturentscheidung (Status: **entschieden**, 2026-06-24) |
 | [dsgvo.md](../../dsgvo.md) | AVV, Einwilligungen, Schüler-Medien |
 | [build-kontext-submodule-regeln.md](../../build-kontext-submodule-regeln.md) | Docker-Build nur `app/`; Git LFS heute |
 
@@ -41,11 +41,12 @@
 | Epic | [#226](https://github.com/flxln/schulnavigator/issues/226) |
 | Epic-Doku | [epic-schuelermedien-deploy-trennung.md](../epic-schuelermedien-deploy-trennung.md) |
 
-## Nächster Schritt
+## Abgeschlossen (2026-06-24)
 
-1. ~~[#227 — Abstimmung DSB/Schule](https://github.com/flxln/schulnavigator/issues/227)~~ — erledigt (2026-06-24)
-2. ~~[#228 Phase 1](https://github.com/flxln/schulnavigator/issues/228)~~ — Repo & Ignore erledigt (2026-06-24)
-3. ~~[#229 Phase 2](https://github.com/flxln/schulnavigator/issues/229)~~ — Coolify-Volumes, Structure-Validatoren, Media-Route, Initial-rsync (Code+Ops ✅; Prod-Smoke offen)
-4. ~~[#230 Phase 3](https://github.com/flxln/schulnavigator/issues/230)~~ — Deploy-Automatisierung (2026-06-24)
-5. **[#231 Phase 4](https://github.com/flxln/schulnavigator/issues/231)** — Doku & Compliance, ADR-027 entscheiden
-6. Parallel/später: [#232](https://github.com/flxln/schulnavigator/issues/232) Git-History bereinigen (O3)
+1. ~~[#227 — Abstimmung DSB/Schule](https://github.com/flxln/schulnavigator/issues/227)~~ — erledigt
+2. ~~[#228 Phase 1](https://github.com/flxln/schulnavigator/issues/228)~~ — Repo & Ignore
+3. ~~[#229 Phase 2](https://github.com/flxln/schulnavigator/issues/229)~~ — Coolify-Volumes, Structure-Validatoren, Media-Route
+4. ~~[#230 Phase 3](https://github.com/flxln/schulnavigator/issues/230)~~ — Deploy-Automatisierung
+5. ~~[#231 Phase 4](https://github.com/flxln/schulnavigator/issues/231)~~ — Doku & Compliance, ADR-027 entschieden
+
+**Separat offen:** [#232](https://github.com/flxln/schulnavigator/issues/232) Git-History bereinigen (O3)

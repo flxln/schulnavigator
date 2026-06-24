@@ -32,8 +32,8 @@
 
 ## Erfolgskriterien (wenn umgesetzt)
 
-- [ ] Schüler-Medien sind in `.gitignore` und tauchen in `git push` nicht mehr auf
-- [ ] Coolify-Build läuft **ohne** Schüler-Dateien im Clone
-- [ ] Nach Deploy sind alle in `stations.json` referenzierten Medien auf der Live-Seite erreichbar
-- [ ] Dokumentierter Workflow für MPZ (Anleitung + ggf. Skript)
-- [ ] ADR-027 **entschieden**; `dsgvo.md` aktualisiert
+- [x] Schüler-Medien sind in `.gitignore` und tauchen in `git push` nicht mehr auf (#228)
+- [x] Coolify-Build läuft **ohne** Schüler-Dateien im Clone (#229)
+- [x] Nach Deploy sind alle in `stations.json` referenzierten Medien auf der Live-Seite erreichbar (#229–#230)
+- [x] Dokumentierter Workflow für MPZ (Anleitung + Skript, #230)
+- [x] ADR-027 **entschieden**; `dsgvo.md` aktualisiert (#231)

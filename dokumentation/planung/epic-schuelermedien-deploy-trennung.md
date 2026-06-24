@@ -1,8 +1,8 @@
 # Epic: Schüler-Medien Deploy-Trennung (ADR-027)
 
 **Milestone:** [Schüler-Medien Deploy-Trennung](https://github.com/flxln/schulnavigator/milestone/14) (GitHub #14)  
-**Status:** offen (2026-06-24)  
-**GitHub Epic:** [#226](https://github.com/flxln/schulnavigator/issues/226)
+**Status:** abgeschlossen (2026-06-24)  
+**GitHub Epic:** [#226](https://github.com/flxln/schulnavigator/issues/226) (geschlossen)
 
 **Planung:** [schuelermedien-deploy-trennung/](./schuelermedien-deploy-trennung/README.md)
 
@@ -70,7 +70,7 @@ ADR-027 entscheiden, `dsgvo.md`, AVV-Anhang, Epic abschließen.
 
 ## Kontext
 
-- ADR: [027-schuelermedien-nicht-in-git.md](../adr/027-schuelermedien-nicht-in-git.md) (offen)
+- ADR: [027-schuelermedien-nicht-in-git.md](../adr/027-schuelermedien-nicht-in-git.md) (**entschieden**, 2026-06-24)
 - Pre-Mortem: [pre-mortem-1a](../reviews/pre-mortem/pre-mortem-1a-schuelermedien-deploy-trennung.md), [pre-mortem-1b-repo-ignore](../reviews/pre-mortem/pre-mortem-1b-repo-ignore.md)
 
 ## Checkliste (Epic)
@@ -80,5 +80,5 @@ ADR-027 entscheiden, `dsgvo.md`, AVV-Anhang, Epic abschließen.
 - [x] Phase 2: Coolify-Volumes + Structure-Build (#229) — 2026-06-24
 - [x] Phase 3: Deploy-Skript + Studio-Tab (#230) — 2026-06-24
 - [x] Ops: GS39-Prod `39-gs.mpz.schule`, Bahn-B-Volumes an Application `jjgl5u105ucxjvbeuwflsjq4`, Teil-Smoke — 2026-06-24
-- [ ] Phase 4: ADR-027 + DSGVO-Doku (#231)
+- [x] Phase 4: ADR-027 + DSGVO-Doku (#231) — 2026-06-24
 - [ ] Optional: Git-History bereinigen (#232)

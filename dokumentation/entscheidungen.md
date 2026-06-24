@@ -32,7 +32,7 @@ Jede wichtige Entscheidung wird als eigenständiger ADR (Architecture Decision R
 | [024](./adr/024-flat-startpan.md) | Flat-Viewer: optionaler horizontaler Startausschnitt `startPanX` (ergänzt ADR-006) | entschieden | 2026-06-16 |
 | [025](./adr/025-coach-audio-autoplay.md) | Coach-Audio: Autoplay mit iOS-Fallback, `quelle` + gated API (ergänzt ADR-019) | entschieden | 2026-06-20 |
 | [026](./adr/026-dialog-text-only-segmente.md) | Dialog: Text-only-Segmente (`quelle` optional), Tap-Advance, Studio-Default ohne Audio (ergänzt ADR-010/011) | entschieden | 2026-06-24 |
-| [027](./adr/027-schuelermedien-nicht-in-git.md) | Schüler-Medien nicht in Git; Deploy-Trennung Code (GitHub) vs. Medien (rsync → Hetzner) | offen | 2026-06-24 |
+| [027](./adr/027-schuelermedien-nicht-in-git.md) | Schüler-Medien nicht in Git; Deploy-Trennung Code (GitHub) vs. Medien (rsync → Hetzner) | entschieden | 2026-06-24 |
 
 ## Konventionen
 
