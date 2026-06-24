@@ -252,42 +252,50 @@
           {
             "id": "k1",
             "rolle": "frieda",
-            "text": "Hi, ich bin’s noch mal. Jetzt erkläre ich euch die Regeln im Kunstraum. Es gibt viele Regeln an die man sich halten muss. Auch auf den Lehrer muss man ebenfalls hören. Ich möchte euch jetzt nicht zu viel verraten. Kommen wir jetzt zu den Regeln.\nRegeln"
+            "text": "Hi, ich bin’s noch mal. Jetzt erkläre ich euch die Regeln im Kunstraum. Es gibt viele Regeln an die man sich halten muss. Auch auf den Lehrer muss man ebenfalls hören. Ich möchte euch jetzt nicht zu viel verraten. Kommen wir jetzt zu den Regeln.\nRegeln",
+            "quelle": "/api/dialog/kunst/01-frieda.wav"
           },
           {
             "id": "k2",
-            "rolle": "frieda",
-            "text": "Wenn man Material braucht, den Lehrer fragen und nicht einfach selbst nehmen."
+            "rolle": "otto",
+            "text": "Wenn man Material braucht, den Lehrer fragen und nicht einfach selbst nehmen.",
+            "quelle": "/api/dialog/kunst/02-otto.wav"
           },
           {
             "id": "k3",
             "rolle": "frieda",
-            "text": "Nur die Materialen auspacken, die man benötigt."
+            "text": "Nur die Materialen auspacken, die man benötigt.",
+            "quelle": "/api/dialog/kunst/03-frieda.wav"
           },
           {
             "id": "k4",
-            "rolle": "frieda",
-            "text": "Die Sitzordnung muss natürlich eingehalten werden."
+            "rolle": "otto",
+            "text": "Die Sitzordnung muss natürlich eingehalten werden.",
+            "quelle": "/api/dialog/kunst/04-otto.wav"
           },
           {
             "id": "k5",
             "rolle": "frieda",
-            "text": "Wenn man beim Waschbecken den Becher auffüllt, soll man den Becher nicht bis zum Rand voll machen, da das Wasser sonst überläuft."
+            "text": "Wenn man beim Waschbecken den Becher auffüllt, soll man den Becher nicht bis zum Rand voll machen, da das Wasser sonst überläuft.",
+            "quelle": "/api/dialog/kunst/05-frieda.wav"
           },
           {
             "id": "k6",
-            "rolle": "frieda",
-            "text": "Keine Überschwemmungen beim Waschbecken."
+            "rolle": "otto",
+            "text": "Keine Überschwemmungen beim Waschbecken.",
+            "quelle": "/api/dialog/kunst/06-otto.wav"
           },
           {
             "id": "k7",
             "rolle": "frieda",
-            "text": "Keine Überschwemmung beim Waschbecken."
+            "text": "Keine Überschwemmung beim Waschbecken.",
+            "quelle": "/api/dialog/kunst/07-frieda.wav"
           },
           {
             "id": "k8",
             "rolle": "frieda",
-            "text": "Das waren die Regeln. Die sind sehr wichtig im Kunstraum. Wenn man sie nicht einhält, dann bekommt man Ärger und das will man sicherlich nicht. Naja, hoffentlich haltet ihr die Regeln immer gut ein. Nun viel Spaß in der Schule. Tschüssi!!"
+            "text": "Das waren die Regeln. Die sind sehr wichtig im Kunstraum. Wenn man sie nicht einhält, dann bekommt man Ärger und das will man sicherlich nicht. Naja, hoffentlich haltet ihr die Regeln immer gut ein. Nun viel Spaß in der Schule. Tschüssi!!",
+            "quelle": "/api/dialog/kunst/08-frieda.wav"
           }
         ],
         "gruppen": [],
@@ -320,6 +328,13 @@
           "y": 0.4765,
           "mediumId": "kunst-kunstraum-safia-bild2-2",
           "icon": "/media/kunst/icons/kunstraum-safia-bild2.png"
+        },
+        {
+          "id": "dialog-ott",
+          "action": "dialog",
+          "mascot": "otto",
+          "x": 0.3697,
+          "y": 0.7564
         }
       ]
     },
