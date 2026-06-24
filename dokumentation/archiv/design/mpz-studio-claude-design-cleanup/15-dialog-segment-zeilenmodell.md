@@ -8,12 +8,12 @@
 
 ## Kernaussage
 
-**Dialog-Audio ist kein globaler Inhalt.** Es gehört fest zum Dialog-Modul pro Station (`dialog` in `stations.json`). Jedes **Dialog-Segment** hat genau:
+**Dialog-Audio ist kein globaler Inhalt.** Es gehört fest zum Dialog-Modul pro Station (`dialog` in `stations.json`). Jedes **Dialog-Segment** hat mindestens:
 
 - einen **Sprechertext** (`segment.text`)
-- eine **Audiodatei** (WAV unter `content/dialog-audio/{slug}/`, verknüpft über `segment.quelle`)
+- optional eine **Audiodatei** (WAV unter `content/dialog-audio/{slug}/`, verknüpft über `segment.quelle`)
 
-Beides wird **in einer Tabellenzeile** gepflegt — nicht auf einer separaten globalen Seite und nicht in einem eigenen Tab.
+**Text-only** (ohne `quelle`) ist gültig — z. B. Lesewelt; im Raum-Viewer Tap auf die Sprechblase zum Weiter (ADR-026). Mit Audio wird **in einer Tabellenzeile** gepflegt — nicht auf einer separaten globalen Seite und nicht in einem eigenen Tab.
 
 ---
 
@@ -24,7 +24,7 @@ interface DialogSegment {
   id: string
   rolle: DialogRolle          // frieda | otto | beide
   text: string                // Sprechertext (Anzeige + Pflege)
-  quelle: string              // z. B. /api/dialog/daz/01-frieda.wav
+  quelle?: string             // optional; z. B. /api/dialog/daz/01-frieda.wav
   gruppe?: string
   tail?: 'left' | 'right' | 'center'
 }
@@ -33,10 +33,10 @@ interface DialogSegment {
 | Segment-Feld | Audio-Bezug |
 |--------------|-------------|
 | `text` | Was gesprochen wird |
-| `quelle` | API-Pfad zur WAV-Datei |
+| `quelle` | Optional: API-Pfad zur WAV-Datei (fehlt → Text-only) |
 | Dateiname auf Disk | `NN-rolle.wav` (Index in `segmente[]` + `rolle`) |
 
-**Regel:** Ein Segment = ein Clip. Kein Segment ohne `text`; Audio kann temporär fehlen (Upload ausstehend), wird aber in derselben Zeile ergänzt.
+**Regel:** Ein Segment = ein Sprechertext; Audio optional (Text-only oder WAV). Kein Segment ohne `text`. Studio-Default beim Anlegen: **nur Text**; Checkbox „Mit Audio“ setzt `quelle` und erwartet Upload in derselben Zeile.
 
 ---
 

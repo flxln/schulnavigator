@@ -42,6 +42,19 @@ describe('validateStationsFile Hub (ADR-016)', () => {
     expect(station?.dialog?.gruppen?.[0]?.id).toBe('gruesse')
   })
 
+  it('akzeptiert dialog-Segment ohne quelle (Text-only)', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const kz = data.stations.find((s) => s.slug === 'klassenzimmer') as Record<string, unknown>
+    kz.dialog = {
+      figuren: ['otto'],
+      segmente: [{ id: 'l1', rolle: 'otto', text: 'Nur Text' }],
+    }
+    const stations = validateStationsFile(data as unknown)
+    const seg = stations.find((s) => s.slug === 'klassenzimmer')?.dialog?.segmente[0]
+    expect(seg?.quelle).toBeUndefined()
+    expect(seg?.text).toBe('Nur Text')
+  })
+
   it('akzeptiert dialog mit leerem segmente-Array (Entwurf)', () => {
     const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
     const kz = data.stations.find((s) => s.slug === 'klassenzimmer') as Record<string, unknown>
@@ -351,6 +364,7 @@ describe('validateStationsFile Hub (ADR-016)', () => {
         untertitel: 'Berühmte Personen',
       },
     ]
+    delete lesewelt.hotspots360
     const stations = validateStationsFile(data as unknown)
     const m = stations
       .find((s) => s.slug === 'lesewelt')

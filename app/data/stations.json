@@ -79,8 +79,25 @@
       "viewer": "equirectangular",
       "panorama360": "/stations/360/musik.jpg",
       "bild": "/stations/musik.jpg",
-      "medien": [],
-      "hotspots360": []
+      "medien": [
+        {
+          "id": "musik-musikzimmer-gute-laune-tanz",
+          "typ": "video",
+          "quelle": "/media/musik/video/musikzimmer-gute-laune-tanz.mp4",
+          "untertitel": "Gute Laune Tanz",
+          "videoSource": "upload"
+        }
+      ],
+      "hotspots360": [
+        {
+          "id": "gute-laune-tanz",
+          "yaw": -96.3,
+          "pitch": 2.2,
+          "mediumId": "musik-musikzimmer-gute-laune-tanz",
+          "icon": "/media/musik/icons/video.svg",
+          "iconSize": 0.2
+        }
+      ]
     },
     {
       "slug": "daz",
@@ -317,12 +334,6 @@
       "bild": "/stations/lesewelt.jpg",
       "medien": [
         {
-          "id": "lesewelt-beruehmte-personen",
-          "typ": "embed",
-          "quelle": "https://read.bookcreator.com/2MfAUZf5kWdGbFsdRTyW50qOUeT2/4GMz8K3eSy2Sv6RbTbo6_A",
-          "untertitel": "Berühmte Personen"
-        },
-        {
           "id": "lesewelt-embed",
           "typ": "embed",
           "quelle": "https://read.bookcreator.com/YqQ0U5L8S0r0vSRfXVfsp8CqLmt2yQvDeGg9lfzLcveH2k6STwD04A/108kSCPeTWiP3ozfYy94IQ",
@@ -335,22 +346,30 @@
       ],
       "hotspots360": [
         {
-          "id": "hs-beruehmte-personen",
-          "label": "Berühmte Personen",
-          "yaw": -20.5,
-          "pitch": 14.9,
-          "mediumId": "lesewelt-beruehmte-personen",
-          "iconSize": 0.2
+          "id": "hs-buchstabel",
+          "label": "Buchstapel",
+          "yaw": -5.4,
+          "pitch": -28.7,
+          "mediumId": "lesewelt-embed",
+          "icon": "/media/lesewelt/icons/books-stack-of-three.svg",
+          "iconSize": 0.15
         },
         {
-          "id": "lesewelt-buchvorstellung",
-          "label": "Wir stellen unsere Bücher vor",
-          "yaw": -3.2,
-          "pitch": -28.9,
-          "mediumId": "lesewelt-beruehmte-personen",
-          "icon": "/media/lesewelt/icons/books-stack-of-three.svg"
+          "id": "otto-buchstapel",
+          "label": "Otto zeigt auf den Buchstapel",
+          "yaw": 0,
+          "pitch": 0,
+          "mediumId": "lesewelt-embed",
+          "icon": "/media/lesewelt/icons/otto.png"
         }
-      ]
+      ],
+      "dialog": {
+        "figuren": [
+          "otto"
+        ],
+        "segmente": [],
+        "gruppen": []
+      }
     },
     {
       "slug": "werken",

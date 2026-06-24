@@ -126,13 +126,22 @@ describe('syncDialogAudioFiles', () => {
 })
 
 describe('applyQuellenAfterSync', () => {
-  it('setzt quelle nach Konvention', () => {
+  it('setzt quelle nach Konvention für Audio-Segmente', () => {
     const result = applyQuellenAfterSync('daz', [
       seg('d1', 'frieda', '/alt'),
       seg('d2', 'beide', '/alt2'),
     ])
     expect(result[0]?.quelle).toBe('/api/dialog/daz/01-frieda.wav')
     expect(result[1]?.quelle).toBe('/api/dialog/daz/02-beide.wav')
+  })
+
+  it('lässt Text-only-Segmente ohne quelle', () => {
+    const result = applyQuellenAfterSync('lesewelt', [
+      { id: 'l1', rolle: 'otto', text: 'Nur Text' },
+      seg('d2', 'frieda', '/api/dialog/lesewelt/02-frieda.wav'),
+    ])
+    expect(result[0]?.quelle).toBeUndefined()
+    expect(result[1]?.quelle).toBe('/api/dialog/lesewelt/02-frieda.wav')
   })
 })
 

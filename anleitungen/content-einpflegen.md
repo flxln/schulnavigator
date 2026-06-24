@@ -266,11 +266,11 @@ Block `station.dialog` neben `hotspots[]` (Beispiel: `daz` in `stations.json`).
 | Feld | Pflicht | Werte / Hinweis |
 |------|---------|-----------------|
 | `figuren` | ja | `["frieda", "otto"]` — erlaubte Figuren |
-| `segmente[]` | ja | Playlist: ein Eintrag = ein Audio-Clip + Anzeigetext |
+| `segmente[]` | ja | Playlist: ein Eintrag = Sprechblase; optional Audio-Clip |
 | `segmente[].id` | ja | Eindeutig pro Station |
 | `segmente[].rolle` | ja | `frieda` \| `otto` \| `beide` — steuert Sprecher-Highlight und Schwanz der Blase (links/rechts/mitte) |
-| `segmente[].text` | ja | Text in der Sprechblase (während dieses Clips) |
-| `segmente[].quelle` | ja | `/api/dialog/{slug}/…wav` — Clips unter `app/content/dialog-audio/`; Dateiname `NN-rolle.wav` (Index in `segmente[]` + `rolle`) |
+| `segmente[].text` | ja | Text in der Sprechblase |
+| `segmente[].quelle` | nein | Nur bei Audio-Segment: `/api/dialog/{slug}/…wav` — Clips unter `app/content/dialog-audio/`; Dateiname `NN-rolle.wav` (Index in `segmente[]` + `rolle`). Fehlt `quelle` → Text-only (Tap auf Blase zum Weiter, ADR-026). |
 
 **Reihenfolge:** Die Reihenfolge von `dialog.segmente[]` ist **immutabel**, solange WAV-Dateien existieren — der Clip-Name leitet sich aus der Array-Position ab (`01-frieda.wav` = Index 0). Kein Reorder/Insert/Delete in der Mitte ohne Clips umzubenennen. MPZ Studio warnt bei fehlenden oder verwaisten WAVs (#148).
 | `segmente[].gruppe` | nein | Verweis auf `gruppen[].id` — mehrere kurze Clips, **eine** Blase (z. B. fünf Grüße) |

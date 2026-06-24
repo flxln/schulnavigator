@@ -188,7 +188,7 @@ Querschnitt: `thumbnail`, Hotspot-`icon` / `iconSize` — Verknüpfung mit Hotsp
 | Block | Inhalt |
 |-------|--------|
 | `figuren[]` | Checkbox Frieda/Otto |
-| `segmente[]` | `id`, `rolle`, `text`, `quelle`, optional `gruppe`, `tail` |
+| `segmente[]` | `id`, `rolle`, `text`, optional `quelle` (Audio), optional `gruppe`, `tail` — ohne `quelle` = Text-only (ADR-026) |
 | `gruppen[]` | Optionaler Gruppentext; auf Segmenten **jeder** Rolle referenzierbar (Validator erzwingt kein `beide`). Typischer Fall: gemeinsame `beide`-Sequenz wie `gruesse`. |
 | `bubble` | `y`, `x`, `maxWidth`, `fontSize`, `followPan` (ADR-015) |
 

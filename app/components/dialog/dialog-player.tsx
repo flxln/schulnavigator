@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { Dialog, DialogRolle, DialogSegment } from '@/lib/types'
+import { segmentHasAudio } from '@/lib/dialog-display'
 import { Gs39Button } from '@/components/ui/gs39-button'
 
 export type DialogPlayerProps = {
@@ -51,14 +52,14 @@ export function DialogPlayer({ dialog, accent, onClose }: DialogPlayerProps) {
   const preloadNext = useCallback(
     (nextIndex: number) => {
       const next = dialog.segmente[nextIndex]
-      if (!next) {
+      if (!next || !segmentHasAudio(next)) {
         return
       }
       if (!preloadRef.current) {
         preloadRef.current = new Audio()
       }
       preloadRef.current.preload = 'auto'
-      preloadRef.current.src = next.quelle
+      preloadRef.current.src = next.quelle!
       preloadRef.current.load()
     },
     [dialog.segmente],
@@ -73,7 +74,11 @@ export function DialogPlayer({ dialog, accent, onClose }: DialogPlayerProps) {
       }
       setLoadError(false)
       setIndex(segIndex)
-      el.src = seg.quelle
+      if (!segmentHasAudio(seg)) {
+        setPlaying(false)
+        return
+      }
+      el.src = seg.quelle!
       preloadNext(segIndex + 1)
       try {
         await el.play()
@@ -160,6 +165,8 @@ export function DialogPlayer({ dialog, accent, onClose }: DialogPlayerProps) {
     [activeRolle],
   )
 
+  const currentIsTextOnly = segment ? !segmentHasAudio(segment) : false
+
   return (
     <div
       className="sn-dialog-cutscene fixed inset-0 z-20 flex flex-col bg-bg-dark/75 backdrop-blur-[2px]"
@@ -220,6 +227,11 @@ export function DialogPlayer({ dialog, accent, onClose }: DialogPlayerProps) {
           {finished ? (
             <Gs39Button type="button" variant="outline" block onClick={handleReplay}>
               Nochmal anhören
+            </Gs39Button>
+          ) : null}
+          {started && !finished && currentIsTextOnly ? (
+            <Gs39Button type="button" variant="primary" block onClick={advance}>
+              Weiter
             </Gs39Button>
           ) : null}
           {started && !finished ? (

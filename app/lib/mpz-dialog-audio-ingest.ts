@@ -7,6 +7,7 @@ import {
   dialogApiQuelle,
   dialogAudioFsPath,
 } from '@/lib/dialog-audio'
+import { segmentHasAudio } from '@/lib/dialog-display'
 import {
   createMpzContentIo,
   type MpzContentIo,
@@ -30,7 +31,7 @@ const MAX_DIALOG_WAV_BYTES = 15 * MB
 const MIN_WAV_BYTES = 1024
 const LFS_POINTER_PREFIX = 'version https://git-lfs.github.com/spec/v1'
 
-export type DialogSegmentState = 'ok' | 'fehlt' | 'drift' | 'leer'
+export type DialogSegmentState = 'ok' | 'fehlt' | 'drift' | 'leer' | 'text-only'
 
 export interface IngestDialogClipInput {
   slug: string
@@ -57,7 +58,7 @@ export interface DialogSegmentAudit {
   rolle: DialogRolle
   textPreview: string
   expectedClip: string
-  quelle: string
+  quelle?: string
   fileExists: boolean
   quelleMatchesConvention: boolean
   state: DialogSegmentState
@@ -126,6 +127,18 @@ export function auditDialogAudio(station: Station, appRoot: string): DialogAudio
   const expectedClips = new Set<string>()
   const segments: DialogSegmentAudit[] = segmente.map((seg, segmentIndex) => {
     const expectedClip = buildClipName(segmentIndex, seg.rolle)
+    if (!segmentHasAudio(seg)) {
+      return {
+        segmentIndex,
+        segmentId: seg.id,
+        rolle: seg.rolle,
+        textPreview: textPreview(seg.text),
+        expectedClip,
+        fileExists: false,
+        quelleMatchesConvention: false,
+        state: 'text-only' as const,
+      }
+    }
     expectedClips.add(expectedClip)
     const expectedQuelle = dialogApiQuelle(slug, expectedClip)
     const destPath = dialogAudioFsPath(appRoot, slug, expectedClip)

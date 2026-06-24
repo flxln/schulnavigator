@@ -100,7 +100,7 @@ describe('patchDialogMeta', () => {
 })
 
 describe('addDialogSegment', () => {
-  it('hängt Segment mit auto-id an', async () => {
+  it('hängt Segment mit auto-id an (Text-only ohne quelle)', async () => {
     const io = makeTempIo()
     const before = dazDialog(io).segmente.length
     const result = await addDialogSegment(
@@ -111,6 +111,18 @@ describe('addDialogSegment', () => {
     expect(result.station.dialog?.segmente).toHaveLength(before + 1)
     const last = result.station.dialog!.segmente.at(-1)!
     expect(last.id).toMatch(/^d\d+$/)
+    expect(last.quelle).toBeUndefined()
+  })
+
+  it('hängt Audio-Segment mit quelle an', async () => {
+    const io = makeTempIo()
+    const before = dazDialog(io).segmente.length
+    const result = await addDialogSegment(
+      'daz',
+      { rolle: 'frieda', text: 'Neu', hasAudio: true },
+      io,
+    )
+    const last = result.station.dialog!.segmente.at(-1)!
     expect(last.quelle).toBe(`/api/dialog/daz/${String(before + 1).padStart(2, '0')}-frieda.wav`)
   })
 })

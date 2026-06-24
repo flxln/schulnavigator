@@ -50,6 +50,10 @@ export function parsePatch(body: unknown): PatchDialogSegmentInput | null {
     if (!isRolle(raw.rolle)) return null
     patch.rolle = raw.rolle
   }
+  if (Object.hasOwn(raw, 'hasAudio')) {
+    if (typeof raw.hasAudio !== 'boolean') return null
+    patch.hasAudio = raw.hasAudio
+  }
 
   if (Object.keys(patch).length === 0) {
     return null
@@ -75,7 +79,7 @@ export const PATCH = withMpzStudioAccess(async (req: NextRequest, context) => {
       {
         error: 'INVALID_BODY',
         message:
-          'Body muss mindestens ein gültiges Feld (text, gruppe, tail, rolle) enthalten.',
+          'Body muss mindestens ein gültiges Feld (text, gruppe, tail, rolle, hasAudio) enthalten.',
       },
       { status: 400 },
     )

@@ -193,6 +193,7 @@ Plan (lokal): `.cursor/plans/#216_dialog_s15_25cdfb74.plan.md` · Pre-Mortems [1
 - ✅ **Audio-Zeile:** `mpzButton`, Upload-Label mit Dateiname, expandable Sub-Zeile beibehalten (#200).
 - ✅ **Kind-Formulare:** Segment/Gruppe/Bubble auf `mpzButtonClassName`.
 - 🔁 **Folge-Scope (bewusst offen):** `min-h-11` auf `<td>` wirkungslos (1a#2); leere Tabelle sichtbar während Segment-Add (1a#4); Badge-Label „ok“ vs. Mockup „Clip ok“; WAV-Orphans-Hinweis beim Dialog-Löschen (1b#4).
+- 🔁 **Domänen-Feature (nicht #205):** Text-only-Dialog-Segmente — [#221](https://github.com/flxln/schulnavigator/issues/221) (Phase 5; Pilot Lesewelt).
 
 ### Archiv — Plan-Härtung #213 (2026-06-24)
 

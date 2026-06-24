@@ -13,6 +13,7 @@ import {
   useStudioValidation,
 } from '@/components/mpz-studio/studio-validation-context'
 import type { DialogBubbleTail, DialogGruppe, DialogRolle, DialogSegment } from '@/lib/types'
+import { segmentHasAudio } from '@/lib/dialog-display'
 
 export type StationDialogSegmentFormProps = {
   slug: string
@@ -41,6 +42,9 @@ export function StationDialogSegmentForm({
   const [text, setText] = useState(segment?.text ?? '')
   const [gruppe, setGruppe] = useState(segment?.gruppe ?? '')
   const [tail, setTail] = useState(segment?.tail ?? '')
+  const [hasAudio, setHasAudio] = useState(
+    segment ? segmentHasAudio(segment) : false,
+  )
   const [error, setError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
 
@@ -51,6 +55,7 @@ export function StationDialogSegmentForm({
       setText(segment.text)
       setGruppe(segment.gruppe ?? '')
       setTail(segment.tail ?? '')
+      setHasAudio(segmentHasAudio(segment))
     }
   }, [segment])
 
@@ -61,7 +66,7 @@ export function StationDialogSegmentForm({
     startTransition(async () => {
       try {
         if (mode === 'add') {
-          const body: Record<string, unknown> = { rolle, text }
+          const body: Record<string, unknown> = { rolle, text, hasAudio }
           if (id.trim()) body.id = id.trim()
           if (gruppe) body.gruppe = gruppe
           if (tail) body.tail = tail
@@ -79,7 +84,7 @@ export function StationDialogSegmentForm({
             return
           }
         } else {
-          const body: Record<string, unknown> = { text, rolle }
+          const body: Record<string, unknown> = { text, rolle, hasAudio }
           body.gruppe = gruppe || null
           body.tail = tail || null
           const res = await fetch(
@@ -176,6 +181,20 @@ export function StationDialogSegmentForm({
             </option>
           ))}
         </select>
+      </div>
+      <div className="mb-3">
+        <label className="flex cursor-pointer items-center gap-2 text-sm text-fg-1">
+          <input
+            type="checkbox"
+            checked={hasAudio}
+            onChange={(e) => setHasAudio(e.target.checked)}
+            className="size-4 rounded border-border-1"
+          />
+          Mit Audio (WAV-Clip)
+        </label>
+        <p className="mt-1 text-xs text-fg-3">
+          Ohne Häkchen: nur Sprechblase im Raum, Tippen zum Weiter.
+        </p>
       </div>
       <div className="mb-3">
         <label className={mpzLabelClassName()} htmlFor="segment-text">

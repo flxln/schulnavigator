@@ -6,6 +6,7 @@ import {
   dialogApiQuelle,
   dialogAudioFsPath,
 } from '@/lib/dialog-audio'
+import { segmentHasAudio } from '@/lib/dialog-display'
 import type { DialogSegment } from '@/lib/types'
 
 const TMP_SUFFIX = '.renaming.tmp'
@@ -35,13 +36,19 @@ export function planDialogAudioRenames(
 
   for (let afterIndex = 0; afterIndex < segmentsAfter.length; afterIndex++) {
     const afterSeg = segmentsAfter[afterIndex]!
+    if (!segmentHasAudio(afterSeg)) {
+      continue
+    }
     const targetClip = buildClipName(afterIndex, afterSeg.rolle)
     const before = beforeById.get(afterSeg.id)
     if (!before) {
       continue
     }
+    if (!segmentHasAudio(before.seg)) {
+      continue
+    }
     const sourceClip =
-      clipFromQuelle(before.seg.quelle) ??
+      clipFromQuelle(before.seg.quelle!) ??
       buildClipName(before.index, before.seg.rolle)
     if (sourceClip !== targetClip) {
       renameMap.set(sourceClip, targetClip)
@@ -55,10 +62,17 @@ export function applyQuellenAfterSync(
   slug: string,
   segmente: DialogSegment[],
 ): DialogSegment[] {
-  return segmente.map((seg, index) => ({
-    ...seg,
-    quelle: dialogApiQuelle(slug, buildClipName(index, seg.rolle)),
-  }))
+  return segmente.map((seg, index) => {
+    if (!segmentHasAudio(seg)) {
+      const next = { ...seg }
+      delete next.quelle
+      return next
+    }
+    return {
+      ...seg,
+      quelle: dialogApiQuelle(slug, buildClipName(index, seg.rolle)),
+    }
+  })
 }
 
 function preflightRenames(
@@ -123,8 +137,11 @@ export async function syncDialogAudioFiles(
       if (afterIds.has(seg.id)) {
         continue
       }
+      if (!segmentHasAudio(seg)) {
+        continue
+      }
       const clip =
-        clipFromQuelle(seg.quelle) ?? buildClipName(index, seg.rolle)
+        clipFromQuelle(seg.quelle!) ?? buildClipName(index, seg.rolle)
       if (renameMap.has(clip)) {
         continue
       }
