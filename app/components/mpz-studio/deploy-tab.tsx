@@ -223,7 +223,7 @@ export function DeployTab() {
               type="url"
               value={baseUrlInput}
               onChange={(e) => setBaseUrlInput(e.target.value)}
-              placeholder="https://schulnavigator.mpz.schule"
+              placeholder="https://39-gs.mpz.schule"
               className="rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1"
             />
             <span className="text-xs text-fg-3">HTTPS, ohne trailing slash — für QR-Druck die Live-Domain.</span>

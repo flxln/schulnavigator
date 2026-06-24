@@ -223,11 +223,12 @@ Vollständige Ablagekonventionen (Pfade, Autorenzone, Laufzeit): [`verzeichnisst
 ## Deployment
 
 - **Produktion:** MPZ-Hetzner-Server, gemanagt über Coolify, deployed als Docker-Container ([`anleitungen/fuer-entwickler.md`](../anleitungen/fuer-entwickler.md) — Abschnitt „Coolify“).
-- **Öffentliche URL:** `https://schulnavigator.mpz.schule` — erreichbar über MPZ-Wildcard-DNS **`*.mpz.schule`** → Coolify-VPS `217.154.120.240` (kein eigener A-Record nur für `schulnavigator` nötig).
+- **Öffentliche URL (GS39, Branch `kunde/39-gs`):** `https://39-gs.mpz.schule` — erreichbar über MPZ-Wildcard-DNS **`*.mpz.schule`** → Coolify-VPS `217.154.120.240`.
+- **Legacy-URL:** `https://schulnavigator.mpz.schule` — Application auf eingefrorenem Branch **`main`** (Referenzstand, nicht GS39-Prod).
 - **Image:** [`app/Dockerfile`](../app/Dockerfile) — Multi-Stage, `output: 'standalone'`, Health `GET /api/health`, Container-Port **`PORT=3000`** (Coolify „Ports Exposes“ = `3000`).
 - **Suchmaschinen:** `robots.txt` mit `Disallow: /` und `noindex` im Root-Layout (Issue #16); Verfeinerung in #23 möglich.
-- **Coolify Prod:** Application `q1a8t4zswynvgutbw9og5l7n` — Projekt **Schulprojekte**, Branch **`kunde/39-gs`** (GS39; `main` eingefroren, `kunde/*` wird nicht nach `main` gemergt).
-- **Staging / Dev:** `https://schulnavigator-dev.mpz.schule` — Application `jjgl5u105ucxjvbeuwflsjq4` (`schulnavigator:development-feature`), gleicher Server, Branch `feature/*` bei Bedarf in Coolify umstellen.
+- **Coolify GS39-Prod:** Application `jjgl5u105ucxjvbeuwflsjq4` (`schulnavigator:development-feature`) — Projekt **Schulprojekte**, Domain **`39-gs.mpz.schule`**, Branch **`kunde/39-gs`** (`main` eingefroren; `kunde/*` wird nicht nach `main` gemergt).
+- **Coolify Legacy:** Application `q1a8t4zswynvgutbw9og5l7n` — Domain `schulnavigator.mpz.schule`, Branch **`main`**.
 
 ### Voraussetzungen fürs Dockerfile
 

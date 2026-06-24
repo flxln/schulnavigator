@@ -290,7 +290,7 @@ PORT=3007 HOSTNAME=127.0.0.1 node server.js
 
 ## Deployment (Überblick)
 
-Produktion: Multi-Stage-Image wie in [`app/Dockerfile`](../app/Dockerfile), Health-Check `GET /api/health`. Ziel-Hosting: **MPZ-Hetzner / Coolify** ([ADR-001](../dokumentation/adr/001-hosting-coolify.md)). **Live-URL:** **`https://schulnavigator.mpz.schule`**.
+Produktion: Multi-Stage-Image wie in [`app/Dockerfile`](../app/Dockerfile), Health-Check `GET /api/health`. Ziel-Hosting: **MPZ-Hetzner / Coolify** ([ADR-001](../dokumentation/adr/001-hosting-coolify.md)). **GS39-Live (Branch `kunde/39-gs`):** **`https://39-gs.mpz.schule`**. Die ältere Application **`https://schulnavigator.mpz.schule`** läuft auf eingefrorenem Branch **`main`** (Referenzstand, nicht GS39-Prod).
 
 Die App setzt **`robots.txt`** (`Disallow: /`) und **`noindex`** im Root-Layout (Phase 1, Issue #16), damit die Subdomain nicht in Suchmaschinen indexiert wird.
 
@@ -312,7 +312,7 @@ Nach Änderung an `data/embed-allowlist.json`: Dev-Server neu starten bzw. neu d
 Smoke nach Deploy:
 
 ```bash
-curl -sI https://schulnavigator.mpz.schule/ | grep -iE 'content-security|permissions-policy'
+curl -sI https://39-gs.mpz.schule/ | grep -iE 'content-security|permissions-policy'
 ```
 
 ### Git LFS — Raumbilder (`public/stations/*.jpg`)
@@ -324,8 +324,8 @@ Panorama-Exporte unter `public/stations/` werden per [`.gitattributes`](../app/.
 ```bash
 # Altes 4:3-Platzhalter: content-length 457340
 # Neues Pano musik.jpg: ~349000
-curl -sI https://schulnavigator.mpz.schule/stations/musik.jpg | grep -i content-length
-curl -s https://schulnavigator.mpz.schule/stations/musik.jpg | head -c 2 | xxd   # ff d8
+curl -sI https://39-gs.mpz.schule/stations/musik.jpg | grep -i content-length
+curl -s https://39-gs.mpz.schule/stations/musik.jpg | head -c 2 | xxd   # ff d8
 ```
 
 **Wenn Coolify-Build mit LFS-Fehler abbricht** (`ist ein Git-LFS-Pointer` in `validate:stations`):
@@ -447,7 +447,7 @@ Lokal entspricht Variante 1: `cd app && docker build -t schulnavigator-app .`
 | Feld | Wert |
 |------|------|
 | **Ports Exposes** | `3000` (muss mit `PORT` übereinstimmen) |
-| **Domain** | `schulnavigator.mpz.schule` |
+| **Domain** | GS39-Prod: `39-gs.mpz.schule` (Branch `kunde/39-gs`); Legacy: `schulnavigator.mpz.schule` (Branch `main`, eingefroren) |
 | **HTTPS** | aktiviert (Let's Encrypt; Wildcard-DNS `*.mpz.schule` muss auf den VPS zeigen) |
 
 5. **Umgebungsvariablen:** `PORT=3000`, optional `NODE_ENV=production`. Für Zugangskontrolle (ADR-021) siehe Abschnitt [Zugang & Embedding](#zugang--embedding-adr-021) — **vor erstem Deploy nach ADR-021** `SN_ACCESS_TOKENS` in Coolify setzen.
@@ -458,7 +458,7 @@ Lokal entspricht Variante 1: `cd app && docker build -t schulnavigator-app .`
 
 ### Schüler-Medien: Persistent Volumes (Prod, #229)
 
-**Prod-Application** (`schulnavigator.mpz.schule`): drei Volume-Mounts — **Dev** zunächst ohne Mounts (Medien aus lokalem Clone/Branch).
+**GS39-Prod-Application** (`39-gs.mpz.schule`, Coolify-UUID `jjgl5u105ucxjvbeuwflsjq4`, Branch `kunde/39-gs`): drei Volume-Mounts. Die Legacy-Application `schulnavigator.mpz.schule` (`main`) hat dieselben Host-Pfade nicht zwingend gemountet.
 
 | Coolify-Name | Host-Pfad | Container-Pfad |
 |--------------|-----------|----------------|
@@ -492,9 +492,14 @@ npm run deploy:content                   # Voll-Flow: validate → push → rsyn
 
 Das Skript [`app/scripts/deploy-content.sh`](../app/scripts/deploy-content.sh) wird via `npm run deploy:content` gestartet (lädt `app/.env.local` automatisch). Es prüft zuerst `DEPLOY_SSH` und `sudo -n` auf dem Remote-Host. Auf **macOS** (OpenBSD-rsync) setzt es Rechte per `sudo chown` nach dem Sync; mit GNU-rsync (`--chown=1001:1001`) entfällt dieser Schritt. Kein `--delete` im Default; `--prune` nur opt-in.
 
-**Lokale Bahn-B-Lücken:** Fehlt z. B. `content/coach-audio/welcome-hub.wav` lokal (gitignored), einmal vom Server holen:
+**Lokale Bahn-B-Lücken:** Schüler-Medien sind gitignored — für paritätisches Lokaltesten einmal vom Server holen (Env `DEPLOY_SSH` aus `.env.local`):
 
 ```bash
+cd app
+# Dialog-WAVs (z. B. DaZ, PC-Raum) — Studio zeigt sonst „Audio fehlt“, /api/dialog/… liefert 404
+rsync -avz -e "ssh -o StrictHostKeyChecking=accept-new -i ~/.ssh/coolify-access" \
+  "${DEPLOY_SSH}:/data/schulnavigator/dialog-audio/" content/dialog-audio/
+# Coach-Audio (einzelne Datei oder Ordner)
 rsync -avz -e "ssh -o StrictHostKeyChecking=accept-new -i ~/.ssh/coolify-access" \
   "${DEPLOY_SSH}:/data/schulnavigator/coach-audio/welcome-hub.wav" content/coach-audio/
 ```
@@ -561,7 +566,7 @@ docker exec -u nextjs <container_id> test -r /app/public/media && echo OK
 | `SN_ACCESS_TOKENS` | — (Dev: Fallback in Code) | JSON-Array: `[{ "token", "mode": "fest"\|"heft", "expiresAt": "YYYY-MM-DD" }]` — **Runtime-Secret in Coolify**, nicht im Docker-Build |
 | `SN_EMBED_ANCESTORS` | leer → kein Framing | Kommagetrennte `https://`-Origins für CSP `frame-ancestors` |
 
-**Pilot (`schulnavigator.mpz.schule`):** `SN_ACCESS_MODE` weglassen oder `gated`; `SN_ACCESS_TOKENS` mit aktuellen Entry-Tokens setzen (Werte aus `app/lib/access-token-constants.mjs` bzw. nach `npm run generate:qr` in `public/qr/manifest.json`). Alte Tokens `fest-2026` / `heft-2026-27` sind ungültig.
+**Pilot (`39-gs.mpz.schule`):** `SN_ACCESS_MODE` weglassen oder `gated`; `SN_ACCESS_TOKENS` mit aktuellen Entry-Tokens setzen (Werte aus `app/lib/access-token-constants.mjs` bzw. nach `npm run generate:qr` in `public/qr/manifest.json`). Alte Tokens `fest-2026` / `heft-2026-27` sind ungültig.
 
 **Deploy-Reihenfolge (gated):**
 
@@ -587,22 +592,26 @@ Vollständig: [ADR-021](../dokumentation/adr/021-zugangsmodus-konfigurierbar.md)
 Ersetze die Domain, falls abweichend.
 
 ```bash
-curl -sS https://schulnavigator.mpz.schule/api/health
+curl -sS https://39-gs.mpz.schule/api/health
 # Erwartung: {"status":"ok"}
 
-curl -sSI http://schulnavigator.mpz.schule/ | head -5
+curl -sSI http://39-gs.mpz.schule/ | head -5
 # Erwartung: Redirect auf https://…
 
-curl -sSI https://schulnavigator.mpz.schule/
+curl -sSI https://39-gs.mpz.schule/
 # Erwartung ohne Cookie: 307/308 → /eintritt
 
-curl -sSI https://schulnavigator.mpz.schule/raum/musik
-curl -sSI https://schulnavigator.mpz.schule/scan
+curl -sSI https://39-gs.mpz.schule/raum/musik
+curl -sSI https://39-gs.mpz.schule/scan
 # FEST_TOKEN aus SN_ACCESS_TOKENS / manifest.json ersetzen:
-curl -sSI 'https://schulnavigator.mpz.schule/eintritt?t=FEST_TOKEN'
+curl -sSI 'https://39-gs.mpz.schule/eintritt?t=FEST_TOKEN'
 # Erwartung: Set-Cookie sn_access=… + Redirect /
 
-curl -sS https://schulnavigator.mpz.schule/robots.txt
+# Schüler-Medien (Volume Bahn B):
+curl -sSI https://39-gs.mpz.schule/media/daz/video/video-hallo-im-daz-raum.mp4
+# Erwartung: 200
+
+curl -sS https://39-gs.mpz.schule/robots.txt
 # Erwartung: Disallow: /
 ```
 
@@ -616,20 +625,19 @@ curl -sS https://schulnavigator.mpz.schule/robots.txt
 
 **Optional:** kostenloses Monitoring (z. B. UptimeRobot) auf `https://…/api/health`.
 
-### Staging / Dev (Coolify-Projekt „Schulprojekte“)
+### Coolify-Applications (Projekt „Schulprojekte“)
 
-Zweite Application für Tests vor Prod — **manuell** angelegt (Coolify erlaubt kein Kopieren einzelner Ressourcen innerhalb eines Projekts).
+| | GS39-Prod | Legacy (`main`) |
+|---|-----------|-----------------|
+| Coolify-Name | `schulnavigator:development-feature` | `schulnavigator:main-…` |
+| Application-UUID | `jjgl5u105ucxjvbeuwflsjq4` | `q1a8t4zswynvgutbw9og5l7n` |
+| URL | **`https://39-gs.mpz.schule`** | `https://schulnavigator.mpz.schule` |
+| Git-Branch | **`kunde/39-gs`** | **`main`** (eingefroren) |
+| Schüler-Medien-Volumes | ja (`/data/schulnavigator/…`) | nein (Stand Juni 2026) |
 
-| | Prod | Dev |
-|---|------|-----|
-| Coolify-Name | `schulnavigator:main-…` | `schulnavigator:development-feature` |
-| Application-UUID | `q1a8t4zswynvgutbw9og5l7n` | `jjgl5u105ucxjvbeuwflsjq4` |
-| URL | `https://schulnavigator.mpz.schule` | `https://schulnavigator-dev.mpz.schule` |
-| Git-Branch | **`kunde/39-gs`** (GS39-Prod; `main` eingefroren) | `feature/*` oder PR-Branches für QA — **kein** Merge nach `main` |
+Build-Einstellungen: Base **`/app`**, Dockerfile **`/Dockerfile`**, Port **`3000`**, Env `PORT=3000`, `NODE_ENV=production`.
 
-Build-Einstellungen wie Prod: Base **`/app`**, Dockerfile **`/Dockerfile`**, Port **`3000`**, Env `PORT=3000`, `NODE_ENV=production`.
-
-**Feature-QA auf Dev:** Coolify → Application Dev → **Source → Branch** auf den PR-Branch stellen → **Redeploy**. Dialog-Test: Entry-URL aus `manifest.json`, dann `/raum/daz` (X neben Zurück, Chip zentriert). Siehe [`lokal-testen-und-anschauen.md`](lokal-testen-und-anschauen.md).
+**Feature-QA:** bevorzugt lokal (`npm run dev`) oder temporär Branch auf App 6 umstellen — **Prod-Smoke und QR-Basis-URL immer `39-gs.mpz.schule`**. Siehe [`lokal-testen-und-anschauen.md`](lokal-testen-und-anschauen.md).
 
 **Pflicht bei jeder neuen Application:** unter **Advanced** / **Build** → **Git Submodules deaktivieren** (sonst schlägt der Clone wegen privater Submodule in [`.gitmodules`](../.gitmodules) fehl — siehe Abschnitt unten).
 
@@ -656,7 +664,7 @@ In Coolify: **Application → Deployments** → stabiles vorheriges Image **Rede
 
 ```bash
 cd app
-NEXT_PUBLIC_BASE_URL=https://schulnavigator.mpz.schule npm run generate:qr
+NEXT_PUBLIC_BASE_URL=https://39-gs.mpz.schule npm run generate:qr
 ```
 
 Oder dauerhaft in `app/.env.local` setzen (nicht committen). Stichprobe: Raum-QR und Entry-QR mit dem Handy scannen.

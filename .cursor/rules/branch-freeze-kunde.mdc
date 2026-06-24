@@ -20,11 +20,11 @@ Referenz: Kunde-Code-Feature-Port (`.cursor/plans/kunde-code_feature-port_db51d0
 
 ## Coolify / Deploy
 
-- **Prod** für GS39: Coolify-Application auf Branch **`kunde/39-gs`** deployen — **nicht** erwarten, dass `#228`/`#229` über `main` live gehen.
-- **Dev** (`schulnavigator-dev.mpz.schule`): Feature-Branches für QA; ebenfalls **nicht** `main` als Ziel für Kundenstände.
-- Schüler-Medien: weiterhin Volumes + rsync (unabhängig vom Git-Branch).
+- **GS39-Prod:** Coolify-Application `jjgl5u105ucxjvbeuwflsjq4` auf Branch **`kunde/39-gs`** → **`https://39-gs.mpz.schule`** — **nicht** erwarten, dass `#228`/`#229` über `main` live gehen.
+- **Legacy:** `schulnavigator.mpz.schule` läuft auf eingefrorenem **`main`** (Referenzstand).
+- Schüler-Medien: Volumes an der GS39-Application + rsync (unabhängig vom Git-Branch).
 
 ## Agenten
 
 - In Plänen, Issues und Abschlussberichten **kein** „Merge/PR nach `main`“ für Kunden- oder Schülermedien-Arbeit vorschlagen.
-- Prod-Smoke: „Coolify-Redeploy auf `kunde/39-gs`“ (oder den jeweiligen `kunde/*`-Branch).
+- Prod-Smoke: **`https://39-gs.mpz.schule`** nach Coolify-Redeploy auf `kunde/39-gs`.
