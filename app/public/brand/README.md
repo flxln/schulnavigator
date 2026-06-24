@@ -9,7 +9,7 @@ Statische Marken-Dateien für den Schulnavigator. Werden **versioniert und commi
 | `logos/` | **Committed** — stabil, klein (SVG) |
 | `motifs/` | **Committed**, sobald PNGs vom Auftraggeber vorliegen; bis dahin nur README + CSS-Fallback in `sn-theme.css` |
 | `mascots/` | **Committed** — Frieda/Otto (Alpha-PNG) für Dialog-Hotspots im Raumbild ([ADR-011](../../dokumentation/adr/011-dialog-mascot-hotspots.md)) |
-| `hotspot-icons/` | **Committed** — Typ-Presets (audio, video, foto, text) für Medien-Hotspots ohne eigenes `icon` ([ADR-017](../../dokumentation/adr/017-externe-medien-hotspot-marker.md)) |
+| `hotspot-icons/` | **Committed** — Typ-Presets (audio, video, foto, text) für Medien-Hotspots ohne eigenes `icon` ([ADR-017](../../dokumentation/adr/017-externe-medien-hotspot-marker.md)); zusätzlich benannte SVGs (`video-abspielen.svg`, `startseite.svg`, …) für manuelle `hotspot.icon`-Zuweisung |
 
 Nicht in `.gitignore` aufnehmen.
 
@@ -26,7 +26,8 @@ Design-System-Doku: `auftraggeber/material/UI-Vorschläge/UI-vorschlag-website.m
 - Logos: `/brand/logos/jubilaeum-lockup.svg`, `/brand/logos/badge.svg` (Next.js `public/`-Pfad)
 - Motive: `/brand/motifs/…` (wenn vorhanden)
 - Maskottchen: `/brand/mascots/frieda.png`, `/brand/mascots/otto.png`
-- Hotspot-Presets: `/brand/hotspot-icons/audio.svg`, `video.svg`, `foto.svg`, `text.svg`, `link.svg`, `embed.svg`
+- Hotspot-Presets (automatisch per Medientyp): `/brand/hotspot-icons/audio.svg`, `video.svg`, `foto.svg`, `text.svg`, `link.svg`, `embed.svg`
+- Erweiterte Hotspot-Icons (manuell): z. B. `/brand/hotspot-icons/video-abspielen.svg`, `startseite.svg`, `profil.svg` — 24 farbige Kreis-Icons (6 Medien + 18 UI)
 - Farben/Typo: CSS-Variablen in `app/gs39-tokens.css`, nicht direkte Hex-Werte in TSX
 
 ## Pflege
