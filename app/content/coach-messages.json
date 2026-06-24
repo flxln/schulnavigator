@@ -7,7 +7,7 @@
       "placement": "left",
       "text": "Willkommen beim Schulrundgang! Tippe auf ein Fenster, den Wegweiser für Hof und Turnhalle oder scanne den QR-Code an der Raumtür.",
       "layout": {
-        "mascotSize": 0.52
+        "mascotSize": 0.55
       },
       "quelle": "/api/coach/welcome-hub",
       "milestone": 0

@@ -21,7 +21,7 @@ describe('resolveCoachLayout', () => {
     const resolved = resolveCoachLayout(baseMessage('left'))
     expect(resolved.imgStyle).toEqual({
       height: `${DEFAULT_MASCOT_SIZE * 100}vh`,
-      maxWidth: `min(45%, ${DEFAULT_MASCOT_SIZE * 100}vh)`,
+      maxWidth: `min(100%, ${DEFAULT_MASCOT_SIZE * 100}vh)`,
     })
     expect(resolved.figureStyle).toBeUndefined()
     expect(resolved.duoRowStyle).toBeUndefined()
@@ -43,7 +43,7 @@ describe('resolveCoachLayout', () => {
       },
     })
     expect(resolved.imgStyle.height).toBe('38vh')
-    expect(resolved.imgStyle.maxWidth).toBe('min(45%, 38vh)')
+    expect(resolved.imgStyle.maxWidth).toBe('min(100%, 38vh)')
     expect(resolved.bubbleStyle.marginTop).toBe(
       `${DEFAULT_BUBBLE_MARGIN_Y_REM - 0.25}rem`,
     )
@@ -57,7 +57,7 @@ describe('resolveCoachLayout', () => {
       layout: { mascotSize: 0.99, bubbleMaxWidth: 40 },
     })
     expect(resolved.imgStyle.height).toBe('55vh')
-    expect(resolved.imgStyle.maxWidth).toBe('min(45%, 55vh)')
+    expect(resolved.imgStyle.maxWidth).toBe('min(100%, 55vh)')
     expect(resolved.bubbleStyle.maxWidth).toBe('min(100%, 32rem)')
   })
 

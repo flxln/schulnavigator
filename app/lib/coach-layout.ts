@@ -38,8 +38,6 @@ export const COACH_LAYOUT_CLAMPS: Record<
 }
 
 export const DEFAULT_MASCOT_SIZE = 0.42
-/** Anteil der Viewport-Breite — verhindert Überlauf bei `placement: left|right`. */
-export const COACH_MASCOT_MAX_WIDTH_VW_PERCENT = 45
 export const DEFAULT_BUBBLE_MAX_WIDTH_REM = 22
 export const DEFAULT_BUBBLE_FONT_SIZE = 15
 export const DEFAULT_BUBBLE_MARGIN_Y_REM = 0.75
@@ -182,7 +180,7 @@ export function resolveCoachLayout(
   const mascotHeight = mascotSizeToVh(mascotSize)
   const imgStyle: CSSProperties = {
     height: mascotHeight,
-    maxWidth: `min(${COACH_MASCOT_MAX_WIDTH_VW_PERCENT}%, ${mascotHeight})`,
+    maxWidth: `min(100%, ${mascotHeight})`,
   }
 
   const figureTransform = buildFigureTransform(

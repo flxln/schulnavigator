@@ -47,8 +47,8 @@ Fehlendes `layout` → identisches Rendering wie vor #192.
 |--------|------|
 | JSON / MPZ | 0,15–0,55 (Default **0,42**) |
 | Inline `height` | `{mascotSize × 100}vh` |
-| Inline `maxWidth` | `min(45%, {mascotSize × 100}vh)` — skaliert mit der Figur, verhindert Überlauf bei `left`/`right` |
+| Inline `maxWidth` | `min(100%, {mascotSize × 100}vh)` — quadratische Figur nutzt Containerbreite bis zur vh-Höhe |
 
-**Häufiger Fehler (behoben 2026-06-24):** Früher setzte `.sn-coach-peek__img` in CSS `height: min(42vh, 260px)` und `max-width: min(45%, 200px)` — damit wirkte `layout.mascotSize` ab ~0,3 oft **nicht sichtbar**. Größe kommt ausschließlich aus `resolveCoachLayout()`.
+**Häufiger Fehler (behoben 2026-06-24):** Früher setzte `.sn-coach-peek__img` feste px/vh-Deckel; danach noch `max-width: min(45%, …)` — damit blieb die Figur auf schmalen Screens bei ~45 % Containerbreite klein, obwohl `mascotSize` z. B. 0,55 (55 vh) war. Größe kommt ausschließlich aus `resolveCoachLayout()` (`min(100%, …vh)`).
 
 **Kalibrierung:** `localStorage` (`sn_coach_seen_heft` / `sn_coach_seen_fest`) leeren → `/` mit Heft-Cookie → `welcome-hub` erneut. Wert ändern → Seite hart neu laden (JSON wird beim Build/HMR eingebunden).
