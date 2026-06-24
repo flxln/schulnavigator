@@ -14,7 +14,7 @@ Abgleich mit [flxln/schulnavigator](https://github.com/flxln/schulnavigator). **
 | [epic-mpz-studio-ui-cleanup.md](./epic-mpz-studio-ui-cleanup.md) | Epic **#195** — MPZ Studio UI-Cleanup (#196–#204) ✅ abgeschlossen |
 | [epic-mpz-studio-v3-visual-polish.md](./epic-mpz-studio-v3-visual-polish.md) | Epic **#205** — MPZ Studio v3 Visual Polish (#206–#220) |
 | [epic-schuelermedien-deploy-trennung.md](./epic-schuelermedien-deploy-trennung.md) | Epic **#226** — Schüler-Medien Deploy-Trennung (#227–#232) |
-| [schuelermedien-deploy-trennung/](./schuelermedien-deploy-trennung/README.md) | Planungsdoku — Schüler-Medien Deploy-Trennung abgeschlossen (#226, ADR-027 entschieden); History [#232](https://github.com/flxln/schulnavigator/issues/232) offen |
+| [schuelermedien-deploy-trennung/](./schuelermedien-deploy-trennung/README.md) | Planungsdoku — Schüler-Medien Deploy-Trennung abgeschlossen (#226, ADR-027); History [#232](https://github.com/flxln/schulnavigator/issues/232) erledigt (GitHub-Support LFS-Purge offen) |
 
 ## Archiv
 

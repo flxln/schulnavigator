@@ -209,7 +209,7 @@ Coolify-Build nutzt `validate:stations:structure` und `validate:coach:structure`
 | LFS-Pointer Schüler-Medien | **0** |
 | LFS-Pointer Raumbilder (`public/stations/`) | **17** (unverändert, O5) |
 | Getrackte Bahn-B-Dateien (Tip `kunde/39-gs`) | **3× `.gitkeep`** |
-| GitHub-Support LFS-Purge | **ausstehend** — [08-github-support-ticket-232.md](./08-github-support-ticket-232.md) |
+| GitHub-Support LFS-Purge | **eingereicht** (2026-06-24) — Bestätigung ausstehend; [08-github-support-ticket-232.md](./08-github-support-ticket-232.md) |
 
 **Verifikation (frischer Klon):**
 

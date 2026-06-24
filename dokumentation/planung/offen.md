@@ -2,7 +2,7 @@
 
 **Stand:** 2026-06-24 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
 
-**Letzter Abgleich:** 2026-06-24 — Epic [#226](https://github.com/flxln/schulnavigator/issues/226) abgeschlossen; [#232](https://github.com/flxln/schulnavigator/issues/232) History-Bereinigung technisch erledigt (GitHub-Support LFS-Purge offen).
+**Letzter Abgleich:** 2026-06-24 — [#232](https://github.com/flxln/schulnavigator/issues/232) History erledigt; GitHub-Support-Ticket LFS-Purge eingereicht (Bestätigung ausstehend).
 
 Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren). Abgeschlossene Epics: [archiv/epics/](./archiv/epics/).
 
