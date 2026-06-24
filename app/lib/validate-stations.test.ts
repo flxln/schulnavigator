@@ -198,14 +198,14 @@ describe('validateStationsFile Hub (ADR-016)', () => {
     const hotspots = klassenzimmer.hotspots360 as Record<string, unknown>[]
     hotspots[1] = {
       ...hotspots[1],
-      icon: '/media/klassenzimmer/icons/play.svg',
+      icon: '/stations-icons/klassenzimmer/play.svg',
       iconSize: 0.12,
     }
     const stations = validateStationsFile(data as unknown)
     const hs = stations
       .find((s) => s.slug === 'klassenzimmer')
       ?.hotspots360?.find((h) => h.id === 'hs-video')
-    expect(hs?.icon).toBe('/media/klassenzimmer/icons/play.svg')
+    expect(hs?.icon).toBe('/stations-icons/klassenzimmer/play.svg')
     expect(hs?.iconSize).toBe(0.12)
   })
 

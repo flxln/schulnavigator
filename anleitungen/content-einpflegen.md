@@ -4,7 +4,7 @@ _Anleitung für MPZ/Lehrkräfte (MVP): Medien und Hotspots ohne Admin-Oberfläch
 
 **Langfristig:** Directus (ADR-003, Phase 5). **Jetzt:** Dateien unter `app/public/` + Einträge in `app/data/stations.json`.
 
-> **Wichtig (Deploy-Trennung, #227):** Schüler-Medien (`public/media/`, `content/dialog-audio/`, `content/coach-audio/`) **nicht** committen oder pushen, bis Phase 2 live ist. Lokal speichern und testen ist in Ordnung. Details: [fuer-entwickler.md](./fuer-entwickler.md) (Abschnitt „Schüler-Medien und Git“).
+> **Wichtig (Deploy-Trennung, #228):** Schüler-Medien (`public/media/`, `content/dialog-audio/`, `content/coach-audio/`) **nie** committen oder pushen — sie werden per Server-Sync (Bahn B) ausgeliefert. Lokal speichern und testen ist in Ordnung. Generische Hotspot-Presets liegen in `public/stations-icons/` (Bahn A, Git). Details: [fuer-entwickler.md](./fuer-entwickler.md) (Abschnitt „Schüler-Medien und Git“).
 
 **Projekttag (24./25.06.):** Schnellpfad mit CLI, JSON-Schema und Snippets — [projekttag-content-ingest.md](./projekttag-content-ingest.md).
 
@@ -15,7 +15,6 @@ Verwandte Dokumente:
 - [pflege-uebersicht.md](../dokumentation/content/pflege-uebersicht.md) — alle Pflegeorte und -wege (Übersicht)
 - [pflege-interaktiv.html](../dokumentation/content/pflege-interaktiv.html) — interaktive Übersicht nach Content-Typ
 - [verzeichnisstruktur.md](../dokumentation/content/verzeichnisstruktur.md) — Slugs, Zonen, Pfadkonventionen
-- [public/media/README.md](../app/public/media/README.md) — Kurzreferenz Ordnerstruktur
 - [lokal-testen-und-anschauen.md](./lokal-testen-und-anschauen.md) — Test-Routen, Build-Check
 - [fuer-entwickler.md](./fuer-entwickler.md) — Deploy, Git LFS, Coolify
 
@@ -54,15 +53,41 @@ flowchart LR
 
 ## Schritt 1 — Dateien ablegen
 
-### Stations-Medien
+### Stations-Medien (Bahn B — nicht in Git)
+
+Öffentliche Stations-Medien (Audio, Video, Fotos, Texte, schülerbezogene Icons). Statisch ausgeliefert — keine Cookie-Prüfung (im Gegensatz zu Dialog-Audio unter `content/dialog-audio/`).
 
 ```
 app/public/media/{slug}/
 ├── audio/      MP3, WAV
 ├── video/      MP4 (ADR-004: Upload auf MPZ-Server)
 ├── fotos/      JPG, WebP
-└── texte/      MD (Markdown) oder TXT (Plaintext)
+├── texte/      MD (Markdown) oder TXT (Plaintext)
+└── icons/      PNG/WebP/SVG aus dem Studio (schülerbezogen oder hochgeladen)
 ```
+
+Slug = App-Slug aus der [kanonischen Slug-Liste](../dokumentation/content/verzeichnisstruktur.md) (z. B. `musik`, `daz`).
+
+**Pfadkonvention in `stations.json`:**
+
+```json
+{ "typ": "audio", "quelle": "/media/{slug}/audio/{dateiname}.mp3" }
+{ "typ": "video", "quelle": "/media/{slug}/video/{dateiname}.mp4" }
+{ "typ": "text", "quelle": "/media/{slug}/texte/{dateiname}.md" }
+```
+
+### Hotspot-Presets (Bahn A — in Git)
+
+Personenfreie generische Icons (SVG, ggf. PNG) liegen außerhalb des Medien-Mounts:
+
+```
+app/public/stations-icons/{slug}/
+└── video.svg, embed.svg, …
+```
+
+In `stations.json`: `"icon": "/stations-icons/{slug}/video.svg"`. Änderungen nur per Code-Commit — das MPZ Studio schreibt **nicht** in diesen Ordner.
+
+Studio-Uploads (alle Formate) landen immer unter `public/media/{slug}/icons/` (Bahn B) und werden per Server-Sync ausgeliefert. Kollision mit einem gleichnamigen Bahn-A-Preset wird abgelehnt.
 
 **Beispiel `klassenzimmer`:**
 
@@ -218,7 +243,7 @@ Orientierung: Eintrag `klassenzimmer` in `stations.json` (Issue **#93**).
 | `mascot` | bei Dialog | `frieda` \| `otto` |
 | `mascotSize` | nein | Anteil der Panorama-Höhe (0,05–1); nur bei `action: "dialog"` — siehe [ADR-014](../dokumentation/adr/014-mascot-size-json.md) |
 | `mascotFlipX` | nein | `true` = Figur horizontal gespiegelt (links↔rechts); Fußpunkt bleibt auf `(x, y)` |
-| `icon` | nein | Pfad `/media/{slug}/icons/….svg` oder PNG — ersetzt gelben Punkt ([ADR-017](../dokumentation/adr/017-externe-medien-hotspot-marker.md) Stufe 1) |
+| `icon` | nein | Pfad `/stations-icons/{slug}/….svg` (Bahn A, Preset) oder `/media/{slug}/icons/….png` (Bahn B, Studio/Schülerarbeit) — ersetzt gelben Punkt ([ADR-017](../dokumentation/adr/017-externe-medien-hotspot-marker.md) Stufe 1) |
 | `iconSize` | nein | 0,05–0,25 — Anteil der Panorama-Höhe (wie `mascotSize`) |
 
 **Dialog-Stationen** (`daz`, `pc-raum`): Audio läuft über `dialog.segmente[]` und `/api/dialog/…` — nicht über `typ: audio` in `medien[]`. Dort Hotspots mit `action: "dialog"`, `mascot: "frieda"` \| `"otto"` und optional `mascotSize` (Default im Code: `0.22`) sowie `mascotFlipX`.

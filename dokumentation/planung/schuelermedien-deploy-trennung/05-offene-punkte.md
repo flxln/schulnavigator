@@ -46,4 +46,4 @@
 - ⁷ T1/T6 präzisiert: Mount-Design entschieden, Rechte-Test offen; SSH-Key je Laptop, `accept-new` für Erst-Connect (1a #3).
 - ⁸ T2 entschieden: rsync ohne `--delete` als Default, `--prune` opt-in (Datenverlust-Risiko).
 
-*Phase 0 (#227): O1–O5 und A1 sind entschieden; Gate für [#228](https://github.com/flxln/schulnavigator/issues/228) ist offen.*
+*Phase 0 (#227) und Phase 1 (#228) abgeschlossen; Gate für [#229](https://github.com/flxln/schulnavigator/issues/229) ist offen.*

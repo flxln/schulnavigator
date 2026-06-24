@@ -48,3 +48,11 @@ certificates
 
 # MPZ Studio / content:ingest — lokale Backup-Datei nicht versionieren
 data/stations.json.bak
+
+# Schüler-Medien — nur Server-Sync (Bahn B), nicht GitHub
+/public/media/*
+!/public/media/.gitkeep
+/content/dialog-audio/*
+!/content/dialog-audio/.gitkeep
+/content/coach-audio/*
+!/content/coach-audio/.gitkeep

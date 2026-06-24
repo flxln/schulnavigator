@@ -85,11 +85,11 @@ Kein `--delete` im Default — Löschen auf dem Server bei unvollständigem loka
 
 ## Akzeptanzkriterien (Gesamt)
 
-- [ ] `git ls-files public/media content/dialog-audio content/coach-audio` liefert nach Phase 1 **nur** `.gitkeep` — keine Schüler-Dateien mehr getrackt ⁴⁹
+- [x] `git ls-files public/media content/dialog-audio content/coach-audio` liefert nach Phase 1 **nur** `.gitkeep` — keine Schüler-Dateien mehr getrackt ⁴⁹
 - [ ] Coolify-Build grün **ohne** Medien im Clone, weil `build` nur die `:structure`-Validatoren ausführt ⁵
 - [ ] Hotspot-Icons live erreichbar (kein 404): `public/stations-icons/` aus Git, Bahn-B-Icons via rsync ²
 - [ ] `rsync` + Deploy → Live-Station zeigt neue Medien ohne GitHub-Upload der Dateien
-- [ ] `git status` nach Studio-Upload zeigt Medien als ignoriert (oder nicht trackbar)
+- [x] `git status` nach Studio-Upload zeigt Medien als ignoriert (oder nicht trackbar)
 - [ ] MPZ-Anleitung in ≤ 1 Seite beschreibt den Alltags-Workflow
 - [ ] Smoke: `/api/health`, eine Raum-URL mit Video, eine mit Dialog-Audio, eine Coach-Message mit gesetzter `quelle` (`/api/coach/{id}`) ⁶
 

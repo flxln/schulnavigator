@@ -71,12 +71,12 @@ ADR-027 entscheiden, `dsgvo.md`, AVV-Anhang, Epic abschließen.
 ## Kontext
 
 - ADR: [027-schuelermedien-nicht-in-git.md](../adr/027-schuelermedien-nicht-in-git.md) (offen)
-- Pre-Mortem: [pre-mortem-1a](../reviews/pre-mortem/pre-mortem-1a-schuelermedien-deploy-trennung.md), [06-pre-mortem-1b-logik.md](./schuelermedien-deploy-trennung/06-pre-mortem-1b-logik.md)
+- Pre-Mortem: [pre-mortem-1a](../reviews/pre-mortem/pre-mortem-1a-schuelermedien-deploy-trennung.md), [pre-mortem-1b-repo-ignore](../reviews/pre-mortem/pre-mortem-1b-repo-ignore.md)
 
 ## Checkliste (Epic)
 
 - [x] Phase 0: DSB-Freigabe (#227) — 2026-06-24
-- [ ] Phase 1: Schüler-Medien aus Git-Index (#228)
+- [x] Phase 1: Schüler-Medien aus Git-Index (#228) — 2026-06-24
 - [ ] Phase 2: Coolify-Volumes + Structure-Build (#229)
 - [ ] Phase 3: Deploy-Skript + Studio-Tab (#230)
 - [ ] Phase 4: ADR-027 + DSGVO-Doku (#231)

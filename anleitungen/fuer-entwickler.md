@@ -178,7 +178,8 @@ Alle Befehle im Verzeichnis `app/` ausführen.
 | `middleware.ts`    | Zugangskontrolle: Cookie `sn_access`, Entry `?t=`, Redirect `/eintritt` (#23, ADR-007) |
 | `data/`            | `stations.json` (Phase 1, Issue #12)                          |
 | `public/stations/` | Raumbilder (`{slug}.jpg`, ≤ 500 KB) — Gyro-Viewer (ADR-006); Slug-Liste + Anforderungen: [`dokumentation/content/verzeichnisstruktur.md`](../dokumentation/content/verzeichnisstruktur.md) |
-| `public/media/`    | Öffentliche Stations-Medien (`{slug}/audio/`, `/video/`, `/fotos/`, `/texte/`) — statisch ausgeliefert; wird befüllt wenn echte Inhalte vorliegen (bis dahin `/demo/`) |
+| `public/media/`    | Öffentliche Stations-Medien (Bahn B, gitignored) — `{slug}/audio/`, `/video/`, `/fotos/`, `/texte/`, `/icons/` |
+| `public/stations-icons/` | Generische Hotspot-Presets (Bahn A, Git) — `{slug}/*.svg` |
 | `content/`         | Dialog-Audio WAV-Clips (`dialog-audio/{slug}/{nn}-{sprecher}.wav`) — Cookie-geschützt via `GET /api/dialog/…` (ADR-010); `COPY content/ ./content/` im Dockerfile |
 | `public/qr/`       | generierte QR-PNGs + Druck-PDFs (`pdf/`) + `manifest.json` (Issue #15, #130; PNGs/PDFs gitignored) |
 
@@ -186,17 +187,25 @@ Dateinamen für Nicht-Komponenten: `kebab-case` (siehe [`CLAUDE.md`](../CLAUDE.m
 
 ---
 
-## Schüler-Medien und Git (Phase 0, #227)
+## Schüler-Medien und Git (#228)
 
-**Bis Phase 2 (#229) live ist:** Keine neuen Schüler-Medien per `git add` / `git push` auf GitHub legen.
+Schüler-Medien **nie** per `git add` / `git push` auf GitHub legen. Sie werden vom MPZ-Rechner per Server-Sync (rsync, Phase 3) auf Hetzner ausgeliefert — nicht über Git.
 
-Betroffene Pfade unter `app/`:
+**Bahn B (ignoriert, nur `.gitkeep` in Git):**
 
-- `public/media/` (Fotos, Videos, Audio, schülerbezogene Icons)
-- `content/dialog-audio/`
-- `content/coach-audio/`
+| Pfad | Inhalt |
+|------|--------|
+| `public/media/` | Fotos, Videos, Audio, Texte, Studio-Icons |
+| `content/dialog-audio/` | Dialog-WAV-Clips |
+| `content/coach-audio/` | Coach-WAV-Clips |
 
-**Weiter erlaubt:** App-Code, `data/stations.json` (DSB Option A), Raumbilder `public/stations/`, generische Icons (werden in #228 nach `public/stations-icons/` umgezogen).
+**Bahn A (weiter in Git):**
+
+- App-Code, `data/stations.json` (DSB Option A)
+- Raumbilder `public/stations/` (LFS)
+- Generische Hotspot-Presets `public/stations-icons/{slug}/`
+
+`.gitignore` unter `app/` schützt Bahn B. Nach Studio-Upload zeigt `git status` Medien als ignoriert. Coolify-Build ohne Medien im Clone: Structure-Validatoren in #229.
 
 Planung: [schuelermedien-deploy-trennung](../dokumentation/planung/schuelermedien-deploy-trennung/README.md) · Inventar: [07-inventar-github.md](../dokumentation/planung/schuelermedien-deploy-trennung/07-inventar-github.md)
 

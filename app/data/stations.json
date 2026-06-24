@@ -25,7 +25,7 @@
           "yaw": 1.1,
           "pitch": -0.2,
           "mediumId": "dx-schule-zukunft",
-          "icon": "/media/klassenzimmer/icons/embed.svg",
+          "icon": "/stations-icons/klassenzimmer/embed.svg",
           "iconSize": 0.24
         }
       ]
@@ -58,7 +58,7 @@
           "yaw": -97.6,
           "pitch": 2.7,
           "mediumId": "musik-musikzimmer-gute-laune-tanz",
-          "icon": "/media/musik/icons/video.svg",
+          "icon": "/stations-icons/musik/video.svg",
           "iconSize": 0.2
         },
         {
@@ -66,7 +66,7 @@
           "yaw": -153.3,
           "pitch": 0.7,
           "mediumId": "musik-musikzimmer-fuer-elise",
-          "icon": "/media/musik/icons/matt-icons-folder-piano.svg",
+          "icon": "/stations-icons/musik/matt-icons-folder-piano.svg",
           "iconSize": 0.23
         }
       ]
@@ -115,7 +115,7 @@
           "yaw": 0.5,
           "pitch": 14.3,
           "mediumId": "daz-video-hallo-im-daz-raum",
-          "icon": "/media/daz/icons/video.svg",
+          "icon": "/stations-icons/daz/video.svg",
           "iconSize": 0.25
         }
       ],
@@ -337,7 +337,7 @@
           "yaw": -170.5,
           "pitch": -20,
           "mediumId": "pc-raum-pc-raum-angebote",
-          "icon": "/media/pc-raum/icons/video.svg",
+          "icon": "/stations-icons/pc-raum/video.svg",
           "iconSize": 0.23
         }
       ],
@@ -432,7 +432,7 @@
           "yaw": -5.4,
           "pitch": -28.7,
           "mediumId": "lesewelt-embed",
-          "icon": "/media/lesewelt/icons/books-stack-of-three.svg",
+          "icon": "/stations-icons/lesewelt/books-stack-of-three.svg",
           "iconSize": 0.15
         },
         {
@@ -502,7 +502,7 @@
           "yaw": 63.1,
           "pitch": 6.7,
           "mediumId": "werken-werken-das-kleine-quadrat",
-          "icon": "/media/werken/icons/video.svg",
+          "icon": "/stations-icons/werken/video.svg",
           "iconSize": 0.25
         }
       ],
@@ -531,7 +531,7 @@
           "yaw": 118.9,
           "pitch": -3.3,
           "mediumId": "speiseraum-speiseraum-essenausgabe-2",
-          "icon": "/media/speiseraum/icons/video.svg",
+          "icon": "/stations-icons/speiseraum/video.svg",
           "iconSize": 0.25
         }
       ],
