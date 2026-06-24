@@ -109,6 +109,14 @@ body {
   .sn-viewer-fallback-min-height {
     min-height: min(50vh, 360px);
   }
+
+  /*
+   * Safari/WebKit: dialog[open] { display: block } (UA) schlägt Tailwind open:grid —
+   * Grid-Rows greifen nicht, Body kollabiert (leeres Modal). Spezifität > UA-Regel.
+   */
+  dialog.mpz-modal[open] {
+    display: grid;
+  }
 }
 
 @media (min-width: 768px) {

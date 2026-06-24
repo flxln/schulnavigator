@@ -321,16 +321,34 @@
           "typ": "embed",
           "quelle": "https://read.bookcreator.com/2MfAUZf5kWdGbFsdRTyW50qOUeT2/4GMz8K3eSy2Sv6RbTbo6_A",
           "untertitel": "Berühmte Personen"
+        },
+        {
+          "id": "lesewelt-embed",
+          "typ": "embed",
+          "quelle": "https://read.bookcreator.com/YqQ0U5L8S0r0vSRfXVfsp8CqLmt2yQvDeGg9lfzLcveH2k6STwD04A/108kSCPeTWiP3ozfYy94IQ",
+          "untertitel": "Entdecke, was wir lesen",
+          "embedAllow": [
+            "bookcreator.com",
+            "delightex.com"
+          ]
         }
       ],
       "hotspots360": [
         {
           "id": "hs-beruehmte-personen",
           "label": "Berühmte Personen",
-          "yaw": 0,
-          "pitch": 0,
+          "yaw": -20.5,
+          "pitch": 14.9,
           "mediumId": "lesewelt-beruehmte-personen",
           "iconSize": 0.2
+        },
+        {
+          "id": "lesewelt-buchvorstellung",
+          "label": "Wir stellen unsere Bücher vor",
+          "yaw": -3.2,
+          "pitch": -28.9,
+          "mediumId": "lesewelt-beruehmte-personen",
+          "icon": "/media/lesewelt/icons/books-stack-of-three.svg"
         }
       ]
     },
