@@ -2,7 +2,7 @@
 
 **Stand:** 2026-06-24 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
 
-**Letzter Abgleich:** 2026-06-24 — MPZ Studio: Dialog-WAV-Upload im Segment-Formular (Chain-on-Save, `dialog-audio-naming` client-safe); Content `kunst`/`musik` auf Branch `kunde/39-gs`.
+**Letzter Abgleich:** 2026-06-24 — Phase 0 Schüler-Medien Deploy-Trennung (#227): DSB-Freigabe, Inventar `07-inventar-github.md`, O1–O5 entschieden; **nächstes:** [#228](https://github.com/flxln/schulnavigator/issues/228).
 
 Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren). Abgeschlossene Epics: [archiv/epics/](./archiv/epics/).
 
@@ -20,7 +20,7 @@ Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eing
 
 | Issue | Thema | Hinweis |
 |-------|--------|---------|
-| Epic [#226](https://github.com/flxln/schulnavigator/issues/226) | Schüler-Medien Deploy-Trennung | #227–#231; [epic-schuelermedien-deploy-trennung.md](./epic-schuelermedien-deploy-trennung.md); **nächstes:** [#227](https://github.com/flxln/schulnavigator/issues/227) DSB/Schule |
+| Epic [#226](https://github.com/flxln/schulnavigator/issues/226) | Schüler-Medien Deploy-Trennung | #228–#231, #232; [#227](https://github.com/flxln/schulnavigator/issues/227) ✅; [epic-schuelermedien-deploy-trennung.md](./epic-schuelermedien-deploy-trennung.md); **nächstes:** [#228](https://github.com/flxln/schulnavigator/issues/228) Repo & Ignore |
 | Epic [#205](https://github.com/flxln/schulnavigator/issues/205) | MPZ Studio v3 Visual Polish | #214, #217–#220; [epic-mpz-studio-v3-visual-polish.md](./epic-mpz-studio-v3-visual-polish.md); nächstes: [#218](https://github.com/flxln/schulnavigator/issues/218) Design & Hub oder [#214](https://github.com/flxln/schulnavigator/issues/214) Flat-Kalibrierung (`#206`–`#216` ✅) |
 | [#17](https://github.com/flxln/schulnavigator/issues/17) | Raumbilder liefern (extern) | 8/11; fehlen: `kunst`, `hort`, `schulsozialarbeit` |
 | Epic [#86](https://github.com/flxln/schulnavigator/issues/86) | Schulfest GS39 Nachtrag | bis #90/#91; Details [issues-schulfest-gs39-nachtrag.md](./issues-schulfest-gs39-nachtrag.md) |

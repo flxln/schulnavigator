@@ -33,6 +33,6 @@ Domänen-Matrix MPZ Studio: [ideen/archiv/mpz-studio-ui.md](../ideen/archiv/mpz-
 
 Vollständiger Abgleich-Log (bis 2026-06-20): [archiv/sync-log-2026-06.md](./archiv/sync-log-2026-06.md).
 
-**Letzter dokumentierter Abgleich:** 2026-06-24 — Coach `mascotSize` maxWidth 100 % (#223); Fest Hub/Stationen gesperrt → `/scan` (#224); siehe [`coach-layout.md`](../ideen/archiv/coach-layout.md).
+**Letzter dokumentierter Abgleich:** 2026-06-24 — Phase 0 Schüler-Medien Deploy-Trennung (#227 abgeschlossen); nächstes Epic-Unterissue [#228](https://github.com/flxln/schulnavigator/issues/228).
 
 Siehe auch [entscheidungen.md](../entscheidungen.md), [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren).
