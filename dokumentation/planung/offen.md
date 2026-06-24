@@ -10,12 +10,17 @@ Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eing
 
 ## Technik (MPZ / Viewer)
 
+| Thema | Planung |
+|-------|---------|
+| Schüler-Medien nicht auf GitHub | Epic [#226](https://github.com/flxln/schulnavigator/issues/226) — [epic-schuelermedien-deploy-trennung.md](./epic-schuelermedien-deploy-trennung.md); ADR-027 (offen) |
+
 *(keine offenen Startblick/Startpan-Issues — #185 erledigt 2026-06-20; CSP-Enforcement #143 erledigt 2026-06-20)*
 
 ## GitHub — noch offen
 
 | Issue | Thema | Hinweis |
 |-------|--------|---------|
+| Epic [#226](https://github.com/flxln/schulnavigator/issues/226) | Schüler-Medien Deploy-Trennung | #227–#231; [epic-schuelermedien-deploy-trennung.md](./epic-schuelermedien-deploy-trennung.md); **nächstes:** [#227](https://github.com/flxln/schulnavigator/issues/227) DSB/Schule |
 | Epic [#205](https://github.com/flxln/schulnavigator/issues/205) | MPZ Studio v3 Visual Polish | #214, #217–#220; [epic-mpz-studio-v3-visual-polish.md](./epic-mpz-studio-v3-visual-polish.md); nächstes: [#218](https://github.com/flxln/schulnavigator/issues/218) Design & Hub oder [#214](https://github.com/flxln/schulnavigator/issues/214) Flat-Kalibrierung (`#206`–`#216` ✅) |
 | [#17](https://github.com/flxln/schulnavigator/issues/17) | Raumbilder liefern (extern) | 8/11; fehlen: `kunst`, `hort`, `schulsozialarbeit` |
 | Epic [#86](https://github.com/flxln/schulnavigator/issues/86) | Schulfest GS39 Nachtrag | bis #90/#91; Details [issues-schulfest-gs39-nachtrag.md](./issues-schulfest-gs39-nachtrag.md) |

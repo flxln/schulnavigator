@@ -4,6 +4,8 @@ _Anleitung für MPZ/Lehrkräfte (MVP): Medien und Hotspots ohne Admin-Oberfläch
 
 **Langfristig:** Directus (ADR-003, Phase 5). **Jetzt:** Dateien unter `app/public/` + Einträge in `app/data/stations.json`.
 
+> **Wichtig (Deploy-Trennung, #227):** Schüler-Medien (`public/media/`, `content/dialog-audio/`, `content/coach-audio/`) **nicht** committen oder pushen, bis Phase 2 live ist. Lokal speichern und testen ist in Ordnung. Details: [fuer-entwickler.md](./fuer-entwickler.md) (Abschnitt „Schüler-Medien und Git“).
+
 **Projekttag (24./25.06.):** Schnellpfad mit CLI, JSON-Schema und Snippets — [projekttag-content-ingest.md](./projekttag-content-ingest.md).
 
 **Referenz-Station im Repo:** `klassenzimmer` — vier Medientypen, vier Hotspots, echte Dateien unter `app/public/media/klassenzimmer/`.

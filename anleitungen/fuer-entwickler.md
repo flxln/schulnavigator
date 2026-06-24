@@ -186,6 +186,22 @@ Dateinamen für Nicht-Komponenten: `kebab-case` (siehe [`CLAUDE.md`](../CLAUDE.m
 
 ---
 
+## Schüler-Medien und Git (Phase 0, #227)
+
+**Bis Phase 2 (#229) live ist:** Keine neuen Schüler-Medien per `git add` / `git push` auf GitHub legen.
+
+Betroffene Pfade unter `app/`:
+
+- `public/media/` (Fotos, Videos, Audio, schülerbezogene Icons)
+- `content/dialog-audio/`
+- `content/coach-audio/`
+
+**Weiter erlaubt:** App-Code, `data/stations.json` (DSB Option A), Raumbilder `public/stations/`, generische Icons (werden in #228 nach `public/stations-icons/` umgezogen).
+
+Planung: [schuelermedien-deploy-trennung](../dokumentation/planung/schuelermedien-deploy-trennung/README.md) · Inventar: [07-inventar-github.md](../dokumentation/planung/schuelermedien-deploy-trennung/07-inventar-github.md)
+
+---
+
 ## Design-Tokens (GS39, Issue #55)
 
 | Pfad | Rolle |

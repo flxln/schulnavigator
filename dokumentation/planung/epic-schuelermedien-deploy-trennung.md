@@ -75,7 +75,7 @@ ADR-027 entscheiden, `dsgvo.md`, AVV-Anhang, Epic abschließen.
 
 ## Checkliste (Epic)
 
-- [ ] Phase 0: DSB-Freigabe (#227)
+- [x] Phase 0: DSB-Freigabe (#227) — 2026-06-24
 - [ ] Phase 1: Schüler-Medien aus Git-Index (#228)
 - [ ] Phase 2: Coolify-Volumes + Structure-Build (#229)
 - [ ] Phase 3: Deploy-Skript + Studio-Tab (#230)

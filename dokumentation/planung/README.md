@@ -13,6 +13,8 @@ Abgleich mit [flxln/schulnavigator](https://github.com/flxln/schulnavigator). **
 | [issues-startblick.md](./issues-startblick.md) | Startblick Sphere (#152–#153) und Flat-Startpan (#154, #185) |
 | [epic-mpz-studio-ui-cleanup.md](./epic-mpz-studio-ui-cleanup.md) | Epic **#195** — MPZ Studio UI-Cleanup (#196–#204) ✅ abgeschlossen |
 | [epic-mpz-studio-v3-visual-polish.md](./epic-mpz-studio-v3-visual-polish.md) | Epic **#205** — MPZ Studio v3 Visual Polish (#206–#220) |
+| [epic-schuelermedien-deploy-trennung.md](./epic-schuelermedien-deploy-trennung.md) | Epic **#226** — Schüler-Medien Deploy-Trennung (#227–#232) |
+| [schuelermedien-deploy-trennung/](./schuelermedien-deploy-trennung/README.md) | Planungsdoku — Schüler-Medien nicht auf GitHub; Code via Coolify, Medien via rsync (ADR-027, offen) |
 
 ## Archiv
 

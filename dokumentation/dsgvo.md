@@ -1,6 +1,6 @@
 # Schulnavigator — Datenschutzkonzept
 
-*Status: Entwurf | Stand: 2026-06-15*
+*Status: Entwurf | Stand: 2026-06-24*
 
 ## Personenbezogene Daten
 
@@ -10,8 +10,9 @@
 
 ## Einwilligungen
 
-- Verantwortliche Person für Einwilligungserklärungen:
-- Vorlage Einwilligungserklärung: —
+- **Schüler-Medien (Foto/Video/Audio):** Einwilligungen bei der Schule **dokumentiert** (Phase 0, O4, 2026-06-24)
+- Verantwortliche Person für Einwilligungserklärungen: Schule (39. Grundschule Dresden)
+- Vorlage Einwilligungserklärung: Projekttag / Schule
 
 ## Zugriffsschutz (Besucher)
 
@@ -27,6 +28,9 @@ Entscheidung: [ADR-005](./adr/005-zugangskontrolle-token.md), Speicher/Durchsetz
 ## Hosting & Datenspeicherung
 
 - Serverstandort: Deutschland (MPZ-Hetzner, siehe ADR-001)
+- **Schüler-Medien (Fotos, Videos, Dialog-/Coach-Audio):** dürfen **nicht** auf GitHub — Trennung Code vs. Medien in Umsetzung: [Planung Schüler-Medien](../planung/schuelermedien-deploy-trennung/README.md), [ADR-027](../adr/027-schuelermedien-nicht-in-git.md) (offen). **DSB-Freigabe Phase 1–4** liegt schriftlich vor (Papier, 2026-06-24). **Bis Phase 2 live:** keine neuen Schüler-Binärdateien pushen — Inventar: [07-inventar-github.md](../planung/schuelermedien-deploy-trennung/07-inventar-github.md).
+- **`stations.json`:** Darf auf GitHub bleiben (DSB Option A) — nur Binärmedien werden getrennt.
+- **Raumbilder** `public/stations/`: Keine erkennbaren Kinder — weiter in Git/LFS (O5).
 - Drittanbieter (Video-Hosting, Analytics, …): Video vorerst MPZ; YouTube nur nach Klärung (ADR-004)
 - Externe Links (`typ: link`, ADR-017): Die App lädt keine Drittanbieter-Inhalte ein; erst ein expliziter Nutzer-Tap öffnet die HTTPS-Zielseite in einem neuen Tab.
 - Delightex-Einbettung (`typ: embed`, ADR-017 Stufe 3): Beim Öffnen eines Embed-Mediums lädt die App Inhalte von Delightex in einem iframe (nur Allowlist-Domain `delightex.com`). DSB-Freigabe liegt vor; **Datenschutzerklärung** um Drittanbieter-Absatz ergänzen (analog YouTube, ADR-004) — noch offen.
@@ -44,5 +48,6 @@ Entscheidung: [ADR-005](./adr/005-zugangskontrolle-token.md), Speicher/Durchsetz
 - [ ] AVV von der Schule unterschrieben zurück
 - [ ] Datenschutzerklärung für die Website erstellen (inkl. Absatz Delightex/Book Creator bei `typ: embed`)
 - [ ] Bei `open` + Website-Einbettung (ADR-021): DSB-Einordnung Parent-Seite / eingebettete App
-- [ ] Einwilligungen einholen (Projekttag 24./25.06.)
+- [x] Einwilligungen für Schüler-Medien dokumentiert (Schule, 2026-06-24)
+- [x] DSB/Schule: Freigabe technische Umsetzung Deploy-Trennung (schriftlich, Papier, 2026-06-24)
 - [ ] Schulleitung / Datenschutzbeauftragten informieren

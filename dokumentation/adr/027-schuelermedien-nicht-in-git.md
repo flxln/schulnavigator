@@ -16,7 +16,7 @@ Ausführliche Planung: [`dokumentation/planung/schuelermedien-deploy-trennung/`]
 1. **Bahn A — Code:** Weiter versionieren in GitHub; Coolify baut die App ohne Schüler-Binärdateien im Clone.
 2. **Bahn B — Schüler-Medien:** **Nicht** in Git; Sync vom MPZ-Laptop per **rsync/SSH** auf **Persistent Volumes** am Server, zur Laufzeit in den Container gemountet (`/app/public/media`, `/app/content/dialog-audio`, ggf. `coach-audio`).
 3. **Deploy:** Ein dokumentiertes Skript (später optional MPZ Studio Deploy-Tab) führt lokal Validierung, optional `git push`, Medien-Sync und Coolify-Redeploy aus.
-4. **`stations.json`:** Vorerst weiter in Git — **vor Umsetzung** mit DSB klären, ob Texte/Namen darin GitHub-tauglich sind ([05-offene-punkte.md](../planung/schuelermedien-deploy-trennung/05-offene-punkte.md)).
+4. **`stations.json`:** Weiter in Git (DSB **Option A**, 2026-06-24) — nur Schüler-**Binärmedien** werden aus GitHub entfernt; Texte/Namen in JSON bleiben versioniert. Details: [05-offene-punkte.md](../planung/schuelermedien-deploy-trennung/05-offene-punkte.md) O1.
 
 ## Begründung
 
