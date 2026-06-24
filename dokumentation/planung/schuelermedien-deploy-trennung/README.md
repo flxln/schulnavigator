@@ -1,7 +1,7 @@
 # Schüler-Medien: Trennung GitHub / Deploy
 
 **Stand:** 2026-06-24  
-**Status:** Epic abgeschlossen (#231, 2026-06-24); ADR-027 entschieden — separates Vorhaben [#232](https://github.com/flxln/schulnavigator/issues/232) (Git-History)  
+**Status:** Epic abgeschlossen (#231, 2026-06-24); ADR-027 entschieden; History [#232](https://github.com/flxln/schulnavigator/issues/232) bereinigt (2026-06-24)  
 **Auslöser:** MPZ Studio schreibt Medien lokal ins Repo; `git push` legt Kinder-Inhalte (Fotos, Videos, Dialog-WAVs) auf GitHub — datenschutzrechtlich nicht akzeptabel.
 
 ## Ziel in einem Satz
@@ -17,7 +17,8 @@
 | [03-zielarchitektur.md](./03-zielarchitektur.md) | Zwei-Bahnen-Modell, Volumes, Deploy-Ablauf |
 | [04-umsetzungsplan.md](./04-umsetzungsplan.md) | Phasen, betroffene Dateien, Akzeptanzkriterien |
 | [05-offene-punkte.md](./05-offene-punkte.md) | DSB/Schule, `stations.json`, Git-History, Coolify (T1–T6 technisch entschieden; O1–O5 entschieden 2026-06-24) |
-| [07-inventar-github.md](./07-inventar-github.md) | Inventar getrackter Schüler-Medien + LFS; Handoff #228/#229 |
+| [07-inventar-github.md](./07-inventar-github.md) | Inventar Pre/Post-Rewrite (#227/#232); Handoff #228/#229 |
+| [08-github-support-ticket-232.md](./08-github-support-ticket-232.md) | GitHub-Support-Vorlage LFS-Purge (#232) |
 | [pre-mortem 1a](../../reviews/pre-mortem/pre-mortem-1a-schuelermedien-deploy-trennung.md) | Code-Praxis-Review: Mount-Masking, `git rm --cached`, rsync/SSH |
 | [pre-mortem 1b](../../reviews/pre-mortem/pre-mortem-1b-repo-ignore.md) | Phase-1-Review: Studio-Ingest, Bahn-A-Presets, Path-Traversal (#228) |
 
@@ -49,4 +50,4 @@
 4. ~~[#230 Phase 3](https://github.com/flxln/schulnavigator/issues/230)~~ — Deploy-Automatisierung
 5. ~~[#231 Phase 4](https://github.com/flxln/schulnavigator/issues/231)~~ — Doku & Compliance, ADR-027 entschieden
 
-**Separat offen:** [#232](https://github.com/flxln/schulnavigator/issues/232) Git-History bereinigen (O3)
+**Separat erledigt:** [#232](https://github.com/flxln/schulnavigator/issues/232) Git-History bereinigt (2026-06-24); GitHub-Support LFS-Purge: [08-github-support-ticket-232.md](./08-github-support-ticket-232.md)

@@ -45,7 +45,7 @@ Entscheidung: [ADR-005](./adr/005-zugangskontrolle-token.md), Speicher/Durchsetz
 | Fotos/Videos mit Schülerinnen/Schülern | Hetzner Volume `/data/schulnavigator/media` | rsync vom MPZ-Rechner | Bahn B; Auslieferung `/media/…` |
 | Dialog-Audio (Kinderstimmen) | Hetzner Volume `/data/schulnavigator/dialog-audio` | rsync | Bahn B; Auslieferung `/api/dialog/…` |
 | Coach-Audio | Hetzner Volume `/data/schulnavigator/coach-audio` | rsync | Bahn B; Auslieferung `/api/coach/…` |
-| Historische Schüler-Medien in Git/LFS | GitHub (Altbestand) | — | Bereinigung [#232](https://github.com/flxln/schulnavigator/issues/232); Inventar: [07-inventar-github.md](../planung/schuelermedien-deploy-trennung/07-inventar-github.md) |
+| Historische Schüler-Medien in Git/LFS | — | Bereinigt 2026-06-24 ([#232](https://github.com/flxln/schulnavigator/issues/232)); Post-Mortem: [post-mortem-232](../reviews/post-mortem/post-mortem-232-2026-06-24.md) |
 
 Ab Phase 1 (#228, 2026-06-24) werden keine neuen Schüler-Binärdateien mehr in Git getrackt oder gepusht.
 
@@ -72,5 +72,5 @@ GitHub, Inc. wird als Subprozessor **ausschließlich** für die Speicherung von 
 - [x] Einwilligungen für Schüler-Medien dokumentiert (Schule, 2026-06-24)
 - [x] DSB/Schule: Freigabe technische Umsetzung Deploy-Trennung (schriftlich, Papier, 2026-06-24)
 - [x] Deploy-Trennung Code vs. Schüler-Medien umgesetzt (ADR-027, #228–#230)
-- [ ] Git-History: Schüler-Medien aus LFS/GitHub entfernen ([#232](https://github.com/flxln/schulnavigator/issues/232))
+- [x] Git-History: Schüler-Medien aus LFS/GitHub entfernt ([#232](https://github.com/flxln/schulnavigator/issues/232), 2026-06-24; GitHub-Support LFS-Purge ausstehend)
 - [ ] Schulleitung / Datenschutzbeauftragten informieren

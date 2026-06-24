@@ -36,5 +36,5 @@ Ausführliche Planung: [`dokumentation/planung/schuelermedien-deploy-trennung/`]
 
 - **Umgesetzt (#228–#230):** `.gitignore`, `git rm --cached`, `.gitkeep`, Icon-Umzug nach `public/stations-icons/`, LFS-Bereinigung für Bahn-B-Pfade, Coolify-Volumes, `:structure`-Validatoren im Build, [`deploy-content.sh`](../../app/scripts/deploy-content.sh), MPZ-Studio-Deploy-Tab. Details: [04-umsetzungsplan.md](../planung/schuelermedien-deploy-trennung/04-umsetzungsplan.md).
 - MPZ-Anleitung und Deploy-Tab dokumentieren den Zwei-Bahnen-Workflow.
-- **Bestehende Git/LFS-History** mit Schüler-Medien: separates Bereinigungsvorhaben [#232](https://github.com/flxln/schulnavigator/issues/232) mit DSB.
+- **Bestehende Git/LFS-History** mit Schüler-Medien: bereinigt ([#232](https://github.com/flxln/schulnavigator/issues/232), 2026-06-24); GitHub-Support LFS-Purge ausstehend.
 - Ergänzt ADR-003 (Content), ADR-004 (Video auf MPZ), ADR-022 (MPZ Studio lokal) — widerspricht ihnen nicht.

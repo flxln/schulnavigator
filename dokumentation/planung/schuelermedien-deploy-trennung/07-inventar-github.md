@@ -1,7 +1,7 @@
 # Inventar — Schüler-Medien auf GitHub (Phase 0.2)
 
-**Stand:** 2026-06-24  
-**Issue:** [#227](https://github.com/flxln/schulnavigator/issues/227) · **Input für:** [#232](https://github.com/flxln/schulnavigator/issues/232) (History-Bereinigung)  
+**Stand:** 2026-06-24 (Pre-Rewrite) · **Post-Rewrite (#232):** 2026-06-24 — siehe Abschnitt unten  
+**Issue:** [#227](https://github.com/flxln/schulnavigator/issues/227) · **Umsetzung:** [#232](https://github.com/flxln/schulnavigator/issues/232) (History-Bereinigung)  
 **Erstellt mit:** `git ls-files`, `git lfs ls-files`, `git status --porcelain` (Repo-Root, Branch `main`)
 
 ---
@@ -197,7 +197,31 @@ Coolify-Build nutzt `validate:stations:structure` und `validate:coach:structure`
 
 ### 5. History-Bereinigung (#232)
 
-Inventar dieser Datei ist Input für `git lfs migrate` / BFG — **nach** Phase 1, mit DSB-Freigabe O3.
+**Erledigt 2026-06-24** — `git filter-repo --invert-paths` auf alle Refs; Force-Push aller Branches/Tags. Post-Mortem: [post-mortem-232-2026-06-24.md](../../reviews/post-mortem/post-mortem-232-2026-06-24.md).
+
+---
+
+## Post-Rewrite (#232, 2026-06-24)
+
+| Kennzahl | Wert nach Bereinigung |
+|----------|----------------------|
+| Bahn-B-Objekte in `git rev-list --objects --all` | **0** (außer `.gitkeep` am Tip) |
+| LFS-Pointer Schüler-Medien | **0** |
+| LFS-Pointer Raumbilder (`public/stations/`) | **17** (unverändert, O5) |
+| Getrackte Bahn-B-Dateien (Tip `kunde/39-gs`) | **3× `.gitkeep`** |
+| GitHub-Support LFS-Purge | **ausstehend** — [08-github-support-ticket-232.md](./08-github-support-ticket-232.md) |
+
+**Verifikation (frischer Klon):**
+
+```bash
+git rev-list --objects --all | grep -E 'app/public/media/|app/content/dialog-audio/|app/content/coach-audio/' | grep -v '\.gitkeep'
+# → leer
+
+git lfs ls-files --all | grep -v 'public/stations'
+# → leer
+```
+
+**Hinweis:** Alle lokalen Klone vor 2026-06-24 verwerfen und neu klonen — alte SHAs sind ungültig.
 
 ---
 

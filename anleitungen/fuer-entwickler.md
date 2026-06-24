@@ -337,6 +337,17 @@ Dies betrifft nur noch **lokale** volle Validierung oder veraltete Build-Skripte
 
 Details und History-Entscheidung: [`dokumentation/build-kontext-submodule-regeln.md`](../dokumentation/build-kontext-submodule-regeln.md) (Abschnitt Git LFS).
 
+### Git-History — Schüler-Medien (#232)
+
+Am **2026-06-24** wurde die Git-History aller Branches von Bahn-B-Pfaden bereinigt (`git filter-repo`). **Lokale Klone vor diesem Datum sind ungültig** — Repository neu klonen:
+
+```bash
+git clone https://github.com/flxln/schulnavigator.git
+cd schulnavigator && git checkout kunde/39-gs   # GS39-Prod
+```
+
+Post-Mortem: [`dokumentation/reviews/post-mortem/post-mortem-232-2026-06-24.md`](../dokumentation/reviews/post-mortem/post-mortem-232-2026-06-24.md). GitHub-Support-Ticket für LFS-Purge: [`08-github-support-ticket-232.md`](../dokumentation/planung/schuelermedien-deploy-trennung/08-github-support-ticket-232.md).
+
 **Panorama neu exportieren (lokal):**
 
 ```bash

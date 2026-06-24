@@ -1,6 +1,6 @@
 # Offene Punkte — DSB, Schule, Technik
 
-**Stand:** 2026-06-24 (Phase 0 abgeschlossen)
+**Stand:** 2026-06-24 (Phase 0 abgeschlossen) · **#232 Umsetzung:** 2026-06-24
 
 ## Organisatorisch / DSGVO
 
@@ -38,6 +38,17 @@
 | 2026-06-24 | Plan-Härtung (Tech-Lead) | Technische Blocker entschieden: Mount-Grenze + Icon-Umzug, `git rm --cached`, `:structure`-Validatoren, coach-audio Bahn B, rsync `accept-new` ohne `--delete` (T2/T3/T4/T6) |
 | 2026-06-24 | DSB/Schule | **Phase-0-Freigabe (A1):** Schriftliches Einverständnis zur technischen Umsetzung Phase 1–4 liegt in **Papierform** vor |
 | 2026-06-24 | DSB/Schule | **O1** Option A · **O2** Ja · **O3** History bereinigen (#232) · **O4** Einwilligungen dokumentiert · **O5** Raumbilder bleiben in Git |
+| 2026-06-24 | DSB/Schule (O3) | **#232 Freigabe:** History-Rewrite + Force-Push aller Branches/Tags — technische Umsetzung von O3 „History bereinigen" abgedeckt; gleicher DSB-/Schul-Kontext wie Phase-0-Freigabe (Papier). Restrisiken: Forks, lokale Klone, LFS-CDN bis Support-Purge (siehe Post-Mortem #232). |
+
+## #232 — DSB-Bewertung History-Rewrite (Phase A)
+
+| Aspekt | Bewertung |
+|--------|-----------|
+| Rechtsgrundlage | Datenminimierung (Art. 5 Abs. 1 lit. c DSGVO); O3 verbindlich seit 2026-06-24 |
+| Mittel | `git filter-repo` — Entfernung Bahn-B-Pfade aus allen Refs; kein erneutes Hochladen der Medien |
+| Restrisiko Forks/Klone | Mitteilung an MPZ-Team: alle lokalen Klone verwerfen; keine bekannten externen Forks |
+| Restrisiko LFS/GitHub | GitHub-Support-Ticket für LFS-Purge + `refs/pull/*` (Phase E) |
+| Raumbilder / `stations.json` | Unverändert (O1, O5) |
 
 ## Änderungslog (Plan-Härtung 2026-06-24)
 
