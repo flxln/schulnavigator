@@ -2,7 +2,7 @@
 
 **Stand:** 2026-06-24 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
 
-**Letzter Abgleich:** 2026-06-24 — #208 A3 Save-Validate & Dashboard erledigt (Post-Mortem [208](../reviews/post-mortem/post-mortem-208-2026-06-24.md)); Epic **#205** — nächstes [#218](https://github.com/flxln/schulnavigator/issues/218) Design & Hub oder [#214](https://github.com/flxln/schulnavigator/issues/214) Flat-Kalibrierung.
+**Letzter Abgleich:** 2026-06-24 — Fest-Hub: gesperrte Taps auf `/` und `/stationen` → `/scan` (Regression ADR-009 #83); #208 A3 erledigt (Post-Mortem [208](../reviews/post-mortem/post-mortem-208-2026-06-24.md)); Epic **#205** — nächstes [#218](https://github.com/flxln/schulnavigator/issues/218) oder [#214](https://github.com/flxln/schulnavigator/issues/214).
 
 Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren). Abgeschlossene Epics: [archiv/epics/](./archiv/epics/).
 
