@@ -226,8 +226,8 @@ Vollständige Ablagekonventionen (Pfade, Autorenzone, Laufzeit): [`verzeichnisst
 - **Öffentliche URL:** `https://schulnavigator.mpz.schule` — erreichbar über MPZ-Wildcard-DNS **`*.mpz.schule`** → Coolify-VPS `217.154.120.240` (kein eigener A-Record nur für `schulnavigator` nötig).
 - **Image:** [`app/Dockerfile`](../app/Dockerfile) — Multi-Stage, `output: 'standalone'`, Health `GET /api/health`, Container-Port **`PORT=3000`** (Coolify „Ports Exposes“ = `3000`).
 - **Suchmaschinen:** `robots.txt` mit `Disallow: /` und `noindex` im Root-Layout (Issue #16); Verfeinerung in #23 möglich.
-- **Coolify Prod:** Application `q1a8t4zswynvgutbw9og5l7n` — Projekt **Schulprojekte**, Branch `main`.
-- **Staging / Dev:** `https://schulnavigator-dev.mpz.schule` — Application `jjgl5u105ucxjvbeuwflsjq4` (`schulnavigator:development-feature`), gleicher Server, Branch `main` (Feature-Branches bei Bedarf in Coolify umstellen).
+- **Coolify Prod:** Application `q1a8t4zswynvgutbw9og5l7n` — Projekt **Schulprojekte**, Branch **`kunde/39-gs`** (GS39; `main` eingefroren, `kunde/*` wird nicht nach `main` gemergt).
+- **Staging / Dev:** `https://schulnavigator-dev.mpz.schule` — Application `jjgl5u105ucxjvbeuwflsjq4` (`schulnavigator:development-feature`), gleicher Server, Branch `feature/*` bei Bedarf in Coolify umstellen.
 
 ### Voraussetzungen fürs Dockerfile
 

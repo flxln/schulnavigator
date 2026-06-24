@@ -86,8 +86,8 @@ Kein `--delete` im Default — Löschen auf dem Server bei unvollständigem loka
 ## Akzeptanzkriterien (Gesamt)
 
 - [x] `git ls-files public/media content/dialog-audio content/coach-audio` liefert nach Phase 1 **nur** `.gitkeep` — keine Schüler-Dateien mehr getrackt ⁴⁹
-- [x] Coolify-Build grün **ohne** Medien im Clone, weil `build` nur die `:structure`-Validatoren ausführt ⁵ *(lokal verifiziert 2026-06-24; Coolify nach Merge)*
-- [ ] Hotspot-Icons live erreichbar (kein 404): `public/stations-icons/` aus Git, Bahn-B-Icons via rsync ² *(nach Deploy #228+#229 auf `main`)*
+- [x] Coolify-Build grün **ohne** Medien im Clone, weil `build` nur die `:structure`-Validatoren ausführt ⁵ *(lokal verifiziert 2026-06-24; Coolify auf `kunde/39-gs`)*
+- [ ] Hotspot-Icons live erreichbar (kein 404): `public/stations-icons/` aus Git, Bahn-B-Icons via rsync ² *(nach Redeploy `kunde/39-gs` — `main` eingefroren)*
 - [x] `rsync` Initialbefüllung auf Hetzner-Volumes (2026-06-24)
 - [x] `git status` nach Studio-Upload zeigt Medien als ignoriert (oder nicht trackbar)
 - [ ] MPZ-Anleitung in ≤ 1 Seite beschreibt den Alltags-Workflow *(→ #230)*

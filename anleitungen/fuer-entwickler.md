@@ -396,6 +396,20 @@ Das Skript erzeugt Zufallstokens (`fest-…` / `heft-…`), schreibt [`app/lib/a
 
 ---
 
+## Git-Branches (Freeze)
+
+| Branch | Rolle | Merge nach `main`? |
+|--------|--------|-------------------|
+| **`main`** | Eingefrorener Referenzstand (historische Prod-Basis) | — (kein Ziel für neue Arbeit) |
+| **`kunde/*`** | Kunden-/Event-Stand (z. B. `kunde/39-gs` — GS39, Content, Medien) | **Niemals** |
+| **`feature/*`** | Plattform, MPZ Studio, Architektur (#228, #229, …) | **Nicht** nach `main` — nur innerhalb `feature/*` |
+
+**Code von `kunde/*` auf `feature/*`:** pfadbasierter Port (`git checkout kunde/39-gs -- <pfade>`), kein Merge. Siehe auch [`.cursor/rules/branch-freeze-kunde.mdc`](../.cursor/rules/branch-freeze-kunde.mdc).
+
+**Coolify Prod (GS39):** Application-Branch **`kunde/39-gs`** — nicht `main`. Schüler-Medien liegen auf Hetzner-Volumes (rsync), unabhängig vom Branch.
+
+---
+
 ## Coolify — Schulnavigator (Issue #16)
 
 ### Preflight (vor erstem Build)
@@ -410,7 +424,7 @@ Das Skript erzeugt Zufallstokens (`fest-…` / `heft-…`), schreibt [`app/lib/a
 ### Neue Application in Coolify
 
 1. **Project** anlegen (z. B. „Schulnavigator“).
-2. **New Resource → Application**; Quelle: GitHub-Repo `flxln/schulnavigator`, Branch `main`.
+2. **New Resource → Application**; Quelle: GitHub-Repo `flxln/schulnavigator`. Branch je nach Zweck: **`kunde/39-gs`** (GS39-Prod) oder **`feature/…`** (Plattform-QA) — **`main` nur als historischer Referenzstand**, nicht für neue Deploys (siehe [Git-Branches (Freeze)](#git-branches-freeze)).
 3. **Build** (Coolify zeigt u. a. **Base Directory** und **Dockerfile Location** — kein separates Feld „Build Context“.)
 
 | Feld | Korrekter Wert | Häufiger Fehler |
@@ -577,7 +591,7 @@ Zweite Application für Tests vor Prod — **manuell** angelegt (Coolify erlaubt
 | Coolify-Name | `schulnavigator:main-…` | `schulnavigator:development-feature` |
 | Application-UUID | `q1a8t4zswynvgutbw9og5l7n` | `jjgl5u105ucxjvbeuwflsjq4` |
 | URL | `https://schulnavigator.mpz.schule` | `https://schulnavigator-dev.mpz.schule` |
-| Branch (Stand 2026-05-28) | `main` | Feature-Branches für QA, z. B. `feat/raum-ui-dialog-topbar-chip-zentrieren` ([#72](https://github.com/flxln/schulnavigator/issues/72) / [PR #73](https://github.com/flxln/schulnavigator/pull/73)); nach Merge wieder **`main`** |
+| Git-Branch | **`kunde/39-gs`** (GS39-Prod; `main` eingefroren) | `feature/*` oder PR-Branches für QA — **kein** Merge nach `main` |
 
 Build-Einstellungen wie Prod: Base **`/app`**, Dockerfile **`/Dockerfile`**, Port **`3000`**, Env `PORT=3000`, `NODE_ENV=production`.
 

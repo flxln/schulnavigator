@@ -2,7 +2,7 @@
 
 **Stand:** 2026-06-24 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
 
-**Letzter Abgleich:** 2026-06-24 — Phase 2 Schüler-Medien (#229 Code + Server-Ops erledigt; Prod-Smoke nach Merge/Deploy); **nächstes:** [#229](https://github.com/flxln/schulnavigator/issues/229) abschließen (Smoke), danach [#230](https://github.com/flxln/schulnavigator/issues/230).
+**Letzter Abgleich:** 2026-06-24 — Phase 2 Schüler-Medien (#229 Code + Server-Ops auf `kunde/39-gs`; Prod-Smoke nach Coolify-Redeploy dieses Branches — `main` eingefroren); **nächstes:** [#229](https://github.com/flxln/schulnavigator/issues/229) Smoke, [#230](https://github.com/flxln/schulnavigator/issues/230).
 
 Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren). Abgeschlossene Epics: [archiv/epics/](./archiv/epics/).
 
