@@ -2,7 +2,7 @@
 
 **Stand:** 2026-06-24 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
 
-**Letzter Abgleich:** 2026-06-24 — Content `kunst` (Safia-Fotos, Dialog, Hotspots) und `musik` (Für-Elise-Audio); Medien unter `/media/kunst/`, Icons als PNG. Branch `kunde/39-gs`.
+**Letzter Abgleich:** 2026-06-24 — MPZ Studio: Dialog-WAV-Upload im Segment-Formular (Chain-on-Save, `dialog-audio-naming` client-safe); Content `kunst`/`musik` auf Branch `kunde/39-gs`.
 
 Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren). Abgeschlossene Epics: [archiv/epics/](./archiv/epics/).
 

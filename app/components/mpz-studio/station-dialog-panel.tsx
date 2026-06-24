@@ -365,6 +365,9 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
             <StationDialogSegmentForm
               slug={slug}
               mode="add"
+              segmentCount={segmentCount}
+              segmentIndex={null}
+              audit={null}
               gruppen={gruppen}
               onCancel={() => setAddingSegment(false)}
               onSuccess={(msg) => {
@@ -372,6 +375,7 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
                 setSuccess(msg)
                 void loadAudioStatus()
               }}
+              onRefresh={loadAudioStatus}
             />
           </div>
         )}
@@ -481,6 +485,9 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
               slug={slug}
               mode="edit"
               segment={dialog.segmente.find((s) => s.id === editingSegmentId)}
+              segmentIndex={dialog.segmente.findIndex((s) => s.id === editingSegmentId)}
+              segmentCount={segmentCount}
+              audit={audioBySegmentId.get(editingSegmentId) ?? null}
               gruppen={gruppen}
               onCancel={() => setEditingSegmentId(null)}
               onSuccess={(msg) => {
@@ -488,6 +495,7 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
                 setSuccess(msg)
                 void loadAudioStatus()
               }}
+              onRefresh={loadAudioStatus}
             />
           </div>
         )}

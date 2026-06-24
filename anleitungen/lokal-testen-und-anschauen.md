@@ -103,7 +103,7 @@ curl -X POST http://localhost:3000/api/mpz/media/ingest \
   -F "file=@./foto.jpg"
 ```
 
-**Dialog-Audio (Issue #148, Studio-UI #200).** Im Studio: Station öffnen → Tab **Dialog** → Segment-Zeile **Audio** aufklappen → WAV hochladen/ersetzen, Vorschau abspielen, Clip entfernen (nur Datei). Alternativ per curl oder CLI `content:ingest-dialog`. Datei landet unter `content/dialog-audio/{slug}/NN-rolle.wav`; `dialog.segmente[i].quelle` wird auf `/api/dialog/{slug}/…` gesetzt. Nur echte WAV (max. 15 MB); Reihenfolge der `dialog.segmente[]` ist immutabel (siehe [content-einpflegen.md](./content-einpflegen.md)). Legacy-Route `/mpz/studio/dialog-audio` leitet auf die Stationsliste um.
+**Dialog-Audio (Issue #148, Studio-UI #200).** Im Studio: Station öffnen → Tab **Dialog** → Segment **Bearbeiten** oder **Anlegen** → Häkchen **Mit Audio** → **WAV auswählen** → **Speichern** (lädt Segment + WAV in einem Schritt; Zielname `NN-rolle.wav` automatisch). Alternativ: Segment-Zeile **Audio** aufklappen → WAV hochladen/ersetzen (Shortcut ohne Formular). Datei landet unter `content/dialog-audio/{slug}/NN-rolle.wav`; `dialog.segmente[i].quelle` wird auf `/api/dialog/{slug}/…` gesetzt. Nur echte WAV (max. 15 MB); Reihenfolge der `dialog.segmente[]` ist immutabel (siehe [content-einpflegen.md](./content-einpflegen.md)). Legacy-Route `/mpz/studio/dialog-audio` leitet auf die Stationsliste um.
 
 ```bash
 curl -X POST "http://localhost:3000/api/mpz/dialog-audio/ingest" \
