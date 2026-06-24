@@ -9,33 +9,6 @@
       "bild": "/stations/klassenzimmer.jpg",
       "medien": [
         {
-          "id": "demo-audio",
-          "typ": "audio",
-          "quelle": "/media/klassenzimmer/audio/grundschule_demo.mp3",
-          "untertitel": "Mein Schultag (Audio)"
-        },
-        {
-          "id": "demo-video",
-          "typ": "video",
-          "videoSource": "upload",
-          "quelle": "/media/klassenzimmer/video/grundschule_demo.mp4",
-          "poster": "/media/klassenzimmer/fotos/grundschule_demo.jpg",
-          "thumbnail": "/media/klassenzimmer/fotos/grundschule_demo.jpg",
-          "untertitel": "Mein Schultag (Video)"
-        },
-        {
-          "id": "demo-foto",
-          "typ": "foto",
-          "quelle": "/media/klassenzimmer/fotos/grundschule_demo.jpg",
-          "untertitel": "Schulfoto"
-        },
-        {
-          "id": "demo-text",
-          "typ": "text",
-          "quelle": "/media/klassenzimmer/texte/grundschule_demo.md",
-          "untertitel": "Mein Schultag"
-        },
-        {
           "id": "dx-schule-zukunft",
           "typ": "embed",
           "quelle": "https://edu.delightex.com/ABE-XQJ",
@@ -105,13 +78,21 @@
       "viewer": "equirectangular",
       "panorama360": "/stations/360/daz.jpg",
       "bild": "/stations/daz.jpg",
-      "medien": [],
+      "medien": [
+        {
+          "id": "daz-video-hallo-im-daz-raum",
+          "typ": "video",
+          "quelle": "/media/daz/video/video-hallo-im-daz-raum.mp4",
+          "untertitel": "Hallo im DaZ Raum",
+          "videoSource": "upload"
+        }
+      ],
       "hotspots360": [
         {
           "id": "hs-frieda",
           "label": "Frieda",
-          "yaw": 21.1,
-          "pitch": -30.7,
+          "yaw": 23,
+          "pitch": -31.4,
           "action": "dialog",
           "mascot": "frieda",
           "mascotSize": 0.3,
@@ -128,6 +109,14 @@
           "mascotSize": 0.2,
           "mascotFlipX": true,
           "bubblePitchOffset": 14
+        },
+        {
+          "id": "hs-video-hallo-im-daz-raum",
+          "yaw": 0.5,
+          "pitch": 14.3,
+          "mediumId": "daz-video-hallo-im-daz-raum",
+          "icon": "/media/daz/icons/video.svg",
+          "iconSize": 0.25
         }
       ],
       "dialog": {
@@ -234,10 +223,52 @@
           {
             "id": "k1",
             "rolle": "frieda",
-            "text": "hi, ich bin’s noch mal. Jetzt zeige ich euch die Regeln im Kunstraum. es gibt viele Regeln an die man sich halten muss auch auf den Lehrer muss man ebenfalls hören Ich möchte euch jetzt nicht verraten.Komm jetzt zu den Regeln.\nRegeln"
+            "text": "Hi, ich bin’s noch mal. Jetzt erkläre ich euch die Regeln im Kunstraum. Es gibt viele Regeln an die man sich halten muss. Auch auf den Lehrer muss man ebenfalls hören. Ich möchte euch jetzt nicht zu viel verraten. Kommen wir jetzt zu den Regeln.\nRegeln"
+          },
+          {
+            "id": "k2",
+            "rolle": "frieda",
+            "text": "Wenn man Material braucht, den Lehrer fragen und nicht einfach selbst nehmen."
+          },
+          {
+            "id": "k3",
+            "rolle": "frieda",
+            "text": "Nur die Materialen auspacken, die man benötigt."
+          },
+          {
+            "id": "k4",
+            "rolle": "frieda",
+            "text": "Die Sitzordnung muss natürlich eingehalten werden."
+          },
+          {
+            "id": "k5",
+            "rolle": "frieda",
+            "text": "Wenn man beim Waschbecken den Becher auffüllt, soll man den Becher nicht bis zum Rand voll machen, da das Wasser sonst überläuft."
+          },
+          {
+            "id": "k6",
+            "rolle": "frieda",
+            "text": "Keine Überschwemmungen beim Waschbecken."
+          },
+          {
+            "id": "k7",
+            "rolle": "frieda",
+            "text": "Keine Überschwemmung beim Waschbecken."
+          },
+          {
+            "id": "k8",
+            "rolle": "frieda",
+            "text": "Das waren die Regeln. Die sind sehr wichtig im Kunstraum. Wenn man sie nicht einhält, dann bekommt man Ärger und das will man sicherlich nicht. Naja, hoffentlich haltet ihr die Regeln immer gut ein. Nun viel Spaß in der Schule. Tschüssi!!"
           }
         ],
-        "gruppen": []
+        "gruppen": [],
+        "bubble": {
+          "y": 0.12,
+          "x": 0.6,
+          "maxWidth": 0.88,
+          "fontSize": 0.0375,
+          "followPan": true
+        }
       },
       "hotspots": [
         {
@@ -485,7 +516,27 @@
       "viewer": "equirectangular",
       "panorama360": "/stations/360/speiseraum.jpg",
       "bild": "/stations/speiseraum.jpg",
-      "medien": []
+      "medien": [
+        {
+          "id": "speiseraum-speiseraum-essenausgabe-2",
+          "typ": "video",
+          "quelle": "/media/speiseraum/video/speiseraum-essenausgabe-2.mp4",
+          "untertitel": "Die Essensausgabe",
+          "videoSource": "upload"
+        }
+      ],
+      "hotspots360": [
+        {
+          "id": "hs-essensausgabe",
+          "yaw": 118.9,
+          "pitch": -3.3,
+          "mediumId": "speiseraum-speiseraum-essenausgabe-2",
+          "icon": "/media/speiseraum/icons/video.svg",
+          "iconSize": 0.25
+        }
+      ],
+      "startYaw": 152.3,
+      "startPitch": -0.3
     },
     {
       "slug": "hort",
