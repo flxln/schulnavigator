@@ -142,6 +142,11 @@ describe('StationDetailShell', () => {
     expect(within(nav).getByRole('link', { name: /Hotspots/ })).toBeTruthy()
     expect(within(nav).getByRole('link', { name: 'Dialog' })).toBeTruthy()
     expect(screen.queryByRole('link', { name: 'Dialog-Audio' })).toBeNull()
+    const preview = screen.getByRole('link', {
+      name: /Vorschau \/raum\/klassenzimmer/,
+    })
+    expect(preview.getAttribute('href')).toBe('/raum/klassenzimmer')
+    expect(preview.hasAttribute('target')).toBe(false)
   })
 
   it('rendert nur Dialog-Tab für daz wenn hasDialog', () => {
