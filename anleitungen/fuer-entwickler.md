@@ -25,7 +25,7 @@ Die App läuft unter [http://localhost:3000](http://localhost:3000).
 
 **Content einpflegen (JSON + Dateien, Hotspots):** [content-einpflegen.md](./content-einpflegen.md).
 
-**MPZ Studio (optional, nur `development`):** [ADR-022](../dokumentation/adr/022-mpz-studio-internes-ingest-tool.md) — internes Ingest-Tool unter `/mpz/studio` (Dashboard, Stationen-Detail mit Tabs, Coach, Embeds, Hub, Brand, Deploy). Siehe Abschnitt [MPZ Studio](#mpz-studio-lokal-adr-022) unten. Epic v2 [#170](https://github.com/flxln/schulnavigator/issues/170) abgeschlossen; v2.1 [#186](https://github.com/flxln/schulnavigator/issues/186) Medien-Datei ersetzen + Thumbnail/Poster abgeschlossen.
+**MPZ Studio (optional, nur `development`):** [ADR-022](../dokumentation/adr/022-mpz-studio-internes-ingest-tool.md) — internes Ingest-Tool unter `/mpz/studio` (Dashboard, Stationen-Detail mit Tabs, Coach, Embeds, Design & Hub, Deploy). Siehe Abschnitt [MPZ Studio](#mpz-studio-lokal-adr-022) unten. Epic v2 [#170](https://github.com/flxln/schulnavigator/issues/170) abgeschlossen; v2.1 [#186](https://github.com/flxln/schulnavigator/issues/186) Medien-Datei ersetzen + Thumbnail/Poster abgeschlossen; UI-Cleanup [#195](https://github.com/flxln/schulnavigator/issues/195) abgeschlossen (#197–#204).
 
 ---
 
@@ -38,11 +38,37 @@ Nur bei `NODE_ENV=development` erreichbar; in Production liefern `/mpz/*` und `/
 3. Browser: [`/mpz/unlock`](http://localhost:3000/mpz/unlock) — Secret eingeben → Session-Cookie.
 4. [`/mpz/studio`](http://localhost:3000/mpz/studio) — Dashboard mit Validierungsstatus und Links zu allen 12 Stationen.
 5. **Station-Detail (v1 #158, v2 #171–#176, v2.1 #187–#189):** [`/mpz/studio/stationen`](http://localhost:3000/mpz/studio/stationen) → Kachel **Bearbeiten** oder direkt [`/mpz/studio/stationen/{slug}`](http://localhost:3000/mpz/studio/stationen/kunst) — Tabs **Stammdaten**, **Medien**, **Hotspots**, **Dialog** (Tab Dialog bei allen Hub-Stationen; ohne `dialog`-Block: Empty-State „Dialog hinzufügen“, #199).
-6. **Querschnitt (v2 #174–#180):** Coach, Embeds & Links, Hub-Karte, Brand & Design, Deploy — jeweils eigene Navigationspunkte in der Studio-Shell.
+6. **Querschnitt (v2 #174–#180, UI-Cleanup #195):** Coach, Embeds & Links, **Design & Hub** (ein Sidebar-Eintrag → `/mpz/studio/design`, Tabs `hub` \| `brand`), Deploy — siehe [Navigation & Shell](#navigation--shell-ui-cleanup-195) unten.
+
+**Navigation & Shell (UI-Cleanup #195)**
+
+Shell: [`studio-shell.tsx`](../app/components/mpz-studio/studio-shell.tsx). Soll-IA: [NAVIGATION-SOLL.md](../dokumentation/archiv/design/mpz-studio-claude-design-cleanup/NAVIGATION-SOLL.md).
+
+| Gruppe | Einträge | Route |
+|--------|----------|-------|
+| Übersicht | Dashboard | `/mpz/studio` |
+| Stationen | Alle Stationen (+ Slug-Roster) | `/mpz/studio/stationen` |
+| Globaler Inhalt | Coach, Embeds & Links | `/mpz/studio/coach`, `/mpz/studio/embeds` |
+| Erscheinungsbild | Design & Hub | `/mpz/studio/design` (`?tab=hub` \| `?tab=brand`) |
+| Betrieb | Deploy | `/mpz/studio/deploy` |
+
+**Mobile Sidebar (#203):** Unter `lg` (< 1024 px) Overlay-Drawer (Hamburger-Toggle); ab `lg` optional einklappbare Icon-Rail (`w-14`) mit Toggle in der Sidebar-Kopfzeile. Collapse-Präferenz: `localStorage`-Key `mpz-studio:nav-collapsed`.
+
+**Legacy-Redirects:**
+
+| Alte Route | Ziel | Mechanismus |
+|------------|------|-------------|
+| `/mpz/studio/hub` | `/mpz/studio/design?tab=hub` | `next.config.ts` (permanent) |
+| `/mpz/studio/brand` | `/mpz/studio/design?tab=brand` | `next.config.ts` (permanent) |
+| `/mpz/studio/dialog-audio` | `/mpz/studio/stationen` | `next.config.ts` (permanent) |
+| `/mpz/studio/ingest` | `/mpz/studio/stationen` oder `…/stationen/{slug}?tab=medien` | Page-Redirect in [`ingest/page.tsx`](../app/app/mpz/studio/ingest/page.tsx) — **slug-aware** (`?slug=werken` → Tab Medien); bewusst nicht in `next.config.ts` (Config-Redirects ignorieren Query) |
+| `…/stationen/{slug}?tab=dialog-audio` | `…/stationen/{slug}?tab=dialog` | Param-Normalisierung in [`station-detail-shell.tsx`](../app/components/mpz-studio/station-detail-shell.tsx) und [`[slug]/page.tsx`](../app/app/mpz/studio/stationen/[slug]/page.tsx) |
+
+Entfallen in der Sidebar: globaler Medien-Upload (`/ingest`), Dialog-Audio, getrennte Hub-/Brand-Routen.
 
 **Station-Detail (#159–#176)**
 
-Route: `/mpz/studio/stationen/[slug]?tab={stammdaten|medien|hotspots|dialog}` (Default: `stammdaten`). Shell: [`StationDetailShell`](../app/components/mpz-studio/station-detail-shell.tsx). Medien-Upload nur über Tab **Medien** (Modal). Legacy-Routen `/mpz/studio/ingest` und `/mpz/studio/dialog-audio` leiten um (#198).
+Route: `/mpz/studio/stationen/[slug]?tab={stammdaten|medien|hotspots|dialog}` (Default: `stammdaten`). Legacy `?tab=dialog-audio` → `dialog`. Shell: [`StationDetailShell`](../app/components/mpz-studio/station-detail-shell.tsx). Medien-Upload nur über Tab **Medien** (Modal). Legacy-Routen `/mpz/studio/ingest` und `/mpz/studio/dialog-audio` leiten um (#198).
 
 | Tab | UI | Schreib-API |
 |-----|-----|-------------|
@@ -60,7 +86,8 @@ Route: `/mpz/studio/stationen/[slug]?tab={stammdaten|medien|hotspots|dialog}` (D
 **API (Auswahl):**
 
 - `POST /api/mpz/view/sphere` — Body `{ slug, startYaw, startPitch }` schreibt den Sphere-Startblick in `stations.json` (#153, ADR-023).
-- `POST /api/mpz/hotspots/sphere` — Body `{ slug, hotspotId, yaw, pitch }` schreibt Sphere-Hotspot-Koordinaten (#149). Kalibrier-UI: `/mpz/calib/sphere/{slug}` (#201, Tabs Hotspots \| Startblick); Flat: `/mpz/calib/flat/{slug}`.
+- `POST /api/mpz/view/flat` — Body `{ slug, startPanX }` schreibt den Flat-Startpan in `stations.json` (#185).
+- `POST /api/mpz/hotspots/sphere` — Body `{ slug, hotspotId, yaw, pitch }` schreibt Sphere-Hotspot-Koordinaten (#149). Kalibrier-UI: `/mpz/calib/sphere/{slug}` (#201, Tabs Hotspots \| Startblick); Flat: `/mpz/calib/flat/{slug}` (Tabs Hotspots \| Startpan).
 - `POST` / `PATCH` / `DELETE` `/api/mpz/stations/[slug]/hotspots` bzw. `…/hotspots/[hotspotId]` — Hotspot anlegen (#165), bearbeiten (#167), entfernen (#162). Fehler-Mapping: `NOT_FOUND` → 404; Client-Domain-Codes (`DUPLICATE_ID`, `INVALID_COORDS`, …) → 400; `NOT_EDITABLE` nur bei PATCH → 403 (#168).
 - `PATCH /api/mpz/stations/[slug]/stammdaten` — Stammdaten (`titel`, `beschreibung`, `viewer`) (#160).
 - `POST /api/mpz/stations/[slug]/raumbild` — Raumbild Flat oder 360° (#173, `public/stations/` bzw. `public/stations/360/`). **POST** `multipart/form-data`: `variant` (`flat` \| `pano360`), `file`, optional `collision` (`reject` \| `replace`, Default `reject`). Erfolg **200** `{ path, variant }`. `MISSING_FILE`, `MISSING_FIELDS` → **400**; `VALIDATION` → **422**; `COLLISION` → **409**.

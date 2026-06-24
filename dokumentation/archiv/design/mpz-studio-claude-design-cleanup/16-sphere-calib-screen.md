@@ -1,7 +1,7 @@
 # Sphere-Kalibrierung — eigener MPZ-Screen (Option A)
 
 **Datum:** 2026-06-22  
-**Status:** ✅ geplant (Design + Phase 4) — **noch nicht implementiert**  
+**Status:** ✅ umgesetzt (#201, 2026-06-23) — Route `/mpz/calib/sphere/[slug]` live  
 **Entscheidung:** Option A — symmetrisch zur Flat-Kalibrierung
 
 ---

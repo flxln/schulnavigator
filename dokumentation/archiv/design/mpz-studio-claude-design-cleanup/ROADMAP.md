@@ -46,8 +46,8 @@ flowchart LR
 | **1 — Design-Briefing** | ✅ abgeschlossen | `00-cleanup-brief`, `08-bekannte-ui-probleme`, Screen-Inventar S1–S24 |
 | **2 — Claude Design** | ✅ abgeschlossen | Stitch-HTML [`mockups/`](./mockups/) (52 Screens, bekannt inkonsistent) |
 | **3 — Design-Freeze** | ✅ abgeschlossen | [`NAVIGATION-SOLL.md`](./NAVIGATION-SOLL.md) + [#196](https://github.com/flxln/schulnavigator/issues/196) |
-| **4 — Implementierung** | 🔄 begonnen | #197 Shell ✅; #198 Redundanzen ✅; #199–#204 offen |
-| **5 — Abnahme** | ⏳ offen | Manuelle Tests, `npm run build`, Kurz-Doku |
+| **4 — Implementierung** | ✅ abgeschlossen | #197–#203 ✅ |
+| **5 — Abnahme** | ✅ abgeschlossen | #204 — manuelle Tests, `npm run build`, Doku |
 
 ---
 
@@ -110,15 +110,15 @@ flowchart TD
 
 ### Phase 5 — Abnahme
 
-- [ ] Alle 12 Stationen im Grid erreichbar
-- [ ] Medien ingestieren (6 Typen) + Validierung
-- [ ] Hotspot Flat-Kalibrierung
+- [x] Alle 12 Stationen im Grid erreichbar
+- [x] Medien ingestieren (6 Typen) + Validierung
+- [x] Hotspot Flat-Kalibrierung
 - [x] Hotspot Sphere-Kalibrierung (`/mpz/calib/sphere/{slug}` — Phase 4.8, #201)
-- [ ] Dialog-Station `daz` vollständig pflegbar
-- [ ] **Dialog-Lifecycle E2E:** Station ohne Dialog → „Dialog hinzufügen“ → erstes Segment anlegen → Dialog-Hotspot setzen → Save-Validate grün ⁸
-- [ ] Coach, Embeds, Hub, Brand, Deploy unverändert funktional (`/hub` + `/brand` → Redirect auf `/design`)
-- [ ] `cd app && npm run build` grün
-- [ ] `anleitungen/fuer-entwickler.md` — Studio-Abschnitt bei Nav-Änderung
+- [x] Dialog-Station `daz` vollständig pflegbar
+- [x] **Dialog-Lifecycle E2E:** Station ohne Dialog → „Dialog hinzufügen“ → erstes Segment anlegen → Dialog-Hotspot setzen → Save-Validate grün ⁸
+- [x] Coach, Embeds, Hub, Brand, Deploy unverändert funktional (`/hub` + `/brand` → Redirect auf `/design`)
+- [x] `cd app && npm run build` grün
+- [x] `anleitungen/fuer-entwickler.md` — Studio-Abschnitt bei Nav-Änderung
 
 ---
 

@@ -84,5 +84,12 @@ Der Fortschrittsbalken in GitHub ergibt sich automatisch aus den geschlossenen I
 
 ## MPZ Studio UI-Cleanup — IA & Navigation (ADR-022)
 
-**Fällig:** 31.07.2026 · **Status:** offen (2026-06-22) · **GitHub-Milestone:** [#12](https://github.com/flxln/schulnavigator/milestone/12)
+**Fällig:** 31.07.2026 · **Status:** abgeschlossen (2026-06-23) · **GitHub-Milestone:** [#12](https://github.com/flxln/schulnavigator/milestone/12)
 **Beschreibung:** Refactor der Studio-Oberfläche bei voller v2.1-Funktionsabdeckung: gruppierte Sidebar, Redundanzen entfernen, Dialog-Lifecycle (Create-API), Sphere-Kalibrierung ins MPZ-Tool, Formular-Patterns, Mobile. Epic [#195](https://github.com/flxln/schulnavigator/issues/195), Unterissues #196–#204 — [epic-mpz-studio-ui-cleanup.md](./epic-mpz-studio-ui-cleanup.md). Roadmap: [ROADMAP.md](../archiv/design/mpz-studio-claude-design-cleanup/ROADMAP.md). **Nicht:** v3 Polish, Directus.
+
+---
+
+## MPZ Studio v3 — Visual Polish
+
+**Fällig:** 31.07.2026 · **Status:** offen (2026-06-23) · **GitHub-Milestone:** [#13](https://github.com/flxln/schulnavigator/milestone/13)  
+**Beschreibung:** Visuelles Redesign auf Mockup-Nähe (GS39 + `studio_precision`), ohne neue Domänen-Features. Epic [#205](https://github.com/flxln/schulnavigator/issues/205), Unterissues #206–#220 — [epic-mpz-studio-v3-visual-polish.md](./epic-mpz-studio-v3-visual-polish.md). **Nicht:** Markdown-Editor, Bubble-Drag, Hub-Karten-Grid. Komfort-v3: [mpz-studio-ui.md](../ideen/archiv/mpz-studio-ui.md).

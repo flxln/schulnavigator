@@ -1,7 +1,7 @@
 # Epic: MPZ Studio UI-Cleanup — IA & Navigation (ADR-022)
 
 **Milestone:** [MPZ Studio UI-Cleanup](https://github.com/flxln/schulnavigator/milestone/12) (GitHub #12)
-**Status:** offen (2026-06-22)
+**Status:** abgeschlossen (2026-06-23)
 **GitHub Epic:** [#195](https://github.com/flxln/schulnavigator/issues/195)
 **Parent:** Epic [#186](./archiv/epics/epic-mpz-studio-v2.1.md) (v2.1 abgeschlossen)
 
@@ -32,7 +32,7 @@ Leitplanken unverändert (ADR-022): nur `NODE_ENV=development`, `assertMpzStudio
 | Unterissue | `#201` | Sphere-Kalibrierung `/mpz/calib/sphere/[slug]` (S14) | `tech` | #197 — **erledigt** (2026-06-23, Post-Mortem unten) |
 | Unterissue | `#202` | Formular-Patterns, Dirty-State, Save-Feedback | `tech` | #197 — **erledigt** (2026-06-23, Post-Mortem unten) |
 | Unterissue | `#203` | Mobile Sidebar einklappbar | `tech`, `design` | #197 — **erledigt** (2026-06-23) |
-| Unterissue | `#204` | Abnahme & Doku | `tech`, `documentation` | #197–#203 |
+| Unterissue | `#204` | Abnahme & Doku | `tech`, `documentation` | #197–#203 — **erledigt** (2026-06-23) |
 
 **Empfohlene Reihenfolge:** Design-Freeze → Shell (#blocker) → Redundanzen ∥ Dialog-Lifecycle → Dialog-Editor → Sphere ∥ Patterns ∥ Mobile → Abnahme
 
@@ -107,8 +107,8 @@ Details: [ROADMAP.md — Pre-Mortem-Härtung](../archiv/design/mpz-studio-claude
 
 - [x] Dirty-State sichtbar in Top-Bar — **#202**
 - [x] Mobile: Sidebar einklappbar (Drawer unter `lg`, Icon-Rail-Collapse ab `lg`) — **#203**
-- [ ] `cd app && npm run build` grün
-- [ ] `anleitungen/fuer-entwickler.md` — Studio-Abschnitt aktualisiert
+- [x] `cd app && npm run build` grün — **#204**
+- [x] `anleitungen/fuer-entwickler.md` — Studio-Abschnitt aktualisiert — **#204**
 
 ---
 
@@ -152,4 +152,4 @@ Details: [ROADMAP.md — Pre-Mortem-Härtung](../archiv/design/mpz-studio-claude
 - [x] Sphere-Kalibrierung (#201, Post-Mortem: [post-mortem-201-2026-06-23.md](../reviews/post-mortem/post-mortem-201-2026-06-23.md))
 - [x] Patterns + Dirty-State (#202, Post-Mortem: [post-mortem-202-2026-06-23.md](../reviews/post-mortem/post-mortem-202-2026-06-23.md))
 - [x] Mobile Sidebar (#203, Post-Mortem: [post-mortem-203-2026-06-23.md](../reviews/post-mortem/post-mortem-203-2026-06-23.md))
-- [ ] Abnahme & Doku
+- [x] Abnahme & Doku (#204, Post-Mortem: [post-mortem-204-2026-06-23.md](../reviews/post-mortem/post-mortem-204-2026-06-23.md))

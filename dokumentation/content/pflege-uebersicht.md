@@ -255,9 +255,9 @@ Diese Inhalte und Strukturen liegen in TypeScript und erfordern Entwickler:
 | `app/lib/lucide-icon-registry.ts` | Lucide-Name → Komponente (nicht JSON-serialisierbar) |
 | UI-Komponenten | Feste UI-Strings (Hinweisseiten, Buttons) |
 
-**Hub-Konfiguration (Slug↔Slot, Akzente, Icons):** `data/hub-slug-map.json`, `data/station-accents.json`, `data/station-icons.json` — MPZ Studio [`/mpz/studio/hub`](../anleitungen/fuer-entwickler.md) oder manuell im Repo. Loader: `schoolhouse-hub-map.ts`, `gs39-brand-colors.ts`, `station-icons.ts`.
+**Hub-Konfiguration (Slug↔Slot, Akzente, Icons):** `data/hub-slug-map.json`, `data/station-accents.json`, `data/station-icons.json` — MPZ Studio [`/mpz/studio/design?tab=hub`](../anleitungen/fuer-entwickler.md) oder manuell im Repo. Loader: `schoolhouse-hub-map.ts`, `gs39-brand-colors.ts`, `station-icons.ts`.
 
-**Brand-Assets (Logos, Maskottchen, Motive):** `public/brand/` — MPZ Studio [`/mpz/studio/brand`](../anleitungen/fuer-entwickler.md) oder manuell im Repo. Feste Slot-Dateinamen (z. B. `mascots/frieda.png`); Hotspot-Preset-Icons und Hub-SVG bleiben Dev-Pflege.
+**Brand-Assets (Logos, Maskottchen, Motive):** `public/brand/` — MPZ Studio [`/mpz/studio/design?tab=brand`](../anleitungen/fuer-entwickler.md) oder manuell im Repo. Feste Slot-Dateinamen (z. B. `mascots/frieda.png`); Hotspot-Preset-Icons und Hub-SVG bleiben Dev-Pflege.
 
 **Embed-Allowlist:** `data/embed-allowlist.json` — MPZ Studio `/mpz/studio/embeds`.
 
@@ -295,18 +295,18 @@ Bis dahin: **kein Admin-UI** — alles über Repo-Dateien.
 | Content-Typ | Laufzeit-Ort | JSON / Config | Studio (lokal) | Wer (MVP) |
 |-------------|--------------|---------------|----------------|-----------|
 | Stationstitel, Beschreibung | — | `stations.json` | `/mpz/studio/stationen/[slug]` Tab Stammdaten | MPZ |
-| Medien (A/V/Foto/Text) | `public/media/{slug}/` | `medien[]` | Station-Detail Tab Medien + `/mpz/studio/ingest` | MPZ |
+| Medien (A/V/Foto/Text) | `public/media/{slug}/` | `medien[]` | Station-Detail Tab Medien (Modal) | MPZ |
 | Externe Links / Embeds | — | `medien[]` (`link`/`embed`) | Station-Detail Tab Medien (Modal #172) | MPZ |
 | Raumbild Flat | `public/stations/` | `bild` | Tab Stammdaten (#173) oder Export-Skript | MPZ |
 | Raumbild 360° | `public/stations/360/` | `viewer`, `panorama360` | Tab Stammdaten (#173) oder `export:pano360` | MPZ |
 | Hotspots Flat | — | `hotspots[]` | Tab Hotspots + `/mpz/calib/flat/{slug}` | MPZ |
-| Hotspots Sphere | — | `hotspots360[]` | Tab Hotspots + `?hotspot-calib=1` | MPZ |
+| Hotspots Sphere | — | `hotspots360[]` | Tab Hotspots + `/mpz/calib/sphere/{slug}` | MPZ |
 | Dialog-Texte | — | `dialog.segmente[]` | Tab Dialog (#175) | MPZ |
-| Dialog-Audio | `content/dialog-audio/` | `dialog.segmente[].quelle` | Tab Dialog-Audio oder `/mpz/studio/dialog-audio` | MPZ |
+| Dialog-Audio | `content/dialog-audio/` | `dialog.segmente[].quelle` | Tab Dialog — Audio in Segment-Zeile (#200) | MPZ |
 | Sprechblasen-Layout | — | `dialog.bubble` | Tab Dialog (#175) | MPZ |
 | Coach-Texte | `content/coach-messages.json` | — | `/mpz/studio/coach` (#177) | MPZ/Dev |
-| Maskottchen-Bilder | `public/brand/mascots/` | — | `/mpz/studio/brand` (#180) | MPZ |
-| Logos, Motive | `public/brand/` | — | `/mpz/studio/brand` (#180) | MPZ |
+| Maskottchen-Bilder | `public/brand/mascots/` | — | `/mpz/studio/design?tab=brand` (#180) | MPZ |
+| Logos, Motive | `public/brand/` | — | `/mpz/studio/design?tab=brand` (#180) | MPZ |
 | Hotspot-Preset-Icons | `public/brand/hotspot-icons/` | — | — (Dev, nicht Studio) | Dev |
 | Hub-Gebäude-SVG | `public/brand/hub/` | — | — (`npm run prepare:hub-outline`) | Dev |
 | Farben/Typo | `gs39-tokens.css` | — | — (Dev, nicht Studio) | Dev |

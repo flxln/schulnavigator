@@ -2,7 +2,7 @@
 
 _Inhaltliche Kategorisierung für Feature-Planung und Issues — unabhängig von der UI-Navigation in der [Studio-Spezifikation](../../spezifikationen/mpz-studio.md)._
 
-**Status:** ✅ v0–v2.1 umgesetzt (Epic #170 [PR #183](https://github.com/flxln/schulnavigator/pull/183), Epic #186 Branch `mpz-studio-v2.1`). v3 Polish offen.
+**Status:** ✅ v0–v2.1 umgesetzt; UI-Cleanup #195 ✅; **v3 Visual Polish #205** offen (#206–#220).
 
 **Epics:** [v0 #144](https://github.com/flxln/schulnavigator/issues/144) · [v1 #158](https://github.com/flxln/schulnavigator/issues/158) · [v2 #170](https://github.com/flxln/schulnavigator/issues/170) **abgeschlossen** · [v2.1 #186](https://github.com/flxln/schulnavigator/issues/186) **abgeschlossen** (#187–#190) · v3 Polish nach Bedarf
 
@@ -154,16 +154,20 @@ Schließt die praktische Lücke nach v2 #171 (nur Metadaten-PATCH): Datei-Tausch
 
 Spezifikation: [epic-mpz-studio-v2.1.md](../../planung/archiv/epics/epic-mpz-studio-v2.1.md)
 
-### v3 — Polish (optional, nach Bedarf)
+### v3 — Komfort (optional, nach Bedarf)
 
-Komfort, den Plan A oder einfache Formulare in v2 schon abdecken:
+**Nicht** Teil von Epic [#205](https://github.com/flxln/schulnavigator/issues/205) Visual Polish:
 
-| Was | Warum v3 |
-|-----|----------|
-| Markdown-Inline-Editor für Text-Medien | v2.1: Datei ersetzen im Studio; Inline-Edit optional |
-| Dialog-Bubble **visuell** positionieren | v2: JSON-Felder `bubble.y/x/…` reichen |
-| Batch-Import aus `auftraggeber/` | Einmal-Migration, kein Dauerworkflow |
+| Was | Warum separates v3 |
+|-----|---------------------|
+| Markdown-Inline-Editor für Text-Medien | v2.1: Datei ersetzen reicht |
+| Dialog-Bubble **visuell** positionieren (Drag) | v2: JSON-Felder `bubble.y/x/…` reichen |
+| Batch-Import aus `auftraggeber/` | Einmal-Migration |
 | YouTube-Video im Studio | Recht/DSB noch offen (ADR-004) |
+
+### v3b — Visual Polish (Epic #205, 2026-06-23)
+
+Mockup-Nähe ohne neue Features: [epic-mpz-studio-v3-visual-polish.md](../../planung/epic-mpz-studio-v3-visual-polish.md). **Nicht:** Markdown, Bubble-Drag, Hub-Karten-Grid (Hub bleibt Tabelle).
 
 ### Was **nicht** ins Studio gehört (Directus / Phase 5)
 
