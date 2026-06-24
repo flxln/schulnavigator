@@ -830,9 +830,7 @@
 
 .sn-coach-peek__img {
   display: block;
-  height: min(42vh, 260px);
   width: auto;
-  max-width: min(45%, 200px);
   object-fit: contain;
   filter: drop-shadow(0 8px 16px rgb(0 0 0 / 0.18));
 }

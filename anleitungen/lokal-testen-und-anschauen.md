@@ -309,7 +309,8 @@ Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/archiv/pr
 11. **Overlay-Priorität (iOS):** `schulnav.pan-onboarding.seen` + Coach-Keys leeren → Raum mit Room-Coach (`klassenzimmer`/`musik`/`hort`) → nur Gyro-Dialog (kein Coach-Flackern) → nach Freigabe nur Pan-Hinweis → danach Room-Coach
 12. **Desktop (gyrolos):** gleicher Raum, Coach-Keys leer → kein Gyro/Pan, Room-Coach erscheint direkt
 13. **Coach-Audio (#193):** Demo-Clip an `welcome-hub` gebunden (`quelle` + `content/coach-audio/welcome-hub.wav`) → Hub: Autoplay; bei blockiertem `play()` Replay-Icon; Schließen stoppt Audio
-14. **Tablet-Spalte (Folge #74):** DevTools 768×1024 und 1024×768 — Backdrop fullscreen; Figuren, Blase und Schließen-Button innerhalb `.sn-page-container` (nicht am Viewport-Rand); `duo-split` auf `/` bei 12/12
+14. **Coach-Layout `mascotSize`:** In `coach-messages.json` oder `/mpz/studio/coach` ändern (0,15–0,55) → nach Reload sichtbare Größenänderung; Größe nur über `resolveCoachLayout()` (kein CSS-Deckel). Details: [`coach-layout.md`](../dokumentation/ideen/archiv/coach-layout.md)
+15. **Tablet-Spalte (Folge #74):** DevTools 768×1024 und 1024×768 — Backdrop fullscreen; Figuren, Blase und Schließen-Button innerhalb `.sn-page-container` (nicht am Viewport-Rand); `duo-split` auf `/` bei 12/12
 
 **Stationssymbole (#105):**
 

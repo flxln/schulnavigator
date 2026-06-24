@@ -37,10 +37,18 @@ Fehlendes `layout` → identisches Rendering wie vor #192.
 
 ## Runtime & Studio
 
-- `resolveCoachLayout()` → Inline-Styles in [`mascot-peek-overlay.tsx`](../../../app/components/coach/mascot-peek-overlay.tsx)
+- `resolveCoachLayout()` → Inline-Styles (`height`, `maxWidth`) in [`mascot-peek-overlay.tsx`](../../../app/components/coach/mascot-peek-overlay.tsx); **keine** festen px/vh-Deckel mehr in `sn-theme.css` (Fix 2026-06-24)
 - MPZ: `/mpz/studio/coach` — aufklappbarer Layout-Abschnitt, Reset „Auf Standard“ (`layout: null`)
 - Validator: `validate:coach` + [`mpz-coach-messages-validation.ts`](../../../app/lib/mpz-coach-messages-validation.ts)
 
----
+### `mascotSize` — Rendering
 
-_Erfasst: 2026-06-20 · Archiviert nach Umsetzung #192_
+| Quelle | Wert |
+|--------|------|
+| JSON / MPZ | 0,15–0,55 (Default **0,42**) |
+| Inline `height` | `{mascotSize × 100}vh` |
+| Inline `maxWidth` | `min(45%, {mascotSize × 100}vh)` — skaliert mit der Figur, verhindert Überlauf bei `left`/`right` |
+
+**Häufiger Fehler (behoben 2026-06-24):** Früher setzte `.sn-coach-peek__img` in CSS `height: min(42vh, 260px)` und `max-width: min(45%, 200px)` — damit wirkte `layout.mascotSize` ab ~0,3 oft **nicht sichtbar**. Größe kommt ausschließlich aus `resolveCoachLayout()`.
+
+**Kalibrierung:** `localStorage` (`sn_coach_seen_heft` / `sn_coach_seen_fest`) leeren → `/` mit Heft-Cookie → `welcome-hub` erneut. Wert ändern → Seite hart neu laden (JSON wird beim Build/HMR eingebunden).

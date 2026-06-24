@@ -3,15 +3,14 @@
     {
       "id": "welcome-hub",
       "trigger": "hub-milestone",
-      "milestone": 0,
       "mascot": "frieda",
       "placement": "left",
       "text": "Willkommen beim Schulrundgang! Tippe auf ein Fenster, den Wegweiser für Hof und Turnhalle oder scanne den QR-Code an der Raumtür.",
-      "modes": [
-        "fest",
-        "heft"
-      ],
-      "quelle": "/api/coach/welcome-hub"
+      "layout": {
+        "mascotSize": 0.52
+      },
+      "quelle": "/api/coach/welcome-hub",
+      "milestone": 0
     },
     {
       "id": "first-visit",

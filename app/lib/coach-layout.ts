@@ -38,6 +38,8 @@ export const COACH_LAYOUT_CLAMPS: Record<
 }
 
 export const DEFAULT_MASCOT_SIZE = 0.42
+/** Anteil der Viewport-Breite — verhindert Überlauf bei `placement: left|right`. */
+export const COACH_MASCOT_MAX_WIDTH_VW_PERCENT = 45
 export const DEFAULT_BUBBLE_MAX_WIDTH_REM = 22
 export const DEFAULT_BUBBLE_FONT_SIZE = 15
 export const DEFAULT_BUBBLE_MARGIN_Y_REM = 0.75
@@ -57,6 +59,10 @@ function clamp(value: number, min: number, max: number): number {
 function clampField(key: CoachLayoutFieldKey, value: number): number {
   const { min, max } = COACH_LAYOUT_CLAMPS[key]
   return clamp(value, min, max)
+}
+
+function mascotSizeToVh(mascotSize: number): string {
+  return `${Math.round(mascotSize * 1000) / 10}vh`
 }
 
 function resolveNumericField(
@@ -173,8 +179,10 @@ export function resolveCoachLayout(
     : DEFAULT_BUBBLE_MARGIN_Y_REM
   const bubbleMarginTop = baseBubbleMarginY + bubbleOffsetY
 
+  const mascotHeight = mascotSizeToVh(mascotSize)
   const imgStyle: CSSProperties = {
-    height: `min(${Math.round(mascotSize * 1000) / 10}vh, 260px)`,
+    height: mascotHeight,
+    maxWidth: `min(${COACH_MASCOT_MAX_WIDTH_VW_PERCENT}%, ${mascotHeight})`,
   }
 
   const figureTransform = buildFigureTransform(
