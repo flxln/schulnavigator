@@ -34,41 +34,26 @@
           "typ": "text",
           "quelle": "/media/klassenzimmer/texte/grundschule_demo.md",
           "untertitel": "Mein Schultag"
+        },
+        {
+          "id": "dx-schule-zukunft",
+          "typ": "embed",
+          "quelle": "https://edu.delightex.com/ABE-XQJ",
+          "untertitel": "Schule der Zukunft 3D",
+          "embedAllow": [
+            "bookcreator.com",
+            "delightex.com"
+          ]
         }
       ],
       "hotspots360": [
         {
-          "id": "hs-text",
-          "label": "Korkpinnwand",
-          "yaw": -32,
-          "pitch": -4,
-          "mediumId": "demo-text",
-          "iconSize": 0.2
-        },
-        {
-          "id": "hs-video",
-          "label": "Tafel",
-          "yaw": -18,
-          "pitch": 0,
-          "mediumId": "demo-video",
-          "icon": "/media/klassenzimmer/icons/play.svg",
-          "iconSize": 0.2
-        },
-        {
-          "id": "hs-audio",
-          "label": "Klassentische",
-          "yaw": 4,
-          "pitch": -8,
-          "mediumId": "demo-audio",
-          "iconSize": 0.2
-        },
-        {
-          "id": "hs-foto",
-          "label": "Fensterseite",
-          "yaw": 28,
-          "pitch": -2,
-          "mediumId": "demo-foto",
-          "iconSize": 0.2
+          "id": "hs-dx-embed",
+          "yaw": 1.1,
+          "pitch": -0.2,
+          "mediumId": "dx-schule-zukunft",
+          "icon": "/media/klassenzimmer/icons/embed.svg",
+          "iconSize": 0.24
         }
       ]
     },
