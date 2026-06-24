@@ -63,6 +63,7 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 | Unterissue | `#216` | C5: Dialog-Tab Layout | `design`, `tech` | #210 — **erledigt** (2026-06-24, Post-Mortem unten) |
 | Unterissue | `#218` | D1: Design & Hub (Tabs, Tabelle, Brand) | `design`, `tech` | #207 |
 | Unterissue | `#219` | D2: Coach, Embeds, Deploy | `design`, `tech` | #207 |
+| Unterissue | `#233` | D2b: Deploy-Tab UX (Buttons, Feedback) | `design`, `tech` | #230 — **erledigt** (2026-06-24) |
 | Unterissue | `#220` | D3: Unlock-Screen (optional) | `design`, `tech` | #206 |
 | Unterissue | `#214` | E1: Flat-Kalibrierung Layout | `design`, `tech` | #210 |
 | Unterissue | `#217` | E2: Sphere-Kalibrierung Layout | `design`, `tech` | #210 |
@@ -106,6 +107,7 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 |-------|---------|---------|
 | #218 | S19, S20 | `design-page-shell.tsx`, `hub-panel.tsx`, `brand-panel.tsx` |
 | #219 | S17, S18, S21 | `coach-panel.tsx`, `embeds-panel.tsx`, `deploy-tab.tsx` |
+| [#233](https://github.com/flxln/schulnavigator/issues/233) | S21 (Bug) | `deploy-tab.tsx`, `globals.css` — sichtbare Buttons + Inline-Feedback — **erledigt** 2026-06-24 |
 | #220 | S24 | `app/mpz/unlock/page.tsx` |
 
 ### Phase E — Kalibrierung
@@ -153,6 +155,7 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 | Issue | URL |
 |-------|-----|
 | #205 | https://github.com/flxln/schulnavigator/issues/205 |
+| #233 | https://github.com/flxln/schulnavigator/issues/233 |
 | #206–#220 | siehe Tabelle oben |
 
 ---
@@ -175,6 +178,7 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 - [x] #215 C3 Medien bearbeiten (Post-Mortem: [post-mortem-215-2026-06-24.md](../reviews/post-mortem/post-mortem-215-2026-06-24.md))
 - [x] #213 C4 Hotspots Empty, Tabelle, Formulare (Post-Mortem: [post-mortem-213-2026-06-24.md](../reviews/post-mortem/post-mortem-213-2026-06-24.md))
 - [x] #216 C5 Dialog-Tab Layout (Post-Mortem: [post-mortem-216-2026-06-24.md](../reviews/post-mortem/post-mortem-216-2026-06-24.md))
+- [x] #233 D2b Deploy-Tab UX — sichtbare Buttons, Inline-Feedback Bahn B (Nacharbeit #230, 2026-06-24)
 
 ### Archiv — Plan-Härtung #208 (2026-06-24)
 
