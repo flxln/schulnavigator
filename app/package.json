@@ -19,6 +19,7 @@
     "export:pano360": "node scripts/export-pano-equirect.mjs",
     "validate:tokens": "node scripts/validate-tokens.mjs",
     "validate:access-config": "node scripts/validate-access-config.mjs",
+    "deploy:content": "node scripts/run-deploy-content-cli.mjs",
     "prepare:hub-outline": "node scripts/prepare-hub-outline.mjs",
     "build": "npm run validate:tokens && npm run validate:stations:structure && npm run validate:coach:structure && npm run validate:embed-allowlist && npm run validate:hub-config && npm run validate:access-config && next build",
     "start": "next start",

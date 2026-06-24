@@ -77,7 +77,7 @@ ADR-027 entscheiden, `dsgvo.md`, AVV-Anhang, Epic abschließen.
 
 - [x] Phase 0: DSB-Freigabe (#227) — 2026-06-24
 - [x] Phase 1: Schüler-Medien aus Git-Index (#228) — 2026-06-24
-- [ ] Phase 2: Coolify-Volumes + Structure-Build (#229) — Code + Server-Ops ✅ 2026-06-24; Prod-Smoke offen
-- [ ] Phase 3: Deploy-Skript + Studio-Tab (#230)
+- [x] Phase 2: Coolify-Volumes + Structure-Build (#229) — 2026-06-24
+- [x] Phase 3: Deploy-Skript + Studio-Tab (#230) — 2026-06-24
 - [ ] Phase 4: ADR-027 + DSGVO-Doku (#231)
 - [ ] Optional: Git-History bereinigen (#232)

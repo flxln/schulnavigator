@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useState } from 'react'
 
+import { DEFAULT_DEPLOY_BRANCH } from '@/lib/mpz-deploy-constants'
+
 type DeployEnv = {
   baseUrl: string | null
   embedEnabled: boolean
@@ -203,9 +205,11 @@ export function DeployTab() {
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-6">
       <p className="text-sm text-fg-2">
-        Betrieb und Deploy-Vorbereitung — schreibt nur lokal ins Repo und{' '}
-        <code className="text-fg-1">.env.local</code>. Kein Git-Commit, kein Coolify-Deploy
-        aus dem Studio.
+        Betrieb und Deploy-Vorbereitung — schreibt lokal ins Repo und{' '}
+        <code className="text-fg-1">.env.local</code>. Kein automatischer Commit; Medien-Sync
+        und optional Push über die Deploy-Buttons unten. Vollständig deployen setzt Branch{' '}
+        <code className="text-fg-1">{DEFAULT_DEPLOY_BRANCH}</code> voraus (konfigurierbar via{' '}
+        <code className="text-fg-1">DEPLOY_BRANCH</code>).
       </p>
 
       <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5 shadow-gs39-sm">
@@ -342,6 +346,53 @@ export function DeployTab() {
             <li key={item}>{item}</li>
           ))}
         </ul>
+      </section>
+
+      <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5 shadow-gs39-sm">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-fg-3">
+          Schüler-Medien (Bahn B)
+        </h2>
+        <p className="mt-2 text-sm text-fg-2">
+          Fotos, Videos, Dialog- und Coach-Audio liegen nicht auf GitHub. Nach Studio-Upload werden
+          sie per rsync auf die Hetzner-Volumes synchronisiert (
+          <code className="text-fg-1">DEPLOY_SSH</code> in{' '}
+          <code className="text-fg-1">.env.local</code>). Vor dem Sync laufen{' '}
+          <code className="text-fg-1">validate:stations</code> und{' '}
+          <code className="text-fg-1">validate:coach</code> im Skript.
+        </p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <ActionButton
+            label="Medien deployen"
+            busy={busyAction === 'sync-media-only'}
+            disabled={!!busyAction}
+            onClick={() =>
+              void runDeployAction(
+                'sync-media-only',
+                '/api/mpz/deploy/sync-content',
+                { mode: 'media-only' },
+                'Schüler-Medien auf den Server rsyncen (ohne git push)?',
+              )
+            }
+          />
+          <ActionButton
+            label="Vollständig deployen"
+            busy={busyAction === 'sync-full'}
+            disabled={!!busyAction}
+            onClick={() =>
+              void runDeployAction(
+                'sync-full',
+                '/api/mpz/deploy/sync-content',
+                { mode: 'full' },
+                `Validate, git push, rsync und optional Coolify-Webhook — nur von Branch ${DEFAULT_DEPLOY_BRANCH}. Fortfahren?`,
+              )
+            }
+          />
+        </div>
+        <p className="mt-3 text-xs text-fg-3">
+          CLI: <code className="text-fg-2">npm run deploy:content</code> (Voll-Flow) oder{' '}
+          <code className="text-fg-2">npm run deploy:content -- --media-only</code>. SSH-User braucht
+          NOPASSWD für <code className="text-fg-2">sudo rsync</code>.
+        </p>
       </section>
 
       <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5 shadow-gs39-sm">

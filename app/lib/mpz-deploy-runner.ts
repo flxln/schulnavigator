@@ -32,6 +32,13 @@ export type RunNpmScriptOptions = {
   maxBuffer?: number
 }
 
+export type RunShellScriptOptions = {
+  timeoutMs: number
+  cwd: string
+  env: NodeJS.ProcessEnv
+  maxBuffer: number
+}
+
 function defaultTimeoutMs(scriptName: string): number {
   if (scriptName === 'test') return 120_000
   if (scriptName === 'rotate:access-tokens') return 180_000
@@ -114,6 +121,52 @@ export async function runNpmScript(
       }
       if (e.killed || e.signal === 'SIGTERM') {
         throw new MpzDeployRunnerError('TIMEOUT', `Subprocess-Timeout (${scriptName})`)
+      }
+      if (typeof e.code === 'number') {
+        return {
+          exitCode: e.code,
+          stdout: e.stdout ?? '',
+          stderr: e.stderr ?? '',
+        }
+      }
+    }
+    throw new MpzDeployRunnerError(
+      'SPAWN',
+      err instanceof Error ? err.message : 'Subprocess konnte nicht gestartet werden.',
+    )
+  }
+}
+
+export async function runShellScript(
+  cmd: string,
+  args: string[] = [],
+  opts: RunShellScriptOptions,
+): Promise<RunNpmScriptResult> {
+  try {
+    const { stdout, stderr } = await execFileAsync(cmd, args, {
+      cwd: opts.cwd,
+      timeout: opts.timeoutMs,
+      maxBuffer: opts.maxBuffer,
+      env: opts.env,
+      encoding: 'utf8',
+    })
+    return {
+      exitCode: 0,
+      stdout: stdout ?? '',
+      stderr: stderr ?? '',
+    }
+  } catch (err: unknown) {
+    if (err && typeof err === 'object') {
+      const e = err as {
+        code?: number | string
+        stdout?: string
+        stderr?: string
+        killed?: boolean
+        signal?: string
+        message?: string
+      }
+      if (e.killed || e.signal === 'SIGTERM') {
+        throw new MpzDeployRunnerError('TIMEOUT', `Subprocess-Timeout (${cmd})`)
       }
       if (typeof e.code === 'number') {
         return {

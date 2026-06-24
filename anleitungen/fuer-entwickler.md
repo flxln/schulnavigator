@@ -476,19 +476,53 @@ sudo chmod -R u+rwX /data/schulnavigator
 
 uid **1001** = User `nextjs` im [`app/Dockerfile`](../app/Dockerfile).
 
-**Initialbefüllung** vom MPZ-Rechner (nach lokalen Validatoren):
+**Initialbefüllung** und **laufender Medien-Deploy** vom MPZ-Rechner (nach lokalen Validatoren im Skript):
+
+```bash
+cd app
+# Env in .env.local oder Shell (siehe app/.env.example)
+export DEPLOY_SSH=admin@<hetzner>
+# optional: export DEPLOY_SSH_IDENTITY_FILE=~/.ssh/schulnavigator_deploy
+# optional: export DEPLOY_BRANCH=kunde/39-gs
+# optional: export COOLIFY_DEPLOY_WEBHOOK_URL=https://…
+
+npm run deploy:content -- --media-only   # nur Medien (kein Branch-Check, kein push)
+npm run deploy:content                   # Voll-Flow: validate → push → rsync → Webhook
+```
+
+Das Skript [`app/scripts/deploy-content.sh`](../app/scripts/deploy-content.sh) wird via `npm run deploy:content` gestartet (lädt `app/.env.local` automatisch). Es prüft zuerst `DEPLOY_SSH` und `sudo -n` auf dem Remote-Host. Auf **macOS** (OpenBSD-rsync) setzt es Rechte per `sudo chown` nach dem Sync; mit GNU-rsync (`--chown=1001:1001`) entfällt dieser Schritt. Kein `--delete` im Default; `--prune` nur opt-in.
+
+**Lokale Bahn-B-Lücken:** Fehlt z. B. `content/coach-audio/welcome-hub.wav` lokal (gitignored), einmal vom Server holen:
+
+```bash
+rsync -avz -e "ssh -o StrictHostKeyChecking=accept-new -i ~/.ssh/coolify-access" \
+  "${DEPLOY_SSH}:/data/schulnavigator/coach-audio/welcome-hub.wav" content/coach-audio/
+```
+
+**Manuell (Fallback):**
 
 ```bash
 cd app
 npm run validate:stations && npm run validate:coach
 RSYNC_SSH="ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=10"
-rsync -avz --no-o --no-g --rsync-path="sudo rsync" -e "$RSYNC_SSH" public/media/         "${DEPLOY_SSH}:/data/schulnavigator/media/"
-rsync -avz --no-o --no-g --rsync-path="sudo rsync" -e "$RSYNC_SSH" content/dialog-audio/ "${DEPLOY_SSH}:/data/schulnavigator/dialog-audio/"
-rsync -avz --no-o --no-g --rsync-path="sudo rsync" -e "$RSYNC_SSH" content/coach-audio/  "${DEPLOY_SSH}:/data/schulnavigator/coach-audio/"
-ssh "${DEPLOY_SSH}" sudo chown -R 1001:1001 /data/schulnavigator
+rsync -avz --no-o --no-g --chown=1001:1001 --rsync-path="sudo rsync" -e "$RSYNC_SSH" public/media/         "${DEPLOY_SSH}:/data/schulnavigator/media/"
+rsync -avz --no-o --no-g --chown=1001:1001 --rsync-path="sudo rsync" -e "$RSYNC_SSH" content/dialog-audio/ "${DEPLOY_SSH}:/data/schulnavigator/dialog-audio/"
+rsync -avz --no-o --no-g --chown=1001:1001 --rsync-path="sudo rsync" -e "$RSYNC_SSH" content/coach-audio/  "${DEPLOY_SSH}:/data/schulnavigator/coach-audio/"
 ```
 
-Kein `--delete` im Default. Automatisierung: [#230](https://github.com/flxln/schulnavigator/issues/230).
+### Alltags-Deploy (MPZ, #230)
+
+| Schritt | Aktion |
+|--------|--------|
+| 1 | Inhalt im MPZ Studio pflegen (Medien, Hotspots, JSON) |
+| 2 | `Validate-all` oder `validate:stations` + `validate:coach` lokal grün |
+| 3 | Code/JSON committen (Medien **nicht** — Bahn B ist gitignored) |
+| 4 | `.env.local`: `DEPLOY_SSH`, optional `DEPLOY_BRANCH` (`kunde/39-gs`), Webhook |
+| 5 | **Nur Medien geändert:** `npm run deploy:content -- --media-only` oder Studio-Button „Medien deployen“ |
+| 6 | **Code + Medien:** auf Branch `kunde/39-gs` → `npm run deploy:content` oder „Vollständig deployen“ |
+| 7 | Smoke: Live-URL mit Video, Dialog-Audio, Coach-`quelle` prüfen |
+
+Kein `--delete` beim rsync ohne `--prune`. SSH-User: NOPASSWD für `sudo rsync` auf dem VPS.
 
 **Build vs. lokale Validierung:**
 

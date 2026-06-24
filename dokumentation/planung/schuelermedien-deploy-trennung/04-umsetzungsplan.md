@@ -90,7 +90,7 @@ Kein `--delete` im Default — Löschen auf dem Server bei unvollständigem loka
 - [ ] Hotspot-Icons live erreichbar (kein 404): `public/stations-icons/` aus Git, Bahn-B-Icons via rsync ² *(nach Redeploy `kunde/39-gs` — `main` eingefroren)*
 - [x] `rsync` Initialbefüllung auf Hetzner-Volumes (2026-06-24)
 - [x] `git status` nach Studio-Upload zeigt Medien als ignoriert (oder nicht trackbar)
-- [ ] MPZ-Anleitung in ≤ 1 Seite beschreibt den Alltags-Workflow *(→ #230)*
+- [x] MPZ-Anleitung in ≤ 1 Seite beschreibt den Alltags-Workflow (#230, 2026-06-24)
 - [ ] Smoke: `/api/health`, eine Raum-URL mit Video, eine mit Dialog-Audio, eine Coach-Message mit gesetzter `quelle` (`/api/coach/{id}`) ⁶ *(nach Prod-Deploy)*
 
 ## Grobe Aufwandsschätzung

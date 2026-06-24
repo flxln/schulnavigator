@@ -1,7 +1,7 @@
 # Schüler-Medien: Trennung GitHub / Deploy
 
 **Stand:** 2026-06-24  
-**Status:** Phase 2 Code + Server-Ops erledigt (#229, 2026-06-24) — Prod-Smoke nach Merge/Deploy; nächstes #230  
+**Status:** Phase 3 Deploy-Automatisierung erledigt (#230, 2026-06-24) — nächstes #231  
 **Auslöser:** MPZ Studio schreibt Medien lokal ins Repo; `git push` legt Kinder-Inhalte (Fotos, Videos, Dialog-WAVs) auf GitHub — datenschutzrechtlich nicht akzeptabel.
 
 ## Ziel in einem Satz
@@ -46,6 +46,6 @@
 1. ~~[#227 — Abstimmung DSB/Schule](https://github.com/flxln/schulnavigator/issues/227)~~ — erledigt (2026-06-24)
 2. ~~[#228 Phase 1](https://github.com/flxln/schulnavigator/issues/228)~~ — Repo & Ignore erledigt (2026-06-24)
 3. ~~[#229 Phase 2](https://github.com/flxln/schulnavigator/issues/229)~~ — Coolify-Volumes, Structure-Validatoren, Media-Route, Initial-rsync (Code+Ops ✅; Prod-Smoke offen)
-4. **[#230 Phase 3](https://github.com/flxln/schulnavigator/issues/230)** — Deploy-Automatisierung ([04-umsetzungsplan.md](./04-umsetzungsplan.md))
-5. ADR-027 auf **entschieden** setzen nach [#231 Phase 4](https://github.com/flxln/schulnavigator/issues/231)
+4. ~~[#230 Phase 3](https://github.com/flxln/schulnavigator/issues/230)~~ — Deploy-Automatisierung (2026-06-24)
+5. **[#231 Phase 4](https://github.com/flxln/schulnavigator/issues/231)** — Doku & Compliance, ADR-027 entscheiden
 6. Parallel/später: [#232](https://github.com/flxln/schulnavigator/issues/232) Git-History bereinigen (O3)
