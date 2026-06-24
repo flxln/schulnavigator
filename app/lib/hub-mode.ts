@@ -35,3 +35,14 @@ export function isHubFullyLocked(
 ): boolean {
   return mode === 'fest' && stationCount > 0 && unlockedSlugs.size === 0
 }
+
+export function getHubStationTapHref(
+  slug: string,
+  mode: EntryMode,
+  unlockedSlugs: ReadonlySet<string>,
+): string {
+  if (mode === 'fest' && !isHubStationNavigable(slug, unlockedSlugs)) {
+    return '/scan'
+  }
+  return `/raum/${slug}`
+}

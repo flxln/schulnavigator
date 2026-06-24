@@ -1,13 +1,17 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft, Check, Lock, QrCode } from 'lucide-react'
 import { TopBar } from '@/components/ui/top-bar'
-import { Gs39Button, Gs39Toast, Gs39ToastLayer } from '@/components/ui'
+import { Gs39Button } from '@/components/ui'
 import type { EntryMode } from '@/lib/access-tokens'
 import { useVisitedStations } from '@/hooks/use-visited-stations'
-import { getUnlockedSlugsForMode, isHubStationNavigable } from '@/lib/hub-mode'
+import {
+  getHubStationTapHref,
+  getUnlockedSlugsForMode,
+  isHubStationNavigable,
+} from '@/lib/hub-mode'
 import type { HubStation } from '@/lib/schoolhouse-hub-map'
 import { StationIcon } from '@/components/station/station-icon'
 import { mixHex } from '@/lib/gs39-hex-blend'
@@ -27,8 +31,6 @@ export function StationenScreen({
   const router = useRouter()
   const { visitedSlugs, visitedCount, isHydrated } =
     useVisitedStations(validSlugs)
-  const [toastMessage, setToastMessage] = useState<string | null>(null)
-
   const stationSlugs = useMemo(
     () => hubStations.map((s) => s.slug),
     [hubStations],
@@ -39,23 +41,11 @@ export function StationenScreen({
     [mode, stationSlugs, visitedSlugs],
   )
 
-  useEffect(() => {
-    if (!toastMessage) return
-    const t = window.setTimeout(() => setToastMessage(null), 2400)
-    return () => window.clearTimeout(t)
-  }, [toastMessage])
-
   const onStationTap = useCallback(
     (station: HubStation) => {
-      if (!isHubStationNavigable(station.slug, unlockedSlugs)) {
-        setToastMessage(
-          `„${station.titel}" — bitte an der Tür scannen.`,
-        )
-        return
-      }
-      router.push(`/raum/${station.slug}`)
+      router.push(getHubStationTapHref(station.slug, mode, unlockedSlugs))
     },
-    [unlockedSlugs, router],
+    [mode, unlockedSlugs, router],
   )
 
   const festHint =
@@ -168,12 +158,6 @@ export function StationenScreen({
           </Gs39Button>
         ) : null}
       </div>
-
-      {toastMessage ? (
-        <Gs39ToastLayer>
-          <Gs39Toast message={toastMessage} icon="lock" />
-        </Gs39ToastLayer>
-      ) : null}
     </div>
   )
 }
