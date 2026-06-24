@@ -9,3 +9,7 @@
 !.cursor/skills/
 
 .DS_Store
+**/.DS_Store
+
+# Cursor-Chat-Exports (Debug-Artefakte, nicht versionieren)
+docs/cursor_*.md
