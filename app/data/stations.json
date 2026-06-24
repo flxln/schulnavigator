@@ -222,19 +222,18 @@
       "bild": "/stations/pc-raum.jpg",
       "medien": [
         {
-          "id": "pc-delightex",
-          "typ": "embed",
-          "quelle": "https://edu.delightex.com/WVX-NAQ",
-          "untertitel": "Unsere 3D-Welt",
-          "thumbnail": "/media/pc-raum/icons/delightex.svg"
+          "id": "pc-raum-pc-raum-angebote",
+          "typ": "video",
+          "quelle": "/media/pc-raum/video/pc-raum-angebote.mp4",
+          "videoSource": "upload"
         }
       ],
       "hotspots360": [
         {
           "id": "hs-frieda",
           "label": "Frieda",
-          "yaw": -20,
-          "pitch": -20,
+          "yaw": -139.7,
+          "pitch": -23.7,
           "action": "dialog",
           "mascot": "frieda",
           "mascotSize": 0.28,
@@ -244,8 +243,8 @@
         {
           "id": "hs-otto",
           "label": "Otto",
-          "yaw": 18,
-          "pitch": -20,
+          "yaw": 144,
+          "pitch": -24.9,
           "action": "dialog",
           "mascot": "otto",
           "mascotSize": 0.28,
@@ -253,13 +252,12 @@
           "bubblePitchOffset": 12
         },
         {
-          "id": "hs-delightex",
-          "label": "3D-Welt",
-          "yaw": -2,
-          "pitch": 2,
-          "mediumId": "pc-delightex",
-          "icon": "/media/pc-raum/icons/delightex.svg",
-          "iconSize": 0.2
+          "id": "video-angebote-pcraum",
+          "yaw": -170.5,
+          "pitch": -20,
+          "mediumId": "pc-raum-pc-raum-angebote",
+          "icon": "/media/pc-raum/icons/video.svg",
+          "iconSize": 0.23
         }
       ],
       "dialog": {
@@ -323,7 +321,9 @@
             "text": "Dann macht das Lernen am Computer allen Spaß."
           }
         ]
-      }
+      },
+      "startYaw": -169.4,
+      "startPitch": 2.9
     },
     {
       "slug": "lesewelt",
