@@ -6,6 +6,7 @@ import {
   formatRaumbildBytes,
   PANO360_MAX_BYTES,
 } from '@/lib/mpz-raumbild-limits'
+import { UPLOAD_RULES } from '@/lib/mpz-upload-rules'
 import type { StationsFile } from '@/lib/types'
 import { jpegDimensionsFromBuffer, webpDimensionsFromBuffer } from '@/lib/image-dimensions'
 const MIN_JPEG_BYTES = 1024
@@ -56,6 +57,17 @@ function jpegDimensions(fsPath: string): { width: number; height: number } | nul
 function webpDimensions(fsPath: string): { width: number; height: number } | null {
   const buf = readFileSync(fsPath)
   return webpDimensionsFromBuffer(buf)
+}
+
+/** Größen-Warnschwelle je Dateityp — aligned mit MPZ-Upload-Regeln (#147), nicht Raumbild-Flat. */
+export function sizeWarnThresholdForPath(urlPath: string): number {
+  const lower = urlPath.toLowerCase()
+  if (lower.endsWith('.mp4')) return UPLOAD_RULES.video.maxBytes
+  if (/\.(mp3|m4a)$/.test(lower)) return UPLOAD_RULES.audio.maxBytes
+  if (lower.endsWith('.wav')) return UPLOAD_RULES.audio.maxBytes
+  if (/\.(md|txt)$/.test(lower)) return UPLOAD_RULES.text.maxBytes
+  if (/\.webp$/.test(lower)) return UPLOAD_RULES.foto.maxBytes
+  return FLAT_MAX_BYTES
 }
 
 function checkPanorama360Ratio(
@@ -189,9 +201,10 @@ function checkPath(
   }
   try {
     const st = statSync(fsPath)
-    if (st.size > FLAT_MAX_BYTES) {
+    const warnBytes = sizeWarnThresholdForPath(urlPath)
+    if (st.size > warnBytes) {
       warnings.push(
-        `${label}: ${urlPath} ist groß (${formatRaumbildBytes(st.size)}, Schwellwert ${formatRaumbildBytes(FLAT_MAX_BYTES)})`,
+        `${label}: ${urlPath} ist groß (${formatRaumbildBytes(st.size)}, Schwellwert ${formatRaumbildBytes(warnBytes)})`,
       )
     }
   } catch {

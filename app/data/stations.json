@@ -874,6 +874,27 @@
           "embedAllow": [
             "delightex.com"
           ]
+        },
+        {
+          "id": "schulhof-erlaerung-schulhofwelt-1-3",
+          "typ": "video",
+          "quelle": "/media/schulhof/video/erlaerung-schulhofwelt-1-3.mp4",
+          "untertitel": "Erklärung Schulhofwelt 1",
+          "videoSource": "upload"
+        },
+        {
+          "id": "schulhof-erklaerung-schulhofwelt-2-3",
+          "typ": "video",
+          "quelle": "/media/schulhof/video/erklaerung-schulhofwelt-2-3.mp4",
+          "untertitel": "Erklärung Schulhofwelt 2",
+          "videoSource": "upload"
+        },
+        {
+          "id": "schulhof-erklaerung-schulhofwelt-3-3",
+          "typ": "video",
+          "quelle": "/media/schulhof/video/erklaerung-schulhofwelt-3-3.mp4",
+          "untertitel": "Erklärung Schulhofwelt 3",
+          "videoSource": "upload"
         }
       ],
       "hotspots360": [
@@ -892,6 +913,27 @@
           "mediumId": "schulhof-embed",
           "icon": "/media/schulhof/icons/link.svg",
           "iconSize": 0.22
+        },
+        {
+          "id": "hs-schulhof-1",
+          "yaw": -1.5,
+          "pitch": 19.7,
+          "mediumId": "schulhof-erlaerung-schulhofwelt-1-3",
+          "icon": "/media/schulhof/icons/embed.svg"
+        },
+        {
+          "id": "hs-schulhof-2",
+          "yaw": 32,
+          "pitch": 30.5,
+          "mediumId": "schulhof-erklaerung-schulhofwelt-2-3",
+          "icon": "/media/schulhof/icons/embed.svg"
+        },
+        {
+          "id": "hs-schulhof-3",
+          "yaw": 48.1,
+          "pitch": 13.5,
+          "mediumId": "schulhof-erklaerung-schulhofwelt-3-3",
+          "icon": "/media/schulhof/icons/embed.svg"
         }
       ],
       "startYaw": -96.3,

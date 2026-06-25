@@ -392,6 +392,7 @@ npm run build
 - jede `quelle` und jedes `bild` existiert unter `public/` (oder `content/` bei Dialog-Audio)
 - JSON-Schema (Slugs, doppelte IDs, `mediumId` verweist auf bekannte Medien)
 - bei JPEG: keine LFS-Pointer als „Bild“
+- Größen-**Warnungen** für Medien-Dateien nach `UPLOAD_RULES` (z. B. Video bis 150 MB, Audio 25 MB) — nicht nach Raumbild-Schwellwert (10 MB)
 
 ### Manuell im Browser
 
