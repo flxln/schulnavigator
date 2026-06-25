@@ -177,7 +177,7 @@ Alle Befehle im Verzeichnis `app/` ausführen.
 | `lib/`             | Hilfsfunktionen, Typen, Daten-Loader; u. a. `access-tokens.ts`, `scan-url.ts` (#23), `schoolhouse-segments.ts` (#14), `qr-urls.ts` (#15) |
 | `middleware.ts`    | Zugangskontrolle: Cookie `sn_access`, Entry `?t=`, Redirect `/eintritt` (#23, ADR-007) |
 | `data/`            | `stations.json` (Phase 1, Issue #12)                          |
-| `public/stations/` | Raumbilder (`{slug}.jpg`, ≤ 8 MB) — Gyro-Viewer (ADR-006); Slug-Liste + Anforderungen: [`dokumentation/content/verzeichnisstruktur.md`](../dokumentation/content/verzeichnisstruktur.md) |
+| `public/stations/` | Raumbilder (`{slug}.jpg`, ≤ 10 MB) — Gyro-Viewer (ADR-006); Slug-Liste + Anforderungen: [`dokumentation/content/verzeichnisstruktur.md`](../dokumentation/content/verzeichnisstruktur.md) |
 | `public/media/`    | Öffentliche Stations-Medien (Bahn B, gitignored) — `{slug}/audio/`, `/video/`, `/fotos/`, `/texte/`, `/icons/` |
 | `public/stations-icons/` | Generische Hotspot-Presets (Bahn A, Git) — `{slug}/*.svg` |
 | `content/`         | Dialog-Audio WAV-Clips (`dialog-audio/{slug}/{nn}-{sprecher}.wav`) — Cookie-geschützt via `GET /api/dialog/…` (ADR-010); `COPY content/ ./content/` im Dockerfile |
@@ -240,7 +240,7 @@ Der Viewer skaliert **höhenbasiert** (`ROOM_VIEWER_HEIGHT_CSS` = `min(50vh, 360
 | Gyro-Konstanten | `lib/raum-viewer/constants.ts` — Feintuning: [raum-viewer-gyro-feintuning.md](./raum-viewer-gyro-feintuning.md) (`GYRO_FULL_RANGE_DEG` aktuell **60°** je Rand) |
 | Pan-Achse | **Portrait:** `deviceorientation.alpha` (Armschwenk, zentrierter Neutral, `pan-from-orientation.ts`); **Landscape:** `gamma` (einseitig); Achswechsel → Neutral-Reset |
 | Datei | `public/stations/{slug}.jpg` (oder WebP, Pfad in JSON) |
-| Größe | WebP oder optimiertes JPG, max. **8 MB** (MPZ-Upload / `validate:stations`) |
+| Größe | WebP oder optimiertes JPG, max. **10 MB** (MPZ-Upload / `validate:stations`) |
 | Ohne Foto | `bild` weglassen → statische Ansicht + Medienliste (z. B. `schulsozialarbeit` bis Panorama da ist) |
 
 **Beispiel Smartphone** (~390 px Viewport-Breite, 360 px Viewer-Höhe): sinnvoller Pan ab ca. **2,2 : 1** Quellbild; **2,5 : 1** ist komfortabel (z. B. 2500×1000 px).

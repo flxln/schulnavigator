@@ -105,7 +105,7 @@ README: [`app/public/media/README.md`](../app/public/media/README.md)
 
 | Ort | Regeln |
 |-----|--------|
-| `app/public/stations/{slug}.jpg` | ≤ 8 MB, ≥ 2400 px Breite, Seitenverhältnis ≥ 2,5:1 |
+| `app/public/stations/{slug}.jpg` | ≤ 10 MB, ≥ 2400 px Breite, Seitenverhältnis ≥ 2,5:1 |
 | Rohmaterial | `auftraggeber/material/stationen-360-pano/flat/{slug}/raw/` |
 | Export | `cd app && node scripts/export-pano.mjs` |
 

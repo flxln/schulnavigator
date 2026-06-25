@@ -23,6 +23,13 @@
           "typ": "audio",
           "quelle": "/media/klassenzimmer/audio/klassenzimmer-tagesablauf-2.mp3",
           "untertitel": "Tagesablauf"
+        },
+        {
+          "id": "klassenzimmer-klassenzimmer-4a-2",
+          "typ": "video",
+          "quelle": "/media/klassenzimmer/video/klassenzimmer-4a-2.mp4",
+          "untertitel": "Eine Mathestunde bei uns",
+          "videoSource": "upload"
         }
       ],
       "hotspots360": [
@@ -32,7 +39,7 @@
           "pitch": -0.2,
           "mediumId": "dx-schule-zukunft",
           "icon": "/stations-icons/klassenzimmer/embed.svg",
-          "iconSize": 0.24
+          "iconSize": 0.2
         },
         {
           "id": "hs-frieda-tagesablauf",
@@ -41,6 +48,13 @@
           "yaw": 32.2,
           "pitch": -43.2,
           "mascotSize": 0.35
+        },
+        {
+          "id": "hs-video-mathestunde",
+          "yaw": -45.5,
+          "pitch": -3.5,
+          "mediumId": "klassenzimmer-klassenzimmer-4a-2",
+          "icon": "/stations-icons/klassenzimmer/play.svg"
         }
       ],
       "dialog": {
@@ -79,6 +93,12 @@
           "typ": "audio",
           "quelle": "/media/musik/audio/musikzimmer-fuer-elise.mp3",
           "untertitel": "Hier kannst du dir \"Für Elise\" von Ludwig van Beethoven anhören."
+        },
+        {
+          "id": "musik-musikraum-plakat",
+          "typ": "foto",
+          "quelle": "/media/musik/fotos/musikraum-plakat.jpg",
+          "untertitel": "Bandplakat"
         }
       ],
       "hotspots360": [
@@ -97,8 +117,18 @@
           "mediumId": "musik-musikzimmer-fuer-elise",
           "icon": "/stations-icons/musik/matt-icons-folder-piano.svg",
           "iconSize": 0.23
+        },
+        {
+          "id": "hs-plakat-musikraum",
+          "yaw": 161.4,
+          "pitch": 11.4,
+          "mediumId": "musik-musikraum-plakat",
+          "icon": "/media/musik/icons/foto-anschauen.svg",
+          "iconSize": 0.19
         }
-      ]
+      ],
+      "startYaw": -61.4,
+      "startPitch": 2
     },
     {
       "slug": "daz",
@@ -114,6 +144,12 @@
           "quelle": "/media/daz/video/video-hallo-im-daz-raum.mp4",
           "untertitel": "Hallo im DaZ Raum",
           "videoSource": "upload"
+        },
+        {
+          "id": "daz-geburtstagskind-arabisch",
+          "typ": "audio",
+          "quelle": "/media/daz/audio/geburtstagskind-arabisch.mp3",
+          "untertitel": "Arabisches Geburtstagslied"
         }
       ],
       "hotspots360": [
@@ -141,11 +177,19 @@
         },
         {
           "id": "hs-video-hallo-im-daz-raum",
-          "yaw": 0.5,
-          "pitch": 14.3,
+          "yaw": -101.9,
+          "pitch": 4.2,
           "mediumId": "daz-video-hallo-im-daz-raum",
           "icon": "/stations-icons/daz/video.svg",
           "iconSize": 0.25
+        },
+        {
+          "id": "hs-audio-geburtstagslied",
+          "yaw": 57,
+          "pitch": -6.4,
+          "mediumId": "daz-geburtstagskind-arabisch",
+          "icon": "/media/daz/icons/DAZ.png",
+          "iconSize": 0.24
         }
       ],
       "dialog": {
@@ -233,13 +277,20 @@
           "typ": "foto",
           "quelle": "/media/kunst/fotos/kunstraum-safia-bild1.jpg",
           "thumbnail": "/media/kunst/icons/kunstraum-safia-bild1.png",
-          "untertitel": "Das habe ich gezeichnet wenn ich Zeit hatte in Stunde und wenn mir langweilig war"
+          "untertitel": "Das habe ich im Kunstunterricht gemalt."
         },
         {
           "id": "kunst-kunstraum-safia-bild2-2",
           "typ": "foto",
           "quelle": "/media/kunst/fotos/kunstraum-safia-bild2-2.jpg",
           "untertitel": "Hier sind ein paar von Safias Bildern."
+        },
+        {
+          "id": "kunst-kunst-bilder-zeigen-2",
+          "typ": "video",
+          "quelle": "/media/kunst/video/kunst-bilder-zeigen-2.mp4",
+          "untertitel": "Galerierundgang",
+          "videoSource": "upload"
         }
       ],
       "startPanX": 0.5289,
@@ -318,17 +369,17 @@
         },
         {
           "id": "safia-bild-1",
-          "x": 0.4566,
-          "y": 0.4876,
+          "x": 0.2878,
+          "y": 0.4664,
           "mediumId": "kunst-kunstraum-safia-bild1",
           "icon": "/media/kunst/icons/kunstzimmer.png"
         },
         {
           "id": "safia-bild-2",
-          "x": 0.3636,
-          "y": 0.4765,
+          "x": 0.1295,
+          "y": 0.4449,
           "mediumId": "kunst-kunstraum-safia-bild2-2",
-          "icon": "/media/kunst/icons/kunstraum-safia-bild2.png"
+          "icon": "/media/kunst/icons/kunstzimmer.png"
         },
         {
           "id": "dialog-ott",
@@ -337,6 +388,13 @@
           "x": 0.3697,
           "y": 0.7564,
           "mascotSize": 0.05
+        },
+        {
+          "id": "hs-video-galerierundgang",
+          "x": 0.8675,
+          "y": 0.4657,
+          "mediumId": "kunst-kunst-bilder-zeigen-2",
+          "icon": "/media/kunst/icons/kunstzimmer.png"
         }
       ]
     },
@@ -352,7 +410,8 @@
           "id": "pc-raum-pc-raum-angebote",
           "typ": "video",
           "quelle": "/media/pc-raum/video/pc-raum-angebote.mp4",
-          "videoSource": "upload"
+          "videoSource": "upload",
+          "untertitel": "Das machen wir mit dem Internet"
         }
       ],
       "hotspots360": [
@@ -455,7 +514,7 @@
     {
       "slug": "lesewelt",
       "titel": "Lesewelt",
-      "beschreibung": "Psst … willkommen in der Lesewelt! Hier tauchen wir in Geschichten ein, reisen in andere Länder und treffen Drachen, Piraten und sprechende Tiere. Lesen ist wie Kino im Kopf, nur ohne Popcorn.",
+      "beschreibung": "Psst … Willkommen in der Lesewelt! Hier tauchen wir in Geschichten ein, reisen in andere Länder und treffen Drachen, Piraten und sprechende Tiere. Lesen ist wie Kino im Kopf, nur ohne Popcorn.",
       "viewer": "equirectangular",
       "panorama360": "/stations/360/lesewelt.jpg",
       "bild": "/stations/lesewelt.jpg",
@@ -551,7 +610,7 @@
       "hotspots360": [
         {
           "id": "hs-elektrobaukasten",
-          "label": "Elektrobaukasten",
+          "label": "Metallbaukasten",
           "yaw": 91.1,
           "pitch": -19.2,
           "mediumId": "werken-werken-elektrobaukasten",
@@ -601,17 +660,85 @@
           "mediumId": "speiseraum-speiseraum-essenausgabe-2",
           "icon": "/stations-icons/speiseraum/video.svg",
           "iconSize": 0.25
+        },
+        {
+          "id": "hs-frieda-schlange",
+          "action": "dialog",
+          "mascot": "frieda",
+          "yaw": 56.3,
+          "pitch": -22.7,
+          "mascotSize": 0.3,
+          "mascotFlipX": true
+        },
+        {
+          "id": "hs-otto-schlange",
+          "action": "dialog",
+          "mascot": "otto",
+          "yaw": 84.7,
+          "pitch": -26.8,
+          "mascotSize": 0.15,
+          "mascotFlipX": true
         }
       ],
       "startYaw": 152.3,
-      "startPitch": -0.3
+      "startPitch": -0.3,
+      "dialog": {
+        "figuren": [
+          "frieda",
+          "otto"
+        ],
+        "segmente": [],
+        "gruppen": []
+      }
     },
     {
       "slug": "hort",
       "titel": "Hortzimmer",
       "beschreibung": "Hallo! Im Hortzimmer spielen wir, basteln wir und machen Hausaufgaben – manchmal sogar freiwillig. Hier ist es immer gemütlich und es gibt fast immer jemanden zum Quatschen.",
       "bild": "/stations/hort.jpg",
-      "medien": []
+      "medien": [
+        {
+          "id": "hort-img-6034",
+          "typ": "foto",
+          "quelle": "/media/hort/fotos/img-6034.jpg",
+          "untertitel": "Lego"
+        },
+        {
+          "id": "hort-hort5",
+          "typ": "foto",
+          "quelle": "/media/hort/fotos/hort5.jpg",
+          "untertitel": "Ferienspiele"
+        },
+        {
+          "id": "hort-hort3",
+          "typ": "foto",
+          "quelle": "/media/hort/fotos/hort3.jpg",
+          "untertitel": "Ferienspiele Bilder"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "hs-spielzeug",
+          "x": 0.4259,
+          "y": 0.4596,
+          "mediumId": "hort-img-6034",
+          "icon": "/media/hort/icons/einstellungen.svg"
+        },
+        {
+          "id": "hs-ferien-bilder",
+          "x": 0.613,
+          "y": 0.1753,
+          "mediumId": "hort-hort3",
+          "icon": "/media/hort/icons/einstellungen.svg"
+        },
+        {
+          "id": "hs-bild-ferienaktivitaeten",
+          "x": 0.9556,
+          "y": 0.2625,
+          "mediumId": "hort-hort5",
+          "icon": "/media/hort/icons/einstellungen.svg"
+        }
+      ]
     },
     {
       "slug": "turnhalle",
@@ -620,7 +747,54 @@
       "viewer": "equirectangular",
       "panorama360": "/stations/360/turnhalle.jpg",
       "bild": "/stations/turnhalle.jpg",
-      "medien": []
+      "medien": [
+        {
+          "id": "turnhalle-sporthalle-1",
+          "typ": "video",
+          "quelle": "/media/turnhalle/video/sporthalle-1.mp4",
+          "untertitel": "Schulrundgang 1",
+          "videoSource": "upload"
+        },
+        {
+          "id": "turnhalle-sporthalle-2",
+          "typ": "video",
+          "quelle": "/media/turnhalle/video/sporthalle-2.mp4",
+          "untertitel": "Rundgang Sporthalle 2",
+          "videoSource": "upload"
+        },
+        {
+          "id": "turnhalle-sporthalle-3",
+          "typ": "video",
+          "quelle": "/media/turnhalle/video/sporthalle-3.mp4",
+          "untertitel": "Rundgang Sporthalle 3",
+          "videoSource": "upload"
+        }
+      ],
+      "hotspots360": [
+        {
+          "id": "hs-rundgang-sporthalle-1",
+          "yaw": -150,
+          "pitch": 0.6,
+          "mediumId": "turnhalle-sporthalle-1",
+          "icon": "/media/turnhalle/icons/video-abspielen.svg"
+        },
+        {
+          "id": "hs-rundgang-sporthalle-2",
+          "yaw": -83.7,
+          "pitch": -2.2,
+          "mediumId": "turnhalle-sporthalle-2",
+          "icon": "/media/turnhalle/icons/video-abspielen.svg"
+        },
+        {
+          "id": "hs-rundgang-sporthalle-3",
+          "yaw": 0,
+          "pitch": 0,
+          "mediumId": "turnhalle-sporthalle-3",
+          "icon": "/media/turnhalle/icons/video-abspielen.svg"
+        }
+      ],
+      "startYaw": -158,
+      "startPitch": 0.3
     },
     {
       "slug": "schulsozialarbeit",
@@ -632,6 +806,35 @@
           "typ": "text",
           "quelle": "/media/schulsozialarbeit/texte/hinweis.txt",
           "untertitel": "Hinweis zur Schulsozialarbeit"
+        },
+        {
+          "id": "schulsozialarbeit-schulsozial-detail1",
+          "typ": "foto",
+          "quelle": "/media/schulsozialarbeit/fotos/schulsozial-detail1.jpg",
+          "untertitel": "Detail 1"
+        },
+        {
+          "id": "schulsozialarbeit-schulsozial-detail2",
+          "typ": "foto",
+          "quelle": "/media/schulsozialarbeit/fotos/schulsozial-detail2.jpg",
+          "untertitel": "Detail 2"
+        }
+      ],
+      "bild": "/stations/schulsozialarbeit.jpg",
+      "hotspots": [
+        {
+          "id": "hs-detail",
+          "x": 0.1286,
+          "y": 0.5396,
+          "mediumId": "schulsozialarbeit-schulsozial-detail1",
+          "icon": "/media/schulsozialarbeit/icons/profil.svg"
+        },
+        {
+          "id": "hs-detail-2",
+          "x": 0.5584,
+          "y": 0.2281,
+          "mediumId": "schulsozialarbeit-schulsozial-detail2",
+          "icon": "/media/schulsozialarbeit/icons/profil.svg"
         }
       ]
     },

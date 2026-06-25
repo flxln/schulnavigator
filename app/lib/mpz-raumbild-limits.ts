@@ -4,8 +4,7 @@ const MB = 1024 * KB
 /** Harte Upload-Schranke für Flat — initial aus Display-Empfehlung 2,5:1, unabhängig evolvierbar. */
 export const FLAT_UPLOAD_RATIO_MIN = 2.5
 
-/** Gleiche Größenklasse wie Foto-Medien (`mpz-upload-rules`). */
-export const FLAT_MAX_BYTES = 8 * MB
+export const FLAT_MAX_BYTES = 10 * MB
 
 /** Equirectangular-Panoramen (bis 8192×4096) brauchen mehr Spielraum als Flat. */
 export const PANO360_MAX_BYTES = 12 * MB

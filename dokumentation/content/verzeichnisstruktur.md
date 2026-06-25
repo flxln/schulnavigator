@@ -91,7 +91,7 @@ app/
 └── public/
     ├── brand/                          # Logos, Maskottchen
     ├── stations/                       # Raumbilder (1 Datei pro Slug)
-    │   └── {slug}.jpg                  # ≤ 8 MB, optimiert
+    │   └── {slug}.jpg                  # ≤ 10 MB, optimiert
     ├── media/                          # öffentliche Stations-Medien
     │   └── {slug}/
     │       ├── audio/
