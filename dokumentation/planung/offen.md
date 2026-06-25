@@ -1,8 +1,8 @@
 # Offene Punkte — Schulnavigator
 
-**Stand:** 2026-06-24 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
+**Stand:** 2026-06-25 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
 
-**Letzter Abgleich:** 2026-06-24 — [#233](https://github.com/flxln/schulnavigator/issues/233) Deploy-Tab UX erledigt (Nacharbeit #230). [#232](https://github.com/flxln/schulnavigator/issues/232) History erledigt; GitHub-Support-Ticket LFS-Purge eingereicht (Bestätigung ausstehend).
+**Letzter Abgleich:** 2026-06-25 — [#235](https://github.com/flxln/schulnavigator/issues/235) Home-Footer: MPZ-Banner statt Jubiläums-Ribbon. Zuvor 2026-06-24: [#233](https://github.com/flxln/schulnavigator/issues/233) Deploy-Tab UX; [#232](https://github.com/flxln/schulnavigator/issues/232) History erledigt.
 
 Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren). Abgeschlossene Epics: [archiv/epics/](./archiv/epics/).
 

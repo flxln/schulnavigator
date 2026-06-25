@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import { List, QrCode } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { MpzOfferBanner } from '@/components/brand/mpz-offer-banner'
 import { HighlightSlugSync } from '@/components/home/highlight-slug-sync'
 import { HomeFestScanCta } from '@/components/home/home-fest-scan-cta'
 import { SchoolhouseHub } from '@/components/schoolhouse/schoolhouse-hub'
@@ -118,11 +119,6 @@ export function HomeScreen({
     hasNext,
   )
 
-  const modeLabel =
-    mode === 'heft'
-      ? 'Schulstartheft · alles frei'
-      : 'Schulfest · 26.06.2026'
-
   return (
     <div className="sn-fade-in flex flex-col gap-4">
       <HighlightSlugSync highlight={highlightSlug} />
@@ -233,14 +229,7 @@ export function HomeScreen({
         </p>
       </Gs39Card>
 
-      <div className="sn-ribbon text-center text-xl">
-        Gemeinsam feiern. Erinnern. Zukunft gestalten.
-      </div>
-
-      <p className="text-center text-[11px] text-fg-3">
-        150 Jahre 39. Grundschule · 26.06.2026
-      </p>
-      <p className="pb-1 text-center text-[11px] text-fg-3">{modeLabel}</p>
+      <MpzOfferBanner className="pb-1" />
 
       <CoachNudgeLayer message={coachMessage} onDismiss={dismissCoach} />
     </div>
