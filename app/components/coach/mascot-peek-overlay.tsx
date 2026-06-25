@@ -23,10 +23,10 @@ type MascotPeekOverlayProps = {
 
 function tailForPlacement(placement: CoachPlacement): 'left' | 'right' | 'center' {
   if (placement === 'left') {
-    return 'right'
+    return 'left'
   }
   if (placement === 'right') {
-    return 'left'
+    return 'right'
   }
   return 'center'
 }
@@ -150,6 +150,14 @@ export function MascotPeekOverlay({
             </>
           ) : null}
 
+          <p
+            id="coach-peek-text"
+            className={`sn-dialog-bubble sn-dialog-bubble--tail-${tail} sn-coach-peek__bubble`}
+            style={bubbleStyle}
+          >
+            {message.text}
+          </p>
+
           {isDuo ? (
             <div
               className="sn-coach-peek__duo-row"
@@ -183,14 +191,6 @@ export function MascotPeekOverlay({
               imgStyle={resolvedLayout.imgStyle}
             />
           ) : null}
-
-          <p
-            id="coach-peek-text"
-            className={`sn-dialog-bubble sn-dialog-bubble--tail-${tail} sn-coach-peek__bubble`}
-            style={bubbleStyle}
-          >
-            {message.text}
-          </p>
         </div>
       </div>
     </div>

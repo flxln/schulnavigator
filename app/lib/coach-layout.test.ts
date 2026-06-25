@@ -26,7 +26,7 @@ describe('resolveCoachLayout', () => {
     expect(resolved.figureStyle).toBeUndefined()
     expect(resolved.duoRowStyle).toBeUndefined()
     expect(resolved.bubbleStyle).toEqual({
-      marginTop: `${DEFAULT_BUBBLE_MARGIN_Y_REM}rem`,
+      marginBottom: `${DEFAULT_BUBBLE_MARGIN_Y_REM}rem`,
       maxWidth: `min(100%, ${DEFAULT_BUBBLE_MAX_WIDTH_REM}rem)`,
       fontSize: `${DEFAULT_BUBBLE_FONT_SIZE}px`,
     })
@@ -44,7 +44,7 @@ describe('resolveCoachLayout', () => {
     })
     expect(resolved.imgStyle.height).toBe('38vh')
     expect(resolved.imgStyle.maxWidth).toBe('min(100%, 38vh)')
-    expect(resolved.bubbleStyle.marginTop).toBe(
+    expect(resolved.bubbleStyle.marginBottom).toBe(
       `${DEFAULT_BUBBLE_MARGIN_Y_REM - 0.25}rem`,
     )
     expect(resolved.bubbleStyle.fontSize).toBe('16px')
@@ -84,7 +84,7 @@ describe('resolveCoachLayout', () => {
       transform: 'translate(1rem, 0.5rem)',
     })
     expect(resolved.figureStyle).toBeUndefined()
-    expect(resolved.bubbleStyle.marginTop).toBe(
+    expect(resolved.bubbleStyle.marginBottom).toBe(
       `${DEFAULT_DUO_BUBBLE_MARGIN_Y_REM}rem`,
     )
   })

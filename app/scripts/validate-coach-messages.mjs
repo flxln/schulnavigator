@@ -23,11 +23,11 @@ const LAYOUT_BOOLEAN_KEYS = new Set(['mascotFlipX', 'mascotFlipY'])
 
 const LAYOUT_CLAMPS = {
   mascotSize: { min: 0.15, max: 0.55 },
-  mascotOffsetX: { min: -5, max: 5 },
-  mascotOffsetY: { min: -5, max: 5 },
+  mascotOffsetX: { min: -20, max: 20 },
+  mascotOffsetY: { min: -20, max: 20 },
   bubbleMaxWidth: { min: 12, max: 32 },
-  bubbleOffsetX: { min: -5, max: 5 },
-  bubbleOffsetY: { min: -5, max: 5 },
+  bubbleOffsetX: { min: -20, max: 20 },
+  bubbleOffsetY: { min: -20, max: 20 },
   bubbleFontSize: { min: 12, max: 20 },
 }
 

@@ -5,70 +5,40 @@
       "trigger": "hub-milestone",
       "mascot": "frieda",
       "placement": "left",
-      "text": "Willkommen beim Schulrundgang! Tippe auf ein Fenster, den Wegweiser für Hof und Turnhalle oder scanne den QR-Code an der Raumtür.",
+      "text": "Herzlich willkommen an der 39. Grundschule! Schön, dass Sie unseren virtuellen Rundgang besuchen. Entdecken Sie unsere Schule, lernen Sie unsere Lern- und Lebensräume kennen und bekommen Sie einen Eindruck davon, wie wir gemeinsam lernen, lachen und wachsen. Wir wünschen Ihnen viel Freude!",
       "layout": {
-        "mascotSize": 0.55
+        "mascotSize": 0.55,
+        "mascotOffsetX": 0,
+        "mascotOffsetY": -5,
+        "bubbleMaxWidth": 12,
+        "bubbleOffsetX": 20,
+        "bubbleOffsetY": -5,
+        "mascotFlipX": true
       },
       "milestone": 0
     },
     {
       "id": "first-visit",
       "trigger": "hub-milestone",
-      "milestone": 1,
       "mascot": "otto",
       "placement": "right",
-      "text": "Super, deine erste Station! Schau dich um — im Schulhaus findest du alle Räume.",
-      "modes": [
-        "fest",
-        "heft"
-      ]
+      "text": "Willkommen im ersten virtuellen Zimmer!\nHier beginnt Ihr Rundgang durch unsere 39. Grundschule.\nEntdecken Sie spannende Einblicke und Eindrücke und machen Sie sich bereit, weitere Räume zu betreten, die unsere Schule lebendig werden lassen. Viel Freude beim Erkunden!",
+      "milestone": 1
     },
     {
       "id": "halfway",
       "trigger": "hub-milestone",
-      "milestone": 6,
       "mascot": "frieda",
       "placement": "right",
-      "text": "Halbzeit! Du hast schon viele Räume entdeckt. Weiter so!",
-      "modes": [
-        "fest",
-        "heft"
-      ]
+      "text": "Toll gemacht!\nSie haben bereits viele unserer virtuellen Räume entdeckt und sich ein umfassendes Bild von der 39. Grundschule gemacht. Wir freuen uns über Ihr Interesse und Ihre Neugier. Bleiben Sie dran, es gibt noch mehr zu entdecken!",
+      "milestone": 6
     },
     {
       "id": "complete",
       "trigger": "hub-complete",
       "mascot": "duo",
       "placement": "duo-split",
-      "text": "Wow — alle Stationen entdeckt! Danke, dass du unsere Schule erkundet hast.",
-      "modes": [
-        "fest",
-        "heft"
-      ]
-    },
-    {
-      "id": "room-first-klassenzimmer",
-      "trigger": "room-first",
-      "slug": "klassenzimmer",
-      "mascot": "otto",
-      "placement": "left",
-      "text": "Hier startet der Rundgang — unser Klassenzimmer. Wische nach oben, um mehr zu lesen."
-    },
-    {
-      "id": "room-first-musik",
-      "trigger": "room-first",
-      "slug": "musik",
-      "mascot": "frieda",
-      "placement": "right",
-      "text": "Willkommen im Musikraum! Schau dich im Raum um und entdecke die Hotspots."
-    },
-    {
-      "id": "room-first-hort",
-      "trigger": "room-first",
-      "slug": "hort",
-      "mascot": "otto",
-      "placement": "left",
-      "text": "Das ist unser Hort. Hier kannst du nach dem Unterricht spielen und ausruhen."
+      "text": "Herzlichen Glückwunsch!\nSie haben den virtuellen Rundgang durch unsere 39. Grundschule erfolgreich beendet. Vielen Dank für Ihre Neugier und Ihr Interesse. Wir hoffen, Sie hatten Freude beim Entdecken unserer Räume und Eindrücke aus dem Schulleben. Schön, dass Sie dabei waren!"
     }
   ]
 }

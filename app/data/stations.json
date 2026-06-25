@@ -321,7 +321,7 @@
           "x": 0.4566,
           "y": 0.4876,
           "mediumId": "kunst-kunstraum-safia-bild1",
-          "icon": "/media/kunst/icons/kunstraum-safia-bild1.png"
+          "icon": "/media/kunst/icons/kunstzimmer.png"
         },
         {
           "id": "safia-bild-2",
@@ -482,21 +482,43 @@
           "iconSize": 0.15
         },
         {
-          "id": "otto-buchstapel",
-          "label": "Otto zeigt auf den Buchstapel",
-          "yaw": 0,
-          "pitch": 0,
-          "mediumId": "lesewelt-embed",
-          "icon": "/media/lesewelt/icons/otto.png"
+          "id": "hs-otto-zeigt-auf-buchstapel",
+          "action": "dialog",
+          "mascot": "otto",
+          "yaw": -33.6,
+          "pitch": -31.8,
+          "mascotFlipX": true
+        },
+        {
+          "id": "hs-frieda-begruesst",
+          "action": "dialog",
+          "mascot": "frieda",
+          "yaw": -49.9,
+          "pitch": -24.1,
+          "mascotSize": 0.4
         }
       ],
       "dialog": {
         "figuren": [
+          "frieda",
           "otto"
         ],
-        "segmente": [],
+        "segmente": [
+          {
+            "id": "l1",
+            "rolle": "frieda",
+            "text": "Herzlich willkommen in der Lesewelt der 39. Grundschule Dresden Plauen. Öffnungszeiten und andere Bücher finden sie hier. An der Tür stehen alle Öffnungszeiten."
+          },
+          {
+            "id": "l2",
+            "rolle": "otto",
+            "text": "Ganz unten in der Mitte auf der Bücherregal, finden Sie das lila Buch. Das ist unsere selbst gestaltete Lesewelt."
+          }
+        ],
         "gruppen": []
-      }
+      },
+      "startYaw": -44.4,
+      "startPitch": 5.7
     },
     {
       "slug": "werken",
@@ -606,9 +628,10 @@
       "beschreibung": "Hallo! Hier arbeitet unser Schulsozialarbeiter. Zu ihm können wir kommen, wenn wir Sorgen haben, Streit klären wollen oder einfach jemanden brauchen, der zuhört. Er hat immer ein offenes Ohr und manchmal auch Gummibärchen.",
       "medien": [
         {
-          "id": "ssa-info",
+          "id": "schulsozialarbeit-hinweis",
           "typ": "text",
-          "quelle": "/demo/ssa-hinweis.txt"
+          "quelle": "/media/schulsozialarbeit/texte/hinweis.txt",
+          "untertitel": "Hinweis zur Schulsozialarbeit"
         }
       ]
     },
@@ -618,7 +641,44 @@
       "beschreibung": "Willkommen auf unserem Schulhof! Hier wird in der Pause gespielt, getobt und gelacht. Schau dich um — bald gibt es hier noch mehr zu entdecken.",
       "viewer": "equirectangular",
       "panorama360": "/stations/360/schulhof.jpg",
-      "medien": []
+      "medien": [
+        {
+          "id": "schulhof-tischball-2",
+          "typ": "video",
+          "quelle": "/media/schulhof/video/tischball-2.mp4",
+          "untertitel": "Tischball",
+          "videoSource": "upload"
+        },
+        {
+          "id": "schulhof-embed",
+          "typ": "embed",
+          "quelle": "https://edu.delightex.com/SVX-FQF",
+          "untertitel": "Schulhof der Zukunft",
+          "embedAllow": [
+            "delightex.com"
+          ]
+        }
+      ],
+      "hotspots360": [
+        {
+          "id": "hs-video-tischball",
+          "yaw": -166.9,
+          "pitch": -0.2,
+          "mediumId": "schulhof-tischball-2",
+          "icon": "/media/schulhof/icons/Unknown.png",
+          "iconSize": 0.2
+        },
+        {
+          "id": "hs-delightex-schulhof-zukunft",
+          "yaw": 29.8,
+          "pitch": -5.3,
+          "mediumId": "schulhof-embed",
+          "icon": "/media/schulhof/icons/link.svg",
+          "iconSize": 0.22
+        }
+      ],
+      "startYaw": -96.3,
+      "startPitch": 12.3
     }
   ]
 }

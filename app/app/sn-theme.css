@@ -850,7 +850,7 @@
 .sn-coach-peek__bubble {
   position: relative;
   z-index: 1;
-  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
   max-width: min(100%, 22rem);
   border: 1px solid var(--border-1);
   border-radius: var(--r-lg);
@@ -867,7 +867,7 @@
 
 .sn-coach-peek--duo-split .sn-coach-peek__bubble {
   align-self: center;
-  margin-top: -0.5rem;
+  margin-bottom: -0.5rem;
 }
 
 @keyframes sn-coach-peek-in-bottom {
@@ -906,7 +906,7 @@
 @keyframes sn-coach-bubble-in {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(-8px);
   }
   to {
     opacity: 1;
