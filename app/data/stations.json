@@ -909,6 +909,16 @@
           "quelle": "/media/schulhof/video/erklaerung-schulhofwelt-3-3.mp4",
           "untertitel": "Erklärung Schulhofwelt 3",
           "videoSource": "upload"
+        },
+        {
+          "id": "schulhof-embed-2",
+          "typ": "embed",
+          "quelle": "https://edu.delightex.com/SVX-FQF",
+          "untertitel": "Schulhof der Zukunft",
+          "embedAllow": [
+            "bookcreator.com",
+            "delightex.com"
+          ]
         }
       ],
       "hotspots360": [
@@ -948,6 +958,13 @@
           "pitch": 13.5,
           "mediumId": "schulhof-erklaerung-schulhofwelt-3-3",
           "icon": "/media/schulhof/icons/embed.svg"
+        },
+        {
+          "id": "hs-delight-schulhof-zukunft",
+          "yaw": 156.4,
+          "pitch": -1.8,
+          "mediumId": "schulhof-embed-2",
+          "icon": "/media/schulhof/icons/einstellungen.svg"
         }
       ],
       "startYaw": -96.3,
