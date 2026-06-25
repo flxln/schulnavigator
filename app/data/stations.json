@@ -36,6 +36,13 @@
           "typ": "foto",
           "quelle": "/media/klassenzimmer/fotos/stundenplan.jpg",
           "untertitel": "Stundenplan"
+        },
+        {
+          "id": "klassenzimmer-mein-film",
+          "typ": "video",
+          "quelle": "/media/klassenzimmer/video/mein-film.mp4",
+          "untertitel": "Meine Unterrichtsstunde",
+          "videoSource": "upload"
         }
       ],
       "hotspots360": [
@@ -69,6 +76,13 @@
           "mediumId": "klassenzimmer-stundenplan",
           "icon": "/media/klassenzimmer/icons/Klassenzimmer.png",
           "iconSize": 0.25
+        },
+        {
+          "id": "hs-video-unterricht-fantasie",
+          "yaw": 70.8,
+          "pitch": 4.9,
+          "mediumId": "klassenzimmer-mein-film",
+          "icon": "/stations-icons/klassenzimmer/play.svg"
         }
       ],
       "dialog": {
