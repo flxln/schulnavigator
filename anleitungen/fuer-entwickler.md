@@ -535,7 +535,7 @@ rsync -avz --no-o --no-g --chown=1001:1001 --rsync-path="sudo rsync" -e "$RSYNC_
 | 3 | Code/JSON committen (Medien **nicht** — Bahn B ist gitignored) |
 | 4 | `.env.local`: `DEPLOY_SSH`, optional `DEPLOY_BRANCH` (`kunde/39-gs`), Webhook |
 | 5 | **Nur Medien geändert:** `npm run deploy:content -- --media-only` oder Studio-Button „Medien deployen“ |
-| 6 | **Code + Medien:** auf Branch `kunde/39-gs` → `npm run deploy:content` oder „Vollständig deployen“ |
+| 6 | **Code + Medien:** auf Branch `kunde/39-gs` → `npm run deploy:content` oder „Vollständig deployen“ (App-Code/SSR-Fixes brauchen immer Schritt 6 — `sync-content` allein reicht nicht) |
 | 7 | Smoke: Live-URL mit Video, Dialog-Audio, Coach-`quelle` prüfen |
 
 Kein `--delete` beim rsync ohne `--prune`. SSH-User: NOPASSWD für `sudo rsync` auf dem VPS.

@@ -33,6 +33,6 @@ Domänen-Matrix MPZ Studio: [ideen/archiv/mpz-studio-ui.md](../ideen/archiv/mpz-
 
 Vollständiger Abgleich-Log (bis 2026-06-20): [archiv/sync-log-2026-06.md](./archiv/sync-log-2026-06.md).
 
-**Letzter dokumentierter Abgleich:** 2026-06-25 — [#236](https://github.com/flxln/schulnavigator/issues/236) Impressum/Datenschutz global; Hosting-Doku IONOS-VPS.
+**Letzter dokumentierter Abgleich:** 2026-06-25 — Coach-Audio-Unlock + Eintritt-SSR-Fix (`kunde/39-gs`); Post-Mortem `post-mortem-coach-unlock-eintritt-ssr-2026-06-25.md`. Zuvor [#236](https://github.com/flxln/schulnavigator/issues/236) Impressum/Datenschutz.
 
 Siehe auch [entscheidungen.md](../entscheidungen.md), [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren).

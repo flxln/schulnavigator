@@ -46,3 +46,13 @@ Technische Rahmenbedingungen:
 - **Geändert:** `CoachMessage`-Typ, `MascotPeekOverlay`, MPZ Coach-Editor, `validate-coach-messages.mjs`.
 - **Abgegrenzt zu ADR-010:** Dialog = Tap-gated Playlist; Coach = Autoplay ein Clip, fortschritts-getriggert.
 - **Bewusst nicht:** Playlist, Lip-Sync, YouTube (ADR-004), globales „Ton aus“, Directus.
+
+## Nachtrag (2026-06-25, `kunde/39-gs`)
+
+Pragmatische **Audio-Unlock-Kette** ergänzt (abweichend von der verworfenen Alternative „globales Session-Freischalten“ als Over-Engineering):
+
+- `unlockAudioPlayback()` nach synchroner User-Geste (Eintritt, Scan, Hub-CTA) + passiver Capture-Listener im Root-Layout (`sn-audio-unlocked`).
+- `useCoachAudio` retryt Autoplay nach Unlock; Replay-Icon bleibt iOS-Fallback (ADR-Kernentscheidung unverändert).
+- SSR: `onClick` nur in Client-Komponente `EintrittScanLink` — kein Handler in Server-`EintrittScreen`.
+
+Details: [Post-Mortem Coach-Unlock & Eintritt-SSR](../reviews/post-mortem/post-mortem-coach-unlock-eintritt-ssr-2026-06-25.md).
