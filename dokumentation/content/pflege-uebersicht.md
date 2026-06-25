@@ -105,7 +105,7 @@ README: [`app/public/media/README.md`](../app/public/media/README.md)
 
 | Ort | Regeln |
 |-----|--------|
-| `app/public/stations/{slug}.jpg` | ≤ 500 KB, ≥ 2400 px Breite, Seitenverhältnis ≥ 2,5:1 |
+| `app/public/stations/{slug}.jpg` | ≤ 8 MB, ≥ 2400 px Breite, Seitenverhältnis ≥ 2,5:1 |
 | Rohmaterial | `auftraggeber/material/stationen-360-pano/flat/{slug}/raw/` |
 | Export | `cd app && node scripts/export-pano.mjs` |
 
@@ -117,7 +117,7 @@ README: [`app/public/stations/README.md`](../app/public/stations/README.md)
 
 | Ort | Regeln |
 |-----|--------|
-| `app/public/stations/360/{slug}.webp` | Equirectangular 2:1, max. 4 MB |
+| `app/public/stations/360/{slug}.webp` | Equirectangular 2:1, max. 12 MB |
 | Export | `npm run export:pano360` |
 | JSON | `"viewer": "equirectangular"` + `"panorama360": "/stations/360/{slug}.webp"` |
 

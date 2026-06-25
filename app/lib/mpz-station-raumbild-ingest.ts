@@ -11,6 +11,16 @@ import {
 import { readImageDimensions } from '@/lib/image-dimensions'
 import { type IngestSource, persistFile } from '@/lib/mpz-medium-ingest'
 import { runMpzStudioValidation, type MpzValidationReport } from '@/lib/mpz-studio-overview'
+import {
+  FLAT_MAX_BYTES,
+  FLAT_RATIO_TOLERANCE,
+  FLAT_UPLOAD_RATIO_MIN,
+  formatRaumbildBytes,
+  MIN_RAUMBILD_BYTES,
+  PANO360_MAX_BYTES,
+  PANO360_RATIO,
+  PANO360_RATIO_TOLERANCE,
+} from '@/lib/mpz-raumbild-limits'
 import { MpzUploadError } from '@/lib/mpz-upload-rules'
 import { getHubSlugOrder, isHubSlug } from '@/lib/schoolhouse-hub-map'
 import type { Station, StationsFile } from '@/lib/types'
@@ -18,15 +28,15 @@ import type { Station, StationsFile } from '@/lib/types'
 export type RaumbildVariant = 'flat' | 'pano360'
 export type RaumbildCollisionMode = 'reject' | 'replace'
 
-/** Harte Upload-Schranke für Flat — initial aus Display-Empfehlung 2,5:1, unabhängig evolvierbar. */
-export const FLAT_UPLOAD_RATIO_MIN = 2.5
-
-export const FLAT_MAX_BYTES = 500 * 1024
-export const PANO360_MAX_BYTES = 4 * 1024 * 1024
-export const MIN_RAUMBILD_BYTES = 1024
-export const FLAT_RATIO_TOLERANCE = 0.02
-export const PANO360_RATIO = 2
-export const PANO360_RATIO_TOLERANCE = 0.02
+export {
+  FLAT_MAX_BYTES,
+  FLAT_RATIO_TOLERANCE,
+  FLAT_UPLOAD_RATIO_MIN,
+  MIN_RAUMBILD_BYTES,
+  PANO360_MAX_BYTES,
+  PANO360_RATIO,
+  PANO360_RATIO_TOLERANCE,
+} from '@/lib/mpz-raumbild-limits'
 
 const PANO360_EXTENSIONS = ['.jpg', '.webp'] as const
 
@@ -92,7 +102,7 @@ export async function validateRaumbildUpload(input: {
   if (buffer.length > maxBytes) {
     throw new MpzUploadError(
       'VALIDATION',
-      `${originalName}: Datei ist zu groß (max. ${maxBytes / 1024} KB für ${variant}).`,
+      `${originalName}: Datei ist zu groß (max. ${formatRaumbildBytes(maxBytes)} für ${variant}).`,
     )
   }
 

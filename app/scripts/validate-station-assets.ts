@@ -1,11 +1,13 @@
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
+import {
+  FLAT_MAX_BYTES,
+  formatRaumbildBytes,
+  PANO360_MAX_BYTES,
+} from '@/lib/mpz-raumbild-limits'
 import type { StationsFile } from '@/lib/types'
 import { jpegDimensionsFromBuffer, webpDimensionsFromBuffer } from '@/lib/image-dimensions'
-
-const WARN_BYTES = 500 * 1024
-const WARN_PANO360_BYTES = 4 * 1024 * 1024
 const MIN_JPEG_BYTES = 1024
 const PANO360_RATIO_TOLERANCE = 0.02
 const JPEG_MAGIC = Buffer.from([0xff, 0xd8])
@@ -78,7 +80,7 @@ function checkPanorama360Asset(
   warnings: string[],
 ): void {
   const errorsBefore = errors.length
-  checkJpegAsset(label, urlPath, fsPath, errors, warnings, WARN_PANO360_BYTES)
+  checkJpegAsset(label, urlPath, fsPath, errors, warnings, PANO360_MAX_BYTES)
   if (errors.length > errorsBefore) {
     return
   }
@@ -110,9 +112,9 @@ function checkPanorama360WebpAsset(
     )
     return
   }
-  if (st.size > WARN_PANO360_BYTES) {
+  if (st.size > PANO360_MAX_BYTES) {
     warnings.push(
-      `${label}: ${urlPath} ist groß (${Math.round(st.size / 1024)} KB, Schwellwert ${WARN_PANO360_BYTES / 1024} KB)`,
+      `${label}: ${urlPath} ist groß (${formatRaumbildBytes(st.size)}, Schwellwert ${formatRaumbildBytes(PANO360_MAX_BYTES)})`,
     )
   }
   const dims = webpDimensions(fsPath)
@@ -129,7 +131,7 @@ function checkJpegAsset(
   fsPath: string,
   errors: string[],
   warnings: string[],
-  warnBytes = WARN_BYTES,
+  warnBytes = FLAT_MAX_BYTES,
 ): void {
   let st
   try {
@@ -156,7 +158,7 @@ function checkJpegAsset(
   }
   if (st.size > warnBytes) {
     warnings.push(
-      `${label}: ${urlPath} ist groß (${Math.round(st.size / 1024)} KB, Schwellwert ${warnBytes / 1024} KB)`,
+      `${label}: ${urlPath} ist groß (${formatRaumbildBytes(st.size)}, Schwellwert ${formatRaumbildBytes(warnBytes)})`,
     )
   }
 }
@@ -187,9 +189,9 @@ function checkPath(
   }
   try {
     const st = statSync(fsPath)
-    if (st.size > WARN_BYTES) {
+    if (st.size > FLAT_MAX_BYTES) {
       warnings.push(
-        `${label}: ${urlPath} ist groß (${Math.round(st.size / 1024)} KB, Schwellwert ${WARN_BYTES / 1024} KB)`,
+        `${label}: ${urlPath} ist groß (${formatRaumbildBytes(st.size)}, Schwellwert ${formatRaumbildBytes(FLAT_MAX_BYTES)})`,
       )
     }
   } catch {

@@ -18,7 +18,7 @@ const repoRoot = join(appRoot, '..')
 const panoRoot = join(repoRoot, 'auftraggeber', 'material', 'stationen-360-pano')
 const stationsDir = join(appRoot, 'public', 'stations')
 
-const MAX_BYTES = 500 * 1024
+const MAX_BYTES = 8 * 1024 * 1024
 const QUALITY_STEPS = [70, 60, 50, 40]
 
 /** slug → relativer Pfad unter panoRoot/flat/{slug}/raw/ */

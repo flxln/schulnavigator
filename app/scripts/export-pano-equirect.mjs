@@ -19,7 +19,7 @@ const repoRoot = join(appRoot, '..')
 const panoRoot = join(repoRoot, 'auftraggeber', 'material', 'stationen-360-pano')
 const stations360Dir = join(appRoot, 'public', 'stations', '360')
 
-const MAX_BYTES = 4 * 1024 * 1024
+const MAX_BYTES = 12 * 1024 * 1024
 const QUALITY_STEPS = [85, 80, 75, 70, 65, 60]
 const FALLBACK_WIDTH = 4096
 
