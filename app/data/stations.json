@@ -317,7 +317,7 @@
           {
             "id": "k1",
             "rolle": "frieda",
-            "text": "Hi, ich bin’s noch mal. Jetzt erkläre ich euch die Regeln im Kunstraum. Es gibt viele Regeln an die man sich halten muss. Auch auf den Lehrer muss man ebenfalls hören. Ich möchte euch jetzt nicht zu viel verraten. Kommen wir jetzt zu den Regeln.\nRegeln",
+            "text": "Hi, ich bin’s noch mal. Jetzt erkläre ich euch die Regeln im Kunstraum. Es gibt viele Regeln an die man sich halten muss. Auch auf den Lehrer muss man ebenfalls hören. Ich möchte euch jetzt nicht zu viel verraten. Kommen wir jetzt zu den Regeln.",
             "quelle": "/api/dialog/kunst/01-frieda.wav"
           },
           {
@@ -766,7 +766,7 @@
           "id": "turnhalle-sporthalle-1",
           "typ": "video",
           "quelle": "/media/turnhalle/video/sporthalle-1.mp4",
-          "untertitel": "Schulrundgang 1",
+          "untertitel": "Rundgang Sporthalle 1",
           "videoSource": "upload"
         },
         {
