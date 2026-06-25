@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import { AlertCircle, QrCode } from 'lucide-react'
 import { MpzOfferBanner } from '@/components/brand/mpz-offer-banner'
+import { EintrittScanLink } from '@/components/eintritt/eintritt-scan-link'
 import { FestiveDecor, Gs39Chip, Gs39ChipMark } from '@/components/ui'
-import { unlockAudioPlayback } from '@/lib/audio-autoplay-unlock'
 
 export type EintrittVariant = 'fresh' | 'expired' | 'wrong'
 
@@ -66,29 +66,7 @@ export function EintrittScreen({ variant = 'fresh' }: EintrittScreenProps) {
       </div>
 
       {!isError ? (
-        <Link
-          href="/eintritt/scan"
-          className="sn-card sn-card--interactive relative z-[1] block p-5 text-left shadow-[var(--shadow-md)]"
-          aria-label="Eintritts-QR scannen, Kamera starten"
-          onClick={() => unlockAudioPlayback()}
-        >
-          <div className="mb-3.5 flex items-center gap-3.5">
-            <Gs39Chip tone="green">
-              <QrCode size={28} aria-hidden className="text-fg-on-dark" />
-            </Gs39Chip>
-            <div>
-              <h2 className="text-lg font-extrabold text-fg-1">
-                Eintritts-QR scannen
-              </h2>
-              <p className="text-sm text-fg-3">
-                Am Schultor oder im Schulstartheft.
-              </p>
-            </div>
-          </div>
-          <p className="text-sm leading-relaxed text-fg-2">
-            Tippen Sie hier — die Kamera startet in der App. Kein App-Store nötig.
-          </p>
-        </Link>
+        <EintrittScanLink />
       ) : (
         <div
           className="relative z-[1] rounded-[var(--r-lg)] border-[1.5px] border-brand-red bg-[#fff5f5] p-5 shadow-[var(--shadow-md)]"
