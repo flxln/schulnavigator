@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { createPortal } from 'react-dom'
 import Image from 'next/image'
@@ -72,10 +72,8 @@ export function MascotPeekOverlay({
   const tail = tailForPlacement(message.placement)
   const [portalReady, setPortalReady] = useState(false)
   const resolvedLayout = useMemo(() => resolveCoachLayout(message), [message])
-  const audioRef = useRef<HTMLAudioElement>(null)
-  const { playBlocked, isPlaying, replay } = useCoachAudio(
+  const { playBlocked, isPlaying, replay, audioRef } = useCoachAudio(
     message.quelle,
-    audioRef,
     portalReady,
   )
 

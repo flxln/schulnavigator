@@ -1,25 +1,32 @@
 import { renderHook, act, waitFor } from '@testing-library/react'
-import { createRef } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import {
+  AUDIO_UNLOCK_EVENT,
+  resetAudioPlaybackUnlockForTests,
+} from '@/lib/audio-autoplay-unlock'
 import { useCoachAudio } from '@/hooks/use-coach-audio'
 
 describe('useCoachAudio', () => {
   afterEach(() => {
     vi.restoreAllMocks()
+    resetAudioPlaybackUnlockForTests()
   })
 
-  function setupAudio() {
-    const audioRef = createRef<HTMLAudioElement>()
-    const el = document.createElement('audio')
-    audioRef.current = el
-    return { audioRef, el }
+  function mountAudio(
+    result: ReturnType<typeof renderHook<ReturnType<typeof useCoachAudio>>>,
+    el: HTMLAudioElement,
+  ) {
+    act(() => {
+      result.result.current.audioRef(el)
+    })
   }
 
   it('startet Autoplay bei quelle', async () => {
-    const { audioRef, el } = setupAudio()
+    const el = document.createElement('audio')
     const playSpy = vi.spyOn(el, 'play').mockResolvedValue(undefined)
 
-    renderHook(() => useCoachAudio('/api/coach/welcome-hub', audioRef))
+    const result = renderHook(() => useCoachAudio('/api/coach/welcome-hub'))
+    mountAudio(result, el)
 
     expect(playSpy).toHaveBeenCalled()
     await waitFor(() => {
@@ -28,22 +35,21 @@ describe('useCoachAudio', () => {
   })
 
   it('setzt playBlocked bei play()-Reject', async () => {
-    const { audioRef, el } = setupAudio()
+    const el = document.createElement('audio')
     vi.spyOn(el, 'play').mockRejectedValue(
       new DOMException('blocked', 'NotAllowedError'),
     )
 
-    const { result } = renderHook(() =>
-      useCoachAudio('/api/coach/welcome-hub', audioRef),
-    )
+    const result = renderHook(() => useCoachAudio('/api/coach/welcome-hub'))
+    mountAudio(result, el)
 
     await waitFor(() => {
-      expect(result.current.playBlocked).toBe(true)
+      expect(result.result.current.playBlocked).toBe(true)
     })
   })
 
   it('ignoriert AbortError beim Unmount während pending play', async () => {
-    const { audioRef, el } = setupAudio()
+    const el = document.createElement('audio')
     let rejectPlay: ((err: DOMException) => void) | undefined
     vi.spyOn(el, 'play').mockImplementation(
       () =>
@@ -55,11 +61,9 @@ describe('useCoachAudio', () => {
       rejectPlay?.(new DOMException('interrupted', 'AbortError'))
     })
 
-    const { unmount } = renderHook(() =>
-      useCoachAudio('/api/coach/welcome-hub', audioRef),
-    )
-
-    unmount()
+    const result = renderHook(() => useCoachAudio('/api/coach/welcome-hub'))
+    mountAudio(result, el)
+    result.unmount()
 
     await waitFor(() => {
       expect(el.getAttribute('src')).toBeNull()
@@ -67,42 +71,40 @@ describe('useCoachAudio', () => {
   })
 
   it('replay ruft play erneut auf', async () => {
-    const { audioRef, el } = setupAudio()
+    const el = document.createElement('audio')
     const playSpy = vi
       .spyOn(el, 'play')
       .mockRejectedValueOnce(new DOMException('blocked', 'NotAllowedError'))
       .mockResolvedValueOnce(undefined)
 
-    const { result } = renderHook(() =>
-      useCoachAudio('/api/coach/welcome-hub', audioRef),
-    )
+    const result = renderHook(() => useCoachAudio('/api/coach/welcome-hub'))
+    mountAudio(result, el)
 
     await waitFor(() => {
-      expect(result.current.playBlocked).toBe(true)
+      expect(result.result.current.playBlocked).toBe(true)
     })
 
     act(() => {
-      result.current.replay()
+      result.result.current.replay()
     })
 
     expect(playSpy).toHaveBeenCalledTimes(2)
   })
 
-  it('startet Autoplay erst wenn enabled und audioRef gesetzt sind', async () => {
-    const audioRef = createRef<HTMLAudioElement>()
+  it('startet Autoplay erst wenn enabled und audio-Element gesetzt sind', async () => {
     const el = document.createElement('audio')
     const playSpy = vi.spyOn(el, 'play').mockResolvedValue(undefined)
 
-    const { rerender } = renderHook(
+    const result = renderHook(
       ({ enabled }: { enabled: boolean }) =>
-        useCoachAudio('/api/coach/welcome-hub', audioRef, enabled),
+        useCoachAudio('/api/coach/welcome-hub', enabled),
       { initialProps: { enabled: false } },
     )
 
     expect(playSpy).not.toHaveBeenCalled()
 
-    audioRef.current = el
-    rerender({ enabled: true })
+    mountAudio(result, el)
+    result.rerender({ enabled: true })
 
     expect(playSpy).toHaveBeenCalled()
     await waitFor(() => {
@@ -110,11 +112,37 @@ describe('useCoachAudio', () => {
     })
   })
 
+  it('versucht erneut nach Audio-Unlock-Event', async () => {
+    const el = document.createElement('audio')
+    const playSpy = vi
+      .spyOn(el, 'play')
+      .mockRejectedValueOnce(new DOMException('blocked', 'NotAllowedError'))
+      .mockResolvedValueOnce(undefined)
+
+    const result = renderHook(() => useCoachAudio('/api/coach/welcome-hub'))
+    mountAudio(result, el)
+
+    await waitFor(() => {
+      expect(result.result.current.playBlocked).toBe(true)
+    })
+
+    act(() => {
+      window.dispatchEvent(new CustomEvent(AUDIO_UNLOCK_EVENT))
+    })
+
+    await waitFor(() => {
+      expect(result.result.current.isPlaying).toBe(true)
+      expect(result.result.current.playBlocked).toBe(false)
+    })
+    expect(playSpy).toHaveBeenCalledTimes(2)
+  })
+
   it('no-op ohne quelle', () => {
-    const { audioRef, el } = setupAudio()
+    const el = document.createElement('audio')
     const playSpy = vi.spyOn(el, 'play')
 
-    renderHook(() => useCoachAudio(undefined, audioRef))
+    const result = renderHook(() => useCoachAudio(undefined))
+    mountAudio(result, el)
 
     expect(playSpy).not.toHaveBeenCalled()
   })

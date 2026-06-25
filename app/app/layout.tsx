@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Nunito } from 'next/font/google'
 import { LegalFooter } from '@/components/legal/legal-footer'
+import { AudioAutoplayUnlock } from '@/components/audio/audio-autoplay-unlock'
 import { DisableZoom } from '@/components/ui/disable-zoom'
 import './globals.css'
 
@@ -39,6 +40,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col font-sans">
+        <AudioAutoplayUnlock />
         <DisableZoom />
         {children}
         <LegalFooter />

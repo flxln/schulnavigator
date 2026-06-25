@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { AlertCircle, QrCode } from 'lucide-react'
 import { MpzOfferBanner } from '@/components/brand/mpz-offer-banner'
 import { FestiveDecor, Gs39Chip, Gs39ChipMark } from '@/components/ui'
+import { unlockAudioPlayback } from '@/lib/audio-autoplay-unlock'
 
 export type EintrittVariant = 'fresh' | 'expired' | 'wrong'
 
@@ -69,6 +70,7 @@ export function EintrittScreen({ variant = 'fresh' }: EintrittScreenProps) {
           href="/eintritt/scan"
           className="sn-card sn-card--interactive relative z-[1] block p-5 text-left shadow-[var(--shadow-md)]"
           aria-label="Eintritts-QR scannen, Kamera starten"
+          onClick={() => unlockAudioPlayback()}
         >
           <div className="mb-3.5 flex items-center gap-3.5">
             <Gs39Chip tone="green">

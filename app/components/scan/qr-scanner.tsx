@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { parseEntryScan, parseRoomScan } from '@/lib/scan-url'
+import { unlockAudioPlayback } from '@/lib/audio-autoplay-unlock'
 import { markVisitedSlug } from '@/lib/visited-stations'
 
 type QrScannerProps =
@@ -105,6 +106,7 @@ export function QrScanner(props: QrScannerProps) {
   )
 
   const startScanner = useCallback(async () => {
+    unlockAudioPlayback()
     setStatusMessage(null)
     setState('starting')
     await stopScanner()

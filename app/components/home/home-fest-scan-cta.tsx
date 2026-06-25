@@ -4,6 +4,7 @@ import { QrCode } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { MpzOfferBanner } from '@/components/brand/mpz-offer-banner'
 import { Gs39Button } from '@/components/ui'
+import { unlockAudioPlayback } from '@/lib/audio-autoplay-unlock'
 
 export function HomeFestScanCta() {
   const router = useRouter()
@@ -13,7 +14,10 @@ export function HomeFestScanCta() {
       <Gs39Button
         block
         className="gap-2.5"
-        onClick={() => router.push('/scan')}
+        onClick={() => {
+          unlockAudioPlayback()
+          router.push('/scan')
+        }}
       >
         <QrCode size={22} aria-hidden />
         Scanne die nächste Station!

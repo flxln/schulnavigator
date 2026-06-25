@@ -1,84 +1,104 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState, type RefObject } from 'react'
+import {
+  useCallback,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type RefCallback,
+} from 'react'
+import { AUDIO_UNLOCK_EVENT } from '@/lib/audio-autoplay-unlock'
 
 export type UseCoachAudioResult = {
   playBlocked: boolean
   isPlaying: boolean
   replay: () => void
+  audioRef: RefCallback<HTMLAudioElement>
 }
 
 export function useCoachAudio(
   quelle: string | undefined,
-  audioRef: RefObject<HTMLAudioElement | null>,
   enabled = true,
 ): UseCoachAudioResult {
   const [playBlocked, setPlayBlocked] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [audioEl, setAudioEl] = useState<HTMLAudioElement | null>(null)
   const playPendingRef = useRef<Promise<void> | null>(null)
+  const generationRef = useRef(0)
 
-  useEffect(() => {
-    if (!quelle || !enabled) {
+  const audioRef: RefCallback<HTMLAudioElement> = useCallback((el) => {
+    setAudioEl(el)
+  }, [])
+
+  const attemptPlay = useCallback((el: HTMLAudioElement, source: string) => {
+    const generation = ++generationRef.current
+    el.src = source
+    const playPromise = el.play()
+    if (!playPromise) {
       return
     }
+    playPendingRef.current = playPromise
+    playPromise
+      .then(() => {
+        if (generationRef.current !== generation) {
+          return
+        }
+        playPendingRef.current = null
+        setPlayBlocked(false)
+        setIsPlaying(true)
+      })
+      .catch((err: DOMException) => {
+        if (generationRef.current !== generation) {
+          return
+        }
+        playPendingRef.current = null
+        if (err.name !== 'AbortError') {
+          setPlayBlocked(true)
+          setIsPlaying(false)
+        }
+      })
+  }, [])
 
-    const el = audioRef.current
-    if (!el) {
+  useLayoutEffect(() => {
+    if (!quelle || !enabled || !audioEl) {
       return
     }
 
     setPlayBlocked(false)
     setIsPlaying(false)
-    el.src = quelle
+    attemptPlay(audioEl, quelle)
 
-    const playPromise = el.play()
-    if (playPromise) {
-      playPendingRef.current = playPromise
-      playPromise
-        .then(() => {
-          playPendingRef.current = null
-          setIsPlaying(true)
-        })
-        .catch((err: DOMException) => {
-          playPendingRef.current = null
-          if (err.name !== 'AbortError') {
-            setPlayBlocked(true)
-          }
-        })
+    const onUnlock = () => {
+      setPlayBlocked(false)
+      attemptPlay(audioEl, quelle)
     }
+    window.addEventListener(AUDIO_UNLOCK_EVENT, onUnlock)
 
     return () => {
+      window.removeEventListener(AUDIO_UNLOCK_EVENT, onUnlock)
+      generationRef.current += 1
       const pending = playPendingRef.current
       if (pending) {
         pending.catch(() => {
           /* AbortError beim Unmount ignorieren */
         })
       }
-      el.pause()
-      el.removeAttribute('src')
-      el.load()
+      audioEl.pause()
+      audioEl.removeAttribute('src')
+      audioEl.load()
       playPendingRef.current = null
     }
-  }, [quelle, audioRef, enabled])
+  }, [quelle, enabled, audioEl, attemptPlay])
 
   const replay = useCallback(() => {
-    const el = audioRef.current
-    if (!el || !quelle) {
+    if (!audioEl || !quelle) {
       return
     }
-    if (!el.src) {
-      el.src = quelle
+    if (!audioEl.src) {
+      audioEl.src = quelle
     }
-    void el
-      .play()
-      .then(() => {
-        setPlayBlocked(false)
-        setIsPlaying(true)
-      })
-      .catch(() => {
-        setPlayBlocked(true)
-      })
-  }, [quelle, audioRef])
+    attemptPlay(audioEl, quelle)
+  }, [quelle, audioEl, attemptPlay])
 
-  return { playBlocked, isPlaying, replay }
+  return { playBlocked, isPlaying, replay, audioRef }
 }

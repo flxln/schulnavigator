@@ -19,6 +19,7 @@ import {
   SparkleBurst,
 } from '@/components/ui'
 import { useCoachNudge } from '@/hooks/use-coach-nudge'
+import { unlockAudioPlayback } from '@/lib/audio-autoplay-unlock'
 import { isCoachSeen, readCoachSeenState } from '@/lib/coach-seen'
 import { isSparkleDone, markSparkleDone } from '@/lib/sparkle-done'
 import type { EntryMode } from '@/lib/access-tokens'
@@ -188,7 +189,10 @@ export function HomeScreen({
         <Gs39Button
           block
           className="gap-2.5"
-          onClick={() => router.push('/scan')}
+          onClick={() => {
+            unlockAudioPlayback()
+            router.push('/scan')
+          }}
         >
           <QrCode size={22} aria-hidden />
           QR an der Tür scannen
