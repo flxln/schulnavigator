@@ -6,7 +6,7 @@
 
 ## Ziel in einem Satz
 
-**Code und Konfiguration über GitHub + Coolify; Schüler-Medien nur vom MPZ-Rechner direkt auf den Hetzner-Server — möglichst in einem automatisierten Deploy-Schritt.**
+**Code und Konfiguration über GitHub + Coolify; Schüler-Medien nur vom MPZ-Rechner direkt auf den IONOS-VPS — möglichst in einem automatisierten Deploy-Schritt.**
 
 ## Dokumente in diesem Ordner
 

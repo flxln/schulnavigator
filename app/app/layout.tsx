@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Nunito } from 'next/font/google'
+import { LegalFooter } from '@/components/legal/legal-footer'
 import { DisableZoom } from '@/components/ui/disable-zoom'
 import './globals.css'
 
@@ -40,6 +41,7 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col font-sans">
         <DisableZoom />
         {children}
+        <LegalFooter />
       </body>
     </html>
   )

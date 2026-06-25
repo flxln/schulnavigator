@@ -7,7 +7,7 @@ Sie werden **nicht** in Auftraggebergesprächen thematisiert.
 
 ## Hosting & Infrastruktur
 
-- ✅ **Hosting:** MPZ-Hetzner-Server mit Coolify, Docker-Container
+- ✅ **Hosting:** MPZ-VPS (IONOS) mit Coolify, Docker-Container
 - ✅ **Öffentliche Schul-App-URL (Subdomain MPZ):** `schulnavigator.mpz.schule` — abgedeckt durch **Wildcard-DNS** `*.mpz.schule` → Coolify-VPS (`217.154.120.240`). Coolify-Application + HTTPS siehe [`anleitungen/fuer-entwickler.md`](../anleitungen/fuer-entwickler.md). Eine **eigene Schul-Domain** ist für den MVP nicht vorgesehen.
 - Muss das System auch **offline** funktionieren, falls das Schulnetz kein Internet hat?
   - Falls ja: Service Worker + PWA-Caching notwendig
@@ -62,7 +62,7 @@ Sie werden **nicht** in Auftraggebergesprächen thematisiert.
 
 - ✅ **Frontend:** Next.js (App Router) + Tailwind CSS — [ADR-002](./adr/002-frontend-nextjs.md)
 - ✅ **Content MVP:** JSON im Repo; **Ziel:** Directus — [ADR-003](./adr/003-content-mvp-json-directus.md)
-- ✅ **Hosting:** MPZ-Hetzner, Coolify, Docker — [ADR-001](./adr/001-hosting-coolify.md)
+- ✅ **Hosting:** MPZ-VPS (IONOS), Coolify, Docker — [ADR-001](./adr/001-hosting-coolify.md)
 - ✅ **QR-Code-Bibliothek:** `qrcode` (npm), Aufruf über `npm run generate:qr` — Issue #15
 - **Sprachen:** TypeScript strict, React 19
 

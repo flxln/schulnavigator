@@ -19,7 +19,7 @@ Konzept und Planung sind weit fortgeschritten; **Next.js-App in `app/` läuft** 
 | --------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------- |
 | Auftraggeber-Gespräch       | ✅ Erledigt          | `auftraggeber/antworten.md`, Transkript, Council-Analyse 08.05.                                         |
 | Projektplan + GitHub-Issues | ✅ Vorhanden         | Phasen 0–5 in `dokumentation/archiv/projektplan.md`                                                            |
-| Hosting (ADR-001)           | ✅ Entschieden       | MPZ-Hetzner, Coolify, Docker                                                                            |
+| Hosting (ADR-001)           | ✅ Entschieden       | MPZ-VPS (IONOS), Coolify, Docker                                                                            |
 | Architektur Frontend/CMS    | ✅ Entschieden       | [ADR-002](../adr/002-frontend-nextjs.md), [ADR-003](../adr/003-content-mvp-json-directus.md)            |
 | Video-Hosting               | ✅ Entschieden       | [ADR-004](../adr/004-video-hosting-mpz.md) — MPZ; YouTube nach Rechtsklärung                            |
 | Zugangskontrolle            | ✅ Entschieden       | [ADR-005](../adr/005-zugangskontrolle-token.md) — Token, Modi fest/heft, In-App-Scanner                 |

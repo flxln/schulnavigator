@@ -25,7 +25,7 @@ describe('validateDeployContentEnv', () => {
 
   it('akzeptiert gesetztes DEPLOY_SSH', () => {
     expect(() =>
-      validateDeployContentEnv({ DEPLOY_SSH: 'admin@hetzner.example' }),
+      validateDeployContentEnv({ DEPLOY_SSH: 'admin@ionos-vps.example' }),
     ).not.toThrow()
   })
 })
@@ -70,7 +70,7 @@ describe('runDeployContent', () => {
       stderr: '',
     })
 
-    const env = { DEPLOY_SSH: 'admin@hetzner.example' }
+    const env = { DEPLOY_SSH: 'admin@ionos-vps.example' }
     const result = await runDeployContent({ mode: 'media-only', env })
 
     expect(result.ok).toBeUndefined()

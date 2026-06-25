@@ -20,7 +20,7 @@
 | T2 | **rsync --delete** — gewollt wenn Datei lokal gelöscht? | **Entschieden:** kein `--delete` im Default; Pruning nur per `--prune`-Opt-in ⁸ |
 | T3 | **Coach-Audio** und **Dialog-Audio** — gleiche Sync-Pipeline? | **Entschieden: Ja**, coach-audio durchgängig Bahn B ⁶ |
 | T4 | **CI/GitHub Actions** — Build ohne Medien: grün? | **Entschieden:** Build nutzt `validate:*:structure` (kein `existsSync`), volle Validatoren lokal ⁵ |
-| T5 | **Backup** der Volumes auf Hetzner | Offen (kein Pre-Mortem-Bezug): Server-Backup-Strategie, nicht GitHub |
+| T5 | **Backup** der Volumes auf dem IONOS-VPS | Offen (kein Pre-Mortem-Bezug): Server-Backup-Strategie, nicht GitHub |
 | T6 | Mehrere MPZ-Rechner — wer darf rsync? | **Entschieden:** SSH-Key je MPZ-Laptop; `accept-new` deckt Erst-Connect ab ⁷ |
 
 ## Produkt / Studio

@@ -40,7 +40,7 @@
 
 | # | Aufgabe | Details |
 |---|---------|---------|
-| 2.1 | Persistent Volumes auf Hetzner anlegen | z. B. `/data/schulnavigator/media`, `dialog-audio` |
+| 2.1 | Persistent Volumes auf dem IONOS-VPS anlegen | z. B. `/data/schulnavigator/media`, `dialog-audio` |
 | 2.2 | Coolify: Volume-Mounts in Application konfigurieren | Pfade siehe [03-zielarchitektur.md](./03-zielarchitektur.md) |
 | 2.3 | Bestehende Medien von Laptop **einmalig** auf Volumes rsyncen | Initialbefüllung |
 | 2.4 | Dockerfile: `COPY public`/`content` darf bleiben (Mount überdeckt sie); sicherstellen, dass darin keine git-getrackten Schüler-Dateien liegen | `app/Dockerfile` ¹ |
@@ -79,7 +79,7 @@ Kein `--delete` im Default — Löschen auf dem Server bei unvollständigem loka
 | # | Aufgabe | Status |
 |---|---------|--------|
 | 4.1 | ADR-027 Status → **entschieden** | ✅ #231 |
-| 4.2 | `dsgvo.md`: Speicherorte GitHub vs. Hetzner | ✅ #231 |
+| 4.2 | `dsgvo.md`: Speicherorte GitHub vs. IONOS-VPS | ✅ #231 |
 | 4.3 | AVV-Anhang (Subprozessor GitHub nur für Code) — Textbaustein in `dsgvo.md` | ✅ #231 |
 | 4.4 | GitHub Issue/Epic abhaken — Epic [#226](https://github.com/flxln/schulnavigator/issues/226), Milestone [#14](https://github.com/flxln/schulnavigator/milestone/14) | ✅ #231 |
 
@@ -88,7 +88,7 @@ Kein `--delete` im Default — Löschen auf dem Server bei unvollständigem loka
 - [x] `git ls-files public/media content/dialog-audio content/coach-audio` liefert nach Phase 1 **nur** `.gitkeep` — keine Schüler-Dateien mehr getrackt ⁴⁹
 - [x] Coolify-Build grün **ohne** Medien im Clone, weil `build` nur die `:structure`-Validatoren ausführt ⁵ *(lokal verifiziert 2026-06-24; Coolify auf `kunde/39-gs`)*
 - [x] Hotspot-Icons live erreichbar (kein 404): `public/stations-icons/` aus Git, Bahn-B-Icons via rsync ² *(Prod-Smoke `39-gs.mpz.schule`, 2026-06-24)*
-- [x] `rsync` Initialbefüllung auf Hetzner-Volumes (2026-06-24)
+- [x] `rsync` Initialbefüllung auf VPS-Volumes (IONOS) (2026-06-24)
 - [x] `git status` nach Studio-Upload zeigt Medien als ignoriert (oder nicht trackbar)
 - [x] MPZ-Anleitung in ≤ 1 Seite beschreibt den Alltags-Workflow (#230, 2026-06-24)
 - [x] ADR-027 **entschieden**; `dsgvo.md` aktualisiert (#231, 2026-06-24)

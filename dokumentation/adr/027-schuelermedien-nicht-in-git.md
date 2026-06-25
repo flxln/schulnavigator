@@ -7,7 +7,7 @@
 
 Der MVP speicherte zunächst alle Inhalte — einschließlich Fotos, Videos und Dialog-Audio mit Kinderstimmen — im gleichen Git-Repository unter `app/public/media/` und `app/content/dialog-audio/`. `git push` legte diese Dateien auf GitHub (teils Git LFS). Für die 39. Grundschule Dresden ist das **unzulässig**: Schüler-Inhalte dürfen **nicht** auf GitHub liegen.
 
-Gleichzeitig soll der Betrieb **nah am Ist-Zustand** bleiben: **Code** über GitHub und **Coolify**; **Medien** vom MPZ-Rechner möglichst **automatisiert** beim Deploy auf den MPZ-Hetzner-Server (Deutschland).
+Gleichzeitig soll der Betrieb **nah am Ist-Zustand** bleiben: **Code** über GitHub und **Coolify**; **Medien** vom MPZ-Rechner möglichst **automatisiert** beim Deploy auf den MPZ-VPS (IONOS, Deutschland).
 
 Ausführliche Planung: [`dokumentation/planung/schuelermedien-deploy-trennung/`](../planung/schuelermedien-deploy-trennung/README.md).
 

@@ -157,7 +157,7 @@ Zwei Ausgabe-Typen ([ADR-005](../../adr/005-zugangskontrolle-token.md)):
 **Labels:** `tech`  
 **Assignee:** Felix
 
-- Docker-Image auf Coolify/Hetzner — [ADR-001](../../adr/001-hosting-coolify.md)
+- Docker-Image auf Coolify/IONOS-VPS — [ADR-001](../../adr/001-hosting-coolify.md)
 - Domain/Subdomain: **`schulnavigator.mpz.schule`** (Wildcard `*.mpz.schule` → Coolify-VPS `217.154.120.240`; in Coolify als App-Domain eintragen)
 - HTTPS (Pflicht für Kamera/Scanner in Phase 2)
 - Health-Check erreichbar

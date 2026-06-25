@@ -11,7 +11,7 @@
 
 2. **Deploy-Weg möglichst nah am Ist-Zustand:**
    - **Code:** weiter `git commit` → `git push` → **Coolify** baut und startet die App
-   - **Medien:** vom **MPZ-Rechner** (nach MPZ Studio / lokaler Pflege) **automatisiert** mit dem Deploy auf den **MPZ-Server (Hetzner, DE)**
+   - **Medien:** vom **MPZ-Rechner** (nach MPZ Studio / lokaler Pflege) **automatisiert** mit dem Deploy auf den **MPZ-VPS (IONOS, DE)**
 
 3. **Live-Auslieferung** an Besucher weiter nur über MPZ-Infrastruktur in Deutschland (ADR-004, AVV).
 

@@ -18,7 +18,7 @@ flowchart TB
     Repo[Repo ohne Schüler-Binärdateien]
   end
 
-  subgraph server [Hetzner / Coolify]
+  subgraph server [IONOS-VPS / Coolify]
     Build[Docker Build ohne Medien]
     VolMedia[Persistent Volume: public/media]
     VolDialog[Persistent Volume: content/dialog-audio]

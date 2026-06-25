@@ -60,7 +60,7 @@ Zitat Spezifikation: *„Lokal speichern → validate → `git commit` → push 
 
 ## Was bereits passt (unverändert nutzbar)
 
-- Hosting Live-App: Hetzner / Coolify (DE) — [ADR-001](../../adr/001-hosting-coolify.md)
+- Hosting Live-App: IONOS-VPS / Coolify (DE) — [ADR-001](../../adr/001-hosting-coolify.md)
 - Videos nicht über YouTube — [ADR-004](../../adr/004-video-hosting-mpz.md)
 - Zugangsschutz Besucher (Entry-Token, Cookie) — ADR-005/007/021
 - MPZ Studio nur lokal — ADR-022

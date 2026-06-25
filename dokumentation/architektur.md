@@ -8,7 +8,7 @@ _Stand: 2026-06-11 (**#111:** Card-Peek Raumseiten + iOS-Breitenfix; **#107:** S
 | ------------------- | ------------------------------------------------- | -------------------------------- | --------------------------------------------- |
 | Frontend            | Next.js (App Router), TypeScript strict, Tailwind | gleich                           | [002](./adr/002-frontend-nextjs.md)           |
 | Content             | JSON + Medien im Repo                             | **Directus** (self-hosted)       | [003](./adr/003-content-mvp-json-directus.md) |
-| Hosting             | MPZ-Hetzner via Coolify                           | gleich                           | [001](./adr/001-hosting-coolify.md)           |
+| Hosting             | MPZ-VPS (IONOS) via Coolify                       | gleich                           | [001](./adr/001-hosting-coolify.md)           |
 | Containerisierung   | Docker                                            | gleich                           | [001](./adr/001-hosting-coolify.md)           |
 | Custom-Admin        | —                                                 | **verworfen** (Directus)         | [003](./adr/003-content-mvp-json-directus.md) |
 | QR-Code-Generierung | `npm run generate:qr`, `rotate:access-tokens` (#141) | gleich | — |
@@ -222,7 +222,7 @@ Vollständige Ablagekonventionen (Pfade, Autorenzone, Laufzeit): [`verzeichnisst
 
 ## Deployment
 
-- **Produktion:** MPZ-Hetzner-Server, gemanagt über Coolify, deployed als Docker-Container ([`anleitungen/fuer-entwickler.md`](../anleitungen/fuer-entwickler.md) — Abschnitt „Coolify“).
+- **Produktion:** MPZ-VPS bei IONOS, gemanagt über Coolify, deployed als Docker-Container ([`anleitungen/fuer-entwickler.md`](../anleitungen/fuer-entwickler.md) — Abschnitt „Coolify“).
 - **Öffentliche URL (GS39, Branch `kunde/39-gs`):** `https://39-gs.mpz.schule` — erreichbar über MPZ-Wildcard-DNS **`*.mpz.schule`** → Coolify-VPS `217.154.120.240`.
 - **Legacy-URL:** `https://schulnavigator.mpz.schule` — Application auf eingefrorenem Branch **`main`** (Referenzstand, nicht GS39-Prod).
 - **Image:** [`app/Dockerfile`](../app/Dockerfile) — Multi-Stage, `output: 'standalone'`, Health `GET /api/health`, Container-Port **`PORT=3000`** (Coolify „Ports Exposes“ = `3000`).

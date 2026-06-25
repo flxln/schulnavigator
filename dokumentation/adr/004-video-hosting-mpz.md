@@ -12,7 +12,7 @@ Stationen können kurze Videos (max. 60 Sekunden) enthalten. Videos mit Kinderst
 **Vorerst (MVP bis Schulfest und initialer Dauerbetrieb):**
 
 - Videos werden auf dem **MPZ-Server** gehostet (gleiche Infrastruktur wie die App, Coolify/Docker).
-- Auslieferung über direkte URLs oder App-Storage-Pfad (z. B. `/public` oder Object Storage auf Hetzner).
+- Auslieferung über direkte URLs oder App-Storage-Pfad (z. B. `/public` oder Object Storage auf dem IONOS-VPS).
 - Kein YouTube-Embed im produktiven MVP.
 
 **Im Kopf behalten (nicht für 26.06. planen):**

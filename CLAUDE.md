@@ -72,7 +72,7 @@ schulnavigator/
 
 | ADR                                                         | Entscheidung                                           | Status      |
 | ----------------------------------------------------------- | ------------------------------------------------------ | ----------- |
-| [001](./dokumentation/adr/001-hosting-coolify.md)           | Hosting: MPZ-Hetzner-Server via Coolify, Docker        | entschieden |
+| [001](./dokumentation/adr/001-hosting-coolify.md)           | Hosting: MPZ-VPS (IONOS) via Coolify, Docker        | entschieden |
 | [002](./dokumentation/adr/002-frontend-nextjs.md)           | Frontend: Next.js (App Router), Tailwind               | entschieden |
 | [003](./dokumentation/adr/003-content-mvp-json-directus.md) | Content: JSON (MVP), Directus; kein Custom-Admin       | entschieden |
 | [004](./dokumentation/adr/004-video-hosting-mpz.md)         | Video: MPZ-Server; YouTube optional nach Rechtsklärung | entschieden |

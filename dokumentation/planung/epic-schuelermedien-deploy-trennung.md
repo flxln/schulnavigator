@@ -10,7 +10,7 @@
 
 ## Ziel
 
-**Code und Konfiguration über GitHub + Coolify; Schüler-Medien nur vom MPZ-Rechner direkt auf den Hetzner-Server** — möglichst in einem automatisierten Deploy-Schritt (Zwei-Bahnen-Modell).
+**Code und Konfiguration über GitHub + Coolify; Schüler-Medien nur vom MPZ-Rechner direkt auf den IONOS-VPS** — möglichst in einem automatisierten Deploy-Schritt (Zwei-Bahnen-Modell).
 
 Auslöser: MPZ Studio schreibt Medien lokal ins Repo; `git push` legt Kinder-Inhalte auf GitHub — datenschutzrechtlich nicht akzeptabel.
 

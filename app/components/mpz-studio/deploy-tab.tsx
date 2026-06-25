@@ -399,7 +399,7 @@ export function DeployTab() {
         </h2>
         <p className="mt-2 text-sm text-fg-2">
           Fotos, Videos, Dialog- und Coach-Audio liegen nicht auf GitHub. Nach Studio-Upload werden
-          sie per rsync auf die Hetzner-Volumes synchronisiert (
+          sie per rsync auf die VPS-Volumes am IONOS-Host synchronisiert (
           <code className="text-fg-1">DEPLOY_SSH</code> in{' '}
           <code className="text-fg-1">.env.local</code>). Vor dem Sync laufen{' '}
           <code className="text-fg-1">validate:stations</code> und{' '}

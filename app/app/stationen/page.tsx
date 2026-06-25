@@ -22,7 +22,7 @@ export default async function StationenPage() {
   const validSlugs = stations.map((s) => s.slug)
 
   return (
-    <main className="sn-page-container flex min-h-full flex-col overflow-x-hidden bg-bg-1">
+    <main className="sn-page-container flex min-h-full flex-col overflow-x-hidden bg-bg-1 pb-[max(3rem,env(safe-area-inset-bottom))]">
       <StationenScreen
         mode={mode}
         hubStations={hubStations}

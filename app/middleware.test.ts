@@ -21,6 +21,8 @@ function middlewareRunsFor(pathname: string): boolean {
     pathname === '/eintritt' ||
     pathname.startsWith('/eintritt/') ||
     pathname === '/stationen' ||
+    pathname === '/impressum' ||
+    pathname === '/datenschutz' ||
     pathname.startsWith('/raum/') ||
     pathname === '/mpz' ||
     pathname.startsWith('/mpz/')
@@ -109,6 +111,14 @@ describe('middleware', () => {
     const res = middleware(req('/eintritt/scan'))
     expect(res.status).toBe(200)
     expect(res.headers.get('location')).toBeNull()
+  })
+
+  it('lässt /impressum und /datenschutz ohne Cookie durch', () => {
+    for (const path of ['/impressum', '/datenschutz'] as const) {
+      const res = middleware(req(path))
+      expect(res.status).toBe(200)
+      expect(res.headers.get('location')).toBeNull()
+    }
   })
 
   it('setzt Cookie bei gültigem ?t= auf /eintritt/scan und leitet nach / um', () => {

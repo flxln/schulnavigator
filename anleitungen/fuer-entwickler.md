@@ -189,7 +189,7 @@ Dateinamen für Nicht-Komponenten: `kebab-case` (siehe [`CLAUDE.md`](../CLAUDE.m
 
 ## Schüler-Medien und Git (#228)
 
-Schüler-Medien **nie** per `git add` / `git push` auf GitHub legen. Sie werden vom MPZ-Rechner per Server-Sync (rsync, Phase 3) auf Hetzner ausgeliefert — nicht über Git.
+Schüler-Medien **nie** per `git add` / `git push` auf GitHub legen. Sie werden vom MPZ-Rechner per Server-Sync (rsync, Phase 3) auf den IONOS-VPS ausgeliefert — nicht über Git.
 
 **Bahn B (ignoriert, nur `.gitkeep` in Git):**
 
@@ -290,7 +290,7 @@ PORT=3007 HOSTNAME=127.0.0.1 node server.js
 
 ## Deployment (Überblick)
 
-Produktion: Multi-Stage-Image wie in [`app/Dockerfile`](../app/Dockerfile), Health-Check `GET /api/health`. Ziel-Hosting: **MPZ-Hetzner / Coolify** ([ADR-001](../dokumentation/adr/001-hosting-coolify.md)). **GS39-Live (Branch `kunde/39-gs`):** **`https://39-gs.mpz.schule`**. Die ältere Application **`https://schulnavigator.mpz.schule`** läuft auf eingefrorenem Branch **`main`** (Referenzstand, nicht GS39-Prod).
+Produktion: Multi-Stage-Image wie in [`app/Dockerfile`](../app/Dockerfile), Health-Check `GET /api/health`. Ziel-Hosting: **MPZ-VPS (IONOS) / Coolify** ([ADR-001](../dokumentation/adr/001-hosting-coolify.md)). **GS39-Live (Branch `kunde/39-gs`):** **`https://39-gs.mpz.schule`**. Die ältere Application **`https://schulnavigator.mpz.schule`** läuft auf eingefrorenem Branch **`main`** (Referenzstand, nicht GS39-Prod).
 
 Die App setzt **`robots.txt`** (`Disallow: /`) und **`noindex`** im Root-Layout (Phase 1, Issue #16), damit die Subdomain nicht in Suchmaschinen indexiert wird.
 
@@ -417,7 +417,7 @@ Das Skript erzeugt Zufallstokens (`fest-…` / `heft-…`), schreibt [`app/lib/a
 
 **Code von `kunde/*` auf `feature/*`:** pfadbasierter Port (`git checkout kunde/39-gs -- <pfade>`), kein Merge. Siehe auch [`.cursor/rules/branch-freeze-kunde.mdc`](../.cursor/rules/branch-freeze-kunde.mdc).
 
-**Coolify Prod (GS39):** Application-Branch **`kunde/39-gs`** — nicht `main`. Schüler-Medien liegen auf Hetzner-Volumes (rsync), unabhängig vom Branch.
+**Coolify Prod (GS39):** Application-Branch **`kunde/39-gs`** — nicht `main`. Schüler-Medien liegen auf VPS-Volumes am IONOS-Host (rsync), unabhängig vom Branch.
 
 ---
 
@@ -492,7 +492,7 @@ uid **1001** = User `nextjs` im [`app/Dockerfile`](../app/Dockerfile).
 ```bash
 cd app
 # Env in .env.local oder Shell (siehe app/.env.example)
-export DEPLOY_SSH=admin@<hetzner>
+export DEPLOY_SSH=admin@<ionos-vps>
 # optional: export DEPLOY_SSH_IDENTITY_FILE=~/.ssh/schulnavigator_deploy
 # optional: export DEPLOY_BRANCH=kunde/39-gs
 # optional: export COOLIFY_DEPLOY_WEBHOOK_URL=https://…

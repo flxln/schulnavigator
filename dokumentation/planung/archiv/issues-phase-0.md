@@ -97,7 +97,7 @@ Enthält: Hosting-Details, Speicherort der Daten (Deutschland), Verantwortlichke
 
 ## #8 — Maskottchen-Rechte klären (Giraffe / Maus)
 
-**GitHub:** geschlossen (2026-05-21) — Freigabe: `auftraggeber/material/verlagsinfo/freigabe-bilder-bildrechte.pdf`; Nennung im Impressum offen
+**GitHub:** geschlossen (2026-05-21) — Freigabe: `auftraggeber/material/verlagsinfo/freigabe-bilder-bildrechte.pdf`; Verlagsnennung im Impressum umgesetzt (2026-06-25)
 
 **Labels:** `org` `extern`
 **Assignee:** Tina

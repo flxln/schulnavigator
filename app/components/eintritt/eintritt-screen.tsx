@@ -123,6 +123,20 @@ export function EintrittScreen({ variant = 'fresh' }: EintrittScreenProps) {
         </div>
       )}
 
+      {variant === 'fresh' ? (
+        <p className="relative z-[1] text-center text-[11px] leading-relaxed text-fg-3">
+          Mit gültigem Eintritts-QR setzen wir ein technisch notwendiges Cookie
+          für den Zugang. Details in der{' '}
+          <Link
+            href="/datenschutz"
+            className="font-medium text-brand-green underline underline-offset-2"
+          >
+            Datenschutzerklärung
+          </Link>
+          .
+        </p>
+      ) : null}
+
       <MpzOfferBanner className="relative z-[1]" />
     </div>
   )
