@@ -678,6 +678,16 @@
           "quelle": "/media/speiseraum/video/speiseraum-essenausgabe-2.mp4",
           "untertitel": "Die Essensausgabe",
           "videoSource": "upload"
+        },
+        {
+          "id": "speiseraum-embed",
+          "typ": "embed",
+          "quelle": "https://edu.delightex.com/TRG-BBD",
+          "untertitel": "Klassenraum",
+          "embedAllow": [
+            "bookcreator.com",
+            "delightex.com"
+          ]
         }
       ],
       "hotspots360": [
@@ -706,6 +716,13 @@
           "pitch": -26.8,
           "mascotSize": 0.15,
           "mascotFlipX": true
+        },
+        {
+          "id": "hs-delight-embed",
+          "yaw": -177.6,
+          "pitch": -10.6,
+          "mediumId": "speiseraum-embed",
+          "icon": "/media/speiseraum/icons/likes.svg"
         }
       ],
       "startYaw": 152.3,
@@ -864,7 +881,8 @@
           "mediumId": "schulsozialarbeit-schulsozial-detail2",
           "icon": "/media/schulsozialarbeit/icons/profil.svg"
         }
-      ]
+      ],
+      "startPanX": 0.5528
     },
     {
       "slug": "schulhof",
