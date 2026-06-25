@@ -11,12 +11,12 @@
         "mascotOffsetX": 0,
         "mascotOffsetY": -5,
         "bubbleMaxWidth": 12,
-        "bubbleOffsetX": 20,
+        "bubbleOffsetX": 9.25,
         "bubbleOffsetY": -5,
         "mascotFlipX": true
       },
-      "milestone": 0,
-      "quelle": "/api/coach/welcome-hub"
+      "quelle": "/api/coach/welcome-hub",
+      "milestone": 0
     },
     {
       "id": "first-visit",
