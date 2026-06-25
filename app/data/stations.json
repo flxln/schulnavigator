@@ -30,6 +30,12 @@
           "quelle": "/media/klassenzimmer/video/klassenzimmer-4a-2.mp4",
           "untertitel": "Eine Mathestunde bei uns",
           "videoSource": "upload"
+        },
+        {
+          "id": "klassenzimmer-stundenplan",
+          "typ": "foto",
+          "quelle": "/media/klassenzimmer/fotos/stundenplan.jpg",
+          "untertitel": "Stundenplan"
         }
       ],
       "hotspots360": [
@@ -55,6 +61,14 @@
           "pitch": -3.5,
           "mediumId": "klassenzimmer-klassenzimmer-4a-2",
           "icon": "/stations-icons/klassenzimmer/play.svg"
+        },
+        {
+          "id": "hs-foto-stundenplan",
+          "yaw": -24.5,
+          "pitch": 8.4,
+          "mediumId": "klassenzimmer-stundenplan",
+          "icon": "/media/klassenzimmer/icons/Klassenzimmer.png",
+          "iconSize": 0.25
         }
       ],
       "dialog": {
