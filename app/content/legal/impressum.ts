@@ -97,8 +97,12 @@ export const impressumContent: LegalPageContent = {
     },
     {
       id: 'maskottchen',
-      title: 'Bildrechte / Maskottchen',
+      title: 'Bildrechte',
       blocks: [
+        {
+          type: 'text',
+          text: 'Die Zeichnung des Schulgebäudes auf der Startseite stammt von Roberto Zänker.',
+        },
         {
           type: 'text',
           text: 'Die in der App verwendeten Figuren Frieda (Giraffe) und Otto (Maus) stammen aus dem Schulplaner des FLVG Verlagshaus OHG, Kirchweg 9, 08527 Straßberg.',

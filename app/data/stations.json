@@ -319,6 +319,16 @@
           "quelle": "/media/kunst/video/kunst-bilder-zeigen-2.mp4",
           "untertitel": "Galerierundgang",
           "videoSource": "upload"
+        },
+        {
+          "id": "kunst-embed",
+          "typ": "embed",
+          "quelle": "https://read.bookcreator.com/0SjkLxk5Rc9Vj2hkA8yBldiwPzO0s6gi1YxZK_yvsjPdO0PUkFFCJg/JqOuLiGeR_mTlsieMjjFcQ",
+          "untertitel": "Unser Kunstzimmer",
+          "embedAllow": [
+            "bookcreator.com",
+            "delightex.com"
+          ]
         }
       ],
       "startPanX": 0.5289,
@@ -415,7 +425,7 @@
           "mascot": "otto",
           "x": 0.3697,
           "y": 0.7564,
-          "mascotSize": 0.05
+          "mascotSize": 0.12
         },
         {
           "id": "hs-video-galerierundgang",
@@ -423,6 +433,13 @@
           "y": 0.4657,
           "mediumId": "kunst-kunst-bilder-zeigen-2",
           "icon": "/media/kunst/icons/kunstzimmer.png"
+        },
+        {
+          "id": "hs-kunst-buch",
+          "x": 0.6733,
+          "y": 0.4971,
+          "mediumId": "kunst-embed",
+          "icon": "/media/kunst/icons/favoriten.svg"
         }
       ]
     },

@@ -233,7 +233,7 @@ export function HomeScreen({
         </p>
       </Gs39Card>
 
-      {footerCta !== 'scan-next' ? <MpzOfferBanner className="pb-1" /> : null}
+      <MpzOfferBanner className="pb-1" />
 
       <CoachNudgeLayer message={coachMessage} onDismiss={dismissCoach} />
     </div>
