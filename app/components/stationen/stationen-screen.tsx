@@ -154,7 +154,7 @@ export function StationenScreen({
             onClick={() => router.push('/scan')}
           >
             <QrCode size={22} aria-hidden />
-            QR an der Tür scannen
+            Scanne einen beliebigen Code
           </Gs39Button>
         ) : null}
       </div>

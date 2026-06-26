@@ -18,7 +18,7 @@ export function HomeFestScanCta() {
       }}
     >
       <QrCode size={22} aria-hidden />
-      Scanne die nächste Station!
+      Scanne einen beliebigen Code
     </Gs39Button>
   )
 }

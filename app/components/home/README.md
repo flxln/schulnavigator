@@ -27,7 +27,7 @@ Steuerung über [`lib/home-cta.ts`](../../lib/home-cta.ts) (`getHomeFooterCta`).
 | `footerCta` | Wann | UI |
 |-------------|------|-----|
 | `fest-scan` | `fest`, vor Hydration oder 0/11 | `Gs39Button` → `/scan` |
-| `scan-next` | `fest`/`heft`, 1–10 mit unbesuchter Station | [`home-fest-scan-cta.tsx`](./home-fest-scan-cta.tsx) „Scanne die nächste Station!“ → `/scan` |
+| `scan-next` | `fest`/`heft`, 1–10 mit unbesuchter Station | [`home-fest-scan-cta.tsx`](./home-fest-scan-cta.tsx) „Scanne einen beliebigen Code“ → `/scan` |
 | `none` | alle besucht oder `heft` ohne Fortschritt | nur Hub + Link `/stationen` |
 
 ## Layout-Reihenfolge (visuell)
