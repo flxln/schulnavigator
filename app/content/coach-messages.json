@@ -23,9 +23,9 @@
       "trigger": "hub-milestone",
       "mascot": "otto",
       "placement": "right",
-      "text": "Willkommen im ersten virtuellen Zimmer!\nHier beginnt Ihr Rundgang durch unsere 39. Grundschule.\nEntdecken Sie spannende Einblicke und Eindrücke und machen Sie sich bereit, weitere Räume zu betreten, die unsere Schule lebendig werden lassen. Viel Freude beim Erkunden!",
-      "milestone": 1,
-      "quelle": "/api/coach/first-visit"
+      "text": "Sie haben gerade das erste virtuelle Zimmer angeschaut!\nHier beginnt Ihr Rundgang durch unsere 39. Grundschule.\nEntdecken Sie spannende Einblicke und Eindrücke und machen Sie sich bereit, weitere Räume zu betreten, die unsere Schule lebendig werden lassen. Viel Freude beim Erkunden!",
+      "quelle": "/api/coach/first-visit",
+      "milestone": 1
     },
     {
       "id": "halfway",
