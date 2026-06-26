@@ -103,7 +103,7 @@ export const datenschutzContent: LegalPageContent = {
       blocks: [
         {
           type: 'text',
-          text: 'Fotos, Videos und Audioaufnahmen mit erkennbaren Schülerinnen und Schülern werden nur mit dokumentierter Einwilligung der Schule veröffentlicht. Schüler-Binärdateien werden ausschließlich auf dem IONOS-VPS des MPZ in Deutschland gehostet, nicht in öffentlichen Code-Repositories.',
+          text: 'Fotos, Videos und Audioaufnahmen mit erkennbaren Schülerinnen und Schülern werden nur mit dokumentierter Einwilligung der Schule veröffentlicht. Schüler-Binärdateien werden ausschließlich auf dem IONOS-VPS des MPZ in Deutschland gehostet.',
         },
       ],
     },
