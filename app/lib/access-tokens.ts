@@ -3,7 +3,6 @@ import {
   FEST_DEV_EXPIRES_AT,
   HEFT_DEV_EXPIRES_AT,
 } from './access-token-constants.mjs'
-import { applyEntryQrHubModes } from './apply-entry-qr-hub-modes.mjs'
 
 export type EntryMode = 'fest' | 'heft'
 
@@ -16,6 +15,17 @@ export type AccessToken = {
 }
 
 export { FEST_DEV_TOKEN, HEFT_DEV_TOKEN } from './access-token-constants.mjs'
+
+/** Hub-Modus für Entry-QRs aus ENTRY_QR_SPECS — SN_ACCESS_TOKENS.mode ist nicht bindend. */
+function applyEntryQrHubModes(tokens: readonly AccessToken[]): AccessToken[] {
+  return tokens.map((entry) => {
+    const spec = ENTRY_QR_SPECS.find((s) => s.token === entry.token)
+    if (!spec) {
+      return entry
+    }
+    return { ...entry, mode: spec.mode }
+  })
+}
 
 function expiresAtForEntryToken(token: string): string {
   const spec = ENTRY_QR_SPECS.find((e) => e.token === token)
