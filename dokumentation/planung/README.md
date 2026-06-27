@@ -33,6 +33,6 @@ Domänen-Matrix MPZ Studio: [ideen/archiv/mpz-studio-ui.md](../ideen/archiv/mpz-
 
 Vollständiger Abgleich-Log (bis 2026-06-20): [archiv/sync-log-2026-06.md](./archiv/sync-log-2026-06.md).
 
-**Letzter dokumentierter Abgleich:** 2026-06-25 — GS39 Polish (`kunde/39-gs`): Scan-CTA-Label, MPZ-Banner-Layout, Impressum/Datenschutz, Raumbild `schulsozialarbeit`; ADR-009-Nachtrag. Zuvor Coach-Audio-Unlock + Eintritt-SSR-Fix.
+**Letzter dokumentierter Abgleich:** 2026-06-27 — Post-Fest GS39 (`kunde/39-gs`): `FEST_ENTRY_HUB_MODE`, `applyEntryQrHubModes`, Playbook §8, ADR-021 Nachtrag; Live `39-gs.mpz.schule`. Zuvor 2026-06-25 GS39 Polish.
 
 Siehe auch [entscheidungen.md](../entscheidungen.md), [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren).

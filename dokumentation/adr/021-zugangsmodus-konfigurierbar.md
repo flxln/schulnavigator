@@ -74,3 +74,16 @@ Neue Umgebungsvariable `SN_ACCESS_MODE` mit zwei Werten:
 1. **Default-Hub-Modus in `open`:** `heft` (voller Hub, alle Stationen klickbar).
 2. **Format `SN_ACCESS_TOKENS`:** JSON-Array `{ token, mode, expiresAt }`.
 3. **Pilot (`schulnavigator.mpz.schule`):** bleibt `gated` (unverändert). `open` wird erst pro künftigem Einbettungs-Deployment aktiviert.
+
+### Nachtrag 2026-06-27 — Post-Fest GS39: Hub-Modus aus Code (`kunde/39-gs`)
+
+**Kontext:** Nach dem Schulfest (26.06.) soll der gedruckte **Fest-Entry-QR** und alle **Raum-QRs** unverändert bleiben; der Hub wechselt auf **Heft-Verhalten** (alle Stationen klickbar).
+
+**Entscheidung:**
+
+1. **`FEST_ENTRY_HUB_MODE`** in [`app/lib/access-token-constants.mjs`](../../app/lib/access-token-constants.mjs) ist die Quelle für den effektiven Hub-Modus des `entry-fest`-Tokens — nicht das Feld `mode` in `SN_ACCESS_TOKENS`.
+2. **Runtime:** [`applyEntryQrHubModes`](../../app/lib/access-tokens.ts) mappt bekannte Entry-Token-Strings auf `ENTRY_QR_SPECS` (Production nach ENV-Parse).
+3. **Deploy-Validierung:** [`assertEntryQrSync`](../../app/scripts/validate-access-shared.mjs) prüft nur, dass die Token-**Strings** in `SN_ACCESS_TOKENS` vorhanden sind (kein Mode-Mismatch mehr).
+4. **Coolify:** `mode:"fest"` in ENV für den Fest-Token-String bleibt zulässig; gedruckte URLs ändern sich nicht.
+
+**Doku:** [schulfest-gs39-playbook.md](../../anleitungen/schulfest-gs39-playbook.md) Abschnitt 8.

@@ -12,6 +12,8 @@
 
 **Technik unverändert:** [ADR-005](../adr/005-zugangskontrolle-token.md) (`fest`/`heft`), Raum-QR → `/raum/[slug]`, Entry → `/eintritt?t=…`
 
+**Post-Fest (ab 27.06.2026):** Fest-Entry-QR unverändert, Hub-Modus **Heft** aus Code — [Playbook §8](../../anleitungen/schulfest-gs39-playbook.md), [ADR-021 Nachtrag](../adr/021-zugangsmodus-konfigurierbar.md#nachtrag-2026-06-27--post-fest-gs39-hub-modus-aus-code-kunde39-gs).
+
 **Betrifft bestehende Issues:** [#39](./issues-phase-4.md) (QR an Räumen) — Scope **ersetzen**, nicht parallel „11× Tür“ drucken.
 
 ---

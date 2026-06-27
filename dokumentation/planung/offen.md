@@ -1,8 +1,8 @@
 # Offene Punkte — Schulnavigator
 
-**Stand:** 2026-06-25 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
+**Stand:** 2026-06-27 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
 
-**Letzter Abgleich:** 2026-06-25 — GS39 Content/Polish auf `kunde/39-gs`: Scan-CTA „Scanne einen beliebigen Code“, MPZ-Banner unter Fortschrittskarte, Impressum (Roberto Zänker), Datenschutz-Formulierung, Raumbild `schulsozialarbeit`. Zuvor Coach-Audio-Unlock + Eintritt-SSR-Fix.
+**Letzter Abgleich:** 2026-06-27 — **Post-Fest GS39** auf `kunde/39-gs`: Fest-Entry-QR liefert Heft-Hub (`FEST_ENTRY_HUB_MODE`), Hub-Modus aus Code nicht ENV; Deploy `39-gs.mpz.schule`. Zuvor GS39 Polish, Coach-Audio, Eintritt-SSR.
 
 Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren). Abgeschlossene Epics: [archiv/epics/](./archiv/epics/).
 
@@ -39,6 +39,7 @@ Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eing
 
 ## Content / MPZ
 
+- [x] **Post-Fest GS39** (`kunde/39-gs`): Heft-Hub per Fest-Entry-QR ohne Neudruck — [Playbook §8](../../anleitungen/schulfest-gs39-playbook.md), ADR-021 Nachtrag 2026-06-27
 - Coach-Texte final mit MPZ abstimmen (`app/content/coach-messages.json`)
 - `prefers-reduced-motion` für Coach manuell am Gerät prüfen
 
