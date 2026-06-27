@@ -105,6 +105,20 @@ describe('getAccessTokens in Production', () => {
     resetAccessTokensCacheForTests()
     expect(getAccessTokens()[0]?.token).toBe('prod-fest')
   })
+
+  it('Production: ENV mode fest für entry-fest → effektiver Hub-Modus heft', () => {
+    vi.stubEnv('NODE_ENV', 'production')
+    vi.stubEnv(
+      'SN_ACCESS_TOKENS',
+      JSON.stringify([
+        { token: FEST_DEV_TOKEN, mode: 'fest', expiresAt: '2027-07-31' },
+        { token: HEFT_DEV_TOKEN, mode: 'heft', expiresAt: '2027-07-31' },
+      ]),
+    )
+    resetAccessTokensCacheForTests()
+    const festHit = validateToken(FEST_DEV_TOKEN, new Date('2026-06-27'))
+    expect(festHit?.mode).toBe('heft')
+  })
 })
 
 describe('DEV_FALLBACK_TOKENS sync mit qr-config.mjs', () => {

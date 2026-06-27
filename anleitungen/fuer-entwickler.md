@@ -587,11 +587,11 @@ docker exec -u nextjs <container_id> test -r /app/public/media && echo OK
 
 **`open` + Einbettung (separates Deployment):** `SN_ACCESS_MODE=open`, `SN_EMBED_ANCESTORS=https://…` (Schulwebsite-Origin). Vor Go-Live: `curl -sSI https://… \| grep -iE 'content-security-policy|x-frame-options'` — kein widersprüchliches `X-Frame-Options` vom Proxy.
 
-Beispiel `SN_ACCESS_TOKENS` (GS39 Post-Fest — echte Werte nur in Coolify):
+Beispiel `SN_ACCESS_TOKENS` (GS39 Post-Fest — `mode` bei fest-Token in ENV darf `fest` bleiben; effektiver Hub-Modus aus Code):
 
 ```json
 [
-  {"token":"fest-vkc2AuKW0S7QGHDT","mode":"heft","expiresAt":"2027-07-31"},
+  {"token":"fest-vkc2AuKW0S7QGHDT","mode":"fest","expiresAt":"2027-07-31"},
   {"token":"heft-ImulQPDmydy7VCVj","mode":"heft","expiresAt":"2027-07-31"}
 ]
 ```

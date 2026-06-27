@@ -68,10 +68,6 @@ export function assertEntryQrSync(tokens, specs = ENTRY_QR_SPECS) {
         `SN_ACCESS_TOKENS: Entry-QR-Token "${spec.token}" (${spec.file}) fehlt — gedruckte QRs würden ins Leere zeigen`,
       )
     }
-    if (hit.mode !== spec.mode) {
-      throw new Error(
-        `SN_ACCESS_TOKENS: Token "${spec.token}" hat mode "${hit.mode}", erwartet "${spec.mode}" (${spec.file})`,
-      )
-    }
+    // Hub-Modus (fest/heft) kommt aus ENTRY_QR_SPECS — SN_ACCESS_TOKENS.mode ist nicht bindend.
   }
 }

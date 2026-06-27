@@ -3,6 +3,7 @@ import {
   FEST_DEV_EXPIRES_AT,
   HEFT_DEV_EXPIRES_AT,
 } from './access-token-constants.mjs'
+import { applyEntryQrHubModes } from './apply-entry-qr-hub-modes.mjs'
 
 export type EntryMode = 'fest' | 'heft'
 
@@ -91,7 +92,7 @@ export function getAccessTokens(): readonly AccessToken[] {
       return cachedTokens
     }
     try {
-      cachedTokens = parseAccessTokensJson(raw)
+      cachedTokens = applyEntryQrHubModes(parseAccessTokensJson(raw))
     } catch {
       cachedTokens = []
     }

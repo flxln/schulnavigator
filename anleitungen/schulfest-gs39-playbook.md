@@ -124,14 +124,15 @@ Sonnentest protokollieren (Datum, Scan ja/nein) — Zeile in [Abschlusstest](../
 | Was | Änderung |
 |-----|----------|
 | Raum-QRs (`/raum/{slug}`) | **Keine** — weiter nutzbar |
-| Entry-QR (`entry-fest.png`) | **Kein Neudruck** — URL unverändert; Server liefert jetzt `heft`-Hub |
-| Coolify `SN_ACCESS_TOKENS` | `fest-vkc2AuKW0S7QGHDT` mit `"mode":"heft"`, Ablauf `2027-07-31` |
+| Entry-QR (`entry-fest.png`) | **Kein Neudruck** — URL unverändert |
+| Hub-Modus | Aus **Code** (`FEST_ENTRY_HUB_MODE` in `access-token-constants.mjs`), nicht aus `SN_ACCESS_TOKENS.mode` |
+| Coolify `SN_ACCESS_TOKENS` | Token-Strings müssen stimmen; `mode:"fest"` in ENV ist **ok** — Laufzeit liefert trotzdem Heft-Hub |
 
-Beispiel für Coolify (Prod + Dev, **vor** Deploy):
+Beispiel für Coolify (Prod + Dev) — `mode` bei fest darf `fest` bleiben:
 
 ```json
 [
-  {"token":"fest-vkc2AuKW0S7QGHDT","mode":"heft","expiresAt":"2027-07-31"},
+  {"token":"fest-vkc2AuKW0S7QGHDT","mode":"fest","expiresAt":"2027-07-31"},
   {"token":"heft-ImulQPDmydy7VCVj","mode":"heft","expiresAt":"2027-07-31"}
 ]
 ```
