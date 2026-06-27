@@ -1,9 +1,7 @@
 import {
   ENTRY_QR_SPECS,
   FEST_DEV_EXPIRES_AT,
-  FEST_DEV_TOKEN,
   HEFT_DEV_EXPIRES_AT,
-  HEFT_DEV_TOKEN,
 } from './access-token-constants.mjs'
 
 export type EntryMode = 'fest' | 'heft'
@@ -16,12 +14,25 @@ export type AccessToken = {
   expiresAt: string
 }
 
-export { FEST_DEV_TOKEN, HEFT_DEV_TOKEN }
+export { FEST_DEV_TOKEN, HEFT_DEV_TOKEN } from './access-token-constants.mjs'
 
-export const DEV_FALLBACK_TOKENS: readonly AccessToken[] = [
-  { token: FEST_DEV_TOKEN, mode: 'fest', expiresAt: FEST_DEV_EXPIRES_AT },
-  { token: HEFT_DEV_TOKEN, mode: 'heft', expiresAt: HEFT_DEV_EXPIRES_AT },
-]
+function expiresAtForEntryToken(token: string): string {
+  const spec = ENTRY_QR_SPECS.find((e) => e.token === token)
+  if (!spec) {
+    throw new Error(`Unbekannter Entry-Token: ${token}`)
+  }
+  return spec.file === 'entry-fest.png'
+    ? FEST_DEV_EXPIRES_AT
+    : HEFT_DEV_EXPIRES_AT
+}
+
+export const DEV_FALLBACK_TOKENS: readonly AccessToken[] = ENTRY_QR_SPECS.map(
+  (spec) => ({
+    token: spec.token,
+    mode: spec.mode,
+    expiresAt: expiresAtForEntryToken(spec.token),
+  }),
+)
 
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/
 

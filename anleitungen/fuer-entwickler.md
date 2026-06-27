@@ -587,14 +587,16 @@ docker exec -u nextjs <container_id> test -r /app/public/media && echo OK
 
 **`open` + Einbettung (separates Deployment):** `SN_ACCESS_MODE=open`, `SN_EMBED_ANCESTORS=https://…` (Schulwebsite-Origin). Vor Go-Live: `curl -sSI https://… \| grep -iE 'content-security-policy|x-frame-options'` — kein widersprüchliches `X-Frame-Options` vom Proxy.
 
-Beispiel `SN_ACCESS_TOKENS` (Platzhalter — echte Werte nur in Coolify):
+Beispiel `SN_ACCESS_TOKENS` (GS39 Post-Fest — echte Werte nur in Coolify):
 
 ```json
 [
-  {"token":"fest-…","mode":"fest","expiresAt":"2026-07-31"},
-  {"token":"heft-…","mode":"heft","expiresAt":"2027-07-31"}
+  {"token":"fest-vkc2AuKW0S7QGHDT","mode":"heft","expiresAt":"2027-07-31"},
+  {"token":"heft-ImulQPDmydy7VCVj","mode":"heft","expiresAt":"2027-07-31"}
 ]
 ```
+
+Post-Fest ohne Neudruck: `entry-fest`-QR-String bleibt, `mode` ist `heft` — [schulfest-gs39-playbook.md](./schulfest-gs39-playbook.md#8-post-fest-ab-27062026--dauerbetrieb-ohne-neue-qr-codes).
 
 Vollständig: [ADR-021](../dokumentation/adr/021-zugangsmodus-konfigurierbar.md), [`app/.env.example`](../app/.env.example).
 

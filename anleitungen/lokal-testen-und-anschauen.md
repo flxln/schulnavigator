@@ -45,7 +45,7 @@ npm run dev
 | Seite | Zweck |
 | ----- | ----- |
 | [https://localhost:3000/](https://localhost:3000/) | Startseite — **ohne** vorherigen Entry: Redirect zu `/eintritt` |
-| [https://localhost:3000/eintritt?t=fest-vkc2AuKW0S7QGHDT](https://localhost:3000/eintritt?t=fest-vkc2AuKW0S7QGHDT) | Entry Schulfest: Cookie + Redirect `/` → Frontansicht-Hub **gesperrt** (0/12), Slots nach Raumbesuch frei (#21) |
+| [https://localhost:3000/eintritt?t=fest-vkc2AuKW0S7QGHDT](https://localhost:3000/eintritt?t=fest-vkc2AuKW0S7QGHDT) | Entry (Post-Fest): Cookie + Redirect `/` → **voller Hub** (alle 12 Stationen klickbar) |
 | [https://localhost:3000/eintritt?t=heft-ImulQPDmydy7VCVj](https://localhost:3000/eintritt?t=heft-ImulQPDmydy7VCVj) | Entry Heft: voller Hub (alle Stationen klickbar), Fortschritt zählt trotzdem (#21) |
 | [https://localhost:3000/stationen](https://localhost:3000/stationen) | Alle 12 Stationen als Liste mit **Raum-Icons** (#105; Lock im Modus `fest`) — Epic #58 |
 | [https://localhost:3000/eintritt](https://localhost:3000/eintritt) | Hinweisseite (Willkommens-Karte → Link auf Scan-Route); Fehler `?reason=expired\|invalid` |

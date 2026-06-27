@@ -10,6 +10,7 @@ import {
 import { loadEnvLocal } from './load-env-local.mjs'
 import {
   buildAccessTokensPayload,
+  buildEntryQrSpecs,
   generateEntryToken,
   parseRotateArgs,
   renderAccessTokenConstants,
@@ -98,10 +99,7 @@ async function main() {
 
   try {
     const parsed = parseAccessTokensJson(coolifyJson)
-    const specs = [
-      { file: 'entry-fest.png', token: fest, mode: 'fest' },
-      { file: 'entry-heft.png', token: heft, mode: 'heft' },
-    ]
+    const specs = buildEntryQrSpecs(fest, heft)
     assertEntryQrSync(parsed, specs)
   } catch (e) {
     fail(e instanceof Error ? e.message : String(e))
