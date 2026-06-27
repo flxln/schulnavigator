@@ -287,13 +287,13 @@ Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/archiv/pr
 8. Zwei Tabs (`/` + `/scan`): im zweiten Tab scannen → erster Tab aktualisiert bei Fokus
 9. Alle 12 Stationen besucht → auf `/` zuerst **Coach** (`complete`, Frieda + Otto), nach Schließen **SparkleBurst** auf der Fortschrittskarte; `sn_sparkle_done` verhindert Sparkle-Wiederholung; Coach-Keys `sn_coach_seen_fest` / `sn_coach_seen_heft` (modus-getrennt)
 10. `curl -sI https://localhost:3000/stationen` ohne Cookie → `307` nach `/eintritt`
-11. **Regression #83 (`fest`):** Raum per QR freischalten → Raum-Footer „Scanne die nächste Station!“ → **`/scan`**; ohne Scan schließen → `sn_visited_slugs` enthält **nicht** die ungescannte Station
+11. **Regression #83 (`fest`):** Raum per QR freischalten → Raum-Footer „Scanne einen beliebigen Code“ → **`/scan`**; ohne Scan schließen → `sn_visited_slugs` enthält **nicht** die ungescannte Station
 12. **Fest Hub/Stationen (#224):** Gesperrtes Fenster auf `/` oder Eintrag auf `/stationen` tippen → **`/scan`** (kein Toast; ADR-009)
-13. **`fest`/`heft` 1–11:** **über** der Fortschrittskarte **ein** Button „Scanne die nächste Station!“ — **kein** Stationsname, **kein** geteilter Button
-14. **`fest` 0/12:** nur „QR an der Tür scannen“ **über** der Fortschrittskarte
+13. **`fest`/`heft` 1–11:** Scan-CTA **über** der Fortschrittskarte — einheitlich **„Scanne einen beliebigen Code“** (kein Stationsname)
+14. **`fest` 0/12:** derselbe Button-Text **über** der Fortschrittskarte (`fest-scan`)
 15. **`fest`/`heft` 12/12:** kein Scan-CTA unter dem Hub (Sparkle in der Fortschrittskarte optional)
-16. **Fortschrittskarte:** Tipp auf „Mein Rundgang …“ → **`/stationen`** (wie Listen-Icon oben rechts)
-17. **Kein Flash:** `fest` mit Fortschritt neu laden → vor Hydration Einzel-Scan, danach „Scanne die nächste Station!“ (Button-Text wechselt, Anzahl bleibt 1)
+16. **Fortschrittskarte:** Tipp auf „Mein Rundgang …“ → **`/stationen`** (wie Listen-Icon oben rechts); **MPZ-Banner** direkt **unter** der Fortschrittskarte
+17. **Kein Flash:** `fest` mit Fortschritt neu laden → vor Hydration `fest-scan`, danach `scan-next` (Button-Text bleibt gleich; nur Sichtbarkeitslogik wechselt)
 
 **Coach-Einblendungen (ADR-019):**
 

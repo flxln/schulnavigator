@@ -26,13 +26,12 @@ Steuerung über [`lib/home-cta.ts`](../../lib/home-cta.ts) (`getHomeFooterCta`).
 
 | `footerCta` | Wann | UI |
 |-------------|------|-----|
-| `fest-scan` | `fest`, vor Hydration oder 0/11 | `Gs39Button` → `/scan` |
+| `fest-scan` | `fest`, vor Hydration oder 0/11 | `Gs39Button` „Scanne einen beliebigen Code“ → `/scan` |
 | `scan-next` | `fest`/`heft`, 1–10 mit unbesuchter Station | [`home-fest-scan-cta.tsx`](./home-fest-scan-cta.tsx) „Scanne einen beliebigen Code“ → `/scan` |
 | `none` | alle besucht oder `heft` ohne Fortschritt | nur Hub + Link `/stationen` |
 
 ## Layout-Reihenfolge (visuell)
 
-- **Fest:** Scan-CTA (`fest-scan` / `scan-next`) unter dem Hub, Fortschrittskarte (`Gs39Card`) darunter.
-- **Heft:** Hub + Fortschrittskarte; bei Fortschritt derselbe Scan-CTA wie im Fest-Modus.
+- **Fest/Heft:** Scan-CTA (`fest-scan` / `scan-next`) unter dem Hub, Fortschrittskarte (`Gs39Card`) darunter, **MPZ-Banner** (`MpzOfferBanner`) am Seitenende.
 
 Spezifikation CTAs: [ADR-009 Nachtrag CTAs](../../../dokumentation/adr/009-hub-isometrisch.md#nachtrag-2026-06-01--startseite-modusabhängige-ctas). Issue **#84** (Sub-Issue **#83**).

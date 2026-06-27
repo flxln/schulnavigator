@@ -2,7 +2,7 @@
 
 **Stand:** 2026-06-25 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
 
-**Letzter Abgleich:** 2026-06-25 — Coach-Audio-Unlock + Eintritt-SSR-Fix auf `kunde/39-gs` (`cf63e0b`, `cf713b9`); Prod `/eintritt` wieder 200. Zuvor [#236](https://github.com/flxln/schulnavigator/issues/236) Impressum/Datenschutz global.
+**Letzter Abgleich:** 2026-06-25 — GS39 Content/Polish auf `kunde/39-gs`: Scan-CTA „Scanne einen beliebigen Code“, MPZ-Banner unter Fortschrittskarte, Impressum (Roberto Zänker), Datenschutz-Formulierung, Raumbild `schulsozialarbeit`. Zuvor Coach-Audio-Unlock + Eintritt-SSR-Fix.
 
 Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren). Abgeschlossene Epics: [archiv/epics/](./archiv/epics/).
 

@@ -79,6 +79,17 @@ Issue: **#84** (Sub-Issue zu **#83**, Kontext **#61**) — https://github.com/fl
 
 Issue: **#104** (Folge **#84**) — https://github.com/flxln/schulnavigator/issues/104
 
+#### Nachtrag 2026-06-25 — Einheitlicher Scan-Button-Text (`kunde/39-gs`)
+
+**Entscheidung:** Primär-Scan-CTA auf `/`, `/stationen` (`fest`) und im Raum-Footer heißt überall **„Scanne einen beliebigen Code“** (statt abweichend „QR an der Tür scannen“ / „Scanne die nächste Station!“). Logik `fest-scan` | `scan-next` | `none` unverändert; nur Label vereinheitlicht.
+
+| Ort | Verhalten |
+|-----|-----------|
+| `/` `fest` 0/11 | Ein Scan-Button „Scanne einen beliebigen Code“ (`fest-scan`) |
+| `/` `fest`/`heft` 1–10 | Derselbe Button-Text (`scan-next`) |
+| `/stationen` (`fest`) | Gleicher Button-Text |
+| Raum-Footer | Gleicher Button-Text, wenn noch unbesuchte Stationen |
+
 ### Interaktion und Barrierefreiheit
 
 - Klicks primär **im SVG** (`onClick` pro Fenster/Bereich), mit **`tabIndex={0}`**, **`role="button"`**, **`onKeyDown`** (Enter/Space).
