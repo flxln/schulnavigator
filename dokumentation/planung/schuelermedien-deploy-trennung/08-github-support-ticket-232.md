@@ -1,11 +1,67 @@
 # GitHub-Support-Ticket — #232 LFS-Purge & PR-Refs
 
-**Status:** Eingereicht bei GitHub Support (2026-06-24) — serverseitige Bereinigung ausstehend  
+**Status:** Support hat Cache-Clearance + GC durchgeführt (Imafidon, 2026-06-24) — **Nacharbeit:** 7 Pre-Rewrite-Commits noch über PR-Refs erreichbar  
 **Repository:** https://github.com/flxln/schulnavigator (privat)  
 **Kontext:** DSGVO — Schüler-Medien (Kinderfotos, -videos, Dialog-/Coach-Audio) aus Git- und LFS-History entfernt  
 **Referenz:** [Removing sensitive data from a repository](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository) · [Removing files from Git LFS](https://docs.github.com/en/repositories/working-with-files/managing-large-files/removing-files-from-git-large-file-storage)
 
 ---
+
+## Support-Antwort (2026-06-24, Imafidon)
+
+> Cache clearance and garbage collection on the repository completed. Commit URLs should return 404.  
+> Commits still referenced in pull requests, branches or tags may not have been GC'd.
+
+### Verifikation (API `GET /repos/.../commits/{sha}`)
+
+| Ergebnis | Commits (Kurz-SHA) |
+|----------|-------------------|
+| **Nicht mehr erreichbar** | `6a55156`, `457955c`, `49c0291`, `ee0df4a` (Tip pre-Rewrite `kunde/39-gs`) u. a. |
+| **Noch erreichbar** (vermutlich `refs/pull/*`) | siehe Tabelle unten |
+
+| Voller SHA | Kurz | Commit-Message |
+|------------|------|----------------|
+| `f45f9a4bc10baba2e98bfaf3edf6569886372330` | `f45f9a4` | feat(demo): Otto/Frieda-Dialog mit gated Audio — **enthält dialog-audio WAVs** |
+| `ff48a44e37dd4009b4f4afdbfff1af56f3441e2a` | `ff48a44` | Coach-Audio-Nachzieh |
+| `2f07ae5b9721f557bc8dc8d8092d1f597748a567` | `2f07ae5` | Coach-Audio mit Autoplay (#193) |
+| `516c8b1183adc66b710726019332a38db5e7c45d` | `516c8b1` | link media type |
+| `f0355a9963817a0def3fdd276ceda3b52b6ceb94` | `f0355a9` | Hotspot-Marker Icon-Fallback |
+| `995b2c8d337df75043ef6a880e1325d6ed277250` | `995b2c8` | TextViewer / Demo klassenzimmer |
+| `03128c9dc56b37330dbee9988accb779fac2dc5b` | `03128c9` | media handling Doku |
+
+**Antwort an Support:** siehe Abschnitt [Antwortvorlage](#antwortvorlage-an-support) unten.
+
+---
+
+## Antwortvorlage an Support
+
+```
+Hi Imafidon,
+
+Thank you for running cache clearance and garbage collection.
+
+I verified via the API and web UI. Most pre-rewrite commit SHAs now return 404 / "No commit found", which is expected.
+
+However, the following commits are still accessible (likely still referenced via refs/pull/*/head from closed PRs). Several contain student dialog audio (children's voices) under app/content/dialog-audio/:
+
+- f45f9a4bc10baba2e98bfaf3edf6569886372330
+- ff48a44e37dd4009b4f4afdbfff1af56f3441e2a
+- 2f07ae5b9721f557bc8dc8d8092d1f597748a567
+- 516c8b1183adc66b710726019332a38db5e7c45d
+- f0355a9963817a0def3fdd276ceda3b52b6ceb94
+- 995b2c8d337df75043ef6a880e1325d6ed277250
+- 03128c9dc56b37330dbee9988accb779fac2dc5b
+
+The commit that originally introduced sensitive student audio was:
+f45f9a4bc10baba2e98bfaf3edf6569886372330
+
+Could you please dereference or purge any remaining refs/pull/*/head (and any other refs) that still point to these commits, and confirm orphaned LFS objects for app/public/media/, app/content/dialog-audio/, and app/content/coach-audio/ are fully removed?
+
+Please retain LFS under app/public/stations/ (room panoramas without identifiable children).
+
+Thank you,
+Felix
+```
 
 ## Was lokal bereits erledigt ist
 
@@ -78,8 +134,9 @@ Thank you.
 ## Nach Support-Antwort
 
 - [x] Ticket an GitHub Support gesendet (2026-06-24)
-- [ ] Ticket-Nummer hier eintragen: ___________
-- [ ] Support-Bestätigung ablegen (Screenshot/E-Mail)
+- [x] Erste Support-Antwort: Cache-Clearance + GC (Imafidon, 2026-06-24)
+- [ ] Follow-up: 7 Commits noch über PR-Refs erreichbar — Antwortvorlage oben senden
+- [ ] Finale Support-Bestätigung (alle SHAs 404, LFS purged)
 - [ ] V9 in [Post-Mortem #232](../../reviews/post-mortem/post-mortem-232-2026-06-24.md) als grün markieren
 - [ ] Optional: `dsgvo.md` — Hinweis „GitHub-Support LFS-Purge ausstehend" entfernen
 
