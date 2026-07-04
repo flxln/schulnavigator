@@ -1,6 +1,6 @@
 # GitHub-Support-Ticket — #232 LFS-Purge & PR-Refs
 
-**Status:** Support hat Cache-Clearance + GC durchgeführt (Imafidon, 2026-06-24) — **Nacharbeit:** 7 Pre-Rewrite-Commits noch über PR-Refs erreichbar  
+**Status:** Ticket **#4510440** — GC durchgeführt; Follow-up mit 7 SHAs gesendet (2026-06-25) — Antwort auf PR-Refs ausstehend  
 **Repository:** https://github.com/flxln/schulnavigator (privat)  
 **Kontext:** DSGVO — Schüler-Medien (Kinderfotos, -videos, Dialog-/Coach-Audio) aus Git- und LFS-History entfernt  
 **Referenz:** [Removing sensitive data from a repository](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository) · [Removing files from Git LFS](https://docs.github.com/en/repositories/working-with-files/managing-large-files/removing-files-from-git-large-file-storage)
@@ -133,11 +133,13 @@ Thank you.
 
 ## Nach Support-Antwort
 
-- [x] Ticket an GitHub Support gesendet (2026-06-24)
-- [x] Erste Support-Antwort: Cache-Clearance + GC (Imafidon, 2026-06-24)
-- [ ] Follow-up: 7 Commits noch über PR-Refs erreichbar — Antwortvorlage oben senden
-- [ ] Finale Support-Bestätigung (alle SHAs 404, LFS purged)
+- [x] Ticket **#4510440** an GitHub Support (2026-06-24)
+- [x] Erste Support-Antwort: Cache-Clearance + GC (Imafidon, 2026-06-25)
+- [x] Follow-up gesendet (2026-06-25): 7 noch erreichbare SHAs + Bitte um `refs/pull/*`-Dereferenzierung
+- [ ] Finale Support-Bestätigung (alle 7 SHAs 404, LFS purged)
 - [ ] V9 in [Post-Mortem #232](../../reviews/post-mortem/post-mortem-232-2026-06-24.md) als grün markieren
 - [ ] Optional: `dsgvo.md` — Hinweis „GitHub-Support LFS-Purge ausstehend" entfernen
+
+**Stand Verifikation (2026-06-25):** 7 SHAs noch via API erreichbar; `6a55156` und die meisten Branch-Tips sind weg.
 
 **Backup (MPZ-only, nicht pushen):** `/tmp/schulnavigator-pre-232-mirror.git` — enthält Pre-Rewrite-History inkl. LFS-OIDs für Support-Nachfragen.
