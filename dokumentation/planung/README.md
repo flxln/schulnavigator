@@ -33,6 +33,6 @@ Domänen-Matrix MPZ Studio: [ideen/archiv/mpz-studio-ui.md](../ideen/archiv/mpz-
 
 Vollständiger Abgleich-Log (bis 2026-06-20): [archiv/sync-log-2026-06.md](./archiv/sync-log-2026-06.md).
 
-**Letzter dokumentierter Abgleich:** 2026-07-04 — **#24** i18n aus `archiv/issues-phase-2.md` nach `archiv/issues-phase-5.md` (GitHub-Milestone Phase 5 — Post-Fest unverändert). Zuvor 2026-06-27 Post-Fest GS39 (`kunde/39-gs`).
+**Letzter dokumentierter Abgleich:** 2026-07-04 — **#24** in **#48** gebündelt (i18n + Englisch-Menü, Post-Fest). Zuvor #24 aus Phase-2-Archiv nach Phase 5 verschoben.
 
 Siehe auch [entscheidungen.md](../entscheidungen.md), [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren).

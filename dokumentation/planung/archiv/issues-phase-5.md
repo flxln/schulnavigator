@@ -65,29 +65,20 @@ Datenschutz: Login nur für Lehrkräfte, keine Schülerdaten im CMS.
 
 ---
 
-## #24 — i18n-Struktur für Menütexte
+## #48 — Englisch-Menü aktivieren (inkl. i18n-Struktur, ehem. #24)
 
-**GitHub:** https://github.com/flxln/schulnavigator/issues/24  
+**GitHub:** https://github.com/flxln/schulnavigator/issues/48  
 **Labels:** `tech`  
 **Assignee:** Felix  
-**Milestone:** Phase 5 — Post-Fest *(ursprünglich Phase 2; nach Schulfest verschoben)*
+**Milestone:** Phase 5 — Post-Fest
 
-- UI-Texte in `de.json` / `en.json` (Platzhalter EN)
-- Umschalter noch inaktiv
-- Content (Räume, Medien) bleibt DE
-- Voraussetzung für **#48** (Englisch-Menü aktivieren)
+Gebündelt mit **#24** (geschlossen): Struktur (`de.json` / `en.json`) und Aktivierung (Übersetzung + Sprachumschalter) in einem Issue.
 
----
-
-## #48 — Englisch-Menü aktivieren
-
-**Labels:** `tech`
-**Assignee:** Felix
-
-`en.json` vollständig übersetzen (Menütexte, Systemmeldungen).
-Sprachumschalter in der UI aktivieren.
-Content (Audio/Video) bleibt deutsch — nur UI-Texte mehrsprachig.
-Tinas Motivation: englischsprachige Eltern (TU Dresden, internationale Familien).
+- UI-Texte in Sprachdateien auslagern; `de.json` vollständig, `en.json` gleiche Struktur
+- `en.json` vollständig übersetzen (Menütexte, Systemmeldungen)
+- Sprachumschalter in der UI aktivieren
+- Content (Audio/Video, Raumbeschreibungen) bleibt deutsch — nur UI-Texte mehrsprachig
+- Motivation: englischsprachige Eltern (TU Dresden, internationale Familien)
 
 ---
 

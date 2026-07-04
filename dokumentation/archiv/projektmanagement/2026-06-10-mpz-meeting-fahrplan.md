@@ -176,7 +176,7 @@ flowchart LR
 ## Was bewusst nicht Thema des Meetings ist
 
 - Tablet-Layout (#74–#78) — nice-to-have, nicht Schulfest-kritisch
-- i18n / Englisch-Menü (#24) — nach dem Fest
+- i18n / Englisch-Menü (#48, ehem. #24) — nach dem Fest
 - Directus / Admin (#47) — Phase 5
 - YouTube-Embed — rechtlich offen (ADR-004); Delightex-`embed` technisch live (ADR-017), Datenschutzerklärung-Absatz offen
 
