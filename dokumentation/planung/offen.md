@@ -1,8 +1,8 @@
 # Offene Punkte — Schulnavigator
 
-**Stand:** 2026-06-27 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
+**Stand:** 2026-07-04 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
 
-**Letzter Abgleich:** 2026-06-27 — **Post-Fest GS39** auf `kunde/39-gs`: Fest-Entry-QR liefert Heft-Hub (`FEST_ENTRY_HUB_MODE`), Hub-Modus aus Code nicht ENV; Deploy `39-gs.mpz.schule`. Zuvor GS39 Polish, Coach-Audio, Eintritt-SSR.
+**Letzter Abgleich:** 2026-07-04 — **#24** i18n nur noch Phase 5 (Post-Fest) in Archiv-Doku; GitHub-Milestone war bereits korrekt. Zuvor 2026-06-27 Post-Fest GS39 auf `kunde/39-gs`.
 
 Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren). Abgeschlossene Epics: [archiv/epics/](./archiv/epics/).
 
@@ -23,6 +23,7 @@ Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eing
 | Epic [#86](https://github.com/flxln/schulnavigator/issues/86) | Schulfest GS39 Nachtrag | bis #90/#91; Details [issues-schulfest-gs39-nachtrag.md](./issues-schulfest-gs39-nachtrag.md) |
 | [#89](https://github.com/flxln/schulnavigator/issues/89) | Sonnentest QR-Druck | technisch erledigt; Feldtest ausstehend |
 | [#221](https://github.com/flxln/schulnavigator/issues/221) | Dialog: Text-only-Segmente | Sprechblase ohne Audio; Pilot Lesewelt; Milestone Phase 5 |
+| [#24](https://github.com/flxln/schulnavigator/issues/24) | i18n-Struktur Menütexte (DE + EN) | `de.json`/`en.json`; Umschalter inaktiv; Voraussetzung für #48; Milestone Phase 5 |
 
 ## Repo-Wartung
 

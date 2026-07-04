@@ -65,6 +65,20 @@ Datenschutz: Login nur für Lehrkräfte, keine Schülerdaten im CMS.
 
 ---
 
+## #24 — i18n-Struktur für Menütexte
+
+**GitHub:** https://github.com/flxln/schulnavigator/issues/24  
+**Labels:** `tech`  
+**Assignee:** Felix  
+**Milestone:** Phase 5 — Post-Fest *(ursprünglich Phase 2; nach Schulfest verschoben)*
+
+- UI-Texte in `de.json` / `en.json` (Platzhalter EN)
+- Umschalter noch inaktiv
+- Content (Räume, Medien) bleibt DE
+- Voraussetzung für **#48** (Englisch-Menü aktivieren)
+
+---
+
 ## #48 — Englisch-Menü aktivieren
 
 **Labels:** `tech`

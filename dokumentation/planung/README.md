@@ -33,6 +33,6 @@ Domänen-Matrix MPZ Studio: [ideen/archiv/mpz-studio-ui.md](../ideen/archiv/mpz-
 
 Vollständiger Abgleich-Log (bis 2026-06-20): [archiv/sync-log-2026-06.md](./archiv/sync-log-2026-06.md).
 
-**Letzter dokumentierter Abgleich:** 2026-06-27 — Post-Fest GS39 (`kunde/39-gs`): `FEST_ENTRY_HUB_MODE`, `applyEntryQrHubModes`, Playbook §8, ADR-021 Nachtrag; Live `39-gs.mpz.schule`. Zuvor 2026-06-25 GS39 Polish.
+**Letzter dokumentierter Abgleich:** 2026-07-04 — **#24** i18n aus `archiv/issues-phase-2.md` nach `archiv/issues-phase-5.md` (GitHub-Milestone Phase 5 — Post-Fest unverändert). Zuvor 2026-06-27 Post-Fest GS39 (`kunde/39-gs`).
 
 Siehe auch [entscheidungen.md](../entscheidungen.md), [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren).
