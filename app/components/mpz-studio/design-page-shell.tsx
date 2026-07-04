@@ -2,6 +2,10 @@
 
 import Link from 'next/link'
 import type { ReactNode } from 'react'
+import {
+  mpzStackClassName,
+  mpzTabLinkClassName,
+} from '@/components/mpz-studio/mpz-form-primitives'
 import type { DesignTab } from '@/lib/mpz-studio-design-page'
 
 export type DesignPageShellProps = {
@@ -16,11 +20,11 @@ const TABS: { id: DesignTab; label: string; href: string }[] = [
 
 export function DesignPageShell({ activeTab, children }: DesignPageShellProps) {
   return (
-    <div className="mx-auto max-w-6xl">
-      <h1 className="mb-4 text-2xl font-bold text-fg-1">Design & Hub</h1>
+    <div className={`mx-auto max-w-6xl ${mpzStackClassName('lg')}`}>
+      <h1 className="text-2xl font-semibold text-fg-1">Design & Hub</h1>
 
       <nav
-        className="mb-6 flex flex-wrap gap-1 border-b border-border-1"
+        className="flex flex-wrap gap-8 border-b border-border-1"
         aria-label="Design und Hub"
       >
         {TABS.map((tab) => {
@@ -29,11 +33,7 @@ export function DesignPageShell({ activeTab, children }: DesignPageShellProps) {
             <Link
               key={tab.id}
               href={tab.href}
-              className={`relative -mb-px rounded-t-gs39-sm px-3 py-2 text-sm font-semibold transition-colors ${
-                active
-                  ? 'border border-b-0 border-border-1 bg-bg-1 text-fg-1'
-                  : 'text-fg-3 hover:text-fg-1'
-              }`}
+              className={mpzTabLinkClassName({ active })}
               aria-current={active ? 'page' : undefined}
             >
               {tab.label}

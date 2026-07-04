@@ -10,8 +10,9 @@ import {
 } from '@/components/mpz-studio/mpz-data-table'
 import { MpzDraftNotice, MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
 import {
+  mpzButtonClassName,
   mpzFieldClassName,
-  mpzLabelClassName,
+  mpzStackClassName,
 } from '@/components/mpz-studio/mpz-form-primitives'
 import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
 import { LUCIDE_ICON_NAMES } from '@/lib/lucide-icon-registry'
@@ -102,9 +103,9 @@ export function HubPanel({ rows, assignableSlots }: HubPanelProps) {
   const sortedDraft = [...draft].sort((a, b) => a.nr - b.nr)
 
   return (
-    <div className="space-y-6">
+    <div className={mpzStackClassName('lg')}>
       <div>
-        <h2 className="text-base font-bold text-fg-1">Hub-Karte</h2>
+        <h2 className="text-base font-semibold text-fg-1">Hub-Karte</h2>
         <p className="mt-1 text-sm text-fg-3">
           Slug-Zuordnung, Akzente und Lucide-Icons für die 12 Hub-Stationen. Geometrie (
           <code className="text-fg-2">HUB_SLOTS</code>) bleibt im Code. Nach dem Speichern:
@@ -112,30 +113,36 @@ export function HubPanel({ rows, assignableSlots }: HubPanelProps) {
           -Neustart.
         </p>
         <p className="mt-2 text-sm">
-          <Link href="/" className="font-medium text-brand-blue underline">
-            Hub-Vorschau öffnen
+          <Link
+            href="/"
+            className="font-semibold text-accent underline-offset-2 hover:underline"
+          >
+            ↗ Hub-Vorschau öffnen
           </Link>
         </p>
       </div>
 
       {dirty && <MpzDraftNotice />}
 
-      <MpzDataTable minWidth="min-w-[960px]">
+      <MpzDataTable
+        className="rounded-gs39-md border border-border-1"
+        minWidth="min-w-[960px]"
+      >
         <MpzDataTableHead>
-          <th className="px-2 py-2">Nr</th>
-          <th className="px-2 py-2">Slug</th>
-          <th className="px-2 py-2">Titel</th>
-          <th className="px-2 py-2">Slot</th>
-          <th className="px-2 py-2">Geometrie (read-only)</th>
-          <th className="px-2 py-2">Akzent</th>
-          <th className="px-2 py-2">Icon</th>
+          <th className="px-3 py-2">Nr</th>
+          <th className="px-3 py-2">Slug</th>
+          <th className="px-3 py-2">Titel</th>
+          <th className="px-3 py-2">Slot</th>
+          <th className="px-3 py-2">Geometrie (read-only)</th>
+          <th className="px-3 py-2">Akzent</th>
+          <th className="px-3 py-2">Icon</th>
         </MpzDataTableHead>
         <MpzDataTableBody>
           {sortedDraft.map((row) => {
             const slot = slotById.get(row.slotId)
             return (
-              <tr key={row.slug} className="border-b border-border-1/60 align-top">
-                <td className="px-2 py-3">
+              <tr key={row.slug} className="border-b border-border-1 align-top last:border-b-0">
+                <td className="px-3 py-3">
                   <input
                     type="number"
                     min={1}
@@ -147,9 +154,9 @@ export function HubPanel({ rows, assignableSlots }: HubPanelProps) {
                     }
                   />
                 </td>
-                <td className="px-2 py-3 font-mono text-xs text-fg-2">{row.slug}</td>
-                <td className="px-2 py-3 text-fg-1">{row.titel}</td>
-                <td className="px-2 py-3">
+                <td className="px-3 py-3 font-mono text-xs text-fg-2">{row.slug}</td>
+                <td className="px-3 py-3 text-fg-1">{row.titel}</td>
+                <td className="px-3 py-3">
                   <select
                     className={mpzFieldClassName()}
                     value={row.slotId}
@@ -162,7 +169,7 @@ export function HubPanel({ rows, assignableSlots }: HubPanelProps) {
                     ))}
                   </select>
                 </td>
-                <td className="px-2 py-3 font-mono text-[11px] leading-relaxed text-fg-3">
+                <td className="px-3 py-3 font-mono text-[11px] leading-relaxed text-fg-3">
                   {slot ? (
                     <>
                       <div>frame: [{formatFrame(slot.frame)}]</div>
@@ -173,7 +180,7 @@ export function HubPanel({ rows, assignableSlots }: HubPanelProps) {
                     '—'
                   )}
                 </td>
-                <td className="px-2 py-3">
+                <td className="px-3 py-3">
                   <div className="flex items-center gap-2">
                     <input
                       type="color"
@@ -190,7 +197,7 @@ export function HubPanel({ rows, assignableSlots }: HubPanelProps) {
                     />
                   </div>
                 </td>
-                <td className="px-2 py-3">
+                <td className="px-3 py-3">
                   <select
                     className={mpzFieldClassName()}
                     value={row.iconName}
@@ -212,18 +219,16 @@ export function HubPanel({ rows, assignableSlots }: HubPanelProps) {
       {error && <MpzFormAlert variant="error">{error}</MpzFormAlert>}
       {success && <MpzFormAlert variant="success">{success}</MpzFormAlert>}
 
-      <button
-        type="button"
-        disabled={!dirty || isPending}
-        onClick={() => void handleSave()}
-        className={`rounded-gs39-sm px-4 py-2 text-sm font-semibold transition-colors ${
-          !dirty || isPending
-            ? 'cursor-not-allowed border border-border-1 bg-bg-2 text-fg-3'
-            : 'border border-accent bg-accent text-fg-on-dark hover:bg-accent-hover'
-        }`}
-      >
-        {isPending ? 'Speichere…' : 'Hub-Konfiguration speichern'}
-      </button>
+      <div>
+        <button
+          type="button"
+          disabled={!dirty || isPending}
+          onClick={() => void handleSave()}
+          className={mpzButtonClassName('primary')}
+        >
+          {isPending ? 'Speichere…' : 'Hub-Konfiguration speichern'}
+        </button>
+      </div>
     </div>
   )
 }

@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
+import { mpzButtonClassName } from '@/components/mpz-studio/mpz-form-primitives'
 import type { BrandSlotManifest } from '@/lib/mpz-brand-ingest'
 import type { BrandSlotCategory } from '@/lib/mpz-brand-validation'
 
@@ -137,7 +138,7 @@ function BrandSlotCard({
               : ' · noch nicht hochgeladen'}
           </p>
 
-          <label className="inline-flex cursor-pointer items-center gap-2 rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-sm font-semibold text-fg-1 hover:bg-bg-2">
+          <label className={`${mpzButtonClassName('secondary')} cursor-pointer`}>
             <span>{busy ? 'Lädt …' : slot.exists ? 'Ersetzen' : 'Hochladen'}</span>
             <input
               type="file"
@@ -149,7 +150,7 @@ function BrandSlotCard({
           </label>
 
           {uploadError && (
-            <p role="alert" className="text-sm text-brand-red">
+            <p role="alert" className="text-sm text-error">
               {uploadError}
             </p>
           )}
@@ -171,7 +172,7 @@ export function BrandPanel({ initialSlots }: BrandPanelProps) {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-base font-bold text-fg-1">Brand & Design</h2>
+        <h2 className="text-base font-semibold text-fg-1">Brand & Design</h2>
         <p className="mt-1 text-sm text-fg-3">
           Logos, Maskottchen und optionale Motive unter{' '}
           <code className="text-fg-2">public/brand/</code>. Änderungen sind in der App
@@ -179,7 +180,10 @@ export function BrandPanel({ initialSlots }: BrandPanelProps) {
         </p>
         <p className="mt-2 text-sm">
           Station-Akzente und Hub-Icons:{' '}
-          <Link href="/mpz/studio/design?tab=hub" className="font-medium text-brand-blue underline">
+          <Link
+            href="/mpz/studio/design?tab=hub"
+            className="font-semibold text-accent underline-offset-2 hover:underline"
+          >
             Hub-Karte
           </Link>
         </p>
@@ -191,7 +195,7 @@ export function BrandPanel({ initialSlots }: BrandPanelProps) {
         return (
           <section key={category} className="space-y-3">
             <div>
-              <h3 className="text-sm font-bold text-fg-1">{meta.title}</h3>
+              <h3 className="text-sm font-semibold text-fg-1">{meta.title}</h3>
               <p className="text-xs text-fg-3">{meta.description}</p>
             </div>
             <ul className="space-y-3">

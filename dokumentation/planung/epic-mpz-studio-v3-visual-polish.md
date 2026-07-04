@@ -61,7 +61,7 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 | Unterissue | `#215` | C3: Medien bearbeiten | `design`, `tech` | #212 — **erledigt** (2026-06-24, Post-Mortem unten) |
 | Unterissue | `#213` | C4: Hotspots Empty, Tabelle, Formulare | `design`, `tech` | #210 — **erledigt** (2026-06-24, Post-Mortem unten) |
 | Unterissue | `#216` | C5: Dialog-Tab Layout | `design`, `tech` | #210 — **erledigt** (2026-06-24, Post-Mortem unten) |
-| Unterissue | `#218` | D1: Design & Hub (Tabs, Tabelle, Brand) | `design`, `tech` | #207 |
+| Unterissue | `#218` | D1: Design & Hub (Tabs, Tabelle, Brand) | `design`, `tech` | #207 — **erledigt** (2026-07-04, Post-Mortem unten) |
 | Unterissue | `#219` | D2: Coach, Embeds, Deploy | `design`, `tech` | #207 |
 | Unterissue | `#220` | D3: Unlock-Screen (optional) | `design`, `tech` | #206 |
 | Unterissue | `#214` | E1: Flat-Kalibrierung Layout | `design`, `tech` | #210 |
@@ -175,6 +175,15 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 - [x] #215 C3 Medien bearbeiten (Post-Mortem: [post-mortem-215-2026-06-24.md](../reviews/post-mortem/post-mortem-215-2026-06-24.md))
 - [x] #213 C4 Hotspots Empty, Tabelle, Formulare (Post-Mortem: [post-mortem-213-2026-06-24.md](../reviews/post-mortem/post-mortem-213-2026-06-24.md))
 - [x] #216 C5 Dialog-Tab Layout (Post-Mortem: [post-mortem-216-2026-06-24.md](../reviews/post-mortem/post-mortem-216-2026-06-24.md))
+- [x] #218 D1 Design & Hub (Post-Mortem: [post-mortem-218-2026-07-04.md](../reviews/post-mortem/post-mortem-218-2026-07-04.md))
+
+### Archiv — #218 Design & Hub (2026-07-04)
+
+- ✅ **Shell:** `design-page-shell.tsx` — `mpzStackClassName`, `mpzTabLinkClassName` (Underline-Tabs wie Station-Detail).
+- ✅ **Page:** `design/page.tsx` — Brand- und Hub-Panel jeweils in `MpzCard`.
+- ✅ **Brand S20:** `brand-panel.tsx` — `mpzButtonClassName` für Upload, semantische Fehlerfarbe, Link-Styling.
+- ✅ **Hub S19:** `hub-panel.tsx` — Tabelle beibehalten (kein Karten-Grid), `mpzButton`/`mpzStack`, Tabellen-Chrome, `px-3`-Padding.
+- 🔁 **Folge-Scope (bewusst offen):** Hub-Tabelle ohne Empty-State-Zeile (immer 12 Zeilen); Brand-Slot-Karten noch ohne `MpzCard`-Unterteilung.
 
 ### Archiv — Plan-Härtung #208 (2026-06-24)
 
