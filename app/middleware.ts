@@ -48,6 +48,9 @@ function isPublicAssetPath(pathname: string): boolean {
   )
 }
 
+/** Öffentliche Legal-Seiten — ohne Entry-Token (ADR-005). */
+const LEGAL_PUBLIC = ['/impressum', '/datenschutz'] as const
+
 export function middleware(req: NextRequest) {
   const url = req.nextUrl
   if (url.pathname === '/mpz' || url.pathname.startsWith('/mpz/')) {
@@ -65,6 +68,10 @@ export function middleware(req: NextRequest) {
       return NextResponse.redirect(unlock)
     }
     return guard
+  }
+
+  if ((LEGAL_PUBLIC as readonly string[]).includes(url.pathname)) {
+    return NextResponse.next()
   }
 
   if (isPublicAssetPath(url.pathname)) {
@@ -132,6 +139,8 @@ export const ACCESS_PROTECTED_MATCHER = [
   '/eintritt',
   '/eintritt/:path*',
   '/stationen',
+  '/impressum',
+  '/datenschutz',
   '/mpz',
   '/mpz/:path*',
 ] as const
@@ -145,6 +154,8 @@ export const config = {
     '/eintritt',
     '/eintritt/:path*',
     '/stationen',
+    '/impressum',
+    '/datenschutz',
     '/mpz',
     '/mpz/:path*',
   ],

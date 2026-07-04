@@ -36,6 +36,8 @@ export type DialogErrorCode =
   | 'NO_DIALOG'
   | 'NO_FIELDS'
   | 'DUPLICATE_ID'
+  | 'DIALOG_EXISTS'
+  | 'DIALOG_IN_USE'
   | 'INVALID_ID'
   | 'INVALID_ROLLE'
   | 'INVALID_FIGUREN'
@@ -59,6 +61,8 @@ export type AddDialogSegmentInput = {
   text?: string
   gruppe?: string
   tail?: DialogBubbleTail
+  /** Client-Hinweis für Chain-on-Save (WAV nach Segment-Save). Server setzt quelle erst per ingestDialogClip; nur `false` entfernt quelle beim Patch. */
+  hasAudio?: boolean
 }
 
 export type PatchDialogSegmentInput = {
@@ -66,6 +70,7 @@ export type PatchDialogSegmentInput = {
   gruppe?: string | null
   tail?: DialogBubbleTail | null
   rolle?: DialogRolle
+  hasAudio?: boolean
 }
 
 export type AddDialogGruppeInput = {
@@ -95,6 +100,8 @@ export class MpzStationDialogError extends Error {
 export const DIALOG_CLIENT_ERROR_CODES = new Set<DialogErrorCode>([
   'NO_FIELDS',
   'DUPLICATE_ID',
+  'DIALOG_EXISTS',
+  'DIALOG_IN_USE',
   'INVALID_ID',
   'INVALID_ROLLE',
   'INVALID_FIGUREN',
@@ -139,14 +146,20 @@ function findHubStation(data: StationsFile, slug: string): Station {
   return station
 }
 
-function requireDialog(station: Station): NonNullable<Station['dialog']> {
-  if (!station.dialog?.segmente?.length) {
+function requireDialogBlock(station: Station): NonNullable<Station['dialog']> {
+  if (!station.dialog) {
     throw new MpzStationDialogError(
       'NO_DIALOG',
       `Station "${station.slug}" hat keinen Dialog.`,
     )
   }
   return station.dialog
+}
+
+function hasStationDialogHotspot(station: Station): boolean {
+  const flat = station.hotspots?.some((h) => h.action === 'dialog') ?? false
+  const sphere = station.hotspots360?.some((h) => h.action === 'dialog') ?? false
+  return flat || sphere
 }
 
 function validateSegmentId(id: string): void {
@@ -365,7 +378,7 @@ async function persistDialogMutation(
   return withMpzWriteLock(async () => {
     const data = await io.readStations()
     const station = findHubStation(data, slug)
-    const dialog = requireDialog(station)
+    const dialog = requireDialogBlock(station)
     const segmentsBefore = structuredClone(dialog.segmente)
 
     mutate(station, segmentsBefore)
@@ -414,7 +427,7 @@ export async function patchDialogMeta(
   return persistDialogMutation(
     slug,
     (station, _segmentsBefore) => {
-      const dialog = requireDialog(station)
+      const dialog = requireDialogBlock(station)
 
       if (patch.figuren !== undefined) {
         const figuren = normalizeFiguren(patch.figuren)
@@ -445,7 +458,7 @@ export async function addDialogSegment(
   return persistDialogMutation(
     slug,
     (station, _segmentsBefore) => {
-      const dialog = requireDialog(station)
+      const dialog = requireDialogBlock(station)
       if (dialog.segmente.length >= 99) {
         throw new MpzStationDialogError(
           'SEGMENT_LIMIT',
@@ -474,7 +487,6 @@ export async function addDialogSegment(
         id,
         rolle,
         text: input.text ?? '',
-        quelle: dialogApiQuelle(slug, buildClipName(index, rolle)),
       }
       if (input.gruppe !== undefined) {
         segment.gruppe = input.gruppe
@@ -506,7 +518,7 @@ export async function patchDialogSegment(
   return persistDialogMutation(
     slug,
     (station, _segmentsBefore) => {
-      const dialog = requireDialog(station)
+      const dialog = requireDialogBlock(station)
       const segment = findSegment(dialog, segmentId)
 
       if (patch.text !== undefined) {
@@ -530,6 +542,9 @@ export async function patchDialogSegment(
       if (patch.rolle !== undefined) {
         segment.rolle = validateRolle(patch.rolle)
       }
+      if (patch.hasAudio === false) {
+        delete segment.quelle
+      }
     },
     needsAudioSync,
     io,
@@ -544,7 +559,7 @@ export async function removeDialogSegment(
   return persistDialogMutation(
     slug,
     (station, _segmentsBefore) => {
-      const dialog = requireDialog(station)
+      const dialog = requireDialogBlock(station)
       if (dialog.segmente.length <= 1) {
         throw new MpzStationDialogError(
           'LAST_SEGMENT',
@@ -578,7 +593,7 @@ export async function addDialogGruppe(
   return persistDialogMutation(
     slug,
     (station, _segmentsBefore) => {
-      const dialog = requireDialog(station)
+      const dialog = requireDialogBlock(station)
       const gruppen = dialog.gruppen ?? []
       if (gruppen.some((g) => g.id === input.id)) {
         throw new MpzStationDialogError(
@@ -606,7 +621,7 @@ export async function patchDialogGruppe(
   return persistDialogMutation(
     slug,
     (station, _segmentsBefore) => {
-      const dialog = requireDialog(station)
+      const dialog = requireDialogBlock(station)
       const gruppe = findGruppe(dialog, gruppeId)
       gruppe.text = patch.text!
     },
@@ -623,7 +638,7 @@ export async function removeDialogGruppe(
   return persistDialogMutation(
     slug,
     (station, _segmentsBefore) => {
-      const dialog = requireDialog(station)
+      const dialog = requireDialogBlock(station)
       const used = dialog.segmente.some((s) => s.gruppe === gruppeId)
       if (used) {
         throw new MpzStationDialogError(
@@ -643,4 +658,64 @@ export async function removeDialogGruppe(
     false,
     io,
   )
+}
+
+export async function createDialog(
+  slug: string,
+  io: MpzContentIo = createMpzContentIo(),
+): Promise<DialogWriteResult> {
+  return withMpzWriteLock(async () => {
+    const data = await io.readStations()
+    const station = findHubStation(data, slug)
+    if (station.dialog !== undefined) {
+      throw new MpzStationDialogError(
+        'DIALOG_EXISTS',
+        `Station "${slug}" hat bereits einen Dialog.`,
+      )
+    }
+    station.dialog = {
+      figuren: ['frieda', 'otto'],
+      segmente: [],
+      gruppen: [],
+    }
+    const writeResult = await io.writeStations(data, {
+      strict: true,
+      postValidate: true,
+      makeBackup: true,
+      touchedSlugs: [slug],
+    })
+    const written = data.stations.find((s) => s.slug === slug)!
+    return { station: written, mtime: writeResult.mtime }
+  })
+}
+
+export async function removeDialog(
+  slug: string,
+  io: MpzContentIo = createMpzContentIo(),
+): Promise<DialogWriteResult> {
+  return withMpzWriteLock(async () => {
+    const data = await io.readStations()
+    const station = findHubStation(data, slug)
+    if (station.dialog === undefined) {
+      throw new MpzStationDialogError(
+        'NO_DIALOG',
+        `Station "${slug}" hat keinen Dialog.`,
+      )
+    }
+    if (hasStationDialogHotspot(station)) {
+      throw new MpzStationDialogError(
+        'DIALOG_IN_USE',
+        `Station "${slug}" hat Dialog-Hotspots — zuerst im Hotspots-Tab entfernen.`,
+      )
+    }
+    delete station.dialog
+    const writeResult = await io.writeStations(data, {
+      strict: true,
+      postValidate: true,
+      makeBackup: true,
+      touchedSlugs: [slug],
+    })
+    const written = data.stations.find((s) => s.slug === slug)!
+    return { station: written, mtime: writeResult.mtime }
+  })
 }

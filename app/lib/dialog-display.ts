@@ -5,6 +5,14 @@ import type {
   DialogSegment,
 } from '@/lib/types'
 
+export function segmentHasAudio(segment: DialogSegment): boolean {
+  return Boolean(segment.quelle?.trim())
+}
+
+export function isTextOnlySegment(segment: DialogSegment): boolean {
+  return !segmentHasAudio(segment)
+}
+
 export function dialogBubbleText(
   segment: DialogSegment,
   dialog: Dialog,

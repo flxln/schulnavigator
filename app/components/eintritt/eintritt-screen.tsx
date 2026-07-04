@@ -1,5 +1,7 @@
 import Link from 'next/link'
 import { AlertCircle, QrCode } from 'lucide-react'
+import { MpzOfferBanner } from '@/components/brand/mpz-offer-banner'
+import { EintrittScanLink } from '@/components/eintritt/eintritt-scan-link'
 import { FestiveDecor, Gs39Chip, Gs39ChipMark } from '@/components/ui'
 
 export type EintrittVariant = 'fresh' | 'expired' | 'wrong'
@@ -64,28 +66,7 @@ export function EintrittScreen({ variant = 'fresh' }: EintrittScreenProps) {
       </div>
 
       {!isError ? (
-        <Link
-          href="/eintritt/scan"
-          className="sn-card sn-card--interactive relative z-[1] block p-5 text-left shadow-[var(--shadow-md)]"
-          aria-label="Eintritts-QR scannen, Kamera starten"
-        >
-          <div className="mb-3.5 flex items-center gap-3.5">
-            <Gs39Chip tone="green">
-              <QrCode size={28} aria-hidden className="text-fg-on-dark" />
-            </Gs39Chip>
-            <div>
-              <h2 className="text-lg font-extrabold text-fg-1">
-                Eintritts-QR scannen
-              </h2>
-              <p className="text-sm text-fg-3">
-                Am Schultor oder im Schulstartheft.
-              </p>
-            </div>
-          </div>
-          <p className="text-sm leading-relaxed text-fg-2">
-            Tippen Sie hier — die Kamera startet in der App. Kein App-Store nötig.
-          </p>
-        </Link>
+        <EintrittScanLink />
       ) : (
         <div
           className="relative z-[1] rounded-[var(--r-lg)] border-[1.5px] border-brand-red bg-[#fff5f5] p-5 shadow-[var(--shadow-md)]"
@@ -122,28 +103,21 @@ export function EintrittScreen({ variant = 'fresh' }: EintrittScreenProps) {
         </div>
       )}
 
-      <div className="relative z-[1] flex flex-col items-center gap-1.5">
-        <p className="text-center text-[0.6rem] uppercase tracking-widest text-fg-3/60">
-          Ein Angebot des
+      {variant === 'fresh' ? (
+        <p className="relative z-[1] text-center text-[11px] leading-relaxed text-fg-3">
+          Mit gültigem Eintritts-QR setzen wir ein technisch notwendiges Cookie
+          für den Zugang. Details in der{' '}
+          <Link
+            href="/datenschutz"
+            className="font-medium text-brand-green underline underline-offset-2"
+          >
+            Datenschutzerklärung
+          </Link>
+          .
         </p>
-        <a
-          href="https://mpz.schule"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group flex items-center gap-2 rounded-full border border-border-1 bg-bg-2/70 px-3 py-1.5 shadow-[var(--shadow-sm)] backdrop-blur-sm transition hover:border-border-2 hover:shadow-[var(--shadow-md)]"
-          aria-label="Medienpädagogisches Zentrum Dresden"
-        >
-          <img
-            src="/brand/logos/mpz-logo.png"
-            alt=""
-            aria-hidden
-            className="h-5 w-auto shrink-0 object-contain"
-          />
-          <span className="text-[0.72rem] font-semibold leading-none tracking-tight text-fg-2 transition group-hover:text-fg-1">
-            Medienpädagogisches Zentrum
-          </span>
-        </a>
-      </div>
+      ) : null}
+
+      <MpzOfferBanner className="relative z-[1]" />
     </div>
   )
 }
