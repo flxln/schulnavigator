@@ -61,6 +61,8 @@ export type AddDialogSegmentInput = {
   text?: string
   gruppe?: string
   tail?: DialogBubbleTail
+  /** Client-Hinweis für Chain-on-Save (WAV nach Segment-Save). Server setzt quelle erst per ingestDialogClip; nur `false` entfernt quelle beim Patch. */
+  hasAudio?: boolean
 }
 
 export type PatchDialogSegmentInput = {
@@ -68,6 +70,7 @@ export type PatchDialogSegmentInput = {
   gruppe?: string | null
   tail?: DialogBubbleTail | null
   rolle?: DialogRolle
+  hasAudio?: boolean
 }
 
 export type AddDialogGruppeInput = {
@@ -484,7 +487,6 @@ export async function addDialogSegment(
         id,
         rolle,
         text: input.text ?? '',
-        quelle: dialogApiQuelle(slug, buildClipName(index, rolle)),
       }
       if (input.gruppe !== undefined) {
         segment.gruppe = input.gruppe
@@ -539,6 +541,9 @@ export async function patchDialogSegment(
       }
       if (patch.rolle !== undefined) {
         segment.rolle = validateRolle(patch.rolle)
+      }
+      if (patch.hasAudio === false) {
+        delete segment.quelle
       }
     },
     needsAudioSync,

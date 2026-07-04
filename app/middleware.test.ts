@@ -21,6 +21,8 @@ function middlewareRunsFor(pathname: string): boolean {
     pathname === '/eintritt' ||
     pathname.startsWith('/eintritt/') ||
     pathname === '/stationen' ||
+    pathname === '/impressum' ||
+    pathname === '/datenschutz' ||
     pathname.startsWith('/raum/') ||
     pathname === '/mpz' ||
     pathname.startsWith('/mpz/')
@@ -87,7 +89,7 @@ describe('middleware', () => {
 
   it('leitet abgelaufenes Cookie mit reason=expired um', () => {
     vi.useFakeTimers()
-    vi.setSystemTime(new Date('2026-08-01'))
+    vi.setSystemTime(new Date('2027-08-01'))
     const res = middleware(req('/', `${ACCESS_COOKIE}=${FEST_DEV_TOKEN}`))
     expect(res.status).toBe(307)
     expect(res.headers.get('location')).toBe(`${BASE}/eintritt?reason=expired`)
@@ -109,6 +111,14 @@ describe('middleware', () => {
     const res = middleware(req('/eintritt/scan'))
     expect(res.status).toBe(200)
     expect(res.headers.get('location')).toBeNull()
+  })
+
+  it('lässt /impressum und /datenschutz ohne Cookie durch', () => {
+    for (const path of ['/impressum', '/datenschutz'] as const) {
+      const res = middleware(req(path))
+      expect(res.status).toBe(200)
+      expect(res.headers.get('location')).toBeNull()
+    }
   })
 
   it('setzt Cookie bei gültigem ?t= auf /eintritt/scan und leitet nach / um', () => {
@@ -139,16 +149,15 @@ describe('middleware', () => {
     expect(setCookie).toContain(`${ACCESS_COOKIE}=${HEFT_DEV_TOKEN}`)
   })
 
-  it('DEV_UNLOCK_ALL: hebt fest-Cookie auf Heft an', () => {
+  it('DEV_UNLOCK_ALL: Post-Fest-Entry-Cookie ist bereits heft — kein Upgrade', () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date('2026-06-01'))
     process.env.DEV_UNLOCK_ALL = 'true'
     process.env.NODE_ENV = 'development'
 
-    const res = middleware(req('/', `${ACCESS_COOKIE}=${FEST_DEV_TOKEN}`))
+    const res = middleware(req('/', `${ACCESS_COOKIE}=${HEFT_DEV_TOKEN}`))
     expect(res.status).toBe(200)
-    const setCookie = res.headers.get('set-cookie') ?? ''
-    expect(setCookie).toContain(`${ACCESS_COOKIE}=${HEFT_DEV_TOKEN}`)
+    expect(res.headers.get('set-cookie')).toBeNull()
   })
 
   describe('MPZ Studio (/mpz/*)', () => {

@@ -8,28 +8,21 @@ import {
   markMpzStudioDirty,
   useStudioValidation,
 } from '@/components/mpz-studio/studio-validation-context'
+import {
+  FLAT_MAX_BYTES,
+  FLAT_UPLOAD_RATIO_MIN,
+  formatRaumbildBytes,
+  PANO360_MAX_BYTES,
+  PANO360_RATIO,
+} from '@/lib/mpz-raumbild-limits'
 import type { RaumbildUploadResponse, RaumbildVariant } from '@/lib/mpz-station-raumbild-ingest'
 import type { Station, ViewerMode } from '@/lib/types'
-
-/** Werte spiegeln mpz-station-raumbild-ingest.ts — nicht dort importieren (node:fs). */
-const FLAT_MAX_BYTES = 500 * 1024
-const PANO360_MAX_BYTES = 4 * 1024 * 1024
-const FLAT_UPLOAD_RATIO_MIN = 2.5
-const PANO360_RATIO = 2
 
 export type StationRaumbildUploadProps = {
   slug: string
   station: Station
   viewer: ViewerMode
   onStationUpdated?: (station: Station) => void
-}
-
-const KB = 1024
-const MB = 1024 * KB
-
-function formatMaxBytes(bytes: number): string {
-  if (bytes >= MB) return `${Math.round(bytes / MB)} MB`
-  return `${Math.round(bytes / KB)} KB`
 }
 
 type RaumbildZoneProps = {
@@ -201,7 +194,7 @@ export function StationRaumbildUpload({
           title="Flat-Panorama"
           path={bildPath}
           accept=".jpg,.jpeg,image/jpeg"
-          hint={`JPEG · max. ${formatMaxBytes(FLAT_MAX_BYTES)} · Seitenverhältnis min. ${FLAT_UPLOAD_RATIO_MIN}:1`}
+          hint={`JPEG · max. ${formatRaumbildBytes(FLAT_MAX_BYTES)} · Seitenverhältnis min. ${FLAT_UPLOAD_RATIO_MIN}:1`}
           busy={busyVariant === 'flat'}
           onPickFile={handlePickFile('flat')}
         />
@@ -212,7 +205,7 @@ export function StationRaumbildUpload({
             title="Panorama 360°"
             path={panoPath}
             accept=".jpg,.jpeg,.webp,image/jpeg,image/webp"
-            hint={`JPEG oder WebP · max. ${formatMaxBytes(PANO360_MAX_BYTES)} · Seitenverhältnis ${PANO360_RATIO}:1`}
+            hint={`JPEG oder WebP · max. ${formatRaumbildBytes(PANO360_MAX_BYTES)} · Seitenverhältnis ${PANO360_RATIO}:1`}
             busy={busyVariant === 'pano360'}
             onPickFile={handlePickFile('pano360')}
           />

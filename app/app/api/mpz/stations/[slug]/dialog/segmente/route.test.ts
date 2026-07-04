@@ -22,6 +22,14 @@ describe('parseCreate dialog segment', () => {
     })
   })
 
+  it('parst hasAudio', () => {
+    expect(parseCreate({ rolle: 'otto', text: 'Hi', hasAudio: true })).toEqual({
+      rolle: 'otto',
+      text: 'Hi',
+      hasAudio: true,
+    })
+  })
+
   it('lehnt fehlende rolle ab', () => {
     expect(parseCreate({ text: 'Hi' })).toBeNull()
   })

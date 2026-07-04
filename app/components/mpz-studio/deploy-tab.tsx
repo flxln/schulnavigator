@@ -1,6 +1,11 @@
 'use client'
 
+import { Loader2 } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
+
+import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
+import { mpzButtonClassName } from '@/components/mpz-studio/mpz-form-primitives'
+import { DEFAULT_DEPLOY_BRANCH } from '@/lib/mpz-deploy-constants'
 
 type DeployEnv = {
   baseUrl: string | null
@@ -21,12 +26,27 @@ type ValidateStep = {
   stderr: string
 }
 
+type SyncFeedback = {
+  variant: 'success' | 'error'
+  message: string
+}
+
 const COOLIFY_CHECKLIST = [
   'SN_ACCESS_TOKENS in Coolify Prod + Dev setzen (vor Deploy)',
   'git add lib/access-token-constants.mjs public/qr/manifest.json public/qr/manifest-schulfest.json',
   'Commit, Push, Deploy',
   'Entry-QRs aus public/qr/pdf/ drucken (alte Tokens verbrannt)',
 ]
+
+function isSyncDeployLabel(label: string): boolean {
+  return label === 'sync-media-only' || label === 'sync-full'
+}
+
+function syncSuccessMessage(label: string): string {
+  return label === 'sync-full'
+    ? 'Vollständiger Deploy abgeschlossen.'
+    : 'Medien erfolgreich synchronisiert.'
+}
 
 export function DeployTab() {
   const [env, setEnv] = useState<DeployEnv | null>(null)
@@ -42,6 +62,9 @@ export function DeployTab() {
   const [actionLog, setActionLog] = useState<string | null>(null)
   const [actionError, setActionError] = useState<string | null>(null)
   const [busyAction, setBusyAction] = useState<string | null>(null)
+
+  const [syncFeedback, setSyncFeedback] = useState<SyncFeedback | null>(null)
+  const [syncLog, setSyncLog] = useState<string | null>(null)
 
   const [validateSteps, setValidateSteps] = useState<ValidateStep[] | null>(null)
   const [validateOk, setValidateOk] = useState<boolean | null>(null)
@@ -122,6 +145,10 @@ export function DeployTab() {
     setBusyAction(label)
     setActionError(null)
     setActionLog(null)
+    if (isSyncDeployLabel(label)) {
+      setSyncFeedback(null)
+      setSyncLog(null)
+    }
     try {
       const res = await fetch(url, {
         method: 'POST',
@@ -140,11 +167,19 @@ export function DeployTab() {
       }
 
       if (res.status === 422 || res.status === 400) {
-        setActionError(json.message ?? json.error ?? 'Anfrage abgelehnt.')
+        const message = json.message ?? json.error ?? 'Anfrage abgelehnt.'
+        if (isSyncDeployLabel(label)) {
+          setSyncFeedback({ variant: 'error', message })
+        }
+        setActionError(message)
         return
       }
       if (res.status === 500) {
-        setActionError(json.message ?? 'Interner Fehler.')
+        const message = json.message ?? 'Interner Fehler.'
+        if (isSyncDeployLabel(label)) {
+          setSyncFeedback({ variant: 'error', message })
+        }
+        setActionError(message)
         return
       }
 
@@ -162,8 +197,22 @@ export function DeployTab() {
         parts.push(`stderr:\n${json.stderr}`)
       }
       parts.push(`exitCode: ${json.exitCode ?? '—'}, ok: ${String(json.ok)}`)
-      setActionLog(parts.join('\n\n'))
-      if (json.ok === false) {
+      const logText = parts.join('\n\n')
+      setActionLog(logText)
+
+      if (isSyncDeployLabel(label)) {
+        setSyncLog(logText)
+        if (json.ok === true) {
+          setSyncFeedback({ variant: 'success', message: syncSuccessMessage(label) })
+        } else {
+          setSyncFeedback({
+            variant: 'error',
+            message: 'Deploy-Skript mit Fehler beendet — Details unten.',
+          })
+        }
+      }
+
+      if (json.ok === false && !isSyncDeployLabel(label)) {
         setActionError('Skript mit Fehler beendet — Ausgabe prüfen.')
       }
       if (
@@ -174,7 +223,11 @@ export function DeployTab() {
         await loadPreview()
       }
     } catch (err) {
-      setActionError(err instanceof Error ? err.message : 'Unbekannter Fehler')
+      const message = err instanceof Error ? err.message : 'Unbekannter Fehler'
+      if (isSyncDeployLabel(label)) {
+        setSyncFeedback({ variant: 'error', message })
+      }
+      setActionError(message)
     } finally {
       setBusyAction(null)
     }
@@ -203,9 +256,11 @@ export function DeployTab() {
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-6">
       <p className="text-sm text-fg-2">
-        Betrieb und Deploy-Vorbereitung — schreibt nur lokal ins Repo und{' '}
-        <code className="text-fg-1">.env.local</code>. Kein Git-Commit, kein Coolify-Deploy
-        aus dem Studio.
+        Betrieb und Deploy-Vorbereitung — schreibt lokal ins Repo und{' '}
+        <code className="text-fg-1">.env.local</code>. Kein automatischer Commit; Medien-Sync
+        und optional Push über die Deploy-Buttons unten. Vollständig deployen setzt Branch{' '}
+        <code className="text-fg-1">{DEFAULT_DEPLOY_BRANCH}</code> voraus (konfigurierbar via{' '}
+        <code className="text-fg-1">DEPLOY_BRANCH</code>).
       </p>
 
       <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5 shadow-gs39-sm">
@@ -219,7 +274,7 @@ export function DeployTab() {
               type="url"
               value={baseUrlInput}
               onChange={(e) => setBaseUrlInput(e.target.value)}
-              placeholder="https://schulnavigator.mpz.schule"
+              placeholder="https://39-gs.mpz.schule"
               className="rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1"
             />
             <span className="text-xs text-fg-3">HTTPS, ohne trailing slash — für QR-Druck die Live-Domain.</span>
@@ -237,7 +292,7 @@ export function DeployTab() {
             type="button"
             disabled={envSaving}
             onClick={() => void saveEnv()}
-            className="self-start rounded-gs39-sm border border-brand-green bg-brand-green px-3 py-1.5 text-sm font-semibold text-fg-on-dark disabled:opacity-50"
+            className={`${mpzButtonClassName('primary')} self-start !min-h-0 px-3 py-1.5 disabled:opacity-50`}
           >
             {envSaving ? 'Speichern…' : 'Env speichern'}
           </button>
@@ -248,15 +303,9 @@ export function DeployTab() {
             </p>
           )}
           {envMessage && (
-            <p className="rounded-gs39-sm border border-brand-green/30 bg-brand-green/10 px-3 py-2 text-sm text-fg-1">
-              {envMessage}
-            </p>
+            <MpzFormAlert variant="success">{envMessage}</MpzFormAlert>
           )}
-          {envError && (
-            <p className="rounded-gs39-sm border border-brand-red/30 bg-brand-red/10 px-3 py-2 text-sm text-fg-1">
-              {envError}
-            </p>
-          )}
+          {envError && <MpzFormAlert variant="error">{envError}</MpzFormAlert>}
         </div>
       </section>
 
@@ -346,6 +395,66 @@ export function DeployTab() {
 
       <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5 shadow-gs39-sm">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-fg-3">
+          Schüler-Medien (Bahn B)
+        </h2>
+        <p className="mt-2 text-sm text-fg-2">
+          Fotos, Videos, Dialog- und Coach-Audio liegen nicht auf GitHub. Nach Studio-Upload werden
+          sie per rsync auf die VPS-Volumes am IONOS-Host synchronisiert (
+          <code className="text-fg-1">DEPLOY_SSH</code> in{' '}
+          <code className="text-fg-1">.env.local</code>). Vor dem Sync laufen{' '}
+          <code className="text-fg-1">validate:stations</code> und{' '}
+          <code className="text-fg-1">validate:coach</code> im Skript.
+        </p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <ActionButton
+            label="Medien deployen"
+            busy={busyAction === 'sync-media-only'}
+            disabled={!!busyAction}
+            onClick={() =>
+              void runDeployAction(
+                'sync-media-only',
+                '/api/mpz/deploy/sync-content',
+                { mode: 'media-only' },
+                'Schüler-Medien auf den Server rsyncen (ohne git push)?',
+              )
+            }
+          />
+          <ActionButton
+            label="Vollständig deployen"
+            busy={busyAction === 'sync-full'}
+            disabled={!!busyAction}
+            onClick={() =>
+              void runDeployAction(
+                'sync-full',
+                '/api/mpz/deploy/sync-content',
+                { mode: 'full' },
+                `Validate, git push, rsync und optional Coolify-Webhook — nur von Branch ${DEFAULT_DEPLOY_BRANCH}. Fortfahren?`,
+              )
+            }
+          />
+        </div>
+        {syncFeedback && (
+          <div className="mt-3 flex flex-col gap-2">
+            <MpzFormAlert variant={syncFeedback.variant}>{syncFeedback.message}</MpzFormAlert>
+            {syncLog && syncFeedback.variant === 'error' && (
+              <details className="rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-xs text-fg-2">
+                <summary className="cursor-pointer font-semibold text-fg-1">
+                  Skript-Ausgabe
+                </summary>
+                <pre className="mt-2 max-h-48 overflow-auto whitespace-pre-wrap">{syncLog}</pre>
+              </details>
+            )}
+          </div>
+        )}
+        <p className="mt-3 text-xs text-fg-3">
+          CLI: <code className="text-fg-2">npm run deploy:content</code> (Voll-Flow) oder{' '}
+          <code className="text-fg-2">npm run deploy:content -- --media-only</code>. SSH-User braucht
+          NOPASSWD für <code className="text-fg-2">sudo rsync</code>.
+        </p>
+      </section>
+
+      <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5 shadow-gs39-sm">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-fg-3">
           Validate-all
         </h2>
         <p className="mt-2 text-sm text-fg-2">
@@ -359,11 +468,11 @@ export function DeployTab() {
           onClick={() => void runValidateAll()}
         />
         {validateOk !== null && (
-          <p
-            className={`mt-3 text-sm font-semibold ${validateOk ? 'text-brand-green' : 'text-brand-red'}`}
-          >
-            {validateOk ? 'Alle Schritte grün.' : 'Mindestens ein Schritt fehlgeschlagen.'}
-          </p>
+          <div className="mt-3">
+            <MpzFormAlert variant={validateOk ? 'success' : 'error'}>
+              {validateOk ? 'Alle Schritte grün.' : 'Mindestens ein Schritt fehlgeschlagen.'}
+            </MpzFormAlert>
+          </div>
         )}
         {validateSteps && (
           <ul className="mt-3 flex flex-col gap-2">
@@ -374,7 +483,7 @@ export function DeployTab() {
               >
                 <span
                   className={
-                    step.exitCode === 0 ? 'font-semibold text-brand-green' : 'font-semibold text-brand-red'
+                    step.exitCode === 0 ? 'font-semibold text-accent' : 'font-semibold text-error'
                   }
                 >
                   {step.name} — exit {step.exitCode}
@@ -420,7 +529,7 @@ export function DeployTab() {
         <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5 shadow-gs39-sm">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-fg-3">Ausgabe</h2>
           {actionError && (
-            <p className="mt-2 text-sm text-brand-red">{actionError}</p>
+            <p className="mt-2 text-sm text-error">{actionError}</p>
           )}
           {actionLog && (
             <pre className="mt-2 max-h-96 overflow-auto whitespace-pre-wrap rounded-gs39-sm bg-bg-1 p-3 text-xs text-fg-2">
@@ -446,18 +555,22 @@ function ActionButton({
   onClick: () => void
   variant?: 'default' | 'danger'
 }) {
-  const classes =
-    variant === 'danger'
-      ? 'border-brand-red bg-brand-red/10 text-brand-red hover:bg-brand-red/20'
-      : 'border-brand-green bg-brand-green text-fg-on-dark hover:opacity-90'
+  const buttonVariant = variant === 'danger' ? 'danger' : 'primary'
   return (
     <button
       type="button"
       disabled={disabled}
       onClick={onClick}
-      className={`rounded-gs39-sm border px-3 py-1.5 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-50 ${classes}`}
+      className={`${mpzButtonClassName(buttonVariant)} !min-h-0 px-3 py-1.5 disabled:opacity-50`}
     >
-      {busy ? 'Läuft…' : label}
+      {busy ? (
+        <>
+          <Loader2 className="mr-1.5 size-3.5 animate-spin" aria-hidden />
+          Läuft…
+        </>
+      ) : (
+        label
+      )}
     </button>
   )
 }

@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { StationHotspotAddForm } from '@/components/mpz-studio/station-hotspot-add-form'
 import { getStationBySlug } from '@/lib/stations'
+import { studioDemoKlassenzimmerStation } from '@/lib/test-fixtures/studio-demo-klassenzimmer'
 import type { Station } from '@/lib/types'
 
 vi.mock('next/navigation', () => ({
@@ -104,7 +105,7 @@ describe('StationHotspotAddForm', () => {
   })
 
   it('nur Medien: Dialog-Karte disabled mit CTA, kein POST beim Klick', () => {
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     render(<StationHotspotAddForm slug="klassenzimmer" station={station} />)
 
     expect(screen.getByRole('button', { name: 'Medien-Hotspot' })).toBeTruthy()
@@ -131,7 +132,7 @@ describe('StationHotspotAddForm', () => {
   })
 
   it('mit Medien: zeigt Formularfelder für Sphere', async () => {
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     render(<StationHotspotAddForm slug="klassenzimmer" station={station} />)
 
     expect(screen.getByLabelText('ID')).toBeTruthy()
@@ -165,7 +166,7 @@ describe('StationHotspotAddForm', () => {
   })
 
   it('erfolgreicher Submit zeigt Erfolgsmeldung', async () => {
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     vi.mocked(fetch)
       .mockResolvedValueOnce({
         ok: true,
@@ -195,7 +196,7 @@ describe('StationHotspotAddForm', () => {
   })
 
   it('Fehler vom Server werden angezeigt', async () => {
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     vi.mocked(fetch)
       .mockResolvedValueOnce({
         ok: true,

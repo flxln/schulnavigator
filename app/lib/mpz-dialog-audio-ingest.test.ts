@@ -239,6 +239,25 @@ describe('mpz-dialog-audio-ingest · auditDialogAudio', () => {
       rmSync(root, { recursive: true, force: true })
     }
   })
+
+  it('meldet text-only für Segment ohne quelle', () => {
+    const root = mkdtempSync(join(tmpdir(), 'dialog-audit-text-'))
+    try {
+      const data = structuredClone(fixture) as StationsFile
+      const lw = data.stations.find((s) => s.slug === 'lesewelt')
+      if (!lw) throw new Error('lesewelt fehlt')
+      lw.dialog = {
+        figuren: ['otto'],
+        segmente: [{ id: 'l1', rolle: 'otto', text: 'Lesen macht Spaß' }],
+      }
+      const { segments } = auditDialogAudio(lw, root)
+      expect(segments).toHaveLength(1)
+      expect(segments[0]?.state).toBe('text-only')
+      expect(segments[0]?.quelle).toBeUndefined()
+    } finally {
+      rmSync(root, { recursive: true, force: true })
+    }
+  })
 })
 
 describe('mpz-dialog-audio-ingest · removeDialogClip', () => {

@@ -4,6 +4,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { StationStammdatenForm } from '@/components/mpz-studio/station-stammdaten-form'
 import { mpzFieldClassName } from '@/components/mpz-studio/mpz-form-primitives'
 import { getStationBySlug } from '@/lib/stations'
+import { studioDemoKlassenzimmerStation } from '@/lib/test-fixtures/studio-demo-klassenzimmer'
 
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ refresh: vi.fn() }),
@@ -77,7 +78,7 @@ describe('StationStammdatenForm', () => {
   })
 
   it('deaktiviert Viewer-Select bei Hotspots', () => {
-    const station = getStationBySlug('klassenzimmer')
+    const station = studioDemoKlassenzimmerStation
     expect(station?.hotspots360?.length).toBeGreaterThan(0)
 
     render(<StationStammdatenForm slug="klassenzimmer" station={station} />)

@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { StationRaumbildUpload } from '@/components/mpz-studio/station-raumbild-upload'
 import { getStationBySlug } from '@/lib/stations'
+import { studioDemoKlassenzimmerStation } from '@/lib/test-fixtures/studio-demo-klassenzimmer'
 
 const mocks = vi.hoisted(() => ({
   validateNow: vi.fn(),
@@ -48,7 +49,7 @@ describe('StationRaumbildUpload', () => {
   })
 
   it('zeigt beide Zonen bei viewer=equirectangular im 2-Spalten-Grid', () => {
-    const station = getStationBySlug('klassenzimmer')
+    const station = studioDemoKlassenzimmerStation
     expect(station).toBeTruthy()
 
     render(

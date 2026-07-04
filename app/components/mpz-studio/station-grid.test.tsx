@@ -145,16 +145,18 @@ describe('StationGrid', () => {
     mocks.report = sampleReport
     mocks.loading = false
     render(<StationGrid />)
-    const bearbeiten = screen.getByRole('link', {
+    const bearbeitenLinks = screen.getAllByRole('link', {
       name: 'Klassenzimmer bearbeiten',
     })
-    expect(bearbeiten.getAttribute('href')).toBe('/mpz/studio/stationen/klassenzimmer')
-    expect(bearbeiten.className).toContain('before:absolute')
-    expect(bearbeiten.className).toContain('before:inset-0')
+    expect(bearbeitenLinks).toHaveLength(2)
+    const stretchLink = bearbeitenLinks.find((link) =>
+      link.className.includes('absolute inset-0'),
+    )
+    expect(stretchLink?.getAttribute('href')).toBe('/mpz/studio/stationen/klassenzimmer')
 
     const vorschau = screen.getByRole('link', { name: /Vorschau \/raum\/musik/ })
-    expect(vorschau.className).toContain('relative z-10')
     expect(vorschau.getAttribute('href')).toBe('/raum/musik')
+    expect(vorschau.hasAttribute('target')).toBe(false)
 
     const kalib = screen.getByRole('link', {
       name: /Kalibrieren \(Hotspots \+ Startblick\)/,

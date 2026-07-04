@@ -7,11 +7,11 @@ import {
   markMpzStudioDirty,
   useStudioValidation,
 } from '@/components/mpz-studio/studio-validation-context'
+import {
+  dialogPlayUrl,
+  useDialogSegmentAudioUpload,
+} from '@/components/mpz-studio/use-dialog-segment-audio-upload'
 import type { DialogSegmentAudit } from '@/lib/mpz-dialog-audio-ingest'
-
-function dialogPlayUrl(slug: string, expectedClip: string): string {
-  return `/api/dialog/${slug}/${expectedClip}`
-}
 
 export type StationDialogSegmentAudioRowProps = {
   slug: string
@@ -28,8 +28,7 @@ export function StationDialogSegmentAudioRow({
 }: StationDialogSegmentAudioRowProps) {
   const router = useRouter()
   const { validateNow } = useStudioValidation()
-  const [busy, setBusy] = useState(false)
-  const [rowError, setRowError] = useState<string | null>(null)
+  const { busy, error: rowError, setError: setRowError, upload } = useDialogSegmentAudioUpload()
   const [playError, setPlayError] = useState(false)
 
   const playUrl = audit.fileExists ? dialogPlayUrl(slug, audit.expectedClip) : null
@@ -46,32 +45,14 @@ export function StationDialogSegmentAudioRow({
 
   async function uploadSegment(file: File, overrideDrift: boolean) {
     setRowError(null)
-    setBusy(true)
-    const form = new FormData()
-    form.set('slug', slug)
-    form.set('segmentIndex', String(audit.segmentIndex))
-    form.set('file', file)
-    form.set('collision', 'replace')
-    if (overrideDrift) {
-      form.set('overrideQuelleDrift', 'true')
+    const ok = await upload(slug, audit.segmentIndex, file, {
+      overrideQuelleDrift: overrideDrift,
+    })
+    if (!ok) {
+      return
     }
-    try {
-      const res = await fetch('/api/mpz/dialog-audio/ingest', {
-        method: 'POST',
-        body: form,
-      })
-      const json = (await res.json()) as { message?: string }
-      if (!res.ok) {
-        setRowError(json.message ?? `Upload fehlgeschlagen (${res.status})`)
-        return
-      }
-      setPlayError(false)
-      await afterMutation()
-    } catch {
-      setRowError('Upload fehlgeschlagen.')
-    } finally {
-      setBusy(false)
-    }
+    setPlayError(false)
+    await afterMutation()
   }
 
   function handleUploadClick() {
@@ -83,10 +64,10 @@ export function StationDialogSegmentAudioRow({
       const file = input.files?.[0]
       if (!file) return
       if (audit.state === 'drift') {
-        const ok = window.confirm(
+        const confirmed = window.confirm(
           `segment.quelle weicht ab (${audit.quelle}). Trotzdem auf ${audit.expectedClip} verknüpfen?`,
         )
-        if (!ok) return
+        if (!confirmed) return
         void uploadSegment(file, true)
         return
       }
@@ -105,7 +86,6 @@ export function StationDialogSegmentAudioRow({
       return
     }
     setRowError(null)
-    setBusy(true)
     try {
       const res = await fetch(
         `/api/mpz/dialog-audio/clip?slug=${encodeURIComponent(slug)}&segmentIndex=${audit.segmentIndex}`,
@@ -120,8 +100,6 @@ export function StationDialogSegmentAudioRow({
       await afterMutation()
     } catch {
       setRowError('Clip konnte nicht entfernt werden.')
-    } finally {
-      setBusy(false)
     }
   }
 

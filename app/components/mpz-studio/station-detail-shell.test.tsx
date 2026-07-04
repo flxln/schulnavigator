@@ -3,6 +3,7 @@ import { cleanup, render, screen, within } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { StationDetailShell } from '@/components/mpz-studio/station-detail-shell'
 import type { MpzValidationReport } from '@/lib/mpz-studio-overview'
+import { studioDemoKlassenzimmerStation } from '@/lib/test-fixtures/studio-demo-klassenzimmer'
 import { getStationBySlug } from '@/lib/stations'
 
 const GLOBAL_SUFFIXES = ['bookcreator.com', 'delightex.com'] as const
@@ -55,7 +56,8 @@ vi.mock('@/components/mpz-studio/studio-validation-context', () => ({
 }))
 
 function summaryForSlug(slug: string, hasDialog: boolean) {
-  const station = getStationBySlug(slug)
+  const station =
+    slug === 'klassenzimmer' ? studioDemoKlassenzimmerStation : getStationBySlug(slug)
   return {
     slug,
     hubNr: 1,
@@ -89,7 +91,8 @@ function setReportWithHealth(
   health: 'ok' | 'warn' | 'error',
   issues: string[],
 ) {
-  const station = getStationBySlug(slug)
+  const station =
+    slug === 'klassenzimmer' ? studioDemoKlassenzimmerStation : getStationBySlug(slug)
   mocks.report = {
     ok: true,
     checkedAt: new Date().toISOString(),
@@ -127,7 +130,7 @@ describe('StationDetailShell', () => {
   it('rendert vier Tabs inkl. Dialog für klassenzimmer', () => {
     mocks.searchParams = new URLSearchParams()
     setReport('klassenzimmer', false)
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
 
     render(
       <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} globalSuffixes={GLOBAL_SUFFIXES} />,
@@ -139,6 +142,11 @@ describe('StationDetailShell', () => {
     expect(within(nav).getByRole('link', { name: /Hotspots/ })).toBeTruthy()
     expect(within(nav).getByRole('link', { name: 'Dialog' })).toBeTruthy()
     expect(screen.queryByRole('link', { name: 'Dialog-Audio' })).toBeNull()
+    const preview = screen.getByRole('link', {
+      name: /Vorschau \/raum\/klassenzimmer/,
+    })
+    expect(preview.getAttribute('href')).toBe('/raum/klassenzimmer')
+    expect(preview.hasAttribute('target')).toBe(false)
   })
 
   it('rendert nur Dialog-Tab für daz wenn hasDialog', () => {
@@ -180,7 +188,7 @@ describe('StationDetailShell', () => {
   it('Dialog-Tab Empty-State mit CTA für klassenzimmer', () => {
     mocks.searchParams = new URLSearchParams('tab=dialog')
     setReport('klassenzimmer', false)
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
 
     render(
       <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} globalSuffixes={GLOBAL_SUFFIXES} />,
@@ -193,7 +201,7 @@ describe('StationDetailShell', () => {
   it('Tab-Links enthalten korrektes ?tab=', () => {
     mocks.searchParams = new URLSearchParams()
     setReport('klassenzimmer', false)
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
 
     render(
       <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} globalSuffixes={GLOBAL_SUFFIXES} />,
@@ -214,7 +222,7 @@ describe('StationDetailShell', () => {
   it('Medien-Tab zeigt Tabelle für klassenzimmer', () => {
     mocks.searchParams = new URLSearchParams('tab=medien')
     setReport('klassenzimmer', false)
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
 
     render(
       <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} globalSuffixes={GLOBAL_SUFFIXES} />,
@@ -269,7 +277,7 @@ describe('StationDetailShell', () => {
   it('zeigt keine Zurück-Navigation zum Stations-Grid', () => {
     mocks.searchParams = new URLSearchParams()
     setReport('klassenzimmer', false)
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
 
     render(
       <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} globalSuffixes={GLOBAL_SUFFIXES} />,
@@ -281,7 +289,7 @@ describe('StationDetailShell', () => {
   it('rendert Ampel mit semantischen Klassen und sr-only-Label bei ok', () => {
     mocks.searchParams = new URLSearchParams()
     setReport('klassenzimmer', false)
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
 
     const { container } = render(
       <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} globalSuffixes={GLOBAL_SUFFIXES} />,
@@ -334,7 +342,7 @@ describe('StationDetailShell', () => {
   it('markiert aktiven Tab mit border-accent', () => {
     mocks.searchParams = new URLSearchParams('tab=medien')
     setReport('klassenzimmer', false)
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
 
     render(
       <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} globalSuffixes={GLOBAL_SUFFIXES} />,
@@ -362,7 +370,7 @@ describe('StationDetailShell', () => {
   it('Hotspots-Tab zeigt Tabelle für klassenzimmer', () => {
     mocks.searchParams = new URLSearchParams('tab=hotspots')
     setReport('klassenzimmer', false)
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
 
     render(
       <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} globalSuffixes={GLOBAL_SUFFIXES} />,

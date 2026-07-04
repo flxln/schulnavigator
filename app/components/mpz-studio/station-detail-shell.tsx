@@ -16,6 +16,7 @@ import { StationStammdatenForm } from '@/components/mpz-studio/station-stammdate
 import { StationHotspotsTable } from '@/components/mpz-studio/station-hotspots-table'
 import { StationDialogPanel } from '@/components/mpz-studio/station-dialog-panel'
 import { StationMedienTable } from '@/components/mpz-studio/station-medien-table'
+import { MpzRoomPreviewControl } from '@/components/mpz-studio/mpz-room-preview-control'
 import type { StationHealth } from '@/lib/mpz-studio-overview'
 import type { Station, ViewerMode } from '@/lib/types'
 
@@ -75,6 +76,7 @@ export function StationDetailShell({
   const searchParams = useSearchParams()
   const activeTab = resolveTab(searchParams.get('tab'))
   const { report } = useStudioValidation()
+  const previewHref = `/raum/${slug}`
 
   const summary = report?.stationSummaries.find((s) => s.slug === slug)
   const titel = station?.titel ?? summary?.titel ?? slug
@@ -133,14 +135,12 @@ export function StationDetailShell({
           )}
         </div>
 
-        <Link
-          href={`/raum/${slug}`}
-          target="_blank"
-          rel="noopener noreferrer"
+        <MpzRoomPreviewControl
+          href={previewHref}
           className="shrink-0 text-sm font-semibold text-accent underline-offset-2 hover:underline"
         >
           ↗ Vorschau /raum/{slug}
-        </Link>
+        </MpzRoomPreviewControl>
       </header>
 
       <nav

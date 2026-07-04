@@ -2,7 +2,7 @@
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { StationHotspotEditForm } from '@/components/mpz-studio/station-hotspot-edit-form'
-import { getStationBySlug } from '@/lib/stations'
+import { studioDemoKlassenzimmerStation } from '@/lib/test-fixtures/studio-demo-klassenzimmer'
 
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ refresh: vi.fn() }),
@@ -30,7 +30,7 @@ afterEach(() => {
 
 describe('StationHotspotEditForm', () => {
   it('rendert mpzButton-Klassen für Speichern und Abbrechen', () => {
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     const hotspot = station.hotspots360![0]
 
     render(

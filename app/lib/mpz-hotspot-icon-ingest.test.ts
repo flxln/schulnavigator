@@ -28,17 +28,35 @@ function makeIo() {
 }
 
 describe('mpz-hotspot-icon-ingest · resolveIconPublicPath', () => {
-  it('akzeptiert Pfade unter icons/', () => {
+  it('akzeptiert Pfade unter media/icons/', () => {
     const appRoot = '/app'
     expect(resolveIconPublicPath(appRoot, 'hort', '/media/hort/icons/play.svg')).toBe(
       join(appRoot, 'public', 'media', 'hort', 'icons', 'play.svg'),
     )
   })
 
-  it('lehnt fotos/ und Traversal ab', () => {
+  it('akzeptiert Pfade unter stations-icons/', () => {
+    const appRoot = '/app'
+    expect(resolveIconPublicPath(appRoot, 'daz', '/stations-icons/daz/video.svg')).toBe(
+      join(appRoot, 'public', 'stations-icons', 'daz', 'video.svg'),
+    )
+  })
+
+  it('lehnt fotos/, falschen Slug und Traversal ab', () => {
     const appRoot = '/app'
     expect(resolveIconPublicPath(appRoot, 'hort', '/media/hort/fotos/x.jpg')).toBeNull()
     expect(resolveIconPublicPath(appRoot, 'hort', '/media/other/icons/x.svg')).toBeNull()
+    expect(resolveIconPublicPath(appRoot, 'hort', '/stations-icons/other/x.svg')).toBeNull()
+    expect(
+      resolveIconPublicPath(appRoot, 'hort', '/media/hort/icons/../../../config.json'),
+    ).toBeNull()
+    expect(
+      resolveIconPublicPath(
+        appRoot,
+        'hort',
+        '/stations-icons/hort/../../../config.json',
+      ),
+    ).toBeNull()
   })
 })
 
@@ -112,6 +130,27 @@ describe('mpz-hotspot-icon-ingest · ingestHotspotIcon', () => {
     expect(existsSync(join(io.getPaths().appRoot, 'public', 'media', 'evil.svg'))).toBe(false)
   })
 
+  it('lehnt Upload ab wenn Bahn-A-Preset kollidiert', async () => {
+    const io = makeIo()
+    const presetDir = join(io.getPaths().appRoot, 'public', 'stations-icons', 'hort')
+    mkdirSync(presetDir, { recursive: true })
+    writeFileSync(join(presetDir, 'video.svg'), SVG)
+    await expect(
+      ingestHotspotIcon(
+        {
+          slug: 'hort',
+          source: { buffer: SVG },
+          originalName: 'video.svg',
+          collision: 'reject',
+        },
+        io,
+      ),
+    ).rejects.toMatchObject({
+      code: 'VALIDATION',
+      message: expect.stringContaining('generisches Preset'),
+    })
+  })
+
   it('COLLISION bei reject wenn Datei existiert', async () => {
     const io = makeIo()
     await ingestHotspotIcon(
@@ -164,17 +203,11 @@ describe('mpz-hotspot-icon-ingest · ingestHotspotIcon', () => {
     expect(readFileSync(first.destPath).equals(other)).toBe(true)
   })
 
-  it('listStationHotspotIcons liefert sortierte Pfade ohne Lock', async () => {
+  it('listStationHotspotIcons liefert sortierte Pfade aus Bahn A und B', async () => {
     const io = makeIo()
-    await ingestHotspotIcon(
-      {
-        slug: 'hort',
-        source: { buffer: SVG },
-        originalName: 'z.svg',
-        collision: 'reject',
-      },
-      io,
-    )
+    const presetDir = join(io.getPaths().appRoot, 'public', 'stations-icons', 'hort')
+    mkdirSync(presetDir, { recursive: true })
+    writeFileSync(join(presetDir, 'preset.svg'), SVG)
     await ingestHotspotIcon(
       {
         slug: 'hort',
@@ -185,7 +218,10 @@ describe('mpz-hotspot-icon-ingest · ingestHotspotIcon', () => {
       io,
     )
     const { paths } = await listStationHotspotIcons('hort', io)
-    expect(paths).toEqual(['/media/hort/icons/a.png', '/media/hort/icons/z.svg'])
+    expect(paths).toEqual([
+      '/media/hort/icons/a.png',
+      '/stations-icons/hort/preset.svg',
+    ])
   })
 
   it('listStationHotspotIcons → leer wenn Ordner fehlt', async () => {

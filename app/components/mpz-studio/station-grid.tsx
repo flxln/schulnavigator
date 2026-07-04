@@ -9,6 +9,7 @@ import {
 } from '@/components/mpz-studio/mpz-studio-health'
 import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
 import { mpzStationCalibHref } from '@/lib/mpz-studio-calib'
+import { MpzRoomPreviewControl } from '@/components/mpz-studio/mpz-room-preview-control'
 import type { MpzStationOverview } from '@/lib/mpz-studio-overview'
 
 function viewerLabel(viewer: MpzStationOverview['viewer']): string {
@@ -23,64 +24,72 @@ function StationCard({ st }: { st: MpzStationOverview }) {
     hasPanorama360: st.hasPanorama360,
   })
   const detailHref = `/mpz/studio/stationen/${encodeURIComponent(st.slug)}`
+  const previewHref = `/raum/${st.slug}`
 
   return (
     <MpzCard
       id={st.slug}
       className="relative scroll-mt-24 transition-shadow hover:shadow-md"
     >
-      <div className="mb-3 flex items-start justify-between gap-2">
-        <div>
-          <p className="text-[11px] font-bold uppercase tracking-wide text-fg-3">
-            #{String(st.hubNr).padStart(2, '0')}
-          </p>
-          <h2 className="text-base font-bold text-fg-1">{st.titel}</h2>
-          <p className="font-mono text-xs text-fg-3">{st.slug}</p>
+      <Link
+        href={detailHref}
+        aria-label={`${st.titel} bearbeiten`}
+        className="absolute inset-0 z-0 rounded-mpz-card"
+      >
+        <span className="sr-only">Bearbeiten</span>
+      </Link>
+
+      <div className="relative z-10 pointer-events-none">
+        <div className="mb-3 flex items-start justify-between gap-2">
+          <div>
+            <p className="text-[11px] font-bold uppercase tracking-wide text-fg-3">
+              #{String(st.hubNr).padStart(2, '0')}
+            </p>
+            <h2 className="text-base font-bold text-fg-1">{st.titel}</h2>
+            <p className="font-mono text-xs text-fg-3">{st.slug}</p>
+          </div>
+          <div className="flex shrink-0 items-center gap-1">
+            <span
+              className={`size-3 rounded-full ${healthDotClass(st.health)}`}
+              title={healthLabel(st.health)}
+              aria-hidden
+            />
+            <span className="sr-only">— {healthLabel(st.health)}</span>
+          </div>
         </div>
-        <div className="flex shrink-0 items-center gap-1">
-          <span
-            className={`size-3 rounded-full ${healthDotClass(st.health)}`}
-            title={healthLabel(st.health)}
-            aria-hidden
-          />
-          <span className="sr-only">— {healthLabel(st.health)}</span>
+
+        <div className="mb-3">
+          <span className="rounded bg-bg-1 px-2 py-0.5 text-xs font-semibold text-fg-3">
+            {viewerLabel(st.viewer)}
+          </span>
         </div>
-      </div>
 
-      <div className="mb-3">
-        <span className="rounded bg-bg-1 px-2 py-0.5 text-xs font-semibold text-fg-3">
-          {viewerLabel(st.viewer)}
-        </span>
-      </div>
+        {st.health !== 'ok' && st.issues.length > 0 && (
+          <ul className="mb-3 space-y-0.5 text-xs text-fg-3">
+            {st.issues.map((issue) => (
+              <li key={issue}>— {issue}</li>
+            ))}
+          </ul>
+        )}
 
-      {st.health !== 'ok' && st.issues.length > 0 && (
-        <ul className="mb-3 space-y-0.5 text-xs text-fg-3">
-          {st.issues.map((issue) => (
-            <li key={issue}>— {issue}</li>
-          ))}
-        </ul>
-      )}
-
-      <div className="flex flex-col gap-2 border-t border-border-1 pt-3 text-sm">
+        <div className="pointer-events-auto flex flex-col gap-2 border-t border-border-1 pt-3 text-sm">
         <Link
           href={detailHref}
           aria-label={`${st.titel} bearbeiten`}
-          className="font-semibold text-accent underline-offset-2 before:absolute before:inset-0 hover:underline"
+          className="font-semibold text-accent underline-offset-2 hover:underline"
         >
           Bearbeiten
         </Link>
-        <Link
-          href={`/raum/${st.slug}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="relative z-10 font-semibold text-accent underline-offset-2 hover:underline"
+        <MpzRoomPreviewControl
+          href={previewHref}
+          className="font-semibold text-accent underline-offset-2 hover:underline"
         >
           ↗ Vorschau /raum/{st.slug}
-        </Link>
+        </MpzRoomPreviewControl>
         {calib && (
           <Link
             href={calib}
-            className="relative z-10 font-semibold text-accent underline-offset-2 hover:underline"
+            className="font-semibold text-accent underline-offset-2 hover:underline"
           >
             {st.viewer === 'equirectangular'
               ? 'Kalibrieren (Hotspots + Startblick)'
@@ -89,10 +98,11 @@ function StationCard({ st }: { st: MpzStationOverview }) {
         )}
         <Link
           href={`${detailHref}?tab=medien`}
-          className="relative z-10 text-fg-2 underline-offset-2 hover:text-accent hover:underline"
+          className="text-fg-2 underline-offset-2 hover:text-accent hover:underline"
         >
           Medien hochladen
         </Link>
+        </div>
       </div>
     </MpzCard>
   )

@@ -19,6 +19,7 @@ import {
   useStudioValidation,
 } from '@/components/mpz-studio/studio-validation-context'
 import type { DialogSegmentAudit } from '@/lib/mpz-dialog-audio-ingest'
+import { segmentHasAudio } from '@/lib/dialog-display'
 import type { DialogFigure, Station } from '@/lib/types'
 
 interface StatusResponse {
@@ -364,6 +365,9 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
             <StationDialogSegmentForm
               slug={slug}
               mode="add"
+              segmentCount={segmentCount}
+              segmentIndex={null}
+              audit={null}
               gruppen={gruppen}
               onCancel={() => setAddingSegment(false)}
               onSuccess={(msg) => {
@@ -371,6 +375,7 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
                 setSuccess(msg)
                 void loadAudioStatus()
               }}
+              onRefresh={loadAudioStatus}
             />
           </div>
         )}
@@ -396,6 +401,7 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
               dialog.segmente.map((seg, index) => {
                 const audit = audioBySegmentId.get(seg.id)
                 const audioExpanded = expandedAudioSegmentId === seg.id
+                const segHasAudio = segmentHasAudio(seg)
                 return (
                   <Fragment key={seg.id}>
                     <tr className="border-b border-border-1/60 align-top">
@@ -420,17 +426,19 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
                       </td>
                       <td className="min-h-11 px-3 py-2 text-right">
                         <div className="flex flex-wrap justify-end gap-1">
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setExpandedAudioSegmentId((prev) =>
-                                prev === seg.id ? null : seg.id,
-                              )
-                            }
-                            className={tableActionButtonClass('ghost', audioExpanded)}
-                          >
-                            Audio
-                          </button>
+                          {segHasAudio ? (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setExpandedAudioSegmentId((prev) =>
+                                  prev === seg.id ? null : seg.id,
+                                )
+                              }
+                              className={tableActionButtonClass('ghost', audioExpanded)}
+                            >
+                              Audio
+                            </button>
+                          ) : null}
                           <button
                             type="button"
                             onClick={() => {
@@ -452,7 +460,7 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
                         </div>
                       </td>
                     </tr>
-                    {audioExpanded && audit ? (
+                    {audioExpanded && audit && segHasAudio ? (
                       <tr className="border-b border-border-1/60 bg-bg-2">
                         <td colSpan={7} className="px-3 py-2">
                           <StationDialogSegmentAudioRow
@@ -477,6 +485,9 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
               slug={slug}
               mode="edit"
               segment={dialog.segmente.find((s) => s.id === editingSegmentId)}
+              segmentIndex={dialog.segmente.findIndex((s) => s.id === editingSegmentId)}
+              segmentCount={segmentCount}
+              audit={audioBySegmentId.get(editingSegmentId) ?? null}
               gruppen={gruppen}
               onCancel={() => setEditingSegmentId(null)}
               onSuccess={(msg) => {
@@ -484,6 +495,7 @@ export function StationDialogPanel({ slug, station }: StationDialogPanelProps) {
                 setSuccess(msg)
                 void loadAudioStatus()
               }}
+              onRefresh={loadAudioStatus}
             />
           </div>
         )}

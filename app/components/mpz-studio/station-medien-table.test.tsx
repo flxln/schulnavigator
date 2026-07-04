@@ -4,6 +4,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { StationMedienTable } from '@/components/mpz-studio/station-medien-table'
 import { mpzButtonClassName } from '@/components/mpz-studio/mpz-form-primitives'
 import { getStationBySlug } from '@/lib/stations'
+import { studioDemoKlassenzimmerStation } from '@/lib/test-fixtures/studio-demo-klassenzimmer'
 
 const openMediaIngest = vi.fn()
 
@@ -67,7 +68,7 @@ describe('StationMedienTable', () => {
   })
 
   it('zeigt Medienzeilen bei gefüllter Liste', () => {
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     render(
       <StationMedienTable
         slug="klassenzimmer"
@@ -81,7 +82,7 @@ describe('StationMedienTable', () => {
   })
 
   it('markiert aktive Zeile beim Bearbeiten', () => {
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     render(
       <StationMedienTable
         slug="klassenzimmer"
