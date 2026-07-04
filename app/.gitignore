@@ -39,6 +39,8 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+# Von Next.js bei dev/build neu erzeugt (Pfad wechselt zwischen .next/dev und .next)
+next-env.d.ts
 
 # QR-Code-PNGs (lokal generiert; bei Bedarf: git add -f public/qr/…)
 public/qr/*.png
