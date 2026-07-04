@@ -39,11 +39,18 @@ describe('GET /api/mpz/dialog-audio/status', () => {
     expect(res.status).toBe(400)
   })
 
-  it('klassenzimmer ohne Dialog → 422', async () => {
+  it('klassenzimmer ohne Dialog → 200 mit leerem Audit', async () => {
     vi.stubEnv('NODE_ENV', 'development')
     vi.stubEnv('SN_MPZ_STUDIO_SECRET', SECRET)
     const res = await GET(getRequest('klassenzimmer', SECRET))
-    expect(res.status).toBe(422)
+    expect(res.status).toBe(200)
+    await expect(res.json()).resolves.toMatchObject({
+      slug: 'klassenzimmer',
+      segments: [],
+      orphans: [],
+      missingCount: 0,
+      driftCount: 0,
+    })
   })
 
   it('daz liefert Segmente und Zähler', async () => {

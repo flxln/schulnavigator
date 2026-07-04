@@ -11,13 +11,17 @@ import {
 import {
   addDialogGruppe,
   addDialogSegment,
+  createDialog,
   MpzStationDialogError,
   patchDialogMeta,
   patchDialogSegment,
+  removeDialog,
   removeDialogGruppe,
   removeDialogSegment,
 } from '@/lib/mpz-station-dialog'
+import { addStationHotspot } from '@/lib/mpz-station-hotspots'
 import * as mpzStationsValidation from '@/lib/mpz-stations-validation'
+import { validateStationsFile } from '@/lib/validate-stations'
 import type { StationsFile } from '@/lib/types'
 
 const fixture = raw as StationsFile
@@ -78,6 +82,15 @@ describe('patchDialogMeta', () => {
     expect(result.station.dialog?.figuren).toEqual(['frieda', 'otto'])
   })
 
+  it('aktualisiert figuren auf leerem Dialog-Entwurf', async () => {
+    const custom = structuredClone(fixture) as StationsFile
+    const kz = custom.stations.find((s) => s.slug === 'klassenzimmer')!
+    kz.dialog = { figuren: ['frieda', 'otto'], segmente: [], gruppen: [] }
+    const io = makeTempIo(custom)
+    const result = await patchDialogMeta('klassenzimmer', { figuren: ['frieda'] }, io)
+    expect(result.station.dialog?.figuren).toEqual(['frieda'])
+  })
+
   it('wirft FIGURE_IN_USE wenn otto-Segment ohne otto in figuren', async () => {
     const io = makeTempIo()
     await expect(
@@ -87,7 +100,7 @@ describe('patchDialogMeta', () => {
 })
 
 describe('addDialogSegment', () => {
-  it('hängt Segment mit auto-id an', async () => {
+  it('hängt Segment mit auto-id an (Text-only ohne quelle)', async () => {
     const io = makeTempIo()
     const before = dazDialog(io).segmente.length
     const result = await addDialogSegment(
@@ -98,7 +111,20 @@ describe('addDialogSegment', () => {
     expect(result.station.dialog?.segmente).toHaveLength(before + 1)
     const last = result.station.dialog!.segmente.at(-1)!
     expect(last.id).toMatch(/^d\d+$/)
-    expect(last.quelle).toBe(`/api/dialog/daz/${String(before + 1).padStart(2, '0')}-frieda.wav`)
+    expect(last.quelle).toBeUndefined()
+  })
+
+  it('legt Audio-Segment ohne quelle an (quelle erst nach WAV-Ingest)', async () => {
+    const io = makeTempIo()
+    const before = dazDialog(io).segmente.length
+    const result = await addDialogSegment(
+      'daz',
+      { rolle: 'frieda', text: 'Neu', hasAudio: true },
+      io,
+    )
+    const last = result.station.dialog!.segmente.at(-1)!
+    expect(last.quelle).toBeUndefined()
+    expect(result.station.dialog!.segmente).toHaveLength(before + 1)
   })
 })
 
@@ -154,6 +180,70 @@ describe('removeDialogGruppe', () => {
     const io = makeTempIo(custom)
     const result = await removeDialogGruppe('daz', 'test-gr', io)
     expect(result.station.dialog?.gruppen?.some((g) => g.id === 'test-gr')).toBeFalsy()
+  })
+})
+
+describe('createDialog', () => {
+  it('legt minimalen Dialog-Block an', async () => {
+    const io = makeTempIo()
+    const result = await createDialog('klassenzimmer', io)
+    expect(result.station.dialog).toEqual({
+      figuren: ['frieda', 'otto'],
+      segmente: [],
+      gruppen: [],
+    })
+  })
+
+  it('wirft DIALOG_EXISTS wenn Block existiert', async () => {
+    const io = makeTempIo()
+    await expect(createDialog('daz', io)).rejects.toMatchObject({ code: 'DIALOG_EXISTS' })
+  })
+})
+
+describe('removeDialog', () => {
+  it('entfernt Dialog-Block', async () => {
+    const custom = structuredClone(fixture) as StationsFile
+    const kz = custom.stations.find((s) => s.slug === 'klassenzimmer')!
+    kz.dialog = { figuren: ['frieda', 'otto'], segmente: [], gruppen: [] }
+    const io = makeTempIo(custom)
+    const result = await removeDialog('klassenzimmer', io)
+    expect(result.station.dialog).toBeUndefined()
+  })
+
+  it('wirft DIALOG_IN_USE bei Dialog-Hotspot', async () => {
+    const io = makeTempIo()
+    await expect(removeDialog('daz', io)).rejects.toMatchObject({ code: 'DIALOG_IN_USE' })
+  })
+
+  it('wirft NO_DIALOG wenn kein Block', async () => {
+    const io = makeTempIo()
+    await expect(removeDialog('klassenzimmer', io)).rejects.toMatchObject({ code: 'NO_DIALOG' })
+  })
+})
+
+describe('dialog lifecycle E2E', () => {
+  it('klassenzimmer: anlegen → Segment → Dialog-Hotspot → validate', async () => {
+    const io = makeTempIo()
+    await createDialog('klassenzimmer', io)
+    await addDialogSegment('klassenzimmer', { rolle: 'frieda', text: 'Hallo' }, io)
+    await addStationHotspot(
+      'klassenzimmer',
+      {
+        action: 'dialog',
+        id: 'hs-dialog-kz',
+        mascot: 'frieda',
+        yaw: 10,
+        pitch: 0,
+      },
+      io,
+    )
+    const data = JSON.parse(
+      readFileSync(io.getPaths().stationsPath, 'utf8'),
+    ) as StationsFile
+    expect(() => validateStationsFile(data)).not.toThrow()
+    const kz = data.stations.find((s) => s.slug === 'klassenzimmer')!
+    expect(kz.dialog?.segmente).toHaveLength(1)
+    expect(kz.hotspots360?.some((h) => h.action === 'dialog')).toBe(true)
   })
 })
 

@@ -45,7 +45,7 @@ npm run dev
 | Seite | Zweck |
 | ----- | ----- |
 | [https://localhost:3000/](https://localhost:3000/) | Startseite — **ohne** vorherigen Entry: Redirect zu `/eintritt` |
-| [https://localhost:3000/eintritt?t=fest-vkc2AuKW0S7QGHDT](https://localhost:3000/eintritt?t=fest-vkc2AuKW0S7QGHDT) | Entry Schulfest: Cookie + Redirect `/` → Frontansicht-Hub **gesperrt** (0/12), Slots nach Raumbesuch frei (#21) |
+| [https://localhost:3000/eintritt?t=fest-vkc2AuKW0S7QGHDT](https://localhost:3000/eintritt?t=fest-vkc2AuKW0S7QGHDT) | Entry (Post-Fest): Cookie + Redirect `/` → **voller Hub** (alle 12 Stationen klickbar) |
 | [https://localhost:3000/eintritt?t=heft-ImulQPDmydy7VCVj](https://localhost:3000/eintritt?t=heft-ImulQPDmydy7VCVj) | Entry Heft: voller Hub (alle Stationen klickbar), Fortschritt zählt trotzdem (#21) |
 | [https://localhost:3000/stationen](https://localhost:3000/stationen) | Alle 12 Stationen als Liste mit **Raum-Icons** (#105; Lock im Modus `fest`) — Epic #58 |
 | [https://localhost:3000/eintritt](https://localhost:3000/eintritt) | Hinweisseite (Willkommens-Karte → Link auf Scan-Route); Fehler `?reason=expired\|invalid` |
@@ -75,10 +75,24 @@ Internes Dev-only-Ingest-Tool — **nie** auf Coolify, in Production 404.
 3. [https://localhost:3000/mpz/studio](https://localhost:3000/mpz/studio) öffnen → Redirect zu `/mpz/unlock`, Secret eintragen → Cookie-Session → Dashboard.
 4. API-Check (optional): `curl -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET" http://localhost:3000/api/mpz/health`
 
+**Navigation & Shell (UI-Cleanup #195, Mobile #203, Visual Polish #207).** Sidebar: 4 Gruppen, 6 Haupt-Einträge (Dashboard, Alle Stationen, Coach, Embeds & Links, Design & Hub, Deploy) — kein globaler Medien-Upload, kein Dialog-Audio. **Shell-Chrome (#207):** Sidebar 240px (`w-mpz-sidebar`), grüner Active-Stripe (`border-accent`), Nav-Icons + Label, Top-Bar 56px, Save als Pill-Button. Design & Hub: [`/mpz/studio/design`](https://localhost:3000/mpz/studio/design) mit Tabs `hub` und `brand`. Unter `lg` (< 1024 px): Hamburger öffnet Overlay-Drawer; ab `lg`: Collapse-Toggle schaltet Icon-Rail (`w-14`), Präferenz in `localStorage` (`mpz-studio:nav-collapsed`). **Stationen-Grid (#209):** [`/mpz/studio/stationen`](https://localhost:3000/mpz/studio/stationen) — `MpzCard`-Kacheln, Ampel (`accent`/`warn`/`error`), Stretched-Link „Bearbeiten“, Issues bei Warnung/Fehler. **Station-Detail-Header (#210):** [`/mpz/studio/stationen/{slug}`](https://localhost:3000/mpz/studio/stationen/kunst) — H1 + Hub-/Viewer-Chips, Ampel, Underline-Tabs, Issues-Statuszeile; Tab-Inhalte (Formulare/Tabellen) noch v2.1 (#211+).
+
+**Legacy-Redirects (Kurztest):**
+
+| Aufruf | Erwartung |
+|--------|-----------|
+| `/mpz/studio/hub` | → `/mpz/studio/design?tab=hub` |
+| `/mpz/studio/brand` | → `/mpz/studio/design?tab=brand` |
+| `/mpz/studio/dialog-audio` | → `/mpz/studio/stationen` |
+| `/mpz/studio/ingest` | → `/mpz/studio/stationen` |
+| `/mpz/studio/ingest?slug=werken` | → `/mpz/studio/stationen/werken?tab=medien` |
+| `/mpz/studio/stationen/kunst?tab=dialog-audio` | → `?tab=dialog` |
+
+**Dialog-Lifecycle E2E (#199).** Station ohne `dialog`-Block (z. B. [`klassenzimmer`](https://localhost:3000/mpz/studio/stationen/klassenzimmer?tab=dialog)): Tab **Dialog** → **Dialog hinzufügen** → Segment anlegen → Tab **Hotspots** → Dialog-Hotspot setzen → **Speichern & Validieren** grün. Vollständiger Dialog-Content: [`daz`](https://localhost:3000/mpz/studio/stationen/daz?tab=dialog).
+
 **Speichern & Validieren (#150, #155).** Nach Uploads/Kalibrierung zeigt das Dashboard den Status (debounced, ≥ 800 ms). Button oben rechts **Speichern & Validieren** normalisiert die Hub-Reihenfolge in `stations.json` und prüft Struktur + Dateireferenzen. Schreiben läuft über Temp-Datei → Validierung → `rename` (kein invalider Zustand bei Abbruch). Nach Medien-/Dialog-Upload liefert die API `validation` + `mtime` direkt; bei Fehlern: rotes Panel, ggf. Rollback aus `.bak`.
 
-**Medien hochladen (Issue #147).** Im Studio „Medien hochladen (Test)“ oder direkt
-[/mpz/studio/ingest](https://localhost:3000/mpz/studio/ingest): Station + Typ + Datei wählen → Upload. Die Datei landet unter `public/media/{slug}/{ordner}/` und der `medien[]`-Eintrag wird in `data/stations.json` ergänzt (gleicher Pfad wie die CLI). Regeln: Magic-Byte- und Größenprüfung je Typ (audio 25 MB, video 150 MB, foto 8 MB, text 512 KB); HEIC wird abgelehnt — bitte als JPG exportieren. Bei Dateinamen-/`id`-Kollision benennt die API automatisch um (`-2`, `-3`, …).
+**Medien hochladen (Issue #147).** Im Studio: Station öffnen → Tab **Medien** → **Medien hinzufügen** (Modal). Legacy-Route [`/mpz/studio/ingest`](https://localhost:3000/mpz/studio/ingest) leitet auf die Stationsliste um; mit `?slug=werken` auf [`/mpz/studio/stationen/werken?tab=medien`](https://localhost:3000/mpz/studio/stationen/werken?tab=medien). Die Datei landet unter `public/media/{slug}/{ordner}/` und der `medien[]`-Eintrag wird in `data/stations.json` ergänzt (gleicher Pfad wie die CLI). Regeln: Magic-Byte- und Größenprüfung je Typ (audio 25 MB, video 150 MB, foto 8 MB, text 512 KB); HEIC wird abgelehnt — bitte als JPG exportieren. Bei Dateinamen-/`id`-Kollision benennt die API automatisch um (`-2`, `-3`, …).
 
 curl-Beispiel (multipart, Cookie- oder Header-Auth):
 
@@ -89,19 +103,21 @@ curl -X POST http://localhost:3000/api/mpz/media/ingest \
   -F "file=@./foto.jpg"
 ```
 
-**Dialog-Audio (Issue #148).** Im Studio „Dialog-Audio (Test)“ oder
-[/mpz/studio/dialog-audio](https://localhost:3000/mpz/studio/dialog-audio): Station `daz` oder `pc-raum` wählen → Segment-Tabelle zeigt fehlende Clips → WAV hochladen. Datei landet unter `content/dialog-audio/{slug}/NN-rolle.wav`; `dialog.segmente[i].quelle` wird auf `/api/dialog/{slug}/…` gesetzt. Nur echte WAV (max. 15 MB); Reihenfolge der `dialog.segmente[]` ist immutabel (siehe [content-einpflegen.md](./content-einpflegen.md)).
+**Dialog-Audio (Issue #148, Studio-UI #200).** Im Studio: Station öffnen → Tab **Dialog** → Segment **Bearbeiten** oder **Anlegen** → Häkchen **Mit Audio** → **WAV auswählen** → **Speichern** (lädt Segment + WAV in einem Schritt; Zielname `NN-rolle.wav` automatisch beim Ingest). Alternativ: Segment-Zeile **Audio** aufklappen → WAV hochladen/ersetzen (Shortcut ohne Formular). Datei landet unter `content/dialog-audio/{slug}/NN-rolle.wav`; `dialog.segmente[i].quelle` wird beim **Ingest** auf `/api/dialog/{slug}/…` gesetzt (nicht schon beim Segment-Save). Nur echte WAV (max. 15 MB); Reihenfolge der `dialog.segmente[]` ist immutabel (siehe [content-einpflegen.md](./content-einpflegen.md)). Legacy-Route `/mpz/studio/dialog-audio` leitet auf die Stationsliste um.
 
 ```bash
 curl -X POST "http://localhost:3000/api/mpz/dialog-audio/ingest" \
   -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET" \
   -F "slug=daz" -F "segmentIndex=0" -F "collision=replace" \
   -F "file=@./01-frieda.wav"
+
+curl -X DELETE "http://localhost:3000/api/mpz/dialog-audio/clip?slug=daz&segmentIndex=0" \
+  -H "x-mpz-studio-key: $SN_MPZ_STUDIO_SECRET"
 ```
 
 **Hotspot-Kalibrierung (Issue #149).** Zuerst `/mpz/unlock`. Im Studio: **Dashboard** (`/mpz/studio`) oder **Stationen** (`/mpz/studio/stationen`) — dort Vorschau und Kalibrier-Links je Station.
 
-- **Sphere:** `/raum/{slug}?hotspot-calib=1` (z. B. `daz`, `klassenzimmer`) → Hotspot-ID wählen, auf Ankerpunkt klicken → **In stations.json übernehmen** (oder JSON kopieren). **Startblick (#153):** Panorama zur Einstiegsansicht drehen → **Als Startblick übernehmen** (aktuelle Kamera, nicht Hotspot-Klick). Nach Reload gilt der neue Startblick (#152). Nach Browser-Zurück und erneutem Aufruf bleibt das Overlay sichtbar (reagiert auf URL via `useSearchParams`).
+- **Sphere:** `/mpz/calib/sphere/{slug}` (z. B. `daz`, `klassenzimmer`) → Tab **Hotspots**: Hotspot-ID wählen, auf Ankerpunkt klicken → **In stations.json übernehmen**. Tab **Startblick** (#153): Panorama zur Einstiegsansicht drehen → **Als Startblick übernehmen** (aktuelle Kamera, nicht Hotspot-Klick). Nach Reload gilt der neue Startblick (#152). Legacy-Fallback: `/raum/{slug}?hotspot-calib=1` (Overlay in der Besucher-App, Dev-only).
 - **Flat:** `/mpz/calib/flat/kunst` (Station mit `bild`, kein `equirectangular`) → Tab **Hotspots**: Klick setzt `x`/`y` → Übernehmen. Tab **Startpan** (#185): Panorama wischen → **Als Startpan übernehmen** (`POST /api/mpz/view/flat`). Hotspot muss bereits in `hotspots[]` existieren.
 
 ```bash
@@ -126,10 +142,9 @@ curl -X POST http://localhost:3000/api/mpz/view/flat \
 | Tab (`?tab=`) | Kurztest |
 |---------------|----------|
 | `stammdaten` (Default) | `titel`/`beschreibung` ändern → Speichern; Raumbild Flat/360° hochladen (#173) → Vorschau aktualisiert |
-| `medien` | **Bearbeiten** (PATCH Metadaten, #171); **Datei ersetzen** (#188); **Thumbnail/Poster hochladen** (#189); **link**/**embed** per Modal anlegen (#172); Ingest-Link; Entfernen mit Bestätigung |
+| `medien` | **Bearbeiten** (PATCH Metadaten, #171); **Datei ersetzen** (#188); **Thumbnail/Poster hochladen** (#189); **link**/**embed** per Modal anlegen (#172); **Medien hinzufügen** (Modal); Entfernen mit Bestätigung |
 | `hotspots` | Medien-Hotspot anlegen/bearbeiten/entfernen; Dialog-Hotspot mit Maskottchen (#176); Kalibrier-Link |
-| `dialog` | Nur `daz`/`pc-raum`: Segment-Text ändern, Gruppe anlegen, `bubble`-Felder (#175) |
-| `dialog-audio` | Segment-Upload wie globale Dialog-Audio-Seite (#163) |
+| `dialog` | Alle Stationen mit Dialog: Segmente, Gruppen, `bubble` (#175); Dialog anlegen/entfernen (#199); pro Segment-Zeile Audio: Upload, Vorschau, Clip entfernen (#200) |
 
 **MPZ Studio v2.1 — Medien-Datei ersetzen (#187–#189).** Nach `/mpz/unlock`: [`/mpz/studio/stationen/klassenzimmer?tab=medien`](https://localhost:3000/mpz/studio/stationen/klassenzimmer?tab=medien) (oder andere Station mit audio/foto/video-Medien).
 
@@ -171,8 +186,8 @@ curl -X PATCH "http://localhost:3000/api/mpz/stations/kunst/stammdaten" \
 |-------|----------|
 | [`/mpz/studio/coach`](https://localhost:3000/mpz/studio/coach) (#177, Layout #192, Audio #193) | Nachricht anlegen → optional Layout/Audio → speichern → Hub/Raum prüfen (Autoplay nach Scan auf iPhone testen) |
 | [`/mpz/studio/embeds`](https://localhost:3000/mpz/studio/embeds) (#178) | Domain zur Allowlist hinzufügen; Übersicht link/embed-Medien aus `stations.json` |
-| [`/mpz/studio/hub`](https://localhost:3000/mpz/studio/hub) (#179) | Slug einem Fenster-Slot zuweisen; Akzentfarbe und Lucide-Icon ändern → speichern |
-| [`/mpz/studio/brand`](https://localhost:3000/mpz/studio/brand) (#180) | Slot-Datei ersetzen → Vorschau mit Cache-Bust (`?t=mtime`) |
+| [`/mpz/studio/design`](https://localhost:3000/mpz/studio/design) (#179, Tab Hub-Karte) | Slug einem Fenster-Slot zuweisen; Akzentfarbe und Lucide-Icon ändern → speichern |
+| [`/mpz/studio/design?tab=brand`](https://localhost:3000/mpz/studio/design?tab=brand) (#180) | Slot-Datei ersetzen → Vorschau mit Cache-Bust (`?t=mtime`) |
 | [`/mpz/studio/deploy`](https://localhost:3000/mpz/studio/deploy) (#174) | **Validate-all** → grün; QR **Dry-Run**; Env lesen (Änderungen an `NEXT_PUBLIC_*` → Dev-Server neu starten) |
 
 Details und API-Referenz: [fuer-entwickler.md](./fuer-entwickler.md) (Abschnitt MPZ Studio).
@@ -272,12 +287,13 @@ Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/archiv/pr
 8. Zwei Tabs (`/` + `/scan`): im zweiten Tab scannen → erster Tab aktualisiert bei Fokus
 9. Alle 12 Stationen besucht → auf `/` zuerst **Coach** (`complete`, Frieda + Otto), nach Schließen **SparkleBurst** auf der Fortschrittskarte; `sn_sparkle_done` verhindert Sparkle-Wiederholung; Coach-Keys `sn_coach_seen_fest` / `sn_coach_seen_heft` (modus-getrennt)
 10. `curl -sI https://localhost:3000/stationen` ohne Cookie → `307` nach `/eintritt`
-11. **Regression #83 (`fest`):** Raum per QR freischalten → Raum-Footer „Scanne die nächste Station!“ → **`/scan`**; ohne Scan schließen → `sn_visited_slugs` enthält **nicht** die ungescannte Station
-12. **`fest`/`heft` 1–11:** **über** der Fortschrittskarte **ein** Button „Scanne die nächste Station!“ — **kein** Stationsname, **kein** geteilter Button
-13. **`fest` 0/12:** nur „QR an der Tür scannen“ **über** der Fortschrittskarte
-14. **`fest`/`heft` 12/12:** kein Scan-CTA unter dem Hub (Sparkle in der Fortschrittskarte optional)
-15. **Fortschrittskarte:** Tipp auf „Mein Rundgang …“ → **`/stationen`** (wie Listen-Icon oben rechts)
-16. **Kein Flash:** `fest` mit Fortschritt neu laden → vor Hydration Einzel-Scan, danach „Scanne die nächste Station!“ (Button-Text wechselt, Anzahl bleibt 1)
+11. **Regression #83 (`fest`):** Raum per QR freischalten → Raum-Footer „Scanne einen beliebigen Code“ → **`/scan`**; ohne Scan schließen → `sn_visited_slugs` enthält **nicht** die ungescannte Station
+12. **Fest Hub/Stationen (#224):** Gesperrtes Fenster auf `/` oder Eintrag auf `/stationen` tippen → **`/scan`** (kein Toast; ADR-009)
+13. **`fest`/`heft` 1–11:** Scan-CTA **über** der Fortschrittskarte — einheitlich **„Scanne einen beliebigen Code“** (kein Stationsname)
+14. **`fest` 0/12:** derselbe Button-Text **über** der Fortschrittskarte (`fest-scan`)
+15. **`fest`/`heft` 12/12:** kein Scan-CTA unter dem Hub (Sparkle in der Fortschrittskarte optional)
+16. **Fortschrittskarte:** Tipp auf „Mein Rundgang …“ → **`/stationen`** (wie Listen-Icon oben rechts); **MPZ-Banner** direkt **unter** der Fortschrittskarte
+17. **Kein Flash:** `fest` mit Fortschritt neu laden → vor Hydration `fest-scan`, danach `scan-next` (Button-Text bleibt gleich; nur Sichtbarkeitslogik wechselt)
 
 **Coach-Einblendungen (ADR-019):**
 
@@ -293,8 +309,9 @@ Referenz: [`2026-06-13-sphere-hotspot-acceptance.md`](../dokumentation/archiv/pr
 10. `prefers-reduced-motion`: kein Slide, Text sichtbar
 11. **Overlay-Priorität (iOS):** `schulnav.pan-onboarding.seen` + Coach-Keys leeren → Raum mit Room-Coach (`klassenzimmer`/`musik`/`hort`) → nur Gyro-Dialog (kein Coach-Flackern) → nach Freigabe nur Pan-Hinweis → danach Room-Coach
 12. **Desktop (gyrolos):** gleicher Raum, Coach-Keys leer → kein Gyro/Pan, Room-Coach erscheint direkt
-13. **Coach-Audio (#193):** Demo-Clip an `welcome-hub` gebunden (`quelle` + `content/coach-audio/welcome-hub.wav`) → Hub: Autoplay; bei blockiertem `play()` Replay-Icon; Schließen stoppt Audio
-14. **Tablet-Spalte (Folge #74):** DevTools 768×1024 und 1024×768 — Backdrop fullscreen; Figuren, Blase und Schließen-Button innerhalb `.sn-page-container` (nicht am Viewport-Rand); `duo-split` auf `/` bei 12/12
+13. **Coach-Audio (#193):** Demo-Clip an `welcome-hub` gebunden (`quelle` + `content/coach-audio/welcome-hub.wav`) → nach Eintritt/Scan-Tap Hub: Autoplay (Unlock-Kette); bei blockiertem `play()` Replay-Icon; Schließen stoppt Audio
+14. **Coach-Layout `mascotSize`:** In `coach-messages.json` oder `/mpz/studio/coach` ändern (0,15–0,55) → nach Reload sichtbare Größenänderung; Größe nur über `resolveCoachLayout()` (kein CSS-Deckel). Details: [`coach-layout.md`](../dokumentation/ideen/archiv/coach-layout.md)
+15. **Tablet-Spalte (Folge #74):** DevTools 768×1024 und 1024×768 — Backdrop fullscreen; Figuren, Blase und Schließen-Button innerhalb `.sn-page-container` (nicht am Viewport-Rand); `duo-split` auf `/` bei 12/12
 
 **Stationssymbole (#105):**
 

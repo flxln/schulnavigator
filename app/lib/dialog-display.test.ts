@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { dialogTailSide, resolveDialogTail } from '@/lib/dialog-display'
+import {
+  dialogTailSide,
+  resolveDialogTail,
+  segmentHasAudio,
+} from '@/lib/dialog-display'
 import type { DialogSegment } from '@/lib/types'
 
 function segment(
@@ -35,5 +39,17 @@ describe('dialogTailSide', () => {
     expect(dialogTailSide('frieda')).toBe('left')
     expect(dialogTailSide('otto')).toBe('right')
     expect(dialogTailSide('beide')).toBe('center')
+  })
+})
+
+describe('segmentHasAudio', () => {
+  it('ist false ohne quelle', () => {
+    expect(
+      segmentHasAudio({ id: 's1', rolle: 'otto', text: 'Nur Text' }),
+    ).toBe(false)
+  })
+
+  it('ist true mit quelle', () => {
+    expect(segmentHasAudio(segment({ rolle: 'otto' }))).toBe(true)
   })
 })

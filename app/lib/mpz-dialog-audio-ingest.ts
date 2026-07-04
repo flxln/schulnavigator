@@ -7,6 +7,7 @@ import {
   dialogApiQuelle,
   dialogAudioFsPath,
 } from '@/lib/dialog-audio'
+import { segmentHasAudio } from '@/lib/dialog-display'
 import {
   createMpzContentIo,
   type MpzContentIo,
@@ -30,7 +31,7 @@ const MAX_DIALOG_WAV_BYTES = 15 * MB
 const MIN_WAV_BYTES = 1024
 const LFS_POINTER_PREFIX = 'version https://git-lfs.github.com/spec/v1'
 
-export type DialogSegmentState = 'ok' | 'fehlt' | 'drift' | 'leer'
+export type DialogSegmentState = 'ok' | 'fehlt' | 'drift' | 'leer' | 'text-only'
 
 export interface IngestDialogClipInput {
   slug: string
@@ -57,7 +58,7 @@ export interface DialogSegmentAudit {
   rolle: DialogRolle
   textPreview: string
   expectedClip: string
-  quelle: string
+  quelle?: string
   fileExists: boolean
   quelleMatchesConvention: boolean
   state: DialogSegmentState
@@ -126,6 +127,18 @@ export function auditDialogAudio(station: Station, appRoot: string): DialogAudio
   const expectedClips = new Set<string>()
   const segments: DialogSegmentAudit[] = segmente.map((seg, segmentIndex) => {
     const expectedClip = buildClipName(segmentIndex, seg.rolle)
+    if (!segmentHasAudio(seg)) {
+      return {
+        segmentIndex,
+        segmentId: seg.id,
+        rolle: seg.rolle,
+        textPreview: textPreview(seg.text),
+        expectedClip,
+        fileExists: false,
+        quelleMatchesConvention: false,
+        state: 'text-only' as const,
+      }
+    }
     expectedClips.add(expectedClip)
     const expectedQuelle = dialogApiQuelle(slug, expectedClip)
     const destPath = dialogAudioFsPath(appRoot, slug, expectedClip)
@@ -168,7 +181,7 @@ export async function auditDialogAudioForSlug(
     throw new MpzUploadError('VALIDATION', `Station "${slug}" nicht gefunden.`)
   }
   if (!station.dialog?.segmente?.length) {
-    throw new MpzUploadError('VALIDATION', `Station "${slug}" hat keinen Dialog.`)
+    return { segments: [], orphans: [] }
   }
   const { appRoot } = io.getPaths()
   const base = auditDialogAudio(station, appRoot)
@@ -336,6 +349,59 @@ export async function ingestDialogClip(
   io: MpzContentIo = createMpzContentIo(),
 ): Promise<IngestDialogClipResult> {
   return withMpzWriteLock(() => ingestDialogClipInner(input, io))
+}
+
+export interface RemoveDialogClipResult {
+  slug: string
+  segmentIndex: number
+  expectedClip: string
+  fileDeleted: boolean
+}
+
+// FIXME: MpzUploadError nutzt 'VALIDATION' statt 'VALIDATION_FAILED' (error-conventions.mdc).
+// Normalisierung mit #199-Tech-Debt — hier modul-konsistent mit ingestDialogClip belassen.
+
+export async function removeDialogClip(
+  slug: string,
+  segmentIndex: number,
+  io: MpzContentIo = createMpzContentIo(),
+): Promise<RemoveDialogClipResult> {
+  if (!isHubSlug(slug)) {
+    throw new MpzUploadError(
+      'VALIDATION',
+      `Unbekannter slug "${slug}". Erlaubt: ${getHubSlugOrder().join(', ')}.`,
+    )
+  }
+
+  const data = await io.readStations()
+  const station = data.stations.find((s) => s.slug === slug)
+  if (!station?.dialog?.segmente?.length) {
+    throw new MpzUploadError(
+      'VALIDATION',
+      `Station "${slug}" hat keinen Dialog (dialog.segmente).`,
+    )
+  }
+
+  const { segmente } = station.dialog
+  if (segmentIndex < 0 || segmentIndex >= segmente.length) {
+    throw new MpzUploadError(
+      'VALIDATION',
+      `segmentIndex ${segmentIndex} außerhalb (0–${segmente.length - 1}).`,
+    )
+  }
+
+  const segment = segmente[segmentIndex]!
+  const expectedClip = buildClipName(segmentIndex, segment.rolle)
+  const { appRoot } = io.getPaths()
+  const destPath = dialogAudioFsPath(appRoot, slug, expectedClip)
+
+  let fileDeleted = false
+  if (existsSync(destPath)) {
+    await unlink(destPath)
+    fileDeleted = true
+  }
+
+  return { slug, segmentIndex, expectedClip, fileDeleted }
 }
 
 /** Nur für Tests: Queue zurücksetzen. */

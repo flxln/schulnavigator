@@ -46,6 +46,8 @@ body {
   --color-brand-sun: var(--brand-sun);
   --color-brand-sky-50: var(--brand-sky-50);
   --color-brand-navy-300: var(--brand-navy-300);
+  --color-brand-green: var(--brand-green);
+  --color-brand-red: var(--brand-red);
   --color-brand-green-300: var(--brand-green-300);
 
   --color-border-1: var(--border-1);

@@ -1,8 +1,12 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { Dialog, DialogRolle } from '@/lib/types'
-import { dialogBubbleText, resolveDialogTail } from '@/lib/dialog-display'
+import {
+  dialogBubbleText,
+  resolveDialogTail,
+  segmentHasAudio,
+} from '@/lib/dialog-display'
 
 /**
  * Dialog-Playlist (ein <audio>) mit UI-State für eingebettete Sprechblase.
@@ -21,14 +25,14 @@ export function useDialogAudioPlaylist(dialog: Dialog | undefined) {
   const preloadNext = useCallback((nextIndex: number) => {
     const d = dialogRef.current
     const next = d?.segmente[nextIndex]
-    if (!next) {
+    if (!next || !segmentHasAudio(next)) {
       return
     }
     if (!preloadRef.current) {
       preloadRef.current = new Audio()
     }
     preloadRef.current.preload = 'auto'
-    preloadRef.current.src = next.quelle
+    preloadRef.current.src = next.quelle!
     preloadRef.current.load()
   }, [])
 
@@ -56,8 +60,14 @@ export function useDialogAudioPlaylist(dialog: Dialog | undefined) {
       }
       indexRef.current = segIndex
       setSegmentIndex(segIndex)
+
+      if (!segmentHasAudio(seg)) {
+        setPlaying(false)
+        return
+      }
+
       setPlaying(true)
-      el.src = seg.quelle
+      el.src = seg.quelle!
       preloadNext(segIndex + 1)
       void el.play().catch(() => {
         /* Fehler → nächstes Segment */
@@ -81,6 +91,10 @@ export function useDialogAudioPlaylist(dialog: Dialog | undefined) {
 
   const advanceRef = useRef(advance)
   advanceRef.current = advance
+
+  const advanceFromUserGesture = useCallback(() => {
+    advanceRef.current()
+  }, [])
 
   useEffect(() => {
     const el = audioRef.current
@@ -128,23 +142,21 @@ export function useDialogAudioPlaylist(dialog: Dialog | undefined) {
     dialog && segment ? dialogBubbleText(segment, dialog) : ''
   const tail = segment ? resolveDialogTail(segment) : 'center'
   const dialogUiActive = segmentIndex !== null
+  const currentSegmentIsTextOnly = segment ? !segmentHasAudio(segment) : false
 
-  const speakingRolle: DialogRolle | null = useMemo(() => {
-    if (!dialogUiActive) {
-      return null
-    }
-    return activeRolle
-  }, [dialogUiActive, activeRolle])
+  const speakingRolle: DialogRolle | null = dialogUiActive ? activeRolle : null
 
   return {
     audioRef,
     startFromUserGesture,
     stopDialog,
+    advanceFromUserGesture,
     playing,
     segmentIndex,
     dialogUiActive,
     speakingRolle,
     displayText,
     tail,
+    currentSegmentIsTextOnly,
   }
 }

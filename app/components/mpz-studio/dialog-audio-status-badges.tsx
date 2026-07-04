@@ -2,9 +2,10 @@ import type { DialogSegmentAudit } from '@/lib/mpz-dialog-audio-ingest'
 
 export const DIALOG_AUDIO_STATE_LABEL: Record<DialogSegmentAudit['state'], string> = {
   ok: 'ok',
-  leer: 'leer',
+  leer: 'Audio fehlt',
   drift: 'Drift',
-  fehlt: 'fehlt',
+  fehlt: 'Audio fehlt',
+  'text-only': 'Nur Text',
 }
 
 export const DIALOG_AUDIO_STATE_CLASS: Record<DialogSegmentAudit['state'], string> = {
@@ -12,6 +13,7 @@ export const DIALOG_AUDIO_STATE_CLASS: Record<DialogSegmentAudit['state'], strin
   leer: 'bg-bg-3 text-fg-2',
   drift: 'bg-brand-sun/20 text-fg-1',
   fehlt: 'bg-brand-red/15 text-fg-1',
+  'text-only': 'bg-bg-3 text-fg-2',
 }
 
 export function DialogAudioStateBadge({ state }: { state: DialogSegmentAudit['state'] }) {

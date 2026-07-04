@@ -16,9 +16,9 @@ describe('validateToken', () => {
     resetAccessTokensCacheForTests()
   })
 
-  it('liefert Modus für gültigen fest-Token', () => {
+  it('liefert Heft-Modus für Post-Fest-Entry-Token (entry-fest.png)', () => {
     const hit = validateToken(FEST_DEV_TOKEN, new Date('2026-06-01'))
-    expect(hit?.mode).toBe('fest')
+    expect(hit?.mode).toBe('heft')
     expect(hit?.token).toBe(FEST_DEV_TOKEN)
   })
 
@@ -33,13 +33,13 @@ describe('validateToken', () => {
 
   it('lehnt abgelaufenen Token ab', () => {
     expect(
-      validateToken(FEST_DEV_TOKEN, new Date('2026-08-01T00:00:00.000Z')),
+      validateToken(FEST_DEV_TOKEN, new Date('2027-08-01T00:00:00.000Z')),
     ).toBeNull()
   })
 
   it('akzeptiert Token bis Ende des Ablauftags', () => {
     expect(
-      validateToken(FEST_DEV_TOKEN, new Date('2026-07-31T12:00:00.000Z')),
+      validateToken(FEST_DEV_TOKEN, new Date('2027-07-31T12:00:00.000Z')),
     ).not.toBeNull()
   })
 
@@ -104,6 +104,20 @@ describe('getAccessTokens in Production', () => {
     )
     resetAccessTokensCacheForTests()
     expect(getAccessTokens()[0]?.token).toBe('prod-fest')
+  })
+
+  it('Production: ENV mode fest für entry-fest → effektiver Hub-Modus heft', () => {
+    vi.stubEnv('NODE_ENV', 'production')
+    vi.stubEnv(
+      'SN_ACCESS_TOKENS',
+      JSON.stringify([
+        { token: FEST_DEV_TOKEN, mode: 'fest', expiresAt: '2027-07-31' },
+        { token: HEFT_DEV_TOKEN, mode: 'heft', expiresAt: '2027-07-31' },
+      ]),
+    )
+    resetAccessTokensCacheForTests()
+    const festHit = validateToken(FEST_DEV_TOKEN, new Date('2026-06-27'))
+    expect(festHit?.mode).toBe('heft')
   })
 })
 

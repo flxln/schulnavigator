@@ -633,10 +633,12 @@ function validateDialogSegment(
     `${ctx}: segment.id fehlt`,
   )
   assert(isDialogRolle(raw.rolle), `${ctx}: segment.rolle ungültig`)
-  assert(
-    typeof raw.quelle === 'string' && raw.quelle.startsWith('/'),
-    `${ctx}: segment.quelle muss mit / beginnen`,
-  )
+  if (raw.quelle !== undefined) {
+    assert(
+      typeof raw.quelle === 'string' && raw.quelle.startsWith('/'),
+      `${ctx}: segment.quelle muss mit / beginnen`,
+    )
+  }
   assert(typeof raw.text === 'string', `${ctx}: segment.text fehlt`)
   if (raw.gruppe !== undefined) {
     assert(typeof raw.gruppe === 'string', `${ctx}: gruppe muss string sein`)
@@ -651,8 +653,8 @@ function validateDialogSegment(
   return {
     id: raw.id,
     rolle: raw.rolle,
-    quelle: raw.quelle,
     text: raw.text,
+    quelle: raw.quelle as string | undefined,
     gruppe: raw.gruppe as string | undefined,
     tail: raw.tail as DialogBubbleTail | undefined,
   }
@@ -697,7 +699,6 @@ function validateDialog(raw: unknown, prefix: string): Dialog {
     }
   }
   assert(Array.isArray(raw.segmente), `${prefix}: segmente muss Array sein`)
-  assert(raw.segmente.length > 0, `${prefix}: segmente ist leer`)
   const segmentIds = new Set<string>()
   const segmente: DialogSegment[] = []
   for (let i = 0; i < raw.segmente.length; i++) {

@@ -28,7 +28,8 @@ export interface DialogBubbleLayout {
 export interface DialogSegment {
   id: string
   rolle: DialogRolle
-  quelle: string
+  /** Fehlt → Text-only-Segment ohne Audio (ADR-026). */
+  quelle?: string
   text: string
   gruppe?: string
   /** Optional: überschreibt Schwanz aus rolle für dieses Segment. */
