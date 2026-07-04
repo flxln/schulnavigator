@@ -31,6 +31,6 @@ Domänen-Matrix MPZ Studio: [ideen/archiv/mpz-studio-ui.md](../ideen/archiv/mpz-
 
 Vollständiger Abgleich-Log (bis 2026-06-20): [archiv/sync-log-2026-06.md](./archiv/sync-log-2026-06.md).
 
-**Letzter dokumentierter Abgleich:** 2026-07-04 — #218 D1 Design & Hub erledigt; Post-Mortem [218](../reviews/post-mortem/post-mortem-218-2026-07-04.md).
+**Letzter dokumentierter Abgleich:** 2026-07-04 — MPZ Studio kunde→feature Port (`9df7355`); Post-Mortem [mpz-kunde-feature-port](../reviews/post-mortem/post-mortem-mpz-kunde-feature-port-2026-07-04.md). Zuvor #218 D1 erledigt.
 
 Siehe auch [entscheidungen.md](../entscheidungen.md), [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren).

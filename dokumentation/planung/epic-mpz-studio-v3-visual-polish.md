@@ -185,6 +185,14 @@ Epic #195 lieferte Navigation und Flows; dieses Epic liefert **Tonal Layering**,
 - ✅ **Hub S19:** `hub-panel.tsx` — Tabelle beibehalten (kein Karten-Grid), `mpzButton`/`mpzStack`, Tabellen-Chrome, `px-3`-Padding.
 - 🔁 **Folge-Scope (bewusst offen):** Hub-Tabelle ohne Empty-State-Zeile (immer 12 Zeilen); Brand-Slot-Karten noch ohne `MpzCard`-Unterteilung.
 
+### Archiv — kunde/39-gs → feature/mpz-studio Funktionsport (2026-07-04)
+
+Post-Mortem: [post-mortem-mpz-kunde-feature-port-2026-07-04.md](../reviews/post-mortem/post-mortem-mpz-kunde-feature-port-2026-07-04.md) · Commit `9df7355`
+
+- ✅ Deploy (#228–#230, #233), ADR-026 + Chain-on-Save, Raumbild-Limits, Safari-Modal, MPZ-Banner von `kunde/39-gs` auf `feature/mpz-studio`
+- ✅ #218-Design-Dateien auf feature unverändert (Hub/Design/Brand)
+- 🔁 **Folge-Scope:** #221 Lesewelt-Content; Rückport #218 → kunde nur bei Bedarf
+
 ### Archiv — Plan-Härtung #208 (2026-06-24)
 
 Plan (lokal): `.cursor/plans/#208_save_dashboard_6181c036.plan.md` · Pre-Mortems [1a](../reviews/pre-mortem/pre-mortem-1a-208-save-dashboard-2026-06-23.md) / [1b](../reviews/pre-mortem/pre-mortem-1b-208-save-dashboard-2026-06-23.md)
