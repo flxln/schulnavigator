@@ -70,10 +70,14 @@ export function withMpzStudioAccess(
   }
 }
 
-export function setMpzStudioSessionCookie(res: NextResponse, secret: string): void {
+export function setMpzStudioSessionCookie(
+  res: NextResponse,
+  secret: string,
+  isHttps: boolean,
+): void {
   res.cookies.set(MPZ_STUDIO_COOKIE, secret, {
     httpOnly: true,
-    secure: false,
+    secure: isHttps,
     sameSite: 'lax',
     path: '/',
     maxAge: MPZ_STUDIO_COOKIE_MAX_AGE,
