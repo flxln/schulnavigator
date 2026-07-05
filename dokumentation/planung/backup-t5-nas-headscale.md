@@ -121,13 +121,15 @@ Vor CMS-Einführung Backup-Konzept um **PostgreSQL-Dump** erweitern (gleicher NA
 - [x] NAS in Headscale — **Tailnet-IP `100.64.0.9`**, Tailscale-SPK (2026-07-05)
 - [x] SSH-Schlüssel auf NAS (`~/.ssh/schulnavigator_backup`)
 - [x] Erster Backup-Lauf (~2,8 GB, ~87 min) + Hash-Stichprobe OK
-- [ ] Boot-Task + Nightly Cron → [#246](https://github.com/flxln/schulnavigator/issues/246)
+- [x] Boot-Task + Nightly Cron → [#246](https://github.com/flxln/schulnavigator/issues/246) **erledigt** (2026-07-06, [Post-Mortem](../reviews/post-mortem/post-mortem-246-2026-07-05.md))
 - [ ] Optional: Shared Folder `/volume1/schulnavigator-backup` statt Home-Pfad
 - [ ] Btrfs Snapshot Replication (30 Tage) → [#247](https://github.com/flxln/schulnavigator/issues/247)
 - [ ] Headscale-Node `100.64.0.8` bereinigen → [#248](https://github.com/flxln/schulnavigator/issues/248)
 - [x] Issue #243 — nach Verifikation schließen
 
-### DSM — noch manuell (Ops)
+### DSM — erledigt (Ops, #246, 2026-07-06)
+
+**Servicename prüfen:** `synosystemctl list-units` zeigt Paketdienste auf Synology oft nicht — stattdessen `sudo synosystemctl restart pkgctl-Tailscale.service && echo OK` und danach `tailscale ip -4`.
 
 **Nightly Backup** — Systemsteuerung → Aufgabenplanung → Geplant → Benutzerdefiniertes Script:
 
