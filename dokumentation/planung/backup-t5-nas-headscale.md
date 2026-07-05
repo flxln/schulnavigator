@@ -123,7 +123,7 @@ Vor CMS-Einführung Backup-Konzept um **PostgreSQL-Dump** erweitern (gleicher NA
 - [x] Erster Backup-Lauf (~2,8 GB, ~87 min) + Hash-Stichprobe OK
 - [x] Boot-Task + Nightly Cron → [#246](https://github.com/flxln/schulnavigator/issues/246) **erledigt** (2026-07-06, [Post-Mortem](../reviews/post-mortem/post-mortem-246-2026-07-05.md))
 - [ ] Optional: Shared Folder `/volume1/schulnavigator-backup` statt Home-Pfad
-- [ ] Btrfs Snapshot Replication (30 Tage) → [#247](https://github.com/flxln/schulnavigator/issues/247)
+- [x] Btrfs Snapshot Replication (30 Tage) → [#247](https://github.com/flxln/schulnavigator/issues/247) **erledigt** (2026-07-06, [Post-Mortem](../reviews/post-mortem/post-mortem-247-2026-07-06.md))
 - [ ] Headscale-Node `100.64.0.8` bereinigen → [#248](https://github.com/flxln/schulnavigator/issues/248)
 - [x] Issue #243 — nach Verifikation schließen
 
@@ -148,7 +148,16 @@ Vor CMS-Einführung Backup-Konzept um **PostgreSQL-Dump** erweitern (gleicher NA
 synosystemctl restart pkgctl-Tailscale.service
 ```
 
-**Snapshot Replication** — Btrfs, Ziel `schulnavigator-backup`, täglich, 30 Tage Aufbewahrung (E4).
+**Snapshot Replication (E4)** — erledigt 2026-07-06 ([#247](https://github.com/flxln/schulnavigator/issues/247)):
+
+| Feld | Wert |
+|------|------|
+| Shared Folder | `homes` (Backup liegt unter `/var/services/homes/felixlein/schulnavigator-backup`) |
+| Zeitplan | täglich 03:30 (nach rsync 02:00) |
+| Aufbewahrung | 30 Snapshots |
+| Benachrichtigung | Systemsteuerung → Benachrichtigung → Regeln → Snapshot Replication (globaler Kanal) |
+
+⚠️ **Restore-Regel:** Ein Ordner-Revert in Snapshot Replication wirkt **atomar auf den gesamten Shared Folder `homes`** — würde alle Home-Verzeichnisse (`~/.ssh`, SSH-Keys, `~/bin/`) zurücksetzen. Restore **ausschließlich auf Dateiebene** (Snapshot Replication → Browse → Datei kopieren), **niemals** Ordner-Revert.
 
 ---
 
