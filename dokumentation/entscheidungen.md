@@ -6,7 +6,7 @@ Jede wichtige Entscheidung wird als eigenständiger ADR (Architecture Decision R
 
 | Nr. | Titel | Status | Datum |
 |---|---|---|---|
-| [001](./adr/001-hosting-coolify.md) | Hosting: MPZ-Hetzner-Server mit Coolify | entschieden | 2026-05-07 |
+| [001](./adr/001-hosting-coolify.md) | Hosting: MPZ-VPS (IONOS) mit Coolify | entschieden | 2026-05-07 |
 | [002](./adr/002-frontend-nextjs.md) | Frontend: Next.js (App Router), TypeScript, Tailwind | entschieden | 2026-05-21 |
 | [003](./adr/003-content-mvp-json-directus.md) | Content: JSON (MVP), Directus langfristig; kein Custom-Admin | entschieden | 2026-05-21 |
 | [004](./adr/004-video-hosting-mpz.md) | Video: MPZ-Server; YouTube optional nach Rechtsklärung | entschieden | 2026-05-21 |
@@ -31,6 +31,8 @@ Jede wichtige Entscheidung wird als eigenständiger ADR (Architecture Decision R
 | [023](./adr/023-sphere-startblick.md) | Sphere-Viewer: optionaler Startblick `startYaw` / `startPitch` (ergänzt ADR-018) | entschieden | 2026-06-16 |
 | [024](./adr/024-flat-startpan.md) | Flat-Viewer: optionaler horizontaler Startausschnitt `startPanX` (ergänzt ADR-006) | entschieden | 2026-06-16 |
 | [025](./adr/025-coach-audio-autoplay.md) | Coach-Audio: Autoplay mit iOS-Fallback, `quelle` + gated API (ergänzt ADR-019) | entschieden | 2026-06-20 |
+| [026](./adr/026-dialog-text-only-segmente.md) | Dialog: Text-only-Segmente (`quelle` optional), Tap-Advance, Studio-Default ohne Audio (ergänzt ADR-010/011) | entschieden | 2026-06-24 |
+| [027](./adr/027-schuelermedien-nicht-in-git.md) | Schüler-Medien nicht in Git; Deploy-Trennung Code (GitHub) vs. Medien (rsync → IONOS-VPS) | entschieden | 2026-06-24 |
 
 ## Konventionen
 

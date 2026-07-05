@@ -177,12 +177,37 @@ Alle Befehle im Verzeichnis `app/` ausführen.
 | `lib/`             | Hilfsfunktionen, Typen, Daten-Loader; u. a. `access-tokens.ts`, `scan-url.ts` (#23), `schoolhouse-segments.ts` (#14), `qr-urls.ts` (#15) |
 | `middleware.ts`    | Zugangskontrolle: Cookie `sn_access`, Entry `?t=`, Redirect `/eintritt` (#23, ADR-007) |
 | `data/`            | `stations.json` (Phase 1, Issue #12)                          |
-| `public/stations/` | Raumbilder (`{slug}.jpg`, ≤ 500 KB) — Gyro-Viewer (ADR-006); Slug-Liste + Anforderungen: [`dokumentation/content/verzeichnisstruktur.md`](../dokumentation/content/verzeichnisstruktur.md) |
-| `public/media/`    | Öffentliche Stations-Medien (`{slug}/audio/`, `/video/`, `/fotos/`, `/texte/`) — statisch ausgeliefert; wird befüllt wenn echte Inhalte vorliegen (bis dahin `/demo/`) |
+| `public/stations/` | Raumbilder (`{slug}.jpg`, ≤ 10 MB) — Gyro-Viewer (ADR-006); Slug-Liste + Anforderungen: [`dokumentation/content/verzeichnisstruktur.md`](../dokumentation/content/verzeichnisstruktur.md) |
+| `public/media/`    | Öffentliche Stations-Medien (Bahn B, gitignored) — `{slug}/audio/`, `/video/`, `/fotos/`, `/texte/`, `/icons/` |
+| `public/stations-icons/` | Generische Hotspot-Presets (Bahn A, Git) — `{slug}/*.svg` |
 | `content/`         | Dialog-Audio WAV-Clips (`dialog-audio/{slug}/{nn}-{sprecher}.wav`) — Cookie-geschützt via `GET /api/dialog/…` (ADR-010); `COPY content/ ./content/` im Dockerfile |
 | `public/qr/`       | generierte QR-PNGs + Druck-PDFs (`pdf/`) + `manifest.json` (Issue #15, #130; PNGs/PDFs gitignored) |
 
 Dateinamen für Nicht-Komponenten: `kebab-case` (siehe [`CLAUDE.md`](../CLAUDE.md)).
+
+---
+
+## Schüler-Medien und Git (#228)
+
+Schüler-Medien **nie** per `git add` / `git push` auf GitHub legen. Sie werden vom MPZ-Rechner per Server-Sync (rsync, Phase 3) auf den IONOS-VPS ausgeliefert — nicht über Git.
+
+**Bahn B (ignoriert, nur `.gitkeep` in Git):**
+
+| Pfad | Inhalt |
+|------|--------|
+| `public/media/` | Fotos, Videos, Audio, Texte, Studio-Icons |
+| `content/dialog-audio/` | Dialog-WAV-Clips |
+| `content/coach-audio/` | Coach-WAV-Clips |
+
+**Bahn A (weiter in Git):**
+
+- App-Code, `data/stations.json` (DSB Option A)
+- Raumbilder `public/stations/` (LFS)
+- Generische Hotspot-Presets `public/stations-icons/{slug}/`
+
+`.gitignore` unter `app/` schützt Bahn B. Nach Studio-Upload zeigt `git status` Medien als ignoriert. Der **Coolify-Build** nutzt `validate:stations:structure` und `validate:coach:structure` (kein `existsSync`); volle Validatoren laufen lokal vor rsync.
+
+Planung: [schuelermedien-deploy-trennung](../dokumentation/planung/schuelermedien-deploy-trennung/README.md) · Inventar: [07-inventar-github.md](../dokumentation/planung/schuelermedien-deploy-trennung/07-inventar-github.md)
 
 ---
 
@@ -215,7 +240,7 @@ Der Viewer skaliert **höhenbasiert** (`ROOM_VIEWER_HEIGHT_CSS` = `min(50vh, 360
 | Gyro-Konstanten | `lib/raum-viewer/constants.ts` — Feintuning: [raum-viewer-gyro-feintuning.md](./raum-viewer-gyro-feintuning.md) (`GYRO_FULL_RANGE_DEG` aktuell **60°** je Rand) |
 | Pan-Achse | **Portrait:** `deviceorientation.alpha` (Armschwenk, zentrierter Neutral, `pan-from-orientation.ts`); **Landscape:** `gamma` (einseitig); Achswechsel → Neutral-Reset |
 | Datei | `public/stations/{slug}.jpg` (oder WebP, Pfad in JSON) |
-| Größe | WebP oder optimiertes JPG, Ziel max. ~500 KB (Phase 3 #27) |
+| Größe | WebP oder optimiertes JPG, max. **10 MB** (MPZ-Upload / `validate:stations`) |
 | Ohne Foto | `bild` weglassen → statische Ansicht + Medienliste (z. B. `schulsozialarbeit` bis Panorama da ist) |
 
 **Beispiel Smartphone** (~390 px Viewport-Breite, 360 px Viewer-Höhe): sinnvoller Pan ab ca. **2,2 : 1** Quellbild; **2,5 : 1** ist komfortabel (z. B. 2500×1000 px).
@@ -228,7 +253,7 @@ Zuordnung Foto ↔ Station: [`auftraggeber/material/stationen/zuordnung-statione
 |-------------|------|
 | Format | Equirectangular **2:1** (JPEG/WebP) |
 | Pfad | `public/stations/360/{slug}.jpg` → `panorama360` in `stations.json` |
-| Größe | max. **4 MB** (`validate:stations` prüft Ratio + Magic-Bytes) |
+| Größe | max. **12 MB** (`validate:stations` prüft Ratio + Magic-Bytes) |
 | Export | `cd app && npm run export:pano360` (macOS `sips`, Rohdatei im Submodule `stationen-360-pano/flat/{slug}/raw/*360*.JPG`) |
 
 8 Panorama-Stationen nutzen `viewer: "equirectangular"`; `kunst`, `hort`, `schulsozialarbeit` bleiben ohne 360°-Content auf Flat bzw. ohne `bild`.
@@ -265,7 +290,7 @@ PORT=3007 HOSTNAME=127.0.0.1 node server.js
 
 ## Deployment (Überblick)
 
-Produktion: Multi-Stage-Image wie in [`app/Dockerfile`](../app/Dockerfile), Health-Check `GET /api/health`. Ziel-Hosting: **MPZ-Hetzner / Coolify** ([ADR-001](../dokumentation/adr/001-hosting-coolify.md)). **Live-URL:** **`https://schulnavigator.mpz.schule`**.
+Produktion: Multi-Stage-Image wie in [`app/Dockerfile`](../app/Dockerfile), Health-Check `GET /api/health`. Ziel-Hosting: **MPZ-VPS (IONOS) / Coolify** ([ADR-001](../dokumentation/adr/001-hosting-coolify.md)). **GS39-Live (Branch `kunde/39-gs`):** **`https://39-gs.mpz.schule`**. Die ältere Application **`https://schulnavigator.mpz.schule`** läuft auf eingefrorenem Branch **`main`** (Referenzstand, nicht GS39-Prod).
 
 Die App setzt **`robots.txt`** (`Disallow: /`) und **`noindex`** im Root-Layout (Phase 1, Issue #16), damit die Subdomain nicht in Suchmaschinen indexiert wird.
 
@@ -282,12 +307,23 @@ In [`next.config.ts`](../app/next.config.ts) über [`lib/security-headers.ts`](.
 
 Nach Änderung an `data/embed-allowlist.json`: Dev-Server neu starten bzw. neu deployen — `frame-src` wird beim Build aus der Allowlist gelesen.
 
-**HSTS** (`Strict-Transport-Security`) setzt die App nicht selbst — liegt bei Coolify/Traefik (Proxy). Bei Bedarf mit Ops abstimmen.
+**HSTS** (`Strict-Transport-Security`) setzt die App nicht selbst — liegt bei Coolify/Traefik (Proxy). Audit Phase 5 (2026-07-05): Header fehlt in Prod — Issue [#143](https://github.com/flxln/schulnavigator/issues/143).
+
+Empfohlene Proxy-Konfiguration (Traefik/Coolify):
+
+- `Strict-Transport-Security: max-age=15552000` (180 Tage)
+- **Ohne** `includeSubDomains` bis Nachbar-Hosts unter `*.mpz.schule` geprüft
+
+Verifikation:
+
+```bash
+curl -sI https://39-gs.mpz.schule/ | grep -i strict-transport
+```
 
 Smoke nach Deploy:
 
 ```bash
-curl -sI https://schulnavigator.mpz.schule/ | grep -iE 'content-security|permissions-policy'
+curl -sI https://39-gs.mpz.schule/ | grep -iE 'content-security|permissions-policy'
 ```
 
 ### Git LFS — Raumbilder (`public/stations/*.jpg`)
@@ -299,16 +335,29 @@ Panorama-Exporte unter `public/stations/` werden per [`.gitattributes`](../app/.
 ```bash
 # Altes 4:3-Platzhalter: content-length 457340
 # Neues Pano musik.jpg: ~349000
-curl -sI https://schulnavigator.mpz.schule/stations/musik.jpg | grep -i content-length
-curl -s https://schulnavigator.mpz.schule/stations/musik.jpg | head -c 2 | xxd   # ff d8
+curl -sI https://39-gs.mpz.schule/stations/musik.jpg | grep -i content-length
+curl -s https://39-gs.mpz.schule/stations/musik.jpg | head -c 2 | xxd   # ff d8
 ```
 
 **Wenn Coolify-Build mit LFS-Fehler abbricht** (`ist ein Git-LFS-Pointer` in `validate:stations`):
+
+Dies betrifft nur noch **lokale** volle Validierung oder veraltete Build-Skripte. Der Standard-Build nutzt `:structure`-Validatoren ohne `existsSync`. Falls dennoch LFS-Fehler bei Raumbildern (`public/stations/`):
 
 1. Coolify: Build-Umgebung muss `git-lfs` haben und beim Clone smudgen (`git lfs pull` nach Checkout), **oder**
 2. Nixpacks/Pre-Build-Hook: `apk add git-lfs && git lfs pull` (Alpine) vor `docker build`.
 
 Details und History-Entscheidung: [`dokumentation/build-kontext-submodule-regeln.md`](../dokumentation/build-kontext-submodule-regeln.md) (Abschnitt Git LFS).
+
+### Git-History — Schüler-Medien (#232)
+
+Am **2026-06-24** wurde die Git-History aller Branches von Bahn-B-Pfaden bereinigt (`git filter-repo`). **Lokale Klone vor diesem Datum sind ungültig** — Repository neu klonen:
+
+```bash
+git clone https://github.com/flxln/schulnavigator.git
+cd schulnavigator && git checkout kunde/39-gs   # GS39-Prod
+```
+
+Post-Mortem: [`dokumentation/reviews/post-mortem/post-mortem-232-2026-06-24.md`](../dokumentation/reviews/post-mortem/post-mortem-232-2026-06-24.md). GitHub-Support-Ticket für LFS-Purge: [`08-github-support-ticket-232.md`](../dokumentation/planung/schuelermedien-deploy-trennung/08-github-support-ticket-232.md).
 
 **Panorama neu exportieren (lokal):**
 
@@ -362,10 +411,24 @@ Das Skript erzeugt Zufallstokens (`fest-…` / `heft-…`), schreibt [`app/lib/a
 - **Logik:** [`app/lib/visited-stations.ts`](../app/lib/visited-stations.ts), Freischaltung [`app/lib/hub-mode.ts`](../app/lib/hub-mode.ts) (`fest` = nur besuchte Segmente, `heft` = alle).
 - **Markierung (`fest`):** nur bei erfolgreichem Raum-QR in [`app/components/scan/qr-scanner.tsx`](../app/components/scan/qr-scanner.tsx) (`markVisitedSlug` vor `router.push`).
 - **Markierung (`heft`):** [`app/components/station-visit-recorder.tsx`](../app/components/station-visit-recorder.tsx) auf `/raum/[slug]` (einmal pro Mount); im `fest`-Modus ist der Recorder ein No-Op.
-- **Hub-Navigation:** Gesperrte Stationen — Footer in `/raum/…` und isometrischer Hub führen zu `/scan`, nicht direkt in den Raum ([ADR-009 Nachtrag #83](../dokumentation/adr/009-hub-isometrisch.md#nachtrag-2026-05-30--fest-freischaltung-nur-per-raum-qr-83)).
-- **Startseiten-CTAs** ([ADR-009 Nachtrag CTAs](../dokumentation/adr/009-hub-isometrisch.md#nachtrag-2026-06-01--startseite-modusabhängige-ctas), [#104](../dokumentation/adr/009-hub-isometrisch.md#nachtrag-2026-06-11--scan-cta-ohne-stationsvorschlag-104)): [`home-screen.tsx`](../app/components/home/home-screen.tsx) steuert per [`getHomeFooterCta`](../app/lib/home-cta.ts) (`fest-scan` | `scan-next` | `none`). `fest`/`heft` 1–10: [`home-fest-scan-cta.tsx`](../app/components/home/home-fest-scan-cta.tsx) → `/scan` („Scanne die nächste Station!“). Fortschrittskarte tippbar → `/stationen`. Raum-Footer: [`next-station-footer.tsx`](../app/components/raum/next-station-footer.tsx) (gleicher Scan-CTA). [`getNextStation`](../app/lib/next-station.ts) nur für Sichtbarkeit (unbesuchte Stationen übrig).
+- **Hub-Navigation:** Gesperrte Stationen — Hub-Fenster, `/stationen` und Raum-Footer führen zu `/scan`, nicht direkt in den Raum ([ADR-009 Nachtrag #83](../dokumentation/adr/009-hub-isometrisch.md#nachtrag-2026-05-30--fest-freischaltung-nur-per-raum-qr-83)). Entscheidung zentral in [`getHubStationTapHref`](../app/lib/hub-mode.ts); Aufrufer: [`schoolhouse-hub.tsx`](../app/components/schoolhouse/schoolhouse-hub.tsx), [`stationen-screen.tsx`](../app/components/stationen/stationen-screen.tsx).
+- **Startseiten-CTAs** ([ADR-009 Nachtrag CTAs](../dokumentation/adr/009-hub-isometrisch.md#nachtrag-2026-06-01--startseite-modusabhängige-ctas), [#104](../dokumentation/adr/009-hub-isometrisch.md#nachtrag-2026-06-11--scan-cta-ohne-stationsvorschlag-104), [Nachtrag 2026-06-25](../dokumentation/adr/009-hub-isometrisch.md#nachtrag-2026-06-25--einheitlicher-scan-button-text-kunde39-gs)): [`home-screen.tsx`](../app/components/home/home-screen.tsx) steuert per [`getHomeFooterCta`](../app/lib/home-cta.ts) (`fest-scan` | `scan-next` | `none`). `fest`/`heft` 1–10: [`home-fest-scan-cta.tsx`](../app/components/home/home-fest-scan-cta.tsx) → `/scan` („Scanne einen beliebigen Code“). Fortschrittskarte tippbar → `/stationen`. Raum-Footer: [`next-station-footer.tsx`](../app/components/raum/next-station-footer.tsx) (gleicher Scan-CTA). [`getNextStation`](../app/lib/next-station.ts) nur für Sichtbarkeit (unbesuchte Stationen übrig).
 - **Hub:** [`schoolhouse-hub.tsx`](../app/components/schoolhouse/schoolhouse-hub.tsx) — `useVisitedStations`, Re-Read bei `storage`, `sn:visited`, `pageshow`, `visibilitychange`.
 - **Zurücksetzen:** DevTools → Application → Local Storage → `sn_visited_slugs` löschen.
+
+---
+
+## Git-Branches (Freeze)
+
+| Branch | Rolle | Merge nach `main`? |
+|--------|--------|-------------------|
+| **`main`** | Eingefrorener Referenzstand (historische Prod-Basis) | — (kein Ziel für neue Arbeit) |
+| **`kunde/*`** | Kunden-/Event-Stand (z. B. `kunde/39-gs` — GS39, Content, Medien) | **Niemals** |
+| **`feature/*`** | Plattform, MPZ Studio, Architektur (#228, #229, …) | **Nicht** nach `main` — nur innerhalb `feature/*` |
+
+**Code von `kunde/*` auf `feature/*`:** pfadbasierter Port (`git checkout kunde/39-gs -- <pfade>`), kein Merge. Siehe auch [`.cursor/rules/branch-freeze-kunde.mdc`](../.cursor/rules/branch-freeze-kunde.mdc).
+
+**Coolify Prod (GS39):** Application-Branch **`kunde/39-gs`** — nicht `main`. Schüler-Medien liegen auf VPS-Volumes am IONOS-Host (rsync), unabhängig vom Branch.
 
 ---
 
@@ -383,7 +446,7 @@ Das Skript erzeugt Zufallstokens (`fest-…` / `heft-…`), schreibt [`app/lib/a
 ### Neue Application in Coolify
 
 1. **Project** anlegen (z. B. „Schulnavigator“).
-2. **New Resource → Application**; Quelle: GitHub-Repo `flxln/schulnavigator`, Branch `main`.
+2. **New Resource → Application**; Quelle: GitHub-Repo `flxln/schulnavigator`. Branch je nach Zweck: **`kunde/39-gs`** (GS39-Prod) oder **`feature/…`** (Plattform-QA) — **`main` nur als historischer Referenzstand**, nicht für neue Deploys (siehe [Git-Branches (Freeze)](#git-branches-freeze)).
 3. **Build** (Coolify zeigt u. a. **Base Directory** und **Dockerfile Location** — kein separates Feld „Build Context“.)
 
 | Feld | Korrekter Wert | Häufiger Fehler |
@@ -406,7 +469,7 @@ Lokal entspricht Variante 1: `cd app && docker build -t schulnavigator-app .`
 | Feld | Wert |
 |------|------|
 | **Ports Exposes** | `3000` (muss mit `PORT` übereinstimmen) |
-| **Domain** | `schulnavigator.mpz.schule` |
+| **Domain** | GS39-Prod: `39-gs.mpz.schule` (Branch `kunde/39-gs`); Legacy: `schulnavigator.mpz.schule` (Branch `main`, eingefroren) |
 | **HTTPS** | aktiviert (Let's Encrypt; Wildcard-DNS `*.mpz.schule` muss auf den VPS zeigen) |
 
 5. **Umgebungsvariablen:** `PORT=3000`, optional `NODE_ENV=production`. Für Zugangskontrolle (ADR-021) siehe Abschnitt [Zugang & Embedding](#zugang--embedding-adr-021) — **vor erstem Deploy nach ADR-021** `SN_ACCESS_TOKENS` in Coolify setzen.
@@ -414,6 +477,96 @@ Lokal entspricht Variante 1: `cd app && docker build -t schulnavigator-app .`
 6. **Health Check** (Coolify UI, bei Application-Typ): Pfad `/api/health`, erwarteter Status **200**. Zusätzlich enthält das Image einen Docker-`HEALTHCHECK` auf dieselbe URL.
 
 7. **Deploy** auslösen und Build-Logs bis „Running“ verfolgen.
+
+### Schüler-Medien: Persistent Volumes (Prod, #229)
+
+**GS39-Prod-Application** (`39-gs.mpz.schule`, Coolify-UUID `jjgl5u105ucxjvbeuwflsjq4`, Branch `kunde/39-gs`): drei Volume-Mounts. Die Legacy-Application `schulnavigator.mpz.schule` (`main`) hat dieselben Host-Pfade nicht zwingend gemountet.
+
+| Coolify-Name | Host-Pfad | Container-Pfad |
+|--------------|-----------|----------------|
+| media | `/data/schulnavigator/media` | `/app/public/media` |
+| dialog-audio | `/data/schulnavigator/dialog-audio` | `/app/content/dialog-audio` |
+| coach-audio | `/data/schulnavigator/coach-audio` | `/app/content/coach-audio` |
+
+**Einmalig auf dem VPS** (SSH als Admin):
+
+```bash
+sudo mkdir -p /data/schulnavigator/{media,dialog-audio,coach-audio}
+sudo chown -R 1001:1001 /data/schulnavigator
+sudo chmod -R u+rwX /data/schulnavigator
+```
+
+uid **1001** = User `nextjs` im [`app/Dockerfile`](../app/Dockerfile).
+
+**Initialbefüllung** und **laufender Medien-Deploy** vom MPZ-Rechner (nach lokalen Validatoren im Skript):
+
+```bash
+cd app
+# Env in .env.local oder Shell (siehe app/.env.example)
+export DEPLOY_SSH=admin@<ionos-vps>
+# optional: export DEPLOY_SSH_IDENTITY_FILE=~/.ssh/schulnavigator_deploy
+# optional: export DEPLOY_BRANCH=kunde/39-gs
+# optional: export COOLIFY_DEPLOY_WEBHOOK_URL=https://…
+
+npm run deploy:content -- --media-only   # nur Medien (kein Branch-Check, kein push)
+npm run deploy:content                   # Voll-Flow: validate → push → rsync → Webhook
+```
+
+Das Skript [`app/scripts/deploy-content.sh`](../app/scripts/deploy-content.sh) wird via `npm run deploy:content` gestartet (lädt `app/.env.local` automatisch). Es prüft zuerst `DEPLOY_SSH` und `sudo -n` auf dem Remote-Host. Auf **macOS** (OpenBSD-rsync) setzt es Rechte per `sudo chown` nach dem Sync; mit GNU-rsync (`--chown=1001:1001`) entfällt dieser Schritt. Kein `--delete` im Default; `--prune` nur opt-in.
+
+**Lokale Bahn-B-Lücken:** Schüler-Medien sind gitignored — für paritätisches Lokaltesten einmal vom Server holen (Env `DEPLOY_SSH` aus `.env.local`):
+
+```bash
+cd app
+# Dialog-WAVs (z. B. DaZ, PC-Raum) — Studio zeigt sonst „Audio fehlt“, /api/dialog/… liefert 404
+rsync -avz -e "ssh -o StrictHostKeyChecking=accept-new -i ~/.ssh/coolify-access" \
+  "${DEPLOY_SSH}:/data/schulnavigator/dialog-audio/" content/dialog-audio/
+# Coach-Audio (einzelne Datei oder Ordner)
+rsync -avz -e "ssh -o StrictHostKeyChecking=accept-new -i ~/.ssh/coolify-access" \
+  "${DEPLOY_SSH}:/data/schulnavigator/coach-audio/welcome-hub.wav" content/coach-audio/
+```
+
+**Manuell (Fallback):**
+
+```bash
+cd app
+npm run validate:stations && npm run validate:coach
+RSYNC_SSH="ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=10"
+rsync -avz --no-o --no-g --chown=1001:1001 --rsync-path="sudo rsync" -e "$RSYNC_SSH" public/media/         "${DEPLOY_SSH}:/data/schulnavigator/media/"
+rsync -avz --no-o --no-g --chown=1001:1001 --rsync-path="sudo rsync" -e "$RSYNC_SSH" content/dialog-audio/ "${DEPLOY_SSH}:/data/schulnavigator/dialog-audio/"
+rsync -avz --no-o --no-g --chown=1001:1001 --rsync-path="sudo rsync" -e "$RSYNC_SSH" content/coach-audio/  "${DEPLOY_SSH}:/data/schulnavigator/coach-audio/"
+```
+
+### Alltags-Deploy (MPZ, #230)
+
+| Schritt | Aktion |
+|--------|--------|
+| 1 | Inhalt im MPZ Studio pflegen (Medien, Hotspots, JSON) |
+| 2 | `Validate-all` oder `validate:stations` + `validate:coach` lokal grün |
+| 3 | Code/JSON committen (Medien **nicht** — Bahn B ist gitignored) |
+| 4 | `.env.local`: `DEPLOY_SSH`, optional `DEPLOY_BRANCH` (`kunde/39-gs`), Webhook |
+| 5 | **Nur Medien geändert:** `npm run deploy:content -- --media-only` oder Studio-Button „Medien deployen“ |
+| 6 | **Code + Medien:** auf Branch `kunde/39-gs` → `npm run deploy:content` oder „Vollständig deployen“ (App-Code/SSR-Fixes brauchen immer Schritt 6 — `sync-content` allein reicht nicht) |
+| 7 | Smoke: Live-URL mit Video, Dialog-Audio, Coach-`quelle` prüfen |
+
+Kein `--delete` beim rsync ohne `--prune`. SSH-User: NOPASSWD für `sudo rsync` auf dem VPS.
+
+**Build vs. lokale Validierung:**
+
+| npm-Script | Wann | Prüft Dateien auf Platte? |
+|------------|------|---------------------------|
+| `validate:stations:structure` | `npm run build` (Coolify) | Nein — nur JSON + Pfad-Wohlgeformtheit |
+| `validate:coach:structure` | `npm run build` (Coolify) | Nein |
+| `validate:stations` | Lokal / MPZ Deploy-Tab | Ja |
+| `validate:coach` | Lokal / MPZ Deploy-Tab | Ja |
+
+**Laufzeit-Auslieferung `/media/*`:** Next.js Standalone listet beim Build nur vorhandene `public/media`-Dateien. Volume-Medien werden deshalb über [`app/media/[...path]/route.ts`](../app/app/media/[...path]/route.ts) aus dem gemounteten Ordner gestreamt (Range-Requests für Video).
+
+**Rechte-Test** nach Deploy mit Mounts:
+
+```bash
+docker exec -u nextjs <container_id> test -r /app/public/media && echo OK
+```
 
 ### Fehler beim Clone: private Git-Submodule
 
@@ -435,7 +588,7 @@ Lokal entspricht Variante 1: `cd app && docker build -t schulnavigator-app .`
 | `SN_ACCESS_TOKENS` | — (Dev: Fallback in Code) | JSON-Array: `[{ "token", "mode": "fest"\|"heft", "expiresAt": "YYYY-MM-DD" }]` — **Runtime-Secret in Coolify**, nicht im Docker-Build |
 | `SN_EMBED_ANCESTORS` | leer → kein Framing | Kommagetrennte `https://`-Origins für CSP `frame-ancestors` |
 
-**Pilot (`schulnavigator.mpz.schule`):** `SN_ACCESS_MODE` weglassen oder `gated`; `SN_ACCESS_TOKENS` mit aktuellen Entry-Tokens setzen (Werte aus `app/lib/access-token-constants.mjs` bzw. nach `npm run generate:qr` in `public/qr/manifest.json`). Alte Tokens `fest-2026` / `heft-2026-27` sind ungültig.
+**Pilot (`39-gs.mpz.schule`):** `SN_ACCESS_MODE` weglassen oder `gated`; `SN_ACCESS_TOKENS` mit aktuellen Entry-Tokens setzen (Werte aus `app/lib/access-token-constants.mjs` bzw. nach `npm run generate:qr` in `public/qr/manifest.json`). Alte Tokens `fest-2026` / `heft-2026-27` sind ungültig.
 
 **Deploy-Reihenfolge (gated):**
 
@@ -445,14 +598,16 @@ Lokal entspricht Variante 1: `cd app && docker build -t schulnavigator-app .`
 
 **`open` + Einbettung (separates Deployment):** `SN_ACCESS_MODE=open`, `SN_EMBED_ANCESTORS=https://…` (Schulwebsite-Origin). Vor Go-Live: `curl -sSI https://… \| grep -iE 'content-security-policy|x-frame-options'` — kein widersprüchliches `X-Frame-Options` vom Proxy.
 
-Beispiel `SN_ACCESS_TOKENS` (Platzhalter — echte Werte nur in Coolify):
+Beispiel `SN_ACCESS_TOKENS` (GS39 Post-Fest — `mode` bei fest-Token in ENV darf `fest` bleiben; effektiver Hub-Modus aus Code):
 
 ```json
 [
-  {"token":"fest-…","mode":"fest","expiresAt":"2026-07-31"},
-  {"token":"heft-…","mode":"heft","expiresAt":"2027-07-31"}
+  {"token":"fest-vkc2AuKW0S7QGHDT","mode":"fest","expiresAt":"2027-07-31"},
+  {"token":"heft-ImulQPDmydy7VCVj","mode":"heft","expiresAt":"2027-07-31"}
 ]
 ```
+
+Post-Fest ohne Neudruck: `entry-fest`-QR-String bleibt, `mode` ist `heft` — [schulfest-gs39-playbook.md](./schulfest-gs39-playbook.md#8-post-fest-ab-27062026--dauerbetrieb-ohne-neue-qr-codes).
 
 Vollständig: [ADR-021](../dokumentation/adr/021-zugangsmodus-konfigurierbar.md), [`app/.env.example`](../app/.env.example).
 
@@ -461,22 +616,26 @@ Vollständig: [ADR-021](../dokumentation/adr/021-zugangsmodus-konfigurierbar.md)
 Ersetze die Domain, falls abweichend.
 
 ```bash
-curl -sS https://schulnavigator.mpz.schule/api/health
+curl -sS https://39-gs.mpz.schule/api/health
 # Erwartung: {"status":"ok"}
 
-curl -sSI http://schulnavigator.mpz.schule/ | head -5
+curl -sSI http://39-gs.mpz.schule/ | head -5
 # Erwartung: Redirect auf https://…
 
-curl -sSI https://schulnavigator.mpz.schule/
+curl -sSI https://39-gs.mpz.schule/
 # Erwartung ohne Cookie: 307/308 → /eintritt
 
-curl -sSI https://schulnavigator.mpz.schule/raum/musik
-curl -sSI https://schulnavigator.mpz.schule/scan
+curl -sSI https://39-gs.mpz.schule/raum/musik
+curl -sSI https://39-gs.mpz.schule/scan
 # FEST_TOKEN aus SN_ACCESS_TOKENS / manifest.json ersetzen:
-curl -sSI 'https://schulnavigator.mpz.schule/eintritt?t=FEST_TOKEN'
+curl -sSI 'https://39-gs.mpz.schule/eintritt?t=FEST_TOKEN'
 # Erwartung: Set-Cookie sn_access=… + Redirect /
 
-curl -sS https://schulnavigator.mpz.schule/robots.txt
+# Schüler-Medien (Volume Bahn B):
+curl -sSI https://39-gs.mpz.schule/media/daz/video/video-hallo-im-daz-raum.mp4
+# Erwartung: 200
+
+curl -sS https://39-gs.mpz.schule/robots.txt
 # Erwartung: Disallow: /
 ```
 
@@ -490,20 +649,19 @@ curl -sS https://schulnavigator.mpz.schule/robots.txt
 
 **Optional:** kostenloses Monitoring (z. B. UptimeRobot) auf `https://…/api/health`.
 
-### Staging / Dev (Coolify-Projekt „Schulprojekte“)
+### Coolify-Applications (Projekt „Schulprojekte“)
 
-Zweite Application für Tests vor Prod — **manuell** angelegt (Coolify erlaubt kein Kopieren einzelner Ressourcen innerhalb eines Projekts).
+| | GS39-Prod | Legacy (`main`) |
+|---|-----------|-----------------|
+| Coolify-Name | `schulnavigator:development-feature` | `schulnavigator:main-…` |
+| Application-UUID | `jjgl5u105ucxjvbeuwflsjq4` | `q1a8t4zswynvgutbw9og5l7n` |
+| URL | **`https://39-gs.mpz.schule`** | `https://schulnavigator.mpz.schule` |
+| Git-Branch | **`kunde/39-gs`** | **`main`** (eingefroren) |
+| Schüler-Medien-Volumes | ja (`/data/schulnavigator/…`) | nein (Stand Juni 2026) |
 
-| | Prod | Dev |
-|---|------|-----|
-| Coolify-Name | `schulnavigator:main-…` | `schulnavigator:development-feature` |
-| Application-UUID | `q1a8t4zswynvgutbw9og5l7n` | `jjgl5u105ucxjvbeuwflsjq4` |
-| URL | `https://schulnavigator.mpz.schule` | `https://schulnavigator-dev.mpz.schule` |
-| Branch (Stand 2026-05-28) | `main` | Feature-Branches für QA, z. B. `feat/raum-ui-dialog-topbar-chip-zentrieren` ([#72](https://github.com/flxln/schulnavigator/issues/72) / [PR #73](https://github.com/flxln/schulnavigator/pull/73)); nach Merge wieder **`main`** |
+Build-Einstellungen: Base **`/app`**, Dockerfile **`/Dockerfile`**, Port **`3000`**, Env `PORT=3000`, `NODE_ENV=production`.
 
-Build-Einstellungen wie Prod: Base **`/app`**, Dockerfile **`/Dockerfile`**, Port **`3000`**, Env `PORT=3000`, `NODE_ENV=production`.
-
-**Feature-QA auf Dev:** Coolify → Application Dev → **Source → Branch** auf den PR-Branch stellen → **Redeploy**. Dialog-Test: Entry-URL aus `manifest.json`, dann `/raum/daz` (X neben Zurück, Chip zentriert). Siehe [`lokal-testen-und-anschauen.md`](lokal-testen-und-anschauen.md).
+**Feature-QA:** bevorzugt lokal (`npm run dev`) oder temporär Branch auf App 6 umstellen — **Prod-Smoke und QR-Basis-URL immer `39-gs.mpz.schule`**. Siehe [`lokal-testen-und-anschauen.md`](lokal-testen-und-anschauen.md).
 
 **Pflicht bei jeder neuen Application:** unter **Advanced** / **Build** → **Git Submodules deaktivieren** (sonst schlägt der Clone wegen privater Submodule in [`.gitmodules`](../.gitmodules) fehl — siehe Abschnitt unten).
 
@@ -530,7 +688,7 @@ In Coolify: **Application → Deployments** → stabiles vorheriges Image **Rede
 
 ```bash
 cd app
-NEXT_PUBLIC_BASE_URL=https://schulnavigator.mpz.schule npm run generate:qr
+NEXT_PUBLIC_BASE_URL=https://39-gs.mpz.schule npm run generate:qr
 ```
 
 Oder dauerhaft in `app/.env.local` setzen (nicht committen). Stichprobe: Raum-QR und Entry-QR mit dem Handy scannen.

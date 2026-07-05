@@ -318,7 +318,7 @@
       "medien": [
         {
           "id": "lesewelt-beruehmte-personen",
-          "typ": "embed",
+          "typ": "link",
           "quelle": "https://read.bookcreator.com/2MfAUZf5kWdGbFsdRTyW50qOUeT2/4GMz8K3eSy2Sv6RbTbo6_A",
           "untertitel": "Berühmte Personen"
         }

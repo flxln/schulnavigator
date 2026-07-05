@@ -49,6 +49,15 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        source: '/media/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'private, max-age=3600',
+          },
+        ],
+      },
+      {
         source: '/:path*',
         headers: [
           {
