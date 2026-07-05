@@ -70,6 +70,11 @@ export function middleware(req: NextRequest) {
     return guard
   }
 
+  const mediaGuard = mediaAccessResponse(req)
+  if (mediaGuard) {
+    return mediaGuard
+  }
+
   if ((LEGAL_PUBLIC as readonly string[]).includes(url.pathname)) {
     return NextResponse.next()
   }
@@ -131,6 +136,24 @@ function redirectToHint(url: URL, reason?: 'invalid' | 'expired') {
   return NextResponse.redirect(hint)
 }
 
+/** Schüler-Medien: 403 ohne Cookie (kein Redirect — <video>/<img>); siehe Audit S1. */
+function mediaAccessResponse(req: NextRequest): NextResponse | null {
+  if (!req.nextUrl.pathname.startsWith('/media/')) {
+    return null
+  }
+  if (!isAccessGated()) {
+    return NextResponse.next()
+  }
+  const cookie = req.cookies.get(ACCESS_COOKIE)?.value
+  if (validateToken(cookie)) {
+    return NextResponse.next()
+  }
+  return new NextResponse(null, {
+    status: 403,
+    headers: { 'Cache-Control': 'no-store' },
+  })
+}
+
 /** Nur App-Routen — öffentliche Assets unter /stations, /demo, /qr usw. bleiben außerhalb der Middleware. */
 export const ACCESS_PROTECTED_MATCHER = [
   '/',
@@ -143,6 +166,7 @@ export const ACCESS_PROTECTED_MATCHER = [
   '/datenschutz',
   '/mpz',
   '/mpz/:path*',
+  '/media/:path*',
 ] as const
 
 // Next.js erfordert statisch parsebare matcher-Literale (kein Spread aus Konstante).
@@ -158,5 +182,6 @@ export const config = {
     '/datenschutz',
     '/mpz',
     '/mpz/:path*',
+    '/media/:path*',
   ],
 }
