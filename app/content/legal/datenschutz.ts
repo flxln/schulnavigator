@@ -117,7 +117,11 @@ export const datenschutzContent: LegalPageContent = {
         },
         {
           type: 'text',
-          text: 'Bei eingebetteten Inhalten (z. B. Delightex, Book Creator) lädt die App nach Ihrer Auswahl Inhalte von dem jeweiligen Anbieter in einem eingebetteten Fenster (iframe). Dabei können personenbezogene Daten (z. B. IP-Adresse) an den Anbieter übermittelt werden. Nutzen Sie diese Funktion nur, wenn Sie damit einverstanden sind.',
+          text: 'Bei eingebetteten Inhalten (z. B. Delightex) lädt die App nach Ihrer Auswahl Inhalte von dem jeweiligen Anbieter in einem eingebetteten Fenster (iframe). Dabei können personenbezogene Daten (z. B. IP-Adresse) an den Anbieter übermittelt werden. Nutzen Sie diese Funktion nur, wenn Sie damit einverstanden sind.',
+        },
+        {
+          type: 'text',
+          text: 'Book-Creator-Inhalte (Lesewelt) werden derzeit als externer Link geöffnet — kein iframe — bis eine formale DSB-Freigabe für Einbettungen vorliegt.',
         },
       ],
     },
@@ -148,6 +152,16 @@ export const datenschutzContent: LegalPageContent = {
           label: 'datenschutz.sachsen.de',
           href: 'https://www.datenschutz.sachsen.de',
           external: true,
+        },
+      ],
+    },
+    {
+      id: 'lehrkraefte-login',
+      title: 'Lehrkräfte-Login (geplant, Directus)',
+      blocks: [
+        {
+          type: 'text',
+          text: 'Für die künftige Content-Pflege durch Lehrkräfte ist ein separates CMS (Directus) geplant. Dabei werden Lehrkräfte-Accounts (Name, E-Mail, Passwort-Hash, Login-Protokolle) verarbeitet — ausschließlich zur Wahrnehmung schulischer Aufgaben. Es werden keine Schülerdaten im CMS gespeichert. Vor dem ersten Login informieren wir Lehrkräfte gesondert und aktualisieren diese Erklärung.',
         },
       ],
     },

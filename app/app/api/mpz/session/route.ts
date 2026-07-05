@@ -21,6 +21,6 @@ export async function POST(req: NextRequest) {
   }
 
   const res = NextResponse.json({ ok: true })
-  setMpzStudioSessionCookie(res, secret)
+  setMpzStudioSessionCookie(res, secret, req.nextUrl.protocol === 'https:')
   return res
 }

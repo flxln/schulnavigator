@@ -9,97 +9,68 @@
       "bild": "/stations/klassenzimmer.jpg",
       "medien": [
         {
-          "id": "dx-schule-zukunft",
-          "typ": "embed",
-          "quelle": "https://edu.delightex.com/ABE-XQJ",
-          "untertitel": "Schule der Zukunft 3D",
-          "embedAllow": [
-            "bookcreator.com",
-            "delightex.com"
-          ]
-        },
-        {
-          "id": "klassenzimmer-klassenzimmer-tagesablauf-2",
+          "id": "demo-audio",
           "typ": "audio",
-          "quelle": "/media/klassenzimmer/audio/klassenzimmer-tagesablauf-2.mp3",
-          "untertitel": "Tagesablauf"
+          "quelle": "/media/klassenzimmer/audio/grundschule_demo.mp3",
+          "untertitel": "Mein Schultag (Audio)"
         },
         {
-          "id": "klassenzimmer-klassenzimmer-4a-2",
+          "id": "demo-video",
           "typ": "video",
-          "quelle": "/media/klassenzimmer/video/klassenzimmer-4a-2.mp4",
-          "untertitel": "Eine Mathestunde bei uns",
-          "videoSource": "upload"
+          "videoSource": "upload",
+          "quelle": "/media/klassenzimmer/video/grundschule_demo.mp4",
+          "poster": "/media/klassenzimmer/fotos/grundschule_demo.jpg",
+          "thumbnail": "/media/klassenzimmer/fotos/grundschule_demo.jpg",
+          "untertitel": "Mein Schultag (Video)"
         },
         {
-          "id": "klassenzimmer-stundenplan",
+          "id": "demo-foto",
           "typ": "foto",
-          "quelle": "/media/klassenzimmer/fotos/stundenplan.jpg",
-          "untertitel": "Stundenplan"
+          "quelle": "/media/klassenzimmer/fotos/grundschule_demo.jpg",
+          "untertitel": "Schulfoto"
         },
         {
-          "id": "klassenzimmer-mein-film",
-          "typ": "video",
-          "quelle": "/media/klassenzimmer/video/mein-film.mp4",
-          "untertitel": "Meine Unterrichtsstunde",
-          "videoSource": "upload"
+          "id": "demo-text",
+          "typ": "text",
+          "quelle": "/media/klassenzimmer/texte/grundschule_demo.md",
+          "untertitel": "Mein Schultag"
         }
       ],
       "hotspots360": [
         {
-          "id": "hs-dx-embed",
-          "yaw": 1.1,
-          "pitch": -0.2,
-          "mediumId": "dx-schule-zukunft",
-          "icon": "/stations-icons/klassenzimmer/embed.svg",
+          "id": "hs-text",
+          "label": "Korkpinnwand",
+          "yaw": -32,
+          "pitch": -4,
+          "mediumId": "demo-text",
           "iconSize": 0.2
         },
         {
-          "id": "hs-frieda-tagesablauf",
-          "action": "dialog",
-          "mascot": "frieda",
-          "yaw": 32.2,
-          "pitch": -43.2,
-          "mascotSize": 0.35
+          "id": "hs-video",
+          "label": "Tafel",
+          "yaw": -18,
+          "pitch": 0,
+          "mediumId": "demo-video",
+          "icon": "/media/klassenzimmer/icons/play.svg",
+          "iconSize": 0.2
         },
         {
-          "id": "hs-video-mathestunde",
-          "yaw": -45.5,
-          "pitch": -3.5,
-          "mediumId": "klassenzimmer-klassenzimmer-4a-2",
-          "icon": "/stations-icons/klassenzimmer/play.svg"
+          "id": "hs-audio",
+          "label": "Klassentische",
+          "yaw": 4,
+          "pitch": -8,
+          "mediumId": "demo-audio",
+          "iconSize": 0.2
         },
         {
-          "id": "hs-foto-stundenplan",
-          "yaw": -24.5,
-          "pitch": 8.4,
-          "mediumId": "klassenzimmer-stundenplan",
-          "icon": "/media/klassenzimmer/icons/Klassenzimmer.png",
-          "iconSize": 0.25
-        },
-        {
-          "id": "hs-video-unterricht-fantasie",
-          "yaw": 70.8,
-          "pitch": 4.9,
-          "mediumId": "klassenzimmer-mein-film",
-          "icon": "/stations-icons/klassenzimmer/play.svg"
+          "id": "hs-foto",
+          "label": "Fensterseite",
+          "yaw": 28,
+          "pitch": -2,
+          "mediumId": "demo-foto",
+          "iconSize": 0.2
         }
-      ],
-      "dialog": {
-        "figuren": [
-          "frieda",
-          "otto"
-        ],
-        "segmente": [
-          {
-            "id": "k1",
-            "rolle": "frieda",
-            "text": "",
-            "quelle": "/api/dialog/klassenzimmer/01-frieda.wav"
-          }
-        ],
-        "gruppen": []
-      }
+      ]
     },
     {
       "slug": "musik",
@@ -108,55 +79,8 @@
       "viewer": "equirectangular",
       "panorama360": "/stations/360/musik.jpg",
       "bild": "/stations/musik.jpg",
-      "medien": [
-        {
-          "id": "musik-musikzimmer-gute-laune-tanz",
-          "typ": "video",
-          "quelle": "/media/musik/video/musikzimmer-gute-laune-tanz.mp4",
-          "untertitel": "Gute Laune Tanz",
-          "videoSource": "upload"
-        },
-        {
-          "id": "musik-musikzimmer-fuer-elise",
-          "typ": "audio",
-          "quelle": "/media/musik/audio/musikzimmer-fuer-elise.mp3",
-          "untertitel": "Hier kannst du dir \"Für Elise\" von Ludwig van Beethoven anhören."
-        },
-        {
-          "id": "musik-musikraum-plakat",
-          "typ": "foto",
-          "quelle": "/media/musik/fotos/musikraum-plakat.jpg",
-          "untertitel": "Bandplakat"
-        }
-      ],
-      "hotspots360": [
-        {
-          "id": "gute-laune-tanz",
-          "yaw": -97.6,
-          "pitch": 2.7,
-          "mediumId": "musik-musikzimmer-gute-laune-tanz",
-          "icon": "/stations-icons/musik/video.svg",
-          "iconSize": 0.2
-        },
-        {
-          "id": "hs-fuer-elise",
-          "yaw": -153.3,
-          "pitch": 0.7,
-          "mediumId": "musik-musikzimmer-fuer-elise",
-          "icon": "/stations-icons/musik/matt-icons-folder-piano.svg",
-          "iconSize": 0.23
-        },
-        {
-          "id": "hs-plakat-musikraum",
-          "yaw": 161.4,
-          "pitch": 11.4,
-          "mediumId": "musik-musikraum-plakat",
-          "icon": "/media/musik/icons/foto-anschauen.svg",
-          "iconSize": 0.19
-        }
-      ],
-      "startYaw": -61.4,
-      "startPitch": 2
+      "medien": [],
+      "hotspots360": []
     },
     {
       "slug": "daz",
@@ -165,27 +89,13 @@
       "viewer": "equirectangular",
       "panorama360": "/stations/360/daz.jpg",
       "bild": "/stations/daz.jpg",
-      "medien": [
-        {
-          "id": "daz-video-hallo-im-daz-raum",
-          "typ": "video",
-          "quelle": "/media/daz/video/video-hallo-im-daz-raum.mp4",
-          "untertitel": "Hallo im DaZ Raum",
-          "videoSource": "upload"
-        },
-        {
-          "id": "daz-geburtstagskind-arabisch",
-          "typ": "audio",
-          "quelle": "/media/daz/audio/geburtstagskind-arabisch.mp3",
-          "untertitel": "Arabisches Geburtstagslied"
-        }
-      ],
+      "medien": [],
       "hotspots360": [
         {
           "id": "hs-frieda",
           "label": "Frieda",
-          "yaw": 23,
-          "pitch": -31.4,
+          "yaw": 21.1,
+          "pitch": -30.7,
           "action": "dialog",
           "mascot": "frieda",
           "mascotSize": 0.3,
@@ -202,22 +112,6 @@
           "mascotSize": 0.2,
           "mascotFlipX": true,
           "bubblePitchOffset": 14
-        },
-        {
-          "id": "hs-video-hallo-im-daz-raum",
-          "yaw": -101.9,
-          "pitch": 4.2,
-          "mediumId": "daz-video-hallo-im-daz-raum",
-          "icon": "/stations-icons/daz/video.svg",
-          "iconSize": 0.25
-        },
-        {
-          "id": "hs-audio-geburtstagslied",
-          "yaw": 57,
-          "pitch": -6.4,
-          "mediumId": "daz-geburtstagskind-arabisch",
-          "icon": "/media/daz/icons/DAZ.png",
-          "iconSize": 0.24
         }
       ],
       "dialog": {
@@ -299,149 +193,8 @@
       "titel": "Kunstzimmer",
       "beschreibung": "Willkommen im Kunstzimmer! Hier malen wir, basteln wir und kleben manchmal aus Versehen unsere Finger zusammen. Aber keine Sorge – die Kunstwerke sind trotzdem wunderschön.",
       "bild": "/stations/kunst.jpg",
-      "medien": [
-        {
-          "id": "kunst-kunstraum-safia-bild1",
-          "typ": "foto",
-          "quelle": "/media/kunst/fotos/kunstraum-safia-bild1.jpg",
-          "thumbnail": "/media/kunst/icons/kunstraum-safia-bild1.png",
-          "untertitel": "Das habe ich im Kunstunterricht gemalt."
-        },
-        {
-          "id": "kunst-kunstraum-safia-bild2-2",
-          "typ": "foto",
-          "quelle": "/media/kunst/fotos/kunstraum-safia-bild2-2.jpg",
-          "untertitel": "Hier sind ein paar von Safias Bildern."
-        },
-        {
-          "id": "kunst-kunst-bilder-zeigen-2",
-          "typ": "video",
-          "quelle": "/media/kunst/video/kunst-bilder-zeigen-2.mp4",
-          "untertitel": "Galerierundgang",
-          "videoSource": "upload"
-        },
-        {
-          "id": "kunst-embed",
-          "typ": "embed",
-          "quelle": "https://read.bookcreator.com/0SjkLxk5Rc9Vj2hkA8yBldiwPzO0s6gi1YxZK_yvsjPdO0PUkFFCJg/JqOuLiGeR_mTlsieMjjFcQ",
-          "untertitel": "Unser Kunstzimmer",
-          "embedAllow": [
-            "bookcreator.com",
-            "delightex.com"
-          ]
-        }
-      ],
-      "startPanX": 0.5289,
-      "dialog": {
-        "figuren": [
-          "frieda",
-          "otto"
-        ],
-        "segmente": [
-          {
-            "id": "k1",
-            "rolle": "frieda",
-            "text": "Hi, ich bin’s noch mal. Jetzt erkläre ich euch die Regeln im Kunstraum. Es gibt viele Regeln an die man sich halten muss. Auch auf den Lehrer muss man ebenfalls hören. Ich möchte euch jetzt nicht zu viel verraten. Kommen wir jetzt zu den Regeln.",
-            "quelle": "/api/dialog/kunst/01-frieda.wav"
-          },
-          {
-            "id": "k2",
-            "rolle": "otto",
-            "text": "Wenn man Material braucht, den Lehrer fragen und nicht einfach selbst nehmen.",
-            "quelle": "/api/dialog/kunst/02-otto.wav"
-          },
-          {
-            "id": "k3",
-            "rolle": "frieda",
-            "text": "Nur die Materialen auspacken, die man benötigt.",
-            "quelle": "/api/dialog/kunst/03-frieda.wav"
-          },
-          {
-            "id": "k4",
-            "rolle": "otto",
-            "text": "Die Sitzordnung muss natürlich eingehalten werden.",
-            "quelle": "/api/dialog/kunst/04-otto.wav"
-          },
-          {
-            "id": "k5",
-            "rolle": "frieda",
-            "text": "Wenn man beim Waschbecken den Becher auffüllt, soll man den Becher nicht bis zum Rand voll machen, da das Wasser sonst überläuft.",
-            "quelle": "/api/dialog/kunst/05-frieda.wav"
-          },
-          {
-            "id": "k6",
-            "rolle": "otto",
-            "text": "Keine Überschwemmungen beim Waschbecken.",
-            "quelle": "/api/dialog/kunst/06-otto.wav"
-          },
-          {
-            "id": "k7",
-            "rolle": "frieda",
-            "text": "Keine Überschwemmung beim Waschbecken.",
-            "quelle": "/api/dialog/kunst/07-frieda.wav"
-          },
-          {
-            "id": "k8",
-            "rolle": "frieda",
-            "text": "Das waren die Regeln. Die sind sehr wichtig im Kunstraum. Wenn man sie nicht einhält, dann bekommt man Ärger und das will man sicherlich nicht. Naja, hoffentlich haltet ihr die Regeln immer gut ein. Nun viel Spaß in der Schule. Tschüssi!!",
-            "quelle": "/api/dialog/kunst/08-frieda.wav"
-          }
-        ],
-        "gruppen": [],
-        "bubble": {
-          "y": 0.12,
-          "x": 0.6,
-          "maxWidth": 0.88,
-          "fontSize": 0.0375,
-          "followPan": true
-        }
-      },
-      "hotspots": [
-        {
-          "id": "dialog-frida",
-          "action": "dialog",
-          "mascot": "frieda",
-          "x": 0.4835,
-          "y": 0.9871,
-          "mascotSize": 0.4
-        },
-        {
-          "id": "safia-bild-1",
-          "x": 0.2878,
-          "y": 0.4664,
-          "mediumId": "kunst-kunstraum-safia-bild1",
-          "icon": "/media/kunst/icons/kunstzimmer.png"
-        },
-        {
-          "id": "safia-bild-2",
-          "x": 0.1295,
-          "y": 0.4449,
-          "mediumId": "kunst-kunstraum-safia-bild2-2",
-          "icon": "/media/kunst/icons/kunstzimmer.png"
-        },
-        {
-          "id": "dialog-ott",
-          "action": "dialog",
-          "mascot": "otto",
-          "x": 0.3666,
-          "y": 0.5702,
-          "mascotSize": 0.12
-        },
-        {
-          "id": "hs-video-galerierundgang",
-          "x": 0.8675,
-          "y": 0.4657,
-          "mediumId": "kunst-kunst-bilder-zeigen-2",
-          "icon": "/media/kunst/icons/kunstzimmer.png"
-        },
-        {
-          "id": "hs-kunst-buch",
-          "x": 0.6733,
-          "y": 0.4971,
-          "mediumId": "kunst-embed",
-          "icon": "/media/kunst/icons/favoriten.svg"
-        }
-      ]
+      "medien": [],
+      "startPanX": 0.6673
     },
     {
       "slug": "pc-raum",
@@ -452,19 +205,19 @@
       "bild": "/stations/pc-raum.jpg",
       "medien": [
         {
-          "id": "pc-raum-pc-raum-angebote",
-          "typ": "video",
-          "quelle": "/media/pc-raum/video/pc-raum-angebote.mp4",
-          "videoSource": "upload",
-          "untertitel": "Das machen wir mit dem Internet"
+          "id": "pc-delightex",
+          "typ": "embed",
+          "quelle": "https://edu.delightex.com/WVX-NAQ",
+          "untertitel": "Unsere 3D-Welt",
+          "thumbnail": "/media/pc-raum/icons/delightex.svg"
         }
       ],
       "hotspots360": [
         {
           "id": "hs-frieda",
           "label": "Frieda",
-          "yaw": -139.7,
-          "pitch": -23.7,
+          "yaw": -20,
+          "pitch": -20,
           "action": "dialog",
           "mascot": "frieda",
           "mascotSize": 0.28,
@@ -474,8 +227,8 @@
         {
           "id": "hs-otto",
           "label": "Otto",
-          "yaw": 144,
-          "pitch": -24.9,
+          "yaw": 18,
+          "pitch": -20,
           "action": "dialog",
           "mascot": "otto",
           "mascotSize": 0.28,
@@ -483,12 +236,13 @@
           "bubblePitchOffset": 12
         },
         {
-          "id": "video-angebote-pcraum",
-          "yaw": -170.5,
-          "pitch": -20,
-          "mediumId": "pc-raum-pc-raum-angebote",
-          "icon": "/stations-icons/pc-raum/video.svg",
-          "iconSize": 0.23
+          "id": "hs-delightex",
+          "label": "3D-Welt",
+          "yaw": -2,
+          "pitch": 2,
+          "mediumId": "pc-delightex",
+          "icon": "/media/pc-raum/icons/delightex.svg",
+          "iconSize": 0.2
         }
       ],
       "dialog": {
@@ -552,77 +306,33 @@
             "text": "Dann macht das Lernen am Computer allen Spaß."
           }
         ]
-      },
-      "startYaw": -169.4,
-      "startPitch": 2.9
+      }
     },
     {
       "slug": "lesewelt",
       "titel": "Lesewelt",
-      "beschreibung": "Psst … Willkommen in der Lesewelt! Hier tauchen wir in Geschichten ein, reisen in andere Länder und treffen Drachen, Piraten und sprechende Tiere. Lesen ist wie Kino im Kopf, nur ohne Popcorn.",
+      "beschreibung": "Psst … willkommen in der Lesewelt! Hier tauchen wir in Geschichten ein, reisen in andere Länder und treffen Drachen, Piraten und sprechende Tiere. Lesen ist wie Kino im Kopf, nur ohne Popcorn.",
       "viewer": "equirectangular",
       "panorama360": "/stations/360/lesewelt.jpg",
       "bild": "/stations/lesewelt.jpg",
       "medien": [
         {
-          "id": "lesewelt-embed",
-          "typ": "embed",
-          "quelle": "https://read.bookcreator.com/YqQ0U5L8S0r0vSRfXVfsp8CqLmt2yQvDeGg9lfzLcveH2k6STwD04A/108kSCPeTWiP3ozfYy94IQ",
-          "untertitel": "Entdecke, was wir lesen",
-          "embedAllow": [
-            "bookcreator.com",
-            "delightex.com"
-          ]
+          "id": "lesewelt-beruehmte-personen",
+          "typ": "link",
+          "quelle": "https://read.bookcreator.com/2MfAUZf5kWdGbFsdRTyW50qOUeT2/4GMz8K3eSy2Sv6RbTbo6_A",
+          "untertitel": "Berühmte Personen"
         }
       ],
       "hotspots360": [
         {
-          "id": "hs-buchstabel",
-          "label": "Buchstapel",
-          "yaw": -5.4,
-          "pitch": -28.7,
-          "mediumId": "lesewelt-embed",
-          "icon": "/stations-icons/lesewelt/books-stack-of-three.svg",
-          "iconSize": 0.15
-        },
-        {
-          "id": "hs-otto-zeigt-auf-buchstapel",
-          "action": "dialog",
-          "mascot": "otto",
-          "yaw": -33.6,
-          "pitch": -31.8,
-          "mascotFlipX": true
-        },
-        {
-          "id": "hs-frieda-begruesst",
-          "action": "dialog",
-          "mascot": "frieda",
-          "yaw": -49.9,
-          "pitch": -24.1,
-          "mascotSize": 0.4
+          "id": "hs-beruehmte-personen",
+          "label": "Berühmte Personen",
+          "yaw": 0,
+          "pitch": 0,
+          "mediumId": "lesewelt-beruehmte-personen",
+          "iconSize": 0.2
         }
-      ],
-      "dialog": {
-        "figuren": [
-          "frieda",
-          "otto"
-        ],
-        "segmente": [
-          {
-            "id": "l1",
-            "rolle": "frieda",
-            "text": "Herzlich willkommen in der Lesewelt der 39. Grundschule Dresden Plauen. Öffnungszeiten und andere Bücher finden sie hier. An der Tür stehen alle Öffnungszeiten."
-          },
-          {
-            "id": "l2",
-            "rolle": "otto",
-            "text": "Ganz unten in der Mitte auf der Bücherregal, finden Sie das lila Buch. Das ist unsere selbst gestaltete Lesewelt."
-          }
-        ],
-        "gruppen": []
-      },
-      "startYaw": -44.4,
-      "startPitch": 5.7
+      ]
     },
     {
       "slug": "werken",
@@ -631,55 +341,7 @@
       "viewer": "equirectangular",
       "panorama360": "/stations/360/werken.jpg",
       "bild": "/stations/werken.jpg",
-      "medien": [
-        {
-          "id": "werken-werken-elektrobaukasten",
-          "typ": "foto",
-          "quelle": "/media/werken/fotos/werken-elektrobaukasten.jpg",
-          "untertitel": "Elektrobaukasten"
-        },
-        {
-          "id": "werken-werkenzimmer-dinge-aus-dem-unterricht",
-          "typ": "foto",
-          "quelle": "/media/werken/fotos/werkenzimmer-dinge-aus-dem-unterricht.jpg",
-          "untertitel": "Dinge aus dem Unterricht"
-        },
-        {
-          "id": "werken-werken-das-kleine-quadrat",
-          "typ": "video",
-          "quelle": "/media/werken/video/werken-das-kleine-quadrat.mp4",
-          "untertitel": "Das kleine Quadrat",
-          "videoSource": "upload"
-        }
-      ],
-      "hotspots360": [
-        {
-          "id": "hs-elektrobaukasten",
-          "label": "Metallbaukasten",
-          "yaw": 91.1,
-          "pitch": -19.2,
-          "mediumId": "werken-werken-elektrobaukasten",
-          "icon": "/media/werken/icons/werken-elektrobaukasten.png"
-        },
-        {
-          "id": "hs-dinge-aus-dem-unterricht",
-          "yaw": 62.1,
-          "pitch": -44.5,
-          "mediumId": "werken-werkenzimmer-dinge-aus-dem-unterricht",
-          "icon": "/media/werken/icons/werkenzimmer-dinge-aus-dem-unterricht.png",
-          "iconSize": 0.25
-        },
-        {
-          "id": "hs-das-kleine-quadrat",
-          "yaw": 63.1,
-          "pitch": 6.7,
-          "mediumId": "werken-werken-das-kleine-quadrat",
-          "icon": "/stations-icons/werken/video.svg",
-          "iconSize": 0.25
-        }
-      ],
-      "startYaw": 65.7,
-      "startPitch": -8.4
+      "medien": []
     },
     {
       "slug": "speiseraum",
@@ -688,119 +350,14 @@
       "viewer": "equirectangular",
       "panorama360": "/stations/360/speiseraum.jpg",
       "bild": "/stations/speiseraum.jpg",
-      "medien": [
-        {
-          "id": "speiseraum-speiseraum-essenausgabe-2",
-          "typ": "video",
-          "quelle": "/media/speiseraum/video/speiseraum-essenausgabe-2.mp4",
-          "untertitel": "Die Essensausgabe",
-          "videoSource": "upload"
-        },
-        {
-          "id": "speiseraum-embed",
-          "typ": "embed",
-          "quelle": "https://edu.delightex.com/TRG-BBD",
-          "untertitel": "Klassenraum",
-          "embedAllow": [
-            "bookcreator.com",
-            "delightex.com"
-          ]
-        }
-      ],
-      "hotspots360": [
-        {
-          "id": "hs-essensausgabe",
-          "yaw": 118.9,
-          "pitch": -3.3,
-          "mediumId": "speiseraum-speiseraum-essenausgabe-2",
-          "icon": "/stations-icons/speiseraum/video.svg",
-          "iconSize": 0.25
-        },
-        {
-          "id": "hs-frieda-schlange",
-          "action": "dialog",
-          "mascot": "frieda",
-          "yaw": 56.3,
-          "pitch": -22.7,
-          "mascotSize": 0.3,
-          "mascotFlipX": true
-        },
-        {
-          "id": "hs-otto-schlange",
-          "action": "dialog",
-          "mascot": "otto",
-          "yaw": 84.7,
-          "pitch": -26.8,
-          "mascotSize": 0.15,
-          "mascotFlipX": true
-        },
-        {
-          "id": "hs-delight-embed",
-          "yaw": -177.6,
-          "pitch": -10.6,
-          "mediumId": "speiseraum-embed",
-          "icon": "/media/speiseraum/icons/likes.svg"
-        }
-      ],
-      "startYaw": 152.3,
-      "startPitch": -0.3,
-      "dialog": {
-        "figuren": [
-          "frieda",
-          "otto"
-        ],
-        "segmente": [],
-        "gruppen": []
-      }
+      "medien": []
     },
     {
       "slug": "hort",
       "titel": "Hortzimmer",
       "beschreibung": "Hallo! Im Hortzimmer spielen wir, basteln wir und machen Hausaufgaben – manchmal sogar freiwillig. Hier ist es immer gemütlich und es gibt fast immer jemanden zum Quatschen.",
       "bild": "/stations/hort.jpg",
-      "medien": [
-        {
-          "id": "hort-img-6034",
-          "typ": "foto",
-          "quelle": "/media/hort/fotos/img-6034.jpg",
-          "untertitel": "Lego"
-        },
-        {
-          "id": "hort-hort5",
-          "typ": "foto",
-          "quelle": "/media/hort/fotos/hort5.jpg",
-          "untertitel": "Ferienspiele"
-        },
-        {
-          "id": "hort-hort3",
-          "typ": "foto",
-          "quelle": "/media/hort/fotos/hort3.jpg",
-          "untertitel": "Ferienspiele Bilder"
-        }
-      ],
-      "hotspots": [
-        {
-          "id": "hs-spielzeug",
-          "x": 0.4259,
-          "y": 0.4596,
-          "mediumId": "hort-img-6034",
-          "icon": "/media/hort/icons/einstellungen.svg"
-        },
-        {
-          "id": "hs-ferien-bilder",
-          "x": 0.613,
-          "y": 0.1753,
-          "mediumId": "hort-hort3",
-          "icon": "/media/hort/icons/einstellungen.svg"
-        },
-        {
-          "id": "hs-bild-ferienaktivitaeten",
-          "x": 0.9556,
-          "y": 0.2625,
-          "mediumId": "hort-hort5",
-          "icon": "/media/hort/icons/einstellungen.svg"
-        }
-      ]
+      "medien": []
     },
     {
       "slug": "turnhalle",
@@ -809,54 +366,7 @@
       "viewer": "equirectangular",
       "panorama360": "/stations/360/turnhalle.jpg",
       "bild": "/stations/turnhalle.jpg",
-      "medien": [
-        {
-          "id": "turnhalle-sporthalle-1",
-          "typ": "video",
-          "quelle": "/media/turnhalle/video/sporthalle-1.mp4",
-          "untertitel": "Rundgang Sporthalle 1",
-          "videoSource": "upload"
-        },
-        {
-          "id": "turnhalle-sporthalle-2",
-          "typ": "video",
-          "quelle": "/media/turnhalle/video/sporthalle-2.mp4",
-          "untertitel": "Rundgang Sporthalle 2",
-          "videoSource": "upload"
-        },
-        {
-          "id": "turnhalle-sporthalle-3",
-          "typ": "video",
-          "quelle": "/media/turnhalle/video/sporthalle-3.mp4",
-          "untertitel": "Rundgang Sporthalle 3",
-          "videoSource": "upload"
-        }
-      ],
-      "hotspots360": [
-        {
-          "id": "hs-rundgang-sporthalle-1",
-          "yaw": -150,
-          "pitch": 0.6,
-          "mediumId": "turnhalle-sporthalle-1",
-          "icon": "/media/turnhalle/icons/video-abspielen.svg"
-        },
-        {
-          "id": "hs-rundgang-sporthalle-2",
-          "yaw": -83.7,
-          "pitch": -2.2,
-          "mediumId": "turnhalle-sporthalle-2",
-          "icon": "/media/turnhalle/icons/video-abspielen.svg"
-        },
-        {
-          "id": "hs-rundgang-sporthalle-3",
-          "yaw": 0,
-          "pitch": 0,
-          "mediumId": "turnhalle-sporthalle-3",
-          "icon": "/media/turnhalle/icons/video-abspielen.svg"
-        }
-      ],
-      "startYaw": -158,
-      "startPitch": 0.3
+      "medien": []
     },
     {
       "slug": "schulsozialarbeit",
@@ -864,42 +374,11 @@
       "beschreibung": "Hallo! Hier arbeitet unser Schulsozialarbeiter. Zu ihm können wir kommen, wenn wir Sorgen haben, Streit klären wollen oder einfach jemanden brauchen, der zuhört. Er hat immer ein offenes Ohr und manchmal auch Gummibärchen.",
       "medien": [
         {
-          "id": "schulsozialarbeit-hinweis",
+          "id": "ssa-info",
           "typ": "text",
-          "quelle": "/media/schulsozialarbeit/texte/hinweis.txt",
-          "untertitel": "Hinweis zur Schulsozialarbeit"
-        },
-        {
-          "id": "schulsozialarbeit-schulsozial-detail1",
-          "typ": "foto",
-          "quelle": "/media/schulsozialarbeit/fotos/schulsozial-detail1.jpg",
-          "untertitel": "Detail 1"
-        },
-        {
-          "id": "schulsozialarbeit-schulsozial-detail2",
-          "typ": "foto",
-          "quelle": "/media/schulsozialarbeit/fotos/schulsozial-detail2.jpg",
-          "untertitel": "Detail 2"
+          "quelle": "/demo/ssa-hinweis.txt"
         }
-      ],
-      "bild": "/stations/schulsozialarbeit.jpg",
-      "hotspots": [
-        {
-          "id": "hs-detail",
-          "x": 0.1286,
-          "y": 0.5396,
-          "mediumId": "schulsozialarbeit-schulsozial-detail1",
-          "icon": "/media/schulsozialarbeit/icons/profil.svg"
-        },
-        {
-          "id": "hs-detail-2",
-          "x": 0.5584,
-          "y": 0.2281,
-          "mediumId": "schulsozialarbeit-schulsozial-detail2",
-          "icon": "/media/schulsozialarbeit/icons/profil.svg"
-        }
-      ],
-      "startPanX": 0.5528
+      ]
     },
     {
       "slug": "schulhof",
@@ -907,103 +386,7 @@
       "beschreibung": "Willkommen auf unserem Schulhof! Hier wird in der Pause gespielt, getobt und gelacht. Schau dich um — bald gibt es hier noch mehr zu entdecken.",
       "viewer": "equirectangular",
       "panorama360": "/stations/360/schulhof.jpg",
-      "medien": [
-        {
-          "id": "schulhof-tischball-2",
-          "typ": "video",
-          "quelle": "/media/schulhof/video/tischball-2.mp4",
-          "untertitel": "Tischball",
-          "videoSource": "upload"
-        },
-        {
-          "id": "schulhof-embed",
-          "typ": "embed",
-          "quelle": "https://edu.delightex.com/SVX-FQF",
-          "untertitel": "Schulhof der Zukunft",
-          "embedAllow": [
-            "delightex.com"
-          ]
-        },
-        {
-          "id": "schulhof-erlaerung-schulhofwelt-1-3",
-          "typ": "video",
-          "quelle": "/media/schulhof/video/erlaerung-schulhofwelt-1-3.mp4",
-          "untertitel": "Erklärung Schulhofwelt 1",
-          "videoSource": "upload"
-        },
-        {
-          "id": "schulhof-erklaerung-schulhofwelt-2-3",
-          "typ": "video",
-          "quelle": "/media/schulhof/video/erklaerung-schulhofwelt-2-3.mp4",
-          "untertitel": "Erklärung Schulhofwelt 2",
-          "videoSource": "upload"
-        },
-        {
-          "id": "schulhof-erklaerung-schulhofwelt-3-3",
-          "typ": "video",
-          "quelle": "/media/schulhof/video/erklaerung-schulhofwelt-3-3.mp4",
-          "untertitel": "Erklärung Schulhofwelt 3",
-          "videoSource": "upload"
-        },
-        {
-          "id": "schulhof-embed-2",
-          "typ": "embed",
-          "quelle": "https://edu.delightex.com/SVX-FQF",
-          "untertitel": "Schulhof der Zukunft",
-          "embedAllow": [
-            "bookcreator.com",
-            "delightex.com"
-          ]
-        }
-      ],
-      "hotspots360": [
-        {
-          "id": "hs-video-tischball",
-          "yaw": -166.9,
-          "pitch": -0.2,
-          "mediumId": "schulhof-tischball-2",
-          "icon": "/media/schulhof/icons/Unknown.png",
-          "iconSize": 0.2
-        },
-        {
-          "id": "hs-delightex-schulhof-zukunft",
-          "yaw": 29.8,
-          "pitch": -5.3,
-          "mediumId": "schulhof-embed",
-          "icon": "/media/schulhof/icons/link.svg",
-          "iconSize": 0.22
-        },
-        {
-          "id": "hs-schulhof-1",
-          "yaw": -1.5,
-          "pitch": 19.7,
-          "mediumId": "schulhof-erlaerung-schulhofwelt-1-3",
-          "icon": "/media/schulhof/icons/embed.svg"
-        },
-        {
-          "id": "hs-schulhof-2",
-          "yaw": 32,
-          "pitch": 30.5,
-          "mediumId": "schulhof-erklaerung-schulhofwelt-2-3",
-          "icon": "/media/schulhof/icons/embed.svg"
-        },
-        {
-          "id": "hs-schulhof-3",
-          "yaw": 48.1,
-          "pitch": 13.5,
-          "mediumId": "schulhof-erklaerung-schulhofwelt-3-3",
-          "icon": "/media/schulhof/icons/embed.svg"
-        },
-        {
-          "id": "hs-delight-schulhof-zukunft",
-          "yaw": 156.4,
-          "pitch": -1.8,
-          "mediumId": "schulhof-embed-2",
-          "icon": "/media/schulhof/icons/einstellungen.svg"
-        }
-      ],
-      "startYaw": -96.3,
-      "startPitch": 12.3
+      "medien": []
     }
   ]
 }
