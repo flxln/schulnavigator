@@ -517,6 +517,19 @@ sudo chmod -R u+rwX /data/schulnavigator
 
 uid **1001** = User `nextjs` im [`app/Dockerfile`](../app/Dockerfile).
 
+### Backup T5 — NAS über Headscale (#243)
+
+**Entscheidung (2026-07-05):** Zweitkopie der drei Volume-Pfade auf **Synology NAS am MPZ**, Transport über **Headscale** (WireGuard-Mesh zum VPS), **einseitiges rsync** VPS → NAS. Keine dauerhafte Medien-Kopie auf dem Entwickler-Laptop.
+
+Vollständige Spezifikation: [backup-t5-nas-headscale.md](../dokumentation/planung/backup-t5-nas-headscale.md) · Beispielskript: [nas-backup-rsync.example.sh](../dokumentation/planung/scripts/nas-backup-rsync.example.sh)
+
+| Phase | Inhalt |
+|-------|--------|
+| **1 (jetzt)** | NAS in Headscale; nightly rsync Pull auf NAS; verschlüsselter Shared Folder; Restore-Test |
+| **2 (optional)** | Syncthing nur wenn NAS Upload-Master wird — VPS Receive Only, Versionierung auf NAS |
+
+Deploy vom MPZ-Rechner zum VPS (öffentliches SSH) bleibt **unverändert** bis Phase 2 oder Directus (#47).
+
 **Initialbefüllung** und **laufender Medien-Deploy** vom MPZ-Rechner (nach lokalen Validatoren im Skript):
 
 ```bash

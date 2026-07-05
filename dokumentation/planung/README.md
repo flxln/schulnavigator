@@ -7,6 +7,7 @@ Abgleich mit [flxln/schulnavigator](https://github.com/flxln/schulnavigator). **
 | Datei | Inhalt |
 |-------|--------|
 | [offen.md](./offen.md) | Schlanke Liste offener Issues und Ideen |
+| [backup-t5-nas-headscale.md](./backup-t5-nas-headscale.md) | Backup T5: NAS, Headscale, rsync (#243) |
 | [milestones.md](./milestones.md) | Milestone-Beschreibungen für GitHub |
 | [labels.md](./labels.md) | Label-Konventionen |
 | [issues-schulfest-gs39-nachtrag.md](./issues-schulfest-gs39-nachtrag.md) | Epic **#86** — Schulfest/Hof-QR/Content |

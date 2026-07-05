@@ -42,9 +42,9 @@ Entscheidung: [ADR-005](./adr/005-zugangskontrolle-token.md), Speicher/Durchsetz
 | `stations.json`, Coach-Texte | GitHub | wie oben | DSB Option A (O1) |
 | Hotspot-/UI-Icons (personenfrei) | GitHub `public/stations-icons/` | Build im Image | Bahn A |
 | Raumbilder ohne erkennbare Kinder | GitHub LFS `public/stations/` | Build + LFS | O5 |
-| Fotos/Videos mit Schülerinnen/Schülern | VPS-Volume `/data/schulnavigator/media` (IONOS) | rsync vom MPZ-Rechner | Bahn B; Auslieferung `/media/…` (Cookie-Gate) |
-| Dialog-Audio (Kinderstimmen) | VPS-Volume `/data/schulnavigator/dialog-audio` (IONOS) | rsync | Bahn B; Auslieferung `/api/dialog/…` |
-| Coach-Audio | VPS-Volume `/data/schulnavigator/coach-audio` (IONOS) | rsync | Bahn B; Auslieferung `/api/coach/…` |
+| Fotos/Videos mit Schülerinnen/Schülern | VPS-Volume `/data/schulnavigator/media` (IONOS) | rsync vom MPZ-Rechner (Übergang) | Bahn B; Backup-Kopie NAS (Headscale, #243) |
+| Dialog-Audio (Kinderstimmen) | VPS-Volume `/data/schulnavigator/dialog-audio` (IONOS) | rsync | Bahn B; Backup NAS |
+| Coach-Audio | VPS-Volume `/data/schulnavigator/coach-audio` (IONOS) | rsync | Bahn B; Backup NAS |
 | Historische Schüler-Medien in Git/LFS | — | Bereinigt 2026-06-24 ([#232](https://github.com/flxln/schulnavigator/issues/232)); V9 (refs/pull/*) offen — siehe [offen.md](./planung/offen.md) |
 
 Ab Phase 1 (#228, 2026-06-24) werden keine neuen Schüler-Binärdateien mehr in Git getrackt oder gepusht.
@@ -62,7 +62,7 @@ Ab Phase 1 (#228, 2026-06-24) werden keine neuen Schüler-Binärdateien mehr in 
 | Entry-Cookie `sn_access` | Besucher | Zugangskontrolle Schulfest/TOT | Art. 6 (1) f | Browser (HttpOnly) | Token-Ablauf (z. B. 31.07.2027) |
 | Hub-Fortschritt | Besucher | Gamification im Rundgang | Art. 6 (1) f | `localStorage` (Gerät) | Nutzer löscht Browserdaten |
 | Access-Logs | Besucher | Betrieb, Fehleranalyse | Art. 6 (1) f | Traefik/Coolify (VPS) | ≤ 14 Tage (Ziel) |
-| Schüler-Medien | Schüler | Virtueller Schulrundgang | Einwilligung + Art. 6 (1) a | VPS-Volumes DE | Projektende + Schulfristen |
+| Schüler-Medien | Schüler | Virtueller Schulrundgang | Einwilligung + Art. 6 (1) a | VPS-Volumes DE; Backup NAS MPZ | Projektende + Schulfristen |
 | Lehrkräfte-Accounts (geplant) | Lehrkräfte | Content-Pflege CMS | Art. 6 (1) e | Directus-DB (DE, geplant) | Bei Ausscheiden aus Kollegium |
 
 Details Directus: [directus-auth-konzept.md](./planung/directus-auth-konzept.md)
@@ -86,12 +86,14 @@ GitHub, Inc. wird als Subprozessor **ausschließlich** für die Speicherung von 
 
 **Textbaustein für papierbasierten AVV-Anhang** (außerhalb des Repos übernehmen):
 
-> Subprozessor: GitHub, Inc. (privates Repository `flxln/schulnavigator`). Zweck: Versionsverwaltung und Bereitstellung von Anwendungsquellcode, Konfigurationsdateien und strukturierten Inhaltsdaten (z. B. `stations.json`, Hotspot-Koordinaten, Texte). Es werden **keine** Schüler-Foto-, Video- oder Audio-Binärdateien auf GitHub gespeichert. Schüler-Medien werden ausschließlich auf dem IONOS-VPS des Medienpädagogischen Zentrums Dresden in Deutschland gehostet und per gesichertem Übertragungsweg (SSH/rsync) vom autorisierten MPZ-Rechner synchronisiert. Stand der technischen Umsetzung: Juni 2026 (ADR-027).
+> Subprozessor: GitHub, Inc. (privates Repository `flxln/schulnavigator`). Zweck: Versionsverwaltung und Bereitstellung von Anwendungsquellcode, Konfigurationsdateien und strukturierten Inhaltsdaten (z. B. `stations.json`, Hotspot-Koordinaten, Texte). Es werden **keine** Schüler-Foto-, Video- oder Audio-Binärdateien auf GitHub gespeichert. Schüler-Medien werden ausschließlich auf dem IONOS-VPS des Medienpädagogischen Zentrums Dresden in Deutschland gehostet und per gesichertem Übertragungsweg (SSH/rsync) vom autorisierten MPZ-Rechner auf den VPS synchronisiert (Übergang bis NAS-Master oder Directus). Stand der technischen Umsetzung: Juni 2026 (ADR-027).
 
 ## Backup (T5)
 
-- **Schüler-Medien-Volumes** (media, dialog-audio, coach-audio): Einzige Kopien VPS + MPZ-Laptop.
-- **Entscheidung ausstehend (2026-07-05):** Serverseitiges verschlüsseltes Backup (DE) **oder** dokumentierte Zweitkopie am MPZ — siehe [offen.md](./planung/offen.md).
+- **Live:** VPS-Volumes `media`, `dialog-audio`, `coach-audio` unter `/data/schulnavigator/` (IONOS, DE).
+- **Zweitkopie (entschieden 2026-07-05, [#243](https://github.com/flxln/schulnavigator/issues/243)):** Synology NAS am MPZ-Standort, verschlüsselter Shared Folder; Sync **VPS → NAS** über **Headscale** (WireGuard-Mesh), einseitiges **rsync** (Phase 1). Details: [backup-t5-nas-headscale.md](./planung/backup-t5-nas-headscale.md).
+- **Entwickler-Laptop:** keine institutionelle Medien-Kopie — nur Deploy-Transport (`deploy:content`), bis Upload auf NAS oder Directus (#47).
+- **Phase 2 optional:** Syncthing (NAS Master, VPS Receive Only) — nur bei direktem NAS-Upload.
 - **Vor Directus (#47):** Backup-Konzept um Directus-Datenbank erweitern.
 
 ## Offene Punkte
@@ -107,4 +109,4 @@ GitHub, Inc. wird als Subprozessor **ausschließlich** für die Speicherung von 
 - [x] Media-Gate `/media/*` live (Middleware + Route, Prod 2026-07-05)
 - [ ] Log-Retention Traefik/Coolify bestätigen (Ziel ≤ 14 Tage)
 - [x] HSTS am Proxy aktivieren (#242, 2026-07-05)
-- [ ] Volume-Backup T5 umsetzen
+- [ ] Volume-Backup T5 umsetzen ([#243](https://github.com/flxln/schulnavigator/issues/243) — Entscheidung NAS/Headscale: [backup-t5-nas-headscale.md](./planung/backup-t5-nas-headscale.md); Cron/Restore ausstehend)

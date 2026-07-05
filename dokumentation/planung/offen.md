@@ -2,7 +2,7 @@
 
 **Stand:** 2026-07-05 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
 
-**Letzter Abgleich:** 2026-07-05 — HSTS Proxy [#242](https://github.com/flxln/schulnavigator/issues/242) erledigt; Post-Mortem [post-mortem-242-2026-07-05.md](../reviews/post-mortem/post-mortem-242-2026-07-05.md).
+**Letzter Abgleich:** 2026-07-05 — Backup T5 [#243](https://github.com/flxln/schulnavigator/issues/243): Entscheidung NAS + Headscale + rsync — [backup-t5-nas-headscale.md](./backup-t5-nas-headscale.md).
 
 Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren). Abgeschlossene Epics: [archiv/epics/](./archiv/epics/).
 
@@ -18,7 +18,7 @@ Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eing
 | #232 V9 | **offen** — 7 SHAs via `refs/pull/*` | GitHub-Support Ticket **#4510440** (Follow-up 25.06. unbeantwortet); Detail: `kunde/39-gs` → `dokumentation/planung/schuelermedien-deploy-trennung/08-github-support-ticket-232.md` |
 | Mirror Pre-Rewrite | **Entscheidung ausstehend** | `/tmp/schulnavigator-pre-232-mirror.git` auf MPZ-Rechner — nach Support-Bestätigung löschen oder verschlüsselt archivieren mit Löschdatum |
 | HSTS Proxy | **erledigt** (2026-07-05) | [#242](https://github.com/flxln/schulnavigator/issues/242) |
-| Volume-Backup T5 | Entscheidung ausstehend | Server-Backup (DE, verschlüsselt) oder MPZ-Zweitkopie — siehe [dsgvo.md](../dsgvo.md) |
+| Volume-Backup T5 | **Entscheidung** NAS/Headscale/rsync | [#243](https://github.com/flxln/schulnavigator/issues/243) — [backup-t5-nas-headscale.md](./backup-t5-nas-headscale.md); Umsetzung Cron ausstehend |
 | Log-Retention | Ziel ≤ 14 Tage | Server-Admin bestätigen; [dsgvo.md](../dsgvo.md) |
 
 ---
