@@ -22,7 +22,10 @@ export async function GET(request: Request, { params }: RouteParams) {
   if (isAccessGated() && !validateToken(token)) {
     // Bewusst 403 ohne Body (kein 307-Redirect wie Middleware):
     // <video>/<img> können 307 nicht folgen und bekämen HTML statt Binärdaten.
-    return new Response(null, { status: 403 })
+    return new Response(null, {
+      status: 403,
+      headers: { 'Cache-Control': 'no-store' },
+    })
   }
 
   const { path } = await params

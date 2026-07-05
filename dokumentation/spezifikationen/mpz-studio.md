@@ -72,6 +72,8 @@ const authorized =
 
 **Nicht:** `SN_MPZ_STUDIO=1` auf Coolify — kein HTTP-Schreibzugriff auf `public/` in Production.
 
+**Cookie-Fallback-Auth (Plan B):** Neben Header `x-mpz-studio-key` akzeptiert `withMpzStudioAccess` ein HttpOnly-Session-Cookie `sn-mpz-studio` (8 h). Gesetzt via `POST /api/mpz/session` nach erfolgreichem Secret-Header. `secure`-Flag folgt dem Request-Protokoll (`https:` — relevant, weil `npm run dev` `--experimental-https` nutzt).
+
 ---
 
 ## Vollständige Content-Matrix (Zielbild — nicht v0)

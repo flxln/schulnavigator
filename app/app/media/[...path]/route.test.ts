@@ -42,6 +42,7 @@ describe('GET /media/[...path]', () => {
       params: Promise.resolve({ path: ['daz', 'video', 'x.mp4'] }),
     })
     expect(res.status).toBe(403)
+    expect(res.headers.get('Cache-Control')).toBe('no-store')
   })
 
   it('liefert Datei mit private Cache bei gültigem Cookie', async () => {

@@ -1,12 +1,25 @@
 import { describe, expect, it } from 'vitest'
 import nextConfig from './next.config'
 
+async function globalSecurityHeaders() {
+  const routes = await nextConfig.headers!()
+  const globalRoute = routes.find((r) => r.source === '/:path*')
+  return globalRoute?.headers ?? []
+}
+
 describe('next.config security headers', () => {
+  it('setzt private Cache-Control für /media/*', async () => {
+    const routes = await nextConfig.headers!()
+    const mediaRoute = routes.find((r) => r.source === '/media/:path*')
+    expect(
+      mediaRoute?.headers?.find((h) => h.key === 'Cache-Control')?.value,
+    ).toBe('private, max-age=3600')
+  })
+
   it('setzt erzwungene CSP mit Embed-Allowlist und Kern-Direktiven (#143)', async () => {
     const headersFn = nextConfig.headers
     expect(typeof headersFn).toBe('function')
-    const routes = await headersFn!()
-    const csp = routes[0]?.headers?.find(
+    const csp = (await globalSecurityHeaders()).find(
       (h) => h.key === 'Content-Security-Policy',
     )?.value
     expect(csp).toContain("default-src 'self'")
@@ -23,30 +36,26 @@ describe('next.config security headers', () => {
   })
 
   it('setzt keine Report-Only-CSP mehr (in Enforcement gemerged)', async () => {
-    const routes = await nextConfig.headers!()
-    const reportOnly = routes[0]?.headers?.find(
+    const reportOnly = (await globalSecurityHeaders()).find(
       (h) => h.key === 'Content-Security-Policy-Report-Only',
     )
     expect(reportOnly).toBeUndefined()
   })
 
   it('setzt Permissions-Policy für Scan und Gyro', async () => {
-    const routes = await nextConfig.headers!()
-    const pp = routes[0]?.headers?.find((h) => h.key === 'Permissions-Policy')
+    const pp = (await globalSecurityHeaders()).find((h) => h.key === 'Permissions-Policy')
       ?.value
     expect(pp).toContain('camera=(self)')
     expect(pp).toContain('gyroscope=(self)')
   })
 
   it('setzt kein X-Frame-Options', async () => {
-    const routes = await nextConfig.headers!()
-    const xfo = routes[0]?.headers?.find((h) => h.key === 'X-Frame-Options')
+    const xfo = (await globalSecurityHeaders()).find((h) => h.key === 'X-Frame-Options')
     expect(xfo).toBeUndefined()
   })
 
   it('setzt X-Content-Type-Options nosniff und Referrer-Policy', async () => {
-    const routes = await nextConfig.headers!()
-    const headers = routes[0]?.headers ?? []
+    const headers = await globalSecurityHeaders()
     expect(headers.find((h) => h.key === 'X-Content-Type-Options')?.value).toBe(
       'nosniff',
     )

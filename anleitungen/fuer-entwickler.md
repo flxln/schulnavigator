@@ -307,7 +307,18 @@ In [`next.config.ts`](../app/next.config.ts) über [`lib/security-headers.ts`](.
 
 Nach Änderung an `data/embed-allowlist.json`: Dev-Server neu starten bzw. neu deployen — `frame-src` wird beim Build aus der Allowlist gelesen.
 
-**HSTS** (`Strict-Transport-Security`) setzt die App nicht selbst — liegt bei Coolify/Traefik (Proxy). Bei Bedarf mit Ops abstimmen.
+**HSTS** (`Strict-Transport-Security`) setzt die App nicht selbst — liegt bei Coolify/Traefik (Proxy). Audit Phase 5 (2026-07-05): Header fehlt in Prod — Issue [#143](https://github.com/flxln/schulnavigator/issues/143).
+
+Empfohlene Proxy-Konfiguration (Traefik/Coolify):
+
+- `Strict-Transport-Security: max-age=15552000` (180 Tage)
+- **Ohne** `includeSubDomains` bis Nachbar-Hosts unter `*.mpz.schule` geprüft
+
+Verifikation:
+
+```bash
+curl -sI https://39-gs.mpz.schule/ | grep -i strict-transport
+```
 
 Smoke nach Deploy:
 

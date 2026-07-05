@@ -26,7 +26,8 @@
     "test:watch": "vitest",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "audit:deps": "npm audit --audit-level=moderate"
   },
   "dependencies": {
     "@photo-sphere-viewer/core": "^5.14.1",
