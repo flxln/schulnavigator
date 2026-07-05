@@ -53,7 +53,7 @@ Schmales, **MPZ-internes** Pflege-UI als optionaler **Plan B** zum bereits umges
 
 ## Scope-Abgrenzung
 
-**Draußen (Post-Fest v1/v2):** Coach, Embed-Allowlist-Extraktion, Brand, Hub-Slug-Map, Station-Icons, GS39-Tokens, Deploy-Tab, Config-Extraktion nach JSON. **Startblick Sphere/Flat (Runtime):** #152, #154 — siehe [issues-startblick.md](issues-startblick.md); MPZ nur #153.
+**Draußen (Post-Fest v1/v2):** Coach, Embed-Allowlist-Extraktion, Brand, Hub-Slug-Map, Station-Icons, GS39-Tokens, Deploy-Tab, Config-Extraktion nach JSON. **Startblick Sphere/Flat (Runtime):** #152, #154 — siehe [epic-startblick.md](./epic-startblick.md); MPZ nur #153.
 
 ## Risiken / Folge-Tasks
 

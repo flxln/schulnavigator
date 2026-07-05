@@ -65,7 +65,7 @@ Ab Phase 1 (#228, 2026-06-24) werden keine neuen Schüler-Binärdateien mehr in 
 | Schüler-Medien | Schüler | Virtueller Schulrundgang | Einwilligung + Art. 6 (1) a | VPS-Volumes DE; Backup NAS MPZ | Projektende + Schulfristen |
 | Lehrkräfte-Accounts (geplant) | Lehrkräfte | Content-Pflege CMS | Art. 6 (1) e | Directus-DB (DE, geplant) | Bei Ausscheiden aus Kollegium |
 
-Details Directus: [directus-auth-konzept.md](./planung/directus-auth-konzept.md)
+Details Directus: [directus-auth-konzept.md](./spezifikationen/directus-auth-konzept.md)
 
 ## Datenschutzbeauftragter
 
@@ -91,7 +91,7 @@ GitHub, Inc. wird als Subprozessor **ausschließlich** für die Speicherung von 
 ## Backup (T5)
 
 - **Live:** VPS-Volumes `media`, `dialog-audio`, `coach-audio` unter `/data/schulnavigator/` (IONOS, DE).
-- **Zweitkopie (entschieden 2026-07-05, [#243](https://github.com/flxln/schulnavigator/issues/243)):** Synology NAS am MPZ-Standort, verschlüsselter Shared Folder; Sync **VPS → NAS** über **Headscale** (WireGuard-Mesh), einseitiges **rsync** (Phase 1). Details: [backup-t5-nas-headscale.md](./planung/backup-t5-nas-headscale.md).
+- **Zweitkopie (entschieden 2026-07-05, [#243](https://github.com/flxln/schulnavigator/issues/243)):** Synology NAS am MPZ-Standort, verschlüsselter Shared Folder; Sync **VPS → NAS** über **Headscale** (WireGuard-Mesh), einseitiges **rsync** (Phase 1). Details: [backup-t5-nas-headscale.md](../anleitungen/backup-t5/backup-t5-nas-headscale.md).
 - **Entwickler-Laptop:** keine institutionelle Medien-Kopie — nur Deploy-Transport (`deploy:content`), bis Upload auf NAS oder Directus (#47).
 - **Phase 2 optional:** Syncthing (NAS Master, VPS Receive Only) — nur bei direktem NAS-Upload.
 - **Vor Directus (#47):** Backup-Konzept um Directus-Datenbank erweitern.
@@ -109,4 +109,4 @@ GitHub, Inc. wird als Subprozessor **ausschließlich** für die Speicherung von 
 - [x] Media-Gate `/media/*` live (Middleware + Route, Prod 2026-07-05)
 - [ ] Log-Retention Traefik/Coolify bestätigen (Ziel ≤ 14 Tage)
 - [x] HSTS am Proxy aktivieren (#242, 2026-07-05)
-- [ ] Volume-Backup T5 umsetzen ([#243](https://github.com/flxln/schulnavigator/issues/243) — Entscheidung NAS/Headscale: [backup-t5-nas-headscale.md](./planung/backup-t5-nas-headscale.md); Cron/Restore ausstehend)
+- [ ] Volume-Backup T5 umsetzen ([#243](https://github.com/flxln/schulnavigator/issues/243) — Entscheidung NAS/Headscale: [backup-t5-nas-headscale.md](../anleitungen/backup-t5/backup-t5-nas-headscale.md); Cron/Restore ausstehend)

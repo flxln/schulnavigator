@@ -6,13 +6,13 @@
 
 **Quellen:**
 
-- Protokoll [`protokolle/analyse-schulnavigator-gs39-nachtrag.md`](../../protokolle/analyse-schulnavigator-gs39-nachtrag.md) (Gespräch 2026-06-03)
+- Protokoll [`protokolle/analyse-schulnavigator-gs39-nachtrag.md`](../../../../protokolle/analyse-schulnavigator-gs39-nachtrag.md) (Gespräch 2026-06-03)
 - Transkripte `auftraggeber/transkripte/39-grundschule-3.md`, `39-grundschule-4.md`
 - Council of 5 (2026-06-05): schmaler Pilot, kein 11× Tür + 11× Hof, Content vor MPZ-Umsetzung
 
-**Technik unverändert:** [ADR-005](../adr/005-zugangskontrolle-token.md) (`fest`/`heft`), Raum-QR → `/raum/[slug]`, Entry → `/eintritt?t=…`
+**Technik unverändert:** [ADR-005](../../../adr/005-zugangskontrolle-token.md) (`fest`/`heft`), Raum-QR → `/raum/[slug]`, Entry → `/eintritt?t=…`
 
-**Betrifft bestehende Issues:** [#39](./issues-phase-4.md) (QR an Räumen) — Scope **ersetzen**, nicht parallel „11× Tür“ drucken.
+**Betrifft bestehende Issues:** [#39](../issues-phase-4.md) (QR an Räumen) — Scope **ersetzen**, nicht parallel „11× Tür“ drucken.
 
 ---
 
@@ -53,7 +53,7 @@ Nach dem Projektgespräch vom **2026-06-03** (Teil 3 + 4) gilt für das **Schulf
 
 Protokoll: [`protokolle/analyse-schulnavigator-gs39-nachtrag.md`](https://github.com/flxln/schulnavigator/blob/main/protokolle/analyse-schulnavigator-gs39-nachtrag.md)
 
-Spezifikation Issues: [`dokumentation/planung/issues-schulfest-gs39-nachtrag.md`](https://github.com/flxln/schulnavigator/blob/main/dokumentation/planung/issues-schulfest-gs39-nachtrag.md)
+Spezifikation Issues: [`dokumentation/planung/archiv/epics/epic-schulfest-gs39-nachtrag.md`](https://github.com/flxln/schulnavigator/blob/main/dokumentation/planung/archiv/epics/epic-schulfest-gs39-nachtrag.md)
 
 ## Ziel
 
@@ -132,14 +132,14 @@ Mobilfunk schwach → Tablet; App down → MPZ-Kontakt [#42](https://github.com/
 
 ## Akzeptanzkriterien
 
-- [ ] Datei im Repo, verlinkt in [`anleitungen/fuer-entwickler.md`](../../anleitungen/fuer-entwickler.md) (Abschnitt Schulfest)
-- [ ] Verweis aus [`protokolle/analyse-schulnavigator-gs39-nachtrag.md`](../../protokolle/analyse-schulnavigator-gs39-nachtrag.md) (Abschnitt „Empfehlung“)
+- [ ] Datei im Repo, verlinkt in [`anleitungen/fuer-entwickler.md`](../../../../anleitungen/fuer-entwickler.md) (Abschnitt Schulfest)
+- [ ] Verweis aus [`protokolle/analyse-schulnavigator-gs39-nachtrag.md`](../../../../protokolle/analyse-schulnavigator-gs39-nachtrag.md) (Abschnitt „Empfehlung“)
 - [ ] Tabelle „Slug → physisch offen | Hof-QR | nur Hub“ ausgefüllt (**Platzhalter** bis `#90`)
 
 ## Verknüpfungen
 
 - [#39](https://github.com/flxln/schulnavigator/issues/39) — QR befestigen (Scope-Anpassung)
-- [`qr-codes-drucken.md`](../../anleitungen/qr-codes-drucken.md)
+- [`qr-codes-drucken.md`](../../../../anleitungen/qr-codes-drucken.md)
 ```
 
 ---
@@ -209,7 +209,7 @@ Engpass ist **Schule**, nicht URL-Logik (Council-Analyst). Ohne Ideen: leere Sta
 ```markdown
 ## Kontext
 
-Parent: #86. Hof-QRs: Wetter, Sonne, Lesbarkeit. Bestehend: [`anleitungen/qr-codes-drucken.md`](../../anleitungen/qr-codes-drucken.md) (innen/trocken).
+Parent: #86. Hof-QRs: Wetter, Sonne, Lesbarkeit. Bestehend: [`anleitungen/qr-codes-drucken.md`](../../../../anleitungen/qr-codes-drucken.md) (innen/trocken).
 
 Council/Research: Outdoor **Error Correction Level H**, **≥3–5 cm** (besser 5 cm), **matt laminiert**, Sonnentest; Sweet Spot **5–10** Stationen gesamt.
 

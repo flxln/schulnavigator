@@ -15,7 +15,7 @@ Milestone: **Phase 4** | Fällig: 26.06.2026
 **Labels:** `org`, `extern`  
 **Assignee:** Sten / Tina
 
-> **Scope Nachtrag 2026-06-03:** Nicht mehr pauschal „11× an Türen“. Schulfest: nur **offene Räume** + **Hof-Virtualisierungen** laut Playbook — siehe [issues-schulfest-gs39-nachtrag.md](./issues-schulfest-gs39-nachtrag.md) (Epic **#86**, Issues **#87–#91**). Tag der offenen Tür: Tür-QRs separat planen.
+> **Scope Nachtrag 2026-06-03:** Nicht mehr pauschal „11× an Türen“. Schulfest: nur **offene Räume** + **Hof-Virtualisierungen** laut Playbook — siehe [epic-schulfest-gs39-nachtrag.md](./epics/epic-schulfest-gs39-nachtrag.md) (Epic **#86**, Issues **#87–#91**). Tag der offenen Tür: Tür-QRs separat planen.
 
 - **Raum-QRs** für alle 12 Stationen generiert (`--preset=schulfest`); **physische** Platzierung nur für im Playbook (#87) vorgesehene Slugs (Tür/Innen oder Hof-Virtualisierung)
 - **Offene Räume:** QR an Tür oder im Raum, Augenhöhe Erwachsene

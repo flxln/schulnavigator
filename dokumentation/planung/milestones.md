@@ -36,7 +36,7 @@ Der Fortschrittsbalken in GitHub ergibt sich automatisch aus den geschlossenen I
 ## Phase 4 — Live am Schulfest
 
 **Fällig:** 26.06.2026
-**Beschreibung:** Hard Deadline. Schulfest-Pilot (`fest`: Hub + Scanner, ADR-009): Entry-QR am Eingang, **12** Raum-QRs generiert (Platzierung Tür vs. Hof laut Playbook — nicht jeder QR an der Klassentür) — [issues-schulfest-gs39-nachtrag.md](./issues-schulfest-gs39-nachtrag.md). Tablet-Fallback.
+**Beschreibung:** Hard Deadline. Schulfest-Pilot (`fest`: Hub + Scanner, ADR-009): Entry-QR am Eingang, **12** Raum-QRs generiert (Platzierung Tür vs. Hof laut Playbook — nicht jeder QR an der Klassentür) — [epic-schulfest-gs39-nachtrag.md](./archiv/epics/epic-schulfest-gs39-nachtrag.md). Tablet-Fallback.
 
 ---
 

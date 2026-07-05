@@ -66,6 +66,6 @@ Diese Punkte sind als GitHub-Issues unter [#45](https://github.com/flxln/schulna
 
 ## 6. Nächste Schritte
 
-- [ ] Meeting #44 mit Leitfaden [meeting-44-leitfaden.md](../planung/meeting-44-leitfaden.md)
+- [ ] Meeting #44 mit Leitfaden [2026-06-meeting-44-leitfaden.md](../archiv/projektmanagement/2026-06-meeting-44-leitfaden.md)
 - [ ] #45-Issues für Hotfixes anlegen
 - [ ] Must/Should/Could für Herbst/TOT aus #44-Synthese

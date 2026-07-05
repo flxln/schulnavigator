@@ -521,7 +521,7 @@ uid **1001** = User `nextjs` im [`app/Dockerfile`](../app/Dockerfile).
 
 **Entscheidung (2026-07-05):** Zweitkopie der drei Volume-Pfade auf **Synology NAS am MPZ**, Transport über **Headscale** (WireGuard-Mesh zum VPS), **einseitiges rsync** VPS → NAS. Keine dauerhafte Medien-Kopie auf dem Entwickler-Laptop.
 
-Vollständige Spezifikation: [backup-t5-nas-headscale.md](../dokumentation/planung/backup-t5-nas-headscale.md) · Beispielskript: [nas-backup-rsync.example.sh](../dokumentation/planung/scripts/nas-backup-rsync.example.sh)
+Vollständige Spezifikation: [backup-t5-nas-headscale.md](./backup-t5/backup-t5-nas-headscale.md) · Beispielskript: [nas-backup-rsync.example.sh](./backup-t5/scripts/nas-backup-rsync.example.sh)
 
 | Phase | Inhalt |
 |-------|--------|

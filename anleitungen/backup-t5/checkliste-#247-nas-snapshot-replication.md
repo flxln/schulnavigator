@@ -3,7 +3,7 @@
 **Stufe:** LIGHT · **Pipeline:** klassisch  
 **Follow-up zu:** #243 · #246  
 **Triage:** 2026-07-06 (Score 2/8, A=0 B=1 C=1 D=0)  
-**Status:** ✅ abgeschlossen (2026-07-06) — [Post-Mortem](../reviews/post-mortem/post-mortem-247-2026-07-06.md): Go
+**Status:** ✅ abgeschlossen (2026-07-06) — [Post-Mortem](../../../dokumentation/reviews/post-mortem/post-mortem-247-2026-07-06.md): Go
 
 ## Ziel & Akzeptanzkriterien
 
@@ -26,7 +26,7 @@
    ⚠️ **Restore-Regel bei `homes`:** Ein „Wiederherstellen" (Revert/Rollback) in Snapshot Replication wirkt **immer atomar auf den gesamten Shared Folder**. Liegt das Backup unter `homes`, würde ein Ordner-Revert **alle** Home-Verzeichnisse (`~/.ssh`, SSH-Keys, `~/bin/nas-backup-rsync.sh`, Synology-Drive-Daten) auf den Snapshot-Stand zurücksetzen. Ein Restore darf daher **ausschließlich auf Dateiebene** erfolgen (Browse/File Station, Kopieren aus `…/#snapshot/…`) — **nie** der Ordner-Revert. Diese Regel in Schritt 7 dokumentieren.¹
 5. **Snapshot-Zeitplan anlegen** — Snapshot Replication → **Snapshot** → Shared Folder aus Schritt 4 → **Einstellungen**: geplante Snapshots **aktiv**, Intervall **täglich** (z. B. 03:30), Aufbewahrung **30**. **Benachrichtigung:** Der Ordner-Zeitplan hat **keine** eigene Fehler-Checkbox — stattdessen in **Systemsteuerung → Benachrichtigung → Regeln → Snapshot Replication** prüfen, dass die Fehler-Ereignisse (z. B. „Erstellung des Snapshots fehlgeschlagen", „Löschen des Snapshots fehlgeschlagen") für den in #246 aktivierten Kanal (E-Mail/Push) angehakt sind (in DSM 7 global vergeben, nicht im Zeitplan).³
 6. **Manuellen Snapshot mit Nachweis-Datei auslösen** — Zuerst eine Marker-Datei im Live-Backup-Ordner (Pfad aus Schritt 1) anlegen: `echo "snapshot-test $(date)" > <Backup-Pfad>/snapshot-test.txt`. Dann „Snapshot erstellen" / „Jetzt ausführen" → Abschluss ohne Fehler in der Aufgabenhistorie. Danach die Marker-Datei im Live-Ordner **löschen** (`rm <Backup-Pfad>/snapshot-test.txt`) — sie muss im Snapshot erhalten bleiben (Nachweis in Verifikation).²
-7. **Doku aktualisieren** — `dokumentation/planung/backup-t5-nas-headscale.md`: E4-Zeile abhaken, tatsächlicher Shared-Folder-Name, Uhrzeit und Retention eintragen; bei Backup unter `homes` die **Restore-Regel aus Schritt 4** („nur Dateiebene, kein Ordner-Revert") als Warnhinweis festhalten; offene-Punkte-Liste (#247) aktualisieren.¹
+7. **Doku aktualisieren** — `anleitungen/backup-t5/backup-t5-nas-headscale.md`: E4-Zeile abhaken, tatsächlicher Shared-Folder-Name, Uhrzeit und Retention eintragen; bei Backup unter `homes` die **Restore-Regel aus Schritt 4** („nur Dateiebene, kein Ordner-Revert") als Warnhinweis festhalten; offene-Punkte-Liste (#247) aktualisieren.¹
 
 ## Verifikation
 
@@ -39,8 +39,8 @@
 ## Referenzen
 
 - Issue [#247](https://github.com/flxln/schulnavigator/issues/247)
-- Entscheidung E4: [post-mortem-243-2026-07-05.md](../reviews/post-mortem/post-mortem-243-2026-07-05.md)
-- [post-mortem-246-2026-07-05.md](../reviews/post-mortem/post-mortem-246-2026-07-05.md) — Nightly-rsync 02:00
+- Entscheidung E4: [post-mortem-243-2026-07-05.md](../../../dokumentation/reviews/post-mortem/post-mortem-243-2026-07-05.md)
+- [post-mortem-246-2026-07-05.md](../../../dokumentation/reviews/post-mortem/post-mortem-246-2026-07-05.md) — Nightly-rsync 02:00
 - [backup-t5-nas-headscale.md](backup-t5-nas-headscale.md) — Zeile 151 (E4-Vorgabe)
 - [nas-backup-rsync.example.sh](scripts/nas-backup-rsync.example.sh) — `NAS_ROOT` Default
 - Pre-Mortem 1b #243: Schutz vor stillem rsync-Überschreiben (Btrfs-Snapshots als Gegenmaßnahme)

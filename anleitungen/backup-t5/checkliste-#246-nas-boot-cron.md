@@ -3,7 +3,7 @@
 **Stufe:** LIGHT · **Pipeline:** klassisch  
 **Follow-up zu:** #243  
 **Triage:** 2026-07-05 (Score 2/8, A=0 B=1 C=0 D=1)  
-**Status:** ✅ abgeschlossen (2026-07-06) — [Post-Mortem](../reviews/post-mortem/post-mortem-246-2026-07-05.md): Go
+**Status:** ✅ abgeschlossen (2026-07-06) — [Post-Mortem](../../../dokumentation/reviews/post-mortem/post-mortem-246-2026-07-05.md): Go
 
 ## Ziel & Akzeptanzkriterien
 
@@ -36,13 +36,13 @@
 ## Referenzen
 
 - Issue [#246](https://github.com/flxln/schulnavigator/issues/246)
-- Post-Mortem [#246](../reviews/post-mortem/post-mortem-246-2026-07-05.md) — Go, 2026-07-06
-- Post-Mortem [#243](dokumentation/reviews/post-mortem/post-mortem-243-2026-07-05.md) — offene Ops-Punkte
+- Post-Mortem [#246](../../../dokumentation/reviews/post-mortem/post-mortem-246-2026-07-05.md) — Go, 2026-07-06
+- Post-Mortem [#243](../../../dokumentation/reviews/post-mortem/post-mortem-243-2026-07-05.md) — offene Ops-Punkte
 - [backup-t5-nas-headscale.md](backup-t5-nas-headscale.md) — DSM-Felder (Zeilen 130–147)
 - [nas-backup-rsync.example.sh](scripts/nas-backup-rsync.example.sh) · [nas-headscale-configure-host.example.sh](scripts/nas-headscale-configure-host.example.sh)
 - SSOT: `~/Projekte/MPZ - Headscale/anleitungen/anleitung_headscale_synology_ds218_schulnavigator.md` (Teil D)
 - Pre-Mortem 1a #243 F4 (Boot-Task-Servicename)
-- Pre-Mortem 1a #246: `dokumentation/reviews/pre-mortem/pre-mortem-1a-nas-boot-cron-246-2026-07-05.md`
+- Pre-Mortem 1a #246: [pre-mortem-1a-nas-boot-cron-246-2026-07-05.md](../../../dokumentation/reviews/pre-mortem/pre-mortem-1a-nas-boot-cron-246-2026-07-05.md)
 
 ## Nicht in Scope
 

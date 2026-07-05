@@ -6,7 +6,7 @@ tags:
   - backup
   - issue-246
 erstellt: 2026-07-05
-ziel-artefakt: dokumentation/planung/checkliste-#246-nas-boot-cron.md
+ziel-artefakt: anleitungen/backup-t5/checkliste-#246-nas-boot-cron.md
 artefakt-typ: checkliste
 issue: "#246"
 modell: claude-sonnet-5

@@ -1,6 +1,6 @@
 # Issues: Startblick (Sphere) und Startpan (Flat)
 
-**ADR:** [023 — Sphere-Startblick](../adr/023-sphere-startblick.md), [024 — Flat-Startpan](../adr/024-flat-startpan.md)  
+**ADR:** [023 — Sphere-Startblick](../../../adr/023-sphere-startblick.md), [024 — Flat-Startpan](../../../adr/024-flat-startpan.md)  
 **Abgrenzung:** Nicht Teil von #149 (Hotspot-Kalibrierung).
 
 | Issue | Titel | Labels | Blockiert durch | Epic |
@@ -21,7 +21,7 @@
 
 ## #152 — Sphere-Startblick (Runtime)
 
-**Ziel:** [ADR-023](../adr/023-sphere-startblick.md) umsetzen — Produktionsverhalten auf `/raum/{slug}`.
+**Ziel:** [ADR-023](../../../adr/023-sphere-startblick.md) umsetzen — Produktionsverhalten auf `/raum/{slug}`.
 
 **Akzeptanz:**
 
@@ -55,7 +55,7 @@
 
 ## #154 — Flat-Startpan (Runtime)
 
-**Ziel:** [ADR-024](../adr/024-flat-startpan.md) umsetzen.
+**Ziel:** [ADR-024](../../../adr/024-flat-startpan.md) umsetzen.
 
 **Akzeptanz:**
 
@@ -81,9 +81,9 @@
 
 **Blockiert durch:** #154 (Runtime) — erledigt.
 
-**Umgesetzt:** 2026-06-20 auf `main` — Post-Mortem [post-mortem-185-2026-06-20.md](../reviews/post-mortem/post-mortem-185-2026-06-20.md).
+**Umgesetzt:** 2026-06-20 auf `main` — Post-Mortem [post-mortem-185-2026-06-20.md](../../../reviews/post-mortem/post-mortem-185-2026-06-20.md).
 
-**Plan:** [flat-startpan_mpz_#185.plan.md](../../.cursor/plans/flat-startpan_mpz_%23185.plan.md)
+**Plan:** [flat-startpan_mpz_#185.plan.md](../../../../.cursor/plans/flat-startpan_mpz_%23185.plan.md)
 
 ## Checkliste (Dokumentation, erledigt 2026-06-16)
 

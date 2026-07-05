@@ -86,7 +86,7 @@ Auf dem **NAS** (Task Scheduler oder `synocrond`), Beispielskript: [`scripts/nas
 
 ### 5. Doku / AVV
 
-- [`dsgvo.md`](../dsgvo.md) Backup-Abschnitt (erledigt mit dieser Entscheidung).
+- [`dsgvo.md`](../../dokumentation/dsgvo.md) Backup-Abschnitt (erledigt mit dieser Entscheidung).
 - Bei AVV-Unterschrift #43: NAS als MPZ-Backup-Speicherort erwähnen.
 
 ---
@@ -121,9 +121,9 @@ Vor CMS-Einführung Backup-Konzept um **PostgreSQL-Dump** erweitern (gleicher NA
 - [x] NAS in Headscale — **Tailnet-IP `100.64.0.9`**, Tailscale-SPK (2026-07-05)
 - [x] SSH-Schlüssel auf NAS (`~/.ssh/schulnavigator_backup`)
 - [x] Erster Backup-Lauf (~2,8 GB, ~87 min) + Hash-Stichprobe OK
-- [x] Boot-Task + Nightly Cron → [#246](https://github.com/flxln/schulnavigator/issues/246) **erledigt** (2026-07-06, [Post-Mortem](../reviews/post-mortem/post-mortem-246-2026-07-05.md))
+- [x] Boot-Task + Nightly Cron → [#246](https://github.com/flxln/schulnavigator/issues/246) **erledigt** (2026-07-06, [Post-Mortem](../../dokumentation/reviews/post-mortem/post-mortem-246-2026-07-05.md))
 - [ ] Optional: Shared Folder `/volume1/schulnavigator-backup` statt Home-Pfad
-- [x] Btrfs Snapshot Replication (30 Tage) → [#247](https://github.com/flxln/schulnavigator/issues/247) **erledigt** (2026-07-06, [Post-Mortem](../reviews/post-mortem/post-mortem-247-2026-07-06.md))
+- [x] Btrfs Snapshot Replication (30 Tage) → [#247](https://github.com/flxln/schulnavigator/issues/247) **erledigt** (2026-07-06, [Post-Mortem](../../dokumentation/reviews/post-mortem/post-mortem-247-2026-07-06.md))
 - [x] Headscale-Node `100.64.0.8` bereinigen → [#248](https://github.com/flxln/schulnavigator/issues/248) **erledigt** (2026-07-06, Node ID 8 gelöscht; nur `100.64.0.9` aktiv)
 - [x] Issue #243 — nach Verifikation schließen
 
@@ -163,6 +163,6 @@ synosystemctl restart pkgctl-Tailscale.service
 
 ## Referenzen
 
-- [ADR-027](../adr/027-schuelermedien-nicht-in-git.md) — Bahn B, Volumes
-- [fuer-entwickler.md](../../anleitungen/fuer-entwickler.md) — Abschnitt „Backup T5“
-- Audit S6 / T5: [audit-phase-5 (Pre-Mortem)](../reviews/pre-mortem/audit-phase-5-2026-07-04.md)
+- [ADR-027](../../dokumentation/adr/027-schuelermedien-nicht-in-git.md) — Bahn B, Volumes
+- [fuer-entwickler.md](../fuer-entwickler.md) — Abschnitt „Backup T5“
+- Audit S6 / T5: [audit-phase-5 (Pre-Mortem)](../../dokumentation/reviews/pre-mortem/audit-phase-5-2026-07-04.md)

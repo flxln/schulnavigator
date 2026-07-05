@@ -109,7 +109,7 @@ Pro Zeile festhalten:
 
 ## Block 4 — Schulfest 26.06. (QR-Strategie)
 
-*Aus Gespräch 03.06. — Details: [`issues-schulfest-gs39-nachtrag.md`](../dokumentation/planung/issues-schulfest-gs39-nachtrag.md)*
+*Aus Gespräch 03.06. — Details: [`epic-schulfest-gs39-nachtrag.md`](../dokumentation/planung/archiv/epics/epic-schulfest-gs39-nachtrag.md)*
 
 **Nicht** pauschal 11× Tür-QR drucken. Stattdessen abstimmen:
 

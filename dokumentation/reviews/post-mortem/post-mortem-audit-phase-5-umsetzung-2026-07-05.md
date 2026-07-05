@@ -44,7 +44,7 @@ Plan-Code-Abgleich nach Implementierung des [gehärteten Umsetzungsplans](../../
 | `p2-backup-logs` | T5 + Log-Retention dokumentieren | **✅** Entscheidung/Umsetzung offen ([#243](https://github.com/flxln/schulnavigator/issues/243)) |
 | `p2-book-creator` | Embed → Link | **✅** kunde + main |
 | `p3-security-klein` | Studio-Cookie, Spec, npm audit | **✅** |
-| `directus-gates` | Auth-Konzept, DSE, VVT | **✅** [directus-auth-konzept.md](../../planung/directus-auth-konzept.md) |
+| `directus-gates` | Auth-Konzept, DSE, VVT | **✅** [directus-auth-konzept.md](../../spezifikationen/directus-auth-konzept.md) |
 
 ---
 

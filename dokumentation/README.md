@@ -18,8 +18,8 @@ Landkarte der Projekt-Dokumentation. **Anleitungen** (How-to) liegen in [`anleit
 |--------|--------|
 | [adr/](./adr/) | Architecture Decision Records |
 | [content/](./content/) | Slugs, Pfade, Pflege-Übersicht |
-| [planung/](./planung/) | GitHub-Issues, Milestones, offene Punkte |
-| [spezifikationen/](./spezifikationen/) | Feature-Specs (z. B. MPZ Studio) |
+| [planung/](./planung/) | GitHub-Issues, Milestones, offene Punkte ([offen.md](./planung/offen.md)) |
+| [spezifikationen/](./spezifikationen/) | Feature-Specs (MPZ Studio, Directus #47) |
 | [ideen/](./ideen/) | Produktideen (offen / archiv) |
 | [reviews/](./reviews/) | Pre-/Post-Mortems zu Issues |
 | [archiv/](./archiv/) | Eingefrorene Pläne, Meetings, Design-Prototypen |
@@ -38,5 +38,7 @@ Landkarte der Projekt-Dokumentation. **Anleitungen** (How-to) liegen in [`anleit
 - **Architekturentscheidung** → neuer ADR in `adr/`, Eintrag in `entscheidungen.md`
 - **Feature-Idee** → `ideen/offen/`; nach Umsetzung nach `ideen/archiv/` mit Verweis auf ADR
 - **Issue-Spec** → GitHub führend; Repo: `planung/offen.md` + ggf. Epic in `planung/archiv/epics/`
+- **Feature-Spec (ohne ADR)** → `spezifikationen/`
+- **Betrieb / How-to** → `anleitungen/` (z. B. [backup-t5](../anleitungen/backup-t5/))
 - **Spike / Meeting** → `archiv/projektmanagement/` mit Datum im Dateinamen
 - **Temporäre Agenten-Pläne** → `.cursor/plans/` (aktiv); erledigte nach `.cursor/plans/archiv/YYYY-MM/`; nach Merge Essenz in ADR oder Post-Mortem
