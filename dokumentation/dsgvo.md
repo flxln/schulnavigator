@@ -106,5 +106,5 @@ GitHub, Inc. wird als Subprozessor **ausschließlich** für die Speicherung von 
 - [x] DSB-Kontakt: LaSuB-DSB in App/DSE (2026-07-05); Schulleitung nur für Inhalte
 - [x] Media-Gate `/media/*` live (Middleware + Route, Prod 2026-07-05)
 - [ ] Log-Retention Traefik/Coolify bestätigen (Ziel ≤ 14 Tage)
-- [ ] HSTS am Proxy aktivieren (#143)
+- [x] HSTS am Proxy aktivieren (#242, 2026-07-05)
 - [ ] Volume-Backup T5 umsetzen

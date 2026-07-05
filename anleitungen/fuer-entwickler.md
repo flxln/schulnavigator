@@ -307,23 +307,42 @@ In [`next.config.ts`](../app/next.config.ts) über [`lib/security-headers.ts`](.
 
 Nach Änderung an `data/embed-allowlist.json`: Dev-Server neu starten bzw. neu deployen — `frame-src` wird beim Build aus der Allowlist gelesen.
 
-**HSTS** (`Strict-Transport-Security`) setzt die App nicht selbst — liegt bei Coolify/Traefik (Proxy). Audit Phase 5 (2026-07-05): Header fehlt in Prod — Issue [#143](https://github.com/flxln/schulnavigator/issues/143).
+**HSTS** (`Strict-Transport-Security`) setzt die App nicht selbst — liegt bei Coolify/Traefik (Proxy). Seit **2026-07-05** in Prod aktiv ([#242](https://github.com/flxln/schulnavigator/issues/242)); Vorgänger [#143](https://github.com/flxln/schulnavigator/issues/143) (CSP-Härtung, HSTS bewusst delegiert).
 
-Empfohlene Proxy-Konfiguration (Traefik/Coolify):
+Ziel-Policy:
 
 - `Strict-Transport-Security: max-age=15552000` (180 Tage)
-- **Ohne** `includeSubDomains` bis Nachbar-Hosts unter `*.mpz.schule` geprüft
+- **Ohne** `includeSubDomains` (Nachbar-Hosts unter `*.mpz.schule` ungeprüft)
+- **Ohne** `preload`
+
+**HSTS in Coolify setzen** (Traefik, persistiert über Redeploys):
+
+1. **Dynamic Config** auf dem VPS (`/data/coolify/proxy/dynamic/sn-hsts.yaml`):
+
+```yaml
+http:
+  middlewares:
+    sn-hsts:
+      headers:
+        stsSeconds: 15552000
+        stsIncludeSubdomains: false
+```
+
+2. **HTTPS-Router** beider Applications (`39-gs.mpz.schule`, `schulnavigator.mpz.schule`): bestehendes `middlewares`-Label **anhängen**, nicht überschreiben — z. B. `gzip` → `gzip,sn-hsts@file`. Vorher generierte Labels in Coolify ablesen (Application → Proxy). **`forceSTSHeader` nicht setzen** (RFC 6797 §7.2).
 
 Verifikation:
 
 ```bash
 curl -sI https://39-gs.mpz.schule/ | grep -i strict-transport
+curl -sI https://schulnavigator.mpz.schule/ | grep -i strict-transport
+# HSTS darf NICHT auf HTTP-Redirect erscheinen:
+curl -sI http://39-gs.mpz.schule/ | grep -i strict-transport   # erwartet: kein Treffer
 ```
 
 Smoke nach Deploy:
 
 ```bash
-curl -sI https://39-gs.mpz.schule/ | grep -iE 'content-security|permissions-policy'
+curl -sI https://39-gs.mpz.schule/ | grep -iE 'content-security|permissions-policy|strict-transport'
 ```
 
 ### Git LFS — Raumbilder (`public/stations/*.jpg`)

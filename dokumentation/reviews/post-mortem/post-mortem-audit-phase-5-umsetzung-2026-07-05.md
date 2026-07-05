@@ -39,7 +39,7 @@ Plan-Code-Abgleich nach Implementierung des [gehärteten Umsetzungsplans](../../
 | `p1-dsgvo-v1` | dsgvo.md v1.0 + VVT, Branch-Sync | **✅** |
 | `p1-232-rest` | V9-Tracking in `offen.md` | **✅** Support-Follow-up offen |
 | `p1-branch-sync` | Compliance main ↔ kunde ↔ feature | **✅** |
-| `p1-hsts` | HSTS | **⚠️** Doku in `fuer-entwickler.md`; Proxy-Aktivierung offen ([#242](https://github.com/flxln/schulnavigator/issues/242)) |
+| `p1-hsts` | HSTS | **✅** Proxy aktiv (2026-07-05), [#242](https://github.com/flxln/schulnavigator/issues/242) — [Post-Mortem](./post-mortem-242-2026-07-05.md) |
 | `p1-schulfest` | Post-Mortem 26.06., Leitfaden #44, #45 | **✅** |
 | `p2-backup-logs` | T5 + Log-Retention dokumentieren | **✅** Entscheidung/Umsetzung offen ([#243](https://github.com/flxln/schulnavigator/issues/243)) |
 | `p2-book-creator` | Embed → Link | **✅** kunde + main |
@@ -83,7 +83,6 @@ Redirects `/mpz/studio/hub|brand|dialog-audio` kamen mit `0001b91` auf `main` mi
 ## 5. Bewusst offen
 
 - AVV-Unterschrift ([#43](https://github.com/flxln/schulnavigator/issues/43))
-- HSTS am Proxy ([#242](https://github.com/flxln/schulnavigator/issues/242))
 - Volume-Backup T5 ([#243](https://github.com/flxln/schulnavigator/issues/243))
 - #232 V9 / Mirror-Governance ([#244](https://github.com/flxln/schulnavigator/issues/244))
 - Meeting #44 mit Schule ([#245](https://github.com/flxln/schulnavigator/issues/245))
@@ -92,4 +91,4 @@ Redirects `/mpz/studio/hub|brand|dialog-audio` kamen mit `0001b91` auf `main` mi
 
 ## Fazit
 
-Der gehärtete Plan ist umgesetzt. Der kritische P0-Befund (öffentliche Schüler-Medien) ist in Prod geschlossen. Organisatorische und Infrastruktur-Punkte sind dokumentiert und als Issues nachverfolgbar.
+Der gehärtete Plan ist umgesetzt. Der kritische P0-Befund (öffentliche Schüler-Medien) ist in Prod geschlossen. HSTS am Proxy ist seit 2026-07-05 live ([#242](https://github.com/flxln/schulnavigator/issues/242)). Organisatorische und Infrastruktur-Punkte sind dokumentiert und als Issues nachverfolgbar.
