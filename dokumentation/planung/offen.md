@@ -18,7 +18,7 @@ Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eing
 | #232 V9 | **offen** — 7 SHAs via `refs/pull/*` | GitHub-Support Ticket **#4510440** (Follow-up 25.06. unbeantwortet); Detail: `kunde/39-gs` → `dokumentation/planung/schuelermedien-deploy-trennung/08-github-support-ticket-232.md` |
 | Mirror Pre-Rewrite | **Entscheidung ausstehend** | `/tmp/schulnavigator-pre-232-mirror.git` auf MPZ-Rechner — nach Support-Bestätigung löschen oder verschlüsselt archivieren mit Löschdatum |
 | HSTS Proxy | **erledigt** (2026-07-05) | [#242](https://github.com/flxln/schulnavigator/issues/242) |
-| Volume-Backup T5 | **Entscheidung** NAS/Headscale/rsync | [#243](https://github.com/flxln/schulnavigator/issues/243) — [backup-t5-nas-headscale.md](./backup-t5-nas-headscale.md); Umsetzung Cron ausstehend |
+| Volume-Backup T5 | **erledigt** (2026-07-05) | [#243](https://github.com/flxln/schulnavigator/issues/243) — erster Lauf OK; Cron/Snapshots noch in DSM |
 | Log-Retention | Ziel ≤ 14 Tage | Server-Admin bestätigen; [dsgvo.md](../dsgvo.md) |
 
 ---

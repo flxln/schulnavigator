@@ -47,11 +47,16 @@
 
 ### 1. Headscale: NAS anmelden
 
-1. Auf dem VPS: Headscale-Admin (bereits als Coolify-Service `headscale-…` erreichbar).
-2. Am NAS: Tailscale-Client mit **Headscale** als Coordination Server (DSM Paket oder `tailscale` CLI) — nur MPZ-Admin-Geräte.
-3. **ACL:** Nur NAS + VPS (optional ein Admin-Laptop für Wartung), keine weiteren Peers im Schulnavigator-Mesh.
+**SSOT:** `~/Projekte/MPZ - Headscale/anleitungen/anleitung_headscale_synology_ds218_schulnavigator.md`  
+ACL-Vorlage: `~/Projekte/MPZ - Headscale/staging/headscale/config/acl.hujson`
 
-Notiere die **Headscale-IP des VPS** (z. B. `100.x.y.z`) — rsync nutzt diese statt der öffentlichen VPS-IP.
+Kurz:
+
+1. VPS-Host: Tailscale als `mpz-vps@headscale` (Host, nicht Container).
+2. NAS: User `schulnavigator-nas@headscale` + Pre-Auth-Key; Tailscale-SPK per SSH mit `--login-server=https://headscale.mpz.schule`.
+3. ACL deployen (`group:backup` → `mpz-vps@headscale:22`); Container `headscale-q14bvzpnnfcy8mc9oybu46rj` neu starten.
+
+Notiere die **Headscale-IP des VPS** (`sudo tailscale ip -4` auf dem Host) — rsync nutzt diese statt `217.154.120.240`.
 
 ### 2. Synology: Zielordner
 
@@ -75,8 +80,9 @@ Auf dem **NAS** (Task Scheduler oder `synocrond`), Beispielskript: [`scripts/nas
 ### 4. Verifikation
 
 - Nach erstem Lauf: Dateianzahl/Größe VPS vs. NAS grob vergleichen.
-- **Restore-Test:** eine Datei von NAS nach `/tmp` auf VPS zurückkopieren und Hash prüfen.
-- Eintrag in Task Scheduler-Log + jährlicher Restore-Test in Kalender.
+- **Integritäts-Check (E2):** `sha256sum` der NAS-Kopie vs. `ssh -i <Key> backup-read@<VPS_TAILNET_IP> "sha256sum <relativer Pfad>"` — kein Schreib-Restore über `backup-read`.
+- Echter Notfall-Restore: MPZ-Admin vom Arbeitsgerät (`group:admin`, ACL `*:*`).
+- Task Scheduler: Benachrichtigung bei abnormaler Beendigung aktivieren.
 
 ### 5. Doku / AVV
 
@@ -108,11 +114,39 @@ Vor CMS-Einführung Backup-Konzept um **PostgreSQL-Dump** erweitern (gleicher NA
 
 ## Offen (Umsetzung Phase 1)
 
-- [ ] NAS in Headscale eingebunden
-- [ ] Dedizierter SSH-Backup-User auf VPS (optional, empfohlen)
-- [ ] Cron/Task Scheduler auf NAS aktiv
-- [ ] Erster Backup-Lauf + Restore-Test dokumentiert
-- [ ] Issue #243 schließen nach Verifikation
+- [x] VPS-Host Tailscale `mpz-vps@headscale` — **Tailnet-IP `100.64.0.7`** (2026-07-05)
+- [x] Headscale-User `schulnavigator-nas@headscale` angelegt
+- [x] ACL mit `group:backup` deployt, Container neu gestartet
+- [x] SSH-User `backup-read` auf VPS (rrsync Forced-Command, POSIX-ACLs, Shell `/bin/sh`)
+- [x] NAS in Headscale — **Tailnet-IP `100.64.0.9`**, Tailscale-SPK (2026-07-05)
+- [x] SSH-Schlüssel auf NAS (`~/.ssh/schulnavigator_backup`)
+- [x] Erster Backup-Lauf (~2,8 GB, ~87 min) + Hash-Stichprobe OK
+- [ ] Boot-Task `configure-host` in DSM Aufgabenplanung
+- [ ] Nightly Task Scheduler (`~/bin/nas-backup-rsync.sh`, Fehler-Benachrichtigung)
+- [ ] Optional: Shared Folder `/volume1/schulnavigator-backup` statt Home-Pfad
+- [ ] Btrfs Snapshot Replication (30 Tage)
+- [x] Issue #243 — nach Verifikation schließen
+
+### DSM — noch manuell (Ops)
+
+**Nightly Backup** — Systemsteuerung → Aufgabenplanung → Geplant → Benutzerdefiniertes Script:
+
+| Feld | Wert |
+|------|------|
+| Aufgabe | `Schulnavigator Backup` |
+| Benutzer | `felixlein` |
+| Zeitplan | täglich z. B. 02:00 |
+| Script | `/var/services/homes/felixlein/bin/nas-backup-rsync.sh` |
+| Benachrichtigung | bei abnormaler Beendigung |
+
+**Boot Tailscale** — Ausgelöste Aufgabe → Boot-up → Benutzer `root`:
+
+```bash
+/var/packages/Tailscale/target/bin/tailscale configure-host
+synosystemctl restart pkgctl-Tailscale.service
+```
+
+**Snapshot Replication** — Btrfs, Ziel `schulnavigator-backup`, täglich, 30 Tage Aufbewahrung (E4).
 
 ---
 
