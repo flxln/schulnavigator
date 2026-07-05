@@ -47,13 +47,13 @@
 ## Nicht in Scope
 
 - Btrfs Snapshot Replication → #247
-- Headscale-Node `100.64.0.8` bereinigen → #248
+- [x] Headscale-Node `100.64.0.8` bereinigen → #248 (2026-07-06)
 - Shared Folder `/volume1/schulnavigator-backup` statt Home-Pfad (optional, #243)
 - Änderungen am rsync-Skript oder VPS/`backup-read`
 
 ## Offene Punkte
 
-- keine (Follow-ups in #247/#248)
+- keine
 
 ## Änderungslog
 

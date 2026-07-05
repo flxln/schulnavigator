@@ -124,7 +124,7 @@ Vor CMS-Einführung Backup-Konzept um **PostgreSQL-Dump** erweitern (gleicher NA
 - [x] Boot-Task + Nightly Cron → [#246](https://github.com/flxln/schulnavigator/issues/246) **erledigt** (2026-07-06, [Post-Mortem](../reviews/post-mortem/post-mortem-246-2026-07-05.md))
 - [ ] Optional: Shared Folder `/volume1/schulnavigator-backup` statt Home-Pfad
 - [x] Btrfs Snapshot Replication (30 Tage) → [#247](https://github.com/flxln/schulnavigator/issues/247) **erledigt** (2026-07-06, [Post-Mortem](../reviews/post-mortem/post-mortem-247-2026-07-06.md))
-- [ ] Headscale-Node `100.64.0.8` bereinigen → [#248](https://github.com/flxln/schulnavigator/issues/248)
+- [x] Headscale-Node `100.64.0.8` bereinigen → [#248](https://github.com/flxln/schulnavigator/issues/248) **erledigt** (2026-07-06, Node ID 8 gelöscht; nur `100.64.0.9` aktiv)
 - [x] Issue #243 — nach Verifikation schließen
 
 ### DSM — erledigt (Ops, #246, 2026-07-06)

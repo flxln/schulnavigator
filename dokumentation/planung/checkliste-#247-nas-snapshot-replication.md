@@ -48,7 +48,7 @@
 ## Nicht in Scope
 
 - Migration zu dediziertem Shared Folder `/volume1/schulnavigator-backup` (optional, #243)
-- Headscale-Node `100.64.0.8` bereinigen → #248
+- [x] Headscale-Node `100.64.0.8` bereinigen → #248 (2026-07-06)
 - Änderungen am rsync-Skript, VPS `backup-read` oder Nightly-Cron (#246)
 - Remote-Replikation auf zweites NAS (nur lokale Snapshots)
 

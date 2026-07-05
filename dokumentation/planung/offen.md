@@ -2,7 +2,7 @@
 
 **Stand:** 2026-07-06 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
 
-**Letzter Abgleich:** 2026-07-06 — Backup T5 [#243](https://github.com/flxln/schulnavigator/issues/243) abgeschlossen; Follow-up [#246](https://github.com/flxln/schulnavigator/issues/246) (Boot-Task + nightly rsync-Cron) abgeschlossen; [#247](https://github.com/flxln/schulnavigator/issues/247) (Btrfs Snapshots) **abgeschlossen** (2026-07-06); [#248](https://github.com/flxln/schulnavigator/issues/248) offen.
+**Letzter Abgleich:** 2026-07-06 — Backup T5 [#243](https://github.com/flxln/schulnavigator/issues/243) abgeschlossen; Follow-ups [#246](https://github.com/flxln/schulnavigator/issues/246) (Boot-Task + nightly rsync-Cron), [#247](https://github.com/flxln/schulnavigator/issues/247) (Btrfs Snapshots) und [#248](https://github.com/flxln/schulnavigator/issues/248) (Headscale-Node bereinigt) **abgeschlossen** (2026-07-06).
 
 Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren). Abgeschlossene Epics: [archiv/epics/](./archiv/epics/).
 
@@ -18,7 +18,7 @@ Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eing
 | #232 V9 | **offen** — 7 SHAs via `refs/pull/*` | GitHub-Support Ticket **#4510440** (Follow-up 25.06. unbeantwortet); Detail: `kunde/39-gs` → `dokumentation/planung/schuelermedien-deploy-trennung/08-github-support-ticket-232.md` |
 | Mirror Pre-Rewrite | **Entscheidung ausstehend** | `/tmp/schulnavigator-pre-232-mirror.git` auf MPZ-Rechner — nach Support-Bestätigung löschen oder verschlüsselt archivieren mit Löschdatum |
 | HSTS Proxy | **erledigt** (2026-07-05) | [#242](https://github.com/flxln/schulnavigator/issues/242) |
-| Volume-Backup T5 | **erledigt** (2026-07-05) | [#243](https://github.com/flxln/schulnavigator/issues/243); Follow-ups [#246](https://github.com/flxln/schulnavigator/issues/246) Cron **erledigt** (2026-07-06), [#247](https://github.com/flxln/schulnavigator/issues/247) Snapshots **erledigt** (2026-07-06), [#248](https://github.com/flxln/schulnavigator/issues/248) Headscale |
+| Volume-Backup T5 | **erledigt** (2026-07-05) | [#243](https://github.com/flxln/schulnavigator/issues/243); Follow-ups [#246](https://github.com/flxln/schulnavigator/issues/246) Cron, [#247](https://github.com/flxln/schulnavigator/issues/247) Snapshots, [#248](https://github.com/flxln/schulnavigator/issues/248) Headscale — alle **erledigt** (2026-07-06) |
 | Log-Retention | Ziel ≤ 14 Tage | Server-Admin bestätigen; [dsgvo.md](../dsgvo.md) |
 
 ---
