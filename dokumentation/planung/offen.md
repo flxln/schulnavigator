@@ -2,7 +2,7 @@
 
 **Stand:** 2026-07-05 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
 
-**Letzter Abgleich:** 2026-07-05 — Audit Phase 5 Umsetzung: Media-Gate Prod live, `dsgvo.md` v1.0, DSB LaSuB, Book Creator → Link.
+**Letzter Abgleich:** 2026-07-05 — Audit Phase 5 abgeschlossen; Post-Mortem [post-mortem-audit-phase-5-umsetzung-2026-07-05.md](../reviews/post-mortem/post-mortem-audit-phase-5-umsetzung-2026-07-05.md).
 
 Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren). Abgeschlossene Epics: [archiv/epics/](./archiv/epics/).
 
@@ -12,7 +12,7 @@ Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eing
 
 | Thema | Status | Issue / Doku |
 |-------|--------|--------------|
-| Media-Gate Prod | **live** (403 + no-store) | [#238](https://github.com/flxln/schulnavigator/issues/238), PR #239 + Middleware-Fix |
+| Media-Gate Prod | **live** (403 + no-store) | [#238](https://github.com/flxln/schulnavigator/issues/238) erledigt — PR #239, #241, Post-Mortem |
 | AVV #43 | Unterschrift ausstehend | [#43](https://github.com/flxln/schulnavigator/issues/43) wieder geöffnet |
 | DSB LaSuB | In App/DSE | `dsb-contact.ts` |
 | #232 V9 | **offen** — 7 SHAs via `refs/pull/*` | GitHub-Support Ticket **#4510440** (Follow-up 25.06. unbeantwortet); Detail: `kunde/39-gs` → `dokumentation/planung/schuelermedien-deploy-trennung/08-github-support-ticket-232.md` |
