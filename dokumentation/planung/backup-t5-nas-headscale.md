@@ -121,10 +121,10 @@ Vor CMS-Einführung Backup-Konzept um **PostgreSQL-Dump** erweitern (gleicher NA
 - [x] NAS in Headscale — **Tailnet-IP `100.64.0.9`**, Tailscale-SPK (2026-07-05)
 - [x] SSH-Schlüssel auf NAS (`~/.ssh/schulnavigator_backup`)
 - [x] Erster Backup-Lauf (~2,8 GB, ~87 min) + Hash-Stichprobe OK
-- [ ] Boot-Task `configure-host` in DSM Aufgabenplanung
-- [ ] Nightly Task Scheduler (`~/bin/nas-backup-rsync.sh`, Fehler-Benachrichtigung)
+- [ ] Boot-Task + Nightly Cron → [#246](https://github.com/flxln/schulnavigator/issues/246)
 - [ ] Optional: Shared Folder `/volume1/schulnavigator-backup` statt Home-Pfad
-- [ ] Btrfs Snapshot Replication (30 Tage)
+- [ ] Btrfs Snapshot Replication (30 Tage) → [#247](https://github.com/flxln/schulnavigator/issues/247)
+- [ ] Headscale-Node `100.64.0.8` bereinigen → [#248](https://github.com/flxln/schulnavigator/issues/248)
 - [x] Issue #243 — nach Verifikation schließen
 
 ### DSM — noch manuell (Ops)
