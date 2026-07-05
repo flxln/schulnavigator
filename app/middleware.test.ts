@@ -24,6 +24,7 @@ function middlewareRunsFor(pathname: string): boolean {
     pathname === '/impressum' ||
     pathname === '/datenschutz' ||
     pathname.startsWith('/raum/') ||
+    pathname.startsWith('/media/') ||
     pathname === '/mpz' ||
     pathname.startsWith('/mpz/')
   )
@@ -95,6 +96,22 @@ describe('middleware', () => {
     expect(res.headers.get('location')).toBe(`${BASE}/eintritt?reason=expired`)
   })
 
+  it('blockiert /media/* ohne Cookie mit 403 und no-store (Audit S1)', () => {
+    expect(middlewareRunsFor('/media/daz/video/x.mp4')).toBe(true)
+    const res = middleware(req('/media/daz/video/x.mp4'))
+    expect(res.status).toBe(403)
+    expect(res.headers.get('Cache-Control')).toBe('no-store')
+    expect(res.headers.get('location')).toBeNull()
+  })
+
+  it('lässt /media/* mit gültigem Cookie durch', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-06-01'))
+    const res = middleware(req('/media/daz/video/x.mp4', `${ACCESS_COOKIE}=${FEST_DEV_TOKEN}`))
+    expect(res.status).toBe(200)
+    expect(res.headers.get('location')).toBeNull()
+  })
+
   it('lässt öffentliche Medien ohne Zugangs-Cookie durch', () => {
     expect(middlewareRunsFor('/stations/klassenzimmer.jpg')).toBe(false)
     expect(middlewareRunsFor('/demo/foto.jpg')).toBe(false)
@@ -155,7 +172,7 @@ describe('middleware', () => {
     process.env.DEV_UNLOCK_ALL = 'true'
     process.env.NODE_ENV = 'development'
 
-    const res = middleware(req('/', `${ACCESS_COOKIE}=${HEFT_DEV_TOKEN}`))
+    const res = middleware(req('/', `${ACCESS_COOKIE}=${FEST_DEV_TOKEN}`))
     expect(res.status).toBe(200)
     expect(res.headers.get('set-cookie')).toBeNull()
   })
