@@ -2,7 +2,7 @@
 
 **Stand:** 2026-07-06 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
 
-**Letzter Abgleich:** 2026-07-06 — AVV [#43](https://github.com/flxln/schulnavigator/issues/43) unterschrieben (25.06.2026, Anhang ADR-027); Backup T5 [#243](https://github.com/flxln/schulnavigator/issues/243) inkl. Follow-ups [#246](https://github.com/flxln/schulnavigator/issues/246)–[#248](https://github.com/flxln/schulnavigator/issues/248) abgeschlossen.
+**Letzter Abgleich:** 2026-07-06 — [#250](https://github.com/flxln/schulnavigator/issues/250) Gates 4–6 formal abgeschlossen (Auth-Konzept „beschlossen", Gate-Tabelle widerspruchsfrei, Trigger für Gate 4/6 benannt, AVV-Negativbefund → Blocker [#263](https://github.com/flxln/schulnavigator/issues/263) vor #261); Post-Mortem ✅. — AVV [#43](https://github.com/flxln/schulnavigator/issues/43) unterschrieben (25.06.2026, Anhang ADR-027); Backup T5 [#243](https://github.com/flxln/schulnavigator/issues/243) inkl. Follow-ups [#246](https://github.com/flxln/schulnavigator/issues/246)–[#248](https://github.com/flxln/schulnavigator/issues/248) abgeschlossen.
 
 Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren). Abgeschlossene Epics: [archiv/epics/](./archiv/epics/).
 
@@ -40,7 +40,7 @@ Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eing
 | [#44](https://github.com/flxln/schulnavigator/issues/44) | Auswertung mit Schule | Leitfaden: [2026-06-meeting-44-leitfaden.md](../archiv/projektmanagement/2026-06-meeting-44-leitfaden.md) |
 | [#221](https://github.com/flxln/schulnavigator/issues/221) | Dialog: Text-only-Segmente | Milestone Phase 5 |
 | [#48](https://github.com/flxln/schulnavigator/issues/48) | i18n + Englisch-Menü | Milestone Phase 5 |
-| [#47](https://github.com/flxln/schulnavigator/issues/47) | Directus | Gates: [directus-auth-konzept.md](../spezifikationen/directus-auth-konzept.md) — AVV ✅; Rest offen |
+| [#47](https://github.com/flxln/schulnavigator/issues/47) | Directus (Epic) | [epic-directus.md](./epics/epic-directus.md) · Unterissues [#249](https://github.com/flxln/schulnavigator/issues/249)–[#262](https://github.com/flxln/schulnavigator/issues/262) · #250 erledigt · Nächste Schritte: [#251](https://github.com/flxln/schulnavigator/issues/251) Spike, [#249](https://github.com/flxln/schulnavigator/issues/249) Adoption (blockiert #44), [#263](https://github.com/flxln/schulnavigator/issues/263) AVV-Blocker vor #261 |
 
 ## Content / MPZ
 

@@ -49,19 +49,17 @@ Besonders: mobile Darstellung, Ladezeiten, In-App-Scanner, Puzzle-Hub, Token/`he
 
 ---
 
-## #47 — Directus einführen und Content migrieren
+## #47 — Directus (Epic-Parent)
 
-**Labels:** `tech`
-**Assignee:** Felix
+**Labels:** `tech` · **Status:** aktiv — zerlegt in Unterissues #249–#262 (2026-07-06)
 
-Directus auf Coolify deployen; Collections aus JSON-Schema; Migration der 39. Grundschule.
+Adoption-First mit technischem Spike; kein Big-Bang. Vollständige Planung:
 
-Lehrkräfte können ohne Entwickler (über Directus-UI):
-- Stationsbeschreibungen bearbeiten
-- Medien hochladen und zuordnen
-- Neue Stationen anlegen (Rollen abhängig)
+- Epic: [epics/epic-directus.md](../../epics/epic-directus.md)
+- Issue-Bodies: [issues/](../../issues/)
+- Gates: [directus-auth-konzept.md](../../spezifikationen/directus-auth-konzept.md)
 
-Datenschutz: Login nur für Lehrkräfte, keine Schülerdaten im CMS.
+**Unterissues (Kurz):** #249 Adoption · #250 Gates 4–6 · #251 Spike · #252–#254 ADRs · #255 Deploy · #256 Collections · #257 Next.js · #258 Backup · #259 Migration Pilot · #260 Anleitung · #261 Pilot DoD · #262 MPZ Studio
 
 ---
 

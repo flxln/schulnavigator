@@ -9,6 +9,8 @@ Abgleich mit [flxln/schulnavigator](https://github.com/flxln/schulnavigator). **
 | [offen.md](./offen.md) | Schlanke Liste offener Issues und Ideen |
 | [milestones.md](./milestones.md) | Milestone-Beschreibungen für GitHub |
 | [labels.md](./labels.md) | Label-Konventionen |
+| [epics/](./epics/) | Aktive Epic-Spezifikationen (derzeit: [Directus #47](./epics/epic-directus.md)) — nach Abschluss ins Archiv |
+| [issues/](./issues/) | GitHub-Issue-Bodies (`gh issue create --body-file`); derzeit Directus #249–#262 |
 
 ## Archiv
 

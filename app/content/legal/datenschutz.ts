@@ -156,6 +156,11 @@ export const datenschutzContent: LegalPageContent = {
       ],
     },
     {
+      // Gate 6 (directus-auth-konzept.md, #250): Trigger für die Finalisierung dieses Abschnitts
+      // ("geplant" -> final) ist die DSE-Finalisierung als erste, blockierende Teilaufgabe von #261 —
+      // muss auf Production deployed sein, BEVOR der erste Lehrkräfte-Account in der produktiven
+      // Directus-Instanz angelegt wird. "Erster Login triggert DSE" ist kein zulässiger Ablauf
+      // (Verarbeitung ohne vorherige transparente Information). Siehe auch dsgvo.md VVT-Trigger.
       id: 'lehrkraefte-login',
       title: 'Lehrkräfte-Login (geplant, Directus)',
       blocks: [

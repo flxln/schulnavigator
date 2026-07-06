@@ -29,3 +29,4 @@ Kurze Risiko- und Abschluss-Notizen zu größeren Issues (v. a. MPZ Studio v2).
 | Runbook Agentic (Vault) | [pre-mortem-runbook-1a](./pre-mortem/pre-mortem-runbook-agentic-projekte-1a.md) | [post-mortem-runbook](./post-mortem/post-mortem-runbook-agentic-projekte-2026-06-20.md) |
 | Audit Phase 5 (#238) | [pre-mortem-1a](./pre-mortem/pre-mortem-1a-audit-phase-5-umsetzung-2026-07-04.md), [1b](./pre-mortem/pre-mortem-1b-audit-phase-5-umsetzung-2026-07-04.md) | [post-mortem-audit-phase-5](./post-mortem/post-mortem-audit-phase-5-umsetzung-2026-07-05.md) |
 | #242 HSTS Proxy | [pre-mortem-1b](./pre-mortem/pre-mortem-1b-hsts-proxy-242-2026-07-05.md) | [post-mortem-242](./post-mortem/post-mortem-242-2026-07-05.md) |
+| #47 Directus Epic (Planung) | [council-directus-planung](./council-directus-planung-2026-07-06.md) · [epic-directus](../planung/epics/epic-directus.md) | — |

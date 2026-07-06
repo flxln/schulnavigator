@@ -57,6 +57,10 @@ Sie werden **nicht** in Auftraggebergesprächen thematisiert.
 
 - Mehrere Lehrkräfte gleichzeitig als Editoren oder nur eine verantwortliche Person?
 - Rollen: nur Superadmin, oder auch raum-spezifische Editoren?
+- 🟡 **Offene Programm-Entscheidungen #47** (ADR-Issues nach Spike [#251](https://github.com/flxln/schulnavigator/issues/251) — Optionen/Kriterien im [Epic Directus](./planung/epics/epic-directus.md)):
+  - **Runtime-Datenpfad:** [#252](https://github.com/flxln/schulnavigator/issues/252) — Build-JSON + Webhook-Rebuild vs. Runtime-Fetch vs. Hybrid-Export
+  - **Migrationsstrategie:** [#253](https://github.com/flxln/schulnavigator/issues/253) — JSON ↔ Directus, Content-Freeze; Quelle `kunde/39-gs`
+  - **Medien-Storage:** [#254](https://github.com/flxln/schulnavigator/issues/254) — `public/`-Volumes vs. Directus-Assets vs. Object Storage (Entry-Cookie-Gate S1)
 
 ## Tech-Stack
 

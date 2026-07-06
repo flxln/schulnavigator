@@ -65,6 +65,8 @@ Ab Phase 1 (#228, 2026-06-24) werden keine neuen Schüler-Binärdateien mehr in 
 | Schüler-Medien | Schüler | Virtueller Schulrundgang | Einwilligung + Art. 6 (1) a | VPS-Volumes DE; Backup NAS MPZ | Projektende + Schulfristen |
 | Lehrkräfte-Accounts (geplant) | Lehrkräfte | Content-Pflege CMS | Art. 6 (1) e | Directus-DB (DE, geplant) | Bei Ausscheiden aus Kollegium |
 
+**Trigger für Finalisierung (Gate 4/6, [#250](https://github.com/flxln/schulnavigator/issues/250)):** Speicherort-DB und Log-/IP-Retention werden mit dem Directus-Prod-Deploy ([#255](https://github.com/flxln/schulnavigator/issues/255)) konkretisiert; „geplant" wird in dieser Tabelle und im DSE-Abschnitt `lehrkraefte-login` erst final, wenn die DSE-Finalisierung — als erste, blockierende Teilaufgabe von [#261](https://github.com/flxln/schulnavigator/issues/261) — auf Production live ist, **bevor** der erste Lehrkräfte-Account angelegt wird (Gate 6 ist Hard Gate *vor* dem Login, nicht danach).
+
 Details Directus: [directus-auth-konzept.md](./spezifikationen/directus-auth-konzept.md)
 
 ## Datenschutzbeauftragter
@@ -110,3 +112,4 @@ GitHub, Inc. wird als Subprozessor **ausschließlich** für die Speicherung von 
 - [ ] Log-Retention Traefik/Coolify bestätigen (Ziel ≤ 14 Tage)
 - [x] HSTS am Proxy aktivieren (#242, 2026-07-05)
 - [ ] Volume-Backup T5 umsetzen ([#243](https://github.com/flxln/schulnavigator/issues/243) — Entscheidung NAS/Headscale: [backup-t5-nas-headscale.md](../anleitungen/backup-t5/backup-t5-nas-headscale.md); Cron/Restore ausstehend)
+- [ ] AVV #43 auf Directus-Verarbeitung (Lehrkräfte-Accounts) prüfen — Befund 2026-07-06 (#250): AVV-Kern nennt nur Schüler-Medien/Hosting, Directus-Zweck vermutlich nicht abgedeckt; **Prüfung/Nachtrag als Blocker vor #261:** [#263](https://github.com/flxln/schulnavigator/issues/263)

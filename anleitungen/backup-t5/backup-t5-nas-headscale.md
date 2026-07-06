@@ -106,9 +106,9 @@ Headscale bleibt Transport-VPN; Syncthing ersetzt dann den Deploy-rsync **von La
 
 ---
 
-## Directus (#47)
+## Directus (#47 / [#258](https://github.com/flxln/schulnavigator/issues/258))
 
-Vor CMS-Einführung Backup-Konzept um **PostgreSQL-Dump** erweitern (gleicher NAS-Pfad oder separates Volume). Medien-Volumes bleiben parallel.
+Vor CMS-Einführung Backup-Konzept um **PostgreSQL-Dump** erweitern (gleicher NAS-Pfad oder separates Volume). Medien-Volumes bleiben parallel. Epic: [epic-directus.md](../../dokumentation/planung/epics/epic-directus.md).
 
 ---
 
