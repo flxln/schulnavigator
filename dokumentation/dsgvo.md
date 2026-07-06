@@ -1,6 +1,6 @@
 # Schulnavigator — Datenschutzkonzept
 
-*Status: v1.0 (beschlossen) — Deploy-Trennung umgesetzt (ADR-027); Media-Gate live (Audit S1, 2026-07-05); AVV-Unterschrift ausstehend (#43) | Stand: 2026-07-05*
+*Status: v1.0 (beschlossen) — Deploy-Trennung umgesetzt (ADR-027); Media-Gate live (Audit S1, 2026-07-05); AVV unterschrieben 25.06.2026 (#43) | Stand: 2026-07-06*
 
 ## Personenbezogene Daten
 
@@ -76,7 +76,7 @@ Details Directus: [directus-auth-konzept.md](./spezifikationen/directus-auth-kon
 
 - **Verhältnis:** MPZ betreibt die App als Auftragsverarbeiter für die 39. Grundschule Dresden
 - **Entwurf:** An die Schule **versendet am 21.05.2026** (Thomas, MPZ)
-- **Unterschrift:** Ausstehend — GitHub Issue [#43](https://github.com/flxln/schulnavigator/issues/43) (wieder geöffnet, Audit 2026-07-05)
+- **Unterschrift:** **25.06.2026** — beidseitig; Ablage MPZ (Hefter). GitHub [#43](https://github.com/flxln/schulnavigator/issues/43) geschlossen (2026-07-06). Anhang Speicherorte inkl. ADR-027 bestätigt.
 - **Inhalt (Kern):** Hosting in Deutschland, Verantwortlichkeiten, Speicherort der Daten (ADR-027), Verarbeitung von Schüler-Medien nur mit Einwilligung
 - **Prüfung vor Unterschrift:** Anhang Speicherorte gegen ADR-027-Stand (Juni 2026) abgleichen; GitHub-Subprozessor-Textbaustein beilegen
 
@@ -98,7 +98,7 @@ GitHub, Inc. wird als Subprozessor **ausschließlich** für die Speicherung von 
 
 ## Offene Punkte
 
-- [ ] AVV von der Schule unterschrieben zurück; GitHub-Anhang aus Textbaustein oben einfügen
+- [x] AVV von der Schule unterschrieben zurück (25.06.2026); Anhang ADR-027/GitHub-Subprozessor enthalten
 - [x] Datenschutzerklärung für die App (`/datenschutz`, Juni 2026); Delightex-Absatz; Book Creator als Link bis DSB-Embed-Freigabe
 - [ ] Bei `open` + Website-Einbettung (ADR-021): DSB-Einordnung Parent-Seite / eingebettete App
 - [x] Einwilligungen für Schüler-Medien dokumentiert (Schule, 2026-06-24)

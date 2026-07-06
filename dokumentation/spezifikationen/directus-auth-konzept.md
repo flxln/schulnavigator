@@ -1,6 +1,8 @@
 # Directus — Auth- und Datenschutz-Konzept (Vorbereitung #47)
 
-**Stand:** 2026-07-05 · **Status:** Entwurf — erst nach Gates 1–3 aus [Audit Phase 5](../reviews/audit-phase-5-2026-07-04.md) umsetzen
+**Stand:** 2026-07-06 · **Status:** Entwurf — erst nach Gates 1–3 aus [Audit Phase 5](../reviews/audit-phase-5-2026-07-04.md) umsetzen
+
+**Gate-Stand:** 1 ✅ AVV (25.06.2026, Anhang ADR-027) · 2 ✅ DSB LaSuB · 3 ✅ Media-Gate · 4–8 offen
 
 ## Hard Gates vor erstem Lehrkräfte-Login
 

@@ -41,7 +41,7 @@ export const datenschutzContent: LegalPageContent = {
         },
         {
           type: 'text',
-          text: 'Das MPZ betreibt die App im Auftrag der Schule. Ein Auftragsverarbeitungsvertrag (AVV) wurde an die Schule übermittelt.',
+          text: 'Das MPZ betreibt die App im Auftrag der Schule. Ein Auftragsverarbeitungsvertrag (AVV) liegt zwischen Schule und MPZ vor (unterschrieben am 25.06.2026).',
         },
       ],
     },

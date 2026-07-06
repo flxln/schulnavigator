@@ -2,7 +2,7 @@
 
 **Stand:** 2026-07-06 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
 
-**Letzter Abgleich:** 2026-07-06 — Backup T5 [#243](https://github.com/flxln/schulnavigator/issues/243) abgeschlossen; Follow-ups [#246](https://github.com/flxln/schulnavigator/issues/246) (Boot-Task + nightly rsync-Cron), [#247](https://github.com/flxln/schulnavigator/issues/247) (Btrfs Snapshots) und [#248](https://github.com/flxln/schulnavigator/issues/248) (Headscale-Node bereinigt) **abgeschlossen** (2026-07-06).
+**Letzter Abgleich:** 2026-07-06 — AVV [#43](https://github.com/flxln/schulnavigator/issues/43) unterschrieben (25.06.2026, Anhang ADR-027); Backup T5 [#243](https://github.com/flxln/schulnavigator/issues/243) inkl. Follow-ups [#246](https://github.com/flxln/schulnavigator/issues/246)–[#248](https://github.com/flxln/schulnavigator/issues/248) abgeschlossen.
 
 Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren). Abgeschlossene Epics: [archiv/epics/](./archiv/epics/).
 
@@ -13,7 +13,7 @@ Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eing
 | Thema | Status | Issue / Doku |
 |-------|--------|--------------|
 | Media-Gate Prod | **live** (403 + no-store) | [#238](https://github.com/flxln/schulnavigator/issues/238) erledigt — PR #239, #241, Post-Mortem |
-| AVV #43 | Unterschrift ausstehend | [#43](https://github.com/flxln/schulnavigator/issues/43) wieder geöffnet |
+| AVV #43 | **erledigt** (25.06.2026) | Unterschrift MPZ-Hefter; Anhang ADR-027 enthalten — [#43](https://github.com/flxln/schulnavigator/issues/43) |
 | DSB LaSuB | In App/DSE | `dsb-contact.ts` |
 | #232 V9 | **offen** — 7 SHAs via `refs/pull/*` | GitHub-Support Ticket **#4510440** (Follow-up 25.06. unbeantwortet); Detail: `kunde/39-gs` → `dokumentation/planung/schuelermedien-deploy-trennung/08-github-support-ticket-232.md` |
 | Mirror Pre-Rewrite | **Entscheidung ausstehend** | `/tmp/schulnavigator-pre-232-mirror.git` auf MPZ-Rechner — nach Support-Bestätigung löschen oder verschlüsselt archivieren mit Löschdatum |
@@ -34,14 +34,13 @@ Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eing
 | Issue | Thema | Hinweis |
 |-------|--------|---------|
 | Epic [#205](https://github.com/flxln/schulnavigator/issues/205) | MPZ Studio v3 Visual Polish | **eingefroren** (2026-07-04) |
-| [#43](https://github.com/flxln/schulnavigator/issues/43) | AVV unterschrieben | Blocker #47; Anhang ADR-027 prüfen |
 | [#17](https://github.com/flxln/schulnavigator/issues/17) | Raumbilder liefern (extern) | 8/11; fehlen: `kunst`, `hort`, `schulsozialarbeit` |
 | Epic [#86](https://github.com/flxln/schulnavigator/issues/86) | Schulfest GS39 Nachtrag | Post-Mortem 26.06. nachgezogen; #44-Meeting offen |
 | [#89](https://github.com/flxln/schulnavigator/issues/89) | Sonnentest QR-Druck | Feldtest ausstehend |
 | [#44](https://github.com/flxln/schulnavigator/issues/44) | Auswertung mit Schule | Leitfaden: [2026-06-meeting-44-leitfaden.md](../archiv/projektmanagement/2026-06-meeting-44-leitfaden.md) |
 | [#221](https://github.com/flxln/schulnavigator/issues/221) | Dialog: Text-only-Segmente | Milestone Phase 5 |
 | [#48](https://github.com/flxln/schulnavigator/issues/48) | i18n + Englisch-Menü | Milestone Phase 5 |
-| [#47](https://github.com/flxln/schulnavigator/issues/47) | Directus | Gates: [directus-auth-konzept.md](../spezifikationen/directus-auth-konzept.md) |
+| [#47](https://github.com/flxln/schulnavigator/issues/47) | Directus | Gates: [directus-auth-konzept.md](../spezifikationen/directus-auth-konzept.md) — AVV ✅; Rest offen |
 
 ## Content / MPZ
 
