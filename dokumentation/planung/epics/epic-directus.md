@@ -73,7 +73,7 @@ Labels nur aus [labels.md](../labels.md). Triage nach Runbook `03b_issue-triage`
 | 5 Auth-Konzept beschlossen | ✅ | ✅ **beschlossen (2026-07-06, #250)** — Status im Dokument gehoben, Rollenmodell/2FA/Session/Löschfristen bestätigt |
 | 6 DSE-Abschnitt Lehrkräfte-Login live | teilerfüllt | **teilerfüllt:** Abschnitt `lehrkraefte-login` existiert in `datenschutz.ts` auf `main` und Prod (`kunde/39-gs`), als „geplant“ formuliert; Trigger benannt — Finalisierung als erste, blockierende Teilaufgabe von #261, **vor** erstem Login |
 | 7 Backup T5 inkl. Directus-DB | teilerfüllt | **teilerfüllt:** T5 läuft (#243, Follow-ups #246–#248 erledigt 2026-07-06); Directus-DB kann erst nach Deploy aufgenommen werden (#258) |
-| 8 Branch-Konsolidierung | im Kern erledigt | **im Kern erledigt (Git-verifiziert):** Legal-Content (`app/content/legal/*`), `dsgvo.md` und ADR-027 liegen auf allen drei Branches — `kunde/39-gs` (PR #241, `f6b1d84`), `feature/mpz-studio` (PR #240, `2eee1e4`), `main` (Merge `port/runtime-compliance-to-main`, Stand 04.–06.07.2026). **Rest-Drift:** `kunde/39-gs` führt ~90 Commits Content/Fixes vor `main` (`stations.json` +697/−84 Zeilen); `main` führt 17 Doku-Commits vor `kunde`. Keine Compliance-Blockade mehr — aber: für die Migration ist **`kunde/39-gs` die Content-Source-of-Truth**, und der **Entwicklungs-Branch für Directus ist zu entscheiden** (Audit nannte `feature/mpz-studio`; die jüngste Doku-Arbeit läuft auf `main`) → in #251 festlegen |
+| 8 Branch-Konsolidierung | im Kern erledigt | **im Kern erledigt (Git-verifiziert):** Legal-Content (`app/content/legal/*`), `dsgvo.md` und ADR-027 liegen auf allen drei Branches — `kunde/39-gs` (PR #241, `f6b1d84`), `feature/mpz-studio` (PR #240, `2eee1e4`), `main` (Merge `port/runtime-compliance-to-main`, Stand 04.–06.07.2026). **Rest-Drift:** `kunde/39-gs` führt ~90 Commits Content/Fixes vor `main` (`stations.json` +697/−84 Zeilen); `main` führt 17 Doku-Commits vor `kunde`. Keine Compliance-Blockade mehr — aber: für die Migration ist **`kunde/39-gs` die Content-Source-of-Truth**. **Entwicklungs-Branch-Entscheidung (2026-07-07, #251):** #255 startet **frisch von `main`**, nicht von `spike/directus-station` (Wegwerf-Branch, nicht mergen — Begründung im [Spike-Bericht](../../reviews/spike-directus-2026-07.md#branch-entscheidung-für-die-directus-entwicklung-gate-8-rest)) und nicht von `feature/mpz-studio` (dort läuft Dev-only-Ingest, ADR-022, keine Directus-Produktivarbeit). |
 
 ## Leitplanken
 
@@ -101,6 +101,8 @@ Drei Entscheidungen sind vor Welle 2 per ADR zu treffen (nächste freie Nummer S
 
 **Kriterien:** Besucher-App darf bei Directus-Ausfall nicht brechen; `validate-stations` muss im Pfad bleiben; Preview für Lehrkräfte; Aktualität nach Publish; Build-Kontext `app/`.
 
+**Spike-Ergebnis (#251, 2026-07-07):** Option b end-to-end gebaut und verifiziert — Fallback bei Directus-Ausfall bestätigt `200` (App bricht nicht), Publish→Live-Latenz 5,5 s–~2 min (SWR-abhängig vom Traffic), Rohlatenz Directus-Fetch ~0,1–0,2 s. Option a (Webhook-Rebuild) gemessen: 19 s Redeploy (Cache-warm, kein Cold-Build). Empfehlung: **b für den MVP**. Details: [Spike-Bericht Phase 5](../../reviews/spike-directus-2026-07.md#phase-5--e1-messungen-latenz-rebuild-dauer-fallback).
+
 ### E2 — Migrationsstrategie JSON ↔ Directus, Content-Freeze (→ #253)
 
 **Ist (verifiziert):** Prod-Content lebt auf `kunde/39-gs` (`stations.json` dort +697/−84 Zeilen ggü. `main`) — **Migrationsquelle ist `kunde/39-gs`, nicht `main`.** MPZ Studio schreibt weiterhin lokale JSON-Dateien (dev); Content-Pflege läuft während des Directus-Aufbaus weiter.
@@ -118,6 +120,8 @@ Drei Entscheidungen sind vor Welle 2 per ADR zu treffen (nächste freie Nummer S
 | c) Object Storage (S3-kompatibel) + gated Proxy | Directus schreibt in Bucket; App liefert über Cookie-gated Route aus | Machbar, neuer Infrastruktur-Baustein + Backup-/AVV-Folgen |
 
 **Kriterien:** Keine Auslieferung von Schüler-Medien ohne Entry-Cookie-Prüfung; ADR-027 (kein Schüler-Content in Git) einhalten; Backup T5 abdecken; AVV-/Speicherort-Anhang ggf. aktualisieren; Upload-Regeln (Größe, Typen — vgl. `lib/mpz-upload-rules.ts`).
+
+**Spike-Ergebnis (#251, 2026-07-07):** Option a bestätigt Gate-intakt (`403` ohne Cookie). Option b praktisch getestet: Directus liefert `/assets/*` standardmäßig **`403`** (kein automatischer Bypass) — aber sobald Public-Read auf `directus_files` gesetzt wird (technisch nötig, damit Option b im Client überhaupt nutzbar ist), liefert `/assets/*` **`200` ohne jeden Cookie/Auth** → S1-Regression bestätigt, sobald Option b produktiv genutzt wird. Empfehlung: **a** (wie im Spike) oder ein serverseitiger Directus-Proxy; reines Option b nur mit DSB-Sign-off + zusätzlicher Schutzschicht. Details: [Spike-Bericht Phase 6](../../reviews/spike-directus-2026-07.md#phase-6--e3-medien-gate-befund).
 
 ## Scope-Abgrenzung
 
@@ -151,7 +155,7 @@ Drei Entscheidungen sind vor Welle 2 per ADR zu treffen (nächste freie Nummer S
 
 - [ ] #249 Adoption geklärt (Champion, Pflegefrequenz, Betriebsfrage MPZ) — **Abbruch-/Pausenkriterium:** ohne Commitment Epic pausieren
 - [x] #250 Gates 4–6 formal abgeschlossen, Gate-Stand im Auth-Konzept aktualisiert (2026-07-06; Nachtrag #263 vor #261)
-- [ ] #251 Spike-Bericht liegt vor (inkl. VPS-Headroom, Branch-Entscheidung)
+- [x] #251 Spike-Bericht liegt vor (inkl. VPS-Headroom, Branch-Entscheidung) — [Bericht](../../reviews/spike-directus-2026-07.md), 2026-07-06/07
 - [ ] #252–#254 drei ADRs entschieden und in `entscheidungen.md` eingetragen
 - [ ] #255 Directus prod-deployed (ohne Lehrkräfte-Accounts)
 - [ ] #256 Collections + PII-Validatoren
