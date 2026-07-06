@@ -8,13 +8,29 @@ import {
   buildHubStations,
   getHubMapping,
 } from '@/lib/schoolhouse-hub-map'
-import { getAllSlugs, getAllStations, getStationBySlug } from '@/lib/stations'
+import { getAllSlugs, getAllStations } from '@/lib/stations'
+import { getStationsForRequest } from '@/lib/stations-directus'
+import type { Station } from '@/lib/types'
 
 type PageProps = {
   params: Promise<{ slug: string }>
 }
 
 export const dynamicParams = false
+
+/**
+ * Spike #251 (Wegwerf, nicht gemergt): Quellen-Weiche NUR an dieser
+ * Konsumstelle (Pre-Mortem 1a F2) — `stations.ts` bleibt sync/JSON-only,
+ * damit `generateStaticParams()` build-unabhängig von Directus bleibt.
+ * `SN_STATIONS_SOURCE` ist runtime-only (Pre-Mortem 1b L4); der Build läuft
+ * per Konstruktion immer gegen `getAllStations()`.
+ */
+async function resolveStations(): Promise<readonly Station[]> {
+  if (process.env.SN_STATIONS_SOURCE === 'directus') {
+    return getStationsForRequest()
+  }
+  return getAllStations()
+}
 
 export function generateStaticParams() {
   return getAllSlugs()
@@ -24,7 +40,8 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params
-  const station = getStationBySlug(slug)
+  const stations = await resolveStations()
+  const station = stations.find((s) => s.slug === slug)
   if (!station) {
     return { title: 'Station nicht gefunden' }
   }
@@ -37,7 +54,8 @@ export async function generateMetadata({
 
 export default async function RaumPage({ params }: PageProps) {
   const { slug } = await params
-  const station = getStationBySlug(slug)
+  const stations = await resolveStations()
+  const station = stations.find((s) => s.slug === slug)
   if (!station) {
     notFound()
   }
@@ -47,7 +65,6 @@ export default async function RaumPage({ params }: PageProps) {
   const access = validateToken(token)
   const mode = access?.mode ?? 'heft'
 
-  const stations = getAllStations()
   const validSlugs = stations.map((s) => s.slug)
   const hubStations = buildHubStations(stations)
   const hubStation = hubStations.find((s) => s.slug === slug)

@@ -69,8 +69,55 @@
           "pitch": -2,
           "mediumId": "demo-foto",
           "iconSize": 0.2
+        },
+        {
+          "id": "hs-frieda",
+          "label": "Frieda",
+          "yaw": -80,
+          "pitch": -18,
+          "action": "dialog",
+          "mascot": "frieda",
+          "mascotSize": 0.28,
+          "mascotFlipX": false,
+          "bubblePitchOffset": 12
+        },
+        {
+          "id": "hs-otto",
+          "label": "Otto",
+          "yaw": 80,
+          "pitch": -18,
+          "action": "dialog",
+          "mascot": "otto",
+          "mascotSize": 0.28,
+          "mascotFlipX": true,
+          "bubblePitchOffset": 12
         }
-      ]
+      ],
+      "dialog": {
+        "figuren": ["frieda", "otto"],
+        "segmente": [
+          {
+            "id": "k1",
+            "rolle": "frieda",
+            "text": "Hallo! Schön, dass du bei uns im Klassenzimmer vorbeischaust."
+          },
+          {
+            "id": "k2",
+            "rolle": "otto",
+            "text": "Hier sitzen wir jeden Tag zusammen und lernen Lesen, Schreiben und Rechnen."
+          },
+          {
+            "id": "k3",
+            "rolle": "frieda",
+            "text": "An der Tafel zeigt unsere Lehrerin neue Aufgaben, und an der Pinnwand hängen unsere schönsten Bilder."
+          },
+          {
+            "id": "k4",
+            "rolle": "otto",
+            "text": "Schau dich ruhig um — an den Hotspots gibt es Fotos, ein Video und sogar Töne aus unserem Klassenzimmer zu entdecken."
+          }
+        ]
+      }
     },
     {
       "slug": "musik",
