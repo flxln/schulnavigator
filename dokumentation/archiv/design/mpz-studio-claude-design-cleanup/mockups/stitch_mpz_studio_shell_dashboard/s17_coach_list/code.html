@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MPZ Studio - Coach-Messages</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#425d86",
+                    "on-primary-fixed-variant": "#1d5200",
+                    "surface-variant": "#e3e2df",
+                    "secondary-fixed": "#d5e3ff",
+                    "surface-dim": "#dbdad6",
+                    "on-surface": "#1b1c1a",
+                    "surface-container-low": "#f4f4f0",
+                    "surface-container": "#efeeea",
+                    "inverse-surface": "#2f312e",
+                    "outline": "#717a68",
+                    "primary-fixed-dim": "#87db5d",
+                    "on-secondary-fixed-variant": "#004786",
+                    "on-secondary-fixed": "#001c3b",
+                    "on-error": "#ffffff",
+                    "secondary": "#045faf",
+                    "surface-bright": "#faf9f5",
+                    "tertiary-container": "#5b76a0",
+                    "surface-container-highest": "#e3e2df",
+                    "tertiary-fixed": "#d5e3ff",
+                    "tertiary-fixed-dim": "#acc8f6",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#37850a",
+                    "on-tertiary-fixed": "#001c3b",
+                    "on-primary-container": "#f8ffee",
+                    "on-primary-fixed": "#072100",
+                    "on-tertiary-container": "#fefcff",
+                    "on-error-container": "#93000a",
+                    "surface": "#faf9f5",
+                    "secondary-fixed-dim": "#a6c8ff",
+                    "on-tertiary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-secondary-container": "#003e76",
+                    "on-surface-variant": "#40493a",
+                    "inverse-primary": "#87db5d",
+                    "primary-fixed": "#a2f876",
+                    "on-background": "#1b1c1a",
+                    "primary": "#276a00",
+                    "surface-container-high": "#e9e8e4",
+                    "on-tertiary-fixed-variant": "#2c476f",
+                    "error": "#ba1a1a",
+                    "secondary-container": "#6daaff",
+                    "inverse-on-surface": "#f2f1ed",
+                    "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "surface-tint": "#286c00",
+                    "outline-variant": "#c0cab5",
+                    "background": "#faf9f5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "16px",
+                    "gutter": "16px",
+                    "container-padding": "24px",
+                    "topbar-height": "56px",
+                    "sidebar-width": "240px",
+                    "card-padding": "20px",
+                    "stack-lg": "24px",
+                    "stack-sm": "8px"
+            },
+            "fontFamily": {
+                    "h1": ["Nunito Sans"],
+                    "body-lg": ["Nunito Sans"],
+                    "code": ["monospace"],
+                    "caption": ["Nunito Sans"],
+                    "sidebar-header": ["Nunito Sans"],
+                    "body-md": ["Nunito Sans"],
+                    "h2": ["Nunito Sans"]
+            },
+            "fontSize": {
+                    "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 1;
+        }
+        body {
+            background-color: #fcfbf7; /* Level 0 Paper */
+        }
+        .sidebar-active-indicator {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #37850a; /* Brand Green */
+        }
+        .card-shadow {
+            border: 1px solid rgba(8,42,80,0.1);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f5f2ea;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c0cab5;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Fixed SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-[240px] bg-secondary flex flex-col py-stack-lg z-50">
+<div class="px-container-padding mb-10">
+<h1 class="font-h1 text-h1 text-on-secondary">MPZ Studio</h1>
+<p class="font-sidebar-header text-sidebar-header text-on-secondary/60 uppercase mt-1">Admin Console</p>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Dashboard -->
+<a class="flex items-center px-container-padding py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="dashboard">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<!-- Alle Stationen -->
+<a class="flex items-center px-container-padding py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="analytics">analytics</span>
+<span class="font-body-md">Alle Stationen</span>
+</a>
+<!-- Coach (Active) -->
+<a class="relative flex items-center px-container-padding py-3 text-on-secondary bg-surface-container-highest/10 transition-all duration-200" href="#">
+<div class="sidebar-active-indicator"></div>
+<span class="material-symbols-outlined mr-3" data-icon="psychology">psychology</span>
+<span class="font-body-md font-bold">Coach</span>
+</a>
+<!-- Embeds & Links -->
+<a class="flex items-center px-container-padding py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="link">link</span>
+<span class="font-body-md">Embeds &amp; Links</span>
+</a>
+<!-- Design & Hub -->
+<a class="flex items-center px-container-padding py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="palette">palette</span>
+<span class="font-body-md">Design &amp; Hub</span>
+</a>
+<!-- Deploy -->
+<a class="flex items-center px-container-padding py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="rocket_launch">rocket_launch</span>
+<span class="font-body-md">Deploy</span>
+</a>
+</nav>
+<div class="px-container-padding pt-6 border-t border-white/10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs">AS</div>
+<div class="overflow-hidden">
+<p class="text-on-secondary text-sm font-semibold truncate">MPZ Studio Admin</p>
+<p class="text-on-secondary/50 text-[10px] uppercase tracking-wider">Premium Plan</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Top Bar -->
+<header class="fixed top-0 right-0 w-[calc(100%-240px)] h-[56px] bg-surface border-b border-outline-variant flex justify-between items-center px-container-padding z-40">
+<div class="flex items-center gap-4">
+<span class="font-h2 text-h2 text-primary">Coach-Messages</span>
+<div class="h-4 w-px bg-outline-variant"></div>
+<nav class="flex gap-6">
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="text-primary font-bold border-b-2 border-primary py-4 h-14 flex items-center" href="#">Stationen</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-primary hover:bg-[#3d7e1b] text-on-primary px-6 py-2 rounded-full text-sm font-semibold transition-all shadow-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="task_alt">task_alt</span>
+                Speichern &amp; Validieren
+            </button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[240px] pt-[56px] min-h-screen p-container-padding">
+<!-- Page Header & Stats Bento Grid -->
+<div class="grid grid-cols-12 gap-stack-lg mb-stack-lg">
+<div class="col-span-8 space-y-2">
+<div class="flex items-center gap-2 text-on-surface-variant mb-2">
+<span class="material-symbols-outlined text-base" data-icon="home">home</span>
+<span class="text-caption">/</span>
+<span class="text-caption">Coach Management</span>
+<span class="text-caption">/</span>
+<span class="text-caption font-bold text-primary">Message Hub</span>
+</div>
+<h2 class="font-h1 text-h1">Übersicht der Coach-Nachrichten</h2>
+<p class="text-on-surface-variant max-w-2xl">
+                    Verwalten Sie hier alle automatisierten Nachrichten, die von Ihren digitalen Coaches (Frieda, Otto, Duo) während der Customer Journey ausgelöst werden.
+                </p>
+</div>
+<div class="col-span-4 flex items-center justify-end">
+<div class="bg-primary-container/10 border-l-4 border-primary p-card-padding rounded-r-lg card-shadow w-full max-w-xs">
+<div class="flex items-center gap-3 mb-1">
+<span class="material-symbols-outlined text-primary" data-icon="check_circle">check_circle</span>
+<span class="font-bold text-primary">Status: Aktiv</span>
+</div>
+<p class="text-caption text-on-surface-variant">Alle Checks bestanden. Ihr Coach-System ist bereit für den Rollout.</p>
+</div>
+</div>
+</div>
+<!-- Table Container -->
+<div class="bg-surface-container-lowest rounded-xl card-shadow overflow-hidden">
+<div class="p-container-padding border-b border-outline-variant flex justify-between items-center bg-white">
+<div class="flex items-center gap-stack-md">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="pl-10 pr-4 py-2 border border-outline-variant rounded-lg text-sm w-64 focus:ring-2 focus:ring-secondary focus:border-secondary outline-none transition-all" placeholder="Nachricht suchen..." type="text"/>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-on-surface-variant border border-outline-variant rounded-lg hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="filter_list">filter_list</span>
+                        Filter
+                    </button>
+</div>
+<div class="flex gap-2">
+<button class="p-2 text-outline hover:text-primary hover:bg-primary-container/10 rounded-lg transition-colors">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+</button>
+<button class="p-2 text-outline hover:text-primary hover:bg-primary-container/10 rounded-lg transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container text-sidebar-header uppercase tracking-wider border-b border-outline-variant">
+<th class="px-6 py-4 font-bold">Trigger ID</th>
+<th class="px-6 py-4 font-bold">Event / Milestone</th>
+<th class="px-6 py-4 font-bold">Coach</th>
+<th class="px-6 py-4 font-bold">Content Preview</th>
+<th class="px-6 py-4 font-bold text-center">Audio Status</th>
+<th class="px-6 py-4 font-bold text-right">Aktionen</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<!-- Row 1: Frieda -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<span class="font-code text-primary bg-primary-container/10 px-2 py-0.5 rounded">welcome-hub</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">hub-milestone (0)</span>
+<span class="text-caption text-outline">Initialer Welcome</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a friendly digital assistant named Frieda, with warm lighting, soft features, and a modern business casual aesthetic. The background is a clean white studio with subtle geometric patterns. High quality digital rendering." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBjKAn097nlj47WFG6pm3TbJy3nrxQzjNzeNMtVJvjYf-pKI1iUIzGUT_lpoKp23RE8eM2F1GXmlRzUlkc2wPdk0rKIE3i0FAeKi5-UXBfWoQMgozL608O5xsgIVNeOryJWayulWeBsOS9blcVOeXTV5GQZuNQFz9_OpZEl55IHRaVycpCciv0Fx2uYHikhSQRDlhoB8cHDdoQbrhduNpA3uBIhTOQGlM2Fk3kIFjCkfGA-dDZd6XSOA0dIQt2X3vEuqD5uxmTwws"/>
+</div>
+<span class="font-medium">frieda</span>
+</div>
+</td>
+<td class="px-6 py-5 max-w-xs">
+<p class="truncate text-on-surface-variant italic">"Willkommen beim..."</p>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="material-symbols-outlined text-primary" data-icon="volume_up">volume_up</span>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-white rounded-md border border-transparent hover:border-outline-variant"><span class="material-symbols-outlined text-base" data-icon="edit">edit</span></button>
+<button class="p-1.5 text-on-surface-variant hover:text-error hover:bg-white rounded-md border border-transparent hover:border-outline-variant"><span class="material-symbols-outlined text-base" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Otto -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<span class="font-code text-primary bg-primary-container/10 px-2 py-0.5 rounded">first-visit</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">hub-milestone (1)</span>
+<span class="text-caption text-outline">Erster Stationen-Besuch</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A professional digital portrait of a trustworthy male coach named Otto, wearing a modern tech blazer. He has a warm smile and approachable look. The lighting is bright and corporate with a clean paper-white background. Realistic 3D rendering style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4dMF1s5nF3qaJ875F1Tl6KQDz5UPbkFe6_wSGHg4MBJvPGGybf48AufzGQ0L3OWhv6mbq7oQ7QK18TQyHfALt3b-ymt4kHkFTyldftC_sJTKx6R5FDMJWmsvT-VfDhaRRwP_NGoAyn938iDfR6Fak-rR13qQj0hipywLKDla9pcAqRmAaGcY36xq3ONy0S5ioXXPcVcLYMCGHaZ4c-qXWt1iOZvtUIYhn9RXQnXfg44E7iTpDm9RS3IQrA-1hWZ-ORtEU8B469Gw"/>
+</div>
+<span class="font-medium">otto</span>
+</div>
+</td>
+<td class="px-6 py-5 max-w-xs">
+<p class="truncate text-on-surface-variant italic">"Super, deine..."</p>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="material-symbols-outlined text-primary" data-icon="volume_up">volume_up</span>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-white rounded-md border border-transparent hover:border-outline-variant"><span class="material-symbols-outlined text-base" data-icon="edit">edit</span></button>
+<button class="p-1.5 text-on-surface-variant hover:text-error hover:bg-white rounded-md border border-transparent hover:border-outline-variant"><span class="material-symbols-outlined text-base" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Duo -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<span class="font-code text-primary bg-primary-container/10 px-2 py-0.5 rounded">complete</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">hub-complete</span>
+<span class="text-caption text-outline">Journey Abschluss</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A creative digital illustration of a robotic or mascot-style duo assistant character. Bright vibrant colors, playful yet professional design. Studio lighting against a neutral light grey background. High-end modern digital character art." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUdK_vqUgiqjA2E_wgI-9KK8fFnvCmGoN8RvaQM5FjWCnZ8U4gXZCO6J5CeNncqGzrNUSYL0Sl6eH9cPlFrta6g6akKa_B2yvpTXAGUmxmPoqaLcKVBwyqvBmx7cC2eMsn2QjzMxj2tSE7Z-rYIPoOwk_UdIbvCZfyPzJ6APXtWcs9onHZLj1qV07dGb9SUHVLPbD6xLfm-Tlo4YDD2ME4OgFP0se-nAQVMKjYKA4bGEngx00Sg59L9uClD22pS2IiglMLrPyp288"/>
+</div>
+<span class="font-medium">duo</span>
+</div>
+</td>
+<td class="px-6 py-5 max-w-xs">
+<p class="truncate text-on-surface-variant italic">"Wow — alle..."</p>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="material-symbols-outlined text-tertiary" data-icon="volume_off">volume_off</span>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-white rounded-md border border-transparent hover:border-outline-variant"><span class="material-symbols-outlined text-base" data-icon="edit">edit</span></button>
+<button class="p-1.5 text-on-surface-variant hover:text-error hover:bg-white rounded-md border border-transparent hover:border-outline-variant"><span class="material-symbols-outlined text-base" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination / Footer -->
+<div class="px-6 py-4 border-t border-outline-variant bg-surface-container-low flex items-center justify-between">
+<p class="text-caption text-on-surface-variant">Zeige 3 von 24 Coach-Messages</p>
+<div class="flex gap-1">
+<button class="px-3 py-1 text-sm border border-outline-variant rounded bg-white hover:bg-surface-container transition-colors disabled:opacity-50" disabled="">Zurück</button>
+<button class="px-3 py-1 text-sm border border-outline-variant rounded bg-primary text-on-primary font-bold">1</button>
+<button class="px-3 py-1 text-sm border border-outline-variant rounded bg-white hover:bg-surface-container transition-colors">2</button>
+<button class="px-3 py-1 text-sm border border-outline-variant rounded bg-white hover:bg-surface-container transition-colors">3</button>
+<button class="px-3 py-1 text-sm border border-outline-variant rounded bg-white hover:bg-surface-container transition-colors">Vor</button>
+</div>
+</div>
+</div>
+<!-- System Activity Micro-Insights -->
+<div class="mt-stack-lg grid grid-cols-1 md:grid-cols-3 gap-stack-lg">
+<div class="bg-white p-card-padding rounded-lg card-shadow border-t-4 border-secondary">
+<h4 class="text-sidebar-header uppercase opacity-60 mb-2">Beliebtester Coach</h4>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-3xl text-secondary" data-icon="star">star</span>
+<div>
+<p class="font-h2 text-secondary">Frieda</p>
+<p class="text-caption">68% Interaktionsrate</p>
+</div>
+</div>
+</div>
+<div class="bg-white p-card-padding rounded-lg card-shadow border-t-4 border-primary">
+<h4 class="text-sidebar-header uppercase opacity-60 mb-2">Voice Synthesis</h4>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-3xl text-primary" data-icon="record_voice_over">record_voice_over</span>
+<div>
+<p class="font-h2 text-primary">Neural HD</p>
+<p class="text-caption">Standard Deutsch (DE)</p>
+</div>
+</div>
+</div>
+<div class="bg-white p-card-padding rounded-lg card-shadow border-t-4 border-tertiary">
+<h4 class="text-sidebar-header uppercase opacity-60 mb-2">Letzte Änderung</h4>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-3xl text-tertiary" data-icon="history">history</span>
+<div>
+<p class="font-h2 text-tertiary">Vor 2h</p>
+<p class="text-caption">Admin user_492 (Frieda Hub)</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Micro-interaction for table rows
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('click', () => {
+                // Toggle a simulated "selected" state
+                row.classList.toggle('bg-primary-container/5');
+            });
+        });
+
+        // Search bar interaction
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('scale-[1.02]');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('scale-[1.02]');
+        });
+    </script>
+</body></html>

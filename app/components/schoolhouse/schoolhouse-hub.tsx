@@ -1,13 +1,12 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { FrontSchoolhouse } from '@/components/schoolhouse/front-schoolhouse'
 import { ScanCta } from '@/components/schoolhouse/scan-cta'
 import { SchoolhouseSrNav } from '@/components/schoolhouse/schoolhouse-sr-nav'
-import { Gs39Toast, Gs39ToastLayer } from '@/components/ui/gs39-toast'
 import type { EntryMode } from '@/lib/access-tokens'
-import { isHubFullyLocked } from '@/lib/hub-mode'
+import { getHubStationTapHref, isHubFullyLocked } from '@/lib/hub-mode'
 import type { HubStation } from '@/lib/schoolhouse-hub-map'
 
 type SchoolhouseHubProps = {
@@ -31,28 +30,12 @@ export function SchoolhouseHub({
   embedded = false,
 }: SchoolhouseHubProps) {
   const router = useRouter()
-  const [toastMessage, setToastMessage] = useState<string | null>(null)
-
-  useEffect(() => {
-    if (!toastMessage) return
-    const t = window.setTimeout(() => setToastMessage(null), 2400)
-    return () => window.clearTimeout(t)
-  }, [toastMessage])
 
   const onStationTap = useCallback(
     (slug: string) => {
-      if (mode === 'fest' && !unlockedSlugs.has(slug)) {
-        const station = hubStations.find((s) => s.slug === slug)
-        setToastMessage(
-          station
-            ? `„${station.titel}" ist noch zu — scanne den QR-Code an der Tür.`
-            : 'Diese Station ist noch gesperrt.',
-        )
-        return
-      }
-      router.push(`/raum/${slug}`)
+      router.push(getHubStationTapHref(slug, mode, unlockedSlugs))
     },
-    [mode, unlockedSlugs, hubStations, router],
+    [mode, unlockedSlugs, router],
   )
 
   const allLocked =
@@ -84,11 +67,6 @@ export function SchoolhouseHub({
         </p>
       ) : null}
       {!embedded ? <ScanCta /> : null}
-      {toastMessage ? (
-        <Gs39ToastLayer>
-          <Gs39Toast message={toastMessage} icon="lock" />
-        </Gs39ToastLayer>
-      ) : null}
     </div>
   )
 }

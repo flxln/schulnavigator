@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .spinner {
+            animation: rotate 2s linear infinite;
+        }
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+        .path {
+            stroke-dasharray: 1, 200;
+            stroke-dashoffset: 0;
+            animation: dash 1.5s ease-in-out infinite;
+            stroke-linecap: round;
+        }
+        @keyframes dash {
+            0% { stroke-dasharray: 1, 200; stroke-dashoffset: 0; }
+            50% { stroke-dasharray: 89, 200; stroke-dashoffset: -35px; }
+            100% { stroke-dasharray: 89, 200; stroke-dashoffset: -124px; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#ffffff",
+                        "background": "#fcfbf7",
+                        "surface-bright": "#faf9f5",
+                        "surface-variant": "#e3e2df",
+                        "on-primary-container": "#f8ffee",
+                        "on-tertiary-fixed-variant": "#2c476f",
+                        "on-error-container": "#93000a",
+                        "on-secondary-container": "#003e76",
+                        "tertiary-fixed-dim": "#acc8f6",
+                        "primary-fixed-dim": "#87db5d",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#001c3b",
+                        "inverse-surface": "#2f312e",
+                        "secondary-fixed": "#d5e3ff",
+                        "on-secondary-fixed-variant": "#004786",
+                        "tertiary-fixed": "#d5e3ff",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#1d5200",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#5b76a0",
+                        "surface": "#faf9f5",
+                        "surface-container-highest": "#e3e2df",
+                        "inverse-on-surface": "#f2f1ed",
+                        "inverse-primary": "#87db5d",
+                        "primary-container": "#37850a",
+                        "secondary-container": "#6daaff",
+                        "on-surface": "#1b1c1a",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#a2f876",
+                        "on-surface-variant": "#40493a",
+                        "on-background": "#1b1c1a",
+                        "surface-tint": "#286c00",
+                        "on-tertiary-container": "#fefcff",
+                        "on-error": "#ffffff",
+                        "outline": "#717a68",
+                        "surface-dim": "#dbdad6",
+                        "secondary": "#1f6abb", /* Brand Blue for functional elements */
+                        "secondary-fixed-dim": "#a6c8ff",
+                        "tertiary": "#425d86",
+                        "on-primary-fixed": "#072100",
+                        "surface-container-high": "#e9e8e4",
+                        "surface-container-low": "#f4f4f0",
+                        "outline-variant": "rgba(8,42,80,0.1)",
+                        "primary": "#276a00",
+                        "on-tertiary-fixed": "#001c3b",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#efeeea",
+                        "brand-navy": "#082a50"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "8px",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "sidebar-width": "240px",
+                        "card-padding": "20px",
+                        "topbar-height": "56px",
+                        "gutter": "16px",
+                        "container-padding": "24px",
+                        "stack-lg": "24px"
+                    },
+                    "fontFamily": {
+                        "sidebar-header": ["Nunito Sans"],
+                        "h2": ["Nunito Sans"],
+                        "caption": ["Nunito Sans"],
+                        "h1": ["Nunito Sans"],
+                        "body-md": ["Nunito Sans"],
+                        "code": ["monospace"],
+                        "body-lg": ["Nunito Sans"]
+                    },
+                    "fontSize": {
+                        "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                        "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background font-body-md text-on-surface antialiased">
+<!-- Sidebar Wrapper -->
+<aside class="fixed left-0 top-0 h-full w-[240px] bg-brand-navy flex flex-col z-50">
+<!-- Brand Header -->
+<div class="px-6 py-8">
+<h1 class="text-h2 font-h2 text-on-primary">MPZ Studio</h1>
+<p class="text-[10px] uppercase tracking-widest text-on-primary/50 mt-1">Admin Dashboard</p>
+</div>
+<!-- Navigation Groups -->
+<nav class="flex-1 overflow-y-auto">
+<div class="mb-6">
+<span class="px-6 text-sidebar-header font-sidebar-header text-on-primary/55 uppercase block mb-2">Verwaltung</span>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary border-l-4 border-primary bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="location_on">location_on</span>
+<span class="font-body-md">Alle Stationen</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span class="font-body-md">Coach</span>
+</a>
+</div>
+<div class="mb-6">
+<span class="px-6 text-sidebar-header font-sidebar-header text-on-primary/55 uppercase block mb-2">Konfiguration</span>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="link">link</span>
+<span class="font-body-md">Embeds &amp; Links</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="palette">palette</span>
+<span class="font-body-md">Design &amp; Hub</span>
+</a>
+</div>
+<div>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+<span class="font-body-md">Deploy</span>
+</a>
+</div>
+</nav>
+<!-- Footer Profile -->
+<div class="p-4 border-t border-white/10 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-on-primary font-bold overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional circular avatar portrait of a modern studio administrator, wearing a dark blue polo shirt, set against a soft grey studio background, captured in high-detail professional photography style with soft rim lighting and a sharp focus on facial features." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmpFD7dDWjWr_aVqMxTLnsFDmV05cy-TIbjXxa7yEe-ntxetjYuz8qo90hdih_-9_dEt4MCSpGjXsmmYE_P9hINe75JpByyFUVrOADM3NlZPcyTZsd_VcH1pApuy44bxauPRttfMXXAIyJoQVhIpTIwZ_TpEq5_GaeEoKDumwhxPPD0jw8y9BKr0BCpcPgrhPreOvJYvvB3_UpRvnmo0zzDZT1ZiqLtuuiaEUqfBmPKm39i6HHg3GfzOzaAelnG7H1wK_Z59AhXJE"/>
+</div>
+<div class="flex-1 overflow-hidden">
+<p class="text-body-md font-bold text-on-primary truncate">Admin User</p>
+<p class="text-[10px] text-on-primary/60 truncate">admin@mpz-studio.de</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[240px] min-h-screen relative flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 right-0 left-[240px] h-[56px] bg-surface-container-lowest border-b border-outline-variant flex items-center justify-between px-container-padding z-40">
+<div class="flex items-center gap-2">
+<span class="text-on-surface-variant font-body-md">Stationen</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[16px]" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-bold font-body-md">Klassenzimmer</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant font-bold text-body-md hover:bg-surface-container-low px-4 py-2 rounded transition-colors">
+                    Nur lokal
+                </button>
+<!-- Loading State Button -->
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-bold text-body-md flex items-center gap-3 opacity-80 cursor-wait">
+<svg class="spinner w-4 h-4" viewbox="0 0 50 50">
+<circle class="path stroke-white" cx="25" cy="25" fill="none" r="20" stroke-width="5"></circle>
+</svg>
+                    Speichert...
+                </button>
+</div>
+</header>
+<!-- Main Body -->
+<div class="mt-[56px] p-container-padding flex flex-col gap-6 relative">
+<!-- Validation Panel (Active State) -->
+<section class="z-30">
+<div class="bg-white rounded-lg border border-outline-variant shadow-sm p-10 flex flex-col items-center justify-center min-h-[320px]">
+<div class="relative w-16 h-16 mb-6">
+<svg class="spinner w-full h-full" viewbox="0 0 50 50">
+<circle class="path stroke-secondary" cx="25" cy="25" fill="none" r="20" stroke-width="4"></circle>
+</svg>
+</div>
+<h2 class="text-h1 font-h1 text-brand-navy mb-2">Validierung läuft</h2>
+<p class="text-body-lg text-brand-navy/70 flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+                        stations.json, Coach, Tokens...
+                    </p>
+<div class="mt-8 w-full max-w-md bg-surface-container-low h-1 rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-2/3 transition-all duration-1000 ease-in-out"></div>
+</div>
+</div>
+</section>
+<!-- Dimmed Background Content (Dashboard Preview) -->
+<div class="opacity-30 pointer-events-none filter blur-[2px] transition-all duration-500">
+<!-- Dashboard Bento Grid Content -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Stats Card -->
+<div class="col-span-8 grid grid-cols-3 gap-6">
+<div class="bg-white p-card-padding rounded-lg border border-outline-variant">
+<p class="text-caption text-on-surface-variant uppercase tracking-wider mb-1">Aktive Stationen</p>
+<h3 class="text-h1 font-h1 text-on-surface">12</h3>
+</div>
+<div class="bg-white p-card-padding rounded-lg border border-outline-variant">
+<p class="text-caption text-on-surface-variant uppercase tracking-wider mb-1">Sync Status</p>
+<h3 class="text-h1 font-h1 text-primary">Live</h3>
+</div>
+<div class="bg-white p-card-padding rounded-lg border border-outline-variant">
+<p class="text-caption text-on-surface-variant uppercase tracking-wider mb-1">Letztes Update</p>
+<h3 class="text-h1 font-h1 text-on-surface">08:45</h3>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="col-span-4 bg-white p-card-padding rounded-lg border border-outline-variant">
+<h4 class="text-h2 font-h2 mb-4">Quick Actions</h4>
+<div class="space-y-2">
+<div class="h-10 bg-surface-container rounded"></div>
+<div class="h-10 bg-surface-container rounded w-3/4"></div>
+</div>
+</div>
+<!-- Visual Assets Section -->
+<div class="col-span-12 h-64 bg-white rounded-lg border border-outline-variant overflow-hidden relative">
+<div class="absolute inset-0 p-6 flex flex-col justify-end bg-gradient-to-t from-black/40 to-transparent">
+<h3 class="text-h2 font-h2 text-white">Visual Overview</h3>
+<p class="text-body-md text-white/80">Raumplanung und Stationsverteilung</p>
+</div>
+<img class="w-full h-full object-cover" data-alt="A sophisticated architectural 3D rendering of a modern classroom interior layout, seen from a high-angle isometric perspective. The space is filled with clean minimalist furniture, digital touchpoints, and large windows with soft morning sunlight streaming in. The aesthetic follows a neutral palette with warm wood accents and brand green highlights, mirroring a professional educational technology environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2tYOHTviI2d4SujfUGabEnf8Kbo70fbt0uYTQCMy4z9W_b3e1zCVtnVYHj-1GSuseu60lJgKVJitmeU9lJN-8RxC8zwlQYXaRduoGGdn1YEM1hYNCdJI09wD2AvxnbZ47x8oTXBSUm0q85VrVJZecRQ4IsTZwCkfbhOkckn8VkuckEoNfhIDEOIEqxYjE93A0s4_agRUZrYREpBec2mxUrrSqKB5uNSU0CTqVvV1FP7kKQYX7rsztlndFfHnqT2yRJancFrCNVWc"/>
+</div>
+<!-- Station List Table -->
+<div class="col-span-12 bg-white rounded-lg border border-outline-variant overflow-hidden">
+<div class="px-6 py-4 border-b border-outline-variant bg-surface-container-low">
+<h4 class="font-bold text-on-surface">Aktuelle Konfiguration</h4>
+</div>
+<div class="p-6 space-y-4">
+<div class="flex justify-between items-center border-b border-outline-variant pb-4">
+<div class="flex gap-4">
+<div class="w-10 h-10 bg-surface-container rounded"></div>
+<div>
+<p class="font-bold">Eingangsbereich</p>
+<p class="text-caption text-on-surface-variant">ID: ST-001</p>
+</div>
+</div>
+<span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold">Online</span>
+</div>
+<div class="flex justify-between items-center border-b border-outline-variant pb-4">
+<div class="flex gap-4">
+<div class="w-10 h-10 bg-surface-container rounded"></div>
+<div>
+<p class="font-bold">Medien-Ecke</p>
+<p class="text-caption text-on-surface-variant">ID: ST-004</p>
+</div>
+</div>
+<span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold">Online</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Atmospheric Footer (Optional background element) -->
+<footer class="mt-auto p-gutter text-center opacity-40">
+<p class="text-caption font-caption text-on-surface-variant italic">MPZ Studio Engine v2.4.0 — Gültiges Token-System erkannt.</p>
+</footer>
+</main>
+<script>
+        // Micro-interaction: Subtle status message cycling
+        const statusEl = document.querySelector('p.text-body-lg.text-brand-navy\\/70');
+        const statuses = [
+            'stations.json, Coach, Tokens...',
+            'Prüfe Assets und Media-Links...',
+            'Synchronisiere Metadaten...',
+            'Generiere Validierungsbericht...'
+        ];
+        let index = 0;
+        
+        setInterval(() => {
+            index = (index + 1) % statuses.length;
+            const textSpan = statusEl.childNodes[2]; // Get the text node after the dot
+            if(textSpan) {
+                statusEl.style.opacity = 0.5;
+                setTimeout(() => {
+                    statusEl.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span> ${statuses[index]}`;
+                    statusEl.style.opacity = 1;
+                }, 300);
+            }
+        }, 3500);
+    </script>
+</body></html>

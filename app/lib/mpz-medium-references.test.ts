@@ -15,8 +15,8 @@ describe('mpz-medium-references', () => {
 
   it('findMediumHotspotReferences: sphere-Hotspot', () => {
     const station = getStationBySlug('klassenzimmer')!
-    const refs = findMediumHotspotReferences(station, 'demo-video')
-    expect(refs.sphere).toContain('hs-video')
+    const refs = findMediumHotspotReferences(station, 'dx-schule-zukunft')
+    expect(refs.sphere).toContain('hs-dx-embed')
     expect(refs.flat).toEqual([])
   })
 
@@ -38,38 +38,61 @@ describe('mpz-medium-references', () => {
   it('collectStationMediaPaths erfasst Medien, Hotspot-Icons und Dialog', () => {
     const station = getStationBySlug('klassenzimmer')!
     const paths = collectStationMediaPaths(station)
-    expect(paths).toContain('/media/klassenzimmer/fotos/grundschule_demo.jpg')
+    expect(paths).toContain('https://edu.delightex.com/ABE-XQJ')
+    expect(paths).toContain('/stations-icons/klassenzimmer/embed.svg')
     expect(paths).toContain('/stations/klassenzimmer.jpg')
     expect(paths).toContain('/stations/360/klassenzimmer.jpg')
   })
 
-  it('isMediaPathStillReferenced: Sharing grundschule_demo.jpg nach demo-foto entfernt', () => {
+  it('isMediaPathStillReferenced: Icon bleibt referenziert wenn Medium entfernt wird', () => {
     const station = getStationBySlug('klassenzimmer')!
-    const shared = '/media/klassenzimmer/fotos/grundschule_demo.jpg'
+    const shared = '/stations-icons/klassenzimmer/embed.svg'
     const filtered: Station = {
       ...station,
-      medien: station.medien.filter((m) => m.id !== 'demo-foto'),
+      medien: station.medien.filter((m) => m.id !== 'dx-schule-zukunft'),
     }
     expect(isMediaPathStillReferenced(filtered, shared)).toBe(true)
   })
 
   it('isMediaPathStillReferenced: false wenn Pfad nur einmal referenziert war', () => {
-    const station = getStationBySlug('klassenzimmer')!
-    const onlyAudio = '/media/klassenzimmer/audio/grundschule_demo.mp3'
+    const station = getStationBySlug('musik')!
+    const onlyAudio = '/media/musik/audio/musikzimmer-fuer-elise.mp3'
     const filtered: Station = {
       ...station,
-      medien: station.medien.filter((m) => m.id !== 'demo-audio'),
+      medien: station.medien.filter((m) => m.id !== 'musik-musikzimmer-fuer-elise'),
     }
     expect(isMediaPathStillReferenced(filtered, onlyAudio)).toBe(false)
   })
 
-  it('isMediaPathStillReferenced: SVG-Sharing pc-raum delightex', () => {
-    const station = getStationBySlug('pc-raum')!
-    const shared = '/media/pc-raum/icons/delightex.svg'
+  it('isMediaPathStillReferenced: Icon-Sharing über Medien und Hotspot', () => {
+    const shared = '/stations-icons/pc-raum/video.svg'
+    const station: Station = {
+      slug: 'pc-raum',
+      titel: 'PC-Raum',
+      beschreibung: 'Test',
+      bild: '/stations/pc-raum.jpg',
+      medien: [
+        {
+          id: 'm1',
+          typ: 'video',
+          quelle: '/media/pc-raum/video/a.mp4',
+          thumbnail: shared,
+        },
+      ],
+      hotspots360: [
+        {
+          id: 'hs1',
+          yaw: 0,
+          pitch: 0,
+          mediumId: 'm1',
+          icon: shared,
+        },
+      ],
+    }
     expect(collectStationMediaPaths(station).filter((p) => p === shared).length).toBeGreaterThan(1)
     const filtered: Station = {
       ...station,
-      medien: station.medien.filter((m) => m.id !== 'pc-delightex'),
+      medien: station.medien.filter((m) => m.id !== 'm1'),
     }
     expect(isMediaPathStillReferenced(filtered, shared)).toBe(true)
   })

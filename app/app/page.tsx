@@ -31,7 +31,7 @@ export default async function Home({ searchParams }: PageProps) {
     highlight && validSlugs.includes(highlight) ? highlight : undefined
 
   return (
-    <main className="sn-page-container flex min-h-full flex-col overflow-x-hidden px-4 py-6 pb-[max(1rem,env(safe-area-inset-bottom))]">
+    <main className="sn-page-container flex min-h-full flex-col overflow-x-hidden px-4 py-6 pb-[max(3rem,env(safe-area-inset-bottom))]">
       <h1 id="hub-schoolhouse-title" className="sr-only">
         Stationen im Schulhaus
       </h1>

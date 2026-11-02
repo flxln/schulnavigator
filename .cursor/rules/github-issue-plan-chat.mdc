@@ -1,0 +1,44 @@
+---
+description: GitHub-Issue-Nummer in Plänen und Chat-Titeln führend verwenden
+alwaysApply: true
+---
+
+# GitHub-Issue ↔ Plan ↔ Chat
+
+Gilt, sobald ein **konkretes** GitHub-Issue referenziert wird (`#227`, `issue 227`, `github.com/.../issues/227`).
+
+## Issue erkennen
+
+- Primäres Issue = erste explizite Issue-Nummer im User-Text oder Plan-Kontext.
+- Mehrere Issues: primär = das Issue, **für das der Plan erstellt wird**; Parent/Epic nur als Verweis, nicht im Dateinamen.
+
+## Plan-Datei (`.cursor/plans/`)
+
+| Feld | Format | Beispiel |
+|------|--------|----------|
+| Dateiname | `issue_{NNN}_{kurz-slug}_{hash}.plan.md` | `issue_227_phase-0-dsb_739f87c0.plan.md` |
+| Frontmatter `name` | `#NNN — {Kurztitel}` | `#227 — Phase 0 DSB-Abstimmung` |
+| Frontmatter `overview` | Beginnt mit `GitHub #NNN:` | `GitHub #227: …` |
+| H1 im Plan | `Implementierungsplan: #NNN — …` | wie oben |
+
+**Pflicht:** `#NNN` in Dateiname, `name`, `overview` und H1 — nicht nur in einem Feld.
+
+## Plan-Inhalt
+
+- Meta-Zeile direkt unter H1: `**Issue:** [#NNN](https://github.com/flxln/schulnavigator/issues/NNN)`
+- Todos und Akzeptanzkriterien dürfen Sub-Issues nennen (`#228`); primäres Issue bleibt `#NNN`.
+
+## Chat-Titel
+
+Zu Sessionbeginn und beim Anlegen eines Plans **einmal** ausgeben:
+
+> **Empfohlener Chat-Titel:** `#227 Phase 0 — DSB-Abstimmung`
+
+Format: `#NNN {Kurztitel}` — Issue-Nummer **immer vorne**, Deutsch, max. ~60 Zeichen.
+
+Wenn der User nur „Plan für #227“ schreibt: zuerst Titel vorschlagen, dann Plan erstellen.
+
+## Ausnahmen
+
+- Reine Architektur- oder Explorations-Chats ohne Issue → keine erzwungene Nummer.
+- Epics ohne konkretes Umsetzungs-Issue → Epic nur verlinken, nicht als primäres `#NNN` im Dateinamen.

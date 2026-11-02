@@ -37,10 +37,12 @@ vi.mock('@/hooks/use-dialog-audio-playlist', () => ({
     audioRef: { current: null },
     startFromUserGesture: vi.fn(),
     stopDialog: mocks.stopDialog,
+    advanceFromUserGesture: vi.fn(),
     dialogUiActive: mocks.dialogUiActive,
     speakingRolle: 'frieda' as const,
     displayText: 'Test',
     tail: 'left' as const,
+    currentSegmentIsTextOnly: false,
   }),
 }))
 

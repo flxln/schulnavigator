@@ -5,7 +5,7 @@ Equirectangular-Panoramen für den Sphere-Viewer (ADR-018). Eine Datei pro Stati
 ## Regeln
 
 - **Dateiname:** `{slug}.webp` (bevorzugt) oder `{slug}.jpg`
-- **Format:** Equirectangular 2:1 (Breite = doppelte Höhe), optimiert, **max. 4 MB**
+- **Format:** Equirectangular 2:1 (Breite = doppelte Höhe), optimiert, **max. 12 MB**
 - **Auflösung:** min. 4096×2048 px, besser 8192×4096 px für scharfe Darstellung
 - **Kein Flat-Panorama** — dieser Ordner ist ausschließlich für echte 360°-Kugelprojektionen
 

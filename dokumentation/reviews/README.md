@@ -27,6 +27,11 @@ Kurze Risiko- und Abschluss-Notizen zu größeren Issues (v. a. MPZ Studio v2).
 | #193 Coach-Audio | [pre-mortem-193-1a](./pre-mortem/pre-mortem-193-1a.md) | [post-mortem-193](./post-mortem/post-mortem-193-2026-06-20.md) |
 | #143 CSP-Enforcement | — | [post-mortem-143](./post-mortem/post-mortem-143-2026-06-20.md) |
 | Runbook Agentic (Vault) | [pre-mortem-runbook-1a](./pre-mortem/pre-mortem-runbook-agentic-projekte-1a.md) | [post-mortem-runbook](./post-mortem/post-mortem-runbook-agentic-projekte-2026-06-20.md) |
+| #207 Shell visuell (v3) | [pre-mortem-1a-207](./pre-mortem/pre-mortem-1a-207-2026-06-23.md), [pre-mortem-1b-207](./pre-mortem/pre-mortem-1b-207-2026-06-23.md) | [post-mortem-207](./post-mortem/post-mortem-207-2026-06-23.md) |
+| #208 Save-Validate & Dashboard (v3) | [pre-mortem-1a-208](./pre-mortem/pre-mortem-1a-208-save-dashboard-2026-06-23.md), [pre-mortem-1b-208](./pre-mortem/pre-mortem-1b-208-save-dashboard-2026-06-23.md) | [post-mortem-208](./post-mortem/post-mortem-208-2026-06-24.md) |
+| #209 Stationen-Grid (v3) | [pre-mortem-1a-209](./pre-mortem/pre-mortem-1a-209-2026-06-23.md), [pre-mortem-1b-209](./pre-mortem/pre-mortem-1b-209-stationen-grid-2026-06-23.md) | [post-mortem-209](./post-mortem/post-mortem-209-2026-06-23.md) |
+| #210 Detail-Header (v3) | [pre-mortem-1a-210](./pre-mortem/pre-mortem-1a-210-2026-06-23.md), [pre-mortem-1b-210](./pre-mortem/pre-mortem-1b-210-detail-header-2026-06-23.md) | [post-mortem-210](./post-mortem/post-mortem-210-2026-06-23.md) |
+| #230 Deploy-Automatisierung | [pre-mortem-1a-230](./pre-mortem/pre-mortem-1a-230-deploy-automatisierung-2026-06-24.md) | [post-mortem-230](./post-mortem/post-mortem-230-2026-06-24.md) |
 | Audit Phase 5 (#238) | [pre-mortem-1a](./pre-mortem/pre-mortem-1a-audit-phase-5-umsetzung-2026-07-04.md), [1b](./pre-mortem/pre-mortem-1b-audit-phase-5-umsetzung-2026-07-04.md) | [post-mortem-audit-phase-5](./post-mortem/post-mortem-audit-phase-5-umsetzung-2026-07-05.md) |
 | #242 HSTS Proxy | [pre-mortem-1b](./pre-mortem/pre-mortem-1b-hsts-proxy-242-2026-07-05.md) | [post-mortem-242](./post-mortem/post-mortem-242-2026-07-05.md) |
 | #47 Directus Epic (Planung) | [council-directus-planung](./council-directus-planung-2026-07-06.md) · [epic-directus](../planung/epics/epic-directus.md) | — |

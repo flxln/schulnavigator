@@ -12,7 +12,9 @@ Eine Web-App für Schulen. Besucher eines Tags der offenen Tür scannen QR-Codes
 
 ## Projektphasen
 
-Das Projekt liegt unter `2_in-arbeit/schulnavigator/`. **Phase 0** (Architektur-ADRs) ist abgeschlossen; **Phase 1** (Foundation) umfasst **#9–#16** — siehe [`dokumentation/archiv/projektplan.md`](./dokumentation/archiv/projektplan.md). **Phase 2:** Raum-Viewer (**#55**/#56), GS39-UI (**#58**), Dialog Maskottchen (**#71**/#72), Medien-Player (**#18–#20**) + **TextViewer** (**#93**) — umgesetzt. **360°-Sphere-Viewer** (**#113**, Branch `feature/360-sphere-viewer`): PSV v5 + Gyro, Koexistenz Flat/Sphere per `viewer`-Flag ([ADR-018](./dokumentation/adr/018-360-sphere-viewer.md)), Pilot `musik` — umgesetzt. **Demo-Content:** **`klassenzimmer`** mit 4 Medien/Hotspots (`public/media/klassenzimmer/`). **Raumbilder:** **#27** geschlossen (8/11 Panorama in `public/stations/`); **#17** offen für `kunst`, `hort`, `schulsozialarbeit`. **Live:** `https://schulnavigator.mpz.schule` (Coolify) — [`anleitungen/fuer-entwickler.md`](./anleitungen/fuer-entwickler.md).
+Das Projekt liegt unter `2_in-arbeit/schulnavigator/`. **Phase 0** (Architektur-ADRs) ist abgeschlossen; **Phase 1** (Foundation) umfasst **#9–#16** — siehe [`dokumentation/archiv/projektplan.md`](./dokumentation/archiv/projektplan.md). **Phase 2:** Raum-Viewer (**#55**/#56), GS39-UI (**#58**), Dialog Maskottchen (**#71**/#72), Medien-Player (**#18–#20**) + **TextViewer** (**#93**) — umgesetzt. **360°-Sphere-Viewer** (**#113**, Branch `feature/360-sphere-viewer`): PSV v5 + Gyro, Koexistenz Flat/Sphere per `viewer`-Flag ([ADR-018](./dokumentation/adr/018-360-sphere-viewer.md)), Pilot `musik` — umgesetzt. **Demo-Content:** **`klassenzimmer`** mit 4 Medien/Hotspots (`public/media/klassenzimmer/`). **Raumbilder:** **#27** geschlossen (8/11 Panorama in `public/stations/`); **#17** offen für `kunst`, `hort`, `schulsozialarbeit`. **Live:** `https://39-gs.mpz.schule` (Coolify, Branch `kunde/39-gs`) — [`anleitungen/fuer-entwickler.md`](./anleitungen/fuer-entwickler.md).
+
+**Git:** `main` eingefroren; `kunde/*` **niemals** nach `main` mergen. Kunden-Code per pfadbasiertem Port auf `feature/*`. Regel: [`.cursor/rules/branch-freeze-kunde.mdc`](./.cursor/rules/branch-freeze-kunde.mdc).
 
 ---
 
@@ -70,7 +72,7 @@ schulnavigator/
 
 | ADR                                                         | Entscheidung                                           | Status      |
 | ----------------------------------------------------------- | ------------------------------------------------------ | ----------- |
-| [001](./dokumentation/adr/001-hosting-coolify.md)           | Hosting: MPZ-Hetzner-Server via Coolify, Docker        | entschieden |
+| [001](./dokumentation/adr/001-hosting-coolify.md)           | Hosting: MPZ-VPS (IONOS) via Coolify, Docker        | entschieden |
 | [002](./dokumentation/adr/002-frontend-nextjs.md)           | Frontend: Next.js (App Router), Tailwind               | entschieden |
 | [003](./dokumentation/adr/003-content-mvp-json-directus.md) | Content: JSON (MVP), Directus; kein Custom-Admin       | entschieden |
 | [004](./dokumentation/adr/004-video-hosting-mpz.md)         | Video: MPZ-Server; YouTube optional nach Rechtsklärung | entschieden |

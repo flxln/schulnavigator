@@ -3,6 +3,7 @@ import { cleanup, render, screen, within } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { StationHotspotsTable } from '@/components/mpz-studio/station-hotspots-table'
 import { getStationBySlug } from '@/lib/stations'
+import { studioDemoKlassenzimmerStation } from '@/lib/test-fixtures/studio-demo-klassenzimmer'
 
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ refresh: vi.fn() }),
@@ -43,7 +44,7 @@ afterEach(() => {
 
 describe('StationHotspotsTable', () => {
   it('zeigt Sphere-Hotspots für klassenzimmer', () => {
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     render(<StationHotspotsTable slug="klassenzimmer" station={station} />)
 
     expect(screen.getByText('hs-text')).toBeTruthy()
@@ -52,15 +53,16 @@ describe('StationHotspotsTable', () => {
     expect(screen.getByText('hs-foto')).toBeTruthy()
     expect(screen.getByText('demo-text')).toBeTruthy()
     expect(
-      screen.getByRole('link', { name: 'Kalibrieren (Hotspots + Startblick)' }).getAttribute('href'),
-    ).toBe('/raum/klassenzimmer?hotspot-calib=1')
+      screen.getByRole('link', { name: 'Sphere kalibrieren' }).getAttribute('href'),
+    ).toBe('/mpz/calib/sphere/klassenzimmer')
   })
 
   it('Empty-State für kunst ohne Hotspots', () => {
     const station = { ...getStationBySlug('kunst')!, hotspots: undefined, hotspots360: undefined }
     render(<StationHotspotsTable slug="kunst" station={station} />)
 
-    expect(screen.getByText('Keine Hotspots')).toBeTruthy()
+    expect(screen.getByText(/Noch keine Hotspots/)).toBeTruthy()
+    expect(screen.getByRole('columnheader', { name: 'ID' })).toBeTruthy()
     const calibLinks = screen.getAllByRole('link', { name: 'Hotspot kalibrieren' })
     expect(calibLinks.some((el) => el.getAttribute('href') === '/mpz/calib/flat/kunst')).toBe(
       true,
@@ -73,7 +75,7 @@ describe('StationHotspotsTable', () => {
   })
 
   it('zeigt Add-Formular bei Station mit Medien', () => {
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     vi.stubGlobal(
       'fetch',
       vi.fn().mockResolvedValue({
@@ -91,7 +93,13 @@ describe('StationHotspotsTable', () => {
   })
 
   it('ohne Medien: Ingest-Hinweis statt Anlege-Button', () => {
-    const station = { ...getStationBySlug('kunst')!, medien: [] }
+    const station = {
+      ...getStationBySlug('kunst')!,
+      medien: [],
+      hotspots: undefined,
+      hotspots360: undefined,
+      dialog: undefined,
+    }
     vi.stubGlobal(
       'fetch',
       vi.fn().mockResolvedValue({
@@ -102,7 +110,10 @@ describe('StationHotspotsTable', () => {
 
     render(<StationHotspotsTable slug="kunst" station={station} />)
 
-    expect(screen.getByRole('button', { name: 'Medium hinzufügen' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Medium hinzufügen' })).toBeTruthy()
+    expect(
+      screen.getByRole('link', { name: 'Medium hinzufügen' }).getAttribute('href'),
+    ).toBe('/mpz/studio/stationen/kunst?tab=medien')
     expect(screen.queryByRole('button', { name: 'Hotspot anlegen' })).toBeNull()
 
     vi.unstubAllGlobals()

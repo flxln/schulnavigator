@@ -505,5 +505,5 @@ Best-Effort, kein QA-Gate. Stichprobenartig im DevTools-Preset testen. Schulfest
 | **#72** TopBar/Chip | erledigt — nicht in Epic-PRs ändern; Test-Lücken aus #72 (siehe `#76` Voraussetzung) |
 | **#17** Raumfotos (extern) | tangiert: Tablet-Hero benötigt ggf. Bilder mit höherer Aspect (siehe `#76` Content-Voraussetzung) |
 | **#41** Tablet-Fallback (Phase 4) | Hardware/Prozess; Epic = Software-UI |
-| **#24** i18n | unabhängig |
+| **#48** i18n | unabhängig |
 | `DialogPlayer` / Cutscene | unverdrahtet, bewusst ausgeschlossen — bei Reaktivierung separates Issue |

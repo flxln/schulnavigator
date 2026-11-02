@@ -20,12 +20,13 @@ describe('resolveCoachLayout', () => {
   it('liefert Defaults ohne layout', () => {
     const resolved = resolveCoachLayout(baseMessage('left'))
     expect(resolved.imgStyle).toEqual({
-      height: `min(${DEFAULT_MASCOT_SIZE * 100}vh, 260px)`,
+      height: `${DEFAULT_MASCOT_SIZE * 100}vh`,
+      maxWidth: `min(100%, ${DEFAULT_MASCOT_SIZE * 100}vh)`,
     })
     expect(resolved.figureStyle).toBeUndefined()
     expect(resolved.duoRowStyle).toBeUndefined()
     expect(resolved.bubbleStyle).toEqual({
-      marginTop: `${DEFAULT_BUBBLE_MARGIN_Y_REM}rem`,
+      marginBottom: `${DEFAULT_BUBBLE_MARGIN_Y_REM}rem`,
       maxWidth: `min(100%, ${DEFAULT_BUBBLE_MAX_WIDTH_REM}rem)`,
       fontSize: `${DEFAULT_BUBBLE_FONT_SIZE}px`,
     })
@@ -41,8 +42,9 @@ describe('resolveCoachLayout', () => {
         bubbleOffsetX: 1,
       },
     })
-    expect(resolved.imgStyle.height).toBe('min(38vh, 260px)')
-    expect(resolved.bubbleStyle.marginTop).toBe(
+    expect(resolved.imgStyle.height).toBe('38vh')
+    expect(resolved.imgStyle.maxWidth).toBe('min(100%, 38vh)')
+    expect(resolved.bubbleStyle.marginBottom).toBe(
       `${DEFAULT_BUBBLE_MARGIN_Y_REM - 0.25}rem`,
     )
     expect(resolved.bubbleStyle.fontSize).toBe('16px')
@@ -54,8 +56,23 @@ describe('resolveCoachLayout', () => {
       placement: 'left',
       layout: { mascotSize: 0.99, bubbleMaxWidth: 40 },
     })
-    expect(resolved.imgStyle.height).toBe('min(55vh, 260px)')
+    expect(resolved.imgStyle.height).toBe('55vh')
+    expect(resolved.imgStyle.maxWidth).toBe('min(100%, 55vh)')
     expect(resolved.bubbleStyle.maxWidth).toBe('min(100%, 32rem)')
+  })
+
+  it('skaliert Figur sichtbar mit mascotSize (kein fester px-Deckel)', () => {
+    const small = resolveCoachLayout({
+      placement: 'left',
+      layout: { mascotSize: 0.2 },
+    })
+    const large = resolveCoachLayout({
+      placement: 'left',
+      layout: { mascotSize: 0.52 },
+    })
+    expect(small.imgStyle.height).toBe('20vh')
+    expect(large.imgStyle.height).toBe('52vh')
+    expect(small.imgStyle.maxWidth).not.toBe(large.imgStyle.maxWidth)
   })
 
   it('duo-split: Default bubble margin -0.5rem und Offsets auf Duo-Row', () => {
@@ -67,7 +84,7 @@ describe('resolveCoachLayout', () => {
       transform: 'translate(1rem, 0.5rem)',
     })
     expect(resolved.figureStyle).toBeUndefined()
-    expect(resolved.bubbleStyle.marginTop).toBe(
+    expect(resolved.bubbleStyle.marginBottom).toBe(
       `${DEFAULT_DUO_BUBBLE_MARGIN_Y_REM}rem`,
     )
   })

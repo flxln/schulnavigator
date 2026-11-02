@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#286c00",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed": "#001c3b",
+                        "surface": "#faf9f5",
+                        "background": "#faf9f5",
+                        "primary-fixed-dim": "#87db5d",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#f2f1ed",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#1b1c1a",
+                        "on-secondary-fixed": "#001c3b",
+                        "surface-container-highest": "#e3e2df",
+                        "primary-container": "#37850a",
+                        "surface-container-high": "#e9e8e4",
+                        "primary": "#276a00",
+                        "inverse-surface": "#2f312e",
+                        "on-secondary-fixed-variant": "#004786",
+                        "on-primary-container": "#f8ffee",
+                        "tertiary-fixed": "#d5e3ff",
+                        "outline-variant": "#c0cab5",
+                        "secondary-fixed-dim": "#a6c8ff",
+                        "outline": "#717a68",
+                        "surface-container": "#efeeea",
+                        "on-error": "#ffffff",
+                        "on-background": "#1b1c1a",
+                        "surface-variant": "#e3e2df",
+                        "on-secondary-container": "#003e76",
+                        "surface-dim": "#dbdad6",
+                        "primary-fixed": "#a2f876",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed-dim": "#acc8f6",
+                        "error": "#ba1a1a",
+                        "surface-container-low": "#f4f4f0",
+                        "secondary-container": "#6daaff",
+                        "inverse-primary": "#87db5d",
+                        "secondary": "#045faf",
+                        "on-primary-fixed": "#072100",
+                        "on-tertiary-fixed-variant": "#2c476f",
+                        "on-surface-variant": "#40493a",
+                        "on-primary-fixed-variant": "#1d5200",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#faf9f5",
+                        "on-tertiary-container": "#fefcff",
+                        "secondary-fixed": "#d5e3ff",
+                        "tertiary": "#425d86",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#5b76a0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "topbar-height": "56px",
+                        "stack-lg": "24px",
+                        "stack-md": "16px",
+                        "gutter": "16px",
+                        "stack-sm": "8px",
+                        "container-padding": "24px",
+                        "card-padding": "20px",
+                        "sidebar-width": "240px"
+                    },
+                    "fontFamily": {
+                        "code": ["monospace"],
+                        "caption": ["Nunito Sans"],
+                        "body-lg": ["Nunito Sans"],
+                        "sidebar-header": ["Nunito Sans"],
+                        "h2": ["Nunito Sans"],
+                        "body-md": ["Nunito Sans"],
+                        "h1": ["Nunito Sans"],
+                        "brand": ["Nunito"]
+                    },
+                    "fontSize": {
+                        "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Nunito Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .studio-glass {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+        }
+        .pin-pulse {
+            animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(.33); opacity: 1; }
+            80%, 100% { opacity: 0; }
+        }
+        .toast-slide-in {
+            animation: slide-in 0.5s ease-out forwards;
+        }
+        @keyframes slide-in {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface overflow-hidden h-screen w-full flex flex-col">
+<!-- Top Bar -->
+<header class="h-[56px] w-full bg-white border-b border-outline-variant/30 flex items-center justify-between px-gutter z-50 shrink-0">
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 px-4 py-1.5 border border-outline rounded-full text-on-surface hover:bg-surface-container transition-colors group">
+<span class="material-symbols-outlined text-[20px] transition-transform group-hover:-translate-x-1">arrow_back</span>
+<span class="font-body-md text-body-md font-semibold">Zurück</span>
+</button>
+</div>
+<div class="flex items-center">
+<h1 class="font-h2 text-h2 font-brand text-on-surface-variant flex items-center gap-2">
+                Flat-Kalibrierung <span class="text-outline">·</span> <span class="font-normal opacity-80">kunst</span>
+</h1>
+</div>
+<div class="flex items-center gap-3">
+<div class="px-2 py-0.5 bg-surface-container-high rounded text-outline font-code text-code uppercase tracking-wider">
+                calib · nur lokal
+            </div>
+<div class="w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center font-bold text-xs">
+                A
+            </div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-grow flex w-full relative overflow-hidden">
+<!-- Success Toast Notification -->
+<div class="absolute top-6 right-6 z-[60] toast-slide-in">
+<div class="bg-primary text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 border-l-4 border-primary-fixed">
+<span class="material-symbols-outlined fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-body-md text-body-md font-bold">Koordinaten übernommen</span>
+</div>
+</div>
+<!-- Left: Panorama Viewer -->
+<section class="flex-grow relative bg-[#082a50] overflow-hidden">
+<!-- Panorama Container -->
+<div class="w-full h-full relative cursor-crosshair">
+<div class="w-full h-full bg-cover bg-center opacity-90 transition-opacity duration-1000" data-alt="A high-resolution wide-angle panoramic photograph of a modern, professional classroom interior. The room features clean white walls, minimalist wooden desks arranged in a grid, and large windows casting soft, natural daylight across the scene. The lighting is bright and even, reinforcing a sterile yet productive studio atmosphere. The color palette is dominated by neutral whites, soft greys, and warm wood tones, perfectly aligned with a professional admin tool's aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBNZYAixXx2GewRUUQDGpI96VekmRXgbhQQG6nXgr9z6MlFyxYu9EaPoHcfsosbcuwoBHLD8WEN-CXNC402gKg2q0KsHp-hizAuD8jDH6z9HtG5dDkr2mzzU80b0Q1AuRzhuxN-x9J18OXTh7Pr6gPrVbImay8UEKMwsvUxOPIb1XyoENXcB2K35BFik1X53vO-CUkm3Fyv1DUnck02l78p1xFtxbwm4h8BXGr8m4JpUFtxBEJLIyMghAMGjVSm14CWgHuZDkt6fBU')"></div>
+<!-- Interaction Overlay Grid -->
+<div class="absolute inset-0 grid grid-cols-12 grid-rows-8 opacity-10 pointer-events-none">
+<div class="border-r border-b border-white/20"></div>
+<div class="border-r border-b border-white/20 col-span-11 row-span-7"></div>
+</div>
+<!-- Green Calibration Pin -->
+<div class="absolute" style="left: 42%; top: 67%; transform: translate(-50%, -50%);">
+<div class="relative flex items-center justify-center">
+<div class="absolute w-8 h-8 bg-primary/40 rounded-full pin-pulse"></div>
+<div class="absolute w-4 h-4 bg-primary border-2 border-white rounded-full shadow-[0_0_15px_rgba(39,106,0,0.8)]"></div>
+<!-- Tooltip Label -->
+<div class="absolute top-8 left-1/2 -translate-x-1/2 bg-on-surface text-white px-2 py-1 rounded text-[10px] font-bold whitespace-nowrap uppercase tracking-tighter">
+                            Active Point: hs-neu
+                        </div>
+</div>
+</div>
+<!-- Viewer Controls -->
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-1 p-1 bg-white/10 backdrop-blur-md rounded-full border border-white/20">
+<button class="p-2 text-white hover:bg-white/20 rounded-full transition-colors"><span class="material-symbols-outlined">zoom_in</span></button>
+<div class="w-px h-4 bg-white/20"></div>
+<button class="p-2 text-white hover:bg-white/20 rounded-full transition-colors"><span class="material-symbols-outlined">zoom_out</span></button>
+<div class="w-px h-4 bg-white/20"></div>
+<button class="p-2 text-white hover:bg-white/20 rounded-full transition-colors"><span class="material-symbols-outlined">fullscreen</span></button>
+</div>
+</div>
+</section>
+<!-- Right: Control Panel -->
+<aside class="w-[272px] bg-[#f5f2ea] h-full border-l border-outline-variant/30 flex flex-col shrink-0">
+<div class="p-6 flex flex-col h-full">
+<!-- Header Info -->
+<div class="mb-8">
+<h3 class="font-sidebar-header text-sidebar-header text-outline uppercase mb-4 tracking-widest">Calibration Data</h3>
+<div class="space-y-4">
+<!-- Coordinate Card -->
+<div class="bg-white border border-outline-variant/30 p-4 rounded-lg shadow-sm">
+<span class="text-caption font-caption text-outline mb-1 block">Selected Hotspot</span>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg">radio_button_checked</span>
+<span class="font-h2 text-h2 text-on-surface">hs-neu</span>
+</div>
+</div>
+<!-- XY Metrics -->
+<div class="grid grid-cols-2 gap-2">
+<div class="bg-white border border-outline-variant/30 p-3 rounded-lg text-center">
+<span class="text-caption font-caption text-outline block uppercase tracking-tighter">X-Pos</span>
+<span class="font-code text-code font-bold text-on-surface">42.00%</span>
+</div>
+<div class="bg-white border border-outline-variant/30 p-3 rounded-lg text-center">
+<span class="text-caption font-caption text-outline block uppercase tracking-tighter">Y-Pos</span>
+<span class="font-code text-code font-bold text-on-surface">67.00%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- System Logs / Details -->
+<div class="flex-grow overflow-y-auto">
+<div class="border-t border-outline-variant/20 pt-6">
+<h4 class="font-sidebar-header text-sidebar-header text-outline uppercase mb-3">Live Feed</h4>
+<div class="space-y-2 font-code text-[11px] text-on-surface-variant leading-tight">
+<p class="text-primary/70">[14:02:11] Waiting for input...</p>
+<p class="text-primary">[14:02:45] Interaction detected at (0.42, 0.67)</p>
+<p class="text-primary font-bold">[14:03:02] Applied state: SAVED</p>
+<p class="opacity-50">[14:03:02] stations.json update queued</p>
+</div>
+</div>
+</div>
+<!-- Footer Action -->
+<div class="mt-auto pt-6 border-t border-outline-variant/20">
+<button class="w-full bg-primary hover:bg-[#3d7e1b] text-white py-3.5 rounded-full font-bold text-body-md transition-all active:scale-[0.98] shadow-md flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]">save</span>
+                        In stations.json übernehmen
+                    </button>
+<p class="mt-3 text-center text-caption font-caption text-outline">
+                        Changes persist in local development environment only.
+                    </p>
+</div>
+</div>
+</aside>
+</main>
+<!-- Overlay Micro-interactions -->
+<script>
+        // Simple micro-interaction for the toast timeout
+        window.addEventListener('DOMContentLoaded', () => {
+            const toast = document.querySelector('.toast-slide-in');
+            setTimeout(() => {
+                toast.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-20px)';
+                setTimeout(() => toast.remove(), 800);
+            }, 4000);
+        });
+
+        // Hover effect for the main viewer
+        const viewer = document.querySelector('section');
+        viewer.addEventListener('mousedown', (e) => {
+            const rect = viewer.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width * 100).toFixed(0);
+            const y = ((e.clientY - rect.top) / rect.height * 100).toFixed(0);
+            // In a real app we'd update the pin and sidebar here
+            console.log(`Calibration point clicked: x=${x}%, y=${y}%`);
+        });
+    </script>
+</body></html>

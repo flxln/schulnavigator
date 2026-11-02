@@ -1,9 +1,14 @@
 'use client'
 
+import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
+import {
+  mpzButtonClassName,
+  mpzFieldClassName,
+  mpzLabelClassName,
+} from '@/components/mpz-studio/mpz-form-primitives'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState, useTransition } from 'react'
-import { useMediaIngest } from '@/components/mpz-studio/media-ingest-modal-context'
 import {
   markMpzStudioDirty,
   useStudioValidation,
@@ -30,14 +35,6 @@ export type StationHotspotAddFormProps = {
   uploadedIconPath?: string | null
 }
 
-function fieldClassName(): string {
-  return 'w-full rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1'
-}
-
-function labelClassName(): string {
-  return 'mb-1 block text-xs font-semibold text-fg-3'
-}
-
 function resetForm(viewer: ViewerMode, action: HotspotActionKind, defaults: {
   mediumId: string
   mascot: DialogFigure
@@ -60,13 +57,24 @@ function resetForm(viewer: ViewerMode, action: HotspotActionKind, defaults: {
   }
 }
 
+function typCardClassName(selected: boolean, disabled: boolean): string {
+  const base =
+    'flex min-h-11 flex-col items-center justify-center gap-1 rounded-gs39-sm border px-3 py-4 text-sm transition-colors'
+  if (disabled) {
+    return `${base} cursor-not-allowed border-border-1 opacity-50`
+  }
+  if (selected) {
+    return `${base} border-accent bg-accent/10 font-semibold text-accent`
+  }
+  return `${base} border-border-1 text-fg-1 hover:bg-bg-2`
+}
+
 export function StationHotspotAddForm({
   slug,
   station,
   uploadedIconPath,
 }: StationHotspotAddFormProps) {
   const router = useRouter()
-  const { openMediaIngest } = useMediaIngest()
   const { validateNow } = useStudioValidation()
   const viewer = station.viewer ?? 'flat'
   const isSphere = viewer === 'equirectangular'
@@ -127,32 +135,36 @@ export function StationHotspotAddForm({
     setSuccess(null)
   }, [slug, viewer, defaultMediumId, defaultMascot, canAddMedium])
 
-  const calib = mpzStationCalibHref({ viewer, slug, hasBild: !!station.bild })
+  const calib = mpzStationCalibHref({
+    viewer,
+    slug,
+    hasBild: !!station.bild,
+    hasPanorama360: !!station.panorama360,
+  })
 
   if (!canAddMedium && !canAddDialog) {
     return (
-      <section className="rounded-gs39-md border border-dashed border-border-1 bg-bg-1 px-4 py-6 text-sm">
+      <div className="rounded-gs39-md border border-dashed border-border-1 bg-bg-1 px-4 py-6 text-sm">
         <p className="mb-2 font-semibold text-fg-1">Hotspot hinzufügen</p>
         <p className="mb-4 text-fg-3">
           Zuerst mindestens ein Medium oder einen Dialog-Block anlegen — Hotspots verknüpfen
           Medien oder Maskottchen mit Positionen im Raum.
         </p>
         <div className="flex flex-wrap gap-3">
-          <button
-            type="button"
-            onClick={() => openMediaIngest({ slug })}
-            className="inline-block rounded-gs39-sm bg-accent px-4 py-2 font-semibold text-white"
+          <Link
+            href={`/mpz/studio/stationen/${encodeURIComponent(slug)}?tab=medien`}
+            className={mpzButtonClassName('primary')}
           >
             Medium hinzufügen
-          </button>
+          </Link>
           <Link
             href={`/mpz/studio/stationen/${encodeURIComponent(slug)}?tab=dialog`}
-            className="inline-block rounded-gs39-sm border border-border-1 px-4 py-2 font-semibold text-fg-2"
+            className={mpzButtonClassName('secondary')}
           >
             Dialog-Tab öffnen
           </Link>
         </div>
-      </section>
+      </div>
     )
   }
 
@@ -161,12 +173,16 @@ export function StationHotspotAddForm({
   }
 
   function handleActionChange(nextAction: HotspotActionKind) {
-    setForm(
-      resetForm(viewer, nextAction, {
-        mediumId: defaultMediumId,
-        mascot: defaultMascot,
-      }),
-    )
+    if (nextAction === form.action) return
+    if (nextAction === 'medium' && !canAddMedium) return
+    if (nextAction === 'dialog' && !canAddDialog) return
+
+    setForm((prev) => ({
+      ...prev,
+      action: nextAction,
+      mediumId: defaultMediumId,
+      mascot: defaultMascot,
+    }))
     setError(null)
     setSuccess(null)
   }
@@ -258,29 +274,70 @@ export function StationHotspotAddForm({
     }
   }
 
+  const medienTabHref = `/mpz/studio/stationen/${encodeURIComponent(slug)}?tab=medien`
+  const dialogTabHref = `/mpz/studio/stationen/${encodeURIComponent(slug)}?tab=dialog`
+
   return (
-    <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-4 text-sm">
+    <div className="border-t border-border-1 pt-6 text-sm">
       <h3 className="mb-3 font-semibold text-fg-1">Hotspot hinzufügen</h3>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div>
-          <label htmlFor="hs-action" className={labelClassName()}>
-            Typ
-          </label>
-          <select
-            id="hs-action"
-            value={form.action}
-            onChange={(e) => handleActionChange(e.target.value as HotspotActionKind)}
-            className={fieldClassName()}
-          >
-            {canAddMedium && <option value="medium">Medien-Hotspot</option>}
-            {canAddDialog && <option value="dialog">Dialog-Hotspot (Maskottchen)</option>}
-          </select>
+          <span className={`${mpzLabelClassName()} uppercase tracking-[0.05em]`}>
+            Typ wählen
+          </span>
+          <div className="mt-2 grid grid-cols-2 gap-3">
+            {canAddMedium ? (
+              <button
+                type="button"
+                onClick={() => handleActionChange('medium')}
+                className={typCardClassName(form.action === 'medium', false)}
+              >
+                Medien-Hotspot
+              </button>
+            ) : (
+              <div
+                aria-disabled="true"
+                className={typCardClassName(false, true)}
+              >
+                <span>Medien-Hotspot</span>
+                <Link
+                  href={medienTabHref}
+                  className="text-xs font-semibold text-accent underline-offset-2 hover:underline"
+                >
+                  Zuerst Medium anlegen
+                </Link>
+              </div>
+            )}
+
+            {canAddDialog ? (
+              <button
+                type="button"
+                onClick={() => handleActionChange('dialog')}
+                className={typCardClassName(form.action === 'dialog', false)}
+              >
+                Dialog-Hotspot (Maskottchen)
+              </button>
+            ) : (
+              <div
+                aria-disabled="true"
+                className={typCardClassName(false, true)}
+              >
+                <span>Dialog-Hotspot (Maskottchen)</span>
+                <Link
+                  href={dialogTabHref}
+                  className="text-xs font-semibold text-accent underline-offset-2 hover:underline"
+                >
+                  Zuerst Dialog-Figur anlegen
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="hs-id" className={labelClassName()}>
+            <label htmlFor="hs-id" className={mpzLabelClassName()}>
               ID
             </label>
             <input
@@ -291,12 +348,12 @@ export function StationHotspotAddForm({
               placeholder="hs-video"
               value={form.id}
               onChange={(e) => updateField('id', e.target.value)}
-              className={fieldClassName()}
+              className={mpzFieldClassName()}
             />
           </div>
 
           <div>
-            <label htmlFor="hs-label" className={labelClassName()}>
+            <label htmlFor="hs-label" className={mpzLabelClassName()}>
               Label (optional)
             </label>
             <input
@@ -304,14 +361,14 @@ export function StationHotspotAddForm({
               type="text"
               value={form.label}
               onChange={(e) => updateField('label', e.target.value)}
-              className={fieldClassName()}
+              className={mpzFieldClassName()}
             />
           </div>
 
           {isDialog ? (
             <>
               <div className="sm:col-span-2">
-                <label htmlFor="hs-mascot" className={labelClassName()}>
+                <label htmlFor="hs-mascot" className={mpzLabelClassName()}>
                   Maskottchen
                 </label>
                 <select
@@ -319,7 +376,7 @@ export function StationHotspotAddForm({
                   required
                   value={form.mascot}
                   onChange={(e) => updateField('mascot', e.target.value as DialogFigure)}
-                  className={fieldClassName()}
+                  className={mpzFieldClassName()}
                 >
                   {dialogFiguren.map((figur) => (
                     <option key={figur} value={figur}>
@@ -330,7 +387,7 @@ export function StationHotspotAddForm({
               </div>
 
               <div>
-                <label htmlFor="hs-mascot-size" className={labelClassName()}>
+                <label htmlFor="hs-mascot-size" className={mpzLabelClassName()}>
                   mascotSize (optional)
                 </label>
                 <input
@@ -342,7 +399,7 @@ export function StationHotspotAddForm({
                   placeholder={`Default ${DEFAULT_MASCOT_SIZE_NORM}`}
                   value={form.mascotSize}
                   onChange={(e) => updateField('mascotSize', e.target.value)}
-                  className={fieldClassName()}
+                  className={mpzFieldClassName()}
                 />
               </div>
 
@@ -359,7 +416,7 @@ export function StationHotspotAddForm({
 
               {isSphere && (
                 <div>
-                  <label htmlFor="hs-bubble-pitch" className={labelClassName()}>
+                  <label htmlFor="hs-bubble-pitch" className={mpzLabelClassName()}>
                     bubblePitchOffset (optional, °)
                   </label>
                   <input
@@ -371,7 +428,7 @@ export function StationHotspotAddForm({
                     placeholder="leer = Viewer-Default"
                     value={form.bubblePitchOffset}
                     onChange={(e) => updateField('bubblePitchOffset', e.target.value)}
-                    className={fieldClassName()}
+                    className={mpzFieldClassName()}
                   />
                 </div>
               )}
@@ -379,7 +436,7 @@ export function StationHotspotAddForm({
           ) : (
             <>
               <div className="sm:col-span-2">
-                <label htmlFor="hs-medium" className={labelClassName()}>
+                <label htmlFor="hs-medium" className={mpzLabelClassName()}>
                   Medium
                 </label>
                 <select
@@ -387,7 +444,7 @@ export function StationHotspotAddForm({
                   required
                   value={form.mediumId}
                   onChange={(e) => updateField('mediumId', e.target.value)}
-                  className={fieldClassName()}
+                  className={mpzFieldClassName()}
                 >
                   {medien.map((m) => (
                     <option key={m.id} value={m.id}>
@@ -398,14 +455,14 @@ export function StationHotspotAddForm({
               </div>
 
               <div>
-                <label htmlFor="hs-icon" className={labelClassName()}>
+                <label htmlFor="hs-icon" className={mpzLabelClassName()}>
                   Icon (optional)
                 </label>
                 <select
                   id="hs-icon"
                   value={form.icon}
                   onChange={(e) => updateField('icon', e.target.value)}
-                  className={fieldClassName()}
+                  className={mpzFieldClassName()}
                 >
                   <option value="">(keins — Viewer-Fallback)</option>
                   {iconPaths.map((path) => (
@@ -415,14 +472,14 @@ export function StationHotspotAddForm({
                   ))}
                 </select>
                 {iconLoadError && (
-                  <p role="alert" className="mt-1 text-xs text-brand-red">
+                  <p role="alert" className="mt-1 text-xs text-error">
                     {iconLoadError}
                   </p>
                 )}
               </div>
 
               <div>
-                <label htmlFor="hs-icon-size" className={labelClassName()}>
+                <label htmlFor="hs-icon-size" className={mpzLabelClassName()}>
                   iconSize (optional)
                 </label>
                 <input
@@ -434,7 +491,7 @@ export function StationHotspotAddForm({
                   placeholder="leer = Viewer-Default"
                   value={form.iconSize}
                   onChange={(e) => updateField('iconSize', e.target.value)}
-                  className={fieldClassName()}
+                  className={mpzFieldClassName()}
                 />
               </div>
             </>
@@ -443,7 +500,7 @@ export function StationHotspotAddForm({
           {isSphere ? (
             <>
               <div>
-                <label htmlFor="hs-yaw" className={labelClassName()}>
+                <label htmlFor="hs-yaw" className={mpzLabelClassName()}>
                   yaw (°)
                 </label>
                 <input
@@ -455,11 +512,11 @@ export function StationHotspotAddForm({
                   max={180}
                   value={form.yaw}
                   onChange={(e) => updateField('yaw', e.target.value)}
-                  className={fieldClassName()}
+                  className={mpzFieldClassName()}
                 />
               </div>
               <div>
-                <label htmlFor="hs-pitch" className={labelClassName()}>
+                <label htmlFor="hs-pitch" className={mpzLabelClassName()}>
                   pitch (°)
                 </label>
                 <input
@@ -471,14 +528,14 @@ export function StationHotspotAddForm({
                   max={90}
                   value={form.pitch}
                   onChange={(e) => updateField('pitch', e.target.value)}
-                  className={fieldClassName()}
+                  className={mpzFieldClassName()}
                 />
               </div>
             </>
           ) : (
             <>
               <div>
-                <label htmlFor="hs-x" className={labelClassName()}>
+                <label htmlFor="hs-x" className={mpzLabelClassName()}>
                   x
                 </label>
                 <input
@@ -490,11 +547,11 @@ export function StationHotspotAddForm({
                   max={1}
                   value={form.x}
                   onChange={(e) => updateField('x', e.target.value)}
-                  className={fieldClassName()}
+                  className={mpzFieldClassName()}
                 />
               </div>
               <div>
-                <label htmlFor="hs-y" className={labelClassName()}>
+                <label htmlFor="hs-y" className={mpzLabelClassName()}>
                   y
                 </label>
                 <input
@@ -506,7 +563,7 @@ export function StationHotspotAddForm({
                   max={1}
                   value={form.y}
                   onChange={(e) => updateField('y', e.target.value)}
-                  className={fieldClassName()}
+                  className={mpzFieldClassName()}
                 />
                 <p className="mt-1 text-xs text-fg-3">
                   Sichtbarer Ausschnitt: y ≈ 0,33–0,67 liegt meist im Bild.
@@ -520,37 +577,24 @@ export function StationHotspotAddForm({
           <button
             type="submit"
             disabled={isPending}
-            className="rounded-gs39-sm bg-accent px-4 py-2 font-semibold text-white disabled:opacity-50"
+            className={mpzButtonClassName('primary')}
           >
             {isPending ? 'Speichert …' : 'Hotspot anlegen'}
           </button>
           {calib && (
             <Link
               href={calib}
-              target={isSphere ? '_blank' : undefined}
-              rel={isSphere ? 'noopener noreferrer' : undefined}
               className="text-sm font-semibold text-accent underline-offset-2 hover:underline"
             >
-              {isSphere ? '↗ Kalibrieren' : 'Kalibrieren'}
+              Kalibrieren
             </Link>
           )}
         </div>
 
-        {error && (
-          <p
-            role="alert"
-            className="rounded-gs39-sm border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800"
-          >
-            {error}
-          </p>
-        )}
+        {error && <MpzFormAlert variant="error">{error}</MpzFormAlert>}
 
-        {success && (
-          <p className="rounded-gs39-sm border border-green-300 bg-green-50 px-3 py-2 text-sm text-green-900">
-            {success}
-          </p>
-        )}
+        {success && <MpzFormAlert variant="success">{success}</MpzFormAlert>}
       </form>
-    </section>
+    </div>
   )
 }

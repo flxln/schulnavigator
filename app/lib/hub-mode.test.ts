@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  getHubStationTapHref,
   getUnlockedSlugsForMode,
   isHubFullyLocked,
   isHubStationNavigable,
@@ -41,6 +42,24 @@ describe('isHubStationNavigable', () => {
   it('true wenn Slug in unlockedSlugs', () => {
     expect(isHubStationNavigable('a', new Set(['a']))).toBe(true)
     expect(isHubStationNavigable('b', new Set(['a']))).toBe(false)
+  })
+})
+
+describe('getHubStationTapHref', () => {
+  it('fest gesperrt: /scan', () => {
+    expect(getHubStationTapHref('musik', 'fest', new Set())).toBe('/scan')
+  })
+
+  it('fest freigeschaltet: /raum/slug', () => {
+    expect(getHubStationTapHref('musik', 'fest', new Set(['musik']))).toBe(
+      '/raum/musik',
+    )
+  })
+
+  it('heft: immer /raum/slug', () => {
+    expect(getHubStationTapHref('musik', 'heft', new Set())).toBe(
+      '/raum/musik',
+    )
   })
 })
 

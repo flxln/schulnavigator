@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MPZ Studio - Station Detail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "secondary-container": "#6daaff",
+                "outline-variant": "#c0cab5",
+                "on-tertiary-fixed-variant": "#2c476f",
+                "tertiary": "#425d86",
+                "error-container": "#ffdad6",
+                "on-primary-container": "#f8ffee",
+                "on-tertiary": "#ffffff",
+                "on-surface": "#1b1c1a",
+                "on-error": "#ffffff",
+                "surface": "#faf9f5",
+                "on-secondary-fixed-variant": "#004786",
+                "tertiary-fixed": "#d5e3ff",
+                "on-secondary-fixed": "#001c3b",
+                "surface-container-high": "#e9e8e4",
+                "on-secondary-container": "#003e76",
+                "primary-fixed": "#a2f876",
+                "primary-container": "#37850a",
+                "surface-container-low": "#f4f4f0",
+                "surface-container": "#efeeea",
+                "outline": "#717a68",
+                "on-background": "#1b1c1a",
+                "inverse-primary": "#87db5d",
+                "tertiary-fixed-dim": "#acc8f6",
+                "tertiary-container": "#5b76a0",
+                "surface-container-highest": "#e3e2df",
+                "surface-tint": "#286c00",
+                "inverse-on-surface": "#f2f1ed",
+                "error": "#ba1a1a",
+                "primary-fixed-dim": "#87db5d",
+                "surface-variant": "#e3e2df",
+                "surface-dim": "#dbdad6",
+                "surface-bright": "#faf9f5",
+                "secondary-fixed-dim": "#a6c8ff",
+                "on-error-container": "#93000a",
+                "inverse-surface": "#2f312e",
+                "on-tertiary-container": "#fefcff",
+                "secondary-fixed": "#d5e3ff",
+                "primary": "#276a00",
+                "background": "#faf9f5",
+                "on-tertiary-fixed": "#001c3b",
+                "on-primary-fixed-variant": "#1d5200",
+                "on-primary": "#ffffff",
+                "on-surface-variant": "#40493a",
+                "surface-container-lowest": "#ffffff",
+                "secondary": "#045faf",
+                "on-secondary": "#ffffff",
+                "on-primary-fixed": "#072100"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "stack-lg": "24px",
+                "topbar-height": "56px",
+                "stack-sm": "8px",
+                "sidebar-width": "240px",
+                "gutter": "16px",
+                "container-padding": "24px",
+                "stack-md": "16px",
+                "card-padding": "20px"
+            },
+            "fontFamily": {
+                "h1": ["Nunito Sans"],
+                "code": ["monospace"],
+                "h2": ["Nunito Sans"],
+                "body-md": ["Nunito Sans"],
+                "body-lg": ["Nunito Sans"],
+                "sidebar-header": ["Nunito Sans"],
+                "caption": ["Nunito Sans"]
+            },
+            "fontSize": {
+                "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body {
+            background-color: #fcfbf7;
+            font-family: 'Nunito Sans', sans-serif;
+            color: #1b1c1a;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .active-tab {
+            color: #276a00;
+            border-bottom: 2px solid #276a00;
+        }
+        /* Custom scrollbar for sidebar */
+        .sidebar-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar-scroll::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+        }
+        .sidebar-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex overflow-hidden">
+<!-- SIDEBAR -->
+<aside class="fixed left-0 top-0 h-full w-[240px] bg-[#082a50] flex flex-col z-50">
+<div class="px-6 py-6 border-b border-white/10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-lg">M</div>
+<div>
+<h2 class="text-white font-h2 text-h2 leading-tight">MPZ Studio</h2>
+<p class="text-white/60 text-caption font-caption">Admin Dashboard</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 py-6 sidebar-scroll overflow-y-auto">
+<div class="px-6 mb-4">
+<span class="text-sidebar-header font-sidebar-header text-white/55 uppercase tracking-wider">Navigation</span>
+</div>
+<a class="flex items-center gap-3 px-6 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-body-md font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-primary border-l-4 border-primary bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined">location_on</span>
+<span class="text-body-md font-body-md">Alle Stationen</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="text-body-md font-body-md">Coach</span>
+</a>
+<div class="px-6 mt-8 mb-4">
+<span class="text-sidebar-header font-sidebar-header text-white/55 uppercase tracking-wider">System</span>
+</div>
+<a class="flex items-center gap-3 px-6 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined">link</span>
+<span class="text-body-md font-body-md">Embeds &amp; Links</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined">palette</span>
+<span class="text-body-md font-body-md">Design &amp; Hub</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined">rocket_launch</span>
+<span class="text-body-md font-body-md">Deploy</span>
+</a>
+</nav>
+<div class="p-6 border-t border-white/10">
+<div class="flex items-center gap-3 text-white/60">
+<div class="w-8 h-8 rounded-full bg-white/20 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional studio headshot of a German curator in a minimalist art space, wearing modern professional attire, soft natural lighting, high-end corporate portrait photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvEcyFRfoMaqpFldkxPrEFzsFf9L0-L91sV88lpWbPVl9Q3fG3UFtgPNe9ZKvSLCjvj8kGxOOlemYur_lG20kZLdsCwLlEhgC5_RSoiOW-Sunf0Rtl-IpgLXWWN-jVQQo7ei0MiuYiLFqbMGwzVwJs8TPEW2R_l2BWnsxIRgtHfgm-x18vPVH05TiKPzLEHAWWpPrhuc_Tu07dLDrnBCfJVglorMFT0GZT5yxGHW01Cpnqgs0HFVtewsTU_7KSbz1eJvYJS2Al_J4"/>
+</div>
+<div class="flex-1">
+<p class="text-body-md font-body-md text-white">Admin User</p>
+<p class="text-caption font-caption">Logout</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- MAIN CONTENT -->
+<main class="ml-[240px] flex-1 flex flex-col min-h-screen">
+<!-- TOP NAVBAR -->
+<header class="fixed top-0 right-0 h-[56px] left-[240px] bg-white border-b border-outline-variant/30 flex items-center justify-between px-6 z-40">
+<div class="flex items-center gap-2">
+<span class="text-on-surface-variant text-body-md font-body-md">Stationen</span>
+<span class="text-outline-variant">›</span>
+<span class="text-primary font-bold text-body-md font-body-md">Kunst</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="px-3 py-1 bg-surface-container-low rounded-full border border-outline-variant/20 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-outline-variant"></span>
+<span class="text-caption font-caption text-on-surface-variant">Nur lokal</span>
+</div>
+<div class="h-6 w-[1px] bg-outline-variant/20 mx-2"></div>
+<button class="px-4 py-2 bg-primary hover:bg-[#3d7e1b] text-white rounded-full text-body-md font-bold transition-all transform active:scale-95 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+                    Speichern &amp; Validieren
+                </button>
+</div>
+</header>
+<!-- CONTENT AREA -->
+<div class="mt-[56px] flex-1">
+<!-- STATION HEADER -->
+<section class="bg-white px-container-padding pt-10 pb-0 border-b border-outline-variant/10">
+<div class="max-w-6xl mx-auto">
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-4">
+<h1 class="text-h1 font-h1 text-on-surface">Kunst</h1>
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 bg-[#e9eff6] text-[#082a50] rounded-md text-caption font-bold">Hub 4</span>
+<span class="px-2.5 py-0.5 bg-[#f0f2f5] text-[#40493a] border border-outline-variant/20 rounded-md text-caption font-bold tracking-wider">FLAT</span>
+<div class="flex items-center justify-center ml-1">
+<span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+</span>
+</div>
+</div>
+</div>
+<a class="flex items-center gap-1.5 text-primary hover:underline text-body-md font-body-md" href="#">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+                            Vorschau /raum/kunst
+                        </a>
+</div>
+<!-- TAB NAVIGATION -->
+<div class="flex gap-8">
+<button class="pb-3 px-1 active-tab text-body-md font-bold relative group">
+                            Stammdaten
+                        </button>
+<button class="pb-3 px-1 text-on-surface-variant hover:text-on-surface text-body-md font-body-md transition-colors relative">
+                            Medien
+                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary/30 transition-all duration-300"></span>
+</button>
+<button class="pb-3 px-1 text-on-surface-variant hover:text-on-surface text-body-md font-body-md transition-colors relative">
+                            Hotspots
+                        </button>
+<button class="pb-3 px-1 text-on-surface-variant hover:text-on-surface text-body-md font-body-md transition-colors relative">
+                            Dialog
+                        </button>
+</div>
+</div>
+</section>
+<!-- CANVAS CONTENT (Stammdaten focus) -->
+<section class="p-container-padding">
+<div class="max-w-6xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-stack-lg">
+<!-- Main Settings Card -->
+<div class="md:col-span-2 space-y-stack-lg">
+<div class="bg-white rounded-lg border border-[#082a50]/10 p-card-padding">
+<h3 class="text-h2 font-h2 text-on-surface mb-stack-md">Basis-Konfiguration</h3>
+<div class="space-y-stack-md">
+<div>
+<label class="block text-caption font-caption text-on-surface-variant mb-1.5">Anzeigename der Station</label>
+<input class="w-full px-4 py-2 bg-surface rounded border border-outline-variant/30 focus:border-primary focus:ring-0 transition-colors text-body-md" type="text" value="Kunst"/>
+</div>
+<div>
+<label class="block text-caption font-caption text-on-surface-variant mb-1.5">Kurzbeschreibung</label>
+<textarea class="w-full px-4 py-2 bg-surface rounded border border-outline-variant/30 focus:border-primary focus:ring-0 transition-colors text-body-md" rows="4">Willkommen im Bereich der klassischen und modernen Kunst. Diese Station bietet einen tiefen Einblick in die Entwicklung visueller Ausdrucksformen.</textarea>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg border border-[#082a50]/10 p-card-padding">
+<h3 class="text-h2 font-h2 text-on-surface mb-stack-md">Sichtbarkeit &amp; Zugriff</h3>
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest border border-outline-variant/10 rounded-lg">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">visibility</span>
+<div>
+<p class="text-body-md font-bold">Station ist aktiv</p>
+<p class="text-caption font-caption text-on-surface-variant">Besucher können diese Station sehen.</p>
+</div>
+</div>
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-high peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar Actions Card -->
+<div class="space-y-stack-lg">
+<div class="bg-white rounded-lg border border-primary/20 bg-primary/5 p-card-padding">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-1">check_circle</span>
+<div>
+<h4 class="text-body-lg font-bold text-primary">Alle Checks bestanden</h4>
+<p class="text-caption font-caption text-on-primary-fixed-variant mt-1 leading-relaxed">Diese Station ist vollständig konfiguriert und bereit für die Veröffentlichung im Hub 4.</p>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg border border-[#082a50]/10 overflow-hidden">
+<div class="p-card-padding border-b border-outline-variant/10">
+<h3 class="text-h2 font-h2 text-on-surface">Vorschau</h3>
+</div>
+<div class="aspect-video bg-surface-dim relative group cursor-pointer overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A sophisticated museum interior showing a digital display station in a clean art gallery. The lighting is focused and warm, highlighting modern artistic exhibits. High resolution architectural photography style with soft focus background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9PO9sIptNMMd4xJoNzkIf1Gr-Sft0bCRWYGWJS2t3osqoDwSCdfUcvobx4C4tvAGeqH-Qm1BU---fYPkMQpd_f5SG5sPMECh6Iy04gN4sG9pAckvE3Ae0TK-1aXp6V_B7UmEMfDEuqTIi4qcRb7b_AsyRi7jrYpD0X1hKGfmNFatsSWFO4F_B4FfQHfKgZOK5ijPsKqSLqnShUOrFjC8i4r3GBMIbYvD5jjvSpBkgLrlveDX0RiUyMvvsAZB3s9fPaiG3uiasztE"/>
+<div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="bg-white px-4 py-2 rounded-full text-body-md font-bold text-on-surface shadow-lg">Bild ändern</span>
+</div>
+</div>
+<div class="p-card-padding bg-surface-container-lowest">
+<p class="text-caption font-caption text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">info</span>
+                                        Zuletzt geändert: Heute, 14:23 Uhr
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- FLOATING ACTION BUTTON (Contextual: Home/Dashboard Only - Suppressed Here as requested in logic) -->
+<script>
+        // Micro-interaction for buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.style.transform = 'scale(0.98)';
+            });
+            button.addEventListener('mouseup', () => {
+                button.style.transform = 'scale(1)';
+            });
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'scale(1)';
+            });
+        });
+
+        // Tab Switching Logic (Visual Only)
+        const tabs = document.querySelectorAll('.max-w-6xl button');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => {
+                    t.classList.remove('active-tab', 'font-bold');
+                    t.classList.add('text-on-surface-variant');
+                });
+                tab.classList.add('active-tab', 'font-bold');
+                tab.classList.remove('text-on-surface-variant');
+            });
+        });
+    </script>
+</body></html>

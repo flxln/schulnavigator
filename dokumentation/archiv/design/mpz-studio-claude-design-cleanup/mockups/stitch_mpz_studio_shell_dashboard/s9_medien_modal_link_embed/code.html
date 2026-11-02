@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MPZ Studio - S9 Medien-Modal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#e3e2df",
+                        "surface-bright": "#faf9f5",
+                        "secondary-container": "#6daaff",
+                        "on-primary": "#ffffff",
+                        "tertiary": "#425d86",
+                        "on-background": "#1b1c1a",
+                        "primary": "#276a00",
+                        "on-surface-variant": "#40493a",
+                        "inverse-surface": "#2f312e",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-high": "#e9e8e4",
+                        "surface": "#faf9f5",
+                        "inverse-on-surface": "#f2f1ed",
+                        "on-secondary-container": "#003e76",
+                        "secondary": "#045faf",
+                        "outline-variant": "#c0cab5",
+                        "inverse-primary": "#87db5d",
+                        "secondary-fixed": "#d5e3ff",
+                        "secondary-fixed-dim": "#a6c8ff",
+                        "error": "#ba1a1a",
+                        "on-surface": "#1b1c1a",
+                        "on-primary-container": "#f8ffee",
+                        "on-primary-fixed-variant": "#1d5200",
+                        "on-error": "#ffffff",
+                        "background": "#faf9f5",
+                        "on-error-container": "#93000a",
+                        "primary-fixed": "#a2f876",
+                        "on-secondary": "#ffffff",
+                        "tertiary-container": "#5b76a0",
+                        "surface-container": "#efeeea",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f4f4f0",
+                        "on-primary-fixed": "#072100",
+                        "on-tertiary-fixed": "#001c3b",
+                        "primary-container": "#37850a",
+                        "tertiary-fixed-dim": "#acc8f6",
+                        "primary-fixed-dim": "#87db5d",
+                        "outline": "#717a68",
+                        "on-secondary-fixed": "#001c3b",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#d5e3ff",
+                        "surface-variant": "#e3e2df",
+                        "surface-dim": "#dbdad6",
+                        "on-tertiary-container": "#fefcff",
+                        "on-secondary-fixed-variant": "#004786",
+                        "on-tertiary-fixed-variant": "#2c476f",
+                        "surface-tint": "#286c00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "24px",
+                        "sidebar-width": "240px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "topbar-height": "56px",
+                        "gutter": "16px",
+                        "card-padding": "20px",
+                        "container-padding": "24px"
+                    },
+                    "fontFamily": {
+                        "h1": ["Nunito Sans"],
+                        "sidebar-header": ["Nunito Sans"],
+                        "body-md": ["Nunito Sans"],
+                        "code": ["monospace"],
+                        "h2": ["Nunito Sans"],
+                        "caption": ["Nunito Sans"],
+                        "body-lg": ["Nunito Sans"]
+                    },
+                    "fontSize": {
+                        "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: #fcfbf7;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .modal-overlay {
+            background-color: rgba(8, 42, 80, 0.45);
+        }
+        .sidebar-active {
+            border-left: 4px solid #a2f876;
+            background-color: rgba(109, 170, 255, 0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e3e2df;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="overflow-hidden">
+<!-- STUDIO SHELL (Background Content) -->
+<div class="flex h-screen w-full">
+<!-- SIDEBAR -->
+<aside class="fixed h-full w-[240px] left-0 top-0 bg-secondary dark:bg-on-secondary-fixed flex flex-col z-10">
+<div class="p-6">
+<h1 class="font-h1 text-h1 font-bold text-on-secondary dark:text-on-secondary-fixed">MPZ Studio</h1>
+<p class="font-sidebar-header text-sidebar-header opacity-60 text-on-secondary">Admin Dashboard</p>
+</div>
+<nav class="mt-4 flex-1">
+<div class="px-4 py-2 font-sidebar-header text-sidebar-header text-on-secondary/50 uppercase">Hauptmenü</div>
+<a class="flex items-center text-on-secondary/80 px-4 py-3 hover:bg-secondary-container/20 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="dashboard">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center text-on-secondary dark:text-on-secondary-fixed border-l-4 border-primary-fixed bg-secondary-container/10 px-4 py-3 hover:bg-secondary-container/20 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="location_on">location_on</span>
+<span class="font-body-md text-body-md">Alle Stationen</span>
+</a>
+<a class="flex items-center text-on-secondary/80 px-4 py-3 hover:bg-secondary-container/20 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="school">school</span>
+<span class="font-body-md text-body-md">Coach</span>
+</a>
+<div class="px-4 py-2 mt-4 font-sidebar-header text-sidebar-header text-on-secondary/50 uppercase">Konfiguration</div>
+<a class="flex items-center text-on-secondary/80 px-4 py-3 hover:bg-secondary-container/20 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="link">link</span>
+<span class="font-body-md text-body-md">Embeds &amp; Links</span>
+</a>
+<a class="flex items-center text-on-secondary/80 px-4 py-3 hover:bg-secondary-container/20 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="palette">palette</span>
+<span class="font-body-md text-body-md">Design &amp; Hub</span>
+</a>
+<a class="flex items-center text-on-secondary/80 px-4 py-3 hover:bg-secondary-container/20 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="rocket_launch">rocket_launch</span>
+<span class="font-body-md text-body-md">Deploy</span>
+</a>
+</nav>
+<div class="p-4 border-t border-white/10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-bold text-xs">AU</div>
+<div class="flex flex-col">
+<span class="text-on-secondary text-xs font-bold">Admin User</span>
+<span class="text-on-secondary/50 text-[10px]">admin@mpz-studio.de</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- MAIN CONTENT AREA -->
+<main class="ml-[240px] flex-1 flex flex-col h-full bg-[#fcfbf7]">
+<!-- TOP BAR -->
+<header class="flex justify-between items-center h-[56px] px-6 bg-surface dark:bg-surface-dim border-b border-outline-variant/30 shrink-0">
+<div class="flex items-center gap-2">
+<span class="text-on-surface-variant font-body-md text-body-md">Stationen</span>
+<span class="material-symbols-outlined text-sm text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+<span class="text-on-surface font-h2 text-h2 font-semibold">Klassenzimmer</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="px-3 py-1 bg-surface-container text-on-surface-variant rounded-full text-xs font-medium border border-outline-variant/50">
+                        Nur lokal · development
+                    </div>
+<button class="bg-primary hover:bg-[#3d7e1b] text-white px-6 py-2 rounded-full font-body-md text-body-md font-semibold transition-all shadow-sm active:scale-95">
+                        Speichern &amp; Validieren
+                    </button>
+</div>
+</header>
+<!-- CANVAS (Blurred content behind modal) -->
+<div class="p-8 flex flex-col gap-6 overflow-y-auto custom-scrollbar">
+<div class="flex justify-between items-end">
+<div>
+<h2 class="font-h1 text-h1 text-on-surface">Medienbibliothek</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Verwalte die interaktiven Inhalte für diese Station.</p>
+</div>
+</div>
+<div class="grid grid-cols-4 gap-6">
+<div class="bg-white border border-outline-variant/30 p-5 rounded-lg">
+<div class="w-full h-32 bg-surface-container rounded mb-4"></div>
+<div class="h-4 w-3/4 bg-surface-container rounded mb-2"></div>
+<div class="h-4 w-1/2 bg-surface-container rounded"></div>
+</div>
+<div class="bg-white border border-outline-variant/30 p-5 rounded-lg">
+<div class="w-full h-32 bg-surface-container rounded mb-4"></div>
+<div class="h-4 w-3/4 bg-surface-container rounded mb-2"></div>
+<div class="h-4 w-1/2 bg-surface-container rounded"></div>
+</div>
+<div class="bg-white border border-outline-variant/30 p-5 rounded-lg">
+<div class="w-full h-32 bg-surface-container rounded mb-4"></div>
+<div class="h-4 w-3/4 bg-surface-container rounded mb-2"></div>
+<div class="h-4 w-1/2 bg-surface-container rounded"></div>
+</div>
+<div class="bg-white border border-outline-variant/30 p-5 rounded-lg">
+<div class="w-full h-32 bg-surface-container rounded mb-4"></div>
+<div class="h-4 w-3/4 bg-surface-container rounded mb-2"></div>
+<div class="h-4 w-1/2 bg-surface-container rounded"></div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- MODAL OVERLAY -->
+<div class="fixed inset-0 z-50 flex items-center justify-center modal-overlay transition-opacity duration-300">
+<!-- MODAL CARD -->
+<div class="w-[560px] bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
+<!-- HEADER -->
+<div class="px-6 py-5 border-b border-outline-variant/20 flex justify-between items-center">
+<h3 class="font-h2 text-h2 text-on-surface font-bold">Medium hinzufügen</h3>
+<button class="p-1 hover:bg-surface-container rounded-full text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<!-- CONTENT -->
+<div class="p-6 flex flex-col gap-6">
+<!-- TYPE SELECTOR GRID -->
+<div>
+<label class="font-sidebar-header text-sidebar-header text-on-surface-variant uppercase block mb-3">Medientyp wählen</label>
+<div class="grid grid-cols-3 gap-3">
+<!-- Audio -->
+<div class="flex flex-col items-center justify-center p-4 rounded-lg border border-outline-variant/30 hover:bg-surface-container-low cursor-pointer transition-all">
+<span class="material-symbols-outlined text-primary text-2xl mb-2" data-icon="audio_file">audio_file</span>
+<span class="font-body-md text-body-md text-on-surface">Audio</span>
+</div>
+<!-- Video -->
+<div class="flex flex-col items-center justify-center p-4 rounded-lg border border-outline-variant/30 hover:bg-surface-container-low cursor-pointer transition-all">
+<span class="material-symbols-outlined text-primary text-2xl mb-2" data-icon="movie">movie</span>
+<span class="font-body-md text-body-md text-on-surface">Video</span>
+</div>
+<!-- Foto -->
+<div class="flex flex-col items-center justify-center p-4 rounded-lg border border-outline-variant/30 hover:bg-surface-container-low cursor-pointer transition-all">
+<span class="material-symbols-outlined text-primary text-2xl mb-2" data-icon="image">image</span>
+<span class="font-body-md text-body-md text-on-surface">Foto</span>
+</div>
+<!-- Text -->
+<div class="flex flex-col items-center justify-center p-4 rounded-lg border border-outline-variant/30 hover:bg-surface-container-low cursor-pointer transition-all">
+<span class="material-symbols-outlined text-primary text-2xl mb-2" data-icon="description">description</span>
+<span class="font-body-md text-body-md text-on-surface">Text</span>
+</div>
+<!-- Link -->
+<div class="flex flex-col items-center justify-center p-4 rounded-lg border border-outline-variant/30 hover:bg-surface-container-low cursor-pointer transition-all">
+<span class="material-symbols-outlined text-primary text-2xl mb-2" data-icon="link">link</span>
+<span class="font-body-md text-body-md text-on-surface">Link</span>
+</div>
+<!-- Embed (Selected) -->
+<div class="flex flex-col items-center justify-center p-4 rounded-lg border-2 border-primary bg-primary-container/10 cursor-pointer transition-all">
+<span class="material-symbols-outlined text-primary text-2xl mb-2" data-icon="code" style="font-variation-settings: 'FILL' 1;">code</span>
+<span class="font-body-md text-body-md text-primary font-bold">Embed</span>
+</div>
+</div>
+</div>
+<!-- DYNAMIC FIELDS FOR 'EMBED' -->
+<div class="space-y-5 animate-in slide-in-from-bottom-2 duration-300">
+<!-- URL Input -->
+<div>
+<label class="font-caption text-caption text-on-surface-variant block mb-1.5 font-semibold">URL des Inhalts</label>
+<div class="relative group">
+<input class="w-full bg-white border border-outline-variant focus:border-2 focus:border-secondary outline-none rounded px-3 py-2.5 font-body-md text-body-md transition-all text-on-surface placeholder:text-on-surface-variant/40" placeholder="https://external-resource.com/..." type="text" value="https://"/>
+</div>
+</div>
+<!-- Domain Allowlist -->
+<div>
+<label class="font-caption text-caption text-on-surface-variant block mb-2 font-semibold">Domain Allowlist</label>
+<div class="flex flex-col gap-2">
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="relative flex items-center">
+<input checked="" class="peer h-5 w-5 appearance-none rounded border border-outline-variant checked:bg-primary checked:border-primary transition-all cursor-pointer" type="checkbox"/>
+<span class="material-symbols-outlined absolute opacity-0 peer-checked:opacity-100 text-white text-[16px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" data-icon="check">check</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface">bookcreator.com</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="relative flex items-center">
+<input class="peer h-5 w-5 appearance-none rounded border border-outline-variant checked:bg-primary checked:border-primary transition-all cursor-pointer" type="checkbox"/>
+<span class="material-symbols-outlined absolute opacity-0 peer-checked:opacity-100 text-white text-[16px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" data-icon="check">check</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface">h5p.org</span>
+</label>
+</div>
+</div>
+<!-- Note -->
+<div class="flex items-start gap-2 p-3 bg-surface-container-low rounded-lg border-l-4 border-secondary">
+<span class="material-symbols-outlined text-secondary text-[18px] mt-0.5" data-icon="info">info</span>
+<p class="font-caption text-caption text-on-surface-variant leading-tight">
+<code class="font-code text-code bg-surface-container-high px-1 rounded">EMBED_ENABLED</code> muss in den Umgebungsvariablen gesetzt sein, damit diese Komponente in der Station geladen wird.
+                        </p>
+</div>
+</div>
+</div>
+<!-- FOOTER -->
+<div class="px-6 py-4 bg-surface-container-low border-t border-outline-variant/20 flex justify-end items-center gap-4">
+<button class="text-on-surface-variant font-body-md text-body-md hover:text-on-surface transition-colors px-4 py-2">
+                    Abbrechen
+                </button>
+<button class="bg-primary hover:bg-[#3d7e1b] text-white px-8 py-2 rounded-full font-body-md text-body-md font-semibold transition-all shadow-md active:scale-95 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+                    Hinzufügen
+                </button>
+</div>
+</div>
+</div>
+<!-- Interaction Script -->
+<script>
+        // Micro-interaction for buttons and selection
+        document.querySelectorAll('.flex-col.items-center').forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove active classes from others
+                document.querySelectorAll('.flex-col.items-center').forEach(el => {
+                    el.classList.remove('border-2', 'border-primary', 'bg-primary-container/10');
+                    el.classList.add('border', 'border-outline-variant/30');
+                    const span = el.querySelector('.material-symbols-outlined');
+                    if(span) span.style.fontVariationSettings = "'FILL' 0";
+                    const label = el.querySelector('.font-body-md');
+                    if(label) label.classList.remove('text-primary', 'font-bold');
+                });
+                
+                // Add active classes to selected
+                this.classList.add('border-2', 'border-primary', 'bg-primary-container/10');
+                this.classList.remove('border', 'border-outline-variant/30');
+                const span = this.querySelector('.material-symbols-outlined');
+                if(span) span.style.fontVariationSettings = "'FILL' 1";
+                const label = this.querySelector('.font-body-md');
+                if(label) label.classList.add('text-primary', 'font-bold');
+            });
+        });
+    </script>
+</body></html>

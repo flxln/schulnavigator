@@ -36,7 +36,7 @@ describe('NextStationFooter', () => {
         visitedSlugs={new Set(['b'])}
       />,
     )
-    expect(screen.getByRole('button', { name: /Scanne die nächste Station/i })).toBeTruthy()
+    expect(screen.getByRole('button', { name: /Scanne einen beliebigen Code/i })).toBeTruthy()
     expect(screen.queryByText('Titel c')).toBeNull()
   })
 

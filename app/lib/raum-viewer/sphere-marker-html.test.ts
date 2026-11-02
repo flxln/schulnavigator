@@ -31,7 +31,7 @@ describe('buildSphereMarkerHtml', () => {
       yaw: 0,
       pitch: 0,
       mediumId: 'pc-delightex',
-      icon: '/media/pc-raum/icons/delightex.svg',
+      icon: '/stations-icons/pc-raum/delightex.svg',
       iconSize: 0.1,
     }
     const html = buildSphereMarkerHtml({
@@ -40,7 +40,7 @@ describe('buildSphereMarkerHtml', () => {
       containerHeight: 500,
       isActive: true,
     })
-    expect(html).toContain('/media/pc-raum/icons/delightex.svg')
+    expect(html).toContain('/stations-icons/pc-raum/delightex.svg')
     expect(html).toContain('ring-accent')
   })
 })

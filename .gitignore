@@ -9,5 +9,9 @@
 !.cursor/skills/
 
 .DS_Store
+**/.DS_Store
 # Kontingent-Snapshot (lokal, nie committen)
 dokumentation/planung/kontingent-status.md
+
+# Cursor-Chat-Exports (Debug-Artefakte, nicht versionieren)
+docs/cursor_*.md

@@ -1,21 +1,34 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import { MediaIngestForm } from '@/components/mpz-studio/media-ingest-form'
+import { useCallback, useEffect, useState } from 'react'
+import {
+  MediaIngestForm,
+  type MediaFormState,
+} from '@/components/mpz-studio/media-ingest-form'
 import { MediaLinkEmbedForm } from '@/components/mpz-studio/media-link-embed-form'
+import { MpzModal } from '@/components/mpz-studio/mpz-modal'
+import {
+  mpzButtonClassName,
+  mpzFieldClassName,
+  mpzLabelClassName,
+} from '@/components/mpz-studio/mpz-form-primitives'
 import { MPZ_HUB_SLUGS } from '@/lib/schoolhouse-hub-map'
 import type { MediumTyp } from '@/lib/types'
 
+const MEDIA_INGEST_FORM_ID = 'media-ingest-active-form'
+
 const ALL_TYPEN: { value: MediumTyp; label: string }[] = [
-  { value: 'audio', label: 'Audio (.mp3 .wav .m4a)' },
-  { value: 'video', label: 'Video (.mp4)' },
-  { value: 'foto', label: 'Foto (.jpg .jpeg .webp)' },
-  { value: 'text', label: 'Text (.md .txt)' },
-  { value: 'link', label: 'Link (externe https-URL)' },
-  { value: 'embed', label: 'Embed (Delightex / Book Creator)' },
+  { value: 'audio', label: 'audio' },
+  { value: 'video', label: 'video' },
+  { value: 'foto', label: 'foto' },
+  { value: 'text', label: 'text' },
+  { value: 'link', label: 'link' },
+  { value: 'embed', label: 'embed' },
 ]
 
 const FILE_TYPEN = new Set<MediumTyp>(['audio', 'video', 'foto', 'text'])
+
+const INITIAL_FORM_STATE: MediaFormState = { canSubmit: false, busy: false }
 
 export type MediaIngestModalProps = {
   open: boolean
@@ -25,10 +38,6 @@ export type MediaIngestModalProps = {
   onClose: () => void
 }
 
-function fieldClassName(): string {
-  return 'w-full rounded-gs39-sm border border-border-1 bg-bg-1 px-3 py-2 text-fg-1'
-}
-
 export function MediaIngestModal({
   open,
   slug,
@@ -36,7 +45,6 @@ export function MediaIngestModal({
   globalSuffixes,
   onClose,
 }: MediaIngestModalProps) {
-  const dialogRef = useRef<HTMLDialogElement>(null)
   const defaultSlug: string =
     slug && MPZ_HUB_SLUGS.includes(slug as (typeof MPZ_HUB_SLUGS)[number])
       ? slug
@@ -44,99 +52,122 @@ export function MediaIngestModal({
 
   const [selectedSlug, setSelectedSlug] = useState(defaultSlug)
   const [selectedTyp, setSelectedTyp] = useState<MediumTyp>(initialTyp ?? 'audio')
+  const [formState, setFormState] = useState<MediaFormState>(INITIAL_FORM_STATE)
+
+  const handleStateChange = useCallback((state: MediaFormState) => {
+    setFormState(state)
+  }, [])
 
   useEffect(() => {
     if (open) {
       setSelectedSlug(defaultSlug)
       setSelectedTyp(initialTyp ?? 'audio')
+      setFormState(INITIAL_FORM_STATE)
     }
   }, [open, defaultSlug, initialTyp])
 
   useEffect(() => {
-    const dialog = dialogRef.current
-    if (!dialog) return
-    if (open && !dialog.open) {
-      dialog.showModal()
-    } else if (!open && dialog.open) {
-      dialog.close()
-    }
-  }, [open])
+    setFormState(INITIAL_FORM_STATE)
+  }, [selectedTyp])
 
   const isFileTyp = FILE_TYPEN.has(selectedTyp)
 
   return (
-    <dialog
-      ref={dialogRef}
-      className="fixed inset-0 z-50 m-auto max-h-[90vh] w-[min(100%,42rem)] overflow-y-auto rounded-gs39-md border border-border-1 bg-bg-2 p-0 shadow-gs39-lg backdrop:bg-black/40"
-      aria-labelledby="media-ingest-modal-title"
+    <MpzModal
+      open={open}
+      title="Medium hinzufügen"
+      titleId="media-ingest-modal-title"
+      className="w-[min(100%,35rem)]"
       onClose={onClose}
-    >
-      <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border-1 bg-bg-2 px-5 py-4">
-        <h2 id="media-ingest-modal-title" className="text-lg font-bold text-fg-1">
-          Medien hinzufügen
-        </h2>
-        <button
-          type="button"
-          onClick={onClose}
-          className="rounded-gs39-sm px-2 py-1 text-sm font-semibold text-fg-3 hover:bg-bg-1 hover:text-fg-1"
-          aria-label="Schließen"
-        >
-          ✕
-        </button>
-      </div>
-
-      <div className="flex flex-col gap-4 p-5">
-        {!slug && (
-          <label className="flex flex-col gap-1 text-sm">
-            <span className="font-semibold text-fg-2">Station (slug)</span>
-            <select
-              value={selectedSlug}
-              onChange={(e) => setSelectedSlug(e.target.value)}
-              className={fieldClassName()}
-            >
-              {MPZ_HUB_SLUGS.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
-            </select>
-          </label>
-        )}
-
-        <label className="flex flex-col gap-1 text-sm">
-          <span className="font-semibold text-fg-2">Typ</span>
-          <select
-            value={selectedTyp}
-            onChange={(e) => setSelectedTyp(e.target.value as MediumTyp)}
-            className={fieldClassName()}
+      footer={
+        <div className="flex items-center justify-end gap-3">
+          <button
+            type="button"
+            onClick={onClose}
+            className={mpzButtonClassName('secondary')}
           >
-            {ALL_TYPEN.map((t) => (
-              <option key={t.value} value={t.value}>
-                {t.label}
+            Abbrechen
+          </button>
+          <button
+            type="submit"
+            form={MEDIA_INGEST_FORM_ID}
+            disabled={!formState.canSubmit || formState.busy}
+            className={mpzButtonClassName('primary')}
+          >
+            {formState.busy ? 'Speichert …' : 'Hinzufügen'}
+          </button>
+        </div>
+      }
+    >
+      {!slug && (
+        <div>
+          <label htmlFor="media-ingest-modal-slug" className={mpzLabelClassName()}>
+            Station (slug)
+          </label>
+          <select
+            id="media-ingest-modal-slug"
+            value={selectedSlug}
+            onChange={(e) => setSelectedSlug(e.target.value)}
+            className={mpzFieldClassName()}
+          >
+            {MPZ_HUB_SLUGS.map((s) => (
+              <option key={s} value={s}>
+                {s}
               </option>
             ))}
           </select>
-        </label>
+        </div>
+      )}
 
-        {isFileTyp ? (
-          <MediaIngestForm
-            key={`${selectedSlug}-${selectedTyp}`}
-            initialSlug={selectedSlug}
-            fixedTyp={selectedTyp}
-            hideSlugSelect
-            hideTypSelect
-            onSuccess={() => onClose()}
-          />
-        ) : (
-          <MediaLinkEmbedForm
-            key={`${selectedSlug}-${selectedTyp}`}
-            slug={selectedSlug}
-            typ={selectedTyp as 'link' | 'embed'}
-            globalSuffixes={globalSuffixes}
-            onSuccess={() => onClose()}
-          />
-        )}
+      <div>
+        <span className={`${mpzLabelClassName()} uppercase tracking-[0.05em]`}>
+          Medientyp wählen
+        </span>
+        <div className="mt-2 grid grid-cols-3 gap-3">
+          {ALL_TYPEN.map((t) => {
+            const selected = selectedTyp === t.value
+            return (
+              <button
+                key={t.value}
+                type="button"
+                onClick={() => setSelectedTyp(t.value)}
+                className={`flex min-h-11 flex-col items-center justify-center rounded-gs39-sm border px-3 py-4 text-sm transition-colors ${
+                  selected
+                    ? 'border-accent bg-accent/10 font-semibold text-accent'
+                    : 'border-border-1 text-fg-1 hover:bg-bg-2'
+                }`}
+              >
+                {t.label}
+              </button>
+            )
+          })}
+        </div>
       </div>
-    </dialog>
+
+      {isFileTyp ? (
+        <MediaIngestForm
+          key={`${selectedSlug}-${selectedTyp}`}
+          formId={MEDIA_INGEST_FORM_ID}
+          hideSubmit
+          initialSlug={selectedSlug}
+          fixedTyp={selectedTyp}
+          hideSlugSelect
+          hideTypSelect
+          onStateChange={handleStateChange}
+          onSuccess={() => onClose()}
+        />
+      ) : (
+        <MediaLinkEmbedForm
+          key={`${selectedSlug}-${selectedTyp}`}
+          formId={MEDIA_INGEST_FORM_ID}
+          hideSubmit
+          slug={selectedSlug}
+          typ={selectedTyp as 'link' | 'embed'}
+          globalSuffixes={globalSuffixes}
+          onStateChange={handleStateChange}
+          onSuccess={() => onClose()}
+        />
+      )}
+    </MpzModal>
   )
 }

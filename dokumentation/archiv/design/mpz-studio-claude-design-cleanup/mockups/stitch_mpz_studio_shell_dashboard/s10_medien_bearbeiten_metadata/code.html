@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MPZ Studio — Medien bearbeiten</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config Verbatim -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#e9e8e4",
+                    "secondary-fixed": "#d5e3ff",
+                    "surface-container-highest": "#e3e2df",
+                    "on-surface": "#1b1c1a",
+                    "on-secondary-fixed-variant": "#004786",
+                    "on-primary-fixed-variant": "#1d5200",
+                    "inverse-primary": "#87db5d",
+                    "surface-dim": "#dbdad6",
+                    "primary-fixed-dim": "#87db5d",
+                    "primary-container": "#37850a",
+                    "inverse-on-surface": "#f2f1ed",
+                    "on-primary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "inverse-surface": "#2f312e",
+                    "outline-variant": "#c0cab5",
+                    "surface-container": "#efeeea",
+                    "secondary": "#045faf",
+                    "primary-fixed": "#a2f876",
+                    "surface-tint": "#286c00",
+                    "on-primary-container": "#f8ffee",
+                    "on-tertiary-fixed": "#001c3b",
+                    "tertiary-container": "#5b76a0",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed-dim": "#a6c8ff",
+                    "primary": "#276a00",
+                    "on-secondary-container": "#003e76",
+                    "on-error-container": "#93000a",
+                    "on-surface-variant": "#40493a",
+                    "tertiary": "#425d86",
+                    "surface-container-low": "#f4f4f0",
+                    "tertiary-fixed": "#d5e3ff",
+                    "surface-bright": "#faf9f5",
+                    "on-primary-fixed": "#072100",
+                    "on-error": "#ffffff",
+                    "background": "#faf9f5",
+                    "surface": "#faf9f5",
+                    "on-background": "#1b1c1a",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-container": "#6daaff",
+                    "on-tertiary-container": "#fefcff",
+                    "tertiary-fixed-dim": "#acc8f6",
+                    "surface-variant": "#e3e2df",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed": "#001c3b",
+                    "error-container": "#ffdad6",
+                    "outline": "#717a68",
+                    "on-tertiary-fixed-variant": "#2c476f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-sm": "8px",
+                    "stack-lg": "24px",
+                    "sidebar-width": "240px",
+                    "stack-md": "16px",
+                    "topbar-height": "56px",
+                    "gutter": "16px",
+                    "container-padding": "24px",
+                    "card-padding": "20px"
+            },
+            "fontFamily": {
+                    "caption": ["Nunito Sans"],
+                    "code": ["monospace"],
+                    "body-md": ["Nunito Sans"],
+                    "sidebar-header": ["Nunito Sans"],
+                    "h2": ["Nunito Sans"],
+                    "h1": ["Nunito Sans"],
+                    "body-lg": ["Nunito Sans"]
+            },
+            "fontSize": {
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body { font-family: 'Nunito Sans', sans-serif; background-color: #faf9f5; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .scrollbar-hidden::-webkit-scrollbar { display: none; }
+        .sidebar-item-active { border-left-color: #4b9a23 !important; background-color: rgba(255,255,255,0.1); }
+        .btn-hover-primary:hover { background-color: #3d7e1b; }
+        .inset-shadow-sm { box-shadow: inset 0 1px 2px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body class="text-on-surface antialiased overflow-hidden">
+<!-- Shell Layout -->
+<div class="flex h-screen w-full">
+<!-- SideNavBar: Fixed-Sidebar Anchor -->
+<aside class="fixed left-0 top-0 h-full w-[240px] bg-[#082a50] flex flex-col overflow-y-auto scrollbar-hidden z-50">
+<!-- Brand Logo Header -->
+<div class="p-container-padding">
+<div class="text-h2 font-h2 text-on-primary tracking-tight">MPZ Studio</div>
+<div class="text-caption text-on-primary/60 font-caption mt-1">Admin Dashboard</div>
+</div>
+<nav class="flex-1 px-0 py-2 space-y-6">
+<!-- Group: ÜBERSICHT -->
+<div>
+<div class="px-6 mb-2 text-sidebar-header font-sidebar-header text-on-primary/55 uppercase">ÜBERSICHT</div>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 font-body-md hover:bg-white/5 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span>Dashboard</span>
+</a>
+</div>
+<!-- Group: STATIONEN -->
+<div>
+<div class="px-6 mb-2 text-sidebar-header font-sidebar-header text-on-primary/55 uppercase">STATIONEN</div>
+<a class="sidebar-item-active border-l-4 border-primary flex items-center gap-3 px-4 py-3 text-on-primary font-body-md transition-colors scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]">location_on</span>
+<span>Alle Stationen</span>
+</a>
+</div>
+<!-- Group: GLOBALER INHALT -->
+<div>
+<div class="px-6 mb-2 text-sidebar-header font-sidebar-header text-on-primary/55 uppercase">GLOBALER INHALT</div>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 font-body-md hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">school</span>
+<span>Coach</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 font-body-md hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">link</span>
+<span>Embeds &amp; Links</span>
+</a>
+</div>
+<!-- Group: ERSCHEINUNGSBILD -->
+<div>
+<div class="px-6 mb-2 text-sidebar-header font-sidebar-header text-on-primary/55 uppercase">ERSCHEINUNGSBILD</div>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 font-body-md hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">palette</span>
+<span>Design &amp; Hub</span>
+</a>
+</div>
+<!-- Group: BETRIEB -->
+<div>
+<div class="px-6 mb-2 text-sidebar-header font-sidebar-header text-on-primary/55 uppercase">BETRIEB</div>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 font-body-md hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">rocket_launch</span>
+<span>Deploy</span>
+</a>
+</div>
+</nav>
+<!-- Bottom Avatar -->
+<div class="p-container-padding mt-auto border-t border-white/10 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-white font-bold text-[12px]">MS</div>
+<div class="flex flex-col">
+<span class="text-on-primary text-body-md font-bold leading-none">Studio Admin</span>
+<span class="text-on-primary/60 text-caption">online</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[240px] flex-1 flex flex-col min-h-0 bg-[#fcfbf7]">
+<!-- TopAppBar -->
+<header class="h-[56px] bg-white border-b border-[#082a50]/10 flex items-center justify-between px-container-padding sticky top-0 z-40">
+<div class="flex items-center gap-2">
+<nav class="text-body-md font-body-md text-on-surface-variant flex items-center gap-2">
+<span class="hover:text-primary cursor-pointer transition-colors">Stationen</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-on-surface font-bold">Klassenzimmer</span>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container-low rounded-full border border-outline-variant/30">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="text-caption font-bold text-on-surface-variant">Nur lokal · development</span>
+</div>
+<button class="bg-[#4b9a23] btn-hover-primary text-white font-bold text-body-md px-4 py-1.5 rounded-full shadow-sm transition-all flex items-center gap-2 active:scale-95">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+                        Speichern &amp; Validieren
+                    </button>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="flex-1 overflow-y-auto p-container-padding space-y-stack-lg pb-12">
+<!-- Page Header -->
+<div class="flex items-end justify-between border-b border-outline-variant/20 pb-4">
+<div>
+<h1 class="text-h1 font-h1 text-[#082a50]">Medien bearbeiten</h1>
+<p class="text-body-md text-on-surface-variant mt-1">Konfiguration der Metadaten für das Medienobjekt</p>
+</div>
+<div class="flex items-center gap-2 text-primary font-bold text-body-md bg-primary-fixed/20 px-3 py-1 rounded">
+<span class="material-symbols-outlined text-[18px]">movie</span>
+                        demo-video.mp4
+                    </div>
+</div>
+<!-- Bento-ish Grid Layout for Form -->
+<div class="grid grid-cols-12 gap-stack-lg">
+<!-- Left Column: Primary Metadata -->
+<div class="col-span-12 lg:col-span-8 space-y-stack-md">
+<div class="bg-white border border-[#082a50]/10 rounded-lg p-card-padding shadow-sm">
+<h2 class="text-h2 font-h2 mb-4 flex items-center gap-2 text-[#082a50]">
+<span class="material-symbols-outlined">edit_note</span>
+                                Basis-Informationen
+                            </h2>
+<div class="space-y-stack-md">
+<!-- Field: ID -->
+<div class="grid grid-cols-4 items-center gap-4">
+<label class="col-span-1 text-body-md font-bold text-on-surface-variant">ID</label>
+<div class="col-span-3">
+<input class="w-full bg-[#f5f2ea] border-outline-variant text-on-surface-variant font-code text-code rounded-md px-3 py-2 cursor-not-allowed" readonly="" type="text" value="demo-video"/>
+<p class="text-caption text-on-surface-variant mt-1 italic">Eindeutige System-ID, nicht veränderbar.</p>
+</div>
+</div>
+<!-- Field: Untertitel -->
+<div class="grid grid-cols-4 items-center gap-4">
+<label class="col-span-1 text-body-md font-bold text-on-surface-variant" for="subtitle">Untertitel</label>
+<div class="col-span-3">
+<input class="w-full border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-md px-3 py-2 text-body-md" id="subtitle" placeholder="Geben Sie einen Untertitel ein..." type="text"/>
+</div>
+</div>
+<!-- Field: Typ -->
+<div class="grid grid-cols-4 items-center gap-4">
+<label class="col-span-1 text-body-md font-bold text-on-surface-variant">Typ</label>
+<div class="col-span-3">
+<div class="relative">
+<input class="w-full bg-[#f5f2ea] border-outline-variant text-on-surface-variant font-body-md rounded-md px-3 py-2 cursor-not-allowed" readonly="" type="text" value="video"/>
+<span class="absolute right-3 top-2.5 material-symbols-outlined text-on-surface-variant/40">lock</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white border border-[#082a50]/10 rounded-lg p-card-padding shadow-sm">
+<h2 class="text-h2 font-h2 mb-4 flex items-center gap-2 text-[#082a50]">
+<span class="material-symbols-outlined">link</span>
+                                Quelle &amp; Verbindung
+                            </h2>
+<div class="space-y-stack-md">
+<!-- Field: videoSource -->
+<div class="grid grid-cols-4 items-center gap-4">
+<label class="col-span-1 text-body-md font-bold text-on-surface-variant">videoSource</label>
+<div class="col-span-3">
+<select class="w-full border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-md px-3 py-2 text-body-md bg-white">
+<option selected="">upload</option>
+<option>youtube</option>
+<option>vimeo</option>
+<option>external_url</option>
+</select>
+</div>
+</div>
+<!-- Field: Quelle -->
+<div class="grid grid-cols-4 items-center gap-4">
+<label class="col-span-1 text-body-md font-bold text-on-surface-variant">Quelle (Pfad)</label>
+<div class="col-span-3">
+<div class="flex">
+<span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-outline-variant bg-[#f5f2ea] text-on-surface-variant text-body-md font-code">
+                                                /assets/media/
+                                            </span>
+<input class="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary text-body-md font-code" type="text" value="videos/demo-video-v1.mp4"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Assets & Preview -->
+<div class="col-span-12 lg:col-span-4 space-y-stack-md">
+<!-- Poster Image Picker -->
+<div class="bg-white border border-[#082a50]/10 rounded-lg p-card-padding shadow-sm h-full">
+<h2 class="text-h2 font-h2 mb-4 flex items-center gap-2 text-[#082a50]">
+<span class="material-symbols-outlined">image</span>
+                                Poster-Frame
+                            </h2>
+<div class="space-y-stack-md">
+<div class="relative group cursor-pointer border-2 border-dashed border-outline-variant hover:border-secondary rounded-lg overflow-hidden transition-all bg-surface-container-low aspect-video flex flex-col items-center justify-center">
+<!-- Placeholder with data-alt -->
+<div class="absolute inset-0 z-0 bg-cover bg-center opacity-40 group-hover:scale-105 transition-transform duration-500" data-alt="A clean and professional video poster frame showing a cinematic shot of a modern digital classroom setup with high-tech displays. The image has soft, diffused lighting and a high-key color palette of whites, light grays, and deep navy blue accents, reflecting a sophisticated administrative tool's visual identity. The atmosphere is crisp, organized, and technologically advanced." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAuKGRSjgpW45gI0cMVh-57J_ha-L7zLwWheYKbirJYW0koy0Q7LsmH0mdu1uDWJTkr4WNkYMJk3l0Q2V1cOBnrfZJs9lgRYRph1iU-TAiSaBStOmfiXa8hTAsvKxOkjznaI8-3VhmRKntRBZwt_RuU6IxCdbaEOZwwTX9XZH2bXMLdPdY12gMK0R7s1efbUF3qmQ7MBYVPkeIp2znrrcLvF7ZVBBDUpevL3M-H6CQwIFF4fceGqAYvRZsaqzmrBYAtluXGl3kinTY')">
+</div>
+<div class="relative z-10 text-center p-4">
+<span class="material-symbols-outlined text-[48px] text-on-surface-variant/60 group-hover:text-secondary transition-colors">add_photo_alternate</span>
+<p class="text-body-md font-bold text-on-surface-variant mt-2 group-hover:text-secondary">Poster wählen</p>
+<p class="text-caption text-on-surface-variant/70">PNG, JPG bis zu 5MB</p>
+</div>
+</div>
+<div class="flex items-center gap-2 px-3 py-2 bg-[#f5f2ea] rounded border border-outline-variant/30">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">info</span>
+<p class="text-caption text-on-surface-variant italic leading-tight">Optional: Wird angezeigt, bevor das Video geladen oder abgespielt wird.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Actions Footer Container -->
+<div class="flex items-center justify-between border-t border-outline-variant/20 pt-8 mt-4">
+<div class="flex items-center gap-4">
+<button class="bg-[#4b9a23] btn-hover-primary text-white font-bold text-body-lg px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center gap-2 active:scale-95">
+<span class="material-symbols-outlined">save</span>
+                            Speichern
+                        </button>
+<button class="bg-transparent border-2 border-[#082a50] text-[#082a50] font-bold text-body-lg px-8 py-2.5 rounded-full hover:bg-[#082a50]/5 transition-all active:scale-95">
+                            Abbrechen
+                        </button>
+</div>
+<div class="flex items-center gap-6">
+<div class="text-right">
+<p class="text-caption text-on-surface-variant">Zuletzt bearbeitet</p>
+<p class="text-body-md font-bold text-[#082a50]">Vor 2 Minuten von Admin</p>
+</div>
+<button class="text-error font-bold flex items-center gap-1 hover:underline text-body-md">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+                            Löschen
+                        </button>
+</div>
+</div>
+<!-- Validation Success Card (As mentioned in guidelines) -->
+<div class="bg-white border-l-4 border-[#4b9a23] border border-outline-variant/20 rounded-r-lg p-card-padding flex items-center gap-4 shadow-sm animate-pulse">
+<div class="w-10 h-10 bg-[#4b9a23]/10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-[#4b9a23]">check_circle</span>
+</div>
+<div>
+<h3 class="text-body-md font-bold text-on-surface">Alle Checks bestanden</h3>
+<p class="text-caption text-on-surface-variant">Das Medienobjekt ist bereit für das Deployment.</p>
+</div>
+<button class="ml-auto text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+</main>
+</div>
+<!-- Micro-interaction Scripts -->
+<script>
+        // Simple hover effect for the sidebar items
+        const sidebarLinks = document.querySelectorAll('aside nav a');
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                if (!link.classList.contains('sidebar-item-active')) {
+                    sidebarLinks.forEach(l => {
+                        l.classList.remove('sidebar-item-active', 'border-l-4', 'border-primary', 'scale-[0.98]');
+                        l.classList.add('text-on-primary/80');
+                    });
+                    link.classList.add('sidebar-item-active', 'border-l-4', 'border-primary', 'text-on-primary', 'scale-[0.98]');
+                    link.classList.remove('text-on-primary/80');
+                }
+            });
+        });
+
+        // Form field focus states logic handled by Tailwind focus: classes
+    </script>
+</body></html>

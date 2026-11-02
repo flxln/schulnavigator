@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MPZ Studio - S15 Dialog Editor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#425d86",
+                    "on-primary-fixed-variant": "#1d5200",
+                    "surface-variant": "#e3e2df",
+                    "secondary-fixed": "#d5e3ff",
+                    "surface-dim": "#dbdad6",
+                    "on-surface": "#1b1c1a",
+                    "surface-container-low": "#f4f4f0",
+                    "surface-container": "#efeeea",
+                    "inverse-surface": "#2f312e",
+                    "outline": "#717a68",
+                    "primary-fixed-dim": "#87db5d",
+                    "on-secondary-fixed-variant": "#004786",
+                    "on-secondary-fixed": "#001c3b",
+                    "on-error": "#ffffff",
+                    "secondary": "#045faf",
+                    "surface-bright": "#faf9f5",
+                    "tertiary-container": "#5b76a0",
+                    "surface-container-highest": "#e3e2df",
+                    "tertiary-fixed": "#d5e3ff",
+                    "tertiary-fixed-dim": "#acc8f6",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#37850a",
+                    "on-tertiary-fixed": "#001c3b",
+                    "on-primary-container": "#f8ffee",
+                    "on-primary-fixed": "#072100",
+                    "on-tertiary-container": "#fefcff",
+                    "on-error-container": "#93000a",
+                    "surface": "#faf9f5",
+                    "secondary-fixed-dim": "#a6c8ff",
+                    "on-tertiary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-secondary-container": "#003e76",
+                    "on-surface-variant": "#40493a",
+                    "inverse-primary": "#87db5d",
+                    "primary-fixed": "#a2f876",
+                    "on-background": "#1b1c1a",
+                    "primary": "#276a00",
+                    "surface-container-high": "#e9e8e4",
+                    "on-tertiary-fixed-variant": "#2c476f",
+                    "error": "#ba1a1a",
+                    "secondary-container": "#6daaff",
+                    "inverse-on-surface": "#f2f1ed",
+                    "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "surface-tint": "#286c00",
+                    "outline-variant": "#c0cab5",
+                    "background": "#faf9f5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "16px",
+                    "gutter": "16px",
+                    "container-padding": "24px",
+                    "topbar-height": "56px",
+                    "sidebar-width": "240px",
+                    "card-padding": "20px",
+                    "stack-lg": "24px",
+                    "stack-sm": "8px"
+            },
+            "fontFamily": {
+                    "h1": ["Nunito Sans"],
+                    "body-lg": ["Nunito Sans"],
+                    "code": ["monospace"],
+                    "caption": ["Nunito Sans"],
+                    "sidebar-header": ["Nunito Sans"],
+                    "body-md": ["Nunito Sans"],
+                    "h2": ["Nunito Sans"]
+            },
+            "fontSize": {
+                    "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #fcfbf7; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .sidebar-item-active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #a2f876;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Side Navigation Bar -->
+<aside class="fixed left-0 top-0 h-full w-[240px] bg-secondary flex flex-col py-stack-lg z-50">
+<div class="px-6 mb-8">
+<h1 class="font-h1 text-h1 text-on-secondary mb-1">MPZ Studio</h1>
+<p class="font-sidebar-header text-sidebar-header text-on-secondary opacity-60 uppercase">Admin Console</p>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Dashboard -->
+<a class="relative flex items-center px-6 py-3 transition-all duration-200 ease-in-out text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<!-- Alle Stationen (Active Context) -->
+<a class="relative flex items-center px-6 py-3 transition-all duration-200 ease-in-out text-on-secondary border-l-4 border-primary-fixed bg-surface-container-highest/10 opacity-100" href="#">
+<span class="material-symbols-outlined mr-3">analytics</span>
+<span class="font-body-md">Alle Stationen</span>
+</a>
+<!-- Coach -->
+<a class="relative flex items-center px-6 py-3 transition-all duration-200 ease-in-out text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5" href="#">
+<span class="material-symbols-outlined mr-3">psychology</span>
+<span class="font-body-md">Coach</span>
+</a>
+<!-- Embeds & Links -->
+<a class="relative flex items-center px-6 py-3 transition-all duration-200 ease-in-out text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5" href="#">
+<span class="material-symbols-outlined mr-3">link</span>
+<span class="font-body-md">Embeds &amp; Links</span>
+</a>
+<!-- Design & Hub -->
+<a class="relative flex items-center px-6 py-3 transition-all duration-200 ease-in-out text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5" href="#">
+<span class="material-symbols-outlined mr-3">palette</span>
+<span class="font-body-md">Design &amp; Hub</span>
+</a>
+<!-- Deploy -->
+<a class="relative flex items-center px-6 py-3 transition-all duration-200 ease-in-out text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5" href="#">
+<span class="material-symbols-outlined mr-3">rocket_launch</span>
+<span class="font-body-md">Deploy</span>
+</a>
+</nav>
+<div class="px-6 mt-auto">
+<div class="flex items-center gap-3 p-2 rounded-lg bg-white/5">
+<img class="w-8 h-8 rounded-full object-cover" data-alt="A professional studio admin portrait, soft studio lighting, corporate attire, minimalist background with navy and white tones, high quality photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTCVF9VrnvFN4d9lsC5CPxxWsToyJrJe7vUxbdhwREs3HAMgwI3jZ2Zk6inWA2d97hcyP_OtlAvYdKcE31BkL20TeG8gXIlKclMCUK3kPPD6-aKaH8W6lGHA_eF1wTuY_zM0bi87WDbkR9a19GMR4oqte7IXcYYy9wC6mnXckzgIBW8zzpYwboj8Aa22_6qXOmxwyAxNeCTK-Azm0ypXZ3GCJniDhi6VtGEvP1KJ7C6LYGizEQVk9Ju-TI46xvgCIvGaHq8rbnN7o"/>
+<div class="overflow-hidden">
+<p class="text-on-secondary font-bold truncate">Admin</p>
+<p class="text-on-secondary/60 text-caption truncate">MPZ Studio Admin</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 right-0 w-[calc(100%-240px)] h-[56px] bg-surface border-b border-outline-variant flex justify-between items-center px-container-padding z-40">
+<div class="flex items-center gap-4">
+<span class="font-h2 text-h2 text-primary">Dialog-Konfiguration</span>
+<div class="h-4 w-[1px] bg-outline-variant"></div>
+<nav class="flex gap-6">
+<a class="text-on-surface-variant font-body-md transition-colors duration-150 hover:text-primary" href="#">Dashboard</a>
+<a class="text-primary font-bold border-b-2 border-primary transition-colors duration-150" href="#">Stationen</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 px-4 py-1.5 bg-primary-container text-on-primary-container rounded-full hover:bg-primary transition-colors duration-200 font-bold">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+                Speichern &amp; Validieren
+            </button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-[240px] pt-[56px] min-h-screen p-container-padding">
+<div class="max-w-4xl mx-auto py-stack-lg space-y-stack-lg">
+<!-- Breadcrumbs / Screen ID -->
+<div class="flex items-center justify-between">
+<div class="flex items-center text-on-surface-variant gap-2 text-caption">
+<span>Stationen</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span>Dialog Block</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-primary font-bold">Screen-ID S15</span>
+</div>
+<div class="bg-surface-container-high px-3 py-1 rounded text-caption font-code text-on-surface-variant">
+                    S15: Dialog Editor
+                </div>
+</div>
+<!-- Block Configuration Card -->
+<div class="bg-white border border-[rgba(8,42,80,0.1)] rounded-lg shadow-sm p-card-padding">
+<div class="flex justify-between items-start mb-stack-lg border-b border-outline-variant pb-4">
+<div>
+<h3 class="font-h2 text-h2 text-primary">Dialogblock-Eigenschaften</h3>
+<p class="text-on-surface-variant text-body-md">Konfigurieren Sie die Figuren und Inhalte für diesen Dialog.</p>
+</div>
+<span class="material-symbols-outlined text-outline">settings</span>
+</div>
+<!-- Figures Section -->
+<div class="mb-stack-lg">
+<label class="font-sidebar-header text-sidebar-header text-outline uppercase mb-stack-sm block">Figuren im Dialog</label>
+<div class="flex gap-stack-lg mt-2">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="w-5 h-5 rounded border-outline text-primary focus:ring-primary transition-all" type="checkbox"/>
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-bold text-caption">F</div>
+<span class="font-body-md group-hover:text-primary transition-colors">Frieda</span>
+</div>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="w-5 h-5 rounded border-outline text-primary focus:ring-primary transition-all" type="checkbox"/>
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-tertiary-container flex items-center justify-center text-on-tertiary-container font-bold text-caption">O</div>
+<span class="font-body-md group-hover:text-primary transition-colors">Otto</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Segments Section -->
+<div class="space-y-stack-md">
+<label class="font-sidebar-header text-sidebar-header text-outline uppercase block">Dialog-Segmente</label>
+<!-- Segment Table Shell -->
+<div class="border border-outline-variant rounded-lg overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low border-b border-outline-variant">
+<tr>
+<th class="p-3 font-sidebar-header text-sidebar-header text-outline uppercase w-12 text-center">#</th>
+<th class="p-3 font-sidebar-header text-sidebar-header text-outline uppercase w-32">Figur</th>
+<th class="p-3 font-sidebar-header text-sidebar-header text-outline uppercase">Inhalt / Text</th>
+<th class="p-3 font-sidebar-header text-sidebar-header text-outline uppercase w-20 text-right">Aktion</th>
+</tr>
+</thead>
+<tbody>
+<!-- Empty State -->
+<tr>
+<td class="py-12 px-6 text-center" colspan="4">
+<div class="flex flex-col items-center gap-stack-md">
+<div class="w-16 h-16 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-outline text-[32px]">format_list_bulleted</span>
+</div>
+<div>
+<p class="font-h2 text-h2 text-on-surface-variant">Noch keine Segmente</p>
+<p class="text-caption text-outline mt-1">Fügen Sie das erste Segment hinzu, um den Dialog zu starten.</p>
+</div>
+<button class="mt-2 flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-full hover:bg-[#3d7e1b] transition-all duration-200 shadow-md">
+<span class="material-symbols-outlined">add</span>
+                                                Erstes Segment anlegen
+                                            </button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Accordions -->
+<div class="space-y-stack-sm">
+<!-- Accordion: Gruppen -->
+<div class="bg-white border border-[rgba(8,42,80,0.1)] rounded-lg overflow-hidden transition-all duration-200">
+<button class="w-full flex items-center justify-between p-4 hover:bg-surface-container-low transition-colors" onclick="toggleAccordion('acc-gruppen')">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline">group</span>
+<span class="font-h2 text-h2 text-on-surface">Gruppen</span>
+</div>
+<span class="material-symbols-outlined text-outline transition-transform duration-200" id="acc-gruppen-icon">expand_more</span>
+</button>
+<div class="hidden border-t border-outline-variant p-card-padding" id="acc-gruppen-content">
+<p class="text-on-surface-variant">Hier können Gruppenberechtigungen verwaltet werden.</p>
+</div>
+</div>
+<!-- Accordion: Sprechblasen-Layout -->
+<div class="bg-white border border-[rgba(8,42,80,0.1)] rounded-lg overflow-hidden transition-all duration-200">
+<button class="w-full flex items-center justify-between p-4 hover:bg-surface-container-low transition-colors" onclick="toggleAccordion('acc-layout')">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline">chat_bubble</span>
+<span class="font-h2 text-h2 text-on-surface">Sprechblasen-Layout</span>
+</div>
+<span class="material-symbols-outlined text-outline transition-transform duration-200" id="acc-layout-icon">expand_more</span>
+</button>
+<div class="hidden border-t border-outline-variant p-card-padding" id="acc-layout-content">
+<div class="grid grid-cols-2 gap-4">
+<div class="border rounded p-3 hover:border-primary cursor-pointer transition-colors">
+<p class="font-bold">Klassisch</p>
+<p class="text-caption">Standard Layout links/rechts</p>
+</div>
+<div class="border rounded p-3 hover:border-primary cursor-pointer transition-colors">
+<p class="font-bold">Modern</p>
+<p class="text-caption">Zentrierte Sprechblasen</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Validation Info Card -->
+<div class="bg-[#f8ffee] border-l-4 border-primary rounded-lg p-card-padding flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-[24px]">verified</span>
+<div>
+<h4 class="font-bold text-primary">Alle Checks bestanden</h4>
+<p class="text-body-md text-on-primary-fixed-variant">Die Dialogstruktur ist bereit für die Validierung.</p>
+</div>
+</div>
+</div>
+</main>
+<script>
+        function toggleAccordion(id) {
+            const content = document.getElementById(id + '-content');
+            const icon = document.getElementById(id + '-icon');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+    </script>
+</body></html>

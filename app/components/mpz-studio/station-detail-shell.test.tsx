@@ -3,6 +3,7 @@ import { cleanup, render, screen, within } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { StationDetailShell } from '@/components/mpz-studio/station-detail-shell'
 import type { MpzValidationReport } from '@/lib/mpz-studio-overview'
+import { studioDemoKlassenzimmerStation } from '@/lib/test-fixtures/studio-demo-klassenzimmer'
 import { getStationBySlug } from '@/lib/stations'
 
 const GLOBAL_SUFFIXES = ['bookcreator.com', 'delightex.com'] as const
@@ -55,7 +56,8 @@ vi.mock('@/components/mpz-studio/studio-validation-context', () => ({
 }))
 
 function summaryForSlug(slug: string, hasDialog: boolean) {
-  const station = getStationBySlug(slug)
+  const station =
+    slug === 'klassenzimmer' ? studioDemoKlassenzimmerStation : getStationBySlug(slug)
   return {
     slug,
     hubNr: 1,
@@ -84,6 +86,39 @@ function setReport(slug: string, hasDialog: boolean) {
   }
 }
 
+function setReportWithHealth(
+  slug: string,
+  health: 'ok' | 'warn' | 'error',
+  issues: string[],
+) {
+  const station =
+    slug === 'klassenzimmer' ? studioDemoKlassenzimmerStation : getStationBySlug(slug)
+  mocks.report = {
+    ok: true,
+    checkedAt: new Date().toISOString(),
+    durationMs: 1,
+    errors: [],
+    warnings: [],
+    bySlug: {},
+    stationsModifiedAt: null,
+    stationSummaries: [
+      {
+        slug,
+        hubNr: 1,
+        titel: station?.titel ?? slug,
+        viewer: station?.viewer ?? 'flat',
+        medienCount: station?.medien?.length ?? 0,
+        hotspotCount:
+          (station?.hotspots?.length ?? 0) + (station?.hotspots360?.length ?? 0),
+        hasDialog: !!station?.dialog?.segmente?.length,
+        hasBild: !!station?.bild,
+        health,
+        issues,
+      },
+    ],
+  }
+}
+
 afterEach(() => {
   cleanup()
   mocks.searchParams = new URLSearchParams()
@@ -92,10 +127,10 @@ afterEach(() => {
 })
 
 describe('StationDetailShell', () => {
-  it('rendert drei Tabs ohne Dialog für klassenzimmer', () => {
+  it('rendert vier Tabs inkl. Dialog für klassenzimmer', () => {
     mocks.searchParams = new URLSearchParams()
     setReport('klassenzimmer', false)
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
 
     render(
       <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} globalSuffixes={GLOBAL_SUFFIXES} />,
@@ -105,11 +140,16 @@ describe('StationDetailShell', () => {
     expect(screen.getByRole('link', { name: /Medien/ })).toBeTruthy()
     const nav = screen.getByRole('navigation', { name: 'Station bearbeiten' })
     expect(within(nav).getByRole('link', { name: /Hotspots/ })).toBeTruthy()
-    expect(screen.queryByRole('link', { name: 'Dialog' })).toBeNull()
+    expect(within(nav).getByRole('link', { name: 'Dialog' })).toBeTruthy()
     expect(screen.queryByRole('link', { name: 'Dialog-Audio' })).toBeNull()
+    const preview = screen.getByRole('link', {
+      name: /Vorschau \/raum\/klassenzimmer/,
+    })
+    expect(preview.getAttribute('href')).toBe('/raum/klassenzimmer')
+    expect(preview.hasAttribute('target')).toBe(false)
   })
 
-  it('rendert Dialog- und Dialog-Audio-Tabs für daz wenn hasDialog', () => {
+  it('rendert nur Dialog-Tab für daz wenn hasDialog', () => {
     mocks.searchParams = new URLSearchParams()
     setReport('daz', true)
     const station = getStationBySlug('daz')!
@@ -117,10 +157,10 @@ describe('StationDetailShell', () => {
     render(<StationDetailShell station={station} slug="daz" hubNr={3} globalSuffixes={GLOBAL_SUFFIXES} />)
 
     expect(screen.getByRole('link', { name: 'Dialog' })).toBeTruthy()
-    expect(screen.getByRole('link', { name: 'Dialog-Audio' })).toBeTruthy()
+    expect(screen.queryByRole('link', { name: 'Dialog-Audio' })).toBeNull()
   })
 
-  it('Dialog-Audio-Tab zeigt Segment-Tabelle für daz', async () => {
+  it('mappt tab=dialog-audio clientseitig auf Dialog-Panel', async () => {
     mocks.searchParams = new URLSearchParams('tab=dialog-audio')
     setReport('daz', true)
     const station = getStationBySlug('daz')!
@@ -131,19 +171,7 @@ describe('StationDetailShell', () => {
         ok: true,
         json: async () => ({
           slug: 'daz',
-          segments: [
-            {
-              segmentIndex: 0,
-              segmentId: 'd1',
-              rolle: 'frieda',
-              textPreview: 'Hallo, willkommen',
-              expectedClip: '01-frieda.wav',
-              quelle: '/api/dialog/daz/01-frieda.wav',
-              fileExists: true,
-              quelleMatchesConvention: true,
-              state: 'ok',
-            },
-          ],
+          segments: [],
           orphans: [],
           missingCount: 0,
           driftCount: 0,
@@ -153,16 +181,27 @@ describe('StationDetailShell', () => {
 
     render(<StationDetailShell station={station} slug="daz" hubNr={3} globalSuffixes={GLOBAL_SUFFIXES} />)
 
-    expect(screen.queryByText('Dialog-Audio-Tab folgt in #163.')).toBeNull()
-    expect(await screen.findByText('Clip')).toBeTruthy()
-    expect(screen.getByText('Status')).toBeTruthy()
-    expect(screen.getByText('01-frieda.wav')).toBeTruthy()
+    expect(screen.queryByRole('link', { name: 'Dialog-Audio' })).toBeNull()
+    expect(await screen.findByText('Figuren')).toBeTruthy()
+  })
+
+  it('Dialog-Tab Empty-State mit CTA für klassenzimmer', () => {
+    mocks.searchParams = new URLSearchParams('tab=dialog')
+    setReport('klassenzimmer', false)
+    const station = studioDemoKlassenzimmerStation
+
+    render(
+      <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} globalSuffixes={GLOBAL_SUFFIXES} />,
+    )
+
+    expect(screen.getByRole('button', { name: 'Dialog hinzufügen' })).toBeTruthy()
+    expect(screen.getByText(/Noch kein Maskottchen-Dialog für diese Station/)).toBeTruthy()
   })
 
   it('Tab-Links enthalten korrektes ?tab=', () => {
     mocks.searchParams = new URLSearchParams()
     setReport('klassenzimmer', false)
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
 
     render(
       <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} globalSuffixes={GLOBAL_SUFFIXES} />,
@@ -175,12 +214,15 @@ describe('StationDetailShell', () => {
     expect(
       within(nav).getByRole('link', { name: /Hotspots/ }).getAttribute('href'),
     ).toBe('/mpz/studio/stationen/klassenzimmer?tab=hotspots')
+    expect(within(nav).getByRole('link', { name: 'Dialog' }).getAttribute('href')).toBe(
+      '/mpz/studio/stationen/klassenzimmer?tab=dialog',
+    )
   })
 
   it('Medien-Tab zeigt Tabelle für klassenzimmer', () => {
     mocks.searchParams = new URLSearchParams('tab=medien')
     setReport('klassenzimmer', false)
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
 
     render(
       <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} globalSuffixes={GLOBAL_SUFFIXES} />,
@@ -226,28 +268,109 @@ describe('StationDetailShell', () => {
 
     render(<StationDetailShell station={emptyHort} slug="hort" hubNr={9} globalSuffixes={GLOBAL_SUFFIXES} />)
 
-    expect(screen.getByText('Noch keine Medien')).toBeTruthy()
-    expect(screen.getByRole('button', { name: 'Erstes Medium hinzufügen' })).toBeTruthy()
+    expect(screen.getByText(/Noch keine Medien/)).toBeTruthy()
+    expect(screen.getByRole('table')).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Medien hinzufügen' })).toBeTruthy()
+    expect(screen.queryByRole('button', { name: 'Erstes Medium hinzufügen' })).toBeNull()
   })
 
-  it('Breadcrumb verlinkt auf Stations-Grid', () => {
+  it('zeigt keine Zurück-Navigation zum Stations-Grid', () => {
     mocks.searchParams = new URLSearchParams()
     setReport('klassenzimmer', false)
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
 
     render(
       <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} globalSuffixes={GLOBAL_SUFFIXES} />,
     )
 
-    expect(screen.getByRole('link', { name: '← Alle Stationen' }).getAttribute('href')).toBe(
-      '/mpz/studio/stationen',
+    expect(screen.queryByRole('link', { name: '← Alle Stationen' })).toBeNull()
+  })
+
+  it('rendert Ampel mit semantischen Klassen und sr-only-Label bei ok', () => {
+    mocks.searchParams = new URLSearchParams()
+    setReport('klassenzimmer', false)
+    const station = studioDemoKlassenzimmerStation
+
+    const { container } = render(
+      <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} globalSuffixes={GLOBAL_SUFFIXES} />,
     )
+
+    expect(container.querySelector('.bg-accent')).toBeTruthy()
+    expect(screen.getByText('— Bereit', { selector: '.sr-only' })).toBeTruthy()
+  })
+
+  it('zeigt Issues-Zeile bei error mit Issue-Liste', () => {
+    mocks.searchParams = new URLSearchParams()
+    setReportWithHealth('daz', 'error', ['Dialog-Audio fehlt'])
+    const station = getStationBySlug('daz')!
+
+    render(
+      <StationDetailShell station={station} slug="daz" hubNr={3} globalSuffixes={GLOBAL_SUFFIXES} />,
+    )
+
+    expect(screen.getByText('Prüfung fehlgeschlagen')).toBeTruthy()
+    expect(screen.getByText('— Dialog-Audio fehlt')).toBeTruthy()
+    expect(screen.getByText('— Fehler', { selector: '.sr-only' })).toBeTruthy()
+  })
+
+  it('zeigt Issues-Zeile bei warn', () => {
+    mocks.searchParams = new URLSearchParams()
+    setReportWithHealth('kunst', 'warn', ['Keine Medien'])
+    const station = getStationBySlug('kunst')!
+
+    render(
+      <StationDetailShell station={station} slug="kunst" hubNr={4} globalSuffixes={GLOBAL_SUFFIXES} />,
+    )
+
+    expect(screen.getByText('Bitte prüfen')).toBeTruthy()
+    expect(screen.getByText('— Keine Medien')).toBeTruthy()
+    expect(screen.getByText('— Warnung', { selector: '.sr-only' })).toBeTruthy()
+  })
+
+  it('zeigt Fallback bei error ohne Issues', () => {
+    mocks.searchParams = new URLSearchParams()
+    mocks.report = null
+
+    render(
+      <StationDetailShell station={null} slug="kunst" hubNr={4} globalSuffixes={GLOBAL_SUFFIXES} />,
+    )
+
+    expect(screen.getByText('Validierungsstatus nicht verfügbar')).toBeTruthy()
+    expect(screen.queryByRole('list')).toBeNull()
+  })
+
+  it('markiert aktiven Tab mit border-accent', () => {
+    mocks.searchParams = new URLSearchParams('tab=medien')
+    setReport('klassenzimmer', false)
+    const station = studioDemoKlassenzimmerStation
+
+    render(
+      <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} globalSuffixes={GLOBAL_SUFFIXES} />,
+    )
+
+    const medienTab = screen.getByRole('link', { name: /Medien/ })
+    expect(medienTab.className).toContain('border-accent')
+    expect(medienTab.className).toContain('text-accent')
+    expect(medienTab.className).toContain('font-semibold')
+    expect(medienTab.className).not.toContain('font-bold')
+  })
+
+  it('zeigt Hub-Chip im Detail-Format', () => {
+    mocks.searchParams = new URLSearchParams()
+    setReport('kunst', false)
+    const station = getStationBySlug('kunst')!
+
+    render(
+      <StationDetailShell station={station} slug="kunst" hubNr={4} globalSuffixes={GLOBAL_SUFFIXES} />,
+    )
+
+    expect(screen.getByText('Hub 4')).toBeTruthy()
   })
 
   it('Hotspots-Tab zeigt Tabelle für klassenzimmer', () => {
     mocks.searchParams = new URLSearchParams('tab=hotspots')
     setReport('klassenzimmer', false)
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
 
     render(
       <StationDetailShell station={station} slug="klassenzimmer" hubNr={1} globalSuffixes={GLOBAL_SUFFIXES} />,
@@ -256,8 +379,8 @@ describe('StationDetailShell', () => {
     expect(screen.getByText('hs-text')).toBeTruthy()
     expect(screen.getByText('hs-foto')).toBeTruthy()
     expect(
-      screen.getByRole('link', { name: 'Kalibrieren (Hotspots + Startblick)' }).getAttribute('href'),
-    ).toBe('/raum/klassenzimmer?hotspot-calib=1')
+      screen.getByRole('link', { name: 'Sphere kalibrieren' }).getAttribute('href'),
+    ).toBe('/mpz/calib/sphere/klassenzimmer')
   })
 
   it('Hotspots-Tab Empty-State für kunst', () => {
@@ -271,7 +394,7 @@ describe('StationDetailShell', () => {
 
     render(<StationDetailShell station={station} slug="kunst" hubNr={4} globalSuffixes={GLOBAL_SUFFIXES} />)
 
-    expect(screen.getByText('Keine Hotspots')).toBeTruthy()
+    expect(screen.getByText(/Noch keine Hotspots/)).toBeTruthy()
   })
 
   it('station null zeigt slug als Titel-Fallback', () => {
@@ -281,6 +404,6 @@ describe('StationDetailShell', () => {
 
     render(<StationDetailShell station={null} slug="kunst" hubNr={4} globalSuffixes={GLOBAL_SUFFIXES} />)
 
-    expect(screen.getByRole('heading', { level: 2, name: 'kunst' })).toBeTruthy()
+    expect(screen.getByRole('heading', { level: 1, name: 'kunst' })).toBeTruthy()
   })
 })

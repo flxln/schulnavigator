@@ -2,15 +2,25 @@
 
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
+import { MpzCard } from '@/components/mpz-studio/mpz-card'
+import {
+  mpzStackClassName,
+  mpzTabLinkClassName,
+} from '@/components/mpz-studio/mpz-form-primitives'
+import {
+  healthDotClass,
+  healthLabel,
+} from '@/components/mpz-studio/mpz-studio-health'
 import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
 import { StationStammdatenForm } from '@/components/mpz-studio/station-stammdaten-form'
 import { StationHotspotsTable } from '@/components/mpz-studio/station-hotspots-table'
-import { DialogAudioPanel } from '@/components/mpz-studio/dialog-audio-panel'
 import { StationDialogPanel } from '@/components/mpz-studio/station-dialog-panel'
 import { StationMedienTable } from '@/components/mpz-studio/station-medien-table'
+import { MpzRoomPreviewControl } from '@/components/mpz-studio/mpz-room-preview-control'
+import type { StationHealth } from '@/lib/mpz-studio-overview'
 import type { Station, ViewerMode } from '@/lib/types'
 
-const VALID_TABS = ['stammdaten', 'medien', 'hotspots', 'dialog', 'dialog-audio'] as const
+const VALID_TABS = ['stammdaten', 'medien', 'hotspots', 'dialog'] as const
 type DetailTab = (typeof VALID_TABS)[number]
 
 export type StationDetailShellProps = {
@@ -24,17 +34,37 @@ function viewerLabel(viewer: ViewerMode): string {
   return viewer === 'equirectangular' ? '360°' : 'flat'
 }
 
-function healthDotClass(health: 'ok' | 'warn' | 'error'): string {
-  if (health === 'ok') return 'bg-brand-green'
-  if (health === 'warn') return 'bg-brand-sun'
-  return 'bg-brand-red'
-}
-
 function resolveTab(raw: string | null): DetailTab {
+  if (raw === 'dialog-audio') return 'dialog'
   if (raw && VALID_TABS.includes(raw as DetailTab)) {
     return raw as DetailTab
   }
   return 'stammdaten'
+}
+
+function issuesStatusLine(
+  health: StationHealth,
+  issues: string[],
+): { text: string; className: string } | null {
+  if (health === 'error' && issues.length === 0) {
+    return {
+      text: 'Validierungsstatus nicht verfügbar',
+      className: 'text-sm font-semibold text-fg-3',
+    }
+  }
+  if (health === 'error' && issues.length > 0) {
+    return {
+      text: 'Prüfung fehlgeschlagen',
+      className: 'text-sm font-semibold text-error',
+    }
+  }
+  if (health === 'warn' && issues.length > 0) {
+    return {
+      text: 'Bitte prüfen',
+      className: 'text-sm font-semibold text-warn',
+    }
+  }
+  return null
 }
 
 export function StationDetailShell({
@@ -46,140 +76,121 @@ export function StationDetailShell({
   const searchParams = useSearchParams()
   const activeTab = resolveTab(searchParams.get('tab'))
   const { report } = useStudioValidation()
+  const previewHref = `/raum/${slug}`
 
   const summary = report?.stationSummaries.find((s) => s.slug === slug)
   const titel = station?.titel ?? summary?.titel ?? slug
   const viewer = station?.viewer ?? summary?.viewer ?? 'flat'
   const health = summary?.health ?? (station ? 'ok' : 'error')
   const issues = summary?.issues ?? []
-  const hasDialog = summary?.hasDialog ?? false
   const medienCount = station?.medien?.length ?? summary?.medienCount ?? 0
   const hotspotCount =
     (station?.hotspots?.length ?? 0) + (station?.hotspots360?.length ?? 0) ||
     summary?.hotspotCount ||
     0
 
-  const tabs: { id: DetailTab; label: string; badge?: number; hidden?: boolean }[] =
-    [
-      { id: 'stammdaten', label: 'Stammdaten' },
-      { id: 'medien', label: 'Medien', badge: medienCount },
-      { id: 'hotspots', label: 'Hotspots', badge: hotspotCount || undefined },
-      {
-        id: 'dialog',
-        label: 'Dialog',
-        hidden: !hasDialog,
-      },
-      {
-        id: 'dialog-audio',
-        label: 'Dialog-Audio',
-        hidden: !hasDialog,
-      },
-    ]
+  const tabs: { id: DetailTab; label: string; badge?: number }[] = [
+    { id: 'stammdaten', label: 'Stammdaten' },
+    { id: 'medien', label: 'Medien', badge: medienCount },
+    { id: 'hotspots', label: 'Hotspots', badge: hotspotCount || undefined },
+    { id: 'dialog', label: 'Dialog' },
+  ]
 
   const baseHref = `/mpz/studio/stationen/${encodeURIComponent(slug)}`
+  const statusLine = issuesStatusLine(health, issues)
+  const showIssuesBlock =
+    issues.length > 0 || (health === 'error' && issues.length === 0)
 
   return (
-    <div className="mx-auto max-w-4xl">
-      <div className="mb-6 flex flex-wrap items-center gap-3">
-        <Link
-          href="/mpz/studio/stationen"
-          className="text-sm font-semibold text-accent underline-offset-2 hover:underline"
-        >
-          ← Alle Stationen
-        </Link>
-        <span className="hidden h-5 w-px bg-border-1 sm:block" aria-hidden />
-        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
-          <span className="text-[11px] font-bold uppercase tracking-wide text-fg-3">
-            #{hubNr}
-          </span>
-          <h2 className="text-xl font-bold text-fg-1">{titel}</h2>
-          <span className="rounded-full border border-border-1 px-2 py-0.5 text-xs font-semibold text-fg-2">
-            {viewerLabel(viewer)}
-          </span>
-          <span
-            className={`size-2.5 rounded-full ${healthDotClass(health)}`}
-            title={health}
-            aria-hidden
-          />
+    <div className={`mx-auto max-w-7xl ${mpzStackClassName('lg')}`}>
+      <header className="flex flex-wrap items-start justify-between gap-4">
+        <div className="min-w-0 flex-1 space-y-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <h1 className="text-2xl font-semibold text-fg-1">{titel}</h1>
+            <span className="rounded bg-bg-1 px-2 py-0.5 text-xs font-semibold text-fg-3">
+              Hub {hubNr}
+            </span>
+            <span className="rounded bg-bg-1 px-2 py-0.5 text-xs font-semibold text-fg-3">
+              {viewerLabel(viewer)}
+            </span>
+            <span
+              className={`size-3 rounded-full ${healthDotClass(health)}`}
+              title={healthLabel(health)}
+              aria-hidden
+            />
+            <span className="sr-only">— {healthLabel(health)}</span>
+          </div>
+
+          {showIssuesBlock && statusLine && (
+            <div>
+              <p className={statusLine.className}>{statusLine.text}</p>
+              {issues.length > 0 && (
+                <ul className="mt-1 space-y-0.5 text-xs text-fg-3">
+                  {issues.map((issue) => (
+                    <li key={issue}>— {issue}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
         </div>
-        <Link
-          href={`/raum/${slug}`}
-          target="_blank"
-          rel="noopener noreferrer"
+
+        <MpzRoomPreviewControl
+          href={previewHref}
           className="shrink-0 text-sm font-semibold text-accent underline-offset-2 hover:underline"
         >
           ↗ Vorschau /raum/{slug}
-        </Link>
-      </div>
-
-      {issues.length > 0 && (
-        <ul className="mb-4 rounded-gs39-md border border-border-1 bg-bg-2 px-4 py-3 text-sm text-fg-2">
-          {issues.map((issue) => (
-            <li key={issue}>— {issue}</li>
-          ))}
-        </ul>
-      )}
+        </MpzRoomPreviewControl>
+      </header>
 
       <nav
-        className="mb-6 flex flex-wrap gap-1 border-b border-border-1"
+        className="flex flex-wrap gap-8 border-b border-border-1"
         aria-label="Station bearbeiten"
       >
-        {tabs
-          .filter((tab) => !tab.hidden)
-          .map((tab) => {
-            const active = activeTab === tab.id
-            const href =
-              tab.id === 'stammdaten' ? baseHref : `${baseHref}?tab=${tab.id}`
-            return (
-              <Link
-                key={tab.id}
-                href={href}
-                className={`relative -mb-px rounded-t-gs39-sm px-3 py-2 text-sm font-semibold transition-colors ${
-                  active
-                    ? 'border border-b-0 border-border-1 bg-bg-1 text-fg-1'
-                    : 'text-fg-3 hover:text-fg-1'
-                }`}
-                aria-current={active ? 'page' : undefined}
-              >
-                {tab.label}
-                {tab.badge !== undefined && tab.badge > 0 && (
-                  <span className="ml-1.5 rounded-full bg-fg-1/10 px-1.5 py-0.5 text-[10px] font-bold text-fg-2">
-                    {tab.badge}
-                  </span>
-                )}
-              </Link>
-            )
-          })}
+        {tabs.map((tab) => {
+          const active = activeTab === tab.id
+          const href =
+            tab.id === 'stammdaten' ? baseHref : `${baseHref}?tab=${tab.id}`
+          return (
+            <Link
+              key={tab.id}
+              href={href}
+              className={mpzTabLinkClassName({ active })}
+              aria-current={active ? 'page' : undefined}
+            >
+              {tab.label}
+              {tab.badge !== undefined && tab.badge > 0 && (
+                <span className="ml-1.5 rounded-full bg-fg-1/10 px-1.5 py-0.5 text-[10px] font-bold text-fg-2">
+                  {tab.badge}
+                </span>
+              )}
+            </Link>
+          )
+        })}
       </nav>
 
       {activeTab === 'stammdaten' && (
-        <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5">
+        <MpzCard>
           <StationStammdatenForm slug={slug} station={station} />
-        </section>
+        </MpzCard>
       )}
 
       {activeTab === 'medien' && (
-        <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5">
+        <MpzCard>
           <StationMedienTable slug={slug} station={station} globalSuffixes={globalSuffixes} />
-        </section>
+        </MpzCard>
       )}
 
       {activeTab === 'hotspots' && (
-        <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5">
+        <MpzCard>
           <StationHotspotsTable slug={slug} station={station} />
-        </section>
+        </MpzCard>
       )}
 
-      {activeTab === 'dialog' && hasDialog && (
-        <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5">
+      {activeTab === 'dialog' && (
+        <MpzCard>
           <StationDialogPanel slug={slug} station={station} />
-        </section>
-      )}
-
-      {activeTab === 'dialog-audio' && hasDialog && (
-        <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5">
-          <DialogAudioPanel slug={slug} />
-        </section>
+        </MpzCard>
       )}
     </div>
   )

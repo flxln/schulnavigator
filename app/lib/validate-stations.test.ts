@@ -1,6 +1,16 @@
 import { describe, expect, it } from 'vitest'
 import raw from '@/data/stations.json'
+import { withStudioDemoKlassenzimmer } from '@/lib/test-fixtures/studio-demo-klassenzimmer'
+import type { StationsFile } from '@/lib/types'
 import { assertUniqueStationSlugs, validateStationsFile } from '@/lib/validate-stations'
+
+function cloneRaw(): StationsFile {
+  return structuredClone(raw) as StationsFile
+}
+
+function cloneRawWithDemoKlassenzimmer(): StationsFile {
+  return withStudioDemoKlassenzimmer(cloneRaw())
+}
 
 describe('assertUniqueStationSlugs', () => {
   it('wirft bei doppeltem slug', () => {
@@ -42,6 +52,19 @@ describe('validateStationsFile Hub (ADR-016)', () => {
     expect(station?.dialog?.gruppen?.[0]?.id).toBe('gruesse')
   })
 
+  it('akzeptiert dialog-Segment ohne quelle (Text-only)', () => {
+    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const kz = data.stations.find((s) => s.slug === 'klassenzimmer') as Record<string, unknown>
+    kz.dialog = {
+      figuren: ['otto'],
+      segmente: [{ id: 'l1', rolle: 'otto', text: 'Nur Text' }],
+    }
+    const stations = validateStationsFile(data as unknown)
+    const seg = stations.find((s) => s.slug === 'klassenzimmer')?.dialog?.segmente[0]
+    expect(seg?.quelle).toBeUndefined()
+    expect(seg?.text).toBe('Nur Text')
+  })
+
   it('akzeptiert dialog mit leerem segmente-Array (Entwurf)', () => {
     const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
     const kz = data.stations.find((s) => s.slug === 'klassenzimmer') as Record<string, unknown>
@@ -79,7 +102,7 @@ describe('validateStationsFile Hub (ADR-016)', () => {
     expect(hotspots[0]?.action).toBe('dialog')
     expect(hotspots[0]?.mediumId).toBeUndefined()
     const stations = validateStationsFile(data as unknown)
-    expect(stations.find((s) => s.slug === 'daz')?.hotspots360).toHaveLength(2)
+    expect(stations.find((s) => s.slug === 'daz')?.hotspots360).toHaveLength(3)
   })
 
   it('wirft bei dialog-Hotspot mit mediumId', () => {
@@ -135,7 +158,7 @@ describe('validateStationsFile Hub (ADR-016)', () => {
   })
 
   it('wirft bei mascotSize auf Medien-Hotspot', () => {
-    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const data = cloneRawWithDemoKlassenzimmer() as { stations: Record<string, unknown>[] }
     const klassenzimmer = data.stations.find(
       (s) => s.slug === 'klassenzimmer',
     ) as Record<string, unknown>
@@ -158,7 +181,7 @@ describe('validateStationsFile Hub (ADR-016)', () => {
   })
 
   it('wirft bei mascotFlipX auf Medien-Hotspot', () => {
-    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const data = cloneRawWithDemoKlassenzimmer() as { stations: Record<string, unknown>[] }
     const klassenzimmer = data.stations.find(
       (s) => s.slug === 'klassenzimmer',
     ) as Record<string, unknown>
@@ -178,21 +201,21 @@ describe('validateStationsFile Hub (ADR-016)', () => {
   })
 
   it('akzeptiert icon und iconSize auf Medien-Hotspot', () => {
-    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const data = cloneRawWithDemoKlassenzimmer() as { stations: Record<string, unknown>[] }
     const klassenzimmer = data.stations.find(
       (s) => s.slug === 'klassenzimmer',
     ) as Record<string, unknown>
     const hotspots = klassenzimmer.hotspots360 as Record<string, unknown>[]
     hotspots[1] = {
       ...hotspots[1],
-      icon: '/media/klassenzimmer/icons/play.svg',
+      icon: '/stations-icons/klassenzimmer/play.svg',
       iconSize: 0.12,
     }
     const stations = validateStationsFile(data as unknown)
     const hs = stations
       .find((s) => s.slug === 'klassenzimmer')
       ?.hotspots360?.find((h) => h.id === 'hs-video')
-    expect(hs?.icon).toBe('/media/klassenzimmer/icons/play.svg')
+    expect(hs?.icon).toBe('/stations-icons/klassenzimmer/play.svg')
     expect(hs?.iconSize).toBe(0.12)
   })
 
@@ -210,7 +233,7 @@ describe('validateStationsFile Hub (ADR-016)', () => {
   })
 
   it('wirft bei iconSize auf Medien-Hotspot außerhalb des Bereichs', () => {
-    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const data = cloneRawWithDemoKlassenzimmer() as { stations: Record<string, unknown>[] }
     const klassenzimmer = data.stations.find(
       (s) => s.slug === 'klassenzimmer',
     ) as Record<string, unknown>
@@ -220,7 +243,7 @@ describe('validateStationsFile Hub (ADR-016)', () => {
   })
 
   it('akzeptiert thumbnail am Medium', () => {
-    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const data = cloneRawWithDemoKlassenzimmer() as { stations: Record<string, unknown>[] }
     const klassenzimmer = data.stations.find(
       (s) => s.slug === 'klassenzimmer',
     ) as Record<string, unknown>
@@ -249,6 +272,7 @@ describe('validateStationsFile Hub (ADR-016)', () => {
         untertitel: 'Demo-Link',
       },
     ]
+    delete pcRaum.hotspots360
     const stations = validateStationsFile(data as unknown)
     const m = stations
       .find((s) => s.slug === 'pc-raum')
@@ -288,7 +312,7 @@ describe('validateStationsFile Hub (ADR-016)', () => {
   })
 
   it('wirft bei openIn auf Video-Medium', () => {
-    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const data = cloneRawWithDemoKlassenzimmer() as { stations: Record<string, unknown>[] }
     const klassenzimmer = data.stations.find(
       (s) => s.slug === 'klassenzimmer',
     ) as Record<string, unknown>
@@ -330,6 +354,7 @@ describe('validateStationsFile Hub (ADR-016)', () => {
         untertitel: '3D-Welt',
       },
     ]
+    delete pcRaum.hotspots360
     const stations = validateStationsFile(data as unknown)
     const m = stations
       .find((s) => s.slug === 'pc-raum')
@@ -351,6 +376,7 @@ describe('validateStationsFile Hub (ADR-016)', () => {
         untertitel: 'Berühmte Personen',
       },
     ]
+    delete lesewelt.hotspots360
     const stations = validateStationsFile(data as unknown)
     const m = stations
       .find((s) => s.slug === 'lesewelt')
@@ -390,7 +416,7 @@ describe('validateStationsFile Hub (ADR-016)', () => {
   })
 
   it('wirft bei embedAllow auf Video-Medium', () => {
-    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const data = cloneRawWithDemoKlassenzimmer() as { stations: Record<string, unknown>[] }
     const klassenzimmer = data.stations.find(
       (s) => s.slug === 'klassenzimmer',
     ) as Record<string, unknown>

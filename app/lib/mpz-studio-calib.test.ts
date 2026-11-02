@@ -2,24 +2,37 @@ import { describe, expect, it } from 'vitest'
 import { mpzStationCalibHref } from '@/lib/mpz-studio-calib'
 
 describe('mpz-studio-calib', () => {
-  it('equirectangular mit Bild → Sphere-Kalib', () => {
+  it('equirectangular mit panorama360 → Sphere-Kalib', () => {
     expect(
       mpzStationCalibHref({
         viewer: 'equirectangular',
         slug: 'klassenzimmer',
         hasBild: true,
+        hasPanorama360: true,
       }),
-    ).toBe('/raum/klassenzimmer?hotspot-calib=1')
+    ).toBe('/mpz/calib/sphere/klassenzimmer')
   })
 
-  it('equirectangular ohne Bild → Sphere-Kalib', () => {
+  it('equirectangular ohne panorama360 → null', () => {
+    expect(
+      mpzStationCalibHref({
+        viewer: 'equirectangular',
+        slug: 'klassenzimmer',
+        hasBild: true,
+        hasPanorama360: false,
+      }),
+    ).toBeNull()
+  })
+
+  it('equirectangular ohne Bild aber mit panorama360 → Sphere-Kalib', () => {
     expect(
       mpzStationCalibHref({
         viewer: 'equirectangular',
         slug: 'klassenzimmer',
         hasBild: false,
+        hasPanorama360: true,
       }),
-    ).toBe('/raum/klassenzimmer?hotspot-calib=1')
+    ).toBe('/mpz/calib/sphere/klassenzimmer')
   })
 
   it('flat mit Bild → Flat-Kalib', () => {
@@ -28,6 +41,7 @@ describe('mpz-studio-calib', () => {
         viewer: 'flat',
         slug: 'kunst',
         hasBild: true,
+        hasPanorama360: false,
       }),
     ).toBe('/mpz/calib/flat/kunst')
   })
@@ -38,6 +52,7 @@ describe('mpz-studio-calib', () => {
         viewer: 'flat',
         slug: 'kunst',
         hasBild: false,
+        hasPanorama360: false,
       }),
     ).toBeNull()
   })
@@ -48,6 +63,7 @@ describe('mpz-studio-calib', () => {
         viewer: 'flat',
         slug: 'slug/with space',
         hasBild: true,
+        hasPanorama360: false,
       }),
     ).toBe('/mpz/calib/flat/slug/with space')
   })

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MPZ Studio - Station Editor</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#425d86",
+                    "on-primary-fixed-variant": "#1d5200",
+                    "surface-variant": "#e3e2df",
+                    "secondary-fixed": "#d5e3ff",
+                    "surface-dim": "#dbdad6",
+                    "on-surface": "#1b1c1a",
+                    "surface-container-low": "#f4f4f0",
+                    "surface-container": "#efeeea",
+                    "inverse-surface": "#2f312e",
+                    "outline": "#717a68",
+                    "primary-fixed-dim": "#87db5d",
+                    "on-secondary-fixed-variant": "#004786",
+                    "on-secondary-fixed": "#001c3b",
+                    "on-error": "#ffffff",
+                    "secondary": "#045faf",
+                    "surface-bright": "#faf9f5",
+                    "tertiary-container": "#5b76a0",
+                    "surface-container-highest": "#e3e2df",
+                    "tertiary-fixed": "#d5e3ff",
+                    "tertiary-fixed-dim": "#acc8f6",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#37850a",
+                    "on-tertiary-fixed": "#001c3b",
+                    "on-primary-container": "#f8ffee",
+                    "on-primary-fixed": "#072100",
+                    "on-tertiary-container": "#fefcff",
+                    "on-error-container": "#93000a",
+                    "surface": "#faf9f5",
+                    "secondary-fixed-dim": "#a6c8ff",
+                    "on-tertiary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-secondary-container": "#003e76",
+                    "on-surface-variant": "#40493a",
+                    "inverse-primary": "#87db5d",
+                    "primary-fixed": "#a2f876",
+                    "on-background": "#1b1c1a",
+                    "primary": "#276a00",
+                    "surface-container-high": "#e9e8e4",
+                    "on-tertiary-fixed-variant": "#2c476f",
+                    "error": "#ba1a1a",
+                    "secondary-container": "#6daaff",
+                    "inverse-on-surface": "#f2f1ed",
+                    "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "surface-tint": "#286c00",
+                    "outline-variant": "#c0cab5",
+                    "background": "#faf9f5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "16px",
+                    "gutter": "16px",
+                    "container-padding": "24px",
+                    "topbar-height": "56px",
+                    "sidebar-width": "240px",
+                    "card-padding": "20px",
+                    "stack-lg": "24px",
+                    "stack-sm": "8px"
+            },
+            "fontFamily": {
+                    "h1": ["Nunito Sans"],
+                    "body-lg": ["Nunito Sans"],
+                    "code": ["monospace"],
+                    "caption": ["Nunito Sans"],
+                    "sidebar-header": ["Nunito Sans"],
+                    "body-md": ["Nunito Sans"],
+                    "h2": ["Nunito Sans"]
+            },
+            "fontSize": {
+                    "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #fcfbf7; /* Paper background */
+            font-family: 'Nunito Sans', sans-serif;
+            color: #1b1c1a;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c0cab5;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="flex min-h-screen">
+<!-- SideNavBar Anchor -->
+<aside class="fixed left-0 top-0 h-full w-[240px] bg-secondary flex flex-col py-stack-lg z-50">
+<div class="px-6 mb-10">
+<h1 class="font-h1 text-h1 text-on-secondary">MPZ Studio</h1>
+<p class="font-sidebar-header text-sidebar-header text-on-secondary opacity-60 uppercase tracking-widest mt-1">Admin Console</p>
+</div>
+<nav class="flex-1 px-4 space-y-2 overflow-y-auto custom-scrollbar">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 ease-in-out text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 ease-in-out text-on-secondary border-l-4 border-primary-fixed bg-surface-container-highest/10 opacity-100" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-md">Alle Stationen</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 ease-in-out text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-body-md">Coach</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 ease-in-out text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5" href="#">
+<span class="material-symbols-outlined">link</span>
+<span class="font-body-md">Embeds &amp; Links</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 ease-in-out text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5" href="#">
+<span class="material-symbols-outlined">palette</span>
+<span class="font-body-md">Design &amp; Hub</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 ease-in-out text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5" href="#">
+<span class="material-symbols-outlined">rocket_launch</span>
+<span class="font-body-md">Deploy</span>
+</a>
+</nav>
+<div class="px-6 mt-auto pt-6 border-t border-white/10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container text-xs font-bold">MS</div>
+<div>
+<p class="text-on-secondary text-sm font-bold">Admin</p>
+<p class="text-on-secondary/60 text-xs">MPZ Studio Admin</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[240px] flex-1 flex flex-col">
+<!-- TopNavBar Anchor -->
+<header class="fixed top-0 right-0 w-[calc(100%-240px)] h-[56px] bg-surface border-b border-outline-variant flex justify-between items-center px-container-padding z-40">
+<div class="flex items-center gap-4">
+<span class="text-on-surface-variant font-body-md">Dashboard / Alle Stationen / </span>
+<span class="text-primary font-bold border-b-2 border-primary font-h2 text-h2">Station daz</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex gap-6 mr-6">
+<a class="text-primary font-bold border-b-2 border-primary transition-colors duration-150 py-1" href="#">Dashboard</a>
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors duration-150 py-1" href="#">Stationen</a>
+</div>
+<button class="bg-primary text-on-primary px-4 py-1.5 rounded-full font-body-md font-bold hover:bg-[#3d7e1b] transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+                    Speichern &amp; Validieren
+                </button>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="mt-[56px] p-container-padding space-y-stack-lg max-w-7xl mx-auto w-full">
+<!-- Breadcrumbs & Status -->
+<div class="flex justify-between items-center bg-white p-4 rounded-lg border border-[rgba(8,42,80,0.1)]">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">chat_bubble</span>
+</div>
+<div>
+<h2 class="font-h2 text-h2">Filled Dialog Editor</h2>
+<p class="text-caption font-caption text-on-surface-variant">Konfiguration der Dialog-Abfolge für Station 'daz'</p>
+</div>
+</div>
+<div class="bg-[#f8ffee] border border-primary-fixed/30 px-4 py-2 rounded-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="text-primary font-bold text-sm">Alle Checks bestanden</span>
+</div>
+</div>
+<!-- Bento Grid Main Content -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Dialog Table Card -->
+<div class="col-span-12 lg:col-span-9 bg-white rounded-lg border border-[rgba(8,42,80,0.1)] overflow-hidden">
+<div class="p-card-padding border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-h2 text-h2 text-tertiary">Dialog Sequenz</h3>
+<div class="flex gap-2">
+<button class="p-2 hover:bg-surface-container rounded-lg transition-colors">
+<span class="material-symbols-outlined text-outline">search</span>
+</button>
+<button class="p-2 hover:bg-surface-container rounded-lg transition-colors">
+<span class="material-symbols-outlined text-outline">filter_list</span>
+</button>
+<button class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">add</span> Neu
+                            </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="p-4 font-sidebar-header text-sidebar-header text-outline uppercase">ID</th>
+<th class="p-4 font-sidebar-header text-sidebar-header text-outline uppercase">ID-Key</th>
+<th class="p-4 font-sidebar-header text-sidebar-header text-outline uppercase">Mascot</th>
+<th class="p-4 font-sidebar-header text-sidebar-header text-outline uppercase">Text</th>
+<th class="p-4 font-sidebar-header text-sidebar-header text-outline uppercase">Group</th>
+<th class="p-4 font-sidebar-header text-sidebar-header text-outline uppercase">Audio Status</th>
+<th class="p-4 font-sidebar-header text-sidebar-header text-outline uppercase text-center">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group">
+<td class="p-4 font-code text-code text-outline">001</td>
+<td class="p-4 font-body-md font-semibold text-tertiary">welcome_msg</td>
+<td class="p-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary/10 overflow-hidden border border-primary/20">
+<img class="w-full h-full object-cover" data-alt="A friendly, stylized flat vector illustration of a cheerful mascot named Frieda, a smart-looking fox with glasses, wearing a small green neckerchief. The background is a clean, neutral cream color, following a modern corporate aesthetic with soft, rounded shapes and professional lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDG2DQs26zt3BRYcGHRzsuPWAJVXrhx6nZYELBnk7C49-VNLS0dJr6suQLbVp5CwyhCmmjjA66v8pFSzjxWJKhmQklr2IrYERDRXzWaLiJ0TA8YWDFTZpMIM2PAb9NXmBqt7cUZuEi9lWC5-Q2yBidPXuYwowrYFZgek5cElNHG-OZNJKU2yhjpUhx_4b45AHmPjEpOAoikiG6CHn8j8Rd4v3-PJ6X5C87ZtzVHA-eHfyJJoJWLjShlZ8Gi0nVV7R84Y4IvNNscM2I"/>
+</div>
+<span class="font-body-md">frieda</span>
+</div>
+</td>
+<td class="p-4 font-body-md max-w-xs truncate" title="Hallo, willkommen...">Hallo, willkommen...</td>
+<td class="p-4"><span class="text-caption font-caption text-outline italic">none</span></td>
+<td class="p-4">
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">volume_up</span>
+<span class="text-caption font-bold">Ready</span>
+</div>
+</td>
+<td class="p-4">
+<div class="flex justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 hover:bg-surface-container rounded text-outline"><span class="material-symbols-outlined text-sm">edit</span></button>
+<button class="p-1.5 hover:bg-surface-container rounded text-error"><span class="material-symbols-outlined text-sm">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group">
+<td class="p-4 font-code text-code text-outline">002</td>
+<td class="p-4 font-body-md font-semibold text-tertiary">intro_otto</td>
+<td class="p-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-secondary/10 overflow-hidden border border-secondary/20">
+<img class="w-full h-full object-cover" data-alt="A friendly, stylized flat vector illustration of a tech-savvy mascot named Otto, a professional-looking owl with a digital headset and a small blue bowtie. The background is a crisp white, minimalist style suitable for a corporate studio software interface, with clean lines and bright, optimistic lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEHZ0sBMCRWEM6S3t_CcfFG24flqXg8Nl5SeGQZvWA8IcoahI1-7siRildcEOJPoLVfzkv3F7X7ineK6WpWDRff2c4ywo3XbLpoJdgsAtE5j8lhCjlXnf5nd_2-iG2y_1L-GQYpgXucXB91Xs8T_nvDWfIzYTskmFP_Z1B4IhUnxDjn7YAz8Wcc9YZPrErZhrsZsTUJ7fST6ycWHVAKuD9NNG6ipOrttUieXjK1aXZw2ld9osEP1Zrzh9oLIw0OQvovhz8zeCuyHA"/>
+</div>
+<span class="font-body-md">otto</span>
+</div>
+</td>
+<td class="p-4 font-body-md max-w-xs truncate" title="Wir haben ein...">Wir haben ein...</td>
+<td class="p-4"><span class="text-caption font-caption text-outline italic">none</span></td>
+<td class="p-4">
+<div class="flex items-center gap-1 text-outline">
+<span class="material-symbols-outlined text-sm">pending</span>
+<span class="text-caption font-bold">Draft</span>
+</div>
+</td>
+<td class="p-4">
+<div class="flex justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 hover:bg-surface-container rounded text-outline"><span class="material-symbols-outlined text-sm">edit</span></button>
+<button class="p-1.5 hover:bg-surface-container rounded text-error"><span class="material-symbols-outlined text-sm">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group bg-tertiary/5">
+<td class="p-4 font-code text-code text-outline">003</td>
+<td class="p-4 font-body-md font-semibold text-tertiary">greet_en</td>
+<td class="p-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary/10 overflow-hidden border border-primary/20">
+<img class="w-full h-full object-cover" data-alt="A friendly fox mascot named Frieda, vector style, showing an enthusiastic wave. Clean lines, soft colors, set against a modern studio background palette of soft cream and whites. High resolution illustration for a professional software dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUJFZE-Z_S0fSR8nkPssqNfct04mvWOzlDAdLUlYMT4wmnAMHy6rZr6nXadCA0Y2eXE8fpGxH9fDjrMEnPpVhcY-0AxUeI7vfbigbDb88wXzkZgUGPknDdHugOConb4pc2GD2k49WaALW88Dfb3t2Ur61Wne0PUQORr8mCeCRhbhYx4-GNLE0r6DBQ37V6FNDqRyHOBlbNzt2LROZ0V_5eykJgtrfexc5ebEOymGeyowGCj2cK7LzuhooABK-ZbUULXsqAFLmu7Vw"/>
+</div>
+<span class="font-body-md">frieda</span>
+</div>
+</td>
+<td class="p-4 font-body-md max-w-xs truncate" title="Hello!">Hello!</td>
+<td class="p-4">
+<span class="bg-tertiary/10 text-tertiary px-2 py-0.5 rounded text-xs font-bold border border-tertiary/20">gruesse</span>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">volume_up</span>
+<span class="text-caption font-bold">Ready</span>
+</div>
+</td>
+<td class="p-4">
+<div class="flex justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 hover:bg-surface-container rounded text-outline"><span class="material-symbols-outlined text-sm">edit</span></button>
+<button class="p-1.5 hover:bg-surface-container rounded text-error"><span class="material-symbols-outlined text-sm">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group bg-tertiary/5 border-b-2 border-tertiary/20">
+<td class="p-4 font-code text-code text-outline">004</td>
+<td class="p-4 font-body-md font-semibold text-tertiary">greet_es</td>
+<td class="p-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-secondary/10 overflow-hidden border border-secondary/20">
+<img class="w-full h-full object-cover" data-alt="Otto the Owl mascot in a professional tech-studio setting, flat vector, bright lighting, high key aesthetic. Minimalist design with a focus on friendly character design and clean navy and white accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7UQ0gHk_PjiiT4l1njegMJmMxQa_wDVCIccsm-v7hzltednXJ7FHgallDEYVkaKXAaDFI6UVUq74iS1cr6ZUmOzBRP5j9-NGpYfslNCKP5KuNItPCrQKqRVyxN5UGwZSHdVCiHffOc_WbfrtejmlILVcmATB7G1UaRhJ4PxXXgOuswf06KorJvQvcEvk_znWs-x-QhqzFJzIxi0rb5aoeaAnnkLDvU2HHUuyOvlfljUgM8gJ7spouphI5TqyizWR6Ep6qasC-OEo"/>
+</div>
+<span class="font-body-md">otto</span>
+</div>
+</td>
+<td class="p-4 font-body-md max-w-xs truncate" title="Hola!">Hola!</td>
+<td class="p-4">
+<span class="bg-tertiary/10 text-tertiary px-2 py-0.5 rounded text-xs font-bold border border-tertiary/20">gruesse</span>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">volume_up</span>
+<span class="text-caption font-bold">Ready</span>
+</div>
+</td>
+<td class="p-4">
+<div class="flex justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 hover:bg-surface-container rounded text-outline"><span class="material-symbols-outlined text-sm">edit</span></button>
+<button class="p-1.5 hover:bg-surface-container rounded text-error"><span class="material-symbols-outlined text-sm">delete</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Right Sidebar / Preview -->
+<div class="col-span-12 lg:col-span-3 space-y-gutter">
+<!-- Live Preview Card -->
+<div class="bg-white rounded-lg border border-[rgba(8,42,80,0.1)] p-card-padding">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-h2 text-h2 text-tertiary">Live Preview</h3>
+<span class="material-symbols-outlined text-outline text-sm">visibility</span>
+</div>
+<div class="bg-[#f5f2ea] rounded-xl p-4 min-h-[240px] relative overflow-hidden">
+
+<!-- Mock Chat Bubble -->
+<div class="space-y-4 relative z-10">
+<div class="flex gap-2">
+<div class="w-8 h-8 rounded-full bg-primary/20 flex-shrink-0"></div>
+<div class="bg-white p-3 rounded-lg rounded-tl-none shadow-sm text-sm">
+                                        Hallo, willkommen bei MPZ Studio!
+                                    </div>
+</div>
+<div class="flex gap-2 flex-row-reverse">
+<div class="w-8 h-8 rounded-full bg-secondary/20 flex-shrink-0"></div>
+<div class="bg-secondary text-on-secondary p-3 rounded-lg rounded-tr-none shadow-sm text-sm">
+                                        Wir haben ein neues Modul vorbereitet.
+                                    </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Audio Stats -->
+<div class="bg-white rounded-lg border border-[rgba(8,42,80,0.1)] p-card-padding">
+<h3 class="font-sidebar-header text-sidebar-header text-outline uppercase mb-3">Audio Deckung</h3>
+<div class="flex items-center justify-between mb-2">
+<span class="text-body-md">Generiert</span>
+<span class="font-bold text-primary">75%</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 75%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Collapsible Sections Area -->
+<div class="space-y-stack-md">
+<!-- Gruppen Section -->
+<div class="bg-white rounded-lg border border-[rgba(8,42,80,0.1)] overflow-hidden">
+<button class="w-full flex items-center justify-between p-4 hover:bg-surface-container transition-colors" onclick="toggleSection('groups-content', 'groups-icon')">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary">group_work</span>
+<span class="font-h2 text-h2">Gruppen</span>
+<span class="bg-surface-container text-on-surface-variant text-[10px] px-2 py-0.5 rounded-full font-bold ml-2">1 Aktiv</span>
+</div>
+<span class="material-symbols-outlined transition-transform duration-300 rotate-180" id="groups-icon">expand_more</span>
+</button>
+<div class="p-4 border-t border-outline-variant" id="groups-content">
+<div class="flex flex-wrap gap-4">
+<div class="bg-surface-container p-3 rounded-lg flex items-center gap-4 border border-outline-variant">
+<div class="w-2 h-8 bg-tertiary rounded-full"></div>
+<div>
+<p class="font-body-md font-bold text-tertiary">gruesse</p>
+<p class="text-caption font-caption text-on-surface-variant">2 Einträge • Random Rotation</p>
+</div>
+<button class="ml-4 p-1 hover:bg-white rounded transition-colors">
+<span class="material-symbols-outlined text-sm">settings</span>
+</button>
+</div>
+<button class="border-2 border-dashed border-outline-variant p-3 rounded-lg flex items-center gap-2 text-outline hover:border-primary hover:text-primary transition-all">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="font-body-md font-bold">Neue Gruppe erstellen</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Sprechblasen-Layout Section -->
+<div class="bg-white rounded-lg border border-[rgba(8,42,80,0.1)] overflow-hidden">
+<button class="w-full flex items-center justify-between p-4 hover:bg-surface-container transition-colors" onclick="toggleSection('layout-content', 'layout-icon')">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary">layers</span>
+<span class="font-h2 text-h2">Sprechblasen-Layout</span>
+</div>
+<span class="material-symbols-outlined transition-transform duration-300" id="layout-icon">expand_more</span>
+</button>
+<div class="hidden p-4 border-t border-outline-variant bg-[#faf9f5]" id="layout-content">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-white p-4 rounded-lg border-2 border-primary shadow-md">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary">format_align_left</span>
+<span class="font-body-md font-bold">Klassisch (Default)</span>
+</div>
+<p class="text-caption text-on-surface-variant">Standard Sprechblasen mit Mascott-Avatar links oder rechts.</p>
+</div>
+<div class="bg-white p-4 rounded-lg border border-outline-variant hover:border-tertiary cursor-pointer transition-all">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-outline">full_coverage</span>
+<span class="font-body-md font-bold">Full Width</span>
+</div>
+<p class="text-caption text-on-surface-variant">Text nimmt die volle Breite ein, Avatare schweben darüber.</p>
+</div>
+<div class="bg-white p-4 rounded-lg border border-outline-variant hover:border-tertiary cursor-pointer transition-all">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-outline">smart_display</span>
+<span class="font-body-md font-bold">Subtitle Style</span>
+</div>
+<p class="text-caption text-on-surface-variant">Kompaktes Layout am unteren Bildschirmrand, ideal für Video-Overlays.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        function toggleSection(contentId, iconId) {
+            const content = document.getElementById(contentId);
+            const icon = document.getElementById(iconId);
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+            }
+        }
+
+        // Simple row hover interaction logging
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('click', () => {
+                console.log('Row selected:', row.cells[1].innerText);
+            });
+        });
+    </script>
+</body></html>

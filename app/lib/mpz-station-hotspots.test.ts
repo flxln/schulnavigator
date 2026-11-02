@@ -16,8 +16,9 @@ import {
   removeStationHotspot,
 } from '@/lib/mpz-station-hotspots'
 import type { StationsFile } from '@/lib/types'
+import { studioDemoStationsFile } from '@/lib/test-fixtures/studio-demo-klassenzimmer'
 
-const fixture = raw as StationsFile
+const fixture = studioDemoStationsFile(raw as StationsFile)
 
 function makeTempIo(initial: StationsFile = fixture) {
   const appRoot = mkdtempSync(join(tmpdir(), 'mpz-hotspots-'))

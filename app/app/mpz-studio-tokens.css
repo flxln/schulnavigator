@@ -1,0 +1,16 @@
+/*
+ * MPZ Studio layout tokens — semantic aliases on GS39 (gs39-tokens.css).
+ * No new brand hex colors; validate:tokens only checks gs39-tokens.css.
+ * Consumers: #207+ (shell, cards, forms). See .cursor/plans/#206_studio_tokens_6e344e61.plan.md
+ */
+
+:root {
+  --mpz-sidebar-width: 240px;
+  --mpz-topbar-height: 56px;
+  --mpz-container-padding: var(--gutter);
+  --mpz-card-padding: 20px;
+  --mpz-r-card: var(--s-2);
+  --mpz-r-button-pill: var(--r-pill);
+  /* Doku-/Referenzwert; Consumer nutzen built-in border-l-4 (= 4px) */
+  --mpz-nav-active-stripe: var(--s-1);
+}

@@ -6,7 +6,7 @@ import {
   StationMediumEditForm,
 } from '@/components/mpz-studio/station-medium-edit-form'
 import { UPLOAD_RULES } from '@/lib/mpz-upload-rules'
-import { getStationBySlug } from '@/lib/stations'
+import { studioDemoKlassenzimmerStation } from '@/lib/test-fixtures/studio-demo-klassenzimmer'
 import type { Medium } from '@/lib/types'
 
 const validateNow = vi.fn().mockResolvedValue(undefined)
@@ -93,7 +93,7 @@ describe('StationMediumEditForm — Datei ersetzen', () => {
   })
 
   it('Audio-Medium: Replace-Abschnitt und Button sichtbar', () => {
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     const medium = station.medien.find((m) => m.id === 'demo-audio')!
     renderForm(medium)
 
@@ -102,7 +102,7 @@ describe('StationMediumEditForm — Datei ersetzen', () => {
   })
 
   it('Video videoSource upload: Replace sichtbar', () => {
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     const medium = station.medien.find((m) => m.id === 'demo-video')!
     renderForm(medium)
 
@@ -121,7 +121,7 @@ describe('StationMediumEditForm — Datei ersetzen', () => {
   })
 
   it('Video upload: Dropdown auf youtube blendet Block aus', () => {
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     const medium = station.medien.find((m) => m.id === 'demo-video')!
     renderForm(medium)
 
@@ -153,7 +153,7 @@ describe('StationMediumEditForm — Datei ersetzen', () => {
   })
 
   it('Datei zu groß: lokaler Fehler, kein fetch', async () => {
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     const medium = station.medien.find((m) => m.id === 'demo-audio')!
     renderForm(medium)
 
@@ -172,7 +172,7 @@ describe('StationMediumEditForm — Datei ersetzen', () => {
   })
 
   it('Sichtbarkeit wechselt: selectedFile wird zurückgesetzt', async () => {
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     const medium = station.medien.find((m) => m.id === 'demo-video')!
     renderForm(medium)
 
@@ -193,7 +193,7 @@ describe('StationMediumEditForm — Datei ersetzen', () => {
   })
 
   it('erfolgreicher Replace: POST, onSuccess mit quelle', async () => {
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     const medium = station.medien.find((m) => m.id === 'demo-audio')!
     const onSuccess = vi.fn()
     renderForm(medium, onSuccess)
@@ -228,7 +228,7 @@ describe('StationMediumEditForm — Datei ersetzen', () => {
       }),
     } as Response)
 
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     const medium = station.medien.find((m) => m.id === 'demo-audio')!
     renderForm(medium)
 
@@ -249,7 +249,7 @@ describe('StationMediumEditForm — Datei ersetzen', () => {
       json: async () => ({ error: 'UNAUTHORIZED' }),
     } as Response)
 
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     const medium = station.medien.find((m) => m.id === 'demo-audio')!
     renderForm(medium)
 
@@ -284,7 +284,7 @@ describe('StationMediumEditForm — Thumbnail/Poster-Upload', () => {
   })
 
   it('Audio: Bild-hochladen-Button sichtbar', () => {
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     const medium = station.medien.find((m) => m.id === 'demo-audio')!
     renderForm(medium)
 
@@ -292,7 +292,7 @@ describe('StationMediumEditForm — Thumbnail/Poster-Upload', () => {
   })
 
   it('bei isDirty: Upload-Button deaktiviert', () => {
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     const medium = station.medien.find((m) => m.id === 'demo-audio')!
     renderForm(medium)
 
@@ -312,7 +312,7 @@ describe('StationMediumEditForm — Thumbnail/Poster-Upload', () => {
   })
 
   it('erfolgreicher Thumbnail-Upload: POST auf …/thumbnail', async () => {
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     const medium = station.medien.find((m) => m.id === 'demo-audio')!
     const onSuccess = vi.fn()
     renderForm(medium, onSuccess)

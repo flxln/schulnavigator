@@ -43,6 +43,11 @@ export function renderAccessTokenConstants({ fest, heft, festExpires, heftExpire
 export const FEST_DEV_TOKEN = '${fest}'
 export const HEFT_DEV_TOKEN = '${heft}'
 
+/**
+ * Post-Fest: gedruckter entry-fest-QR → Heft-Hub (gleicher Token-String, kein Neudruck).
+ */
+export const FEST_ENTRY_HUB_MODE = 'heft'
+
 export const FEST_DEV_EXPIRES_AT = '${festExpires}'
 export const HEFT_DEV_EXPIRES_AT = '${heftExpires}'
 
@@ -51,7 +56,7 @@ export const HEFT_DEV_EXPIRES_AT = '${heftExpires}'
  * @type {ReadonlyArray<{ file: string; token: string; mode: EntryMode }>}
  */
 export const ENTRY_QR_SPECS = [
-  { file: 'entry-fest.png', token: FEST_DEV_TOKEN, mode: 'fest' },
+  { file: 'entry-fest.png', token: FEST_DEV_TOKEN, mode: FEST_ENTRY_HUB_MODE },
   { file: 'entry-heft.png', token: HEFT_DEV_TOKEN, mode: 'heft' },
 ]
 `
@@ -62,8 +67,20 @@ export const ENTRY_QR_SPECS = [
  */
 export function buildAccessTokensPayload({ fest, heft, festExpires, heftExpires }) {
   return [
-    { token: fest, mode: 'fest', expiresAt: festExpires },
+    { token: fest, mode: 'heft', expiresAt: festExpires },
     { token: heft, mode: 'heft', expiresAt: heftExpires },
+  ]
+}
+
+/**
+ * Specs für assertEntryQrSync nach Rotation (entry-fest → Heft-Hub).
+ * @param {string} fest
+ * @param {string} heft
+ */
+export function buildEntryQrSpecs(fest, heft) {
+  return [
+    { file: 'entry-fest.png', token: fest, mode: 'heft' },
+    { file: 'entry-heft.png', token: heft, mode: 'heft' },
   ]
 }
 

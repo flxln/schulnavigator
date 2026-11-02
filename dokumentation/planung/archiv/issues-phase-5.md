@@ -63,15 +63,20 @@ Adoption-First mit technischem Spike; kein Big-Bang. Vollständige Planung:
 
 ---
 
-## #48 — Englisch-Menü aktivieren
+## #48 — Englisch-Menü aktivieren (inkl. i18n-Struktur, ehem. #24)
 
-**Labels:** `tech`
-**Assignee:** Felix
+**GitHub:** https://github.com/flxln/schulnavigator/issues/48  
+**Labels:** `tech`  
+**Assignee:** Felix  
+**Milestone:** Phase 5 — Post-Fest
 
-`en.json` vollständig übersetzen (Menütexte, Systemmeldungen).
-Sprachumschalter in der UI aktivieren.
-Content (Audio/Video) bleibt deutsch — nur UI-Texte mehrsprachig.
-Tinas Motivation: englischsprachige Eltern (TU Dresden, internationale Familien).
+Gebündelt mit **#24** (geschlossen): Struktur (`de.json` / `en.json`) und Aktivierung (Übersetzung + Sprachumschalter) in einem Issue.
+
+- UI-Texte in Sprachdateien auslagern; `de.json` vollständig, `en.json` gleiche Struktur
+- `en.json` vollständig übersetzen (Menütexte, Systemmeldungen)
+- Sprachumschalter in der UI aktivieren
+- Content (Audio/Video, Raumbeschreibungen) bleibt deutsch — nur UI-Texte mehrsprachig
+- Motivation: englischsprachige Eltern (TU Dresden, internationale Familien)
 
 ---
 

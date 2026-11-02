@@ -33,7 +33,7 @@ describe('buildSphereMarkerConfig', () => {
       yaw: 0,
       pitch: 0,
       mediumId: 'pc-delightex',
-      icon: '/media/pc-raum/icons/delightex.svg',
+      icon: '/stations-icons/pc-raum/delightex.svg',
       iconSize: 0.1,
     }
     const built = buildSphereMarkerConfig({
@@ -43,7 +43,7 @@ describe('buildSphereMarkerConfig', () => {
       isActive: true,
     })
     expect(built.kind).toBe('imageLayer')
-    expect(built.config.imageLayer).toBe('/media/pc-raum/icons/delightex.svg')
+    expect(built.config.imageLayer).toBe('/stations-icons/pc-raum/delightex.svg')
     expect(built.config.size).toMatchObject({
       width: expect.any(Number),
       height: expect.any(Number),

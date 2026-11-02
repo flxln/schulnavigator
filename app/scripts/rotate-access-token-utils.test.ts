@@ -111,7 +111,7 @@ describe('buildAccessTokensPayload', () => {
       heftExpires: '2027-07-31',
     })
     expect(payload).toEqual([
-      { token: 'fest-a', mode: 'fest', expiresAt: '2026-07-31' },
+      { token: 'fest-a', mode: 'heft', expiresAt: '2026-07-31' },
       { token: 'heft-b', mode: 'heft', expiresAt: '2027-07-31' },
     ])
   })

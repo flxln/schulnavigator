@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MPZ Studio — Medien · editing</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#e3e2df",
+                        "tertiary-fixed-dim": "#acc8f6",
+                        "tertiary-container": "#5b76a0",
+                        "on-background": "#1b1c1a",
+                        "inverse-primary": "#87db5d",
+                        "surface-container": "#efeeea",
+                        "outline": "#717a68",
+                        "surface-container-low": "#f4f4f0",
+                        "primary-fixed": "#a2f876",
+                        "primary-container": "#37850a",
+                        "on-secondary-container": "#003e76",
+                        "surface-container-high": "#e9e8e4",
+                        "on-secondary-fixed": "#001c3b",
+                        "tertiary-fixed": "#d5e3ff",
+                        "surface": "#faf9f5",
+                        "on-secondary-fixed-variant": "#004786",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#1b1c1a",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#f8ffee",
+                        "tertiary": "#425d86",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#2c476f",
+                        "outline-variant": "#c0cab5",
+                        "secondary-container": "#6daaff",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#045faf",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed": "#072100",
+                        "on-surface-variant": "#40493a",
+                        "on-primary-fixed-variant": "#1d5200",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#001c3b",
+                        "background": "#faf9f5",
+                        "primary": "#276a00",
+                        "secondary-fixed": "#d5e3ff",
+                        "on-tertiary-container": "#fefcff",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#2f312e",
+                        "surface-bright": "#faf9f5",
+                        "secondary-fixed-dim": "#a6c8ff",
+                        "surface-dim": "#dbdad6",
+                        "surface-variant": "#e3e2df",
+                        "primary-fixed-dim": "#87db5d",
+                        "error": "#ba1a1a",
+                        "inverse-on-surface": "#f2f1ed",
+                        "surface-tint": "#286c00",
+                        "paper": "#fcfbf7",
+                        "paper-50": "#f5f2ea"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sidebar-width": "240px",
+                        "gutter": "16px",
+                        "topbar-height": "56px",
+                        "stack-sm": "8px",
+                        "stack-lg": "24px",
+                        "stack-md": "16px",
+                        "card-padding": "20px",
+                        "container-padding": "24px"
+                    },
+                    "fontFamily": {
+                        "h1": ["Nunito Sans"],
+                        "code": ["monospace"],
+                        "sidebar-header": ["Nunito Sans"],
+                        "caption": ["Nunito Sans"],
+                        "h2": ["Nunito Sans"],
+                        "body-md": ["Nunito Sans"],
+                        "body-lg": ["Nunito Sans"]
+                    },
+                    "fontSize": {
+                        "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                        "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Nunito Sans', sans-serif; background-color: #faf9f5; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .sidebar-active { border-left: 4px solid #a2f876; background-color: rgba(255, 255, 255, 0.05); }
+        .paper-bg { background-color: #fcfbf7; }
+        .inset-shadow-sm { box-shadow: inset 0 1px 2px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body class="flex min-h-screen text-on-surface">
+<!-- Fixed Sidebar -->
+<aside class="w-[240px] bg-on-secondary-fixed text-white fixed h-full flex flex-col z-50">
+<div class="p-6">
+<h1 class="text-h1 font-h1 font-bold tracking-tight text-white">MPZ Studio</h1>
+<p class="text-[10px] uppercase tracking-widest opacity-50 mt-1 font-bold">Admin Dashboard</p>
+</div>
+<nav class="flex-1 mt-4">
+<div class="px-6 mb-2 opacity-40 text-sidebar-header font-sidebar-header uppercase">Management</div>
+<a class="flex items-center px-6 py-3 text-white/80 hover:bg-white/5 transition-colors gap-3" href="#">
+<span class="material-symbols-outlined text-xl">dashboard</span>
+<span class="text-body-md font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center px-6 py-3 text-white border-l-4 border-primary-fixed bg-white/5 gap-3" href="#">
+<span class="material-symbols-outlined text-xl">location_on</span>
+<span class="text-body-md font-body-md">Alle Stationen</span>
+</a>
+<a class="flex items-center px-6 py-3 text-white/80 hover:bg-white/5 transition-colors gap-3" href="#">
+<span class="material-symbols-outlined text-xl">school</span>
+<span class="text-body-md font-body-md">Coach</span>
+</a>
+<div class="px-6 mt-8 mb-2 opacity-40 text-sidebar-header font-sidebar-header uppercase">Studio Tools</div>
+<a class="flex items-center px-6 py-3 text-white/80 hover:bg-white/5 transition-colors gap-3" href="#">
+<span class="material-symbols-outlined text-xl">link</span>
+<span class="text-body-md font-body-md">Embeds &amp; Links</span>
+</a>
+<a class="flex items-center px-6 py-3 text-white/80 hover:bg-white/5 transition-colors gap-3" href="#">
+<span class="material-symbols-outlined text-xl">palette</span>
+<span class="text-body-md font-body-md">Design &amp; Hub</span>
+</a>
+<a class="flex items-center px-6 py-3 text-white/80 hover:bg-white/5 transition-colors gap-3" href="#">
+<span class="material-symbols-outlined text-xl">rocket_launch</span>
+<span class="text-body-md font-body-md">Deploy</span>
+</a>
+</nav>
+<div class="p-6 border-t border-white/10 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-white font-bold text-xs">AU</div>
+<div>
+<p class="text-xs font-bold leading-none">Admin User</p>
+<p class="text-[10px] opacity-50 mt-1">v2.4.0-stable</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[240px] flex-1 flex flex-col min-h-screen paper-bg">
+<!-- Top Bar -->
+<header class="h-[56px] bg-white border-b border-outline-variant/30 px-6 flex items-center justify-between sticky top-0 z-40">
+<div class="flex items-center gap-2 text-on-surface-variant font-body-md">
+<span class="hover:text-primary cursor-pointer">Stationen</span>
+<span class="material-symbols-outlined text-base">chevron_right</span>
+<span class="text-on-surface font-bold">Klassenzimmer</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="bg-surface-container text-on-surface-variant px-3 py-1 rounded-full text-caption flex items-center gap-1.5 border border-outline-variant/20">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                    Nur lokal · development
+                </span>
+<button class="bg-primary hover:bg-[#3d7e1b] text-white px-5 py-1.5 rounded-full text-body-md font-semibold transition-all active:scale-95 shadow-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+                    Speichern &amp; Validieren
+                </button>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="flex-1 p-8 max-w-6xl mx-auto w-full">
+<!-- Station Header Section -->
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-4">
+<h2 class="text-h1 font-h1 font-bold text-on-secondary-fixed">Klassenzimmer</h2>
+<div class="flex items-center gap-2">
+<span class="bg-surface-container-high px-2.5 py-0.5 rounded text-caption font-bold text-on-surface-variant">HUB 1</span>
+<span class="bg-on-secondary-fixed text-white px-2.5 py-0.5 rounded text-caption font-bold">360°</span>
+<div class="flex items-center gap-1.5 ml-2">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
+<span class="text-caption text-primary font-bold">Online</span>
+</div>
+</div>
+</div>
+<a class="flex items-center gap-2 text-primary hover:underline font-semibold text-body-md" href="#">
+<span class="material-symbols-outlined">visibility</span>
+                    Preview Link
+                </a>
+</div>
+<!-- Navigation Tabs -->
+<div class="flex gap-8 border-b border-outline-variant/30 mb-8">
+<button class="pb-3 text-body-md font-semibold text-on-surface-variant hover:text-on-surface transition-colors relative">Stammdaten</button>
+<button class="pb-3 text-body-md font-bold text-primary relative">
+                    Medien
+                    <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full"></div>
+</button>
+<button class="pb-3 text-body-md font-semibold text-on-surface-variant hover:text-on-surface transition-colors">Hotspots</button>
+<button class="pb-3 text-body-md font-semibold text-on-surface-variant hover:text-on-surface transition-colors">Dialog</button>
+</div>
+<!-- Media List Table -->
+<div class="bg-white rounded-lg border border-outline-variant/30 overflow-hidden shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low text-sidebar-header font-sidebar-header uppercase text-on-surface-variant/60">
+<tr>
+<th class="px-6 py-4 font-bold">ID</th>
+<th class="px-6 py-4 font-bold">Typ</th>
+<th class="px-6 py-4 font-bold">Label</th>
+<th class="px-6 py-4 font-bold">Quelle</th>
+<th class="px-6 py-4 font-bold text-right">Aktionen</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-6 py-4 font-code text-code text-on-surface-variant">demo-audio</td>
+<td class="px-6 py-4">
+<span class="material-symbols-outlined text-secondary align-middle mr-1.5 text-lg">audiotrack</span>
+<span class="text-body-md text-on-surface">audio</span>
+</td>
+<td class="px-6 py-4 text-body-md font-semibold">Mein Schultag (Audio)</td>
+<td class="px-6 py-4 text-caption text-on-surface-variant font-code">…/grundschule_demo.mp3</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary font-semibold text-body-md hover:underline mr-4">Bearbeiten</button>
+<button class="text-error font-semibold text-body-md hover:underline">Entfernen</button>
+</td>
+</tr>
+<!-- Row 2: ACTIVE EDITING STATE -->
+<tr class="bg-primary/5 border-l-4 border-primary">
+<td class="px-6 py-4 font-code text-code text-on-surface font-bold">demo-video</td>
+<td class="px-6 py-4">
+<span class="material-symbols-outlined text-primary align-middle mr-1.5 text-lg" style="font-variation-settings: 'FILL' 1;">videocam</span>
+<span class="text-body-md text-on-surface font-bold">video</span>
+</td>
+<td class="px-6 py-4 text-body-md font-bold">Mein Schultag (Video)</td>
+<td class="px-6 py-4 text-caption text-on-surface-variant font-code">…/grundschule_demo.mp4</td>
+<td class="px-6 py-4 text-right">
+<span class="text-primary font-bold text-body-md uppercase tracking-tighter italic">Edit-Modus</span>
+</td>
+</tr>
+<!-- Inline Editing Panel -->
+<tr class="bg-surface-container-lowest border-l-4 border-primary">
+<td class="px-8 py-8" colspan="5">
+<div class="grid grid-cols-12 gap-8">
+<!-- Form Column -->
+<div class="col-span-8 flex flex-col gap-6">
+<div class="grid grid-cols-2 gap-6">
+<div class="flex flex-col gap-2">
+<label class="text-caption font-bold text-on-surface-variant uppercase">Anzeigename</label>
+<input class="w-full bg-white border border-outline px-4 py-2.5 rounded-lg text-body-md focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none" type="text" value="Mein Schultag (Video)"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-caption font-bold text-on-surface-variant uppercase">Dateipfad</label>
+<div class="relative">
+<input class="w-full bg-paper-50 border border-outline-variant px-4 py-2.5 rounded-lg text-body-md text-on-surface-variant cursor-not-allowed italic" disabled="" type="text" value="…/grundschule_demo.mp4"/>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-on-surface-variant/40 text-lg">lock</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-caption font-bold text-on-surface-variant uppercase">Poster / Thumbnail</label>
+<div class="flex items-center gap-6">
+<div class="w-40 h-24 rounded-lg bg-surface-container border-2 border-dashed border-outline-variant flex flex-col items-center justify-center gap-2 group cursor-pointer hover:border-primary transition-colors overflow-hidden relative">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A cinematic cinematic still from a documentary about a modern elementary school in Germany. Soft morning light filters through large windows into a clean, bright classroom filled with high-quality educational materials. The mood is aspirational, professional, and optimistic. Studio precision aesthetic, high resolution." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBrQX1cEUa2EPjqLLpb0EuDzoSg08ZNWaHKczKI7Px22QhK6JD6ycHYPR6BW66srqrgLEi0x-EeKhJHnkFTq4apdPsoldgnBr0b0rpgyznrvtf5CeVCompbC-_QAPeG6-yKphhP0YR2O_LRRY8hH0wq3qkkpyRDuaCEsZrX67QsbdAJmYSWhfG-0jokCpON7ekx4KOddwFJLd1vV8yrEtEIwT2Vl3t_1qfQK2c4-CLRPpIt3u0anGSE_gRBgfxtB2WO6G2UTSDGa4o')"></div>
+<div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white">upload</span>
+</div>
+</div>
+<div class="flex-1">
+<p class="text-body-md font-semibold text-on-surface">Vorschaubild für Video-Player</p>
+<p class="text-caption text-on-surface-variant mt-1">Empfohlen: 1920x1080px (16:9), PNG oder JPG. Max. 2MB.</p>
+<button class="mt-2 text-primary font-bold text-caption uppercase tracking-wider flex items-center gap-1 hover:underline">
+<span class="material-symbols-outlined text-base">cloud_upload</span>
+                                                        Bild hochladen
+                                                    </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Asset Summary Card -->
+<div class="col-span-4 bg-paper-50 p-6 rounded-xl border border-outline-variant/30 flex flex-col justify-between">
+<div>
+<h4 class="text-body-md font-bold text-on-surface mb-3">Asset Details</h4>
+<div class="space-y-2">
+<div class="flex justify-between text-caption">
+<span class="text-on-surface-variant">Format:</span>
+<span class="font-bold">MPEG-4 Video</span>
+</div>
+<div class="flex justify-between text-caption">
+<span class="text-on-surface-variant">Größe:</span>
+<span class="font-bold">42.5 MB</span>
+</div>
+<div class="flex justify-between text-caption">
+<span class="text-on-surface-variant">Länge:</span>
+<span class="font-bold">03:24 min</span>
+</div>
+<div class="flex justify-between text-caption">
+<span class="text-on-surface-variant">Status:</span>
+<span class="text-primary font-bold">Optimiert</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-2 pt-4">
+<button class="w-full bg-primary hover:bg-[#3d7e1b] text-white py-2.5 rounded-lg font-bold transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">save</span>
+                                                Änderungen übernehmen
+                                            </button>
+<button class="w-full py-2.5 text-on-surface-variant hover:text-on-surface font-semibold transition-all">
+                                                Abbrechen
+                                            </button>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-6 py-4 font-code text-code text-on-surface-variant">demo-foto</td>
+<td class="px-6 py-4">
+<span class="material-symbols-outlined text-secondary align-middle mr-1.5 text-lg">image</span>
+<span class="text-body-md text-on-surface">foto</span>
+</td>
+<td class="px-6 py-4 text-body-md font-semibold">Schulfoto</td>
+<td class="px-6 py-4 text-caption text-on-surface-variant font-code">…/grundschule_demo.jpg</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary font-semibold text-body-md hover:underline mr-4">Bearbeiten</button>
+<button class="text-error font-semibold text-body-md hover:underline">Entfernen</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-6 py-4 font-code text-code text-on-surface-variant">demo-text</td>
+<td class="px-6 py-4">
+<span class="material-symbols-outlined text-secondary align-middle mr-1.5 text-lg">description</span>
+<span class="text-body-md text-on-surface">text</span>
+</td>
+<td class="px-6 py-4 text-body-md font-semibold">Mein Schultag</td>
+<td class="px-6 py-4 text-caption text-on-surface-variant font-code">…/grundschule_demo.md</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary font-semibold text-body-md hover:underline mr-4">Bearbeiten</button>
+<button class="text-error font-semibold text-body-md hover:underline">Entfernen</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Empty Well / Add Asset -->
+<div class="mt-6 flex justify-center">
+<button class="group flex items-center gap-2 border-2 border-dashed border-outline-variant/50 hover:border-primary hover:bg-primary/5 px-8 py-4 rounded-xl transition-all">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">add_circle</span>
+<span class="text-body-md font-bold text-on-surface-variant group-hover:text-primary transition-colors">Neues Medium hinzufügen</span>
+</button>
+</div>
+</div>
+<!-- Footer / Feedback -->
+<footer class="mt-auto py-6 px-8 border-t border-outline-variant/20 flex justify-between items-center bg-white/50">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 text-caption font-bold text-on-surface-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                    Studio Precision Engine v4.2 Active
+                </div>
+<div class="text-caption text-on-surface-variant/60">
+                    Letzte Änderung: Vor 2 Minuten durch Admin User
+                </div>
+</div>
+<div class="flex gap-4">
+<button class="text-caption font-bold text-on-surface-variant uppercase tracking-wider hover:text-primary">Hilfe &amp; Support</button>
+<button class="text-caption font-bold text-on-surface-variant uppercase tracking-wider hover:text-primary">Dokumentation</button>
+</div>
+</footer>
+</main>
+<script>
+        // Micro-interactions for button active states
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => btn.classList.add('scale-95'));
+            btn.addEventListener('mouseup', () => btn.classList.remove('scale-95'));
+            btn.addEventListener('mouseleave', () => btn.classList.remove('scale-95'));
+        });
+    </script>
+</body></html>

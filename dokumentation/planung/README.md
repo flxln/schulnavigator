@@ -11,6 +11,10 @@ Abgleich mit [flxln/schulnavigator](https://github.com/flxln/schulnavigator). **
 | [labels.md](./labels.md) | Label-Konventionen |
 | [epics/](./epics/) | Aktive Epic-Spezifikationen (derzeit: [Directus #47](./epics/epic-directus.md)) — nach Abschluss ins Archiv |
 | [issues/](./issues/) | GitHub-Issue-Bodies (`gh issue create --body-file`); derzeit Directus #249–#262 |
+| [epic-mpz-studio-ui-cleanup.md](./epic-mpz-studio-ui-cleanup.md) | Epic **#195** — MPZ Studio UI-Cleanup (#196–#204), abgeschlossen |
+| [epic-mpz-studio-v3-visual-polish.md](./epic-mpz-studio-v3-visual-polish.md) | Epic **#205** — MPZ Studio v3 Visual Polish (#206–#220) |
+| [epic-schuelermedien-deploy-trennung.md](./epic-schuelermedien-deploy-trennung.md) | Epic **#226** — Schüler-Medien Deploy-Trennung (#227–#232) |
+| [schuelermedien-deploy-trennung/](./schuelermedien-deploy-trennung/README.md) | Planungsdoku Deploy-Trennung (ADR-027); History [#232](https://github.com/flxln/schulnavigator/issues/232) (GitHub-Support LFS-Purge offen) |
 
 ## Archiv
 
@@ -37,5 +41,7 @@ Domänen-Matrix MPZ Studio: [ideen/archiv/mpz-studio-ui.md](../ideen/archiv/mpz-
 3. Große Planänderungen: GitHub anpassen (`gh issue edit`, `gh issue create`).
 
 Vollständiger Abgleich-Log (bis 2026-06-20): [archiv/sync-log-2026-06.md](./archiv/sync-log-2026-06.md).
+
+**Letzter dokumentierter Abgleich:** 2026-07-04 — **#24** in **#48** gebündelt (i18n + Englisch-Menü, Post-Fest). Zuvor #24 aus Phase-2-Archiv nach Phase 5 verschoben.
 
 Siehe auch [entscheidungen.md](../entscheidungen.md), [archiv/projektplan.md](../archiv/projektplan.md) (eingefroren).

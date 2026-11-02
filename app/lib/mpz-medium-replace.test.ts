@@ -20,8 +20,9 @@ import { replaceStationMediumFile } from '@/lib/mpz-medium-replace'
 import { MpzStationMedienError } from '@/lib/mpz-station-medien'
 import * as mpzStationsValidation from '@/lib/mpz-stations-validation'
 import type { StationsFile } from '@/lib/types'
+import { studioDemoStationsFile } from '@/lib/test-fixtures/studio-demo-klassenzimmer'
 
-const fixture = rawStations as StationsFile
+const fixture = studioDemoStationsFile(rawStations as StationsFile)
 
 function pad(b: Buffer, n = 64): Buffer {
   return Buffer.concat([b, Buffer.alloc(Math.max(0, n - b.length))])

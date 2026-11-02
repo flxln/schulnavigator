@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { createPortal } from 'react-dom'
 import Image from 'next/image'
@@ -23,10 +23,10 @@ type MascotPeekOverlayProps = {
 
 function tailForPlacement(placement: CoachPlacement): 'left' | 'right' | 'center' {
   if (placement === 'left') {
-    return 'right'
+    return 'left'
   }
   if (placement === 'right') {
-    return 'left'
+    return 'right'
   }
   return 'center'
 }
@@ -72,10 +72,8 @@ export function MascotPeekOverlay({
   const tail = tailForPlacement(message.placement)
   const [portalReady, setPortalReady] = useState(false)
   const resolvedLayout = useMemo(() => resolveCoachLayout(message), [message])
-  const audioRef = useRef<HTMLAudioElement>(null)
-  const { playBlocked, isPlaying, replay } = useCoachAudio(
+  const { playBlocked, isPlaying, replay, audioRef } = useCoachAudio(
     message.quelle,
-    audioRef,
     portalReady,
   )
 
@@ -150,6 +148,14 @@ export function MascotPeekOverlay({
             </>
           ) : null}
 
+          <p
+            id="coach-peek-text"
+            className={`sn-dialog-bubble sn-dialog-bubble--tail-${tail} sn-coach-peek__bubble`}
+            style={bubbleStyle}
+          >
+            {message.text}
+          </p>
+
           {isDuo ? (
             <div
               className="sn-coach-peek__duo-row"
@@ -183,14 +189,6 @@ export function MascotPeekOverlay({
               imgStyle={resolvedLayout.imgStyle}
             />
           ) : null}
-
-          <p
-            id="coach-peek-text"
-            className={`sn-dialog-bubble sn-dialog-bubble--tail-${tail} sn-coach-peek__bubble`}
-            style={bubbleStyle}
-          >
-            {message.text}
-          </p>
         </div>
       </div>
     </div>

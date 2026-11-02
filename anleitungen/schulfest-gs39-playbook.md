@@ -112,3 +112,41 @@ Sonnentest protokollieren (Datum, Scan ja/nein) — Zeile in [Abschlusstest](../
 - [ ] Tablet-Fallback geladen (Entry-URL aus `manifest-schulfest.json` oder gedrucktem Entry-QR)
 - [ ] MPZ erreichbar (Felix/Julia)
 - [ ] Mobilfunk am Hof getestet ([#91](../dokumentation/planung/archiv/epics/epic-schulfest-gs39-nachtrag.md))
+
+---
+
+## 8. Post-Fest (ab 27.06.2026) — Dauerbetrieb ohne neue QR-Codes
+
+**Ziel:** Voller Hub (Modus `heft`) — alle Stationen sofort klickbar; gedruckte Raum-QRs und der Fest-Entry-QR am Eingang **bleiben unverändert**.
+
+### Technik
+
+| Was | Änderung |
+|-----|----------|
+| Raum-QRs (`/raum/{slug}`) | **Keine** — weiter nutzbar |
+| Entry-QR (`entry-fest.png`) | **Kein Neudruck** — URL unverändert |
+| Hub-Modus | Aus **Code** (`FEST_ENTRY_HUB_MODE` in `access-token-constants.mjs`), nicht aus `SN_ACCESS_TOKENS.mode` |
+| Coolify `SN_ACCESS_TOKENS` | Token-Strings müssen stimmen; `mode:"fest"` in ENV ist **ok** — Laufzeit liefert trotzdem Heft-Hub |
+
+Beispiel für Coolify (Prod + Dev) — `mode` bei fest darf `fest` bleiben:
+
+```json
+[
+  {"token":"fest-vkc2AuKW0S7QGHDT","mode":"fest","expiresAt":"2027-07-31"},
+  {"token":"heft-ImulQPDmydy7VCVj","mode":"heft","expiresAt":"2099-12-31"}
+]
+```
+
+`SN_ACCESS_MODE` bleibt `gated` (oder weglassen). Optional später: `open` für Zugang ohne Entry — siehe [ADR-021](../dokumentation/adr/021-zugangsmodus-konfigurierbar.md).
+
+### Ablauf für Besucher (nach Umstellung)
+
+1. Entry-QR scannen (optional, wenn noch am Eingang) **oder** Raum-QR direkt — nach Entry: **voller Hub**, keine Scan-Pflicht für gesperrte Fenster.
+2. Raum-QRs an Türen/Hof: direkt zur Station oder über Hub.
+
+### Checkliste MPZ
+
+- [ ] `SN_ACCESS_TOKENS` in Coolify Prod + Dev gesetzt (siehe JSON oben)
+- [ ] Deploy `kunde/39-gs` — Runtime-Validierung muss grün sein
+- [ ] Smoke: Entry-URL → Hub zeigt alle 12 Fenster klickbar
+- [ ] Entry-QR am Eingang optional entfernen (Raum-QRs reichen nach erstem Entry-Cookie)

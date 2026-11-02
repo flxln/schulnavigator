@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MPZ Studio - Validierung erfolgreich</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: #faf9f5; /* --paper */
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .success-overlay {
+            backdrop-filter: blur(4px);
+            background-color: rgba(250, 249, 245, 0.7);
+        }
+        .custom-shadow {
+            box-shadow: 0 4px 6px -1px rgba(8, 42, 80, 0.05), 0 2px 4px -1px rgba(8, 42, 80, 0.03);
+        }
+        .inset-field {
+            background-color: #f5f2ea;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#87db5d",
+                        "tertiary": "#425d86",
+                        "surface-container": "#efeeea",
+                        "secondary-fixed": "#d5e3ff",
+                        "on-primary": "#ffffff",
+                        "primary-fixed": "#a2f876",
+                        "primary-container": "#37850a",
+                        "surface-dim": "#dbdad6",
+                        "surface-variant": "#e3e2df",
+                        "on-primary-fixed-variant": "#1d5200",
+                        "on-error": "#ffffff",
+                        "on-surface": "#1b1c1a",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#d5e3ff",
+                        "secondary-container": "#6daaff",
+                        "on-secondary": "#ffffff",
+                        "surface": "#faf9f5",
+                        "secondary": "#045faf",
+                        "on-tertiary-fixed-variant": "#2c476f",
+                        "background": "#faf9f5",
+                        "secondary-fixed-dim": "#a6c8ff",
+                        "on-tertiary-container": "#fefcff",
+                        "on-primary-fixed": "#072100",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#276a00",
+                        "outline": "#717a68",
+                        "surface-container-low": "#f4f4f0",
+                        "on-secondary-container": "#003e76",
+                        "surface-bright": "#faf9f5",
+                        "surface-container-high": "#e9e8e4",
+                        "on-surface-variant": "#40493a",
+                        "surface-container-highest": "#e3e2df",
+                        "tertiary-container": "#5b76a0",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#acc8f6",
+                        "on-secondary-fixed": "#001c3b",
+                        "inverse-surface": "#2f312e",
+                        "on-primary-container": "#f8ffee",
+                        "error-container": "#ffdad6",
+                        "outline-variant": "#c0cab5",
+                        "on-background": "#1b1c1a",
+                        "on-tertiary-fixed": "#001c3b",
+                        "surface-tint": "#286c00",
+                        "on-secondary-fixed-variant": "#004786",
+                        "inverse-on-surface": "#f2f1ed",
+                        "primary-fixed-dim": "#87db5d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "gutter": "16px",
+                        "container-padding": "24px",
+                        "card-padding": "20px",
+                        "topbar-height": "56px",
+                        "stack-lg": "24px",
+                        "sidebar-width": "240px",
+                        "stack-md": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Nunito Sans"],
+                        "h2": ["Nunito Sans"],
+                        "h1": ["Nunito Sans"],
+                        "code": ["monospace"],
+                        "body-lg": ["Nunito Sans"],
+                        "caption": ["Nunito Sans"],
+                        "sidebar-header": ["Nunito Sans"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                        "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="flex min-h-screen overflow-hidden">
+<!-- Sidebar Section -->
+<aside class="fixed left-0 top-0 h-full w-[240px] bg-[#082a50] flex flex-col z-50">
+<div class="px-6 py-8">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary" data-icon="rocket_launch">rocket_launch</span>
+</div>
+<div>
+<h1 class="text-h2 font-h2 text-on-primary leading-tight">MPZ Studio</h1>
+<p class="text-caption text-on-primary/60">Admin Dashboard</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto space-y-6 pb-8">
+<!-- Group: ÜBERSICHT -->
+<div>
+<p class="px-6 mb-2 text-sidebar-header font-sidebar-header text-on-primary/55 uppercase">Übersicht</p>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary border-l-4 border-primary bg-white/10 transition-transform duration-200 scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-body-md font-body-md">Dashboard</span>
+</a>
+</div>
+<!-- Group: STATIONEN -->
+<div>
+<p class="px-6 mb-2 text-sidebar-header font-sidebar-header text-on-primary/55 uppercase">Stationen</p>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="location_on">location_on</span>
+<span class="text-body-md font-body-md">Alle Stationen</span>
+</a>
+</div>
+<!-- Group: GLOBALER INHALT -->
+<div>
+<p class="px-6 mb-2 text-sidebar-header font-sidebar-header text-on-primary/55 uppercase">Globaler Inhalt</p>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span class="text-body-md font-body-md">Coach</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="link">link</span>
+<span class="text-body-md font-body-md">Embeds &amp; Links</span>
+</a>
+</div>
+</div>
+<!-- Group: ERSCHEINUNGSBILD -->
+<div>
+<p class="px-6 mb-2 text-sidebar-header font-sidebar-header text-on-primary/55 uppercase">Erscheinungsbild</p>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="palette">palette</span>
+<span class="text-body-md font-body-md">Design &amp; Hub</span>
+</a>
+</div>
+<!-- Group: BETRIEB -->
+<div>
+<p class="px-6 mb-2 text-sidebar-header font-sidebar-header text-on-primary/55 uppercase">Betrieb</p>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+<span class="text-body-md font-body-md">Deploy</span>
+</a>
+</div>
+</nav>
+<div class="p-6 border-t border-white/10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container text-caption font-bold">JD</div>
+<div class="overflow-hidden">
+<p class="text-body-md font-bold text-on-primary truncate">Admin User</p>
+<p class="text-caption text-on-primary/60 truncate">v2.4.0-stable</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Shell -->
+<main class="ml-[240px] flex-1 flex flex-col h-screen relative">
+<!-- Top Bar -->
+<header class="h-[56px] bg-surface-container-lowest border-b border-[rgba(8,42,80,0.1)] px-container-padding flex items-center justify-between z-40">
+<div class="flex items-center gap-4">
+<span class="text-on-surface-variant font-body-md">Stationen › Klassenzimmer</span>
+<span class="bg-surface-container-low text-on-surface-variant px-3 py-1 rounded-full text-caption flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                    Nur lokal · development
+                </span>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full text-body-md font-bold hover:bg-[#3d7e1b] transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="done_all">done_all</span>
+                    Speichern &amp; Validieren
+                </button>
+</div>
+</header>
+<!-- Content Area -->
+<div class="flex-1 bg-surface p-container-padding overflow-y-auto relative">
+<!-- Dashboard Content (Background Placeholder) -->
+<div class="max-w-5xl mx-auto space-y-stack-lg opacity-40 pointer-events-none">
+<div class="flex items-center justify-between">
+<h2 class="text-h1 font-h1 text-on-surface">Klassenzimmer Overview</h2>
+<div class="flex gap-2">
+<div class="w-10 h-10 rounded bg-white border border-[rgba(8,42,80,0.1)]"></div>
+<div class="w-10 h-10 rounded bg-white border border-[rgba(8,42,80,0.1)]"></div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-stack-md">
+<div class="bg-white p-card-padding rounded-lg border border-[rgba(8,42,80,0.1)] h-32"></div>
+<div class="bg-white p-card-padding rounded-lg border border-[rgba(8,42,80,0.1)] h-32"></div>
+<div class="bg-white p-card-padding rounded-lg border border-[rgba(8,42,80,0.1)] h-32"></div>
+</div>
+<div class="bg-white p-card-padding rounded-lg border border-[rgba(8,42,80,0.1)] h-64">
+<div class="w-full h-full bg-surface-container-low rounded"></div>
+</div>
+<div class="grid grid-cols-2 gap-stack-md">
+<div class="bg-white p-card-padding rounded-lg border border-[rgba(8,42,80,0.1)] h-48"></div>
+<div class="bg-white p-card-padding rounded-lg border border-[rgba(8,42,80,0.1)] h-48"></div>
+</div>
+</div>
+<!-- SUCCESS PANEL OVERLAY -->
+<div class="absolute inset-0 flex items-start justify-center pt-24 z-30 success-overlay">
+<div class="w-full max-w-lg bg-[#f0f9eb] border-l-[6px] border-[#4b9a23] rounded-lg custom-shadow overflow-hidden animate-in fade-in zoom-in duration-300">
+<div class="p-8">
+<div class="flex items-start gap-4 mb-8">
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[32px]" data-icon="check_circle">check_circle</span>
+</div>
+<div>
+<h3 class="text-h1 font-h1 text-on-surface mb-1">Validierung erfolgreich</h3>
+<p class="text-body-md text-on-surface-variant">Die Station 'Klassenzimmer' wurde erfolgreich geprüft und ist bereit für den Deploy.</p>
+</div>
+</div>
+<div class="space-y-4 bg-white/50 rounded-lg p-6 border border-primary/10">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="check">check</span>
+<span class="text-code font-code text-on-surface-variant">validate:stations</span>
+</div>
+<span class="text-caption font-bold text-primary">BESTANDEN</span>
+</div>
+<div class="h-px bg-primary/5"></div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="check">check</span>
+<span class="text-code font-code text-on-surface-variant">validate:coach</span>
+</div>
+<span class="text-caption font-bold text-primary">BESTANDEN</span>
+</div>
+<div class="h-px bg-primary/5"></div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="check">check</span>
+<span class="text-code font-code text-on-surface-variant">validate:tokens</span>
+</div>
+<span class="text-caption font-bold text-primary">BESTANDEN</span>
+</div>
+<div class="h-px bg-primary/5"></div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="check">check</span>
+<span class="text-code font-code text-on-surface-variant">Tests</span>
+</div>
+<span class="text-caption font-bold text-primary">BESTANDEN</span>
+</div>
+</div>
+<div class="mt-8 flex gap-3">
+<button class="flex-1 bg-primary text-on-primary px-6 py-3 rounded-full text-body-md font-bold hover:bg-[#3d7e1b] transition-all transform active:scale-95 shadow-lg shadow-primary/20">
+                                Veröffentlichung starten
+                            </button>
+<button class="px-6 py-3 rounded-full text-on-surface-variant font-bold border border-outline-variant hover:bg-surface-container-low transition-colors" onclick="this.closest('.success-overlay').style.display='none'">
+                                Schließen
+                            </button>
+</div>
+</div>
+<div class="px-8 py-4 bg-primary/5 flex items-center justify-between">
+<span class="text-caption text-on-surface-variant italic">Alle Checks bestanden • 14:32:05 UTC</span>
+<div class="flex gap-1">
+<div class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-primary/50"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-primary/30"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bento Content Glimpse for Realism -->
+<div class="max-w-5xl mx-auto pt-8 opacity-40">
+<div class="grid grid-cols-12 gap-6">
+<div class="col-span-8 bg-white border border-[rgba(8,42,80,0.1)] rounded-xl p-6 h-96 flex flex-col">
+<div class="flex items-center justify-between mb-6">
+<h4 class="text-h2 font-h2 text-on-surface">Besucherfrequenz</h4>
+<div class="flex gap-2">
+<div class="px-3 py-1 bg-surface-container rounded text-caption font-bold">TAG</div>
+<div class="px-3 py-1 text-caption font-bold text-on-surface-variant">WOCHE</div>
+</div>
+</div>
+<div class="flex-1 w-full bg-[#fcfbf7] rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
+<div class="text-center text-on-surface-variant/40">
+<span class="material-symbols-outlined text-[48px]" data-icon="monitoring">monitoring</span>
+<p class="text-caption mt-2">Graphik-Daten werden geladen...</p>
+</div>
+</div>
+</div>
+<div class="col-span-4 space-y-6">
+<div class="bg-white border border-[rgba(8,42,80,0.1)] rounded-xl p-6 h-44">
+<h4 class="text-sidebar-header font-sidebar-header text-on-surface-variant uppercase mb-4">System Status</h4>
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<span class="text-body-md">Cloud Sync</span>
+<span class="text-primary font-bold text-caption">AKTIV</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-body-md">API Latency</span>
+<span class="text-on-surface font-bold text-caption">24ms</span>
+</div>
+</div>
+</div>
+<div class="bg-white border border-[rgba(8,42,80,0.1)] rounded-xl p-6 h-44 relative overflow-hidden group">
+<div class="absolute inset-0 bg-cover bg-center opacity-10 group-hover:scale-110 transition-transform duration-700" data-alt="Abstract modern architectural photography of a clean glass building with soft reflections and a minimalist blue and white sky, matching a professional admin software aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBvfpbxmlRYQldrhLYp5NjU06A76DjZXz212ACRTFYoktUzf63F5XIVrLRaxvWTFpzKDIJJMZL4sJIrQE9jbdPk9MIfIBNcYLKG8JeSGzIfJHM6klKuSCZg5ISXMWjMAxMLOW9vU1gtwTi_n6Pt9c25f1jVHc-_vp3gsjOqGwW-K3Nsr4yPve10ll9HB8ROB2wIW-HzkpdElllyixeSOo-noUi5po-i4DAqYCpGdo1R0FdhO_KlabbuPbPvQwrmis8BvJNbES9Kg8w')"></div>
+<h4 class="text-sidebar-header font-sidebar-header text-on-surface-variant uppercase mb-4 relative z-10">Tipps &amp; Tricks</h4>
+<p class="text-body-md text-on-surface-variant relative z-10">Entdecken Sie neue Workflows für interaktive Lernstationen.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Micro-interaction for the success panel close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const overlay = document.querySelector('.success-overlay');
+                if (overlay) overlay.style.display = 'none';
+            }
+        });
+
+        // Add hover effect to table rows if they existed
+        const interactiveElements = document.querySelectorAll('.transition-all');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mousedown', () => el.style.transform = 'scale(0.96)');
+            el.addEventListener('mouseup', () => el.style.transform = 'scale(1)');
+            el.addEventListener('mouseleave', () => el.style.transform = 'scale(1)');
+        });
+    </script>
+</body></html>

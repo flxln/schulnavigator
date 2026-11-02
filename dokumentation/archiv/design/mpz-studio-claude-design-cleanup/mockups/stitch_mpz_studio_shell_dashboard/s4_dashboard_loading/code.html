@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MPZ Studio - Dashboard Loading</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-container": "#37850a",
+                    "inverse-primary": "#87db5d",
+                    "surface-tint": "#286c00",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed": "#a2f876",
+                    "on-surface-variant": "#40493a",
+                    "on-background": "#1b1c1a",
+                    "secondary-container": "#6daaff",
+                    "on-surface": "#1b1c1a",
+                    "on-tertiary-container": "#fefcff",
+                    "on-error": "#ffffff",
+                    "secondary": "#045faf",
+                    "surface-dim": "#dbdad6",
+                    "outline": "#717a68",
+                    "secondary-fixed-dim": "#a6c8ff",
+                    "surface-container-high": "#e9e8e4",
+                    "tertiary": "#425d86",
+                    "on-primary-fixed": "#072100",
+                    "surface-container-low": "#f4f4f0",
+                    "surface-container": "#efeeea",
+                    "primary": "#276a00",
+                    "on-tertiary-fixed": "#001c3b",
+                    "on-secondary": "#ffffff",
+                    "outline-variant": "#c0cab5",
+                    "background": "#faf9f5",
+                    "on-primary": "#ffffff",
+                    "surface-variant": "#e3e2df",
+                    "on-primary-container": "#f8ffee",
+                    "surface-bright": "#faf9f5",
+                    "tertiary-fixed-dim": "#acc8f6",
+                    "primary-fixed-dim": "#87db5d",
+                    "on-secondary-container": "#003e76",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed-variant": "#2c476f",
+                    "inverse-surface": "#2f312e",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed": "#001c3b",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed": "#d5e3ff",
+                    "secondary-fixed": "#d5e3ff",
+                    "on-secondary-fixed-variant": "#004786",
+                    "surface-container-highest": "#e3e2df",
+                    "inverse-on-surface": "#f2f1ed",
+                    "tertiary-container": "#5b76a0",
+                    "surface": "#faf9f5",
+                    "on-primary-fixed-variant": "#1d5200",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-lg": "24px",
+                    "topbar-height": "56px",
+                    "gutter": "16px",
+                    "container-padding": "24px",
+                    "stack-md": "16px",
+                    "sidebar-width": "240px",
+                    "card-padding": "20px",
+                    "stack-sm": "8px"
+            },
+            "fontFamily": {
+                    "h1": ["Nunito Sans"],
+                    "sidebar-header": ["Nunito Sans"],
+                    "h2": ["Nunito Sans"],
+                    "caption": ["Nunito Sans"],
+                    "body-md": ["Nunito Sans"],
+                    "code": ["monospace"],
+                    "body-lg": ["Nunito Sans"]
+            },
+            "fontSize": {
+                    "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        .skeleton-shimmer {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite linear;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .loading-spinner {
+            border: 3px solid rgba(39, 106, 0, 0.1);
+            border-top: 3px solid #276a00;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        body {
+            background-color: #faf9f5; /* --paper background */
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface antialiased">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-[240px] bg-[#082a50] flex flex-col overflow-y-auto z-50">
+<div class="px-6 py-8">
+<h2 class="text-h2 font-h2 text-on-primary">MPZ Studio</h2>
+<p class="text-caption text-on-primary/60 mt-1">Admin Dashboard</p>
+</div>
+<nav class="flex-1 mt-4">
+<!-- Active Item: Dashboard -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary border-l-4 border-primary bg-white/10 scale-[0.98] transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined">location_on</span>
+<span class="font-body-md">Alle Stationen</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="font-body-md">Coach</span>
+</a>
+<div class="px-6 py-4 mt-4">
+<span class="text-sidebar-header font-sidebar-header text-on-primary/55 uppercase">Konfiguration</span>
+</div>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined">link</span>
+<span class="font-body-md">Embeds &amp; Links</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined">palette</span>
+<span class="font-body-md">Design &amp; Hub</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined">rocket_launch</span>
+<span class="font-body-md">Deploy</span>
+</a>
+</nav>
+<div class="p-4 mt-auto border-t border-white/10">
+<div class="flex items-center gap-3 px-2">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary text-[10px] font-bold">
+                    MPZ
+                </div>
+<div class="overflow-hidden">
+<p class="text-caption text-on-primary truncate">Studio Admin</p>
+<p class="text-[10px] text-on-primary/50 truncate">v2.4.0-stable</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 h-[56px] left-[240px] bg-surface-container-lowest border-b border-outline-variant flex items-center justify-between px-container-padding z-40">
+<div class="flex items-center gap-2">
+<span class="text-on-surface-variant font-body-md">Stationen</span>
+<span class="text-on-surface-variant/40 text-[12px] material-symbols-outlined">chevron_right</span>
+<span class="text-primary font-bold font-body-md">Dashboard</span>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="text-body-md font-bold px-4 py-2 text-primary hover:bg-surface-container-low transition-colors rounded-lg">
+                Nur lokal
+            </button>
+<button class="text-body-md font-bold px-6 py-2 bg-primary text-on-primary rounded-full hover:bg-[#3d7e1b] transition-colors shadow-sm">
+                Speichern &amp; Validieren
+            </button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[240px] pt-[56px] min-h-screen p-container-padding">
+<div class="max-w-5xl mx-auto space-y-stack-lg">
+<!-- Dashboard Header -->
+<section class="flex flex-col gap-1">
+<h1 class="text-h1 font-h1 text-on-surface">Dashboard</h1>
+<p class="text-body-md text-on-surface-variant">Willkommen zurück im Studio. Hier sehen Sie den Status Ihrer aktuellen Stationen.</p>
+</section>
+<!-- Loading Validation Card (Bento-ish primary card) -->
+<div class="bg-white rounded-lg border border-[#082a50]/10 p-card-padding shadow-sm min-h-[400px] flex flex-col">
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-3">
+<div class="loading-spinner"></div>
+<h2 class="text-h2 font-h2">Lade Validierungsreport...</h2>
+</div>
+<div class="h-6 w-24 skeleton-shimmer rounded"></div>
+</div>
+<!-- Skeleton Rows -->
+<div class="space-y-6">
+<div class="grid grid-cols-3 gap-6">
+<div class="h-32 skeleton-shimmer rounded-lg opacity-40"></div>
+<div class="h-32 skeleton-shimmer rounded-lg opacity-40"></div>
+<div class="h-32 skeleton-shimmer rounded-lg opacity-40"></div>
+</div>
+<div class="space-y-4 pt-4 border-t border-outline-variant/30">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full skeleton-shimmer opacity-30 shrink-0"></div>
+<div class="h-4 w-1/3 skeleton-shimmer rounded opacity-30"></div>
+<div class="h-4 w-12 skeleton-shimmer rounded ml-auto opacity-30"></div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full skeleton-shimmer opacity-20 shrink-0"></div>
+<div class="h-4 w-2/5 skeleton-shimmer rounded opacity-20"></div>
+<div class="h-4 w-12 skeleton-shimmer rounded ml-auto opacity-20"></div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full skeleton-shimmer opacity-10 shrink-0"></div>
+<div class="h-4 w-1/4 skeleton-shimmer rounded opacity-10"></div>
+<div class="h-4 w-12 skeleton-shimmer rounded ml-auto opacity-10"></div>
+</div>
+</div>
+<div class="mt-8 p-6 bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex flex-col items-center justify-center gap-3">
+<div class="h-4 w-48 skeleton-shimmer rounded opacity-40"></div>
+<div class="h-3 w-64 skeleton-shimmer rounded opacity-20"></div>
+</div>
+</div>
+</div>
+<!-- Idle Secondary Content (Inactive State) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
+<!-- Activity Feed Placeholder -->
+<div class="bg-white rounded-lg border border-[#082a50]/10 p-card-padding opacity-60">
+<h3 class="text-body-lg font-bold mb-4">Letzte Aktivitäten</h3>
+<div class="space-y-4">
+<div class="flex items-start gap-3">
+<div class="w-2 h-2 rounded-full bg-outline mt-2"></div>
+<div>
+<p class="text-body-md font-semibold">Station "Klassenzimmer" aktualisiert</p>
+<p class="text-caption text-on-surface-variant">Vor 2 Stunden • Von Admin</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-2 h-2 rounded-full bg-outline mt-2"></div>
+<div>
+<p class="text-body-md font-semibold">Neuer Medieninhalt hochgeladen</p>
+<p class="text-caption text-on-surface-variant">Gestern • Von System</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Stats Summary Placeholder -->
+<div class="bg-white rounded-lg border border-[#082a50]/10 p-card-padding opacity-60">
+<h3 class="text-body-lg font-bold mb-4">System Übersicht</h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-4 rounded">
+<p class="text-caption uppercase font-bold text-on-surface-variant/70">Aktiv</p>
+<p class="text-h2 font-h2">12</p>
+</div>
+<div class="bg-surface-container-low p-4 rounded">
+<p class="text-caption uppercase font-bold text-on-surface-variant/70">Fehler</p>
+<p class="text-h2 font-h2">0</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Micro-interactions & Micro-Ambient Animation -->
+<div class="fixed inset-0 pointer-events-none z-0 opacity-20" id="ambient-glow">
+<div class="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full blur-[120px] bg-primary/10"></div>
+<div class="absolute bottom-[-10%] left-[10%] w-[30%] h-[30%] rounded-full blur-[100px] bg-secondary/5"></div>
+</div>
+<script>
+        // Subtle ambient mouse movement effect on the glow
+        document.addEventListener('mousemove', (e) => {
+            const glow = document.getElementById('ambient-glow');
+            const x = (e.clientX / window.innerWidth) * 20;
+            const y = (e.clientY / window.innerHeight) * 20;
+            glow.style.transform = `translate(${x}px, ${y}px)`;
+        });
+
+        // Simulate random skeleton widths on load for more "natural" feel
+        window.addEventListener('DOMContentLoaded', () => {
+            const skeletons = document.querySelectorAll('.skeleton-shimmer');
+            skeletons.forEach(s => {
+                if (s.classList.contains('w-1/3') || s.classList.contains('w-2/5') || s.classList.contains('w-1/4')) {
+                    const randomWidth = Math.floor(Math.random() * (60 - 20) + 20);
+                    s.style.width = randomWidth + '%';
+                }
+            });
+        });
+    </script>
+</body></html>

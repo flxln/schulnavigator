@@ -179,7 +179,7 @@ export function BrandPanel({ initialSlots }: BrandPanelProps) {
         </p>
         <p className="mt-2 text-sm">
           Station-Akzente und Hub-Icons:{' '}
-          <Link href="/mpz/studio/hub" className="font-medium text-brand-blue underline">
+          <Link href="/mpz/studio/design?tab=hub" className="font-medium text-brand-blue underline">
             Hub-Karte
           </Link>
         </p>

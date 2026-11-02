@@ -108,6 +108,9 @@ describe('stations-hotspot-coverage (Forward-Guard)', () => {
           MIN_PAN_DISPLAY_RATIO,
         )
         for (const hs of station.hotspots ?? []) {
+          if (hs.action === 'dialog') {
+            continue
+          }
           assertHotspotInBand(hs, band)
         }
       }

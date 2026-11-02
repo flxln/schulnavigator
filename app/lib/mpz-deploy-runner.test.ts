@@ -5,6 +5,7 @@ import {
   MpzDeployRunnerError,
   QR_MANIFEST_SENTINEL,
   runNpmScript,
+  runShellScript,
   truncateDeployOutput,
 } from '@/lib/mpz-deploy-runner'
 
@@ -73,5 +74,46 @@ describe('runNpmScript', () => {
   it('wirft bei Timeout', async () => {
     execFileMock.mockRejectedValue({ killed: true, signal: 'SIGTERM' })
     await expect(runNpmScript('test')).rejects.toBeInstanceOf(MpzDeployRunnerError)
+  })
+})
+
+describe('runShellScript', () => {
+  afterEach(() => {
+    execFileMock.mockReset()
+  })
+
+  it('übergibt explizite timeoutMs, cwd, env und maxBuffer', async () => {
+    execFileMock.mockResolvedValue({ stdout: 'sync ok', stderr: '' })
+    const env = { DEPLOY_SSH: 'admin@example.test', PATH: '/usr/bin' }
+    const result = await runShellScript('bash', ['/tmp/deploy.sh'], {
+      timeoutMs: 900_000,
+      cwd: '/app',
+      env,
+      maxBuffer: 1024,
+    })
+    expect(result.exitCode).toBe(0)
+    expect(execFileMock).toHaveBeenCalledWith(
+      'bash',
+      ['/tmp/deploy.sh'],
+      expect.objectContaining({
+        timeout: 900_000,
+        cwd: '/app',
+        env,
+        maxBuffer: 1024,
+        encoding: 'utf8',
+      }),
+    )
+  })
+
+  it('mappt Exit-Code ≠ 0', async () => {
+    execFileMock.mockRejectedValue({ code: 1, stdout: '', stderr: 'fail' })
+    const result = await runShellScript('bash', ['script.sh'], {
+      timeoutMs: 60_000,
+      cwd: '/app',
+      env: process.env,
+      maxBuffer: 1024,
+    })
+    expect(result.exitCode).toBe(1)
+    expect(result.stderr).toBe('fail')
   })
 })

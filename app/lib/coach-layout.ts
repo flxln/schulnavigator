@@ -29,11 +29,11 @@ export const COACH_LAYOUT_CLAMPS: Record<
   { min: number; max: number }
 > = {
   mascotSize: { min: 0.15, max: 0.55 },
-  mascotOffsetX: { min: -5, max: 5 },
-  mascotOffsetY: { min: -5, max: 5 },
+  mascotOffsetX: { min: -20, max: 20 },
+  mascotOffsetY: { min: -20, max: 20 },
   bubbleMaxWidth: { min: 12, max: 32 },
-  bubbleOffsetX: { min: -5, max: 5 },
-  bubbleOffsetY: { min: -5, max: 5 },
+  bubbleOffsetX: { min: -20, max: 20 },
+  bubbleOffsetY: { min: -20, max: 20 },
   bubbleFontSize: { min: 12, max: 20 },
 }
 
@@ -57,6 +57,10 @@ function clamp(value: number, min: number, max: number): number {
 function clampField(key: CoachLayoutFieldKey, value: number): number {
   const { min, max } = COACH_LAYOUT_CLAMPS[key]
   return clamp(value, min, max)
+}
+
+function mascotSizeToVh(mascotSize: number): string {
+  return `${Math.round(mascotSize * 1000) / 10}vh`
 }
 
 function resolveNumericField(
@@ -171,10 +175,12 @@ export function resolveCoachLayout(
   const baseBubbleMarginY = isDuo
     ? DEFAULT_DUO_BUBBLE_MARGIN_Y_REM
     : DEFAULT_BUBBLE_MARGIN_Y_REM
-  const bubbleMarginTop = baseBubbleMarginY + bubbleOffsetY
+  const bubbleMarginBottom = baseBubbleMarginY + bubbleOffsetY
 
+  const mascotHeight = mascotSizeToVh(mascotSize)
   const imgStyle: CSSProperties = {
-    height: `min(${Math.round(mascotSize * 1000) / 10}vh, 260px)`,
+    height: mascotHeight,
+    maxWidth: `min(100%, ${mascotHeight})`,
   }
 
   const figureTransform = buildFigureTransform(
@@ -206,7 +212,7 @@ export function resolveCoachLayout(
     : undefined
 
   const bubbleStyle: CSSProperties = {
-    marginTop: `${bubbleMarginTop}rem`,
+    marginBottom: `${bubbleMarginBottom}rem`,
     maxWidth: `min(100%, ${bubbleMaxWidth}rem)`,
     fontSize: `${bubbleFontSize}px`,
   }
@@ -285,12 +291,12 @@ export function parseCoachLayoutBody(
 export function placementLayoutHint(placement: CoachPlacement): string {
   switch (placement) {
     case 'duo-split':
-      return 'Duo-Row: mascotOffset auf beide Figuren; Spiegelung gilt für beide; Blase zentriert (Default margin-top −0,5 rem).'
+      return 'Duo-Row: mascotOffset auf beide Figuren; Spiegelung gilt für beide; Blase zentriert darüber (Default margin-bottom −0,5 rem).'
     case 'bottom':
-      return 'Figur zentriert unten; Blase darunter (Default margin-top 0,75 rem).'
+      return 'Figur zentriert unten; Blase darüber (Default margin-bottom 0,75 rem).'
     case 'left':
-      return 'Figur links unten; Blase darunter (Default margin-top 0,75 rem).'
+      return 'Figur links unten; Blase darüber (Default margin-bottom 0,75 rem).'
     case 'right':
-      return 'Figur rechts unten; Blase darunter (Default margin-top 0,75 rem).'
+      return 'Figur rechts unten; Blase darüber (Default margin-bottom 0,75 rem).'
   }
 }

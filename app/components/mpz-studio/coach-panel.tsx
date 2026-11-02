@@ -5,6 +5,12 @@ import { useCallback, useEffect, useState, useTransition } from 'react'
 import { CoachAudioStateBadge } from '@/components/mpz-studio/coach-audio-status-badges'
 import { CoachMessageForm } from '@/components/mpz-studio/coach-message-form'
 import {
+  MpzDataTable,
+  MpzDataTableBody,
+  MpzDataTableHead,
+} from '@/components/mpz-studio/mpz-data-table'
+import { MpzFormAlert } from '@/components/mpz-studio/mpz-form-alert'
+import {
   markMpzStudioDirty,
   useStudioValidation,
 } from '@/components/mpz-studio/studio-validation-context'
@@ -105,16 +111,8 @@ export function CoachPanel({ messages, stationSlugs, stationCount }: CoachPanelP
         läuft <code className="text-fg-1">validate:coach</code>.
       </p>
 
-      {error && (
-        <p className="rounded-gs39-sm border border-brand-red/30 bg-brand-red/10 px-3 py-2 text-sm text-fg-1">
-          {error}
-        </p>
-      )}
-      {success && (
-        <p className="rounded-gs39-sm border border-brand-green/30 bg-brand-green/10 px-3 py-2 text-sm text-fg-1">
-          {success}
-        </p>
-      )}
+      {error && <MpzFormAlert variant="error">{error}</MpzFormAlert>}
+      {success && <MpzFormAlert variant="success">{success}</MpzFormAlert>}
 
       {!adding && !editingId && (
         <button
@@ -151,22 +149,19 @@ export function CoachPanel({ messages, stationSlugs, stationCount }: CoachPanelP
         />
       )}
 
-      <div className="overflow-x-auto rounded-gs39-md border border-border-1">
-        <table className="w-full min-w-[640px] text-left text-sm">
-          <thead className="border-b border-border-1 bg-bg-2 text-xs font-semibold uppercase tracking-wide text-fg-3">
-            <tr>
-              <th className="px-3 py-2">ID</th>
-              <th className="px-3 py-2">Trigger</th>
-              <th className="px-3 py-2">Details</th>
-              <th className="px-3 py-2">Maskottchen</th>
-              <th className="px-3 py-2">Text</th>
-              <th className="px-3 py-2">Audio</th>
-              <th className="px-3 py-2">Aktionen</th>
-            </tr>
-          </thead>
-          <tbody>
-            {messages.map((m) => (
-              <tr key={m.id} className="border-b border-border-1 last:border-b-0">
+      <MpzDataTable className="rounded-gs39-md border border-border-1" minWidth="min-w-[640px]">
+        <MpzDataTableHead>
+          <th className="px-3 py-2">ID</th>
+          <th className="px-3 py-2">Trigger</th>
+          <th className="px-3 py-2">Details</th>
+          <th className="px-3 py-2">Maskottchen</th>
+          <th className="px-3 py-2">Text</th>
+          <th className="px-3 py-2">Audio</th>
+          <th className="px-3 py-2">Aktionen</th>
+        </MpzDataTableHead>
+        <MpzDataTableBody>
+          {messages.map((m) => (
+            <tr key={m.id} className="border-b border-border-1 last:border-b-0">
                 <td className="px-3 py-2 font-mono text-xs text-fg-2">{m.id}</td>
                 <td className="px-3 py-2 text-fg-1">{m.trigger}</td>
                 <td className="px-3 py-2 text-xs text-fg-3">
@@ -212,7 +207,7 @@ export function CoachPanel({ messages, stationSlugs, stationCount }: CoachPanelP
                       type="button"
                       disabled={isPending}
                       onClick={() => void handleDelete(m.id)}
-                      className="text-xs font-semibold text-brand-red underline-offset-2 hover:underline disabled:opacity-50"
+                      className="text-xs font-semibold text-error underline-offset-2 hover:underline disabled:opacity-50"
                     >
                       Löschen
                     </button>
@@ -220,9 +215,8 @@ export function CoachPanel({ messages, stationSlugs, stationCount }: CoachPanelP
                 </td>
               </tr>
             ))}
-          </tbody>
-        </table>
-      </div>
+        </MpzDataTableBody>
+      </MpzDataTable>
     </div>
   )
 }

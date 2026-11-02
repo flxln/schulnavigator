@@ -49,11 +49,16 @@ public/qr/pdf/*.pdf
 
 certificates
 
-# MPZ Studio / content:ingest — lokale Backup-Datei nicht versionieren
+# MPZ Studio / content:ingest — lokale Backup-Dateien nicht versionieren
 data/stations.json.bak
+content/coach-messages.json.bak
 # Einzelseiten-PDFs (enthalten Entry-Token, nicht öffentlich ausliefern)
 public/qr/einzelneseiten/
 
 # Schüler-Medien nie in Git (ADR-027, Volumes + rsync)
-public/media/*
-!public/media/.gitkeep
+/public/media/*
+!/public/media/.gitkeep
+/content/dialog-audio/*
+!/content/dialog-audio/.gitkeep
+/content/coach-audio/*
+!/content/coach-audio/.gitkeep

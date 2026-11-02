@@ -22,6 +22,7 @@ export type SaveValidateFeedback = {
 type StudioValidationContextValue = {
   report: MpzValidationReport | null
   loading: boolean
+  saveInProgress: boolean
   dirty: boolean
   error: string | null
   saveFeedback: SaveValidateFeedback | null
@@ -44,12 +45,13 @@ export function markMpzStudioDirty(): void {
 
 export function StudioValidationProvider({ children }: { children: ReactNode }) {
   const [report, setReport] = useState<MpzValidationReport | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [dirty, setDirty] = useState(true)
+  const [loading, setLoading] = useState(true)
+  const [dirty, setDirty] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [saveFeedback, setSaveFeedback] = useState<SaveValidateFeedback | null>(
     null,
   )
+  const [saveInProgress, setSaveInProgress] = useState(false)
   const lastValidatedMtimeRef = useRef<string | null>(null)
 
   const applyReport = useCallback(
@@ -63,6 +65,7 @@ export function StudioValidationProvider({ children }: { children: ReactNode }) 
   )
 
   const validateNow = useCallback(async () => {
+    setSaveInProgress(false)
     setLoading(true)
     setError(null)
     try {
@@ -91,6 +94,7 @@ export function StudioValidationProvider({ children }: { children: ReactNode }) 
   }, [])
 
   const saveAndValidate = useCallback(async () => {
+    setSaveInProgress(true)
     setLoading(true)
     setError(null)
     setSaveFeedback(null)
@@ -123,6 +127,7 @@ export function StudioValidationProvider({ children }: { children: ReactNode }) 
     } catch {
       setError('Netzwerkfehler bei Speichern & Validieren.')
     } finally {
+      setSaveInProgress(false)
       setLoading(false)
     }
   }, [applyReport])
@@ -146,6 +151,7 @@ export function StudioValidationProvider({ children }: { children: ReactNode }) 
       value={{
         report,
         loading,
+        saveInProgress,
         dirty,
         error,
         saveFeedback,

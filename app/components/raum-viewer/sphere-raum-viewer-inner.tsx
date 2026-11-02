@@ -45,6 +45,15 @@ import {
   yawPitchToRadians,
 } from '@/lib/raum-viewer/sphere-marker-conventions'
 
+export type SphereCalibClick = {
+  yaw: number
+  pitch: number
+  textureX?: number
+  textureY?: number
+}
+
+export type SphereCalibView = { yawDeg: number; pitchDeg: number }
+
 export type SphereRaumViewerInnerProps = {
   stationSlug?: string
   panorama: string
@@ -62,6 +71,11 @@ export type SphereRaumViewerInnerProps = {
   layout?: RaumViewerLayout
   orientationEnabled?: boolean
   onViewerCoachGateChange?: (blocksCoach: boolean) => void
+  /** MPZ-Kalibrierung ohne URL-Param (S14). */
+  calibMode?: boolean
+  calibUi?: 'overlay' | 'external'
+  onCalibClick?: (click: SphereCalibClick) => void
+  onCalibViewReady?: (getCurrentView: () => SphereCalibView | null) => void
 }
 
 const VIEWER_HEIGHT_CLASS_DEFAULT = 'sn-viewer-fallback-height'
@@ -103,11 +117,15 @@ export const SphereRaumViewerInner = forwardRef<
     layout = 'default',
     orientationEnabled = true,
     onViewerCoachGateChange,
+    calibMode = false,
+    calibUi = 'overlay',
+    onCalibClick,
+    onCalibViewReady,
   },
   ref,
 ) {
   const searchParams = useSearchParams()
-  const calibEnabled = hotspotCalibFromSearchParams(searchParams)
+  const calibEnabled = hotspotCalibFromSearchParams(searchParams) || !!calibMode
   const containerRef = useRef<HTMLDivElement>(null)
   const viewerRef = useRef<Viewer | null>(null)
   const markersPluginRef = useRef<MarkersPlugin | null>(null)
@@ -115,6 +133,8 @@ export const SphereRaumViewerInner = forwardRef<
   const onViewChangeRef = useRef(onViewChange)
   const onHotspotTapRef = useRef(onHotspotTap)
   const onContainerReadyRef = useRef(onContainerReady)
+  const onCalibClickRef = useRef(onCalibClick)
+  const onCalibViewReadyRef = useRef(onCalibViewReady)
   const hotspots360Ref = useRef(hotspots360)
   const startYawRef = useRef(startYaw)
   const startPitchRef = useRef(startPitch)
@@ -128,12 +148,7 @@ export const SphereRaumViewerInner = forwardRef<
   const mascotElementsRef = useRef<Map<string, HTMLElement>>(new Map())
   const [ready, setReady] = useState(false)
   const [panOnboardingActive, setPanOnboardingActive] = useState(false)
-  const [calibClick, setCalibClick] = useState<{
-    yaw: number
-    pitch: number
-    textureX?: number
-    textureY?: number
-  } | null>(null)
+  const [calibClick, setCalibClick] = useState<SphereCalibClick | null>(null)
 
   const { state: orientState, requestAccess } = useDeviceOrientation(orientationEnabled)
 
@@ -164,6 +179,8 @@ export const SphereRaumViewerInner = forwardRef<
   useEffect(() => { onViewChangeRef.current = onViewChange }, [onViewChange])
   useEffect(() => { onHotspotTapRef.current = onHotspotTap }, [onHotspotTap])
   useEffect(() => { onContainerReadyRef.current = onContainerReady }, [onContainerReady])
+  useEffect(() => { onCalibClickRef.current = onCalibClick }, [onCalibClick])
+  useEffect(() => { onCalibViewReadyRef.current = onCalibViewReady }, [onCalibViewReady])
   useEffect(() => { hotspots360Ref.current = hotspots360 }, [hotspots360])
   useEffect(() => {
     startYawRef.current = startYaw
@@ -177,6 +194,12 @@ export const SphereRaumViewerInner = forwardRef<
     () => calibViewRef.current,
     [],
   )
+
+  useEffect(() => {
+    if (ready && calibEnabled) {
+      onCalibViewReadyRef.current?.(getCurrentCalibView)
+    }
+  }, [ready, calibEnabled, getCurrentCalibView])
 
   const isHero = layout === 'hero'
 
@@ -365,12 +388,14 @@ export const SphereRaumViewerInner = forwardRef<
 
     if (calibEnabled) {
       viewer.addEventListener('click', (e) => {
-        setCalibClick({
+        const click: SphereCalibClick = {
           yaw: e.data.yaw,
           pitch: e.data.pitch,
           textureX: e.data.textureX,
           textureY: e.data.textureY,
-        })
+        }
+        setCalibClick(click)
+        onCalibClickRef.current?.(click)
       })
     }
 
@@ -541,7 +566,7 @@ export const SphereRaumViewerInner = forwardRef<
         skip={panOnboardingSkip}
         onActiveChange={handlePanOnboardingActiveChange}
       />
-      {calibEnabled && stationSlug ? (
+      {calibEnabled && calibUi === 'overlay' && stationSlug ? (
         <SphereHotspotCalibOverlay
           stationSlug={stationSlug}
           hotspots360={hotspots360}

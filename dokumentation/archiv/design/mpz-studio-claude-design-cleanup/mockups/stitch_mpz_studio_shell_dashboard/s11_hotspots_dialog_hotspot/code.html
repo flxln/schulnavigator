@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MPZ Studio - Hotspots Dialog</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#d5e3ff",
+                        "primary-container": "#37850a",
+                        "primary": "#276a00",
+                        "surface-container": "#efeeea",
+                        "surface": "#faf9f5",
+                        "outline-variant": "#c0cab5",
+                        "surface-dim": "#dbdad6",
+                        "secondary": "#045faf",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#f2f1ed",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#2c476f",
+                        "on-secondary-fixed": "#001c3b",
+                        "tertiary": "#425d86",
+                        "surface-container-highest": "#e3e2df",
+                        "surface-container-low": "#f4f4f0",
+                        "on-tertiary-container": "#fefcff",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#d5e3ff",
+                        "outline": "#717a68",
+                        "on-secondary-fixed-variant": "#004786",
+                        "primary-fixed": "#a2f876",
+                        "on-tertiary-fixed": "#001c3b",
+                        "on-background": "#1b1c1a",
+                        "inverse-primary": "#87db5d",
+                        "secondary-container": "#6daaff",
+                        "on-surface": "#1b1c1a",
+                        "on-primary-container": "#f8ffee",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed-dim": "#87db5d",
+                        "tertiary-fixed-dim": "#acc8f6",
+                        "tertiary-container": "#5b76a0",
+                        "surface-container-high": "#e9e8e4",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed": "#072100",
+                        "background": "#faf9f5",
+                        "surface-variant": "#e3e2df",
+                        "surface-tint": "#286c00",
+                        "surface-bright": "#faf9f5",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#2f312e",
+                        "on-secondary-container": "#003e76",
+                        "secondary-fixed-dim": "#a6c8ff",
+                        "on-surface-variant": "#40493a",
+                        "on-primary-fixed-variant": "#1d5200",
+                        "navy-studio": "#082a50",
+                        "paper": "#fcfbf7",
+                        "paper-50": "#f5f2ea"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "card-padding": "20px",
+                        "topbar-height": "56px",
+                        "stack-sm": "8px",
+                        "sidebar-width": "240px",
+                        "gutter": "16px",
+                        "stack-lg": "24px",
+                        "stack-md": "16px",
+                        "container-padding": "24px"
+                    },
+                    "fontFamily": {
+                        "sidebar-header": ["Nunito Sans"],
+                        "caption": ["Nunito Sans"],
+                        "h2": ["Nunito Sans"],
+                        "body-md": ["Nunito Sans"],
+                        "body-lg": ["Nunito Sans"],
+                        "h1": ["Nunito Sans"],
+                        "code": ["monospace"]
+                    },
+                    "fontSize": {
+                        "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                        "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: #faf9f5;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .sidebar-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+        }
+        .custom-shadow {
+            box-shadow: 0 1px 3px rgba(8,42,80,0.08);
+        }
+        .active-pill {
+            position: relative;
+        }
+        .active-pill::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #a2f876;
+        }
+    </style>
+</head>
+<body class="bg-paper text-on-surface">
+<!-- SIDEBAR -->
+<aside class="fixed inset-y-0 left-0 w-[240px] bg-navy-studio text-white z-50 flex flex-col">
+<div class="p-6">
+<h1 class="font-h1 text-h1 font-extrabold tracking-tight text-white">MPZ Studio</h1>
+<p class="text-[10px] uppercase tracking-widest opacity-50 mt-1">Admin Dashboard</p>
+</div>
+<nav class="flex-1 px-0 py-4 sidebar-scroll overflow-y-auto">
+<div class="px-6 mb-4">
+<p class="font-sidebar-header text-sidebar-header uppercase text-white/50 mb-2">STATIONEN</p>
+<ul class="space-y-1">
+<li>
+<a class="flex items-center gap-3 px-4 py-3 bg-white/10 active-pill text-white transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">location_on</span>
+<span class="font-body-md text-body-md">Alle Stationen</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 text-white/70 hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+</li>
+</ul>
+</div>
+<div class="px-6 mb-4">
+<p class="font-sidebar-header text-sidebar-header uppercase text-white/50 mb-2">TOOLS</p>
+<ul class="space-y-1">
+<li>
+<a class="flex items-center gap-3 px-4 py-3 text-white/70 hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">school</span>
+<span class="font-body-md text-body-md">Coach</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 text-white/70 hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">link</span>
+<span class="font-body-md text-body-md">Embeds &amp; Links</span>
+</a>
+</li>
+</ul>
+</div>
+<div class="px-6 mb-4">
+<p class="font-sidebar-header text-sidebar-header uppercase text-white/50 mb-2">SYSTEM</p>
+<ul class="space-y-1">
+<li>
+<a class="flex items-center gap-3 px-4 py-3 text-white/70 hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">palette</span>
+<span class="font-body-md text-body-md">Design &amp; Hub</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 text-white/70 hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">rocket_launch</span>
+<span class="font-body-md text-body-md">Deploy</span>
+</a>
+</li>
+</ul>
+</div>
+</nav>
+<div class="p-4 border-t border-white/10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-bold text-xs">
+                    AU
+                </div>
+<div>
+<p class="text-xs font-bold">Admin User</p>
+<p class="text-[10px] opacity-60">Super Administrator</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- TOP BAR -->
+<header class="fixed top-0 right-0 left-[240px] h-[56px] bg-white border-b border-outline-variant/30 z-40 flex items-center justify-between px-6">
+<div class="flex items-center gap-4">
+<nav class="flex items-center text-on-surface-variant font-body-md text-body-md">
+<a class="hover:text-primary transition-colors" href="#">Stationen</a>
+<span class="mx-2 opacity-30">/</span>
+<span class="font-bold text-on-surface">DaZ</span>
+</nav>
+<div class="flex items-center gap-2 px-2 py-1 bg-surface-container-low border border-outline-variant/50 rounded-full">
+<span class="w-2 h-2 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.6)]"></span>
+<span class="text-[11px] font-bold text-on-surface-variant">Nur lokal · development</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-4 py-2 bg-primary hover:bg-[#3d7e1b] text-white rounded-full font-bold text-body-md transition-all active:scale-95 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+                Speichern &amp; Validieren
+            </button>
+</div>
+</header>
+<!-- MAIN CONTENT -->
+<main class="ml-[240px] mt-[56px] p-6 min-h-[calc(100vh-56px)]">
+<div class="max-w-6xl mx-auto space-y-6">
+<!-- SECTION HEADER -->
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-h1 text-h1 text-on-surface">Hotspots 360°</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Konfigurieren Sie interaktive Punkte innerhalb der Szene.</p>
+</div>
+<button class="px-6 py-2 bg-white border border-secondary text-secondary hover:bg-secondary/5 rounded-full font-bold text-body-md transition-all flex items-center gap-2">
+<span class="material-symbols-outlined">add</span>
+                    Neuer Hotspot
+                </button>
+</div>
+<!-- HOTSPOT TABLE -->
+<div class="bg-white rounded-xl border border-outline-variant/30 custom-shadow overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low border-b border-outline-variant/30">
+<tr>
+<th class="px-6 py-4 font-sidebar-header text-sidebar-header uppercase text-on-surface-variant/60">Label</th>
+<th class="px-6 py-4 font-sidebar-header text-sidebar-header uppercase text-on-surface-variant/60">Mascot</th>
+<th class="px-6 py-4 font-sidebar-header text-sidebar-header uppercase text-on-surface-variant/60 text-center">Yaw / Pitch</th>
+<th class="px-6 py-4 font-sidebar-header text-sidebar-header uppercase text-on-surface-variant/60 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+<!-- Row 1: Dialog Hotspot -->
+<tr class="hover:bg-surface transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-fixed/30 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">chat_bubble</span>
+</div>
+<span class="font-bold text-body-lg text-on-surface">Begrüßung Frieda</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2 bg-secondary/10 px-3 py-1.5 rounded-full w-fit">
+<span class="material-symbols-outlined text-secondary text-[18px]" style="font-variation-settings: 'FILL' 1">person</span>
+<span class="font-body-md text-body-md font-semibold text-secondary">Frieda</span>
+</div>
+</td>
+<td class="px-6 py-5 text-center">
+<code class="bg-surface-container-highest px-3 py-1 rounded text-code font-code text-on-surface-variant">21.1 / -30.7</code>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-secondary/10 text-secondary rounded-lg transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+<span class="text-xs font-bold">Bearbeiten</span>
+</button>
+<button class="p-2 hover:bg-error/10 text-error rounded-lg transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+<span class="text-xs font-bold">Löschen</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- FOOTER / UTILITIES -->
+<div class="p-6 bg-surface-container-lowest flex items-center justify-between border-t border-outline-variant/30">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">info</span>
+<span class="font-body-md text-body-md">1 Hotspot definiert</span>
+</div>
+<a class="flex items-center gap-2 text-secondary font-bold text-body-md hover:underline" href="#">
+<span class="material-symbols-outlined text-[18px]">settings_overscan</span>
+                        Sphere kalibrieren
+                    </a>
+</div>
+</div>
+<!-- VISUAL PREVIEW / BENTO HINT -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="md:col-span-2 bg-white rounded-xl border border-outline-variant/30 custom-shadow p-6 flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h3 class="font-h2 text-h2">Vorschau Hotspot-Position</h3>
+<span class="text-caption font-caption text-on-surface-variant/60">Panorama View</span>
+</div>
+<div class="aspect-video rounded-lg bg-surface-dim relative overflow-hidden group">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="A professional high-resolution 360-degree equirectangular panorama of a modern, bright educational classroom. The room is filled with light, minimalist wooden furniture, and interactive whiteboards. The overall aesthetic is clean, professional, and slightly warm to align with the MPZ Studio brand identity. The lighting is soft and even, highlighting a spacious and inviting learning environment." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAocS2A_v_JZqZNpTa7KZJxaI70xzH7ZBSxDjb-CLAYTXD1u1RSpx4qbYFxuD2GWHFa_EGtSDNsOgN_RAceISPMZjaKoFhW7TMwPKJ7f5CZ9TiQcTdr4nqWBNkH91wtLm0LZ1butf9bBebvdNZiRRq6n1urQ4QUlr_AKDIsuNU4j05KvNV-BaYu1CaLmz8b3Ztajj1WnkowEce9vnUlF9EwOKkHRWh_P8MBCGymRZ0tnqLoOg1X6nh14mimmuZrJm234scppvWyA2w')">
+</div>
+<!-- UI Overlay on Preview -->
+<div class="absolute top-1/2 left-[55%] -translate-x-1/2 -translate-y-1/2">
+<div class="relative">
+<div class="w-12 h-12 rounded-full border-4 border-white shadow-xl bg-primary flex items-center justify-center text-white cursor-pointer hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">chat_bubble</span>
+</div>
+<div class="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-md px-3 py-1 rounded-md text-[10px] font-bold shadow-lg border border-white whitespace-nowrap">
+                                    Frieda: Begrüßung
+                                </div>
+</div>
+</div>
+<div class="absolute bottom-4 right-4 bg-black/50 backdrop-blur-sm text-white px-3 py-1.5 rounded-full text-[11px] font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">view_in_ar</span>
+                            Interaktive Vorschau
+                        </div>
+</div>
+</div>
+<div class="bg-white rounded-xl border border-outline-variant/30 custom-shadow p-6 space-y-4">
+<h3 class="font-h2 text-h2">Validierung</h3>
+<div class="p-4 rounded-lg bg-primary-container/10 border-l-4 border-primary-container space-y-3">
+<div class="flex items-center gap-3 text-primary">
+<span class="material-symbols-outlined">verified</span>
+<span class="font-bold text-body-md">Alle Checks bestanden</span>
+</div>
+<p class="text-caption font-caption text-on-surface-variant">
+                            Der Hotspot ist korrekt verknüpft und das Mascot "Frieda" verfügt über alle notwendigen Dialog-Assets.
+                        </p>
+</div>
+<div class="pt-4 border-t border-outline-variant/20">
+<p class="font-sidebar-header text-sidebar-header uppercase text-on-surface-variant/60 mb-2">Statistiken</p>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-3 rounded-lg">
+<p class="text-[24px] font-extrabold text-on-surface">1</p>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold">Dialoge</p>
+</div>
+<div class="bg-surface-container-low p-3 rounded-lg">
+<p class="text-[24px] font-extrabold text-on-surface">0</p>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold">Medien</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Micro-interaction for hover states -->
+<script>
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('mousedown', () => {
+                el.style.transform = 'scale(0.97)';
+            });
+            el.addEventListener('mouseup', () => {
+                el.style.transform = '';
+            });
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = '';
+            });
+        });
+    </script>
+</body></html>

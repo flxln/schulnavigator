@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MPZ Studio - Brand Assets (S20)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#425d86",
+                        "on-primary-fixed-variant": "#1d5200",
+                        "surface-variant": "#e3e2df",
+                        "secondary-fixed": "#d5e3ff",
+                        "surface-dim": "#dbdad6",
+                        "on-surface": "#1b1c1a",
+                        "surface-container-low": "#f4f4f0",
+                        "surface-container": "#efeeea",
+                        "inverse-surface": "#2f312e",
+                        "outline": "#717a68",
+                        "primary-fixed-dim": "#87db5d",
+                        "on-secondary-fixed-variant": "#004786",
+                        "on-secondary-fixed": "#001c3b",
+                        "on-error": "#ffffff",
+                        "secondary": "#045faf",
+                        "surface-bright": "#faf9f5",
+                        "tertiary-container": "#5b76a0",
+                        "surface-container-highest": "#e3e2df",
+                        "tertiary-fixed": "#d5e3ff",
+                        "tertiary-fixed-dim": "#acc8f6",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#37850a",
+                        "on-tertiary-fixed": "#001c3b",
+                        "on-primary-container": "#f8ffee",
+                        "on-primary-fixed": "#072100",
+                        "on-tertiary-container": "#fefcff",
+                        "on-error-container": "#93000a",
+                        "surface": "#faf9f5",
+                        "secondary-container": "#6daaff",
+                        "on-secondary-container": "#003e76",
+                        "on-surface-variant": "#40493a",
+                        "inverse-primary": "#87db5d",
+                        "primary-fixed": "#a2f876",
+                        "on-background": "#1b1c1a",
+                        "primary": "#276a00",
+                        "surface-container-high": "#e9e8e4",
+                        "on-tertiary-fixed-variant": "#2c476f",
+                        "error": "#ba1a1a",
+                        "inverse-on-surface": "#f2f1ed",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#286c00",
+                        "outline-variant": "#c0cab5",
+                        "background": "#faf9f5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "gutter": "16px",
+                        "container-padding": "24px",
+                        "topbar-height": "56px",
+                        "sidebar-width": "240px",
+                        "card-padding": "20px",
+                        "stack-lg": "24px",
+                        "stack-sm": "8px"
+                    },
+                    "fontFamily": {
+                        "h1": ["Nunito Sans"],
+                        "body-lg": ["Nunito Sans"],
+                        "code": ["monospace"],
+                        "caption": ["Nunito Sans"],
+                        "sidebar-header": ["Nunito Sans"],
+                        "body-md": ["Nunito Sans"],
+                        "h2": ["Nunito Sans"]
+                    },
+                    "fontSize": {
+                        "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                        "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #faf9f5; /* Tonal paper background from tokens */
+            color: #1b1c1a;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .sidebar-active-indicator {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #a2f876;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(8, 42, 80, 0.1);
+        }
+    </style>
+</head>
+<body class="font-body-md overflow-x-hidden">
+<!-- FIXED SIDEBAR -->
+<aside class="fixed left-0 top-0 h-full w-[240px] bg-secondary flex flex-col py-stack-lg z-50">
+<div class="px-6 mb-10">
+<h1 class="font-h1 text-h1 text-on-secondary">MPZ Studio</h1>
+<p class="font-sidebar-header text-sidebar-header text-on-secondary opacity-60 uppercase tracking-widest mt-1">Admin Console</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="relative flex items-center px-6 py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="relative flex items-center px-6 py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3">analytics</span>
+<span class="font-body-md">Alle Stationen</span>
+</a>
+<a class="relative flex items-center px-6 py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3">psychology</span>
+<span class="font-body-md">Coach</span>
+</a>
+<a class="relative flex items-center px-6 py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3">link</span>
+<span class="font-body-md">Embeds &amp; Links</span>
+</a>
+<a class="relative flex items-center px-6 py-3 text-on-secondary border-l-4 border-primary-fixed bg-surface-container-highest/10 opacity-100 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3">palette</span>
+<span class="font-body-md">Design &amp; Hub</span>
+</a>
+<a class="relative flex items-center px-6 py-3 text-on-secondary opacity-80 hover:opacity-100 hover:bg-surface-container-highest/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3">rocket_launch</span>
+<span class="font-body-md">Deploy</span>
+</a>
+</nav>
+<div class="px-6 mt-auto">
+<div class="flex items-center gap-3 p-3 bg-surface-container-highest/10 rounded-lg">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-bold text-xs">MA</div>
+<div class="overflow-hidden">
+<p class="text-on-secondary text-xs font-bold truncate">MPZ Studio Admin</p>
+<p class="text-on-secondary opacity-60 text-[10px] truncate">admin@mpz-studio.de</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- TOP NAVIGATION -->
+<header class="fixed top-0 right-0 w-[calc(100%-240px)] h-[56px] bg-surface border-b border-outline-variant flex justify-between items-center px-container-padding z-40">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-2">
+<span class="text-on-surface-variant font-body-md">Design &amp; Hub</span>
+<span class="material-symbols-outlined text-outline text-sm">chevron_right</span>
+<span class="text-primary font-bold border-b-2 border-primary py-4">Brand Assets</span>
+</div>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="px-4 py-2 bg-primary hover:bg-[#3d7e1b] text-white rounded-full font-h2 text-sm transition-colors duration-150 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">cloud_upload</span>
+                Speichern &amp; Validieren
+            </button>
+</div>
+</header>
+<!-- MAIN CONTENT CANVAS -->
+<main class="ml-[240px] pt-[56px] min-h-screen">
+<div class="p-container-padding max-w-7xl mx-auto space-y-stack-lg">
+<!-- HEADER SECTION -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div class="space-y-1">
+<h2 class="font-h1 text-h1 text-on-surface">Marken-Assets &amp; Mediathek</h2>
+<p class="font-body-lg text-on-surface-variant max-w-2xl">Verwalten Sie Ihre Corporate Identity Assets. Diese Grafiken werden systemweit in Ihren Stationen und im Coach-Interface verwendet.</p>
+</div>
+<div class="flex gap-stack-sm">
+<div class="px-4 py-2 bg-surface-container-high rounded-lg flex items-center gap-2 border border-outline-variant">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-caption font-bold text-primary uppercase">Alle Checks bestanden</span>
+</div>
+</div>
+</section>
+<!-- ASSET BENTO GRID -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-stack-lg">
+<!-- PRIMARY LOGO CARD -->
+<div class="md:col-span-8 glass-card rounded-xl p-card-padding flex flex-col justify-between min-h-[320px]">
+<div class="flex justify-between items-start">
+<div>
+<span class="text-sidebar-header font-sidebar-header text-tertiary uppercase tracking-wider">Haupt-Logo</span>
+<h3 class="font-h2 text-h2 mt-1">GS39 Logo</h3>
+</div>
+<div class="flex gap-2">
+<button class="p-2 hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">info</span>
+</button>
+</div>
+</div>
+<div class="flex-1 flex items-center justify-center my-8 bg-surface-container rounded-lg border border-dashed border-outline-variant overflow-hidden relative group">
+<img class="max-h-32 object-contain group-hover:scale-105 transition-transform duration-500" data-alt="A professional corporate logo design for 'GS39' featuring clean, modern typography and a minimalist geometric mark. The logo is rendered in a high-contrast black and white style, centered perfectly on a neutral light grey background with soft studio lighting. The aesthetic is corporate, reliable, and high-end." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiHfa1qQmkaAO7orvU_e0VSEseo2vP7MtPL2NZzkR23mrYReWd538YMervAPXQJohFAEKjCCKJ9T-rwUNmust8rjPLazD76ftC7up47nYSOpOC4SU9k03LM_rkXVfEC5xmm5nJLfBHL3l0RyYAli1-BiTnDMQNTUR-dRPkJXumwf3KyiHizea_UhCoAPKn1byYNFAR4T1YkKYbKOn66waRTJnT-6bigvDJ2G-oRei_X6RkSWAI3MSsHRDZ89WsXBeXHlCvQ0n1LsE"/>
+<div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors pointer-events-none"></div>
+</div>
+<div class="flex items-center justify-between pt-4 border-t border-outline-variant">
+<div class="flex flex-col">
+<span class="text-caption text-on-surface-variant font-bold">SVG Vector Format</span>
+<span class="text-caption text-outline">Letzte Änderung: Vor 2 Stunden</span>
+</div>
+<div class="flex gap-stack-sm">
+<button class="px-4 py-2 border border-outline text-on-surface font-body-md rounded-full hover:bg-surface-container transition-colors">Remove</button>
+<button class="px-6 py-2 bg-primary text-white font-body-md rounded-full hover:bg-[#3d7e1b] transition-colors">Replace</button>
+</div>
+</div>
+</div>
+<!-- INFO STATS CARD -->
+<div class="md:col-span-4 glass-card rounded-xl p-card-padding flex flex-col gap-stack-md bg-secondary text-on-secondary">
+<h3 class="font-h2 text-h2">Asset Status</h3>
+<div class="space-y-stack-md mt-2">
+<div class="flex items-center justify-between p-3 bg-white/10 rounded-lg">
+<span class="text-body-md">Speicherauslastung</span>
+<span class="font-bold">12.4 MB</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-white/10 rounded-lg">
+<span class="text-body-md">Aktive Verknüpfungen</span>
+<span class="font-bold">8 Stationen</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-white/10 rounded-lg border border-primary-fixed">
+<span class="text-body-md">Synchronisation</span>
+<span class="text-primary-fixed font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">sync</span> Live
+                            </span>
+</div>
+</div>
+<div class="mt-auto pt-6">
+<button class="w-full py-3 bg-white text-secondary font-bold rounded-xl hover:bg-white/90 transition-all">Mediathek öffnen</button>
+</div>
+</div>
+<!-- ASSET ITEM: FRIEDA -->
+<div class="md:col-span-6 bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm group">
+<div class="aspect-video relative overflow-hidden bg-surface-container-low">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A high-quality studio portrait of a friendly professional woman named Frieda, used as a brand avatar. She is smiling warmly towards the camera, wearing professional business casual attire. The background is a soft, out-of-focus modern office interior with warm wooden tones and natural light, creating a trustworthy and accessible corporate atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1uZc4aqjq6mW8t1keROm5b4cTlwmYAlzmyCYMrWHNwzPgZ6ievK8upLFTO-Zepr3B8MPQdc1QDWsypI8UK4j886bm3mZzIZo9IN6PbJDFFDMEUQl06iSN6AFwXBhEKMsT1OGSrjdVHgz4PVwp1YE9ScegqBgGZ6G5Vrwxh-EEpmiOh7vg3FJBymn6R_7ySc-nJS9Wo40H1eWqEsZjVyYB1O61TIJy4YJfq8V1DkI5sWg4fbKUbpCCbOJil5Nc8ZBr9ngkbzrGQFI"/>
+<div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-2 py-1 rounded text-[10px] font-bold uppercase text-on-surface tracking-widest shadow-sm">Frieda.png</div>
+</div>
+<div class="p-card-padding">
+<div class="flex justify-between items-center mb-4">
+<div>
+<h4 class="font-h2 text-body-lg font-bold">Frieda PNG</h4>
+<p class="text-caption text-on-surface-variant">Transparent Profile / 2400 x 2400 px</p>
+</div>
+<div class="text-right">
+<span class="px-2 py-1 bg-primary-fixed/20 text-on-primary-fixed-variant text-[10px] font-bold rounded">COACH AVATAR</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-2 border border-outline text-on-surface font-body-md rounded-lg hover:bg-surface-container transition-colors">Remove</button>
+<button class="flex-1 py-2 bg-primary text-white font-body-md rounded-lg hover:bg-[#3d7e1b] transition-colors">Replace</button>
+</div>
+</div>
+</div>
+<!-- ASSET ITEM: OTTO -->
+<div class="md:col-span-6 bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm group">
+<div class="aspect-video relative overflow-hidden bg-surface-container-low">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A professional headshot of a senior male executive named Otto for a corporate portal. He has a confident, experienced expression and is wearing a dark navy suit. The lighting is crisp and detailed, emphasizing professional authority and trust. The background is a minimalist, warm-toned architectural wall that complements the MPZ Studio's paper-themed color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAM4OChsKLsez9MUdi0aNna80gf-bXrbRskgt4PIL5zcykYkp7ELncB6wLkJ5zKfxbgfOBhtnxYJvxGXE7w4Rp1F3bB8Da6kkHZX5YQV-FybFTNBqIy7IZjxURXLIQkfbDMUifus9TPI4TH67VAl9pruDzgiIYRr4lbaN246N5zPAwrv8sGZ_m61b5YXQOeClxGaz3DuXntUnOoPROjktJjjD1zLI68Ezkovgb2LR2D2lkX5K-bPabVcsZgFxM9QzxAt-d8sm3-gT8"/>
+<div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-2 py-1 rounded text-[10px] font-bold uppercase text-on-surface tracking-widest shadow-sm">Otto.png</div>
+</div>
+<div class="p-card-padding">
+<div class="flex justify-between items-center mb-4">
+<div>
+<h4 class="font-h2 text-body-lg font-bold">Otto PNG</h4>
+<p class="text-caption text-on-surface-variant">Transparent Profile / 2400 x 2400 px</p>
+</div>
+<div class="text-right">
+<span class="px-2 py-1 bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold rounded">STATION LEAD</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-2 border border-outline text-on-surface font-body-md rounded-lg hover:bg-surface-container transition-colors">Remove</button>
+<button class="flex-1 py-2 bg-primary text-white font-body-md rounded-lg hover:bg-[#3d7e1b] transition-colors">Replace</button>
+</div>
+</div>
+</div>
+<!-- UPLOAD ZONE -->
+<div class="md:col-span-12 border-2 border-dashed border-outline-variant bg-surface-container-low/50 rounded-xl p-10 flex flex-col items-center justify-center text-center group cursor-pointer hover:bg-surface-container-low transition-all">
+<div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl">add_photo_alternate</span>
+</div>
+<h3 class="font-h2 text-h2">Neues Asset hochladen</h3>
+<p class="font-body-md text-on-surface-variant mt-2">Ziehen Sie Dateien hierher oder klicken Sie zum Auswählen.<br/><span class="text-caption">Unterstützte Formate: PNG, SVG, JPG (Max. 25MB)</span></p>
+</div>
+</div>
+</div>
+</main>
+<!-- FLOATING CHAT / HELP (Subtle Contextual UI) -->
+<div class="fixed bottom-8 right-8 z-50">
+<button class="w-14 h-14 bg-secondary text-on-secondary rounded-full flex items-center justify-center shadow-xl hover:scale-105 transition-all">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</div>
+<script>
+        // Simple micro-interaction for buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', function() {
+                this.style.transform = 'scale(0.98)';
+            });
+            button.addEventListener('mouseup', function() {
+                this.style.transform = 'scale(1)';
+            });
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+
+        // Simulating loading states on replace buttons
+        document.querySelectorAll('button').forEach(button => {
+            if (button.textContent.includes('Replace')) {
+                button.addEventListener('click', function() {
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">sync</span>';
+                    this.disabled = true;
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.disabled = false;
+                    }, 1500);
+                });
+            }
+        });
+    </script>
+</body></html>

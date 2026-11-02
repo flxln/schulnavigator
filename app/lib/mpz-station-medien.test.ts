@@ -17,8 +17,9 @@ import {
   resolvePublicMediaPath,
 } from '@/lib/mpz-station-medien'
 import type { StationsFile } from '@/lib/types'
+import { studioDemoStationsFile } from '@/lib/test-fixtures/studio-demo-klassenzimmer'
 
-const fixture = raw as StationsFile
+const fixture = studioDemoStationsFile(raw as StationsFile)
 
 function makeTempIo(initial: StationsFile = fixture) {
   const appRoot = mkdtempSync(join(tmpdir(), 'mpz-medien-'))
@@ -250,8 +251,15 @@ describe('mpz-station-medien', () => {
     it('embed: nur quelle gepatcht — Merged-State mit bestehendem embedAllow', async () => {
       const customFixture = structuredClone(fixture) as StationsFile
       const pc = customFixture.stations.find((s) => s.slug === 'pc-raum')!
-      const delightex = pc.medien.find((m) => m.id === 'pc-delightex')!
-      delightex.embedAllow = ['delightex.com']
+      pc.medien = [
+        {
+          id: 'pc-delightex',
+          typ: 'embed',
+          quelle: 'https://edu.delightex.com/old',
+          embedAllow: ['delightex.com'],
+        },
+      ]
+      pc.hotspots360 = []
 
       const io = makeTempIo(customFixture)
       temps.push(io.getPaths().appRoot)
@@ -270,6 +278,14 @@ describe('mpz-station-medien', () => {
     it('embed: nur embedAllow gepatcht — Merged-State mit bestehender quelle', async () => {
       const customFixture = structuredClone(fixture) as StationsFile
       const pc = customFixture.stations.find((s) => s.slug === 'pc-raum')!
+      pc.medien = [
+        {
+          id: 'pc-delightex',
+          typ: 'embed',
+          quelle: 'https://edu.delightex.com/old',
+        },
+      ]
+      pc.hotspots360 = []
 
       const io = makeTempIo(customFixture)
       temps.push(io.getPaths().appRoot)
@@ -287,8 +303,15 @@ describe('mpz-station-medien', () => {
     it('embed: leeres embedAllow entfernt Feld', async () => {
       const customFixture = structuredClone(fixture) as StationsFile
       const pc = customFixture.stations.find((s) => s.slug === 'pc-raum')!
-      const delightex = pc.medien.find((m) => m.id === 'pc-delightex')!
-      delightex.embedAllow = ['delightex.com']
+      pc.medien = [
+        {
+          id: 'pc-delightex',
+          typ: 'embed',
+          quelle: 'https://edu.delightex.com/old',
+          embedAllow: ['delightex.com'],
+        },
+      ]
+      pc.hotspots360 = []
 
       const io = makeTempIo(customFixture)
       temps.push(io.getPaths().appRoot)
@@ -358,6 +381,14 @@ describe('mpz-station-medien', () => {
     it('embed quelle außerhalb Allowlist → INVALID_QUELLE', async () => {
       const customFixture = structuredClone(fixture) as StationsFile
       const pc = customFixture.stations.find((s) => s.slug === 'pc-raum')!
+      pc.medien = [
+        {
+          id: 'pc-delightex',
+          typ: 'embed',
+          quelle: 'https://edu.delightex.com/old',
+        },
+      ]
+      pc.hotspots360 = []
 
       const io = makeTempIo(customFixture)
       temps.push(io.getPaths().appRoot)

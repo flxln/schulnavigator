@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MPZ Studio - Dashboard</title>
+<!-- Google Fonts: Nunito Sans -->
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200..1000;1,200..1000&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed": "#d5e3ff",
+                    "on-surface": "#1b1c1a",
+                    "outline-variant": "#c0cab5",
+                    "surface": "#faf9f5",
+                    "tertiary": "#425d86",
+                    "inverse-surface": "#2f312e",
+                    "surface-container-highest": "#e3e2df",
+                    "surface-container-high": "#e9e8e4",
+                    "on-tertiary-fixed-variant": "#2c476f",
+                    "on-tertiary-container": "#fefcff",
+                    "tertiary-fixed-dim": "#acc8f6",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "surface-bright": "#faf9f5",
+                    "outline": "#717a68",
+                    "on-secondary-fixed-variant": "#004786",
+                    "on-surface-variant": "#40493a",
+                    "error": "#ba1a1a",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed-dim": "#a6c8ff",
+                    "primary-container": "#37850a",
+                    "secondary-container": "#6daaff",
+                    "tertiary-container": "#5b76a0",
+                    "on-primary-container": "#f8ffee",
+                    "on-tertiary": "#ffffff",
+                    "surface-variant": "#e3e2df",
+                    "on-primary-fixed-variant": "#1d5200",
+                    "background": "#faf9f5",
+                    "on-tertiary-fixed": "#001c3b",
+                    "secondary": "#045faf",
+                    "inverse-on-surface": "#f2f1ed",
+                    "surface-tint": "#286c00",
+                    "inverse-primary": "#87db5d",
+                    "primary-fixed-dim": "#87db5d",
+                    "primary": "#276a00",
+                    "surface-container-low": "#f4f4f0",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed": "#d5e3ff",
+                    "on-background": "#1b1c1a",
+                    "on-secondary-container": "#003e76",
+                    "surface-container": "#efeeea",
+                    "on-primary-fixed": "#072100",
+                    "on-secondary": "#ffffff",
+                    "surface-dim": "#dbdad6",
+                    "on-secondary-fixed": "#001c3b",
+                    "primary-fixed": "#a2f876",
+                    "brand-navy": "#082a50",
+                    "brand-green": "#4b9a23",
+                    "brand-paper": "#fcfbf7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "topbar-height": "56px",
+                    "stack-lg": "24px",
+                    "card-padding": "20px",
+                    "container-padding": "24px",
+                    "gutter": "16px",
+                    "stack-sm": "8px",
+                    "stack-md": "16px",
+                    "sidebar-width": "240px"
+            },
+            "fontFamily": {
+                    "body-md": ["Nunito Sans"],
+                    "body-lg": ["Nunito Sans"],
+                    "sidebar-header": ["Nunito Sans"],
+                    "h2": ["Nunito Sans"],
+                    "h1": ["Nunito Sans"],
+                    "caption": ["Nunito Sans"],
+                    "code": ["monospace"]
+            },
+            "fontSize": {
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: #fcfbf7;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .sidebar-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="flex min-h-screen text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Left Sidebar -->
+<aside class="fixed left-0 top-0 h-full w-[240px] bg-brand-navy flex flex-col z-50 text-white shadow-xl">
+<!-- Logo/Header -->
+<div class="px-6 py-6 flex items-center gap-3">
+<div class="w-8 h-8 bg-brand-green rounded flex items-center justify-center font-bold text-lg">M</div>
+<div>
+<h2 class="text-h2 font-h2 leading-tight">MPZ Studio</h2>
+<p class="text-caption font-caption opacity-60">Admin Dashboard</p>
+</div>
+</div>
+<!-- Navigation -->
+<nav class="flex-1 overflow-y-auto sidebar-scroll pb-10">
+<!-- Group: ÜBERSICHT -->
+<div class="mt-4">
+<div class="px-6 py-2 text-sidebar-header font-sidebar-header opacity-50 uppercase tracking-wider">ÜBERSICHT</div>
+<a class="flex items-center gap-3 px-6 py-3 text-on-primary border-l-4 border-brand-green bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-body-md font-body-md">Dashboard</span>
+</a>
+</div>
+<!-- Group: STATIONEN -->
+<div class="mt-6">
+<div class="px-6 py-2 text-sidebar-header font-sidebar-header opacity-50 uppercase tracking-wider">STATIONEN</div>
+<a class="flex items-center gap-3 px-6 py-3 text-white/80 hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="location_on">location_on</span>
+<span class="text-body-md font-body-md">Alle Stationen</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-white/80 hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span class="text-body-md font-body-md">Coach</span>
+</a>
+</div>
+<!-- Group: GLOBALER INHALT -->
+<div class="mt-6">
+<div class="px-6 py-2 text-sidebar-header font-sidebar-header opacity-50 uppercase tracking-wider">GLOBALER INHALT</div>
+<a class="flex items-center gap-3 px-6 py-3 text-white/80 hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="link">link</span>
+<span class="text-body-md font-body-md">Embeds &amp; Links</span>
+</a>
+</div>
+<!-- Group: ERSCHEINUNGSBILD -->
+<div class="mt-6">
+<div class="px-6 py-2 text-sidebar-header font-sidebar-header opacity-50 uppercase tracking-wider">ERSCHEINUNGSBILD</div>
+<a class="flex items-center gap-3 px-6 py-3 text-white/80 hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="palette">palette</span>
+<span class="text-body-md font-body-md">Design &amp; Hub</span>
+</a>
+</div>
+<!-- Group: BETRIEB -->
+<div class="mt-6">
+<div class="px-6 py-2 text-sidebar-header font-sidebar-header opacity-50 uppercase tracking-wider">BETRIEB</div>
+<a class="flex items-center gap-3 px-6 py-3 text-white/80 hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+<span class="text-body-md font-body-md">Deploy</span>
+</a>
+</div>
+</nav>
+<!-- Footer Avatar -->
+<div class="p-4 border-t border-white/10 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a creative studio administrator with a clean, high-key studio background. The style is modern and minimalist, featuring soft lighting and a neutral professional color palette that complements the corporate Navy and Green brand identity of the application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0Gi2WvNKlIb2TZvyA-WnGAD6pFbX_RxCBoOnhjsOgriknPPZT7L0_wdyWqIB5G9PVb7NftdADCJUFeEwFrtH9iaUt4z7FxAzNZT0tq99Y4NogklL4svXFxTXbsLdDLLI0LmMo7grUM4jvndU7npT5lRJCOLLbsxhjYDHA_CfyCh_zc-tEI5R1XYPaSyAcpTqTUTAcgxUtxvW_APcTgXCLnFncJCmILGeLfOlwsh176dHMEjK7VYqZbfuOnnEsZyoruJcAwOWIhds"/>
+</div>
+<div class="overflow-hidden">
+<p class="text-body-md font-bold truncate">Admin User</p>
+<p class="text-caption opacity-60 truncate">studio@mpz.de</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-[240px] flex flex-col min-h-screen">
+<!-- Top Bar -->
+<header class="fixed top-0 right-0 h-[56px] left-[240px] bg-white border-b border-brand-navy/10 flex items-center justify-between px-6 z-40">
+<div class="flex items-center gap-2 text-brand-navy">
+<span class="text-body-md opacity-60">Stationen</span>
+<span class="material-symbols-outlined text-[16px] opacity-40">chevron_right</span>
+<span class="text-body-md font-bold">Klassenzimmer</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.5)]"></div>
+<span class="text-caption text-on-surface-variant">Nur lokal · development</span>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-4 py-1.5 rounded-full text-body-md font-bold text-brand-navy hover:bg-surface-container transition-colors">
+                        Nur lokal
+                    </button>
+<button class="px-6 py-1.5 rounded-full bg-brand-green text-white text-body-md font-bold shadow-sm hover:bg-[#3d7e1b] active:scale-[0.98] transition-all">
+                        Speichern &amp; Validieren
+                    </button>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<section class="mt-[56px] p-container-padding max-w-[1280px] w-full mx-auto">
+<!-- Page Title -->
+<div class="mb-8">
+<h1 class="text-h1 font-h1 text-brand-navy">MPZ Studio</h1>
+<p class="text-body-md text-on-surface-variant mt-1">Willkommen zurück. Hier ist die Übersicht deiner aktuellen Projekte.</p>
+</div>
+<!-- Validation Success Card -->
+<div class="bg-white border border-brand-green/30 rounded-lg p-5 flex items-center gap-4 mb-8 shadow-sm">
+<div class="w-10 h-10 rounded-full bg-brand-green/10 flex items-center justify-center text-brand-green">
+<span class="material-symbols-outlined" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div>
+<h3 class="text-body-lg font-bold text-brand-green">Alle Checks bestanden</h3>
+<p class="text-body-md text-on-surface-variant">Dein Projekt ist bereit für die Veröffentlichung. Alle Validierungen waren erfolgreich.</p>
+</div>
+</div>
+<!-- Bento Grid Main Content -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Main Stats -->
+<div class="col-span-12 md:col-span-8 bg-white border border-brand-navy/10 rounded-xl p-card-padding shadow-sm relative overflow-hidden group">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h2 class="text-h2 font-h2 text-brand-navy">Projektübersicht</h2>
+<p class="text-caption text-on-surface-variant">Status der aktuellen Stationen</p>
+</div>
+<span class="material-symbols-outlined text-brand-navy opacity-20 group-hover:opacity-100 transition-opacity">more_horiz</span>
+</div>
+<div class="h-64 w-full relative bg-surface-container-low rounded-lg overflow-hidden flex items-center justify-center">
+<!-- Background atmospheric SVG -->
+<div class="absolute inset-0 opacity-10">
+<svg height="100%" preserveaspectratio="none" viewbox="0 0 100 100" width="100%">
+<path class="text-brand-navy" d="M0 100 C 20 0, 50 0, 100 100 Z" fill="currentColor"></path>
+</svg>
+</div>
+<div class="z-10 text-center">
+<span class="material-symbols-outlined text-4xl text-brand-navy opacity-20 block mb-2">monitoring</span>
+<p class="text-body-md font-bold text-brand-navy">Analytik wird geladen...</p>
+</div>
+</div>
+</div>
+<!-- Secondary Info -->
+<div class="col-span-12 md:col-span-4 flex flex-col gap-6">
+<!-- Quick Stats Card -->
+<div class="bg-white border border-brand-navy/10 rounded-xl p-card-padding shadow-sm">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-brand-green" data-icon="bolt">bolt</span>
+<span class="text-body-md font-bold">Schnellzugriff</span>
+</div>
+<ul class="space-y-3">
+<li class="flex items-center justify-between p-2 hover:bg-surface-container-lowest rounded transition-colors cursor-pointer">
+<span class="text-body-md">Neue Station</span>
+<span class="material-symbols-outlined text-sm">add</span>
+</li>
+<li class="flex items-center justify-between p-2 hover:bg-surface-container-lowest rounded transition-colors cursor-pointer">
+<span class="text-body-md">Inhalte importieren</span>
+<span class="material-symbols-outlined text-sm">file_upload</span>
+</li>
+<li class="flex items-center justify-between p-2 hover:bg-surface-container-lowest rounded transition-colors cursor-pointer">
+<span class="text-body-md">Team verwalten</span>
+<span class="material-symbols-outlined text-sm">groups</span>
+</li>
+</ul>
+</div>
+<!-- System Status -->
+<div class="bg-brand-navy text-white rounded-xl p-card-padding shadow-sm relative overflow-hidden">
+<div class="absolute -right-4 -top-4 opacity-10">
+<span class="material-symbols-outlined text-8xl">settings</span>
+</div>
+<h3 class="text-body-md font-bold mb-2">System-Status</h3>
+<div class="flex items-center gap-2 mb-4">
+<span class="w-2 h-2 rounded-full bg-brand-green animate-pulse"></span>
+<span class="text-caption opacity-80">Server: Online</span>
+</div>
+<p class="text-caption opacity-60 mb-4">Letztes Update: Vor 12 Minuten durch Admin.</p>
+<button class="w-full py-2 rounded bg-white/10 hover:bg-white/20 text-body-md font-bold transition-all">
+                            Logs einsehen
+                        </button>
+</div>
+</div>
+<!-- Recent Activities (List but high-end layout) -->
+<div class="col-span-12 bg-white border border-brand-navy/10 rounded-xl p-card-padding shadow-sm">
+<h2 class="text-h2 font-h2 text-brand-navy mb-6">Letzte Aktivitäten</h2>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="text-sidebar-header opacity-50 border-b border-brand-navy/5">
+<th class="pb-3 font-bold">AKTIVITÄT</th>
+<th class="pb-3 font-bold">STATUS</th>
+<th class="pb-3 font-bold">ZEITSTEMPEL</th>
+<th class="pb-3 font-bold">BENUTZER</th>
+</tr>
+</thead>
+<tbody class="text-body-md">
+<tr class="border-b border-brand-navy/5 hover:bg-brand-paper transition-colors group">
+<td class="py-4 font-bold text-brand-navy">Klassenzimmer Station aktualisiert</td>
+<td class="py-4">
+<span class="px-2 py-1 bg-brand-green/10 text-brand-green text-caption font-bold rounded">Erfolg</span>
+</td>
+<td class="py-4 text-on-surface-variant">Heute, 14:23</td>
+<td class="py-4 flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-[10px] font-bold text-blue-600">JD</div>
+<span>Janine Doe</span>
+</td>
+</tr>
+<tr class="border-b border-brand-navy/5 hover:bg-brand-paper transition-colors group">
+<td class="py-4 font-bold text-brand-navy">Globaler Header CSS angepasst</td>
+<td class="py-4">
+<span class="px-2 py-1 bg-yellow-500/10 text-yellow-600 text-caption font-bold rounded">Pendent</span>
+</td>
+<td class="py-4 text-on-surface-variant">Gestern, 09:12</td>
+<td class="py-4 flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-brand-navy text-white flex items-center justify-center text-[10px] font-bold">A</div>
+<span>Admin</span>
+</td>
+</tr>
+<tr class="hover:bg-brand-paper transition-colors group">
+<td class="py-4 font-bold text-brand-navy">Neue Bildergalerie "Museumsnacht"</td>
+<td class="py-4">
+<span class="px-2 py-1 bg-brand-green/10 text-brand-green text-caption font-bold rounded">Erfolg</span>
+</td>
+<td class="py-4 text-on-surface-variant">12. Okt, 16:45</td>
+<td class="py-4 flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center text-[10px] font-bold text-purple-600">MK</div>
+<span>Markus Koch</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<!-- Tooltip/Floating Element Simulation -->
+<div class="fixed bottom-6 right-6 translate-y-20 opacity-0 bg-brand-navy text-white px-6 py-3 rounded-lg shadow-2xl flex items-center gap-3 transition-all duration-300" id="save-toast">
+<span class="material-symbols-outlined text-brand-green">cloud_done</span>
+<p class="text-body-md">Änderungen wurden lokal gespeichert.</p>
+</div>
+</main>
+<script>
+        // Micro-interaction for the primary CTA
+        const cta = document.querySelector('button.bg-brand-green');
+        const toast = document.getElementById('save-toast');
+
+        cta.addEventListener('click', () => {
+            // Simulate save effect
+            cta.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">sync</span> Speichern...';
+            cta.disabled = true;
+            
+            setTimeout(() => {
+                cta.innerHTML = 'Speichern & Validieren';
+                cta.disabled = false;
+                
+                // Show toast
+                toast.classList.remove('translate-y-20', 'opacity-0');
+                
+                setTimeout(() => {
+                    toast.classList.add('translate-y-20', 'opacity-0');
+                }, 3000);
+            }, 1500);
+        });
+
+        // Hover effect for table rows
+        document.querySelectorAll('tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.transform = 'translateX(4px)';
+                row.style.transition = 'transform 0.2s ease';
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.transform = 'translateX(0px)';
+            });
+        });
+    </script>
+</body></html>

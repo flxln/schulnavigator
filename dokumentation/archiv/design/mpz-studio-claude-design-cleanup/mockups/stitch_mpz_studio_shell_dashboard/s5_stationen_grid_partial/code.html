@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MPZ Studio - Stationen</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "error-container": "#ffdad6",
+                "outline": "#717a68",
+                "on-secondary-fixed": "#001c3b",
+                "tertiary-fixed-dim": "#acc8f6",
+                "primary-fixed-dim": "#87db5d",
+                "primary-container": "#37850a",
+                "on-tertiary-fixed": "#001c3b",
+                "surface-tint": "#286c00",
+                "on-tertiary-fixed-variant": "#2c476f",
+                "on-tertiary-container": "#fefcff",
+                "on-secondary-fixed-variant": "#004786",
+                "tertiary-fixed": "#d5e3ff",
+                "surface-variant": "#e3e2df",
+                "surface-dim": "#dbdad6",
+                "secondary-fixed": "#d5e3ff",
+                "secondary": "#045faf",
+                "outline-variant": "rgba(8,42,80,0.1)",
+                "inverse-primary": "#87db5d",
+                "on-secondary-container": "#003e76",
+                "inverse-on-surface": "#f2f1ed",
+                "surface-container-high": "#e9e8e4",
+                "surface": "#faf9f5",
+                "primary": "#276a00",
+                "on-surface-variant": "#40493a",
+                "inverse-surface": "#2f312e",
+                "on-tertiary": "#ffffff",
+                "tertiary": "#425d86",
+                "on-background": "#1b1c1a",
+                "surface-container-highest": "#e3e2df",
+                "surface-bright": "#faf9f5",
+                "secondary-container": "#6daaff",
+                "on-primary": "#ffffff",
+                "surface-container-lowest": "#ffffff",
+                "surface-container-low": "#f4f4f0",
+                "on-primary-fixed": "#072100",
+                "primary-fixed": "#a2f876",
+                "on-secondary": "#ffffff",
+                "tertiary-container": "#5b76a0",
+                "surface-container": "#efeeea",
+                "background": "#fcfbf7",
+                "on-error-container": "#93000a",
+                "on-error": "#ffffff",
+                "on-primary-fixed-variant": "#1d5200",
+                "on-primary-container": "#f8ffee",
+                "on-surface": "#1b1c1a",
+                "secondary-fixed-dim": "#a6c8ff",
+                "error": "#ba1a1a",
+                "status-green": "#4b9a23",
+                "status-yellow": "#fbbb24",
+                "status-red": "#ef3a37"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "stack-sm": "8px",
+                "stack-md": "16px",
+                "stack-lg": "24px",
+                "sidebar-width": "240px",
+                "container-padding": "24px",
+                "topbar-height": "56px",
+                "gutter": "16px",
+                "card-padding": "20px"
+            },
+            "fontFamily": {
+                "h2": ["Nunito Sans"],
+                "caption": ["Nunito Sans"],
+                "body-lg": ["Nunito Sans"],
+                "h1": ["Nunito Sans"],
+                "sidebar-header": ["Nunito Sans"],
+                "body-md": ["Nunito Sans"],
+                "code": ["monospace"]
+            },
+            "fontSize": {
+                "h2": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "h1": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                "sidebar-header": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "code": ["13px", {"lineHeight": "18px", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body { font-family: 'Nunito Sans', sans-serif; background-color: #fcfbf7; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .sidebar-scroll::-webkit-scrollbar { width: 4px; }
+        .sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        
+        /* Card Hover Effects */
+        .sn-card {
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .sn-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(8, 42, 80, 0.08);
+        }
+    </style>
+</head>
+<body class="text-on-surface">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-full w-[240px] bg-[#082a50] flex flex-col z-50">
+<!-- Brand Header -->
+<div class="px-6 py-8 flex flex-col gap-1">
+<h2 class="text-h2 font-h2 text-on-primary tracking-tight">MPZ Studio</h2>
+<span class="text-caption text-on-primary/60 font-medium uppercase tracking-widest">Admin Dashboard</span>
+</div>
+<!-- Navigation items -->
+<nav class="flex-1 sidebar-scroll overflow-y-auto">
+<div class="flex flex-col">
+<!-- Dashboard -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-body-md font-body-md">Dashboard</span>
+</a>
+<!-- Alle Stationen (ACTIVE) -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary border-l-4 border-primary bg-white/10 active:scale-[0.98] transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">location_on</span>
+<span class="text-body-md font-body-md font-bold">Alle Stationen</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">school</span>
+<span class="text-body-md font-body-md">Coach</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">link</span>
+<span class="text-body-md font-body-md">Embeds &amp; Links</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">palette</span>
+<span class="text-body-md font-body-md">Design &amp; Hub</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary/80 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">rocket_launch</span>
+<span class="text-body-md font-body-md">Deploy</span>
+</a>
+</div>
+</nav>
+<!-- Sidebar Footer/Avatar -->
+<div class="p-4 border-t border-white/10 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A minimalist logo for MPZ Studio, featuring professional geometric lines in a clean corporate style with a deep navy and white color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfpK2GRYvER3iPLUb9S3rmoc1NpC9Y2wt97MuBHyCmYUREjLoTK50evldRZrTcjuBNGWanwJiFWL7lhdulpNhJLdo0k97D3m0Kefy26QJgND3JQVG9r6Vx4m7AKMAUAhrsYFywxBFaipiN679qWB8ZL4mRC9rYC_Qwop5ceIr0JTvq4stye8EgttQfjsPwFQpRP0EAu2rRqrkln2rkJYGNf6YHG6VEWCSpMQqI73dZuJZ_HcE1v3rxtL5OfeivdrErTeWXbSo3Ql0"/>
+</div>
+<div class="flex flex-col">
+<span class="text-caption font-bold text-on-primary">Admin User</span>
+<span class="text-[10px] text-on-primary/50 uppercase">v2.4.0-stable</span>
+</div>
+</div>
+</aside>
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 right-0 h-[56px] left-[240px] bg-surface-container-lowest border-b border-outline-variant flex items-center justify-between px-container-padding z-40">
+<!-- Left Side: Breadcrumb -->
+<div class="flex items-center gap-2">
+<span class="text-on-surface-variant text-body-md font-body-md">Stationen</span>
+<span class="text-outline-variant text-body-md">›</span>
+<span class="text-primary font-bold text-body-md">Alle Stationen</span>
+</div>
+<!-- Right Side: Actions & Badge -->
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container-low rounded-full border border-outline-variant/50">
+<div class="w-2 h-2 rounded-full bg-status-yellow animate-pulse"></div>
+<span class="text-caption font-bold text-on-surface-variant">Nur lokal · development</span>
+</div>
+<div class="flex items-center gap-3">
+<button class="text-body-md font-body-md font-bold text-on-surface-variant hover:bg-surface-container-low px-4 py-1.5 rounded-full transition-colors">
+                    Nur lokal
+                </button>
+<button class="bg-primary hover:bg-[#3d7e1b] text-on-primary text-body-md font-body-md font-bold px-4 py-1.5 rounded-full shadow-sm transition-all active:scale-95">
+                    Speichern &amp; Validieren
+                </button>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-[240px] mt-[56px] min-h-screen p-container-padding bg-[#fcfbf7]">
+<div class="max-w-[1200px] mx-auto">
+<!-- Page Header -->
+<div class="mb-stack-lg flex items-baseline justify-between">
+<h1 class="text-h1 font-h1 text-on-surface">Stationen</h1>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="bg-white border border-outline-variant rounded-lg pl-10 pr-4 py-2 text-body-md focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all w-64" placeholder="Station suchen..." type="text"/>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 bg-white border border-outline-variant rounded-lg hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+<span class="text-body-md">Filter</span>
+</button>
+</div>
+</div>
+<!-- Validation Info Bar (Optional addition for fidelity) -->
+<div class="mb-stack-lg bg-white border-l-4 border-status-green border-outline-variant p-4 flex items-center justify-between rounded-r-lg shadow-sm">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-status-green" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<p class="text-body-md font-bold">Inhaltsprüfung bestanden</p>
+<p class="text-caption text-on-surface-variant">Alle 12 Stationen sind für den Live-Betrieb bereit und lokal validiert.</p>
+</div>
+</div>
+<button class="text-primary font-bold text-body-md hover:underline">Details anzeigen</button>
+</div>
+<!-- Stations Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-stack-lg pb-10">
+<!-- Station 1: Klassenzimmer -->
+<div class="sn-card bg-white border border-outline-variant rounded-lg p-card-padding flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-h2 font-h2 text-on-surface">Klassenzimmer</h3>
+<p class="text-code text-on-surface-variant/70">klassenzimmer</p>
+</div>
+<div class="w-3 h-3 rounded-full bg-status-green shadow-[0_0_8px_rgba(75,154,35,0.4)]"></div>
+</div>
+<div class="flex items-center gap-2 mt-auto">
+<span class="px-2 py-1 bg-surface-container-low rounded text-caption font-bold text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">360</span> Viewer 360°
+                        </span>
+</div>
+</div>
+<!-- Station 2: Musik -->
+<div class="sn-card bg-white border border-outline-variant rounded-lg p-card-padding flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-h2 font-h2 text-on-surface">Musik</h3>
+<p class="text-code text-on-surface-variant/70">musik</p>
+</div>
+<div class="w-3 h-3 rounded-full bg-status-green shadow-[0_0_8px_rgba(75,154,35,0.4)]"></div>
+</div>
+<div class="flex items-center gap-2 mt-auto">
+<span class="px-2 py-1 bg-surface-container-low rounded text-caption font-bold text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">360</span> Viewer 360°
+                        </span>
+</div>
+</div>
+<!-- Station 3: DaZ-Zimmer -->
+<div class="sn-card bg-white border border-outline-variant rounded-lg p-card-padding flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-h2 font-h2 text-on-surface">DaZ-Zimmer</h3>
+<p class="text-code text-on-surface-variant/70">daz</p>
+</div>
+<div class="w-3 h-3 rounded-full bg-status-green shadow-[0_0_8px_rgba(75,154,35,0.4)]"></div>
+</div>
+<div class="flex items-center gap-2 mt-auto">
+<span class="px-2 py-1 bg-surface-container-low rounded text-caption font-bold text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">360</span> Viewer 360°
+                        </span>
+</div>
+</div>
+<!-- Station 4: Kunst -->
+<div class="sn-card bg-white border border-outline-variant rounded-lg p-card-padding flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-h2 font-h2 text-on-surface">Kunst</h3>
+<p class="text-code text-on-surface-variant/70">kunst</p>
+</div>
+<div class="w-3 h-3 rounded-full bg-status-red shadow-[0_0_8px_rgba(239,58,55,0.4)]"></div>
+</div>
+<div class="flex items-center gap-2 mt-auto">
+<span class="px-2 py-1 bg-surface-container-low rounded text-caption font-bold text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">image</span> Viewer flat
+                        </span>
+</div>
+</div>
+<!-- Station 5: PC-Raum -->
+<div class="sn-card bg-white border border-outline-variant rounded-lg p-card-padding flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-h2 font-h2 text-on-surface">PC-Raum</h3>
+<p class="text-code text-on-surface-variant/70">pc-raum</p>
+</div>
+<div class="w-3 h-3 rounded-full bg-status-green shadow-[0_0_8px_rgba(75,154,35,0.4)]"></div>
+</div>
+<div class="flex items-center gap-2 mt-auto">
+<span class="px-2 py-1 bg-surface-container-low rounded text-caption font-bold text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">360</span> Viewer 360°
+                        </span>
+</div>
+</div>
+<!-- Station 6: Lesewelt -->
+<div class="sn-card bg-white border border-outline-variant rounded-lg p-card-padding flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-h2 font-h2 text-on-surface">Lesewelt</h3>
+<p class="text-code text-on-surface-variant/70">lesewelt</p>
+</div>
+<div class="w-3 h-3 rounded-full bg-status-green shadow-[0_0_8px_rgba(75,154,35,0.4)]"></div>
+</div>
+<div class="flex items-center gap-2 mt-auto">
+<span class="px-2 py-1 bg-surface-container-low rounded text-caption font-bold text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">image</span> Viewer flat
+                        </span>
+</div>
+</div>
+<!-- Station 7: Werken -->
+<div class="sn-card bg-white border border-outline-variant rounded-lg p-card-padding flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-h2 font-h2 text-on-surface">Werken</h3>
+<p class="text-code text-on-surface-variant/70">werken</p>
+</div>
+<div class="w-3 h-3 rounded-full bg-status-green shadow-[0_0_8px_rgba(75,154,35,0.4)]"></div>
+</div>
+<div class="flex items-center gap-2 mt-auto">
+<span class="px-2 py-1 bg-surface-container-low rounded text-caption font-bold text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">image</span> Viewer flat
+                        </span>
+</div>
+</div>
+<!-- Station 8: Speiseraum -->
+<div class="sn-card bg-white border border-outline-variant rounded-lg p-card-padding flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-h2 font-h2 text-on-surface">Speiseraum</h3>
+<p class="text-code text-on-surface-variant/70">speiseraum</p>
+</div>
+<div class="w-3 h-3 rounded-full bg-status-yellow shadow-[0_0_8px_rgba(251,187,36,0.4)]"></div>
+</div>
+<div class="flex items-center gap-2 mt-auto">
+<span class="px-2 py-1 bg-surface-container-low rounded text-caption font-bold text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">image</span> Viewer flat
+                        </span>
+</div>
+</div>
+<!-- Station 9: Hort -->
+<div class="sn-card bg-white border border-outline-variant rounded-lg p-card-padding flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-h2 font-h2 text-on-surface">Hort</h3>
+<p class="text-code text-on-surface-variant/70">hort</p>
+</div>
+<div class="w-3 h-3 rounded-full bg-status-green shadow-[0_0_8px_rgba(75,154,35,0.4)]"></div>
+</div>
+<div class="flex items-center gap-2 mt-auto">
+<span class="px-2 py-1 bg-surface-container-low rounded text-caption font-bold text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">image</span> Viewer flat
+                        </span>
+</div>
+</div>
+<!-- Station 10: Turnhalle -->
+<div class="sn-card bg-white border border-outline-variant rounded-lg p-card-padding flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-h2 font-h2 text-on-surface">Turnhalle</h3>
+<p class="text-code text-on-surface-variant/70">turnhalle</p>
+</div>
+<div class="w-3 h-3 rounded-full bg-status-green shadow-[0_0_8px_rgba(75,154,35,0.4)]"></div>
+</div>
+<div class="flex items-center gap-2 mt-auto">
+<span class="px-2 py-1 bg-surface-container-low rounded text-caption font-bold text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">image</span> Viewer flat
+                        </span>
+</div>
+</div>
+<!-- Station 11: Schulsozialarbeit -->
+<div class="sn-card bg-white border border-outline-variant rounded-lg p-card-padding flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-h2 font-h2 text-on-surface">Schulsozialarbeit</h3>
+<p class="text-code text-on-surface-variant/70">schulsozialarbeit</p>
+</div>
+<div class="w-3 h-3 rounded-full bg-status-green shadow-[0_0_8px_rgba(75,154,35,0.4)]"></div>
+</div>
+<div class="flex items-center gap-2 mt-auto">
+<span class="px-2 py-1 bg-surface-container-low rounded text-caption font-bold text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">image</span> Viewer flat
+                        </span>
+</div>
+</div>
+<!-- Station 12: Schulhof -->
+<div class="sn-card bg-white border border-outline-variant rounded-lg p-card-padding flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-h2 font-h2 text-on-surface">Schulhof</h3>
+<p class="text-code text-on-surface-variant/70">schulhof</p>
+</div>
+<div class="w-3 h-3 rounded-full bg-status-green shadow-[0_0_8px_rgba(75,154,35,0.4)]"></div>
+</div>
+<div class="flex items-center gap-2 mt-auto">
+<span class="px-2 py-1 bg-surface-container-low rounded text-caption font-bold text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">image</span> Viewer flat
+                        </span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button (FAB) for adding new station -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all z-50 group">
+<span class="material-symbols-outlined text-2xl group-hover:rotate-90 transition-transform duration-300">add</span>
+</button>
+<script>
+        // Micro-interaction: Sidebar active state indicator logic
+        // This is primarily for visual demonstration in the static mockup
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                if (link.textContent.trim() === 'Alle Stationen') return; // Stay on this page for demo
+                e.preventDefault();
+                console.log('Navigating to:', link.textContent.trim());
+            });
+        });
+
+        // Simple Card Click Simulation
+        document.querySelectorAll('.sn-card').forEach(card => {
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', () => {
+                const title = card.querySelector('h3').textContent;
+                console.log('Selected Station:', title);
+                // Highlight selection
+                document.querySelectorAll('.sn-card').forEach(c => c.classList.remove('ring-2', 'ring-primary'));
+                card.classList.add('ring-2', 'ring-primary');
+            });
+        });
+    </script>
+</body></html>

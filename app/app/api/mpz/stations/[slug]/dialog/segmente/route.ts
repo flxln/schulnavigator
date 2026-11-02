@@ -44,6 +44,10 @@ export function parseCreate(body: unknown): AddDialogSegmentInput | null {
     if (!isTail(raw.tail)) return null
     input.tail = raw.tail
   }
+  if (raw.hasAudio !== undefined) {
+    if (typeof raw.hasAudio !== 'boolean') return null
+    input.hasAudio = raw.hasAudio
+  }
   return input
 }
 

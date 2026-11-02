@@ -24,10 +24,10 @@ export default async function MpzFlatCalibPage({ params }: PageProps) {
           ist hier nicht verfügbar.
         </p>
         <Link
-          href={`/raum/${slug}?hotspot-calib=1`}
+          href={`/mpz/calib/sphere/${slug}`}
           className="text-sm font-semibold text-accent underline-offset-2 hover:underline"
         >
-          Sphere-Kalibrierung: /raum/{slug}?hotspot-calib=1
+          Sphere-Kalibrierung: /mpz/calib/sphere/{slug}
         </Link>
         <Link
           href="/mpz/studio/stationen"

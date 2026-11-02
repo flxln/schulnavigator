@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs'
 import { mkdir, rename, unlink } from 'node:fs/promises'
-import { dirname, extname, join, normalize } from 'node:path'
+import { dirname, extname, join, normalize, sep } from 'node:path'
 import { fileTypeFromBuffer } from 'file-type'
 import {
   createMpzContentIo,
@@ -28,6 +28,9 @@ const ICON_SANITIZE_RULE = {
 
 const ICON_EXT_SET = new Set<string>(ICON_EXTENSIONS)
 
+const BAHN_A_PRESET_COLLISION_MESSAGE =
+  'Dieses Icon ist ein generisches Preset (Bahn A) und kann nur über einen Code-Commit geändert werden.'
+
 export type IconCollisionMode = 'reject' | 'replace'
 
 export interface IngestHotspotIconInput {
@@ -52,22 +55,50 @@ function looksLikeSvg(headerSlice: Buffer): boolean {
   return head.startsWith('<svg') || head.startsWith('<?xml')
 }
 
+function mediaIconsRoot(appRoot: string, slug: string): string {
+  return normalize(join(appRoot, 'public', 'media', slug, 'icons'))
+}
+
+function stationsIconsRoot(appRoot: string, slug: string): string {
+  return normalize(join(appRoot, 'public', 'stations-icons', slug))
+}
+
+function isPathUnderRoot(candidate: string, root: string): boolean {
+  const rootPrefix = `${root}${sep}`
+  return candidate === root || candidate.startsWith(rootPrefix)
+}
+
 export function resolveIconPublicPath(
   appRoot: string,
   slug: string,
   quelle: string,
 ): string | null {
-  const prefix = `/media/${slug}/icons/`
-  if (!quelle.startsWith(prefix)) {
+  if (!quelle.startsWith('/')) {
     return null
   }
-  const iconsRoot = normalize(join(appRoot, 'public', 'media', slug, 'icons'))
+
+  const mediaPrefix = `/media/${slug}/icons/`
+  const stationsPrefix = `/stations-icons/${slug}/`
+
+  let root: string | null = null
+  if (quelle.startsWith(mediaPrefix)) {
+    root = mediaIconsRoot(appRoot, slug)
+  } else if (quelle.startsWith(stationsPrefix)) {
+    root = stationsIconsRoot(appRoot, slug)
+  } else {
+    return null
+  }
+
   const candidate = normalize(join(appRoot, 'public', quelle.slice(1)))
-  const iconsPrefix = `${iconsRoot}/`
-  if (candidate !== iconsRoot && !candidate.startsWith(iconsPrefix)) {
+  if (!isPathUnderRoot(candidate, root)) {
     return null
   }
+
   return candidate
+}
+
+function bahnAPresetPath(appRoot: string, slug: string, filename: string): string {
+  return join(stationsIconsRoot(appRoot, slug), filename)
 }
 
 export async function validateIconUpload(input: {
@@ -163,6 +194,23 @@ async function writeIconWithReplace(
   }
 }
 
+async function listIconPathsInDir(
+  dir: string,
+  publicPrefix: string,
+): Promise<string[]> {
+  if (!existsSync(dir)) {
+    return []
+  }
+
+  const { readdir } = await import('node:fs/promises')
+  const entries = await readdir(dir, { withFileTypes: true })
+  return entries
+    .filter((e) => e.isFile())
+    .map((e) => e.name)
+    .filter((name) => ICON_EXT_SET.has(extname(name).toLowerCase()))
+    .map((name) => `${publicPrefix}${name}`)
+}
+
 export async function ingestHotspotIcon(
   input: IngestHotspotIconInput,
   io: MpzContentIo = createMpzContentIo(),
@@ -190,6 +238,10 @@ export async function ingestHotspotIcon(
       throw new MpzUploadError('VALIDATION', 'Ungültiger Icon-Zielpfad.')
     }
 
+    if (existsSync(bahnAPresetPath(appRoot, input.slug, filename))) {
+      throw new MpzUploadError('VALIDATION', BAHN_A_PRESET_COLLISION_MESSAGE)
+    }
+
     await writeIconWithReplace(input.source, destPath, input.collision)
 
     return { path, filename, destPath }
@@ -207,19 +259,15 @@ export async function listStationHotspotIcons(
     )
   }
 
-  const iconsDir = join(io.getPaths().appRoot, 'public', 'media', slug, 'icons')
-  if (!existsSync(iconsDir)) {
-    return { paths: [] }
-  }
+  const { appRoot } = io.getPaths()
+  const bahnAPaths = await listIconPathsInDir(
+    stationsIconsRoot(appRoot, slug),
+    `/stations-icons/${slug}/`,
+  )
+  const bahnBPaths = await listIconPathsInDir(
+    mediaIconsRoot(appRoot, slug),
+    `/media/${slug}/icons/`,
+  )
 
-  const { readdir } = await import('node:fs/promises')
-  const entries = await readdir(iconsDir, { withFileTypes: true })
-  const paths = entries
-    .filter((e) => e.isFile())
-    .map((e) => e.name)
-    .filter((name) => ICON_EXT_SET.has(extname(name).toLowerCase()))
-    .sort()
-    .map((name) => `/media/${slug}/icons/${name}`)
-
-  return { paths }
+  return { paths: [...bahnAPaths, ...bahnBPaths].sort() }
 }

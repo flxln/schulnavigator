@@ -519,17 +519,6 @@ Entry-Scanner von Inline-Block auf **`/eintritt/scan`** verschoben; gemeinsame `
 
 ---
 
-## #24 — i18n-Struktur für Menütexte
-
-**Labels:** `tech`  
-**Assignee:** Felix
-
-- UI-Texte in `de.json` / `en.json` (Platzhalter EN)
-- Umschalter noch inaktiv
-- Content (Räume, Medien) bleibt DE
-
----
-
 ## #25 — Meeting 10.06.: Demo + Content-Lieferplan einfordern
 
 **Labels:** `org` `blocker`  

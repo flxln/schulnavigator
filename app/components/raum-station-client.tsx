@@ -93,10 +93,12 @@ export function RaumStationClient({
     audioRef: dialogAudioRef,
     startFromUserGesture,
     stopDialog,
+    advanceFromUserGesture,
     dialogUiActive,
     speakingRolle,
     displayText,
     tail,
+    currentSegmentIsTextOnly,
   } = useDialogAudioPlaylist(station.dialog)
 
   const hasViewer = Boolean(
@@ -379,6 +381,8 @@ export function RaumStationClient({
             }
             layoutPx={station.dialog.bubble ? bubbleLayoutPx : undefined}
             offsetX={bubbleOffsetXResolved}
+            interactive={dialogUiActive && currentSegmentIsTextOnly}
+            onAdvance={advanceFromUserGesture}
           />
         ) : null}
       </section>

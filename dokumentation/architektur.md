@@ -8,7 +8,7 @@ _Stand: 2026-06-11 (**#111:** Card-Peek Raumseiten + iOS-Breitenfix; **#107:** S
 | ------------------- | ------------------------------------------------- | -------------------------------- | --------------------------------------------- |
 | Frontend            | Next.js (App Router), TypeScript strict, Tailwind | gleich                           | [002](./adr/002-frontend-nextjs.md)           |
 | Content             | JSON + Medien im Repo                             | **Directus** (self-hosted)       | [003](./adr/003-content-mvp-json-directus.md) |
-| Hosting             | MPZ-Hetzner via Coolify                           | gleich                           | [001](./adr/001-hosting-coolify.md)           |
+| Hosting             | MPZ-VPS (IONOS) via Coolify                       | gleich                           | [001](./adr/001-hosting-coolify.md)           |
 | Containerisierung   | Docker                                            | gleich                           | [001](./adr/001-hosting-coolify.md)           |
 | Custom-Admin        | —                                                 | **verworfen** (Directus)         | [003](./adr/003-content-mvp-json-directus.md) |
 | QR-Code-Generierung | `npm run generate:qr`, `rotate:access-tokens` (#141) | gleich | — |
@@ -136,7 +136,7 @@ Hotspot oder Medienliste → [`StationMediaPanel`](../app/components/station-med
 /api/dialog/[slug]/[clip]
 ```
 
-- **`/`** — Startseite mit **Frontansicht**-Hub ([ADR-016](./adr/016-hub-frontansicht-39gs.md)); Modus aus Cookie: `heft` = alle Stationen, `fest` = nur besuchte Slots klickbar (#21). **CTAs** modusabhängig ([ADR-009 Nachtrag CTAs](./adr/009-hub-isometrisch.md#nachtrag-2026-06-01--startseite-modusabhängige-ctas), [Nachtrag #104](./adr/009-hub-isometrisch.md#nachtrag-2026-06-11--scan-cta-ohne-stationsvorschlag-104)): `fest` 0/11 = Einzel-Scan; `fest`/`heft` 1–10 = „Scanne die nächste Station!“; Fortschrittskarte → `/stationen`. Logik: `lib/home-cta.ts`, `lib/next-station.ts` (Sichtbarkeit). Wordmark/Layout: [ADR-016 Nachtrag](./adr/016-hub-frontansicht-39gs.md#nachtrag-2026-06-10--startseiten-layout--wordmark-103) (#103, Schriftgröße #104).
+- **`/`** — Startseite mit **Frontansicht**-Hub ([ADR-016](./adr/016-hub-frontansicht-39gs.md)); Modus aus Cookie: `heft` = alle Stationen, `fest` = nur besuchte Slots klickbar (#21). **CTAs** modusabhängig ([ADR-009 Nachtrag CTAs](./adr/009-hub-isometrisch.md#nachtrag-2026-06-01--startseite-modusabhängige-ctas), [Nachtrag #104](./adr/009-hub-isometrisch.md#nachtrag-2026-06-11--scan-cta-ohne-stationsvorschlag-104), [Nachtrag 2026-06-25](./adr/009-hub-isometrisch.md#nachtrag-2026-06-25--einheitlicher-scan-button-text-kunde39-gs)): `fest` 0/11 = Einzel-Scan; `fest`/`heft` 1–10 = Fortsetzungs-Scan — einheitlich **„Scanne einen beliebigen Code“**; Fortschrittskarte → `/stationen`. Logik: `lib/home-cta.ts`, `lib/next-station.ts` (Sichtbarkeit). Wordmark/Layout: [ADR-016 Nachtrag](./adr/016-hub-frontansicht-39gs.md#nachtrag-2026-06-10--startseiten-layout--wordmark-103) (#103, Schriftgröße #104).
 - **`/stationen`** — Stationsliste mit Raum-Icons (#105; Lock im Modus `fest`) — Epic #58.
 - **`/eintritt`** — Entry-QR (`?t=…`) setzt Cookie und leitet auf `/` um; ohne gültigen Zugang **Hinweis-/Fehlerseite** (Willkommens-Karte verlinkt auf `/eintritt/scan`). Kein Inline-Scanner mehr (#57, #82, [ADR-008](./adr/008-eintritt-in-app-scanner.md)).
 - **`/eintritt/scan`** — Vollbild-Entry-Scanner (gleiche Shell wie `/scan`, `ScanFullscreenShell`); `QrScanner` `mode="entry"` `chrome`; ohne Cookie erreichbar (Middleware-Whitelist). `parseEntryScan` prüft nur Struktur (Origin, Pfad `/eintritt`, `t` nicht leer); Gültigkeit nur Middleware.
@@ -222,12 +222,13 @@ Vollständige Ablagekonventionen (Pfade, Autorenzone, Laufzeit): [`verzeichnisst
 
 ## Deployment
 
-- **Produktion:** MPZ-Hetzner-Server, gemanagt über Coolify, deployed als Docker-Container ([`anleitungen/fuer-entwickler.md`](../anleitungen/fuer-entwickler.md) — Abschnitt „Coolify“).
-- **Öffentliche URL:** `https://schulnavigator.mpz.schule` — erreichbar über MPZ-Wildcard-DNS **`*.mpz.schule`** → Coolify-VPS `217.154.120.240` (kein eigener A-Record nur für `schulnavigator` nötig).
+- **Produktion:** MPZ-VPS bei IONOS, gemanagt über Coolify, deployed als Docker-Container ([`anleitungen/fuer-entwickler.md`](../anleitungen/fuer-entwickler.md) — Abschnitt „Coolify“).
+- **Öffentliche URL (GS39, Branch `kunde/39-gs`):** `https://39-gs.mpz.schule` — erreichbar über MPZ-Wildcard-DNS **`*.mpz.schule`** → Coolify-VPS `217.154.120.240`.
+- **Legacy-URL:** `https://schulnavigator.mpz.schule` — Application auf eingefrorenem Branch **`main`** (Referenzstand, nicht GS39-Prod).
 - **Image:** [`app/Dockerfile`](../app/Dockerfile) — Multi-Stage, `output: 'standalone'`, Health `GET /api/health`, Container-Port **`PORT=3000`** (Coolify „Ports Exposes“ = `3000`).
 - **Suchmaschinen:** `robots.txt` mit `Disallow: /` und `noindex` im Root-Layout (Issue #16); Verfeinerung in #23 möglich.
-- **Coolify Prod:** Application `q1a8t4zswynvgutbw9og5l7n` — Projekt **Schulprojekte**, Branch `main`.
-- **Staging / Dev:** `https://schulnavigator-dev.mpz.schule` — Application `jjgl5u105ucxjvbeuwflsjq4` (`schulnavigator:development-feature`), gleicher Server, Branch `main` (Feature-Branches bei Bedarf in Coolify umstellen).
+- **Coolify GS39-Prod:** Application `jjgl5u105ucxjvbeuwflsjq4` (`schulnavigator:development-feature`) — Projekt **Schulprojekte**, Domain **`39-gs.mpz.schule`**, Branch **`kunde/39-gs`** (`main` eingefroren; `kunde/*` wird nicht nach `main` gemergt).
+- **Coolify Legacy:** Application `q1a8t4zswynvgutbw9og5l7n` — Domain `schulnavigator.mpz.schule`, Branch **`main`**.
 
 ### Voraussetzungen fürs Dockerfile
 
