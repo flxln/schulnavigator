@@ -51,3 +51,5 @@ certificates
 
 # MPZ Studio / content:ingest — lokale Backup-Datei nicht versionieren
 data/stations.json.bak
+# Einzelseiten-PDFs (enthalten Entry-Token, nicht öffentlich ausliefern)
+public/qr/einzelneseiten/
