@@ -85,6 +85,7 @@ schulnavigator/
 | [019](./dokumentation/adr/019-coach-fortschritt-einblendung.md) | Coach-Einblendungen (fortschritts-getriggert, getrennt vom Dialog); Schwellwert-Trigger, `duo-split`, modus-getrennter Seen-State, Layer-Vertrag ([Plan](./.cursor/plans/archiv/2026-06/coach_sparkle_mvp_d9e82ce2.plan.md)) | entschieden |
 | [022](./dokumentation/adr/022-mpz-studio-internes-ingest-tool.md) | MPZ Studio: internes Dev-only-Ingest-Tool (nur MPZ, nicht Lehrkräfte); Ausnahme/ergänzt ADR-003; `/mpz/*` nur `NODE_ENV=development`, Secret-Header, Validatoren nach Save ([Spec](./dokumentation/spezifikationen/mpz-studio.md)) | entschieden |
 | [028](./dokumentation/adr/028-main-und-release-39-gs.md) | `main` ist der Stamm; Schule deployt von `release/39-gs` (Auto-Deploy aus) | entschieden |
+| [029](./dokumentation/adr/029-runtime-datenpfad-directus.md) | Runtime-Datenpfad Directus: Fetch + Data-Cache (Option b); Fallback `stations.json` | entschieden |
 
 Vollständiger ADR-Index: [`dokumentation/entscheidungen.md`](./dokumentation/entscheidungen.md)
 
