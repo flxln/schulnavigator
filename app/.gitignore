@@ -53,3 +53,7 @@ certificates
 data/stations.json.bak
 # Einzelseiten-PDFs (enthalten Entry-Token, nicht öffentlich ausliefern)
 public/qr/einzelneseiten/
+
+# Schüler-Medien nie in Git (ADR-027, Volumes + rsync)
+public/media/*
+!public/media/.gitkeep
