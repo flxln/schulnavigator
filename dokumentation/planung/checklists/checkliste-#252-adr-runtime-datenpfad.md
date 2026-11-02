@@ -54,6 +54,8 @@
      - Build-Kontext bleibt `app/` (Build-Regeln).
 5. **`entscheidungen.md`:** Tabellenzeile mit tatsächlicher Nummer NNN, Status „entschieden“, Datum. Kein Eingriff in ADR-003; Bezug zu ADR-003 nur als Verweis im ADR-Text.
 6. ~~**03 Implementieren** (Composer)~~ erledigt (Composer, 2026-11-02): ADR-029, Index-Zeile, Verifikation unten.
+7. ~~**04 Post-Mortem**~~ erledigt (Sonnet 4.6, 2026-11-02): [post-mortem-252-2026-11-02.md](../../reviews/post-mortem/post-mortem-252-2026-11-02.md), Go für 5a.
+8. ~~**05a Abschließen**~~ erledigt (2026-11-02): Issue-Datei, `offen.md`, `CLAUDE.md`, GitHub-Body-Sync, Draft-PR.
 
 ## Implementierungsnotizen
 
