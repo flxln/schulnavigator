@@ -53,7 +53,7 @@
      - Folgen für #257: Env (Runtime-only), Fetch/Merge in `stations.ts`, Cache/Revalidate, Fallback.
      - Build-Kontext bleibt `app/` (Build-Regeln).
 5. **`entscheidungen.md`:** Tabellenzeile mit tatsächlicher Nummer NNN, Status „entschieden“, Datum. Kein Eingriff in ADR-003; Bezug zu ADR-003 nur als Verweis im ADR-Text.
-6. **03 Implementieren** (Composer): Text finalisieren, keine `.cursor/plans/`, PR/Issue-Verweis optional im ADR-Footer.
+6. ~~**03 Implementieren** (Composer)~~ erledigt (Composer, 2026-11-02): ADR-029, Index-Zeile, Verifikation unten.
 
 ## Implementierungsnotizen
 
@@ -71,6 +71,19 @@
 - Latenz erscheint als Spanne (5,5 s bis ~2 min), nicht als Einzelwert gegen 19 s³.
 - `git diff --name-status main` zeigt nur Dateien unter `dokumentation/`.
 - `cd app && npm run build` unverändert grün (kein Code-Diff erwartet).
+
+## Verifikationsergebnisse (03 Implementieren, 2026-11-02)
+
+| Prüfung | Ergebnis |
+|---|---|
+| `ls dokumentation/adr/` → eine neue Datei `029-runtime-datenpfad-directus.md` (höchste vorherige 028 + 1) | OK |
+| `rg "Runtime-Datenpfad" dokumentation/entscheidungen.md` → Link `./adr/029-runtime-datenpfad-directus.md` | OK |
+| ADR-029: Status „entschieden“, Option b; a/c unter „Verworfene Alternativen“, c mit Re-Trigger + #253 | OK |
+| Kriterien-Tabelle: 5 Zeilen; Preview = Abweichung, „nicht gemessen“ | OK |
+| Stichprobe Text (Fallback, Gesamtdokument, Runtime-only, Service-User, Source-of-Truth, frisch von `main`) | OK (`rg` auf ADR-029) |
+| Latenz als Spanne 5,5 s bis ~2 min, Verwerfungsgrund a ≠ Spitzenvergleich | OK |
+| `git diff --name-status main` (Doku dieser Issue): nur `dokumentation/` inkl. `??` ADR-029; kein `app/` | OK (Branch enthält zusätzlich Triage/Checkliste/Pre-Mortem aus Pipeline) |
+| `cd app && npm run build` | OK (Exit 0, Next.js 16.2.6) |
 
 ## Referenzen
 
