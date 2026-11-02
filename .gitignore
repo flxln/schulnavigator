@@ -9,3 +9,5 @@
 !.cursor/skills/
 
 .DS_Store
+# Kontingent-Snapshot (lokal, nie committen)
+dokumentation/planung/kontingent-status.md
