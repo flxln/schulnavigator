@@ -10,7 +10,7 @@ Abgleich mit [flxln/schulnavigator](https://github.com/flxln/schulnavigator). **
 | [milestones.md](./milestones.md) | Milestone-Beschreibungen für GitHub |
 | [labels.md](./labels.md) | Label-Konventionen |
 | [epics/](./epics/) | Aktive Epic-Spezifikationen (derzeit: [Directus #47](./epics/epic-directus.md)) — nach Abschluss ins Archiv |
-| [issues/](./issues/) | GitHub-Issue-Bodies (`gh issue create --body-file`); derzeit Directus #249–#262 |
+| [issues/](./issues/) | GitHub-Issue-Bodies (`issue-<nr>-<slug>.md`); Directus #47 und #249–#263 |
 | [epic-mpz-studio-ui-cleanup.md](./epic-mpz-studio-ui-cleanup.md) | Epic **#195** — MPZ Studio UI-Cleanup (#196–#204), abgeschlossen |
 | [epic-mpz-studio-v3-visual-polish.md](./epic-mpz-studio-v3-visual-polish.md) | Epic **#205** — MPZ Studio v3 Visual Polish (#206–#220) |
 | [epic-schuelermedien-deploy-trennung.md](./epic-schuelermedien-deploy-trennung.md) | Epic **#226** — Schüler-Medien Deploy-Trennung (#227–#232) |
