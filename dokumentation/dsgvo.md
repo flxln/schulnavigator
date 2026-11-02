@@ -1,6 +1,6 @@
 # Schulnavigator — Datenschutzkonzept
 
-*Status: v1.0 (beschlossen) — Deploy-Trennung umgesetzt (ADR-027); Media-Gate live (Audit S1, 2026-07-05); AVV unterschrieben 25.06.2026 (#43) | Stand: 2026-07-06*
+*Status: v1.0 (beschlossen). Deploy-Trennung umgesetzt (ADR-027). Media-Gate live (Audit S1, 2026-07-05). AVV unterschrieben 25.06.2026 (#43). Wortlautprüfung 2026-11-02: Directus-Lehrkräfte-Accounts nicht abgedeckt (#263). Stand: 2026-11-02*
 
 ## Personenbezogene Daten
 
@@ -82,6 +82,14 @@ Details Directus: [directus-auth-konzept.md](./spezifikationen/directus-auth-kon
 - **Inhalt (Kern):** Hosting in Deutschland, Verantwortlichkeiten, Speicherort der Daten (ADR-027), Verarbeitung von Schüler-Medien nur mit Einwilligung
 - **Prüfung vor Unterschrift:** Anhang Speicherorte gegen ADR-027-Stand (Juni 2026) abgleichen; GitHub-Subprozessor-Textbaustein beilegen
 
+### Wortlaut im Repo (geprüft 2026-11-02, #263)
+
+Datei: [`auftraggeber/verträge/Auftragsverarbeitungsvertrag (AVV 39.GS) .pdf`](../auftraggeber/verträge/Auftragsverarbeitungsvertrag%20(AVV%2039.GS)%20.pdf). 3 Seiten, erzeugt am 13.05.2026. Die Unterschriftszeile ist leer. Ein Anhang zu ADR-027 oder GitHub ist nicht enthalten.
+
+Der Text nennt die App „Besucherkompass“ und den Tag der offenen Tür. § 2 schließt Namen, Geburtsdaten und E-Mail-Adressen aus. § 3 sieht keine Unterauftragnehmer vor und löscht Mediendaten nach der Veranstaltung. Lehrkräfte stehen nur als betroffene Personen von Bild und Ton, nicht als Account-Inhaber.
+
+Namen und E-Mail-Adressen von Lehrkräften in einer Directus-Datenbank deckt dieser Wortlaut nicht ab. Vor [#261](https://github.com/flxln/schulnavigator/issues/261) ist ein Nachtrag nötig. Die unterschriebene Ausfertigung vom 25.06.2026 mit ADR-027-Anhang liegt laut [#43](https://github.com/flxln/schulnavigator/issues/43) im MPZ-Hefter und ist nicht diese PDF.
+
 ### Subprozessor GitHub (nur Quellcode)
 
 GitHub, Inc. wird als Subprozessor **ausschließlich** für die Speicherung von Anwendungsquellcode, Konfigurationsdateien und strukturierten Inhaltsdaten (z. B. `stations.json`) im **privaten** Repository genutzt. **Keine** Schüler-Foto-, Video- oder Audio-Binärdateien werden dort gespeichert (DSB O2, 2026-06-24). Schüler-Medien liegen ausschließlich auf dem IONOS-VPS des MPZ in Deutschland ([ADR-027](./adr/027-schuelermedien-nicht-in-git.md)).
@@ -112,4 +120,5 @@ GitHub, Inc. wird als Subprozessor **ausschließlich** für die Speicherung von 
 - [ ] Log-Retention Traefik/Coolify bestätigen (Ziel ≤ 14 Tage)
 - [x] HSTS am Proxy aktivieren (#242, 2026-07-05)
 - [ ] Volume-Backup T5 umsetzen ([#243](https://github.com/flxln/schulnavigator/issues/243) — Entscheidung NAS/Headscale: [backup-t5-nas-headscale.md](../anleitungen/backup-t5/backup-t5-nas-headscale.md); Cron/Restore ausstehend)
-- [ ] AVV #43 auf Directus-Verarbeitung (Lehrkräfte-Accounts) prüfen — Befund 2026-07-06 (#250): AVV-Kern nennt nur Schüler-Medien/Hosting, Directus-Zweck vermutlich nicht abgedeckt; **Prüfung/Nachtrag als Blocker vor #261:** [#263](https://github.com/flxln/schulnavigator/issues/263)
+- [x] AVV-Wortlaut auf Directus-Verarbeitung geprüft (2026-11-02, [#263](https://github.com/flxln/schulnavigator/issues/263)): die Repo-Datei vom 13.05.2026 deckt Lehrkräfte-Accounts nicht ab
+- [ ] AVV-Nachtrag vor [#261](https://github.com/flxln/schulnavigator/issues/261): Zweck Lehrkräfte-Accounts (Name, E-Mail), Speicherort Directus-DB, Unterauftragnehmer falls nötig
