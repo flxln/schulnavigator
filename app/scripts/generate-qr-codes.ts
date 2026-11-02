@@ -130,7 +130,10 @@ function cleanPdfOutput(preset: 'all' | 'schulfest') {
     const remove =
       preset === 'schulfest'
         ? name.startsWith('qr-schulfest-')
-        : name.startsWith('qr-') && !name.startsWith('qr-schulfest-')
+        : name.startsWith('qr-') &&
+          !name.startsWith('qr-schulfest-') &&
+          !name.startsWith('qr-vsr-') &&
+          !name.startsWith('qr-openmoji-')
     if (remove) {
       unlinkSync(join(pdfDir, name))
     }
