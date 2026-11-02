@@ -39,16 +39,12 @@ Vorgaben für den ADR-Text (Schritt 03). Spalte „Fund“ verweist auf das Pre-
 
 1. ~~**01b Pre-Mortem**~~ erledigt (GLM 5.3 / ‡ Cline, 2026-11-02): [pre-mortem-1b-adr-migration-freeze-253-2026-11-02.md](../../reviews/pre-mortem/pre-mortem-1b-adr-migration-freeze-253-2026-11-02.md), vier Funde L1 bis L4.
 2. ~~**02 Plan härten**~~ erledigt (Opus 5.5 / ◆, 2026-11-02): Entscheidungstabelle D-1 bis D-9, AC und Verifikation angepasst; kein `.cursor/plans/`.
-3. ~~**Issue-Datei:** Frontmatter, Ziel, Akzeptanzkriterien, Checklisten-Link~~ in Schritt 0 erledigt⁵. In 03 nur nachziehen: AC-Zeile „Folgen für #255, #259, #262“ um **#256, #257, #261** ergänzen².
-4. **Vor 03 aufräumen:** `dokumentation/planung/issues/Untitled` (untracked, Inhalt nur `/clear`) löschen, damit es nicht in den 5a-Sammelcommit gerät⁵.
-5. **ADR anlegen:** Template `000-template.md` → `NNN-migrationsstrategie-content-freeze.md` (NNN per `ls` prüfen). Kontext Ist-Stand (#264: Content auf `main`, Deploy `release/39-gs`, Studio schreibt dev-JSON) und Delegation aus ADR-029 Z. 40/47.
-6. **ADR-Inhalt:**
-   - a) **Entscheidung** in vier Blöcken entlang der E2-Fragen: SoT-Übergangsregime (D-1 bis D-3, D-8), Content-Freeze mit Commit-Klassen und Prüfbefehl (D-4, D-5), MPZ Studio (D-7), kanonische Slugs (D-9)¹²⁴.
-   - b) **Verworfene Alternativen:** globaler SoT-Wechsel (Big-Bang, außerhalb Epic); globaler Freeze aller Slugs (blockiert Pflege von 10+ Stationen ohne Grund); pauschales JSON-Commit-Verbot (bricht Build/Fallback aus ADR-029 Z. 44/45); implizite Pilot-Liste „was in Directus steht“ (SoT-Wechsel ohne Freeze möglich); regelmäßiger Rück-Export im Piloten (kein Executor: Studio dev-only, Export-Job außerhalb Scope)¹²³.
-   - c) **Konsequenzen:** Fallback-Drift für Pilot-Räume (D-6); Folgen je Issue: #255 Prüfbefehl D-5 vor `release/39-gs`-Verschiebung, sonst nur Deploy; #256 Rechte und Slug-Constraint (D-9), Schema-Migration als technische Commit-Klasse (D-5); #257 Merge-Vertrag D-2 und Pilot-Liste im Repo (D-1); #259 Pilot-Liste festlegen, Freeze-Basis setzen, Vermerk in `verzeichnisstruktur.md`, Export aus `main`; #261 Pilot-Review entscheidet Rück-Export, Neuanlage, Big-Bang, ggf. Rückabwicklung D-8; #262 Studio-Sperre für Pilot-Slugs (D-7)¹²³⁴.
-   - d) Slugs: Verweis auf [verzeichnisstruktur.md](../../content/verzeichnisstruktur.md), keine Kopie der Liste im ADR.
-7. **`entscheidungen.md`:** Tabellenzeile mit tatsächlicher Nummer, Status „entschieden“, Datum, Link.
-8. **03 Implementieren** (Composer / ⌘): nur Doku; danach Verifikation unten.
+3. ~~**Issue-Datei:** Frontmatter, Ziel, Akzeptanzkriterien, Checklisten-Link~~ in Schritt 0 erledigt⁵. ~~In 03 nachziehen: AC-Zeile „Folgen für #255, #259, #262“ um **#256, #257, #261** ergänzen²~~ erledigt (2026-11-02, 03).
+4. ~~**Vor 03 aufräumen:** `dokumentation/planung/issues/Untitled` (untracked, Inhalt nur `/clear`) löschen, damit es nicht in den 5a-Sammelcommit gerät⁵~~ erledigt (2026-11-02, 03).
+5. ~~**ADR anlegen:**~~ `030-migrationsstrategie-content-freeze.md` (2026-11-02, 03).
+6. ~~**ADR-Inhalt:**~~ D-1 bis D-9 in vier Blöcken, verworfene Alternativen, Konsequenzen 6c (2026-11-02, 03).
+7. ~~**`entscheidungen.md`:**~~ Zeile ADR-030 (2026-11-02, 03).
+8. ~~**03 Implementieren**~~ erledigt (Composer, 2026-11-02); Verifikation unten.
 9. **04 Post-Mortem** kompakt · **05a Abschließen** (Issue, `offen.md`, GitHub-Body, Draft-PR).
 
 ## Implementierungsnotizen
@@ -76,6 +72,22 @@ Vorgaben für den ADR-Text (Schritt 03). Spalte „Fund“ verweist auf das Pre-
 - `git diff --name-status main -- dokumentation/adr/022-* dokumentation/adr/028-* dokumentation/adr/029-*` → leer (Rahmen-ADRs unverändert).
 - `git diff --name-status main` → nur `dokumentation/` (Pipeline-Artefakte ausgenommen prüfen); `issues/Untitled` taucht nicht auf⁵.
 - `cd app && npm run build` grün (kein Code-Diff erwartet).
+
+## Verifikationsergebnisse (03 Implementieren, 2026-11-02)
+
+| Prüfung | Ergebnis |
+|---|---|
+| `ls dokumentation/adr/` → genau `030-migrationsstrategie-content-freeze.md` neu (029 + 1) | OK |
+| `rg -i "freeze\|migration\|slug\|studio" dokumentation/adr/030-*.md` (vier E2-Themen; SoT-Verweis ADR-029 im Kontext) | OK |
+| `rg -i "Pilot-Liste\|Freeze-Basis\|redaktionell\|technisch" dokumentation/adr/030-*.md` | OK |
+| `rg -i "jq -S" dokumentation/adr/030-*.md` → Prüfbefehl D-5 | OK |
+| D-6: „Freeze-Stand“ bei Directus-Ausfall; kein offener Rück-Export im Piloten | OK (Abschnitt 2 Fallback-Stand) |
+| D-9: drei Teilaussagen + Prozessregel bis #256 | OK (Abschnitt 4) |
+| `rg "Migrationsstrategie\|Content-Freeze" dokumentation/entscheidungen.md` → Link `030-migrationsstrategie-content-freeze.md` | OK |
+| ADR Konsequenzen: #255, #256, #257, #259, #261, #262 je eine Folge; #255 nur Deploy/Prüfbefehl | OK |
+| `git diff --name-status main -- dokumentation/adr/022-* dokumentation/adr/028-* dokumentation/adr/029-*` | OK (leer) |
+| `git diff --name-status main` → nur `dokumentation/` (+ untracked ADR-030); kein `app/`; `issues/Untitled` fehlt | OK |
+| `cd app && npm run build` | OK (Exit 0) |
 
 ## Referenzen
 

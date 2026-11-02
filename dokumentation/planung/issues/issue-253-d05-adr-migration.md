@@ -13,7 +13,7 @@ depends_on:
 
 ## Ziel
 
-ADR-030 (nächste freie Nummer beim Anlegen prüfen) festlegen: Migrationsstrategie JSON ↔ Directus und Content-Freeze-Regeln für den Directus-Pilot; E2-Fragen belegt; Folgen für #255, #259, #262 dokumentieren. Kein App-Code.
+ADR-030 (nächste freie Nummer beim Anlegen prüfen) festlegen: Migrationsstrategie JSON ↔ Directus und Content-Freeze-Regeln für den Directus-Pilot; E2-Fragen belegt; Folgen für #255, #256, #257, #259, #261, #262 dokumentieren. Kein App-Code.
 
 ## Akzeptanzkriterien
 
@@ -22,7 +22,7 @@ ADR-030 (nächste freie Nummer beim Anlegen prüfen) festlegen: Migrationsstrate
 - [ ] Freeze-Regeln für #259 mechanisch anwendbar
 - [ ] Konsistent mit ADR-022, ADR-028, ADR-029
 - [ ] Eintrag in `dokumentation/entscheidungen.md`
-- [ ] Folgen für #255, #259, #262 benannt
+- [ ] Folgen für #255, #256, #257, #259, #261, #262 benannt
 - [ ] Kein App-Code geändert
 
 ## Kontext
