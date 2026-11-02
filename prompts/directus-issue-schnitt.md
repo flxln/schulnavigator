@@ -76,7 +76,7 @@ Pipeline-Stufen-Spalte leer und vermerke das als offenen Punkt — Stufen **nich
    - „**Zuständig:** MPZ/Felix | Schule | DSB“ — mehrere Gates sind organisatorisch, nicht technisch
 
 5. **GitHub-Issue-Bodies** als je eine Markdown-Datei unter `dokumentation/planung/issues/`
-   (Ordner anlegen), Namensschema `issue-directus-<slug>.md`, kompatibel mit
+   (Ordner anlegen), Namensschema `issue-<github-nr>-<slug>.md`, kompatibel mit
    `gh issue create --body-file`. **Keine `gh`-Aufrufe, kein Commit, kein Push** — Freigabe folgt separat.
 
 ## Verboten
@@ -90,7 +90,7 @@ Pipeline-Stufen-Spalte leer und vermerke das als offenen Punkt — Stufen **nich
 ## Deliverables (Pflicht)
 
 - `dokumentation/planung/epics/epic-directus.md`
-- Issue-Body-Dateien unter `dokumentation/planung/issues/issue-directus-*.md`
+- Issue-Body-Dateien unter `dokumentation/planung/issues/issue-<nr>-*.md`
 - Optional: `dokumentation/spezifikationen/directus-implementierung.md` (Spec vor ADR), nur falls Aufgabe 1 dafür genug Substanz liefert
 - **Abschlussmeldung** (letzte Nachricht, kein Reasoning-Narrativ):
   - Liste aller erzeugten Dateien mit Pfaden
