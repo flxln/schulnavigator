@@ -12,9 +12,9 @@ Eine Web-App für Schulen. Besucher eines Tags der offenen Tür scannen QR-Codes
 
 ## Projektphasen
 
-Das Projekt liegt unter `2_in-arbeit/schulnavigator/`. **Phase 0** (Architektur-ADRs) ist abgeschlossen; **Phase 1** (Foundation) umfasst **#9–#16** — siehe [`dokumentation/archiv/projektplan.md`](./dokumentation/archiv/projektplan.md). **Phase 2:** Raum-Viewer (**#55**/#56), GS39-UI (**#58**), Dialog Maskottchen (**#71**/#72), Medien-Player (**#18–#20**) + **TextViewer** (**#93**) — umgesetzt. **360°-Sphere-Viewer** (**#113**, Branch `feature/360-sphere-viewer`): PSV v5 + Gyro, Koexistenz Flat/Sphere per `viewer`-Flag ([ADR-018](./dokumentation/adr/018-360-sphere-viewer.md)), Pilot `musik` — umgesetzt. **Demo-Content:** **`klassenzimmer`** mit 4 Medien/Hotspots (`public/media/klassenzimmer/`). **Raumbilder:** **#27** geschlossen (8/11 Panorama in `public/stations/`); **#17** offen für `kunst`, `hort`, `schulsozialarbeit`. **Live:** `https://39-gs.mpz.schule` (Coolify, Branch `kunde/39-gs`) — [`anleitungen/fuer-entwickler.md`](./anleitungen/fuer-entwickler.md).
+Das Projekt liegt unter `2_in-arbeit/schulnavigator/`. **Phase 0** (Architektur-ADRs) ist abgeschlossen; **Phase 1** (Foundation) umfasst **#9–#16** — siehe [`dokumentation/archiv/projektplan.md`](./dokumentation/archiv/projektplan.md). **Phase 2:** Raum-Viewer (**#55**/#56), GS39-UI (**#58**), Dialog Maskottchen (**#71**/#72), Medien-Player (**#18–#20**) + **TextViewer** (**#93**) — umgesetzt. **360°-Sphere-Viewer** (**#113**, Branch `feature/360-sphere-viewer`): PSV v5 + Gyro, Koexistenz Flat/Sphere per `viewer`-Flag ([ADR-018](./dokumentation/adr/018-360-sphere-viewer.md)), Pilot `musik` — umgesetzt. **Demo-Content:** **`klassenzimmer`** mit 4 Medien/Hotspots (`public/media/klassenzimmer/`). **Raumbilder:** **#27** geschlossen (8/11 Panorama in `public/stations/`); **#17** offen für `kunst`, `hort`, `schulsozialarbeit`. **Live:** `https://39-gs.mpz.schule` (Coolify, Branch `release/39-gs`, Auto-Deploy aus) — [`anleitungen/fuer-entwickler.md`](./anleitungen/fuer-entwickler.md).
 
-**Git:** `main` eingefroren; `kunde/*` **niemals** nach `main` mergen. Kunden-Code per pfadbasiertem Port auf `feature/*`. Regel: [`.cursor/rules/branch-freeze-kunde.mdc`](./.cursor/rules/branch-freeze-kunde.mdc).
+**Git:** `main` ist der Stamm. Die Schule deployt von `release/39-gs` (nur bewusst verschieben). `kunde/39-gs` ist veraltet. Regel: [`.cursor/rules/release-39-gs.mdc`](./.cursor/rules/release-39-gs.mdc), [ADR-028](./dokumentation/adr/028-main-und-release-39-gs.md).
 
 ---
 
@@ -84,6 +84,7 @@ schulnavigator/
 | [018](./dokumentation/adr/018-360-sphere-viewer.md)             | 360°-Sphere-Viewer (PSV v5) + Flat-Koexistenz per `viewer`-Flag; Gyro-Plugin; Spike Musikraum | entschieden |
 | [019](./dokumentation/adr/019-coach-fortschritt-einblendung.md) | Coach-Einblendungen (fortschritts-getriggert, getrennt vom Dialog); Schwellwert-Trigger, `duo-split`, modus-getrennter Seen-State, Layer-Vertrag ([Plan](./.cursor/plans/archiv/2026-06/coach_sparkle_mvp_d9e82ce2.plan.md)) | entschieden |
 | [022](./dokumentation/adr/022-mpz-studio-internes-ingest-tool.md) | MPZ Studio: internes Dev-only-Ingest-Tool (nur MPZ, nicht Lehrkräfte); Ausnahme/ergänzt ADR-003; `/mpz/*` nur `NODE_ENV=development`, Secret-Header, Validatoren nach Save ([Spec](./dokumentation/spezifikationen/mpz-studio.md)) | entschieden |
+| [028](./dokumentation/adr/028-main-und-release-39-gs.md) | `main` ist der Stamm; Schule deployt von `release/39-gs` (Auto-Deploy aus) | entschieden |
 
 Vollständiger ADR-Index: [`dokumentation/entscheidungen.md`](./dokumentation/entscheidungen.md)
 
@@ -156,8 +157,6 @@ Gilt für alle im Team. Vollständige Regeln: `.cursor/rules/feature-pipeline-gi
 Exit 2: falscher Branch, erst `start`. Exit 3: Secret-Datei genannt, entfernen. Exit 4: Push abgelehnt, nicht erzwingen. Exit 5: `gh` fehlt, PR legt der Nutzer an.
 
 `scripts/pipeline-git` ist ein lokaler Symlink auf `~/Projekte/hilfreiche-tools/bin/pipeline-git` und nicht getrackt. Neu anlegen: `ln -s ~/Projekte/hilfreiche-tools/bin/pipeline-git scripts/pipeline-git`.
-
-**Offen:** `pipeline-git start` legt Branches aus `origin/main` an, `main` ist aber laut [`branch-freeze-kunde.mdc`](./.cursor/rules/branch-freeze-kunde.mdc) eingefroren und hinter `kunde/39-gs`. Bis `main` und `kunde/39-gs` zusammengeführt sind, startet kein Pipeline-Issue mit Code-Schritten.
 
 ---
 

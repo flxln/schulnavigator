@@ -27,7 +27,7 @@ if [ -z "${DEPLOY_SSH:-}" ]; then
 fi
 
 DEPLOY_REMOTE_BASE="${DEPLOY_REMOTE_BASE:-/data/schulnavigator}"
-DEPLOY_BRANCH="${DEPLOY_BRANCH:-kunde/39-gs}"
+DEPLOY_BRANCH="${DEPLOY_BRANCH:-release/39-gs}"
 
 SSH_BASE=(ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=10)
 if [ -n "${DEPLOY_SSH_IDENTITY_FILE:-}" ]; then

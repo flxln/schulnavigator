@@ -1,6 +1,6 @@
 # Offene Punkte — Schulnavigator
 
-**Stand:** 2026-07-06 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
+**Stand:** 2026-11-02 · Führend für neue Arbeit: [GitHub Issues](https://github.com/flxln/schulnavigator/issues). Diese Datei ist die schlanke Repo-Übersicht.
 
 **Letzter Abgleich:** 2026-07-06 — [#250](https://github.com/flxln/schulnavigator/issues/250) Gates 4–6 formal abgeschlossen (Auth-Konzept „beschlossen", Gate-Tabelle widerspruchsfrei, Trigger für Gate 4/6 benannt, AVV-Negativbefund → Blocker [#263](https://github.com/flxln/schulnavigator/issues/263) vor #261); Post-Mortem ✅. — AVV [#43](https://github.com/flxln/schulnavigator/issues/43) unterschrieben (25.06.2026, Anhang ADR-027); Backup T5 [#243](https://github.com/flxln/schulnavigator/issues/243) inkl. Follow-ups [#246](https://github.com/flxln/schulnavigator/issues/246)–[#248](https://github.com/flxln/schulnavigator/issues/248) abgeschlossen.
 
@@ -15,7 +15,7 @@ Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eing
 | Media-Gate Prod | **live** (403 + no-store) | [#238](https://github.com/flxln/schulnavigator/issues/238) erledigt — PR #239, #241, Post-Mortem |
 | AVV #43 | **erledigt** (25.06.2026) | Unterschrift MPZ-Hefter; Anhang ADR-027 enthalten — [#43](https://github.com/flxln/schulnavigator/issues/43) |
 | DSB LaSuB | In App/DSE | `dsb-contact.ts` |
-| #232 V9 | **offen** — 7 SHAs via `refs/pull/*` | GitHub-Support Ticket **#4510440** (Follow-up 25.06. unbeantwortet); Detail: `kunde/39-gs` → `dokumentation/planung/schuelermedien-deploy-trennung/08-github-support-ticket-232.md` |
+| #232 V9 | **offen** — 7 SHAs via `refs/pull/*` | GitHub-Support Ticket **#4510440** (Follow-up 25.06. unbeantwortet); Detail: [08-github-support-ticket-232.md](./schuelermedien-deploy-trennung/08-github-support-ticket-232.md) |
 | Mirror Pre-Rewrite | **Entscheidung ausstehend** | `/tmp/schulnavigator-pre-232-mirror.git` auf MPZ-Rechner — nach Support-Bestätigung löschen oder verschlüsselt archivieren mit Löschdatum |
 | HSTS Proxy | **erledigt** (2026-07-05) | [#242](https://github.com/flxln/schulnavigator/issues/242) |
 | Volume-Backup T5 | **erledigt** (2026-07-05) | [#243](https://github.com/flxln/schulnavigator/issues/243); Follow-ups [#246](https://github.com/flxln/schulnavigator/issues/246) Cron, [#247](https://github.com/flxln/schulnavigator/issues/247) Snapshots, [#248](https://github.com/flxln/schulnavigator/issues/248) Headscale — alle **erledigt** (2026-07-06) |
@@ -44,7 +44,8 @@ Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eing
 
 ## Content / MPZ
 
-- [x] **Post-Fest GS39** (`kunde/39-gs`): Heft-Hub per Fest-Entry-QR — [Playbook §8](../../anleitungen/schulfest-gs39-playbook.md)
+- [x] **Post-Fest GS39:** Heft-Hub per Fest-Entry-QR — [Playbook §8](../../anleitungen/schulfest-gs39-playbook.md)
+- [x] **#264:** `main` enthält den GS39-Content. Schule deployt von `release/39-gs` ([ADR-028](../adr/028-main-und-release-39-gs.md)). `kunde/39-gs` ist veraltet und bleibt, bis der Release in Coolify bestätigt ist. Legacy `schulnavigator.mpz.schule`: Auto-Deploy aus, kein Redeploy (keine Medien-Volumes).
 - Coach-Texte final mit MPZ abstimmen (`app/content/coach-messages.json`)
 
 ## Technische Fragen (ohne ADR)

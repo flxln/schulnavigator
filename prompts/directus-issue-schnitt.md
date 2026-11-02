@@ -34,9 +34,9 @@ Pipeline-Stufen-Spalte leer und vermerke das als offenen Punkt — Stufen **nich
 
 - **Gate-Stand** aus dem Kopf des Auth-Konzepts übernehmen; bei Widerspruch zu anderen Quellen beides nennen.
 - **Gate 8 (Branch-Konsolidierung):** tatsächlichen Stand per Git prüfen, nicht aus Doku abschreiben.
-  Legal-/DSGVO-Dateien liegen (Stand Anfang Juli 2026) nur auf `kunde/39-gs`, nicht auf `main`;
-  das Auth-Konzept nennt zusätzlich `feature/mpz-studio`. Prüfen mit:
-  `git branch -a`, `git log main..kunde/39-gs --oneline`, `git show kunde/39-gs:<pfad>`.
+  Legal-/DSGVO-Dateien und der GS39-Content liegen seit #264 auf `main` ([ADR-028](../dokumentation/adr/028-main-und-release-39-gs.md)).
+  `kunde/39-gs` ist veraltet. Prüfen mit:
+  `git branch -a`, `git log origin/main -1`.
   Ergebnis als Gate-8-Status ins Epic schreiben.
 - Jede Aussage über Code (Datenlader, Media-Gate, stations.json) nur nach gelesener Datei.
 

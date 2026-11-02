@@ -1,0 +1,25 @@
+---
+description: Release-Zweig release/39-gs nur bewusst verschieben, nie direkt darauf committen
+alwaysApply: true
+---
+
+# Git-Branches: `main` ist der Stamm, die Schule deployt von `release/39-gs`
+
+Ersetzt die eingefrorene Regel `branch-freeze-kunde.mdc`. Entscheidung: [ADR-028](../../dokumentation/adr/028-main-und-release-39-gs.md) (#264).
+
+## Verbindlich
+
+- **`main`** ist der Entwicklungsstamm. Issue-Branches starten von `origin/main`.
+- **`release/39-gs`** ist der Zeiger für die 39. Grundschule. Er wird nur bewusst verschoben (Fast-Forward auf einen Commit von `main`). **Keine direkten Commits**, kein Rebase, kein Force-Push.
+- **`kunde/39-gs`** ist seit #264 veraltet. Nicht löschen, bis `release/39-gs` in Coolify bestätigt ist. Keine neuen Commits darauf.
+
+## Coolify / Deploy
+
+- **GS39-Prod:** Application `jjgl5u105ucxjvbeuwflsjq4`, Branch **`release/39-gs`**, Auto-Deploy **aus**, URL **`https://39-gs.mpz.schule`**.
+- **Legacy:** `schulnavigator.mpz.schule` (Application `q1a8t4zswynvgutbw9og5l7n`) bleibt auf dem letzten Image. Auto-Deploy aus. Keine Schüler-Medien-Volumes, deshalb nicht auf den GS39-Release umstellen und nicht neu deployen.
+- Schüler-Medien: Volumes an der GS39-Application plus rsync, unabhängig vom Branch.
+
+## Agenten
+
+- Prod-Änderungen für die Schule enden damit, dass `release/39-gs` auf den gewünschten Commit von `main` gesetzt und gepusht wird. Danach manueller Redeploy.
+- Prod-Smoke: **`https://39-gs.mpz.schule`**.

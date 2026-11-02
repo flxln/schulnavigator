@@ -31,7 +31,7 @@ describe('validateDeployContentEnv', () => {
 })
 
 describe('resolveDeployBranch', () => {
-  it('nutzt Default kunde/39-gs', () => {
+  it('nutzt Default release/39-gs', () => {
     expect(resolveDeployBranch({})).toBe(DEFAULT_DEPLOY_BRANCH)
   })
 

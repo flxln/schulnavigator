@@ -99,7 +99,7 @@ Chairman-Vorgabe: Spike vor jeder Vollmigration. Zweck ist **Erkenntnis, nicht P
 
 **Labels:** `tech`, `content` · **Blockiert durch:** #251 · **Blockiert:** #259
 
-**Ist (Git-verifiziert):** Prod-Content lebt auf `kunde/39-gs` — `stations.json` dort +697/−84 Zeilen ggü. `main`. **Migrationsquelle ist `kunde/39-gs`.** MPZ Studio schreibt weiter JSON; Pflege läuft während des Aufbaus weiter.
+**Ist (Stand #264, 2026-11-02):** Prod-Content liegt auf `main`. Die Schule deployt von `release/39-gs` ([ADR-028](../../adr/028-main-und-release-39-gs.md)). `kunde/39-gs` ist veraltet. MPZ Studio schreibt weiter JSON; Pflege läuft während des Aufbaus weiter.
 
 **Zu entscheiden:**
 - Source-of-Truth-Wechsel: wann kippt die Wahrheit von `stations.json` nach Directus — global oder pro Raum?
@@ -195,7 +195,7 @@ T5 läuft (#243, #246–#248, Btrfs-Snapshots täglich 03:30, 30 Tage). Gate 7 v
 
 **Labels:** `content`, `tech` · **Blockiert durch:** #253, #256, #257 · **Triage:** VOLL · Fable (A1 B2 C1 D1 = 5/8; B=2 Migration)
 
-**Nur Pilot-Räume (1–2), kein Big-Bang.** Quelle ist der Prod-Stand `kunde/39-gs` (nicht `main` — dort fehlen ~700 Zeilen Content).
+**Nur Pilot-Räume (1–2), kein Big-Bang.** Quelle ist der Prod-Stand auf `main` (seit #264). `kunde/39-gs` ist veraltet.
 
 **Aufgaben:**
 - [ ] Freeze-Fenster nach #253-Regeln ankündigen und einhalten

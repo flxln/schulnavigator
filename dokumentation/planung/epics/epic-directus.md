@@ -105,7 +105,7 @@ Drei Entscheidungen sind vor Welle 2 per ADR zu treffen (nächste freie Nummer S
 
 ### E2 — Migrationsstrategie JSON ↔ Directus, Content-Freeze (→ #253)
 
-**Ist (verifiziert):** Prod-Content lebt auf `kunde/39-gs` (`stations.json` dort +697/−84 Zeilen ggü. `main`) — **Migrationsquelle ist `kunde/39-gs`, nicht `main`.** MPZ Studio schreibt weiterhin lokale JSON-Dateien (dev); Content-Pflege läuft während des Directus-Aufbaus weiter.
+**Ist (Stand #264, 2026-11-02):** Prod-Content liegt auf `main`. Die Schule deployt von `release/39-gs` ([ADR-028](../../adr/028-main-und-release-39-gs.md)). `kunde/39-gs` ist veraltet. MPZ Studio schreibt weiterhin lokale JSON-Dateien (dev); Content-Pflege läuft während des Directus-Aufbaus weiter.
 
 **Offen:** Content-Freeze ja/nein/wann und wie lang (Council-Konsenslücke); pro Pilot-Raum oder global; Verhalten von MPZ Studio während/nach Migration (Dual-Write-Verbot? Rück-Export Directus → JSON als Fallback/Backup?); Umgang mit der kanonischen Slug-Liste (unveränderlich, QR-fixiert — [verzeichnisstruktur.md](../../content/verzeichnisstruktur.md)).
 

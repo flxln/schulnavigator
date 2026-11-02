@@ -147,6 +147,6 @@ Beispiel für Coolify (Prod + Dev) — `mode` bei fest darf `fest` bleiben:
 ### Checkliste MPZ
 
 - [ ] `SN_ACCESS_TOKENS` in Coolify Prod + Dev gesetzt (siehe JSON oben)
-- [ ] Deploy `kunde/39-gs` — Runtime-Validierung muss grün sein
+- [ ] Deploy `release/39-gs` — Runtime-Validierung muss grün sein
 - [ ] Smoke: Entry-URL → Hub zeigt alle 12 Fenster klickbar
 - [ ] Entry-QR am Eingang optional entfernen (Raum-QRs reichen nach erstem Entry-Cookie)

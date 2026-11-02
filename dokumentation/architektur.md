@@ -223,12 +223,12 @@ Vollständige Ablagekonventionen (Pfade, Autorenzone, Laufzeit): [`verzeichnisst
 ## Deployment
 
 - **Produktion:** MPZ-VPS bei IONOS, gemanagt über Coolify, deployed als Docker-Container ([`anleitungen/fuer-entwickler.md`](../anleitungen/fuer-entwickler.md) — Abschnitt „Coolify“).
-- **Öffentliche URL (GS39, Branch `kunde/39-gs`):** `https://39-gs.mpz.schule` — erreichbar über MPZ-Wildcard-DNS **`*.mpz.schule`** → Coolify-VPS `217.154.120.240`.
-- **Legacy-URL:** `https://schulnavigator.mpz.schule` — Application auf eingefrorenem Branch **`main`** (Referenzstand, nicht GS39-Prod).
+- **Öffentliche URL (GS39, Branch `release/39-gs`):** `https://39-gs.mpz.schule` — erreichbar über MPZ-Wildcard-DNS **`*.mpz.schule`** → Coolify-VPS `217.154.120.240`.
+- **Legacy-URL:** `https://schulnavigator.mpz.schule` — bleibt auf dem letzten Image, Auto-Deploy aus, keine Schüler-Medien-Volumes ([ADR-028](./adr/028-main-und-release-39-gs.md)).
 - **Image:** [`app/Dockerfile`](../app/Dockerfile) — Multi-Stage, `output: 'standalone'`, Health `GET /api/health`, Container-Port **`PORT=3000`** (Coolify „Ports Exposes“ = `3000`).
 - **Suchmaschinen:** `robots.txt` mit `Disallow: /` und `noindex` im Root-Layout (Issue #16); Verfeinerung in #23 möglich.
-- **Coolify GS39-Prod:** Application `jjgl5u105ucxjvbeuwflsjq4` (`schulnavigator:development-feature`) — Projekt **Schulprojekte**, Domain **`39-gs.mpz.schule`**, Branch **`kunde/39-gs`** (`main` eingefroren; `kunde/*` wird nicht nach `main` gemergt).
-- **Coolify Legacy:** Application `q1a8t4zswynvgutbw9og5l7n` — Domain `schulnavigator.mpz.schule`, Branch **`main`**.
+- **Coolify GS39-Prod:** Application `jjgl5u105ucxjvbeuwflsjq4` (`schulnavigator:development-feature`) — Projekt **Schulprojekte**, Domain **`39-gs.mpz.schule`**, Branch **`release/39-gs`**, Auto-Deploy aus ([ADR-028](./adr/028-main-und-release-39-gs.md)).
+- **Coolify Legacy:** Application `q1a8t4zswynvgutbw9og5l7n` — Domain `schulnavigator.mpz.schule`. Nicht neu deployen.
 
 ### Voraussetzungen fürs Dockerfile
 

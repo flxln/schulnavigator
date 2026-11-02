@@ -290,7 +290,7 @@ PORT=3007 HOSTNAME=127.0.0.1 node server.js
 
 ## Deployment (Überblick)
 
-Produktion: Multi-Stage-Image wie in [`app/Dockerfile`](../app/Dockerfile), Health-Check `GET /api/health`. Ziel-Hosting: **MPZ-VPS (IONOS) / Coolify** ([ADR-001](../dokumentation/adr/001-hosting-coolify.md)). **GS39-Live (Branch `kunde/39-gs`):** **`https://39-gs.mpz.schule`**. Die ältere Application **`https://schulnavigator.mpz.schule`** läuft auf eingefrorenem Branch **`main`** (Referenzstand, nicht GS39-Prod).
+Produktion: Multi-Stage-Image wie in [`app/Dockerfile`](../app/Dockerfile), Health-Check `GET /api/health`. Ziel-Hosting: **MPZ-VPS (IONOS) / Coolify** ([ADR-001](../dokumentation/adr/001-hosting-coolify.md)). **GS39-Live (Branch `release/39-gs`, Auto-Deploy aus):** **`https://39-gs.mpz.schule`**. Die ältere Application **`https://schulnavigator.mpz.schule`** bleibt auf dem letzten Image (Auto-Deploy aus, keine Schüler-Medien-Volumes, [ADR-028](../dokumentation/adr/028-main-und-release-39-gs.md)).
 
 Die App setzt **`robots.txt`** (`Disallow: /`) und **`noindex`** im Root-Layout (Phase 1, Issue #16), damit die Subdomain nicht in Suchmaschinen indexiert wird.
 
@@ -373,7 +373,7 @@ Am **2026-06-24** wurde die Git-History aller Branches von Bahn-B-Pfaden bereini
 
 ```bash
 git clone https://github.com/flxln/schulnavigator.git
-cd schulnavigator && git checkout kunde/39-gs   # GS39-Prod
+cd schulnavigator && git checkout main   # Entwicklung; Schule: release/39-gs
 ```
 
 Post-Mortem: [`dokumentation/reviews/post-mortem/post-mortem-232-2026-06-24.md`](../dokumentation/reviews/post-mortem/post-mortem-232-2026-06-24.md). GitHub-Support-Ticket für LFS-Purge: [`08-github-support-ticket-232.md`](../dokumentation/planung/schuelermedien-deploy-trennung/08-github-support-ticket-232.md).
@@ -437,17 +437,16 @@ Das Skript erzeugt Zufallstokens (`fest-…` / `heft-…`), schreibt [`app/lib/a
 
 ---
 
-## Git-Branches (Freeze)
+## Git-Branches
 
-| Branch | Rolle | Merge nach `main`? |
-|--------|--------|-------------------|
-| **`main`** | Eingefrorener Referenzstand (historische Prod-Basis) | — (kein Ziel für neue Arbeit) |
-| **`kunde/*`** | Kunden-/Event-Stand (z. B. `kunde/39-gs` — GS39, Content, Medien) | **Niemals** |
-| **`feature/*`** | Plattform, MPZ Studio, Architektur (#228, #229, …) | **Nicht** nach `main` — nur innerhalb `feature/*` |
+| Branch | Rolle |
+|--------|--------|
+| **`main`** | Entwicklungsstamm. Issue-Branches starten hier. |
+| **`release/39-gs`** | Zeiger für die Schule. Nur per Fast-Forward verschieben, nie direkt committen. Auto-Deploy aus. |
+| **`kunde/39-gs`** | Veraltet seit #264. Nicht löschen, bis `release/39-gs` in Coolify bestätigt ist. Keine neuen Commits. |
+| **`feature/*`** | Arbeit an Issues, Merge nach `main` über Pull Request. |
 
-**Code von `kunde/*` auf `feature/*`:** pfadbasierter Port (`git checkout kunde/39-gs -- <pfade>`), kein Merge. Siehe auch [`.cursor/rules/branch-freeze-kunde.mdc`](../.cursor/rules/branch-freeze-kunde.mdc).
-
-**Coolify Prod (GS39):** Application-Branch **`kunde/39-gs`** — nicht `main`. Schüler-Medien liegen auf VPS-Volumes am IONOS-Host (rsync), unabhängig vom Branch.
+Schüler-Medien liegen auf VPS-Volumes am IONOS-Host (rsync), unabhängig vom Branch. Regel: [`.cursor/rules/release-39-gs.mdc`](../.cursor/rules/release-39-gs.mdc). Entscheidung: [ADR-028](../dokumentation/adr/028-main-und-release-39-gs.md).
 
 ---
 
@@ -465,7 +464,7 @@ Das Skript erzeugt Zufallstokens (`fest-…` / `heft-…`), schreibt [`app/lib/a
 ### Neue Application in Coolify
 
 1. **Project** anlegen (z. B. „Schulnavigator“).
-2. **New Resource → Application**; Quelle: GitHub-Repo `flxln/schulnavigator`. Branch je nach Zweck: **`kunde/39-gs`** (GS39-Prod) oder **`feature/…`** (Plattform-QA) — **`main` nur als historischer Referenzstand**, nicht für neue Deploys (siehe [Git-Branches (Freeze)](#git-branches-freeze)).
+2. **New Resource → Application**; Quelle: GitHub-Repo `flxln/schulnavigator`. Branch für die Schule: **`release/39-gs`** (siehe [Git-Branches](#git-branches)). `main` ist der Entwicklungsstamm und kein Schul-Deploy.
 3. **Build** (Coolify zeigt u. a. **Base Directory** und **Dockerfile Location** — kein separates Feld „Build Context“.)
 
 | Feld | Korrekter Wert | Häufiger Fehler |
@@ -488,7 +487,7 @@ Lokal entspricht Variante 1: `cd app && docker build -t schulnavigator-app .`
 | Feld | Wert |
 |------|------|
 | **Ports Exposes** | `3000` (muss mit `PORT` übereinstimmen) |
-| **Domain** | GS39-Prod: `39-gs.mpz.schule` (Branch `kunde/39-gs`); Legacy: `schulnavigator.mpz.schule` (Branch `main`, eingefroren) |
+| **Domain** | GS39-Prod: `39-gs.mpz.schule` (Branch `release/39-gs`, Auto-Deploy aus); Legacy: `schulnavigator.mpz.schule` (letztes Image, nicht neu deployen) |
 | **HTTPS** | aktiviert (Let's Encrypt; Wildcard-DNS `*.mpz.schule` muss auf den VPS zeigen) |
 
 5. **Umgebungsvariablen:** `PORT=3000`, optional `NODE_ENV=production`. Für Zugangskontrolle (ADR-021) siehe Abschnitt [Zugang & Embedding](#zugang--embedding-adr-021) — **vor erstem Deploy nach ADR-021** `SN_ACCESS_TOKENS` in Coolify setzen.
@@ -499,7 +498,7 @@ Lokal entspricht Variante 1: `cd app && docker build -t schulnavigator-app .`
 
 ### Schüler-Medien: Persistent Volumes (Prod, #229)
 
-**GS39-Prod-Application** (`39-gs.mpz.schule`, Coolify-UUID `jjgl5u105ucxjvbeuwflsjq4`, Branch `kunde/39-gs`): drei Volume-Mounts. Die Legacy-Application `schulnavigator.mpz.schule` (`main`) hat dieselben Host-Pfade nicht zwingend gemountet.
+**GS39-Prod-Application** (`39-gs.mpz.schule`, Coolify-UUID `jjgl5u105ucxjvbeuwflsjq4`, Branch `release/39-gs`): drei Volume-Mounts. Die Legacy-Application `schulnavigator.mpz.schule` hat dieselben Host-Pfade nicht gemountet.
 
 | Coolify-Name | Host-Pfad | Container-Pfad |
 |--------------|-----------|----------------|
@@ -537,7 +536,7 @@ cd app
 # Env in .env.local oder Shell (siehe app/.env.example)
 export DEPLOY_SSH=admin@<ionos-vps>
 # optional: export DEPLOY_SSH_IDENTITY_FILE=~/.ssh/schulnavigator_deploy
-# optional: export DEPLOY_BRANCH=kunde/39-gs
+# optional: export DEPLOY_BRANCH=release/39-gs
 # optional: export COOLIFY_DEPLOY_WEBHOOK_URL=https://…
 
 npm run deploy:content -- --media-only   # nur Medien (kein Branch-Check, kein push)
@@ -576,9 +575,9 @@ rsync -avz --no-o --no-g --chown=1001:1001 --rsync-path="sudo rsync" -e "$RSYNC_
 | 1 | Inhalt im MPZ Studio pflegen (Medien, Hotspots, JSON) |
 | 2 | `Validate-all` oder `validate:stations` + `validate:coach` lokal grün |
 | 3 | Code/JSON committen (Medien **nicht** — Bahn B ist gitignored) |
-| 4 | `.env.local`: `DEPLOY_SSH`, optional `DEPLOY_BRANCH` (`kunde/39-gs`), Webhook |
+| 4 | `.env.local`: `DEPLOY_SSH`, optional `DEPLOY_BRANCH` (`release/39-gs`), Webhook |
 | 5 | **Nur Medien geändert:** `npm run deploy:content -- --media-only` oder Studio-Button „Medien deployen“ |
-| 6 | **Code + Medien:** auf Branch `kunde/39-gs` → `npm run deploy:content` oder „Vollständig deployen“ (App-Code/SSR-Fixes brauchen immer Schritt 6 — `sync-content` allein reicht nicht) |
+| 6 | **Code an die Schule:** `release/39-gs` per Fast-Forward auf den Commit von `main` setzen, pushen, dann auf diesem Branch `npm run deploy:content` oder „Vollständig deployen“. Auto-Deploy ist aus. `sync-content` allein reicht für App-Code nicht |
 | 7 | Smoke: Live-URL mit Video, Dialog-Audio, Coach-`quelle` prüfen |
 
 Kein `--delete` beim rsync ohne `--prune`. SSH-User: NOPASSWD für `sudo rsync` auf dem VPS.
@@ -683,13 +682,13 @@ curl -sS https://39-gs.mpz.schule/robots.txt
 
 ### Coolify-Applications (Projekt „Schulprojekte“)
 
-| | GS39-Prod | Legacy (`main`) |
-|---|-----------|-----------------|
+| | GS39-Prod | Legacy |
+|---|-----------|--------|
 | Coolify-Name | `schulnavigator:development-feature` | `schulnavigator:main-…` |
 | Application-UUID | `jjgl5u105ucxjvbeuwflsjq4` | `q1a8t4zswynvgutbw9og5l7n` |
 | URL | **`https://39-gs.mpz.schule`** | `https://schulnavigator.mpz.schule` |
-| Git-Branch | **`kunde/39-gs`** | **`main`** (eingefroren) |
-| Schüler-Medien-Volumes | ja (`/data/schulnavigator/…`) | nein (Stand Juni 2026) |
+| Git-Branch | **`release/39-gs`**, Auto-Deploy aus | letzter Stand, Auto-Deploy aus, nicht neu deployen |
+| Schüler-Medien-Volumes | ja (`/data/schulnavigator/…`) | nein |
 
 Build-Einstellungen: Base **`/app`**, Dockerfile **`/Dockerfile`**, Port **`3000`**, Env `PORT=3000`, `NODE_ENV=production`.
 
