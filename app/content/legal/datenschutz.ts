@@ -65,7 +65,7 @@ export const datenschutzContent: LegalPageContent = {
         },
         {
           type: 'text',
-          text: 'Das Cookie ist HttpOnly (nicht per JavaScript auslesbar), wird nur über HTTPS übertragen (Produktion) und läuft ab, wenn der jeweilige Eintritts-Zeitraum endet (z. B. Schulfest oder Schuljahr). Es dient nicht dem Tracking oder der Werbung.',
+          text: 'Das Cookie ist HttpOnly (nicht per JavaScript auslesbar), wird nur über HTTPS übertragen (Produktion) und läuft ab, wenn der hinterlegte Eintritts-Zeitraum endet. Browser können es früher löschen. Es dient nicht dem Tracking oder der Werbung.',
         },
         {
           type: 'text',

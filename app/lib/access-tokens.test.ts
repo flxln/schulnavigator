@@ -43,6 +43,21 @@ describe('validateToken', () => {
     ).not.toBeNull()
   })
 
+  it('akzeptiert Heft-Token nach Fest-Ablauf bis 2099-12-31', () => {
+    expect(
+      validateToken(HEFT_DEV_TOKEN, new Date('2027-08-01T00:00:00.000Z')),
+    ).not.toBeNull()
+    expect(
+      validateToken(HEFT_DEV_TOKEN, new Date('2099-12-31T12:00:00.000Z')),
+    ).not.toBeNull()
+  })
+
+  it('lehnt Heft-Token nach 2099-12-31 ab', () => {
+    expect(
+      validateToken(HEFT_DEV_TOKEN, new Date('2100-01-01T00:00:00.000Z')),
+    ).toBeNull()
+  })
+
   it('lehnt leer/undefined ab', () => {
     expect(validateToken('')).toBeNull()
     expect(validateToken(undefined)).toBeNull()
@@ -55,6 +70,12 @@ describe('maxAgeSeconds', () => {
     expect(
       maxAgeSeconds('2020-01-01', new Date('2026-01-01')),
     ).toBe(0)
+  })
+
+  it('kappt Werte über signed 32-bit für weit entfernte expiresAt', () => {
+    expect(
+      maxAgeSeconds('2099-12-31', new Date('2026-09-02T00:00:00.000Z')),
+    ).toBe(2_147_483_647)
   })
 })
 
@@ -112,7 +133,7 @@ describe('getAccessTokens in Production', () => {
       'SN_ACCESS_TOKENS',
       JSON.stringify([
         { token: FEST_DEV_TOKEN, mode: 'fest', expiresAt: '2027-07-31' },
-        { token: HEFT_DEV_TOKEN, mode: 'heft', expiresAt: '2027-07-31' },
+        { token: HEFT_DEV_TOKEN, mode: 'heft', expiresAt: '2099-12-31' },
       ]),
     )
     resetAccessTokensCacheForTests()

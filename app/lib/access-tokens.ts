@@ -117,9 +117,12 @@ export function tokenExpiresAtEnd(expiresAt: string): Date {
   return new Date(`${expiresAt}T23:59:59.999Z`)
 }
 
+/** Set-Cookie Max-Age: signed 32-bit seconds. */
+const MAX_COOKIE_AGE_SECONDS = 2_147_483_647
+
 export function maxAgeSeconds(expiresAt: string, now: Date = new Date()): number {
   const ms = tokenExpiresAtEnd(expiresAt).getTime() - now.getTime()
-  return Math.max(0, Math.floor(ms / 1000))
+  return Math.max(0, Math.min(MAX_COOKIE_AGE_SECONDS, Math.floor(ms / 1000)))
 }
 
 export function validateToken(

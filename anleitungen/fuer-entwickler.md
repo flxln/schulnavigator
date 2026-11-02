@@ -635,7 +635,7 @@ Beispiel `SN_ACCESS_TOKENS` (GS39 Post-Fest — `mode` bei fest-Token in ENV dar
 ```json
 [
   {"token":"fest-vkc2AuKW0S7QGHDT","mode":"fest","expiresAt":"2027-07-31"},
-  {"token":"heft-ImulQPDmydy7VCVj","mode":"heft","expiresAt":"2027-07-31"}
+  {"token":"heft-ImulQPDmydy7VCVj","mode":"heft","expiresAt":"2099-12-31"}
 ]
 ```
 

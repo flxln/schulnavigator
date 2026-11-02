@@ -19,7 +19,7 @@
 Entscheidung: [ADR-005](./adr/005-zugangskontrolle-token.md), Speicher/Durchsetzung [ADR-007](./adr/007-zugangskontrolle-cookie.md), konfigurierbar [ADR-021](./adr/021-zugangsmodus-konfigurierbar.md)
 
 - Kein öffentliches Login; Zugang über **Entry-QR** (Einladungslink-Charakter — siehe ADR-021; kein Geheimnis, Schutzziel ist das Gate)
-- HttpOnly-Cookie `sn_access` (ADR-007), Ablaufdatum je Profil (Schulfest vs. Schuljahr)
+- HttpOnly-Cookie `sn_access` (ADR-007), Ablaufdatum je Profil (Fest: 31.07.2027, Heft: 31.12.2099)
 - Production: Token-Liste aus `SN_ACCESS_TOKENS` (nicht im Quellcode); Default-Modus `gated`
 - Keine Besucher-Accounts; Stempel-Fortschritt nur lokal auf dem Gerät
 - **`SN_ACCESS_MODE=open`:** Kein Zugangs-Gate — nur für bewusst offene Deployments (z. B. Website-Einbettung); DSB-Einordnung vor Aktivierung klären
@@ -59,7 +59,7 @@ Ab Phase 1 (#228, 2026-06-24) werden keine neuen Schüler-Binärdateien mehr in 
 
 | Verarbeitung | Betroffene | Zweck | Rechtsgrundlage | Speicherort | Löschfrist |
 |--------------|------------|-------|-----------------|-------------|------------|
-| Entry-Cookie `sn_access` | Besucher | Zugangskontrolle Schulfest/TOT | Art. 6 (1) f | Browser (HttpOnly) | Token-Ablauf (z. B. 31.07.2027) |
+| Entry-Cookie `sn_access` | Besucher | Zugangskontrolle Schulfest/TOT | Art. 6 (1) f | Browser (HttpOnly) | Token-Ablauf (Fest: 31.07.2027, Heft: 31.12.2099; Browser oft früher) |
 | Hub-Fortschritt | Besucher | Gamification im Rundgang | Art. 6 (1) f | `localStorage` (Gerät) | Nutzer löscht Browserdaten |
 | Access-Logs | Besucher | Betrieb, Fehleranalyse | Art. 6 (1) f | Traefik/Coolify (VPS) | ≤ 14 Tage (Ziel) |
 | Schüler-Medien | Schüler | Virtueller Schulrundgang | Einwilligung + Art. 6 (1) a | VPS-Volumes DE; Backup NAS MPZ | Projektende + Schulfristen |

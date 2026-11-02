@@ -11,7 +11,7 @@ export const HEFT_DEV_TOKEN = 'heft-ImulQPDmydy7VCVj'
 export const FEST_ENTRY_HUB_MODE = 'heft'
 
 export const FEST_DEV_EXPIRES_AT = '2027-07-31'
-export const HEFT_DEV_EXPIRES_AT = '2027-07-31'
+export const HEFT_DEV_EXPIRES_AT = '2099-12-31'
 
 /**
  * Entry-QR-Spezifikation — Token-Strings müssen in SN_ACCESS_TOKENS (Production) enthalten sein.
