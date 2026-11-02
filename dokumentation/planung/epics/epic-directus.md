@@ -66,7 +66,7 @@ Labels nur aus [labels.md](../labels.md). Triage nach Runbook `03b_issue-triage`
 
 | Gate | Laut Auth-Konzept | Verifizierter Befund (2026-07-06) |
 |------|-------------------|------------------------------------|
-| 1 AVV #43 | ✅ | ✅ unterschrieben 25.06.2026 inkl. ADR-027-Anhang — **Directus-Verarbeitung (Lehrkräfte-Accounts) separat geprüft: negativ, Nachtrag als Blocker vor #261 → [#263](https://github.com/flxln/schulnavigator/issues/263)** |
+| 1 AVV #43 | ✅ | ✅ unterschrieben 25.06.2026 inkl. ADR-027-Anhang. **Wortlaut 2026-11-02 (#263):** die Repo-PDF vom 13.05.2026 (`auftraggeber/verträge/`, Unterschriftszeile leer, kein ADR-027-Anhang) deckt Lehrkräfte-Accounts nicht ab (§ 2: keine Namen, keine E-Mail). Nachtrag bleibt Blocker vor #261 → [#263](https://github.com/flxln/schulnavigator/issues/263) |
 | 2 DSB | ✅ | ✅ LaSuB-DSB in App (`dsb-contact.ts`) |
 | 3 Media-Gate | ✅ | ✅ `app/app/media/[...path]/route.ts` prüft Entry-Cookie (403 + `no-store`, Cache `private`) — auf `main` **und** Prod (`kunde/39-gs`, zusätzlich Middleware `21a1dc2`) |
 | 4 dsgvo.md v1.0 + VVT | weitgehend erfüllt | **weitgehend erfüllt:** `dokumentation/dsgvo.md` auf `main` ist „v1.0 (beschlossen)“ inkl. VVT-Kurzfassung (Art. 30) mit Eintrag „Lehrkräfte-Accounts (geplant)“ und benanntem Trigger (Deploy → #255). Rest: Eintrag beim Deploy konkretisieren |

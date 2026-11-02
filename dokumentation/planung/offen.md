@@ -40,7 +40,7 @@ Historischer Phasenplan: [archiv/projektplan.md](../archiv/projektplan.md) (eing
 | [#44](https://github.com/flxln/schulnavigator/issues/44) | Auswertung mit Schule | Leitfaden: [2026-06-meeting-44-leitfaden.md](../archiv/projektmanagement/2026-06-meeting-44-leitfaden.md) |
 | [#221](https://github.com/flxln/schulnavigator/issues/221) | Dialog: Text-only-Segmente | Milestone Phase 5 |
 | [#48](https://github.com/flxln/schulnavigator/issues/48) | i18n + Englisch-Menü | Milestone Phase 5 |
-| [#47](https://github.com/flxln/schulnavigator/issues/47) | Directus (Epic) | [epic-directus.md](./epics/epic-directus.md) · Unterissues [#249](https://github.com/flxln/schulnavigator/issues/249)–[#262](https://github.com/flxln/schulnavigator/issues/262) · #250 erledigt · Nächste Schritte: [#251](https://github.com/flxln/schulnavigator/issues/251) Spike, [#249](https://github.com/flxln/schulnavigator/issues/249) Adoption (blockiert #44), [#263](https://github.com/flxln/schulnavigator/issues/263) AVV-Blocker vor #261 |
+| [#47](https://github.com/flxln/schulnavigator/issues/47) | Directus (Epic) | [epic-directus.md](./epics/epic-directus.md) · Unterissues [#249](https://github.com/flxln/schulnavigator/issues/249)–[#262](https://github.com/flxln/schulnavigator/issues/262) · #250 und #251 erledigt · Nächster Bau: [#252](https://github.com/flxln/schulnavigator/issues/252) · [#263](https://github.com/flxln/schulnavigator/issues/263): Wortlaut der AVV-PDF vom 13.05.2026 geprüft, Lehrkräfte-Accounts nicht gedeckt, Nachtrag offen vor #261 |
 
 ## Content / MPZ
 

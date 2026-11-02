@@ -1,8 +1,8 @@
 # Directus — Auth- und Datenschutz-Konzept (Vorbereitung #47)
 
-**Stand:** 2026-07-06 · **Status:** beschlossen (Gate 5, 2026-07-06 — [#250](https://github.com/flxln/schulnavigator/issues/250))
+**Stand:** 2026-11-02 · **Status:** beschlossen (Gate 5, 2026-07-06 — [#250](https://github.com/flxln/schulnavigator/issues/250))
 
-**Gate-Stand:** 1 ✅ AVV (25.06.2026, Anhang ADR-027) · 2 ✅ DSB LaSuB · 3 ✅ Media-Gate · 4 weitgehend erfüllt (VVT-Rest bei Deploy → #255) · 5 ✅ beschlossen (dieses Dokument, 2026-07-06) · 6 teilerfüllt (DSE final vor erstem Login → Trigger in #261, siehe unten) · 7 teilerfüllt (Directus-DB-Aufnahme nach Deploy → #258) · 8 im Kern erledigt (Rest-Drift dokumentiert, Branch-Entscheidung → #251)
+**Gate-Stand:** 1 ✅ AVV Hosting (25.06.2026, Anhang ADR-027); Directus-Accounts vom Wortlaut nicht gedeckt ([#263](https://github.com/flxln/schulnavigator/issues/263)) · 2 ✅ DSB LaSuB · 3 ✅ Media-Gate · 4 weitgehend erfüllt (VVT-Rest bei Deploy → #255) · 5 ✅ beschlossen (dieses Dokument, 2026-07-06) · 6 teilerfüllt (DSE final vor erstem Login → Trigger in #261, siehe unten) · 7 teilerfüllt (Directus-DB-Aufnahme nach Deploy → #258) · 8 im Kern erledigt (Rest-Drift dokumentiert, Branch-Entscheidung → #251)
 
 ## Hard Gates vor erstem Lehrkräfte-Login
 
@@ -38,6 +38,10 @@
 - Directus auf MPZ-VPS (DE), gleicher Betriebskontext wie Schulnavigator
 - TLS über Traefik; HSTS am Proxy (#143)
 - Backup: Directus-DB in T5-Strategie aufnehmen
+
+## AVV und Lehrkräfte-Accounts (#263)
+
+Gate 1 für den unterschriebenen Hosting-AVV bleibt erfüllt. Der Wortlaut in [`auftraggeber/verträge/Auftragsverarbeitungsvertrag (AVV 39.GS) .pdf`](../../auftraggeber/verträge/Auftragsverarbeitungsvertrag%20(AVV%2039.GS)%20.pdf) (erzeugt 13.05.2026, Unterschriftszeile leer) deckt Directus-Accounts nicht ab. § 2 schließt Namen und E-Mail-Adressen aus. Der Nachtrag bleibt Blocker vor dem ersten Lehrkräfte-Login ([#263](https://github.com/flxln/schulnavigator/issues/263), [#261](https://github.com/flxln/schulnavigator/issues/261)). Detail: [dsgvo.md](../dsgvo.md).
 
 ## Rechtsgrundlage
 
