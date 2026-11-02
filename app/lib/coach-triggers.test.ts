@@ -54,9 +54,9 @@ describe('resolveHubCoachMessage', () => {
 })
 
 describe('resolveRoomCoachMessage', () => {
-  it('liefert room-first für konfigurierten slug', () => {
+  it('liefert null wenn keine room-first-Message konfiguriert ist', () => {
     const result = resolveRoomCoachMessage('musik', 'fest', empty)
-    expect(result?.message.id).toBe('room-first-musik')
+    expect(result).toBeNull()
   })
 
   it('liefert null für unbekannten slug', () => {

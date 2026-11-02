@@ -63,7 +63,8 @@ afterEach(() => {
 describe('StationDialogSegmentForm', () => {
   it('zeigt Zielnamen-Vorschau bei aktivem Audio-Häkchen', () => {
     const station = getStationBySlug('kunst')!
-    const segment = station.dialog!.segmente[0]!
+    const segment = { ...station.dialog!.segmente[0]! }
+    delete segment.quelle
 
     render(
       <StationDialogSegmentForm
@@ -270,7 +271,8 @@ describe('StationDialogSegmentForm', () => {
 
   it('verwirft pendingFile wenn Audio-Häkchen aus', async () => {
     const station = getStationBySlug('kunst')!
-    const segment = station.dialog!.segmente[0]!
+    const segment = { ...station.dialog!.segmente[0]! }
+    delete segment.quelle
 
     const file = new File(['x'], 'clip.wav', { type: 'audio/wav' })
     const createSpy = mockFilePick(file)

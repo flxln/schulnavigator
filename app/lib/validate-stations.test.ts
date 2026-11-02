@@ -53,7 +53,7 @@ describe('validateStationsFile Hub (ADR-016)', () => {
   })
 
   it('akzeptiert dialog-Segment ohne quelle (Text-only)', () => {
-    const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
+    const data = cloneRawWithDemoKlassenzimmer() as { stations: Record<string, unknown>[] }
     const kz = data.stations.find((s) => s.slug === 'klassenzimmer') as Record<string, unknown>
     kz.dialog = {
       figuren: ['otto'],
@@ -102,7 +102,7 @@ describe('validateStationsFile Hub (ADR-016)', () => {
     expect(hotspots[0]?.action).toBe('dialog')
     expect(hotspots[0]?.mediumId).toBeUndefined()
     const stations = validateStationsFile(data as unknown)
-    expect(stations.find((s) => s.slug === 'daz')?.hotspots360).toHaveLength(3)
+    expect(stations.find((s) => s.slug === 'daz')?.hotspots360).toHaveLength(hotspots.length)
   })
 
   it('wirft bei dialog-Hotspot mit mediumId', () => {
@@ -502,6 +502,8 @@ describe('validateStationsFile startYaw/startPitch (ADR-023)', () => {
   function musikWithStartView(overrides: Record<string, unknown> = {}) {
     const data = structuredClone(raw) as { stations: Record<string, unknown>[] }
     const musik = data.stations.find((s) => s.slug === 'musik') as Record<string, unknown>
+    delete musik.startYaw
+    delete musik.startPitch
     Object.assign(musik, overrides)
     return data
   }

@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { StationDialogPanel } from '@/components/mpz-studio/station-dialog-panel'
 import { getStationBySlug } from '@/lib/stations'
+import { studioDemoKlassenzimmerStation } from '@/lib/test-fixtures/studio-demo-klassenzimmer'
 import type { DialogFigure } from '@/lib/types'
 
 const mocks = vi.hoisted(() => ({
@@ -30,7 +31,7 @@ afterEach(() => {
 
 describe('StationDialogPanel', () => {
   it('zeigt Empty-State mit CTA ohne dialog-Block', () => {
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     render(<StationDialogPanel slug="klassenzimmer" station={station} />)
 
     expect(screen.getByRole('button', { name: 'Dialog hinzufügen' })).toBeTruthy()
@@ -38,7 +39,7 @@ describe('StationDialogPanel', () => {
   })
 
   it('ruft POST beim Anlegen auf', async () => {
-    const station = getStationBySlug('klassenzimmer')!
+    const station = studioDemoKlassenzimmerStation
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,
       json: async () => ({ station: { ...station, dialog: { figuren: ['frieda', 'otto'], segmente: [], gruppen: [] } } }),

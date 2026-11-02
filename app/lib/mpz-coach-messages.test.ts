@@ -150,10 +150,10 @@ describe('patchCoachMessage', () => {
 })
 
 describe('removeCoachMessage', () => {
-  it('löscht room-first Message', async () => {
+  it('löscht eine vorhandene Message', async () => {
     const io = makeTempIo()
-    const result = await removeCoachMessage('room-first-hort', io)
-    expect(result.messages.some((m) => m.id === 'room-first-hort')).toBe(false)
+    const result = await removeCoachMessage('first-visit', io)
+    expect(result.messages.some((m) => m.id === 'first-visit')).toBe(false)
   })
 
   it('wirft LAST_HUB_COMPLETE', async () => {

@@ -87,5 +87,11 @@ export function withStudioDemoKlassenzimmer(file: StationsFile): StationsFile {
 }
 
 export function studioDemoStationsFile(base: StationsFile): StationsFile {
-  return withStudioDemoKlassenzimmer(base)
+  const copy = withStudioDemoKlassenzimmer(base)
+  const hort = copy.stations.find((s) => s.slug === 'hort')
+  if (hort) {
+    delete hort.hotspots
+    delete hort.hotspots360
+  }
+  return copy
 }

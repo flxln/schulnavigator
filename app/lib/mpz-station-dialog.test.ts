@@ -22,9 +22,10 @@ import {
 import { addStationHotspot } from '@/lib/mpz-station-hotspots'
 import * as mpzStationsValidation from '@/lib/mpz-stations-validation'
 import { validateStationsFile } from '@/lib/validate-stations'
+import { withStudioDemoKlassenzimmer } from '@/lib/test-fixtures/studio-demo-klassenzimmer'
 import type { StationsFile } from '@/lib/types'
 
-const fixture = raw as StationsFile
+const fixture = withStudioDemoKlassenzimmer(raw as StationsFile)
 const temps: string[] = []
 
 function makeTempIo(initial: StationsFile = fixture) {
