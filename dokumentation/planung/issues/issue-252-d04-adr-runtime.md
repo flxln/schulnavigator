@@ -2,7 +2,7 @@
 title: "ADR: Runtime-Datenpfad (Build-JSON vs. Runtime-Fetch vs. Webhook-Rebuild)"
 github_number: 252
 github_url: "https://github.com/flxln/schulnavigator/issues/252"
-status: umgesetzt
+status: abgeschlossen
 parent: "#47"
 depends_on:
   - "#251"
