@@ -141,6 +141,24 @@ Neue Architekturentscheidungen werden so dokumentiert:
 
 ---
 
+## Feature-Pipeline: Git-Ablauf (Team-Regel)
+
+Gilt für alle im Team. Vollständige Regeln: `.cursor/rules/feature-pipeline-git.mdc` (Symlink aus `hilfreiche-tools`, Bootstrap 2. November 2026), Routing in [`dokumentation/planung/harness-inventar.md`](./dokumentation/planung/harness-inventar.md).
+
+**Freigabe:** Auf dem Branch `<typ>/<nr>-<slug>` des bearbeiteten Issues sind Commit je Schritt, Push und Draft-PR dauerhaft freigegeben. **Nie:** auf `main` arbeiten, mergen, `--force`, Branches löschen.
+
+1. Vor dem ersten Artefakt: `./scripts/pipeline-git start --issue <nr>`
+2. Nach jedem Pipeline-Artefakt im selben Turn: `./scripts/pipeline-git commit --schritt <id>` (`triage`, `-1`, `0`, `1`, `2`, `3`, `direkt`, `4`, `5a`; sonst `--schritt frei --titel "…" --paths <dateien>`)
+3. Bei Abschluss (5a): `./scripts/pipeline-git finish`
+
+Exit 2: falscher Branch, erst `start`. Exit 3: Secret-Datei genannt, entfernen. Exit 4: Push abgelehnt, nicht erzwingen. Exit 5: `gh` fehlt, PR legt der Nutzer an.
+
+`scripts/pipeline-git` ist ein lokaler Symlink auf `~/Projekte/hilfreiche-tools/bin/pipeline-git` und nicht getrackt. Neu anlegen: `ln -s ~/Projekte/hilfreiche-tools/bin/pipeline-git scripts/pipeline-git`.
+
+**Offen:** `pipeline-git start` legt Branches aus `origin/main` an, `main` ist aber laut [`branch-freeze-kunde.mdc`](./.cursor/rules/branch-freeze-kunde.mdc) eingefroren und hinter `kunde/39-gs`. Bis `main` und `kunde/39-gs` zusammengeführt sind, startet kein Pipeline-Issue mit Code-Schritten.
+
+---
+
 ## Konventionen (Platzhalter — wird bei Entwicklungsstart befüllt)
 
 Detaillierte Code-Konventionen: [`prompts/code-konventionen.md`](./prompts/code-konventionen.md)
