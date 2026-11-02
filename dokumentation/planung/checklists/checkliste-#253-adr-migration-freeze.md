@@ -1,37 +1,80 @@
-# Kurz-Checkliste: Issue #253 — ADR Migrationsstrategie JSON ↔ Directus + Content-Freeze
+# Kurz-Checkliste: Issue #253 – ADR Migrationsstrategie JSON ↔ Directus + Content-Freeze
 
 **Stufe:** LIGHT · **Prompt-Variante:** klassisch  
 **Follow-up zu:** #251 (Spike), #252 (ADR-029 Runtime-Datenpfad)  
 **Triage:** [triage-#253-adr-migrationsstrategie.md](../triage/triage-%23253-adr-migrationsstrategie.md) · 2026-11-02  
-**Verifikationsprofil:** Standard (B=1)
+**Verifikationsprofil:** Standard (B=1)  
+**Gehärtet:** nach Pre-Mortem 1b ([pre-mortem-1b-adr-migration-freeze-253-2026-11-02.md](../../reviews/pre-mortem/pre-mortem-1b-adr-migration-freeze-253-2026-11-02.md)), 2026-11-02, Opus 5.5 / ◆. 01a entfällt (LIGHT).
 
 ## Ziel & Akzeptanzkriterien
 
 - Neue ADR unter `dokumentation/adr/` mit **nächster freier Nummer** (beim Anlegen `ls dokumentation/adr/`; Stand 2026-11-02: **030**, #254 kann auf 031+ rutschen).
-- ADR beantwortet die vier E2-Fragen aus [epic-directus.md](../epics/epic-directus.md#e2--migrationsstrategie-json--directus-content-freeze--253): Source-of-Truth-Wechsel (global vs. pro Raum), Content-Freeze (ja/nein/wann/Dauer), MPZ Studio (Dual-Write-Verbot, optional Rück-Export), kanonische Slugs (QR-fixiert).
-- Freeze-Regeln sind so konkret, dass #259 sie ohne Interpretation anwenden kann (Zeitfenster, betroffene Slugs, wer committet noch JSON).
-- Konsistenz mit [ADR-029](../../adr/029-runtime-datenpfad-directus.md) (Directus als SoT, c-Re-Trigger/Git-Satz), [ADR-028](../../adr/028-main-und-release-39-gs.md) (`main` / `release/39-gs`), [ADR-022](../../adr/022-mpz-studio-internes-ingest-tool.md) (Studio-Rolle nach Migration).
-- Eintrag in [`dokumentation/entscheidungen.md`](../../entscheidungen.md); Folgen für #255, #259, #262 benannt, ohne deren Umsetzung.
+- ADR beantwortet die vier E2-Fragen aus [epic-directus.md](../epics/epic-directus.md#e2--migrationsstrategie-json--directus-content-freeze--253) mit den Entscheidungen D-1 bis D-9 unten. Kein eigenes Abwägen im ADR-Text, keine neuen Varianten.
+- **SoT-Wechsel** ist als Übergangsregime formuliert: SoT pro Slug während des Piloten, „global“ nur als Endzustand nach einer Big-Bang-Entscheidung außerhalb dieses Epics. Merge-Konsumstelle und Konfliktregel stehen im ADR (D-1 bis D-3)².
+- **Freeze-Regeln** sind für #259 mechanisch anwendbar: Beginn (Freeze-Basis-Commit), betroffene Slugs (Pilot-Liste), Dauer, Commit-Klassen „redaktionell“ und „technisch“ mit Owner, Prüfbefehl (D-4, D-5)¹.
+- **Fallback-Drift** ist als bewusste Konsequenz ausgesprochen: Fallback-JSON eines Pilot-Slugs bleibt auf dem Freeze-Stand bis zum Pilot-Review, kein Rück-Export im Piloten (D-6)¹³.
+- **MPZ Studio:** Dual-Write-Verbot pro Pilot-Slug; Studio ist kein Rück-Export-Werkzeug (D-7)³.
+- **Kanonische Slugs:** drei Teilaussagen (unveränderlich, keine Neuanlage, keine Löschung) plus Erzwingung bis #256 per Prozess (D-9)⁴.
+- Konsistenz mit [ADR-029](../../adr/029-runtime-datenpfad-directus.md) (Directus als SoT, c-Re-Trigger/Git-Satz Z. 40, Build JSON-only Z. 45), [ADR-028](../../adr/028-main-und-release-39-gs.md) (`main` / `release/39-gs`), [ADR-022](../../adr/022-mpz-studio-internes-ingest-tool.md) (Studio dev-only, befristet). Diese drei ADRs werden **nicht** geändert.
+- Eintrag in [`dokumentation/entscheidungen.md`](../../entscheidungen.md); Folgen für **#255, #256, #257, #259, #261, #262** benannt, ohne deren Umsetzung².
 - Kein App-Code geändert.
+
+## Entscheidungen aus der Härtung
+
+Vorgaben für den ADR-Text (Schritt 03). Spalte „Fund“ verweist auf das Pre-Mortem 1b.
+
+| # | Frage | Entscheidung | Fund |
+|---|---|---|---|
+| D-1 | SoT global oder pro Raum? | **Pro Slug im Übergang.** Directus ist SoT genau für die Slugs der **Pilot-Liste** (max. 2 Slugs aus der kanonischen Liste, #259 legt sie vor Freeze-Beginn fest). Alle anderen Slugs bleiben JSON-SoT. „Global“ ist Endzustand und braucht eine eigene Entscheidung nach dem Pilot-Review (#261); Big-Bang ist laut Epic draußen. Die Pilot-Liste ist **explizit und versioniert im Repo unter `app/`** (Datei und Format legt #257 fest), nicht implizit „was in Directus steht“ und nicht nur als Env-Variable, damit Freeze-Prüfung und Fallback aus Git nachvollziehbar sind. #259 vermerkt jeden Pilot-Slug zusätzlich in [verzeichnisstruktur.md](../../content/verzeichnisstruktur.md): „SoT Directus seit <Datum>, Freeze-Basis <Commit>“. | L2 |
+| D-2 | Merge-Vertrag (Konsumstelle für #257) | Konsumstelle ist `stations.ts` (#257). Gesamtdokument = `stations.json` aus dem Image; für jeden Slug der Pilot-Liste ersetzt der Directus-Eintrag den JSON-Eintrag. Directus-Einträge mit Slugs **außerhalb** der Pilot-Liste werden ignoriert. Fehlt ein Pilot-Slug in Directus oder ist Directus nicht erreichbar, gilt der eingefrorene JSON-Eintrag (wie ADR-029-Fallback), nie 404. Validator läuft auf dem gemergten Gesamtdokument (ADR-029 Z. 25). | L2, L4 |
+| D-3 | Konfliktregel bei Doppelbearbeitung | Für Pilot-Slugs gewinnt **immer Directus**. Eine JSON-Änderung an einem Pilot-Slug nach Freeze-Beginn wird per Revert zurückgenommen, nicht nach Directus übertragen. Erkennung: Prüfbefehl aus D-5 vor jedem Verschieben von `release/39-gs`. | L2 |
+| D-4 | Freeze ja/nein, wann, wie lang | **Kein globaler Freeze.** Freeze gilt pro Pilot-Slug. **Beginn:** Migrationsstart in #259, festgehalten als **Freeze-Basis** = Commit auf `main`, aus dem #259 den Slug exportiert (Quelle `main`, nicht `kunde/39-gs`; Epic-Ist-Stand #264, ADR-028). **Dauer:** unbefristet, weil der SoT-Wechsel einseitig ist. Endet nur bei Rückabwicklung (D-8). Nicht-Pilot-Slugs: keine Einschränkung, Pflege wie heute. | L1 |
+| D-5 | Wer committet noch `app/data/stations.json`? (Delegation aus ADR-029 Z. 40) | Nur **MPZ (Felix)**, auf `main` über Branches; Lehrkräfte nie; `release/39-gs` wird bewusst verschoben (ADR-028). Zwei Commit-Klassen: **redaktionell** = Änderung an Inhaltsfeldern eines Eintrags (`titel`, `beschreibung`, `bild`, `medien`, `hotspots360`, `panorama360`, `dialog`, `viewer`): für Pilot-Slugs ab Freeze-Beginn verboten, für alle anderen Slugs erlaubt. **Technisch** = inhaltsneutrale Änderung, die alle Einträge gleich trifft (Schema-Migration aus #256, Formatierung): auch für Pilot-Slugs erlaubt; Trigger ist eine Schemaänderung; im selben PR wird die Freeze-Basis in `verzeichnisstruktur.md` auf diesen Commit nachgezogen. **Prüfbefehl** pro Pilot-Slug: siehe Implementierungsnotizen, Ausgaben für Freeze-Basis und Ziel-Commit müssen identisch sein. | L1 |
+| D-6 | Fallback-Stand und Rück-Export | Regime **(b) bewusst veraltender Fallback:** Der JSON-Eintrag eines Pilot-Slugs bleibt auf dem Stand der Freeze-Basis bis zum Pilot-Review (#261). Im Piloten **kein Rück-Export** Directus → JSON, also kein Executor nötig. Als Konsequenz im ADR: Bei Directus-Ausfall sehen Besucher für Pilot-Räume den Freeze-Stand. Ob es einen Rück-Export gibt, entscheidet der Pilot-Review zusammen mit der Big-Bang-Frage; ein Mechanismus kommt nur per Folge-ADR (naheliegender Kandidat: ADR-029 Option c). | L1, L3 |
+| D-7 | MPZ Studio: Dual-Write, Rück-Export | **Dual-Write-Verbot:** Studio schreibt ab Freeze-Beginn keine Pilot-Slugs. Bis #262 ist das eine Prozessregel für MPZ; ein Verstoß ist ein redaktioneller Commit und fällt unter D-3 (Revert). Für Nicht-Pilot-Slugs bleibt Studio unverändert nach ADR-022 (dev-only). Studio ist **kein** Rück-Export-Werkzeug. Technische Sperre oder Warnung für Pilot-Slugs ist Auftrag an #262. | L3 |
+| D-8 | Rückabwicklung bei Pilot-No-Go | Entscheidet der Pilot-Review (#261) No-Go, fällt der Slug an JSON zurück: MPZ überträgt den Directus-Stand einmalig von Hand in `stations.json` (ausdrücklich erlaubter redaktioneller Commit), streicht den Slug aus der Pilot-Liste und entfernt den Vermerk in `verzeichnisstruktur.md`. Damit endet der Freeze für diesen Slug. | L2 |
+| D-9 | Kanonische Slugs (QR-fixiert) | (1) Die 12 Slugs aus `verzeichnisstruktur.md` sind unveränderlich (deckungsgleich mit `stations.json`, 12/12, verifiziert 2026-11-02). (2) **Neuanlage verboten** bis zum Pilot-Review; Öffnung nur per Folge-Entscheidung danach (Epic: „Erweiterungen erst nach Pilot“). (3) **Löschung verboten** (gedruckte QR-Codes). Erzwingung technisch in #256 (Redaktion ohne create/delete auf Stations-Items, Slug nach Anlage nicht editierbar). Bis dahin Prozessregel: Nur Felix als Directus-Admin legt Pilot-Items an und prüft Admin-Änderungen. D-2 ignoriert fremde Slugs ohnehin. | L4 |
 
 ## Ausführungs-Checkliste
 
-1. **01b Pre-Mortem** (GLM 5.3 / ‡ Cline, high): Spec-Risiko Freeze, Dual-Write, Slug-Invariante, Konflikt ADR-022/029; Funde in `dokumentation/reviews/pre-mortem/`.
-2. **02 Plan härten** (Opus 5.5 / ◆): diese Datei ergänzen (Entscheidungstabelle, Verifikation); kein `.cursor/plans/`.
-3. **Issue-Datei:** Frontmatter (`depends_on`), Ziel, Akzeptanzkriterien, Link auf diese Checkliste (Vorlage [#252](../issues/issue-252-d04-adr-runtime.md)).
-4. **ADR anlegen:** Template `000-template.md` → `NNN-*-migration-freeze*.md`; Kontext Ist-Stand (#264: Content auf `main`, Deploy `release/39-gs`, Studio schreibt dev-JSON).
-5. **ADR-Inhalt:** Entscheidung + verworfene Alternativen; Freeze als explizite Regeln (Council-Lücke schließen); Studio: eine Wahrheit pro Slug/Zeitraum; Slugs: Verweis [verzeichnisstruktur.md](../../content/verzeichnisstruktur.md), Erzwingung über Directus/Prozess (#256 folgt technisch).
-6. **`entscheidungen.md`:** Tabellenzeile Status „entschieden“, Datum, Link.
-7. **03 Implementieren** (Composer / ⌘): nur Doku; danach Verifikation unten.
-8. **04 Post-Mortem** kompakt · **05a Abschließen** (Issue, `offen.md`, GitHub-Body, Draft-PR).
+1. ~~**01b Pre-Mortem**~~ erledigt (GLM 5.3 / ‡ Cline, 2026-11-02): [pre-mortem-1b-adr-migration-freeze-253-2026-11-02.md](../../reviews/pre-mortem/pre-mortem-1b-adr-migration-freeze-253-2026-11-02.md), vier Funde L1 bis L4.
+2. ~~**02 Plan härten**~~ erledigt (Opus 5.5 / ◆, 2026-11-02): Entscheidungstabelle D-1 bis D-9, AC und Verifikation angepasst; kein `.cursor/plans/`.
+3. ~~**Issue-Datei:** Frontmatter, Ziel, Akzeptanzkriterien, Checklisten-Link~~ in Schritt 0 erledigt⁵. In 03 nur nachziehen: AC-Zeile „Folgen für #255, #259, #262“ um **#256, #257, #261** ergänzen².
+4. **Vor 03 aufräumen:** `dokumentation/planung/issues/Untitled` (untracked, Inhalt nur `/clear`) löschen, damit es nicht in den 5a-Sammelcommit gerät⁵.
+5. **ADR anlegen:** Template `000-template.md` → `NNN-migrationsstrategie-content-freeze.md` (NNN per `ls` prüfen). Kontext Ist-Stand (#264: Content auf `main`, Deploy `release/39-gs`, Studio schreibt dev-JSON) und Delegation aus ADR-029 Z. 40/47.
+6. **ADR-Inhalt:**
+   - a) **Entscheidung** in vier Blöcken entlang der E2-Fragen: SoT-Übergangsregime (D-1 bis D-3, D-8), Content-Freeze mit Commit-Klassen und Prüfbefehl (D-4, D-5), MPZ Studio (D-7), kanonische Slugs (D-9)¹²⁴.
+   - b) **Verworfene Alternativen:** globaler SoT-Wechsel (Big-Bang, außerhalb Epic); globaler Freeze aller Slugs (blockiert Pflege von 10+ Stationen ohne Grund); pauschales JSON-Commit-Verbot (bricht Build/Fallback aus ADR-029 Z. 44/45); implizite Pilot-Liste „was in Directus steht“ (SoT-Wechsel ohne Freeze möglich); regelmäßiger Rück-Export im Piloten (kein Executor: Studio dev-only, Export-Job außerhalb Scope)¹²³.
+   - c) **Konsequenzen:** Fallback-Drift für Pilot-Räume (D-6); Folgen je Issue: #255 Prüfbefehl D-5 vor `release/39-gs`-Verschiebung, sonst nur Deploy; #256 Rechte und Slug-Constraint (D-9), Schema-Migration als technische Commit-Klasse (D-5); #257 Merge-Vertrag D-2 und Pilot-Liste im Repo (D-1); #259 Pilot-Liste festlegen, Freeze-Basis setzen, Vermerk in `verzeichnisstruktur.md`, Export aus `main`; #261 Pilot-Review entscheidet Rück-Export, Neuanlage, Big-Bang, ggf. Rückabwicklung D-8; #262 Studio-Sperre für Pilot-Slugs (D-7)¹²³⁴.
+   - d) Slugs: Verweis auf [verzeichnisstruktur.md](../../content/verzeichnisstruktur.md), keine Kopie der Liste im ADR.
+7. **`entscheidungen.md`:** Tabellenzeile mit tatsächlicher Nummer, Status „entschieden“, Datum, Link.
+8. **03 Implementieren** (Composer / ⌘): nur Doku; danach Verifikation unten.
+9. **04 Post-Mortem** kompakt · **05a Abschließen** (Issue, `offen.md`, GitHub-Body, Draft-PR).
+
+## Implementierungsnotizen
+
+- Prüfbefehl D-5 (so in den ADR übernehmen, `<ref>` = Freeze-Basis bzw. Ziel-Commit, z. B. `release/39-gs`)¹:
+
+  ```bash
+  git show <ref>:app/data/stations.json | jq -S --arg s <slug> '.stations[] | select(.slug==$s)'
+  ```
+
+- Im ADR keine Formulierung „ab Freeze committet niemand mehr JSON“. Richtig ist: redaktionelle Änderungen an Pilot-Slugs sind verboten, technische bleiben erlaubt (D-5)¹.
+- „Optional Rück-Export“ nicht als offene Option stehen lassen. D-6 ist die Entscheidung, die Frage nach einem Mechanismus wandert an den Pilot-Review³.
+- Die Epic-Tabelle nennt für #259 noch „Quelle `kunde/39-gs`“. Der ADR legt die Quelle über D-4 auf `main` fest; die Epic-Zeile korrigiert 5a, nicht 03.
 
 ## Verifikation
 
 - `ls dokumentation/adr/` → genau eine neue Migrations-/Freeze-ADR; Nummer = höchste vorherige +1.
 - `rg -i "freeze|migration|slug|studio" dokumentation/adr/NNN-*.md` trifft alle vier E2-Themen; Verweis auf ADR-029 SoT-Satz.
+- `rg -i "Pilot-Liste|Freeze-Basis|redaktionell|technisch" dokumentation/adr/NNN-*.md` trifft D-1, D-4, D-5¹².
+- `rg -i "jq -S" dokumentation/adr/NNN-*.md` → Prüfbefehl aus D-5 steht im ADR¹.
+- ADR enthält den Fallback-Satz aus D-6 („Freeze-Stand“ bei Directus-Ausfall) und keinen offenen Rück-Export³.
+- ADR enthält die drei Slug-Teilaussagen (unveränderlich, Neuanlage, Löschung) und die Prozessregel bis #256⁴.
 - `rg "Migrationsstrategie\|Content-Freeze" dokumentation/entscheidungen.md` → Link stimmt mit Dateiname.
-- ADR nennt #259 (Pilot), #262 (Studio-Abgrenzung), #255 nur soweit Deploy/Git-Freeze betrifft.
-- `git diff --name-status main` → nur `dokumentation/` (Pipeline-Artefakte ausgenommen prüfen).
+- ADR nennt **#255, #256, #257, #259, #261, #262** mit je einer Folge aus 6c; #255 nur Deploy/Git².
+- `git diff --name-status main -- dokumentation/adr/022-* dokumentation/adr/028-* dokumentation/adr/029-*` → leer (Rahmen-ADRs unverändert).
+- `git diff --name-status main` → nur `dokumentation/` (Pipeline-Artefakte ausgenommen prüfen); `issues/Untitled` taucht nicht auf⁵.
 - `cd app && npm run build` grün (kein Code-Diff erwartet).
 
 ## Referenzen
@@ -48,4 +91,13 @@
 
 ## Offene Punkte
 
-- Keine (Unknowns-Exploration entfällt, C=1). Die Freeze-Variante ist **Inhalt der ADR-Entscheidung**, kein Planungs-Blocker; strittige AC nach 01b → Triage G1 (VOLL).
+- Keine. Die vier Spec-Lücken aus 01b sind in D-1 bis D-9 entschieden. G1 bleibt entfallen: Der Freeze ist nach der Härtung nicht strittig, keine Hochstufung auf VOLL. G2: kein ungelöster Blocker, keine Fable-Eskalation.
+
+## Änderungslog
+
+- 2026-11-02, Schritt 02 (Opus 5.5):
+  - ¹ 1b L1: Commit-Klassen redaktionell/technisch mit Owner, Trigger und `jq`-Prüfbefehl (D-5); Freeze pro Slug mit Freeze-Basis auf `main` (D-4); Fallback-Drift als Konsequenz (D-6).
+  - ² 1b L2: Übergangsregime SoT pro Slug mit expliziter Pilot-Liste (D-1), Merge-Vertrag für #257 (D-2), Konfliktregel Directus gewinnt (D-3), Rückabwicklung (D-8); #256, #257, #261 in AC, Schritt 3, 6c und Verifikation ergänzt.
+  - ³ 1b L3: Rück-Export auf Regime (b) festgelegt, kein Executor im Piloten, Mechanismus nur per Folge-ADR nach Pilot-Review (D-6); Studio ist kein Rück-Export-Werkzeug (D-7).
+  - ⁴ 1b L4: Slug-Regel in drei Teilaussagen (unveränderlich, keine Neuanlage, keine Löschung) mit Prozessregel bis #256 (D-9).
+  - ⁵ 1b Nebenbefunde: Schritt 3 als in Schritt 0 erledigt markiert; neuer Schritt 4 entfernt `issues/Untitled` vor 03.
