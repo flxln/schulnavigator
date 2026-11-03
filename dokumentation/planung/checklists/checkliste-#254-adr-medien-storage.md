@@ -22,7 +22,7 @@
 4. ~~**ADR-Inhalt** nach den Vorgaben V1–V6 unten~~ erledigt 2026-11-03 (`dokumentation/adr/031-medien-storage-directus-proxy.md`).
 5. ~~**`entscheidungen.md`:** Tabellenzeile ADR-031~~ erledigt 2026-11-03.
 6. ~~**03 Implementieren** (Composer): nur Doku; Verifikation unten.~~ erledigt 2026-11-03.
-7. **04 Post-Mortem** kompakt · **05a Abschließen:** Issue-Datei (AC an diese Revision angleichen), `offen.md`, GitHub-Body-Sync, GitHub-Beziehung `#259 blocked by #254` nachtragen.
+7. ~~**04 Post-Mortem** kompakt · **05a Abschließen:** Issue-Datei (AC an diese Revision angleichen), `offen.md`, GitHub-Body-Sync, GitHub-Beziehung `#259 blocked by #254` nachtragen.~~ erledigt 2026-11-03.
 
 ### Vorgaben für ADR-031 (aus Härtung, verbindlich für Schritt 3)
 
