@@ -60,6 +60,16 @@ Gelesen: Plan, Unknowns 0b, Triage (Zeile 01a: Sonnet 5.5 ◆ `high`), Vorgänge
 - **Wann es beißt:** Beim Commit von Schritt 3.
 - **Billige Gegenmaßnahme jetzt:** `infra/directus-demo/.env.example` mit Variablennamen und leeren Werten, `infra/directus-demo/.gitignore` mit `.env`, `*.sql`, `*.key`. `README.md` nennt, dass Port und Ziel in der gelaufenen Datei stehen, nicht im Repo (wie ScratchCraft).
 
+## Nachtrag: Edge-Skript gelesen (3. November 2026, lesend per SSH)
+
+`/usr/local/sbin/scratch-edge-proxy.py` auf dem MPZ-VPS ist ein reiner TCP-Pipe (`select`, ein Thread je Verbindung), kein HTTP-Parser. Folgen für den ersten Fund:
+
+- **`X-Forwarded-For` bleibt unverändert**, was Traefik setzt, kommt in der VM an. Das Edge-Skript ist als Fehlerquelle für die Client-IP ausgeschlossen. Der Abnahmetest aus dem zweiten Fund bleibt nötig, aber der Hop dazwischen ist transparent.
+- **Ports sind hartkodiert:** `LISTEN = ("10.0.0.1", 49161)`, `TARGET = ("127.0.0.1", 49160)`. Die Docker-Bridge hat hier also `10.0.0.1`, nicht das Docker-Default `172.17.0.1`. Für Directus: Kopie `directus-edge-proxy.py` mit eigenem `LISTEN`-Port und eigenem `TARGET`-Port (Tunnel). Die Ports 49160 und 49161 sind belegt und dürfen nicht wiederverwendet werden.
+- **Unit** `scratch-edge.service` ist wie das Repo-Platzhalter (`Restart=always`, `RestartSec=2`, kein `StartLimit`-Eintrag, also gilt der systemd-Default von 5 Starts in 10 s). Für `directus-edge.service` `StartLimitIntervalSec=0` ergänzen.
+- **Ablauf bei totem Tunnel:** `create_connection` schlägt fehl, die Verbindung wird sofort geschlossen, Traefik meldet 502. Das deckt die Erwartung aus dem Plan.
+- Offen bleibt die Skript-Kopie im Repo: Sie fehlt auch in ScratchCraft. Beim Anlegen von `infra/directus-demo/` beide Skripte als Platzhalter (ohne Ports) ablegen.
+
 ## Klassen ohne Fund
 
 - **Postgres/Directus nicht von außen erreichbar:** Kein `ports:` am Postgres, Directus nur `127.0.0.1:8055`, Tunnel nur `127.0.0.1`: Das Muster ist tragfähig. `ss -tlnp` in der VM zeigt den Docker-Proxy-Listener, das ist erwartbar. Zusätzlich lohnt `iptables -t nat -S DOCKER`, weil Docker UFW umgeht. Kein eigener Fund.
