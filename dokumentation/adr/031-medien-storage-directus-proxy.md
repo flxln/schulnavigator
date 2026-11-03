@@ -1,7 +1,7 @@
 # ADR-031 — Medien-Storage: Directus-Uploads hinter Cookie-gated App-Proxy (b-Proxy)
 
 **Datum:** 2026-11-03  
-**Status:** entschieden  
+**Status:** ersetzt durch [ADR-032](./032-mpz-studio-produktions-admin.md), soweit Directus betroffen ist (2026-11-03)  
 **Issue:** [#254](https://github.com/flxln/schulnavigator/issues/254) · Epic E3 · Spike [#251](https://github.com/flxln/schulnavigator/issues/251) Phase 6 ([Spike-Bericht](../../reviews/spike-directus-2026-07.md#phase-6--e3-medien-gate-befund))  
 **Bezug:** präzisiert Medien-Auslieferung neben [ADR-027](./027-schuelermedien-nicht-in-git.md) (Bahn B), [ADR-029](./029-runtime-datenpfad-directus.md) (Lesepfad) und [ADR-030](./030-migrationsstrategie-content-freeze.md) (Freeze/D-7).
 

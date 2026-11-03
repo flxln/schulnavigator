@@ -1,3 +1,5 @@
+> **Überholt durch [ADR-032](../adr/032-mpz-studio-produktions-admin.md)** (3. November 2026). Die Gates zu AVV, VVT, Datenschutzerklärung und Backup gelten sinngemäß für Lehrkräfte-Konten im Studio-Produktionsmodus (Stufe 2, [#273](https://github.com/flxln/schulnavigator/issues/273)); Directus-spezifische Teile entfallen.
+
 # Directus — Auth- und Datenschutz-Konzept (Vorbereitung #47)
 
 **Stand:** 2026-11-02 · **Status:** beschlossen (Gate 5, 2026-07-06 — [#250](https://github.com/flxln/schulnavigator/issues/250))

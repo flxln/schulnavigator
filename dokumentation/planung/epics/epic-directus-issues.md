@@ -1,3 +1,5 @@
+> **Überholt durch [ADR-032](../../adr/032-mpz-studio-produktions-admin.md)** (3. November 2026): Directus wird nicht das Lehrkräfte-CMS. Nachfolger-Epic [#273](https://github.com/flxln/schulnavigator/issues/273) (MPZ Studio Produktionsmodus). Dieses Dokument bleibt als Historie.
+
 # Issue-Texte: Epic Directus #47
 
 Index der Issue-Texte (GitHub #249–#262, Parent #47). Kanonische Bodies: [planung/issues/](../issues/). Übersicht: [epic-directus.md](./epic-directus.md).

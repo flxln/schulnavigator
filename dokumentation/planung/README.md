@@ -9,8 +9,8 @@ Abgleich mit [flxln/schulnavigator](https://github.com/flxln/schulnavigator). **
 | [offen.md](./offen.md) | Schlanke Liste offener Issues und Ideen |
 | [milestones.md](./milestones.md) | Milestone-Beschreibungen für GitHub |
 | [labels.md](./labels.md) | Label-Konventionen |
-| [epics/](./epics/) | Aktive Epic-Spezifikationen (derzeit: [Directus #47](./epics/epic-directus.md)) — nach Abschluss ins Archiv |
-| [issues/](./issues/) | GitHub-Issue-Bodies (`issue-<nr>-<slug>.md`); Directus #47 und #249–#263 |
+| [epics/](./epics/) | Aktive Epic-Spezifikationen (Directus #47 überholt durch ADR-032; Nachfolger [#273](../planung/issues/issue-273-epic-studio-produktionsmodus.md), Spezifikation = ADR-032) — nach Abschluss ins Archiv |
+| [issues/](./issues/) | GitHub-Issue-Bodies (`issue-<nr>-<slug>.md`); MPZ Studio Produktionsmodus #273, Directus #47 (Historie) |
 | [epic-mpz-studio-ui-cleanup.md](./epic-mpz-studio-ui-cleanup.md) | Epic **#195** — MPZ Studio UI-Cleanup (#196–#204), abgeschlossen |
 | [epic-mpz-studio-v3-visual-polish.md](./epic-mpz-studio-v3-visual-polish.md) | Epic **#205** — MPZ Studio v3 Visual Polish (#206–#220) |
 | [epic-schuelermedien-deploy-trennung.md](./epic-schuelermedien-deploy-trennung.md) | Epic **#226** — Schüler-Medien Deploy-Trennung (#227–#232) |
@@ -30,7 +30,7 @@ Domänen-Matrix MPZ Studio: [ideen/archiv/mpz-studio-ui.md](../ideen/archiv/mpz-
 | Thema | Ort |
 |-------|-----|
 | Backup T5 (Ops, #243–#248) | [anleitungen/backup-t5/](../../anleitungen/backup-t5/) |
-| Directus Auth (#47) | [spezifikationen/directus-auth-konzept.md](../spezifikationen/directus-auth-konzept.md) |
+| Directus Auth (#47, überholt durch ADR-032) | [spezifikationen/directus-auth-konzept.md](../spezifikationen/directus-auth-konzept.md) |
 | Schulfest GS39 Playbook | [anleitungen/schulfest-gs39-playbook.md](../../anleitungen/schulfest-gs39-playbook.md) |
 | Meeting #44 Leitfaden | [archiv/projektmanagement/2026-06-meeting-44-leitfaden.md](../archiv/projektmanagement/2026-06-meeting-44-leitfaden.md) |
 

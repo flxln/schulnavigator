@@ -19,7 +19,7 @@ Landkarte der Projekt-Dokumentation. **Anleitungen** (How-to) liegen in [`anleit
 | [adr/](./adr/) | Architecture Decision Records |
 | [content/](./content/) | Slugs, Pfade, Pflege-Übersicht |
 | [planung/](./planung/) | GitHub-Issues, Milestones, offene Punkte ([offen.md](./planung/offen.md)) |
-| [spezifikationen/](./spezifikationen/) | Feature-Specs (MPZ Studio, Directus #47) |
+| [spezifikationen/](./spezifikationen/) | Feature-Specs (MPZ Studio; Directus #47 überholt durch ADR-032) |
 | [ideen/](./ideen/) | Produktideen (offen / archiv) |
 | [reviews/](./reviews/) | Pre-/Post-Mortems zu Issues |
 | [archiv/](./archiv/) | Eingefrorene Pläne, Meetings, Design-Prototypen |

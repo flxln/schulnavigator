@@ -1,3 +1,5 @@
+> **Überholt durch [ADR-032](../../adr/032-mpz-studio-produktions-admin.md)** (3. November 2026): Directus wird nicht das Lehrkräfte-CMS. Nachfolger-Epic [#273](https://github.com/flxln/schulnavigator/issues/273) (MPZ Studio Produktionsmodus). Dieses Dokument bleibt als Historie.
+
 # Epic: Directus #47 — Lehrkräfte-CMS (ADR-003), Adoption-First mit Spike
 
 **Milestone:** Phase 5 (31.10.2026 — weicher Anker, siehe Risiken)
