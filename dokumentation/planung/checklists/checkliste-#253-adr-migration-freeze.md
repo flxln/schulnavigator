@@ -45,7 +45,7 @@ Vorgaben für den ADR-Text (Schritt 03). Spalte „Fund“ verweist auf das Pre-
 6. ~~**ADR-Inhalt:**~~ D-1 bis D-9 in vier Blöcken, verworfene Alternativen, Konsequenzen 6c (2026-11-02, 03).
 7. ~~**`entscheidungen.md`:**~~ Zeile ADR-030 (2026-11-02, 03).
 8. ~~**03 Implementieren**~~ erledigt (Composer, 2026-11-02); Verifikation unten.
-9. **04 Post-Mortem** kompakt · **05a Abschließen** (Issue, `offen.md`, GitHub-Body, Draft-PR).
+9. ~~**04 Post-Mortem** kompakt~~ erledigt (2026-11-02, [post-mortem-253-2026-11-02.md](../../reviews/post-mortem/post-mortem-253-2026-11-02.md), Go für 05a) · ~~**05a Abschließen**~~ erledigt (2026-11-02, 5a).
 
 ## Implementierungsnotizen
 
