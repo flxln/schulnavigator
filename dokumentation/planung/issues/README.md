@@ -18,6 +18,8 @@ Namensschema: `issue-<github-nr>-<slug>.md`. Die Planungs-IDs D-01 bis D-14 steh
 | [issue-256-d08-collections.md](./issue-256-d08-collections.md) | [#256](https://github.com/flxln/schulnavigator/issues/256) | 1 (Save-Pfad) |
 | [issue-257-d09-nextjs.md](./issue-257-d09-nextjs.md) | [#257](https://github.com/flxln/schulnavigator/issues/257) | 1 (Lesepfad) |
 | [issue-258-d10-backup.md](./issue-258-d10-backup.md) | [#258](https://github.com/flxln/schulnavigator/issues/258) | 1 (Backup) |
+| [issue-281-adr-033-demo-domain.md](./issue-281-adr-033-demo-domain.md) | [#281](https://github.com/flxln/schulnavigator/issues/281) | Demo-Domain (ADR-033) |
+| [issue-282-demo-synthetischer-content.md](./issue-282-demo-synthetischer-content.md) | [#282](https://github.com/flxln/schulnavigator/issues/282) | 1 (Demo-Content) |
 | [issue-249-d01-adoption.md](./issue-249-d01-adoption.md) | [#249](https://github.com/flxln/schulnavigator/issues/249) | 2 |
 | [issue-261-d13-pilot.md](./issue-261-d13-pilot.md) | [#261](https://github.com/flxln/schulnavigator/issues/261) | 2 |
 

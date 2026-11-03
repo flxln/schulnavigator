@@ -5,18 +5,19 @@ alwaysApply: true
 
 # Git-Branches: `main` ist der Stamm, die Schule deployt von `release/39-gs`
 
-Ersetzt die eingefrorene Regel `branch-freeze-kunde.mdc`. Entscheidung: [ADR-028](../../dokumentation/adr/028-main-und-release-39-gs.md) (#264).
+Ersetzt die eingefrorene Regel `branch-freeze-kunde.mdc`. Entscheidung: [ADR-028](../../dokumentation/adr/028-main-und-release-39-gs.md) (#264), Demo-Domain: [ADR-033](../../dokumentation/adr/033-demo-instanz-schulnavigator-mpz-schule.md).
 
 ## Verbindlich
 
 - **`main`** ist der Entwicklungsstamm. Issue-Branches starten von `origin/main`.
 - **`release/39-gs`** ist der Zeiger für die 39. Grundschule. Er wird nur bewusst verschoben (Fast-Forward auf einen Commit von `main`). **Keine direkten Commits**, kein Rebase, kein Force-Push.
-- **`kunde/39-gs`** ist seit #264 veraltet. Nicht löschen, bis `release/39-gs` in Coolify bestätigt ist. Keine neuen Commits darauf.
+- **`kunde/39-gs`** ist gelöscht (3. November 2026, Stand im Tag `archiv/kunde-39-gs`). Nicht wieder anlegen.
 
 ## Coolify / Deploy
 
 - **GS39-Prod:** Application `jjgl5u105ucxjvbeuwflsjq4`, Branch **`release/39-gs`**, Auto-Deploy **aus**, URL **`https://39-gs.mpz.schule`**.
-- **Legacy:** `schulnavigator.mpz.schule` (Application `q1a8t4zswynvgutbw9og5l7n`) bleibt auf dem letzten Image. Auto-Deploy aus. Keine Schüler-Medien-Volumes, deshalb nicht auf den GS39-Release umstellen und nicht neu deployen.
+- **Demo:** `schulnavigator.mpz.schule` (Application `q1a8t4zswynvgutbw9og5l7n`), Branch **`main`**, Auto-Deploy aus, nur synthetische Daten, eigene Volumes und Tokens ([ADR-033](../../dokumentation/adr/033-demo-instanz-schulnavigator-mpz-schule.md)). Redeploy erlaubt, aber erst mit synthetischem Content (#282). Nie auf `release/39-gs` umstellen.
+- **Host-Pfade `/data/schulnavigator/*`** gehören nur der GS39-Application. Keine Kopie oder andere Application mountet sie; beim Löschen von Applications nie „Volumes löschen“, ohne die Mounts vorher zu prüfen.
 - Schüler-Medien: Volumes an der GS39-Application plus rsync, unabhängig vom Branch.
 
 ## Agenten

@@ -403,7 +403,7 @@ npm run build
 | `/raum/{slug}` | Hotspots: Tipp öffnet dasselbe Panel |
 | Handy + HTTPS | Gyro, Hotspot erreichbar nach Wischen |
 
-Referenz: [`/raum/klassenzimmer`](https://schulnavigator.mpz.schule/raum/klassenzimmer) (Prod) bzw. lokal.
+Referenz: [`/raum/klassenzimmer`](https://39-gs.mpz.schule/raum/klassenzimmer) (Prod) bzw. lokal.
 
 ---
 

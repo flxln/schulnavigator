@@ -12,9 +12,9 @@ Eine Web-App für Schulen. Besucher eines Tags der offenen Tür scannen QR-Codes
 
 ## Projektphasen
 
-Das Projekt liegt unter `2_in-arbeit/schulnavigator/`. **Phase 0** (Architektur-ADRs) ist abgeschlossen; **Phase 1** (Foundation) umfasst **#9–#16** — siehe [`dokumentation/archiv/projektplan.md`](./dokumentation/archiv/projektplan.md). **Phase 2:** Raum-Viewer (**#55**/#56), GS39-UI (**#58**), Dialog Maskottchen (**#71**/#72), Medien-Player (**#18–#20**) + **TextViewer** (**#93**) — umgesetzt. **360°-Sphere-Viewer** (**#113**, Branch `feature/360-sphere-viewer`): PSV v5 + Gyro, Koexistenz Flat/Sphere per `viewer`-Flag ([ADR-018](./dokumentation/adr/018-360-sphere-viewer.md)), Pilot `musik` — umgesetzt. **Demo-Content:** **`klassenzimmer`** mit 4 Medien/Hotspots (`public/media/klassenzimmer/`). **Raumbilder:** **#27** geschlossen (8/11 Panorama in `public/stations/`); **#17** offen für `kunst`, `hort`, `schulsozialarbeit`. **Live:** `https://39-gs.mpz.schule` (Coolify, Branch `release/39-gs`, Auto-Deploy aus) — [`anleitungen/fuer-entwickler.md`](./anleitungen/fuer-entwickler.md).
+Das Projekt liegt unter `2_in-arbeit/schulnavigator/`. **Phase 0** (Architektur-ADRs) ist abgeschlossen; **Phase 1** (Foundation) umfasst **#9–#16** — siehe [`dokumentation/archiv/projektplan.md`](./dokumentation/archiv/projektplan.md). **Phase 2:** Raum-Viewer (**#55**/#56), GS39-UI (**#58**), Dialog Maskottchen (**#71**/#72), Medien-Player (**#18–#20**) + **TextViewer** (**#93**) — umgesetzt. **360°-Sphere-Viewer** (**#113**, Branch `feature/360-sphere-viewer`): PSV v5 + Gyro, Koexistenz Flat/Sphere per `viewer`-Flag ([ADR-018](./dokumentation/adr/018-360-sphere-viewer.md)), Pilot `musik` — umgesetzt. **Demo-Content:** **`klassenzimmer`** mit 4 Medien/Hotspots (`public/media/klassenzimmer/`). **Raumbilder:** **#27** geschlossen (8/11 Panorama in `public/stations/`); **#17** offen für `kunst`, `hort`, `schulsozialarbeit`. **Live:** `https://39-gs.mpz.schule` (Coolify, Branch `release/39-gs`, Auto-Deploy aus). **Demo:** `https://schulnavigator.mpz.schule` (Branch `main`, nur synthetische Daten, ADR-033). [`anleitungen/fuer-entwickler.md`](./anleitungen/fuer-entwickler.md).
 
-**Git:** `main` ist der Stamm. Die Schule deployt von `release/39-gs` (nur bewusst verschieben). `kunde/39-gs` ist veraltet. Regel: [`.cursor/rules/release-39-gs.mdc`](./.cursor/rules/release-39-gs.mdc), [ADR-028](./dokumentation/adr/028-main-und-release-39-gs.md).
+**Git:** `main` ist der Stamm. Die Schule deployt von `release/39-gs` (nur bewusst verschieben). `kunde/39-gs` ist gelöscht (Tag `archiv/kunde-39-gs`). Regel: [`.cursor/rules/release-39-gs.mdc`](./.cursor/rules/release-39-gs.mdc), [ADR-028](./dokumentation/adr/028-main-und-release-39-gs.md).
 
 ---
 
@@ -84,9 +84,10 @@ schulnavigator/
 | [018](./dokumentation/adr/018-360-sphere-viewer.md)             | 360°-Sphere-Viewer (PSV v5) + Flat-Koexistenz per `viewer`-Flag; Gyro-Plugin; Spike Musikraum | entschieden |
 | [019](./dokumentation/adr/019-coach-fortschritt-einblendung.md) | Coach-Einblendungen (fortschritts-getriggert, getrennt vom Dialog); Schwellwert-Trigger, `duo-split`, modus-getrennter Seen-State, Layer-Vertrag ([Plan](./.cursor/plans/archiv/2026-06/coach_sparkle_mvp_d9e82ce2.plan.md)) | entschieden |
 | [022](./dokumentation/adr/022-mpz-studio-internes-ingest-tool.md) | MPZ Studio: internes Dev-only-Ingest-Tool (nur MPZ, nicht Lehrkräfte); Ausnahme/ergänzt ADR-003; `/mpz/*` nur `NODE_ENV=development`, Secret-Header, Validatoren nach Save ([Spec](./dokumentation/spezifikationen/mpz-studio.md)); Produktionsmodus → ADR-032 | entschieden |
-| [028](./dokumentation/adr/028-main-und-release-39-gs.md) | `main` ist der Stamm; Schule deployt von `release/39-gs` (Auto-Deploy aus) | entschieden |
+| [028](./dokumentation/adr/028-main-und-release-39-gs.md) | `main` ist der Stamm; Schule deployt von `release/39-gs` (Auto-Deploy aus); Punkt 4 → ADR-033 | entschieden |
 | [029](./dokumentation/adr/029-runtime-datenpfad-directus.md) | Runtime-Datenpfad Directus: Fetch + Data-Cache (Option b); Fallback `stations.json` | ersetzt durch ADR-032 |
 | [032](./dokumentation/adr/032-mpz-studio-produktions-admin.md) | MPZ Studio als schmales Produktions-Admin statt Directus; CMS-Umfang (Undo, Entwürfe, Rollen, Mehrsprachigkeit) ausgeschlossen | entschieden |
+| [033](./dokumentation/adr/033-demo-instanz-schulnavigator-mpz-schule.md) | `schulnavigator.mpz.schule` = Demo/Test (Branch `main`, nur synthetische Daten); `/data/schulnavigator/*` nur an der GS39-App | entschieden |
 
 Vollständiger ADR-Index: [`dokumentation/entscheidungen.md`](./dokumentation/entscheidungen.md)
 

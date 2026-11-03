@@ -224,7 +224,7 @@ Vollständige Ablagekonventionen (Pfade, Autorenzone, Laufzeit): [`verzeichnisst
 
 - **Produktion:** MPZ-VPS bei IONOS, gemanagt über Coolify, deployed als Docker-Container ([`anleitungen/fuer-entwickler.md`](../anleitungen/fuer-entwickler.md) — Abschnitt „Coolify“).
 - **Öffentliche URL (GS39, Branch `release/39-gs`):** `https://39-gs.mpz.schule` — erreichbar über MPZ-Wildcard-DNS **`*.mpz.schule`** → Coolify-VPS `217.154.120.240`.
-- **Legacy-URL:** `https://schulnavigator.mpz.schule` — bleibt auf dem letzten Image, Auto-Deploy aus, keine Schüler-Medien-Volumes ([ADR-028](./adr/028-main-und-release-39-gs.md)).
+- **Demo-URL:** `https://schulnavigator.mpz.schule`: Demo- und Testinstanz, Branch `main`, Auto-Deploy aus, nur synthetische Daten, keine Schüler-Medien-Volumes ([ADR-033](./adr/033-demo-instanz-schulnavigator-mpz-schule.md)).
 - **Image:** [`app/Dockerfile`](../app/Dockerfile) — Multi-Stage, `output: 'standalone'`, Health `GET /api/health`, Container-Port **`PORT=3000`** (Coolify „Ports Exposes“ = `3000`).
 - **Suchmaschinen:** `robots.txt` mit `Disallow: /` und `noindex` im Root-Layout (Issue #16); Verfeinerung in #23 möglich.
 - **Coolify GS39-Prod:** Application `jjgl5u105ucxjvbeuwflsjq4` (`schulnavigator:development-feature`) — Projekt **Schulprojekte**, Domain **`39-gs.mpz.schule`**, Branch **`release/39-gs`**, Auto-Deploy aus ([ADR-028](./adr/028-main-und-release-39-gs.md)).
