@@ -33,11 +33,12 @@ Jede wichtige Entscheidung wird als eigenständiger ADR (Architecture Decision R
 | [025](./adr/025-coach-audio-autoplay.md) | Coach-Audio: Autoplay mit iOS-Fallback, `quelle` + gated API (ergänzt ADR-019) | entschieden | 2026-06-20 |
 | [026](./adr/026-dialog-text-only-segmente.md) | Dialog: Text-only-Segmente (`quelle` optional), Tap-Advance, Studio-Default ohne Audio (ergänzt ADR-010/011) | entschieden | 2026-06-24 |
 | [027](./adr/027-schuelermedien-nicht-in-git.md) | Schüler-Medien nicht in Git; Deploy-Trennung Code (GitHub) vs. Medien (rsync → IONOS-VPS) | entschieden | 2026-06-24 |
-| [028](./adr/028-main-und-release-39-gs.md) | `main` ist der Stamm; die Schule deployt von `release/39-gs` (Auto-Deploy aus). Ersetzt die Branch-Freeze-Regel | entschieden | 2026-11-02 |
+| [028](./adr/028-main-und-release-39-gs.md) | `main` ist der Stamm; die Schule deployt von `release/39-gs` (Auto-Deploy aus). Ersetzt die Branch-Freeze-Regel; Punkt 4 ersetzt durch ADR-033 | entschieden | 2026-11-02 |
 | [029](./adr/029-runtime-datenpfad-directus.md) | Runtime-Datenpfad: Directus per Fetch + Data-Cache (Option b); Fallback `stations.json` | ersetzt durch ADR-032 (Directus-Teil) | 2026-11-02 |
 | [030](./adr/030-migrationsstrategie-content-freeze.md) | Migrationsstrategie JSON ↔ Directus und Content-Freeze (Pilot-Liste, Merge, Commit-Klassen) | ersetzt durch ADR-032 (Directus-Teil) | 2026-11-02 |
 | [031](./adr/031-medien-storage-directus-proxy.md) | Medien-Storage: Directus-Uploads hinter Cookie-gated App-Proxy (b-Proxy); koexistierend mit Bahn B | ersetzt durch ADR-032 (Directus-Teil) | 2026-11-03 |
 | [032](./adr/032-mpz-studio-produktions-admin.md) | MPZ Studio als schmales Produktions-Admin statt Directus: Konten pro Person, Content-Volume, Lesen zur Request-Zeit, Medien hinter dem Cookie; CMS-Umfang ausgeschlossen | entschieden | 2026-11-03 |
+| [033](./adr/033-demo-instanz-schulnavigator-mpz-schule.md) | `schulnavigator.mpz.schule` als Demo- und Testinstanz (Branch `main`, nur synthetische Daten, eigene Volumes und Tokens); Host-Pfade der Schule nur an der GS39-Application | entschieden | 2026-11-03 |
 
 ## Konventionen
 

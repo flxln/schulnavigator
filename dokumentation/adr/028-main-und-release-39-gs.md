@@ -1,7 +1,7 @@
 # ADR-028 — `main` als Stamm, Schule deployt von `release/39-gs`
 
 **Datum:** 2026-11-02
-**Status:** entschieden
+**Status:** entschieden; Punkt 4 **ersetzt durch [ADR-033](./033-demo-instanz-schulnavigator-mpz-schule.md)** (Demo-Instanz, 2026-11-03); Punkt 5 erledigt (`kunde/39-gs` gelöscht, Tag `archiv/kunde-39-gs`)
 
 ## Kontext
 

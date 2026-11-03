@@ -6,7 +6,7 @@ MPZ Studio bekommt neben dem Dev-Modus einen Produktionsmodus auf dem Live-Serve
 
 ### Stufe 1: MPZ pflegt live
 
-Reihenfolge: #274 → #275 → #256 und #257 → #276, #277, #258 → #278.
+Reihenfolge: #274 → #275 → #256 und #257 → #276, #277, #258 → #278. Erster Zielort ist die Demo `schulnavigator.mpz.schule` (ADR-033, Content in #282), danach `39-gs.mpz.schule`.
 
 
 - [ ] #274 Produktionsmodus-Schalter (eigene Runtime-Variable, nicht `NODE_ENV`) und Guard; Dev-only-Bereiche bleiben im Produktionsmodus 404

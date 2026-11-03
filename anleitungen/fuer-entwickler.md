@@ -290,7 +290,7 @@ PORT=3007 HOSTNAME=127.0.0.1 node server.js
 
 ## Deployment (Überblick)
 
-Produktion: Multi-Stage-Image wie in [`app/Dockerfile`](../app/Dockerfile), Health-Check `GET /api/health`. Ziel-Hosting: **MPZ-VPS (IONOS) / Coolify** ([ADR-001](../dokumentation/adr/001-hosting-coolify.md)). **GS39-Live (Branch `release/39-gs`, Auto-Deploy aus):** **`https://39-gs.mpz.schule`**. Die ältere Application **`https://schulnavigator.mpz.schule`** bleibt auf dem letzten Image (Auto-Deploy aus, keine Schüler-Medien-Volumes, [ADR-028](../dokumentation/adr/028-main-und-release-39-gs.md)).
+Produktion: Multi-Stage-Image wie in [`app/Dockerfile`](../app/Dockerfile), Health-Check `GET /api/health`. Ziel-Hosting: **MPZ-VPS (IONOS) / Coolify** ([ADR-001](../dokumentation/adr/001-hosting-coolify.md)). **GS39-Live (Branch `release/39-gs`, Auto-Deploy aus):** **`https://39-gs.mpz.schule`**. **Demo:** **`https://schulnavigator.mpz.schule`** (Branch `main`, Auto-Deploy aus, nur synthetische Daten, keine Schüler-Medien-Volumes, [ADR-033](../dokumentation/adr/033-demo-instanz-schulnavigator-mpz-schule.md)); erster Redeploy mit synthetischem Content in #282.
 
 Die App setzt **`robots.txt`** (`Disallow: /`) und **`noindex`** im Root-Layout (Phase 1, Issue #16), damit die Subdomain nicht in Suchmaschinen indexiert wird.
 
@@ -443,7 +443,7 @@ Das Skript erzeugt Zufallstokens (`fest-…` / `heft-…`), schreibt [`app/lib/a
 |--------|--------|
 | **`main`** | Entwicklungsstamm. Issue-Branches starten hier. |
 | **`release/39-gs`** | Zeiger für die Schule. Nur per Fast-Forward verschieben, nie direkt committen. Auto-Deploy aus. |
-| **`kunde/39-gs`** | Veraltet seit #264. Nicht löschen, bis `release/39-gs` in Coolify bestätigt ist. Keine neuen Commits. |
+| ~~`kunde/39-gs`~~ | Gelöscht am 3. November 2026 (Tag `archiv/kunde-39-gs`). |
 | **`feature/*`** | Arbeit an Issues, Merge nach `main` über Pull Request. |
 
 Schüler-Medien liegen auf VPS-Volumes am IONOS-Host (rsync), unabhängig vom Branch. Regel: [`.cursor/rules/release-39-gs.mdc`](../.cursor/rules/release-39-gs.mdc). Entscheidung: [ADR-028](../dokumentation/adr/028-main-und-release-39-gs.md).
@@ -487,7 +487,7 @@ Lokal entspricht Variante 1: `cd app && docker build -t schulnavigator-app .`
 | Feld | Wert |
 |------|------|
 | **Ports Exposes** | `3000` (muss mit `PORT` übereinstimmen) |
-| **Domain** | GS39-Prod: `39-gs.mpz.schule` (Branch `release/39-gs`, Auto-Deploy aus); Legacy: `schulnavigator.mpz.schule` (letztes Image, nicht neu deployen) |
+| **Domain** | GS39-Prod: `39-gs.mpz.schule` (Branch `release/39-gs`, Auto-Deploy aus); Demo: `schulnavigator.mpz.schule` (Branch `main`, nur synthetische Daten, ADR-033) |
 | **HTTPS** | aktiviert (Let's Encrypt; Wildcard-DNS `*.mpz.schule` muss auf den VPS zeigen) |
 
 5. **Umgebungsvariablen:** `PORT=3000`, optional `NODE_ENV=production`. Für Zugangskontrolle (ADR-021) siehe Abschnitt [Zugang & Embedding](#zugang--embedding-adr-021) — **vor erstem Deploy nach ADR-021** `SN_ACCESS_TOKENS` in Coolify setzen.
@@ -498,7 +498,7 @@ Lokal entspricht Variante 1: `cd app && docker build -t schulnavigator-app .`
 
 ### Schüler-Medien: Persistent Volumes (Prod, #229)
 
-**GS39-Prod-Application** (`39-gs.mpz.schule`, Coolify-UUID `jjgl5u105ucxjvbeuwflsjq4`, Branch `release/39-gs`): drei Volume-Mounts. Die Legacy-Application `schulnavigator.mpz.schule` hat dieselben Host-Pfade nicht gemountet.
+**GS39-Prod-Application** (`39-gs.mpz.schule`, Coolify-UUID `jjgl5u105ucxjvbeuwflsjq4`, Branch `release/39-gs`): drei Volume-Mounts. Die Demo-Application `schulnavigator.mpz.schule` hat diese Host-Pfade nicht gemountet, und keine andere Application darf sie mounten (ADR-033 Punkt 7). Eine gestoppte Kopie der Schul-App hatte sie gemountet; sie wurde am 3. November 2026 ohne Volumes gelöscht.
 
 | Coolify-Name | Host-Pfad | Container-Pfad |
 |--------------|-----------|----------------|
@@ -682,12 +682,12 @@ curl -sS https://39-gs.mpz.schule/robots.txt
 
 ### Coolify-Applications (Projekt „Schulprojekte“)
 
-| | GS39-Prod | Legacy |
+| | GS39-Prod | Demo |
 |---|-----------|--------|
 | Coolify-Name | `schulnavigator:development-feature` | `schulnavigator:main-…` |
 | Application-UUID | `jjgl5u105ucxjvbeuwflsjq4` | `q1a8t4zswynvgutbw9og5l7n` |
 | URL | **`https://39-gs.mpz.schule`** | `https://schulnavigator.mpz.schule` |
-| Git-Branch | **`release/39-gs`**, Auto-Deploy aus | letzter Stand, Auto-Deploy aus, nicht neu deployen |
+| Git-Branch | **`release/39-gs`**, Auto-Deploy aus | `main`, Auto-Deploy aus, Redeploy bewusst (ADR-033) |
 | Schüler-Medien-Volumes | ja (`/data/schulnavigator/…`) | nein |
 
 Build-Einstellungen: Base **`/app`**, Dockerfile **`/Dockerfile`**, Port **`3000`**, Env `PORT=3000`, `NODE_ENV=production`.
