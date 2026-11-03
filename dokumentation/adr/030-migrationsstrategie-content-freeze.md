@@ -1,7 +1,7 @@
 # ADR-030 — Migrationsstrategie JSON ↔ Directus und Content-Freeze
 
 **Datum:** 2026-11-02  
-**Status:** entschieden  
+**Status:** ersetzt durch [ADR-032](./032-mpz-studio-produktions-admin.md), soweit Directus betroffen ist (2026-11-03)  
 **Issue:** [#253](https://github.com/flxln/schulnavigator/issues/253) · Epic E2 · Follow-up [ADR-029](./029-runtime-datenpfad-directus.md) (#252), Spike [#251](https://github.com/flxln/schulnavigator/issues/251)
 
 ## Kontext

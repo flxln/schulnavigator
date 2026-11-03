@@ -1,7 +1,7 @@
 # ADR-029 — Runtime-Datenpfad: Directus per Fetch + Data-Cache (Option b)
 
 **Datum:** 2026-11-02  
-**Status:** entschieden  
+**Status:** ersetzt durch [ADR-032](./032-mpz-studio-produktions-admin.md), soweit Directus betroffen ist (2026-11-03)  
 **Issue:** [#252](https://github.com/flxln/schulnavigator/issues/252) · Spike [#251](https://github.com/flxln/schulnavigator/issues/251)  
 **Hinweis:** präzisiert das Zielbild aus [ADR-003](./003-content-mvp-json-directus.md) (Directus als Content-Quelle); ADR-003 bleibt unverändert, der Lesepfad wird hier festgelegt.
 

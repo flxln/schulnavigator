@@ -8,7 +8,7 @@ Jede wichtige Entscheidung wird als eigenständiger ADR (Architecture Decision R
 |---|---|---|---|
 | [001](./adr/001-hosting-coolify.md) | Hosting: MPZ-VPS (IONOS) mit Coolify | entschieden | 2026-05-07 |
 | [002](./adr/002-frontend-nextjs.md) | Frontend: Next.js (App Router), TypeScript, Tailwind | entschieden | 2026-05-21 |
-| [003](./adr/003-content-mvp-json-directus.md) | Content: JSON (MVP), Directus langfristig; kein Custom-Admin | entschieden | 2026-05-21 |
+| [003](./adr/003-content-mvp-json-directus.md) | Content: JSON (MVP), Directus langfristig; kein Custom-Admin. **Directus-Zielbild und Admin-Verbot ersetzt durch ADR-032** | entschieden, teilweise ersetzt durch ADR-032 | 2026-05-21 |
 | [004](./adr/004-video-hosting-mpz.md) | Video: MPZ-Server; YouTube optional nach Rechtsklärung | entschieden | 2026-05-21 |
 | [005](./adr/005-zugangskontrolle-token.md) | Zugang: Entry-Token, Modi fest/heft, In-App-Scanner | entschieden | 2026-05-21 |
 | [006](./adr/006-raum-viewer-gyro-hotspots.md) | Raum-Viewer: Gyro (Standard), Hotspots, Tap-Fallback; Portrait `alpha`/Armschwenk, Mobil-Härtung (#56), Gimbal-Lock (#85) in [architektur.md](./architektur.md) | entschieden | 2026-05-22 |
@@ -27,16 +27,17 @@ Jede wichtige Entscheidung wird als eigenständiger ADR (Architecture Decision R
 | [019](./adr/019-coach-fortschritt-einblendung.md) | Coach: fortschritts-getriggerte Maskottchen-Einblendungen (getrennt vom Dialog); Schwellwert-Trigger, `duo-split`, modus-getrennter Seen-State, Layer-Vertrag; keine Migration | entschieden | 2026-06-14 |
 | [020](./adr/020-hub-wegweiser-aussen-stationen.md) | Hub: Wegweiser-Slots für Schulhof + Turnhalle; 12 Stationen; Slot-Vertrag frame/hitFrame/chipAnchor/rotation | entschieden | 2026-06-14 |
 | [021](./adr/021-zugangsmodus-konfigurierbar.md) | Zugang: Modus `open`/`gated` konfigurierbar, Tokens aus ENV, Embedding/CSP (ergänzt ADR-005/007) | entschieden | 2026-06-15 |
-| [022](./adr/022-mpz-studio-internes-ingest-tool.md) | MPZ Studio: internes Ingest-/Pflege-Werkzeug, Dev-only, Secret-Header (Ausnahme/ergänzt ADR-003 „kein Custom-Admin"; nur MPZ, nicht Lehrkräfte) | entschieden | 2026-06-16 |
+| [022](./adr/022-mpz-studio-internes-ingest-tool.md) | MPZ Studio: internes Ingest-/Pflege-Werkzeug, Dev-only, Secret-Header (Ausnahme/ergänzt ADR-003 „kein Custom-Admin"; nur MPZ, nicht Lehrkräfte); Produktionsmodus ergänzt durch ADR-032 | entschieden | 2026-06-16 |
 | [023](./adr/023-sphere-startblick.md) | Sphere-Viewer: optionaler Startblick `startYaw` / `startPitch` (ergänzt ADR-018) | entschieden | 2026-06-16 |
 | [024](./adr/024-flat-startpan.md) | Flat-Viewer: optionaler horizontaler Startausschnitt `startPanX` (ergänzt ADR-006) | entschieden | 2026-06-16 |
 | [025](./adr/025-coach-audio-autoplay.md) | Coach-Audio: Autoplay mit iOS-Fallback, `quelle` + gated API (ergänzt ADR-019) | entschieden | 2026-06-20 |
 | [026](./adr/026-dialog-text-only-segmente.md) | Dialog: Text-only-Segmente (`quelle` optional), Tap-Advance, Studio-Default ohne Audio (ergänzt ADR-010/011) | entschieden | 2026-06-24 |
 | [027](./adr/027-schuelermedien-nicht-in-git.md) | Schüler-Medien nicht in Git; Deploy-Trennung Code (GitHub) vs. Medien (rsync → IONOS-VPS) | entschieden | 2026-06-24 |
 | [028](./adr/028-main-und-release-39-gs.md) | `main` ist der Stamm; die Schule deployt von `release/39-gs` (Auto-Deploy aus). Ersetzt die Branch-Freeze-Regel | entschieden | 2026-11-02 |
-| [029](./adr/029-runtime-datenpfad-directus.md) | Runtime-Datenpfad: Directus per Fetch + Data-Cache (Option b); Fallback `stations.json` | entschieden | 2026-11-02 |
-| [030](./adr/030-migrationsstrategie-content-freeze.md) | Migrationsstrategie JSON ↔ Directus und Content-Freeze (Pilot-Liste, Merge, Commit-Klassen) | entschieden | 2026-11-02 |
-| [031](./adr/031-medien-storage-directus-proxy.md) | Medien-Storage: Directus-Uploads hinter Cookie-gated App-Proxy (b-Proxy); koexistierend mit Bahn B | entschieden | 2026-11-03 |
+| [029](./adr/029-runtime-datenpfad-directus.md) | Runtime-Datenpfad: Directus per Fetch + Data-Cache (Option b); Fallback `stations.json` | ersetzt durch ADR-032 (Directus-Teil) | 2026-11-02 |
+| [030](./adr/030-migrationsstrategie-content-freeze.md) | Migrationsstrategie JSON ↔ Directus und Content-Freeze (Pilot-Liste, Merge, Commit-Klassen) | ersetzt durch ADR-032 (Directus-Teil) | 2026-11-02 |
+| [031](./adr/031-medien-storage-directus-proxy.md) | Medien-Storage: Directus-Uploads hinter Cookie-gated App-Proxy (b-Proxy); koexistierend mit Bahn B | ersetzt durch ADR-032 (Directus-Teil) | 2026-11-03 |
+| [032](./adr/032-mpz-studio-produktions-admin.md) | MPZ Studio als schmales Produktions-Admin statt Directus: Konten pro Person, Content-Volume, Lesen zur Request-Zeit, Medien hinter dem Cookie; CMS-Umfang ausgeschlossen | entschieden | 2026-11-03 |
 
 ## Konventionen
 
@@ -49,7 +50,7 @@ Jede wichtige Entscheidung wird als eigenständiger ADR (Architecture Decision R
 
 ```
 MVP (bis 26.06.):     Next.js  ←  JSON + Medien im Repo
-Langfristig:          Next.js  ←  Directus (self-hosted, Coolify)
+Ab ADR-032:          Next.js  ←  Content-Volume (Studio-Produktionsmodus), Fallback JSON im Image
 
 Zugang:  /eintritt?t=…  →  Cookie sn_access (mode: fest | heft, ADR-007, #23)
 Fest:    Entry (Kamera/In-App) → Frontansicht-Hub (ADR-016) + Scanner für Räume

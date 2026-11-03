@@ -6,7 +6,7 @@ Dieses Dokument beschreibt Projektstruktur, Arbeitsweise und Konventionen für C
 
 ## Was ist der Schulnavigator?
 
-Eine Web-App für Schulen. Besucher eines Tags der offenen Tür scannen QR-Codes an Zimmern und sehen dort Multimedia-Inhalte (Texte, Bilder, Videos). **MVP:** Content als JSON im Repo (MPZ pflegt). **Langfrist:** Lehrkräfte pflegen über **Directus** — kein Custom-Admin (ADR-003).
+Eine Web-App für Schulen. Besucher eines Tags der offenen Tür scannen QR-Codes an Zimmern und sehen dort Multimedia-Inhalte (Texte, Bilder, Videos). **MVP:** Content als JSON im Repo (MPZ pflegt). **Ab ADR-032:** MPZ Studio bekommt einen Produktionsmodus (Konten pro Person, Content-Volume, Medien hinter dem Cookie); erst MPZ, später benannte Lehrkräfte. Directus ist nicht mehr das Zielbild.
 
 ---
 
@@ -45,7 +45,7 @@ schulnavigator/
 │   └── content-generierung.md        # Prompts zur KI-gestützten Inhaltserstellung
 │
 ├── anleitungen/
-│   ├── fuer-lehrkraefte.md            # Directus / Content-Pflege für Lehrkräfte
+│   ├── fuer-lehrkraefte.md            # Content-Pflege für Lehrkräfte (Stufe 2 ADR-032)
 │   ├── qr-codes-drucken.md            # QR-Codes exportieren & drucken
 │   ├── fuer-entwickler.md             # Setup, Deploy, Wartung
 │   └── lokal-testen-und-anschauen.md  # Dev-Server, Testrouten, Build-Check
@@ -74,7 +74,7 @@ schulnavigator/
 | ----------------------------------------------------------- | ------------------------------------------------------ | ----------- |
 | [001](./dokumentation/adr/001-hosting-coolify.md)           | Hosting: MPZ-VPS (IONOS) via Coolify, Docker        | entschieden |
 | [002](./dokumentation/adr/002-frontend-nextjs.md)           | Frontend: Next.js (App Router), Tailwind               | entschieden |
-| [003](./dokumentation/adr/003-content-mvp-json-directus.md) | Content: JSON (MVP), Directus; kein Custom-Admin       | entschieden |
+| [003](./dokumentation/adr/003-content-mvp-json-directus.md) | Content: JSON (MVP); Directus-Zielbild ersetzt durch ADR-032 | teilweise ersetzt |
 | [004](./dokumentation/adr/004-video-hosting-mpz.md)         | Video: MPZ-Server; YouTube optional nach Rechtsklärung | entschieden |
 | [005](./dokumentation/adr/005-zugangskontrolle-token.md)    | Zugang: Entry-Token, fest/heft, In-App-Scanner         | entschieden |
 | [006](./dokumentation/adr/006-raum-viewer-gyro-hotspots.md) | Raum-Viewer: Gyro (Standard), Hotspots, Tap-Fallback   | entschieden |
@@ -83,9 +83,10 @@ schulnavigator/
 | [017](./dokumentation/adr/017-externe-medien-hotspot-marker.md) | Externe Medien (`link`, `embed`), Hotspot-Icons — Stufe 1–3 live (#98–#100, #109) ([Umsetzungsplan](./dokumentation/archiv/projektmanagement/2026-06-10-externe-medien-hotspot-marker-plan.md)) | entschieden |
 | [018](./dokumentation/adr/018-360-sphere-viewer.md)             | 360°-Sphere-Viewer (PSV v5) + Flat-Koexistenz per `viewer`-Flag; Gyro-Plugin; Spike Musikraum | entschieden |
 | [019](./dokumentation/adr/019-coach-fortschritt-einblendung.md) | Coach-Einblendungen (fortschritts-getriggert, getrennt vom Dialog); Schwellwert-Trigger, `duo-split`, modus-getrennter Seen-State, Layer-Vertrag ([Plan](./.cursor/plans/archiv/2026-06/coach_sparkle_mvp_d9e82ce2.plan.md)) | entschieden |
-| [022](./dokumentation/adr/022-mpz-studio-internes-ingest-tool.md) | MPZ Studio: internes Dev-only-Ingest-Tool (nur MPZ, nicht Lehrkräfte); Ausnahme/ergänzt ADR-003; `/mpz/*` nur `NODE_ENV=development`, Secret-Header, Validatoren nach Save ([Spec](./dokumentation/spezifikationen/mpz-studio.md)) | entschieden |
+| [022](./dokumentation/adr/022-mpz-studio-internes-ingest-tool.md) | MPZ Studio: internes Dev-only-Ingest-Tool (nur MPZ, nicht Lehrkräfte); Ausnahme/ergänzt ADR-003; `/mpz/*` nur `NODE_ENV=development`, Secret-Header, Validatoren nach Save ([Spec](./dokumentation/spezifikationen/mpz-studio.md)); Produktionsmodus → ADR-032 | entschieden |
 | [028](./dokumentation/adr/028-main-und-release-39-gs.md) | `main` ist der Stamm; Schule deployt von `release/39-gs` (Auto-Deploy aus) | entschieden |
-| [029](./dokumentation/adr/029-runtime-datenpfad-directus.md) | Runtime-Datenpfad Directus: Fetch + Data-Cache (Option b); Fallback `stations.json` | entschieden |
+| [029](./dokumentation/adr/029-runtime-datenpfad-directus.md) | Runtime-Datenpfad Directus: Fetch + Data-Cache (Option b); Fallback `stations.json` | ersetzt durch ADR-032 |
+| [032](./dokumentation/adr/032-mpz-studio-produktions-admin.md) | MPZ Studio als schmales Produktions-Admin statt Directus; CMS-Umfang (Undo, Entwürfe, Rollen, Mehrsprachigkeit) ausgeschlossen | entschieden |
 
 Vollständiger ADR-Index: [`dokumentation/entscheidungen.md`](./dokumentation/entscheidungen.md)
 
@@ -120,7 +121,7 @@ Alle noch offenen technischen Fragen stehen in [`dokumentation/technische-fragen
 
 - YouTube-Freigabe (Recht/DSB) — vor Nutzung von Embed, siehe ADR-004
 - Weitere Embed-Anbieter (Book Creator, H5P) — Domain + DSB; Workaround: `typ: link` (Book Creator Lesewelt: #128 erledigt)
-- Directus-Rollen und Mandantenfähigkeit (bei Skalierung auf weitere Schulen)
+- Lehrkräfte-Konten im Studio-Produktionsmodus: benannte Personen (#249), VVT/AVV (Stufe 2 ADR-032)
 
 ---
 

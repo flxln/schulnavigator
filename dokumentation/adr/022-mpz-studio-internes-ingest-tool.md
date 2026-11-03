@@ -1,7 +1,7 @@
 # ADR-022 — MPZ Studio: internes Ingest-/Pflege-Werkzeug (Dev-only, Ausnahme zu ADR-003)
 
 **Datum:** 2026-06-16
-**Status:** entschieden
+**Status:** entschieden; **ergänzt durch [ADR-032](./032-mpz-studio-produktions-admin.md)** (Produktionsmodus mit Konten pro Person, 2026-11-03). Dieses ADR gilt weiter für den Dev-Modus.
 
 ## Kontext
 

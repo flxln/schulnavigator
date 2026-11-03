@@ -1,7 +1,7 @@
 # ADR-003 — Content: JSON im MVP, Directus langfristig (kein Custom-Admin)
 
 **Datum:** 2026-05-21  
-**Status:** entschieden  
+**Status:** entschieden; Directus-Zielbild und Verbot eines eigenen Admins **ersetzt durch [ADR-032](./032-mpz-studio-produktions-admin.md)** (2026-11-03)  
 **Hinweis:** ergänzt durch [ADR-022](./022-mpz-studio-internes-ingest-tool.md) — schmales, **MPZ-internes** Dev-only-Ingest-Tool als bewusste Ausnahme. Das hier festgelegte Verbot eines **Lehrkräfte**-Custom-Admins bleibt unverändert gültig; Directus (#47) bleibt das Zielbild für Lehrkräfte.
 
 ## Kontext
