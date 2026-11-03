@@ -35,6 +35,7 @@ Jede wichtige Entscheidung wird als eigenständiger ADR (Architecture Decision R
 | [027](./adr/027-schuelermedien-nicht-in-git.md) | Schüler-Medien nicht in Git; Deploy-Trennung Code (GitHub) vs. Medien (rsync → IONOS-VPS) | entschieden | 2026-06-24 |
 | [028](./adr/028-main-und-release-39-gs.md) | `main` ist der Stamm; die Schule deployt von `release/39-gs` (Auto-Deploy aus). Ersetzt die Branch-Freeze-Regel | entschieden | 2026-11-02 |
 | [029](./adr/029-runtime-datenpfad-directus.md) | Runtime-Datenpfad: Directus per Fetch + Data-Cache (Option b); Fallback `stations.json` | entschieden | 2026-11-02 |
+| [030](./adr/030-migrationsstrategie-content-freeze.md) | Migrationsstrategie JSON ↔ Directus und Content-Freeze (Pilot-Liste, Merge, Commit-Klassen) | entschieden | 2026-11-02 |
 
 ## Konventionen
 
