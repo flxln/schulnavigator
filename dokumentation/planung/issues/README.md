@@ -4,7 +4,23 @@ Kanonische Texte für `gh issue create --body-file` und `gh issue edit --body-fi
 
 Namensschema: `issue-<github-nr>-<slug>.md`. Die Planungs-IDs D-01 bis D-14 stehen hinter der Nummer, zum Beispiel `issue-259-d11-migration-pilot.md` für [#259](https://github.com/flxln/schulnavigator/issues/259).
 
-## Directus Epic #47 (2026-07-06)
+## MPZ Studio Produktionsmodus #273 (2026-11-03, ADR-032)
+
+| Datei | GitHub | Stufe |
+|-------|--------|-------|
+| [issue-273-epic-studio-produktionsmodus.md](./issue-273-epic-studio-produktionsmodus.md) | [#273](https://github.com/flxln/schulnavigator/issues/273) | Parent |
+| [issue-271-adr-032-mpz-studio-admin.md](./issue-271-adr-032-mpz-studio-admin.md) | [#271](https://github.com/flxln/schulnavigator/issues/271) | ADR |
+| [issue-256-d08-collections.md](./issue-256-d08-collections.md) | [#256](https://github.com/flxln/schulnavigator/issues/256) | 1 (Save-Pfad) |
+| [issue-257-d09-nextjs.md](./issue-257-d09-nextjs.md) | [#257](https://github.com/flxln/schulnavigator/issues/257) | 1 (Lesepfad) |
+| [issue-258-d10-backup.md](./issue-258-d10-backup.md) | [#258](https://github.com/flxln/schulnavigator/issues/258) | 1 (Backup) |
+| [issue-249-d01-adoption.md](./issue-249-d01-adoption.md) | [#249](https://github.com/flxln/schulnavigator/issues/249) | 2 |
+| [issue-261-d13-pilot.md](./issue-261-d13-pilot.md) | [#261](https://github.com/flxln/schulnavigator/issues/261) | 2 |
+
+Dateinamen mit D-Kennung bleiben aus der Directus-Planung, damit Links stabil sind.
+
+## Directus Epic #47 (2026-07-06, überholt durch ADR-032)
+
+Historie. #47, #255, #259, #260, #262 und #263 sind als „not planned“ geschlossen; #249, #256, #257, #258 und #261 laufen unter #273 weiter.
 
 | Datei | GitHub | Welle |
 |-------|--------|-------|
