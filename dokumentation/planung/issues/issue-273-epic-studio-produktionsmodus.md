@@ -6,14 +6,17 @@ MPZ Studio bekommt neben dem Dev-Modus einen Produktionsmodus auf dem Live-Serve
 
 ### Stufe 1: MPZ pflegt live
 
-- [ ] Produktionsmodus-Schalter (eigene Runtime-Variable, nicht `NODE_ENV`) und Guard; Dev-only-Bereiche bleiben im Produktionsmodus 404 (Issue folgt)
-- [ ] Konten admin/redaktion, Hash, Session-Cookie, Origin-Prüfung, Login-Bremse, Konto-Skript im Container (Issue folgt)
+Reihenfolge: #274 → #275 → #256 und #257 → #276, #277, #258 → #278.
+
+
+- [ ] #274 Produktionsmodus-Schalter (eigene Runtime-Variable, nicht `NODE_ENV`) und Guard; Dev-only-Bereiche bleiben im Produktionsmodus 404
+- [ ] #275 Konten admin/redaktion, Hash, Session-Cookie, Origin-Prüfung, Login-Bremse, Konto-Skript im Container
 - [ ] #257 Lesepfad vom Content-Volume mit Fallback auf das Image
 - [ ] #256 Save-Pfad auf das Volume: Gesamtdokument validieren, kein Schüler-PII, keine neuen Slugs
-- [ ] Uploads auf die Bahn-B-Volumes hinter dem Cookie-Gate (Issue folgt)
-- [ ] Export Volume → Git, Pflicht vor Verschieben von `release/39-gs` und vor Schema-Änderungen (Issue folgt)
+- [ ] #276 Uploads auf die Bahn-B-Volumes hinter dem Cookie-Gate
+- [ ] #277 Export Volume → Git, Pflicht vor Verschieben von `release/39-gs` und vor Schema-Änderungen
 - [ ] #258 Content-Volume in Backup T5, Restore-Test
-- [ ] Security-Review der schreibenden Routen vor Go-Live (Issue folgt)
+- [ ] #278 Security-Review der schreibenden Routen vor Go-Live
 - [ ] VVT-Eintrag für MPZ-Konten, Doku in `anleitungen/fuer-entwickler.md`
 
 ### Stufe 2: Lehrkräfte

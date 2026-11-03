@@ -10,6 +10,11 @@ Namensschema: `issue-<github-nr>-<slug>.md`. Die Planungs-IDs D-01 bis D-14 steh
 |-------|--------|-------|
 | [issue-273-epic-studio-produktionsmodus.md](./issue-273-epic-studio-produktionsmodus.md) | [#273](https://github.com/flxln/schulnavigator/issues/273) | Parent |
 | [issue-271-adr-032-mpz-studio-admin.md](./issue-271-adr-032-mpz-studio-admin.md) | [#271](https://github.com/flxln/schulnavigator/issues/271) | ADR |
+| [issue-274-produktionsmodus-schalter.md](./issue-274-produktionsmodus-schalter.md) | [#274](https://github.com/flxln/schulnavigator/issues/274) | 1 (Schalter, Guard) |
+| [issue-275-konten-login.md](./issue-275-konten-login.md) | [#275](https://github.com/flxln/schulnavigator/issues/275) | 1 (Konten, Login) |
+| [issue-276-uploads-volumes.md](./issue-276-uploads-volumes.md) | [#276](https://github.com/flxln/schulnavigator/issues/276) | 1 (Uploads) |
+| [issue-277-export-volume-git.md](./issue-277-export-volume-git.md) | [#277](https://github.com/flxln/schulnavigator/issues/277) | 1 (Export nach Git) |
+| [issue-278-security-review.md](./issue-278-security-review.md) | [#278](https://github.com/flxln/schulnavigator/issues/278) | 1 (Security-Review) |
 | [issue-256-d08-collections.md](./issue-256-d08-collections.md) | [#256](https://github.com/flxln/schulnavigator/issues/256) | 1 (Save-Pfad) |
 | [issue-257-d09-nextjs.md](./issue-257-d09-nextjs.md) | [#257](https://github.com/flxln/schulnavigator/issues/257) | 1 (Lesepfad) |
 | [issue-258-d10-backup.md](./issue-258-d10-backup.md) | [#258](https://github.com/flxln/schulnavigator/issues/258) | 1 (Backup) |
