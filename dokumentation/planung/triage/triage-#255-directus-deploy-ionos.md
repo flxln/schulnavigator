@@ -132,7 +132,7 @@ prompt: 00_issue-triage-pipeline-routing
 | Start vor Serverfix | entschieden | Felix 3. Nov 2026: Go, nur Prod 39. GS ausgenommen |
 | Issue-Datei ohne Ziel und Akzeptanzkriterien | offen | Schritt 0 ergänzt sie |
 | Cube `mpz-anwendungen` nutzbar (V0) | offen | IONOS-Störung, blockiert Schritt 3, nicht Schritt 0–2 |
-| Konsument `schulnavigator.mpz.schule` vs. ADR-028 Punkt 4 | entschieden, ADR offen | Felix 3. Nov: `schulnavigator.mpz.schule` wird Demo-/Test-Instanz mit synthetischen Daten; ADR-032 in Schritt 0 ersetzt ADR-028 Punkt 4 |
+| Konsument `schulnavigator.mpz.schule` vs. ADR-028 Punkt 4 | entschieden, ADR offen | Felix 3. Nov: `schulnavigator.mpz.schule` wird Demo-/Test-Instanz mit synthetischen Daten; keine alten Links auf die Domain; ADR-032 in Schritt 0 ersetzt ADR-028 Punkt 4 |
 | Host-Wechsel (ADR-031, Auth-Konzept, dsgvo.md nennen MPZ-VPS) | offen | Empfehlung ADR-032 in Schritt 0 |
 | Umzug der Schulnavigator-Apps auf den Cube | offen | Felix 3. Nov: eigenes Ticket, nicht #255 |
 
