@@ -49,6 +49,9 @@ public/qr/pdf/*.pdf
 
 certificates
 
+# Von Next.js bei dev/build neu erzeugt (Pfad wechselt zwischen .next/dev und .next)
+next-env.d.ts
+
 # MPZ Studio / content:ingest — lokale Backup-Dateien nicht versionieren
 data/stations.json.bak
 content/coach-messages.json.bak
