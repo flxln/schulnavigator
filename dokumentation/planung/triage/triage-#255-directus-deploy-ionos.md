@@ -6,7 +6,7 @@ prompt: 00_issue-triage-pipeline-routing
 
 ## Triage: Issue #255 – Directus-Deploy auf dem neuen IONOS-Server (nicht die 39. GS)
 
-**Score:** A=2 B=2 C=1 D=2 → 7/8
+**Score:** A=2 B=2 C=2 D=2 → 8/8 (G1, 3. Nov 2026; vorher C=1, 7/8)
 **Stufe:** VOLL
 **Prompt-Variante:** Fable-unterstützt (D=2)
 **Empfohlener Pfad:** Gemischt. B=2 und D=2 verlangen starke Prüfung vorn (Unknowns, Härtung), die Umsetzung läuft günstig auf Composer.
@@ -26,7 +26,8 @@ prompt: 00_issue-triage-pipeline-routing
 **Gemini-Abo ◇ Pro:** ja (Schritt 4, Argon knapp, Fallback Grok 4.7)
 **Gemini Free Tier (◎):** nein
 **IONOS MPZ (⬡):** nein (Inventar)
-**Unknowns-Exploration vorab:** ja (D=2: Ursache der Deploy-Probleme auf dem neuen Server unbekannt). Danach G1 mit vollständiger Neubewertung.
+**Unknowns-Exploration vorab:** nein (erledigt 3. Nov 2026, [Befund](../../reviews/unknowns/unknowns-%23255-directus-cube-2026-11-03.md)). Ursache: IONOS-Störung für neu angelegte/neu gestartete Cloud Server seit 22. Okt (status.ionos.cloud), Cube `mpz-anwendungen` noch nicht nutzbar.
+**Vorbedingung V0 vor Schritt 3:** Cube erreichbar, IONOS-Fix für den Host bestätigt, Cube im Bestand-Coolify validiert. Gehört nicht zu #255.
 
 **Freigabe (Felix, 3. Nov 2026):** Das Issue ist nur insofern pausiert, als die produktive 39. GS kein Directus bekommt. Alles andere ist freigegeben. `39-gs.mpz.schule` bleibt auf JSON und `release/39-gs`. Die ADRs 029, 030, 031 gelten für die eigene Instanz auf dem neuen IONOS-Server.
 
@@ -114,8 +115,8 @@ prompt: 00_issue-triage-pipeline-routing
 
 | Schritt | Modell | Harness | Effort | Abweichung? |
 |---------|--------|---------|--------|-------------|
-| −1 Unknowns | Fable 5.1 | ◆ | `xhigh` | D=2 |
-| 0 Plan | Composer 2.5 | ⌘ | `—` | Fable-Slot auf −1 |
+| −1 Unknowns | Opus 5.5 | ◆ | `high` | erledigt; klassische Variante statt Fable, Fable-Slot frei |
+| 0 Plan | Opus 5.5 | ◆ | `high` | G1: C=2 und B=2, Composer-Begründung („Fable-Slot auf −1“) entfällt; Fable optional bei Credits |
 | 01a | Sonnet 5.5 | ◆ | `high` | — |
 | 01b | GLM 5.3 | ‡ | `high` | — |
 | 2 Härten | Opus 5.5 | ◆ | `high` | Fable nur nach G2 |
@@ -129,15 +130,19 @@ prompt: 00_issue-triage-pipeline-routing
 |----------|--------|-------|
 | ADRs 029, 030, 031 (#252, #253, #254) | entschieden | auf `main` |
 | Start vor Serverfix | entschieden | Felix 3. Nov 2026: Go, nur Prod 39. GS ausgenommen |
-| Issue-Datei ohne Ziel und Akzeptanzkriterien | offen | Schritt −1/0 ergänzt sie |
+| Issue-Datei ohne Ziel und Akzeptanzkriterien | offen | Schritt 0 ergänzt sie |
+| Cube `mpz-anwendungen` nutzbar (V0) | offen | IONOS-Störung, blockiert Schritt 3, nicht Schritt 0–2 |
+| Konsument `schulnavigator.mpz.schule` vs. ADR-028 Punkt 4 | offen | Felix 3. Nov: Konsument = `schulnavigator.mpz.schule`; braucht neuen ADR, blockiert #257 |
+| Host-Wechsel (ADR-031, Auth-Konzept, dsgvo.md nennen MPZ-VPS) | offen | Empfehlung ADR-032 in Schritt 0 |
+| Umzug der Schulnavigator-Apps auf den Cube | offen | Felix 3. Nov: eigenes Ticket, nicht #255 |
 
-Der Serverfehler ist kein Blocker mehr, sondern Gegenstand von Schritt −1.
+Der Serverfehler ist kein Blocker für die Planung; für die Umsetzung gilt V0.
 
 ### Routing-Gates
 
 | Gate | Status | Beleg/Entscheidung |
 |------|--------|--------------------|
-| G1 | offen | Re-Triage nach Unknowns-Befund |
+| G1 | passiert (2026-11-03) | [`reviews/unknowns/unknowns-#255-directus-cube-2026-11-03.md`](../../reviews/unknowns/unknowns-%23255-directus-cube-2026-11-03.md): 8/8, VOLL bleibt, Schritt 0 auf Opus ◆ |
 | G2 | offen | — |
 | G3 | offen | — |
 
