@@ -6,7 +6,7 @@ prompt: 00_issue-triage-pipeline-routing
 
 ## Triage: Issue #255 – Directus-Deploy auf dem neuen IONOS-Server (nicht die 39. GS)
 
-**Score:** A=2 B=2 C=2 D=2 → 8/8 (G1, 3. Nov 2026; vorher C=1, 7/8)
+**Score:** A=1 B=1 C=1 D=1 → 4/8 (G1 zweite Neubewertung, 3. Nov 2026: Interim-Host SiliconSound, nur synthetische Daten; davor 8/8 mit Cube, ursprünglich 7/8)
 **Stufe:** VOLL
 **Prompt-Variante:** Fable-unterstützt (D=2)
 **Empfohlener Pfad:** Gemischt. B=2 und D=2 verlangen starke Prüfung vorn (Unknowns, Härtung), die Umsetzung läuft günstig auf Composer.
@@ -27,7 +27,8 @@ prompt: 00_issue-triage-pipeline-routing
 **Gemini Free Tier (◎):** nein
 **IONOS MPZ (⬡):** nein (Inventar)
 **Unknowns-Exploration vorab:** nein (erledigt 3. Nov 2026, [Befund](../../reviews/unknowns/unknowns-%23255-directus-cube-2026-11-03.md)). Ursache: IONOS-Störung für neu angelegte/neu gestartete Cloud Server seit 22. Okt (status.ionos.cloud), Cube `mpz-anwendungen` noch nicht nutzbar.
-**Vorbedingung V0 vor Schritt 3:** Cube erreichbar, IONOS-Fix für den Host bestätigt, Cube im Bestand-Coolify validiert. Gehört nicht zu #255.
+**Host (Felix, 3. Nov 2026):** Directus vorerst auf SiliconSound (privater Hetzner-VPS `195.201.93.22`, eigenes Coolify), nur synthetische Daten, keine 39. GS. Cube später, eigenes Ticket; V0 (Cube) blockiert #255 nicht mehr.
+**Vorbedingung vor Schritt 3:** RAM auf SiliconSound (329 MiB available, kein Swap, Befund S1) per Swap oder Hochstufen lösen; A-Record im IONOS-Webvertrag setzen (Felix).
 
 **Freigabe (Felix, 3. Nov 2026):** Das Issue ist nur insofern pausiert, als die produktive 39. GS kein Directus bekommt. Alles andere ist freigegeben. `39-gs.mpz.schule` bleibt auf JSON und `release/39-gs`. Die ADRs 029, 030, 031 gelten für die eigene Instanz auf dem neuen IONOS-Server.
 
@@ -116,7 +117,7 @@ prompt: 00_issue-triage-pipeline-routing
 | Schritt | Modell | Harness | Effort | Abweichung? |
 |---------|--------|---------|--------|-------------|
 | −1 Unknowns | Opus 5.5 | ◆ | `high` | erledigt; klassische Variante statt Fable, Fable-Slot frei |
-| 0 Plan | Opus 5.5 | ◆ | `high` | G1: C=2 und B=2, Composer-Begründung („Fable-Slot auf −1“) entfällt; Fable optional bei Credits |
+| 0 Plan | Composer 2.5 | ⌘ | `—` | G1 zweite Neubewertung 4/8: Opus-Hochstufung zurückgenommen |
 | 01a | Sonnet 5.5 | ◆ | `high` | — |
 | 01b | GLM 5.3 | ‡ | `high` | — |
 | 2 Härten | Opus 5.5 | ◆ | `high` | Fable nur nach G2 |
@@ -131,9 +132,11 @@ prompt: 00_issue-triage-pipeline-routing
 | ADRs 029, 030, 031 (#252, #253, #254) | entschieden | auf `main` |
 | Start vor Serverfix | entschieden | Felix 3. Nov 2026: Go, nur Prod 39. GS ausgenommen |
 | Issue-Datei ohne Ziel und Akzeptanzkriterien | offen | Schritt 0 ergänzt sie |
-| Cube `mpz-anwendungen` nutzbar (V0) | offen | IONOS-Störung, blockiert Schritt 3, nicht Schritt 0–2 |
+| Cube `mpz-anwendungen` nutzbar (V0) | entfällt für #255 | Directus vorerst auf SiliconSound; Cube-Umzug eigenes Ticket |
+| RAM SiliconSound (S1) | offen | 329 MiB available, kein Swap; Swap oder Hochstufen vor Deploy |
 | Konsument `schulnavigator.mpz.schule` vs. ADR-028 Punkt 4 | entschieden, ADR offen | Felix 3. Nov: `schulnavigator.mpz.schule` wird Demo-/Test-Instanz mit synthetischen Daten; keine alten Links auf die Domain; ADR-032 in Schritt 0 ersetzt ADR-028 Punkt 4 |
-| Host-Wechsel (ADR-031, Auth-Konzept, dsgvo.md nennen MPZ-VPS) | offen | Empfehlung ADR-032 in Schritt 0 |
+| Host SiliconSound in ADR festhalten (ADR-031, Auth-Konzept nennen MPZ-VPS) | offen | ADR-032 in Schritt 0, inkl. Regel „nie Schul-, Lehrkräfte- oder Schülerdaten auf SiliconSound“ |
+| Spike-Reste auf MPZ-VPS | Löschung freigegeben (Felix) | Service `g13fe84h6fvq3yxi80mw2mfh`, Application `h13lje955e2f1liu317bxibx`; Löschung in Coolify-UI |
 | Umzug der Schulnavigator-Apps auf den Cube | offen | Felix 3. Nov: eigenes Ticket, nicht #255 |
 
 Der Serverfehler ist kein Blocker für die Planung; für die Umsetzung gilt V0.
@@ -142,7 +145,7 @@ Der Serverfehler ist kein Blocker für die Planung; für die Umsetzung gilt V0.
 
 | Gate | Status | Beleg/Entscheidung |
 |------|--------|--------------------|
-| G1 | passiert (2026-11-03) | [`reviews/unknowns/unknowns-#255-directus-cube-2026-11-03.md`](../../reviews/unknowns/unknowns-%23255-directus-cube-2026-11-03.md): 8/8, VOLL bleibt, Schritt 0 auf Opus ◆ |
+| G1 | passiert (2026-11-03) | [`reviews/unknowns/unknowns-#255-directus-cube-2026-11-03.md`](../../reviews/unknowns/unknowns-%23255-directus-cube-2026-11-03.md), Abschnitt 0: 4/8 nach Host-Entscheid SiliconSound, VOLL bleibt (knapp), Schritt 0 auf Composer |
 | G2 | offen | — |
 | G3 | offen | — |
 

@@ -10,6 +10,64 @@ harness: Anthropic-Abo ◆ (Claude Code)
 
 # Unknowns-Befund #255: Directus auf dem neuen IONOS-Server
 
+## 0. Nachtrag 3. November 2026: Interim-Host SiliconSound
+
+Entscheidungen Felix nach dem ersten G1, sie gehen den Abschnitten 1 bis 8 vor:
+
+1. **Host:** Directus läuft vorerst auf **SiliconSound**, nicht auf dem Cube. SiliconSound ist Felix' privater Hetzner-Cloud-VPS (`195.201.93.22`, SSH-Alias `hetzner-coolify`, eigenes Coolify 4.5.3, Traefik v3.7.13, Ubuntu 24.04.4), getrennt vom MPZ-Coolify. Quelle: Vault `05_Technik/Hosting/Server_und_SSH_Zugaenge.md`. Der Cube wird späteres Ziel, eigenes Ticket.
+2. **Keine 39. GS:** Für Directus wird die 39. GS komplett gestrichen. Es gibt nur synthetische Daten, keine Pilot-Slugs aus `main`, keine Lehrkräfte-Accounts.
+3. **DNS:** Felix setzt den A-Record im IONOS-Webvertrag (Zone `mpz.schule`). Ein expliziter Eintrag sticht den Wildcard `*.mpz.schule`.
+4. **Spike-Reste löschen:** freigegeben (siehe unten).
+
+### Folgen für diesen Befund
+
+- **V0 (Cube) blockiert #255 nicht mehr.** Die IONOS-Störung (B4) und die Cube-Punkte B5, B6, B9, B10 und O1 bis O3 betreffen erst den späteren Umzug.
+- **B2 (Host-Wechsel) bleibt, mit anderem Ziel.** ADR-032 hält fest: Directus-Demo auf SiliconSound, nur synthetische Daten, Konsument `schulnavigator.mpz.schule`, ersetzt ADR-028 Punkt 4. Dazu gehört eine harte Regel: **Auf SiliconSound landen nie Schul-, Lehrkräfte- oder Schülerdaten.** Für einen privaten Hetzner-Server gibt es keinen AVV mit einer Schule, und `dsgvo.md` nennt ihn nicht.
+- **B3 (getrennte Hosts) gilt verschärft:** App auf dem MPZ-Coolify (IONOS), Directus auf Hetzner. Stations-Fetch und Medien-Proxy laufen über das öffentliche Netz zwischen zwei Anbietern. Für eine Demo hinnehmbar, im Spike nie gemessen.
+- **B7 (Admin-UI offen) gilt weiter:** Rate-Limiter, Login-Sperre, Session 8 h, 2FA-Policy. Ein Headscale-Zugang für den Admin scheidet aus, SiliconSound ist nicht im MPZ-Tailnet.
+- **ADR-030 und #259/#261:** Ohne 39-GS-Content gilt die Migration aus `main` für diese Instanz nicht. Die Epic-DoD bleibt unerreichbar, bis eine Schule und ein Produktivhost feststehen. Der Satz im Epic („Ein Wegwerf-Test, etwa auf SiliconSound … ersetzt #255 nicht“) widerspricht jetzt der Entscheidung. Schritt 0 passt Epic und Issue-Datei an.
+
+### Neuer Befund S1: RAM auf SiliconSound reicht nicht (hoch)
+
+Gemessen am 3. November 2026 (`ssh hetzner-coolify`, nur lesend):
+
+| Wert | Ist |
+|------|-----|
+| RAM gesamt | 3,7 GiB |
+| belegt | 3,4 GiB |
+| available | **329 MiB** |
+| Swap | **0** |
+| CPU | 2 Kerne |
+| Platte `/` | 18 von 38 GB frei |
+| laufende Container | 15 |
+
+Directus und Postgres brauchten im Spike im Leerlauf ~237 MiB RSS, beim Start mit Migrationen mehr. Ohne Swap greift dann der OOM-Killer, im schlechtesten Fall bei Coolify selbst oder bei den Bagles-Apps auf demselben Host. Der Spike setzte als Alarmschwelle „< ~1 GiB available nach Deploy“; SiliconSound liegt schon vorher bei einem Drittel davon.
+
+Optionen für Schritt 0, vor jedem Deploy zu entscheiden:
+
+| Option | Aufwand | Wirkung |
+|--------|---------|---------|
+| Swap-Datei anlegen (2 bis 4 GB) | gering | verhindert harte OOM-Abbrüche, macht Lastspitzen langsam |
+| Hetzner-Plan hochstufen (8 GB RAM) | gering, Kosten pro Monat | löst das Problem; kurzer Neustart des Servers |
+| Ungenutzte Container auf SiliconSound stoppen | gering | hängt davon ab, was dort entbehrlich ist |
+
+Empfehlung: Swap sofort als Sicherung, Hochstufen, falls nach dem Directus-Deploy `available` unter 1 GiB liegt.
+
+### Spike-Reste auf dem MPZ-VPS (Ist, lesend geprüft)
+
+Container: keine mehr. Übrig: Coolify-Service `directus-spike-251` (`g13fe84h6fvq3yxi80mw2mfh`) mit vier Volumes (`…_directus-postgres-data`, `…_directus-uploads`, `…_directus-extensions`, `…_directus-templates`), Ordner `/data/coolify/services/g13fe84h6fvq3yxi80mw2mfh`; Coolify-Application `directus-spike-251-app` (`h13lje955e2f1liu317bxibx`), Ordner `/data/coolify/applications/h13lje955e2f1liu317bxibx`. Die Routen antworten noch mit `503`. Löschen über die Coolify-Oberfläche, damit auch die Datenbankeinträge und die gespeicherten Env-Variablen (Admin-Token, Dev-Tokens) verschwinden.
+
+### G1, zweite Neubewertung
+
+| Achse | G1 (Cube) | Neu (SiliconSound) | Begründung |
+|-------|-----------|--------------------|------------|
+| A Scope | 2 | 1 | Ein Directus-Service auf bekanntem Coolify, Domain, Härtung, Service-User, ADR-032. Cube, Proxy-Neuaufbau und Backup-Kette fallen weg |
+| B Fehlerkosten | 2 | 1 | Nur synthetische Daten, keine Lehrkräfte. Restrisiko: offener Admin-Login und OOM auf einem Host mit anderen Apps |
+| C Ambiguität | 2 | 1 | Host, Konsument, Daten entschieden. Offen: Domain-Name, RAM-Option |
+| D Terrain | 2 | 1 | Spike-Muster (Custom-Compose) auf gleicher Coolify-Version 4.5.x; SiliconSound betreibt schon Apps |
+
+**Score 4/8, Stufe VOLL** (Schwelle 4–8, knapp). Schritt 0 kann wieder auf Composer 2.5 ⌘ laufen, die Opus-Begründung (C=2, B=2) entfällt.
+
 ## 1. Executive Summary
 
 Der „neue IONOS-Server“ ist der IONOS Cloud Cube `mpz-anwendungen` (Memory Cube M, Frankfurt `de/fra/1`), festgelegt am 28. Oktober 2026 in `~/Projekte/MPZ-DevOps-Ideen/festlegung-rechner-bestand-und-cube.md`. Im Schulnavigator-Repo steht dazu nichts.
