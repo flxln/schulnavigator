@@ -1,7 +1,16 @@
 # Epic: Directus #47 — Lehrkräfte-CMS (ADR-003), Adoption-First mit Spike
 
 **Milestone:** Phase 5 (31.10.2026 — weicher Anker, siehe Risiken)
-**Status:** aktiv (2026-07-06) — Unterissues #249–#262 auf GitHub; Bodies: [planung/issues/](../issues/) · Index: [epic-directus-issues.md](./epic-directus-issues.md)
+**Status:** pausiert für die 39. GS (3. November 2026). Directus kommt erst auf den neuen IONOS-Server, sobald das Deploy dort steht. Unterissues #249–#262 auf GitHub; Bodies: [planung/issues/](../issues/) · Index: [epic-directus-issues.md](./epic-directus-issues.md)
+
+## Halt bis zum neuen IONOS-Server
+
+Stand 3. November 2026 (Felix): Die 39. Grundschule bekommt vorerst kein Directus. `https://39-gs.mpz.schule` bleibt auf JSON und `release/39-gs`. Kein `SN_DIRECTUS_URL`, keine Migration der bestehenden Stationen, keine Lehrkräfte-Accounts an dieser Instanz.
+
+Directus ist für eine eigene Instanz auf dem neuen IONOS-Server vorgesehen. Dort gibt es derzeit Deploy-Probleme. #255 und die davon abhängige Welle 2/3 starten erst, wenn dieser Server deployt. Die ADRs 029, 030 und 031 beschreiben diese künftige Instanz. Sie werden nicht auf die 39. GS angewendet.
+
+Ein Wegwerf-Test, etwa auf SiliconSound und nur mit synthetischen Daten, ersetzt #255 nicht und hängt nicht an der Schul-Instanz.
+
 **Grundlage (bindend):** [Council-Chairman 2026-07-06](../../reviews/council-directus-planung-2026-07-06.md) — Umstellung von „Technik-First“ auf **Adoption-First mit technischem Spike**; kein Big-Bang für alle 11+ Stationen.
 
 ## Übersicht
@@ -17,7 +26,7 @@ Labels nur aus [labels.md](../labels.md). Triage nach Runbook `03b_issue-triage`
 | Welle 1 | [#252](https://github.com/flxln/schulnavigator/issues/252) | ADR: Runtime-Datenpfad (Build-JSON vs. Runtime-Fetch vs. Webhook-Rebuild) | `tech` | [#251](https://github.com/flxln/schulnavigator/issues/251) | — |
 | Welle 1 | [#253](https://github.com/flxln/schulnavigator/issues/253) | ADR: Migrationsstrategie JSON ↔ Directus + Content-Freeze | `tech`, `content` | [#251](https://github.com/flxln/schulnavigator/issues/251) | — |
 | Welle 1 | [#254](https://github.com/flxln/schulnavigator/issues/254) | ADR: Medien-Storage (`public/`-Volumes vs. Directus-Assets vs. Object Storage) — Gate-kompatibel | `tech` | [#251](https://github.com/flxln/schulnavigator/issues/251) | — |
-| Welle 2 | [#255](https://github.com/flxln/schulnavigator/issues/255) | Directus-Prod-Deploy auf Coolify (eigener Service; noch kein Lehrkräfte-Login) | `tech` | [#251](https://github.com/flxln/schulnavigator/issues/251)–[#254](https://github.com/flxln/schulnavigator/issues/254) | VOLL · Fable |
+| Welle 2 | [#255](https://github.com/flxln/schulnavigator/issues/255) | Directus-Deploy auf dem neuen IONOS-Server (pausiert, nicht die 39. GS) | `tech` | [#251](https://github.com/flxln/schulnavigator/issues/251)–[#254](https://github.com/flxln/schulnavigator/issues/254), Deploy auf dem neuen IONOS-Server | VOLL · Fable |
 | Welle 2 | [#256](https://github.com/flxln/schulnavigator/issues/256) | Collections aus `stations.schema.json` + Kein-Schüler-PII technisch erzwingen | `tech` | [#252](https://github.com/flxln/schulnavigator/issues/252), [#255](https://github.com/flxln/schulnavigator/issues/255) | VOLL · Fable |
 | Welle 2 | [#257](https://github.com/flxln/schulnavigator/issues/257) | Next.js-Anbindung: Runtime-Datenpfad produktiv umsetzen | `tech` | [#252](https://github.com/flxln/schulnavigator/issues/252), [#255](https://github.com/flxln/schulnavigator/issues/255) | VOLL · klassisch |
 | Welle 2 | [#258](https://github.com/flxln/schulnavigator/issues/258) | Gate-7-Rest: Directus-DB in Backup T5 aufnehmen + Restore-Test | `tech` | [#255](https://github.com/flxln/schulnavigator/issues/255) | LIGHT · klassisch (Härtung, B=2) |
@@ -157,7 +166,7 @@ Drei Entscheidungen sind vor Welle 2 per ADR zu treffen (nächste freie Nummer S
 - [x] #250 Gates 4–6 formal abgeschlossen, Gate-Stand im Auth-Konzept aktualisiert (2026-07-06; Nachtrag #263 vor #261)
 - [x] #251 Spike-Bericht liegt vor (inkl. VPS-Headroom, Branch-Entscheidung) — [Bericht](../../reviews/spike-directus-2026-07.md), 2026-07-06/07
 - [x] #252–#254 drei ADRs entschieden und in `entscheidungen.md` eingetragen (ADR-029, ADR-030, ADR-031)
-- [ ] #255 Directus prod-deployed (ohne Lehrkräfte-Accounts)
+- [ ] #255 Directus auf dem neuen IONOS-Server (ohne Lehrkräfte-Accounts, nicht an die 39. GS gekoppelt). Pausiert, bis das Deploy dort steht.
 - [ ] #256 Collections + PII-Validatoren
 - [ ] #257 produktiver Lesepfad live, Besucher-App fallback-sicher
 - [ ] #258 Backup inkl. Directus-DB, Restore getestet (Gate 7 vollständig)
