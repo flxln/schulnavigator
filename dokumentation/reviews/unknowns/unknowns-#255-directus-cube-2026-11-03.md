@@ -18,7 +18,7 @@ Die Ursache der Deploy-Probleme liegt bei IONOS, nicht bei uns: Laut [status.ion
 
 Drei Befunde ändern die Planung:
 
-1. **Der Konsument kollidiert mit ADR-028.** Felix nennt `schulnavigator.mpz.schule` als Directus-Leser. Diese Application ist laut ADR-028 Legacy, „nicht neu deployen“, ohne Schüler-Medien-Volumes, und gedruckte URLs der 39. GS können noch darauf zeigen.
+1. **Der Konsument kollidiert mit ADR-028.** Felix nennt `schulnavigator.mpz.schule` als Directus-Leser. Diese Application ist laut ADR-028 Legacy, „nicht neu deployen“, ohne Schüler-Medien-Volumes, und gedruckte URLs der 39. GS können noch darauf zeigen. **Nachtrag, Entscheidung Felix 3. November 2026:** `schulnavigator.mpz.schule` wird Demo-/Test-Instanz und Directus-Leser. Das löst ADR-028 Punkt 4 ab und braucht einen ADR (siehe E-4).
 2. **Drei Dokumente nennen den falschen Host.** ADR-031 („lokales Storage-Volume auf dem MPZ-VPS“), Auth-Konzept („Directus auf MPZ-VPS, gleicher Betriebskontext“) und `dsgvo.md` beschreiben den Bestand-VPS. Directus landet auf einem anderen IONOS-Produkt mit eigener IP.
 3. **Zwischen Bestand-Coolify und Cube gibt es kein erprobtes Muster.** Kein Remote-Server, eigener Proxy, Wildcard-DNS zeigt auf den Bestand, kein Headscale-Knoten. Der Cube-Teil gehört als Vorbedingung vor #255, nicht hinein.
 
@@ -62,6 +62,13 @@ Priorisiert nach Wirkung auf die Architektur.
 Felix hat `schulnavigator.mpz.schule` als Directus-Leser genannt. ADR-028 Punkt 4 und `.cursor/rules/release-39-gs.mdc` verbieten das Neudeployen dieser Application. Sie hat keine Bahn-B-Volumes, Form-1-Pfade (`/media/<slug>/…`) liefen dort ins Leere; nur Form 2 (`/api/medien/<uuid>`, ADR-031) ginge. Gedruckte QR-Codes oder Links der 39. GS können noch auf diese Domain zeigen. Wer so einen Code scannt, sieht dann Directus-Content, obwohl die 39. GS laut Halt kein Directus bekommt.
 
 Zum Deploy selbst blockiert das #255 nicht, Directus braucht keinen Leser. Es betrifft #257 und die Frage, wessen Content in die Instanz kommt. Schritt 0 muss es trotzdem festhalten, weil davon `PUBLIC_URL`, CORS, Netzweg App → Directus und ein neuer ADR abhängen.
+
+**Entschieden (Felix, 3. November 2026):** `schulnavigator.mpz.schule` ist ab jetzt Demo-/Test-Instanz und liest aus Directus. Damit gilt:
+
+- In die Instanz kommen synthetische oder Demo-Daten, kein 39-GS-Content. Das hält AVV und #263 aus dem Testbetrieb heraus.
+- Fehlende Bahn-B-Volumes sind kein Mangel mehr. Neue Medien kommen über Directus-Uploads (Form 2).
+- Offen bleibt der Rest-Effekt alter Links: Ein gedruckter 39-GS-QR-Code auf diese Domain führt künftig in die Demo. Schritt 0 entscheidet, ob das hinnehmbar ist oder ob die Demo auf eine eigene Domain zieht und die alte auf `39-gs.mpz.schule` umleitet.
+- Die Epic-DoD („2 Lehrkräfte, 1 Raum in Produktion“) erfüllt eine Demo-Instanz nicht. Welche Schule den Piloten #261 trägt, ist weiter offen.
 
 ### B2 · Host-Wechsel ist in keinem ADR gedeckt (hoch)
 
@@ -156,7 +163,7 @@ Erhöhtes Profil laut Triage (B=2). Noch nicht ausgeführt.
 | E-1 Wann startet die Umsetzung? | O1 / O2 / O3 | O1 | Störung ist extern; O2 erzeugt einen zweiten Umzug mit Daten | Zeitpunkt, Kriterium „IONOS-Fix bestätigt“ |
 | E-2 Wohin gehört die Cube-Inbetriebnahme? | in #255 / Vorbedingung in MPZ-DevOps | Vorbedingung V0 | betrifft alle Cube-Dienste, nicht nur Directus | wer, wo dokumentiert |
 | E-3 Host-Wechsel dokumentieren | ADR-031 überschreiben / neuer ADR / nur Doku-Nachtrag | neuer ADR (nächste freie Nummer, heute 032) für „Directus auf IONOS Cloud Cube“, alte ADRs verweisen | ADR-Regel verbietet Überschreiben; drei Dokumente nennen den Bestand | Wortlaut, ob ADR-001 mit erfasst wird |
-| E-4 Konsument | `schulnavigator.mpz.schule` (Felix) / neue Domain | Felix' Wahl umsetzen, aber per neuem ADR, der ADR-028 Punkt 4 ersetzt | ADR-028 verbietet Redeploy; gedruckte 39-GS-URLs | ob die Legacy-Domain dafür vorher abgeschaltet oder umgeleitet wird; Entscheidung erst in #257 nötig |
+| E-4 Konsument | **entschieden:** `schulnavigator.mpz.schule` als Demo-/Test-Instanz (Felix, 3. Nov 2026) | ADR-032 hält das fest und ersetzt ADR-028 Punkt 4; ADR-028 bekommt den Vermerk „Punkt 4 ersetzt durch ADR-032“ | ADR-028 verbietet bisher Redeploy | Umgang mit alten 39-GS-Links auf dieser Domain; synthetische Daten als Regel |
 | E-5 Admin-Erreichbarkeit bis #261 | öffentlich mit Härtung / nur über Headscale | nur über Headscale, API öffentlich | B=2, keine Lehrkräfte vor #261 | technisch über Traefik-Middleware oder getrennte Router |
 | E-6 Domain-Name | z. B. `cms.mpz.schule`, `directus.mpz.schule` | neutraler Name ohne Schulbezug | Instanz gehört nicht der 39. GS | Name, A-Record, Zone |
 | E-7 Inhalt bei Abschluss von #255 | leer / Demo / Pilot-Content | leer: nur Admin + Service-User, keine Collections | Collections sind #256, Content #259; kein Schul-Content vor geklärter Zuordnung | – |
@@ -180,9 +187,9 @@ Erhöhtes Profil laut Triage (B=2). Noch nicht ausgeführt.
 
 Nur echte Blocker:
 
-1. **E-4 Konsument:** Soll für `schulnavigator.mpz.schule` ein neuer ADR ADR-028 Punkt 4 ersetzen, und was passiert mit gedruckten 39-GS-URLs auf dieser Domain? Blockiert #257, nicht #255. Schritt 0 muss es nur als Abhängigkeit festhalten.
+1. **Alte 39-GS-Links auf `schulnavigator.mpz.schule`:** hinnehmen oder Demo auf eigene Domain mit Umleitung? Der Konsument selbst ist entschieden (E-4). Blockiert #257, nicht #255.
 2. **E-6 Domain und DNS-Zone:** Welcher Name, und wer setzt den A-Record (IONOS-DNS-Zugang)?
-3. **Wessen Content kommt später in die Instanz?** ADR-030 migriert Pilot-Slugs aus `main`, das ist 39-GS-Content. Das berührt AVV und #263. Für #255 selbst nicht blockierend, wenn E-7 („leer“) gilt.
+3. **Pilot-Schule für #261:** Die Demo-Instanz arbeitet mit synthetischen Daten. ADR-030 migriert Pilot-Slugs aus `main` (39-GS-Content), das passt nicht mehr zur Demo. Für #255 nicht blockierend, wenn E-7 („leer“) gilt; #259 und #261 brauchen eine neue Antwort.
 4. **Löschfreigabe Spike-Reste** (`directus-spike`, `app-spike`) vor Schritt 3.
 
 ## Quellen
@@ -197,4 +204,4 @@ Nur echte Blocker:
 - `~/Projekte/MPZ-DevOps-Ideen/festlegung-rechner-bestand-und-cube.md`
 - [status.ionos.cloud](https://status.ionos.cloud/), abgerufen 3. November 2026
 - Eigene Prüfungen 3. November 2026: `dig +short` für 15 Namen, `curl` auf `39-gs`, `schulnavigator`, `directus-spike`, `app-spike`, unbekannten Namen
-- Felix, Antworten im Lauf: IONOS-Verfügbarmachung gestört; Konsument `schulnavigator.mpz.schule`; 39-GS-Umzug eigenes Ticket
+- Felix, Antworten im Lauf: IONOS-Verfügbarmachung gestört; Konsument `schulnavigator.mpz.schule`; 39-GS-Umzug eigenes Ticket; `schulnavigator.mpz.schule` wird Demo-/Test-Instanz
