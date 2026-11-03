@@ -18,10 +18,10 @@
 
 1. ~~**01b Pre-Mortem** (GLM/Cline)~~ erledigt 2026-11-03.
 2. ~~**02 Plan härten** (Opus)~~ erledigt 2026-11-03 (diese Revision).
-3. **Vorlage:** `dokumentation/adr/000-template.md` → `031-medien-storage-directus-proxy.md`.
-4. **ADR-Inhalt** nach den Vorgaben V1–V6 unten: Kontext (Ist: Bahn-B-Volumes + gated `/media/*`, Spike #251 Phase 6, Scope-Antwort); Entscheidung; verworfene Alternativen; E3-Kriterien-Tabelle; Pfad-Vertrag; Bezug ADR-030 D-7; Konsequenzen je Folge-Issue; Re-Trigger.
-5. **`entscheidungen.md`:** Tabellenzeile ADR-031, Status „entschieden“, Datum.
-6. **03 Implementieren** (Composer): nur Doku; Verifikation unten.
+3. ~~**Vorlage:** `dokumentation/adr/000-template.md` → `031-medien-storage-directus-proxy.md`.~~ erledigt 2026-11-03.
+4. ~~**ADR-Inhalt** nach den Vorgaben V1–V6 unten~~ erledigt 2026-11-03 (`dokumentation/adr/031-medien-storage-directus-proxy.md`).
+5. ~~**`entscheidungen.md`:** Tabellenzeile ADR-031~~ erledigt 2026-11-03.
+6. ~~**03 Implementieren** (Composer): nur Doku; Verifikation unten.~~ erledigt 2026-11-03.
 7. **04 Post-Mortem** kompakt · **05a Abschließen:** Issue-Datei (AC an diese Revision angleichen), `offen.md`, GitHub-Body-Sync, GitHub-Beziehung `#259 blocked by #254` nachtragen.
 
 ### Vorgaben für ADR-031 (aus Härtung, verbindlich für Schritt 3)
@@ -77,6 +77,20 @@ Klarstellungssatz, kein Widerspruch zu ADR-030: „Das Dual-Write-Verbot (D-7) b
 - ADR enthält: Scope-Antwort mit Datum und Entscheider, beide Re-Trigger (V1); b-direkt-Kette `403` → Public-Read → `200` (V3); beide `quelle`-Formen inkl. `icons` (V4); D-7-Klarstellungssatz (V5).
 - `rg -o "#25[5-9]|#26[0-3]" dokumentation/adr/031-*.md | sort -u` liefert mindestens #255, #256, #257, #258, #259, #260, #262, #263.
 - `git diff --name-status main` nur unter `dokumentation/`; `cd app && npm run build` grün.
+
+## Verifikationsergebnisse (Schritt 03, 2026-11-03)
+
+| Prüfpunkt | Ergebnis | Beleg |
+|---|---|---|
+| Genau eine ADR `031-*.md` | OK | `ls dokumentation/adr/`: nur `031-medien-storage-directus-proxy.md` neben 030 |
+| `entscheidungen.md`-Link | OK | `rg "Medien-Storage\|031-" dokumentation/entscheidungen.md` → `./adr/031-medien-storage-directus-proxy.md` |
+| Status, b-Proxy, Public-Read-Satz, 5× E3 mit Folge-Issue | OK | manuell + `rg` in ADR-031 |
+| V1 Scope/Re-Trigger, V3 b-direkt-Kette, V4 beide Formen + `icons`, V5 D-7 | OK | Abschnitte Kontext, Verworfene Alternativen, Pfad-Vertrag, Bezug ADR-030 |
+| Folge-Issues #255–#260, #262, #263 | OK | `rg -o "#25[5-9]\|#26[0-3]" … \| sort -u` (zusätzlich #261 als Konsequenz-Verweis) |
+| `git diff --name-status main` nur `dokumentation/` | OK mit Hinweis | Diff gegen `main`: nur `dokumentation/*`; ADR-031 noch `??` (untracked), nach `git add` ebenfalls nur unter `dokumentation/` |
+| `cd app && npm run build` | OK | Exit 0, 2026-11-03 |
+
+**Profil:** Standard (B≤1, Triage). Keine Code-Änderungen; kein Browser-/Gate-Retest (liegt in #257).
 
 ## Referenzen
 
