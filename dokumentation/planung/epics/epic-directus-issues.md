@@ -18,7 +18,7 @@ Zielbild aus ADR-003: Lehrkräfte pflegen Content über Directus (self-hosted au
 **Unterissues (Wellen):**
 - Welle 0: #249 Adoption/Gate 9 · #250 Gates 4–6 abschließen
 - Welle 1: #251 Spike · #252/#253/#254 ADRs (Runtime-Datenpfad, Migration/Freeze, Medien-Storage)
-- Welle 2: #255 Deploy auf neuem IONOS-Server (pausiert, nicht die 39. GS) · #256 Collections/PII · #257 Next.js-Anbindung · #258 Backup
+- Welle 2: #255 Deploy Demo (Proxmox-VM, Tunnel über MPZ-VPS; nicht die 39. GS) · #256 Collections/PII · #257 Next.js-Anbindung · #258 Backup
 - Welle 3: #259 Migration Pilot · #260 Anleitung · #261 Pilot (DoD) · #262 MPZ-Studio-Abgrenzung
 
 Planung: `dokumentation/planung/epics/epic-directus.md` · Gates: `dokumentation/spezifikationen/directus-auth-konzept.md` · Council: `dokumentation/reviews/council-directus-planung-2026-07-06.md`
@@ -125,22 +125,22 @@ Chairman-Vorgabe: Spike vor jeder Vollmigration. Zweck ist **Erkenntnis, nicht P
 
 ---
 
-## #255 (#255) — Directus-Deploy auf dem neuen IONOS-Server (pausiert, nicht die 39. GS)
+## #255 (#255) — Directus-Deploy Demo (Proxmox-VM, nicht 39. GS)
 
-**Labels:** `tech` · **Blockiert durch:** #251–#254 und ein laufendes Deploy auf dem neuen IONOS-Server · **Triage:** VOLL · Fable (A2 B2 C1 D1 = 6/8; B=2 Admin-Zugang im Internet)
+**Labels:** `tech` · **Blockiert durch:** #251–#254 · **Triage:** VOLL (4/8 nach Unknowns, Host Proxmox-VM)
 
-**Halt (3. November 2026, Felix):** Die 39. GS (`https://39-gs.mpz.schule`, `release/39-gs`) bekommt vorerst kein Directus. Der Dienst ist für eine eigene Instanz auf dem neuen IONOS-Server vorgesehen. Dort gibt es derzeit Deploy-Probleme. Dieses Issue startet erst, wenn der Server deployt. Kein `SN_DIRECTUS_URL` an der Schul-Instanz, noch kein Lehrkräfte-Login.
+**Halt (39. GS Prod):** `https://39-gs.mpz.schule` bleibt JSON/`release/39-gs`, kein Directus. **Demo-Instanz:** Docker Compose in einer VM auf dem Proxmox-Homelab, öffentlich als `directus.mpz.schule` über Tunnel und Traefik auf dem MPZ-VPS, nur synthetische Daten; Konsument später `schulnavigator.mpz.schule` (ADR-032). Cube/IONOS-Umzug eigenes Ticket.
 
 **Aufgaben:**
-- [ ] Directus + Postgres als eigener Coolify-Service auf dem neuen IONOS-Server (DE), nicht auf der laufenden 39.-GS-Application; TLS via Traefik, HSTS analog #242
+- [ ] Directus + Postgres als Compose-Stack in einer **Proxmox-VM** (Muster Spike, Version pin); Tunnel zum MPZ-VPS wie ScratchCraft; TLS + HSTS am MPZ-Traefik
 - [ ] Secrets über ENV (kein Secret im Repo); Admin-Account mit **2FA** ab erstem Prod-Login
 - [ ] Rollen **Redaktion** (Content) und **Admin** (Schema, User) anlegen — noch **keine** Lehrkräfte-Accounts (Gates!)
 - [ ] Session-Dauer ≤ 8 h, HttpOnly-Cookies, starke Passwort-Policy (Auth-Konzept)
 - [ ] Login-Log-Retention ≤ 14 Tage konfigurieren/dokumentieren (analog Besucher-Logs)
-- [ ] Health-Check + Coolify-Monitoring; Update-Strategie (Directus-Releases) notieren
+- [ ] Health-Check (Compose-Healthcheck; kein Coolify in der VM, Monitoring offen); Update-Strategie (Directus-Releases) notieren
 - [ ] VVT-Eintrag „Lehrkräfte-Accounts" in `dsgvo.md` von „geplant" auf final heben (Speicherort-DB, Log-/IP-Retention — Gate-4-Trigger aus #250)
 
-**Leitplanken:** Nicht im `app/`-Docker-Image; keine Submodule-Referenzen. Die Instanz hängt nicht an `39-gs.mpz.schule`. **Akzeptanzkriterium:** Instanz läuft auf dem neuen IONOS-Server, nur MPZ-Admin-Zugang, Konfiguration in `anleitungen/fuer-entwickler.md` dokumentiert.
+**Leitplanken:** Nicht im `app/`-Docker-Image; keine Submodule-Referenzen. Die Instanz hängt nicht an `39-gs.mpz.schule`. **Akzeptanzkriterium:** Instanz läuft in der Proxmox-VM und ist als `directus.mpz.schule` erreichbar, nur MPZ-Admin-Zugang + Service-User, Konfiguration in `anleitungen/fuer-entwickler.md` dokumentiert; ADR-032.
 
 ---
 

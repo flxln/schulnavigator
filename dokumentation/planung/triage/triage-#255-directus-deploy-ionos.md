@@ -27,8 +27,8 @@ prompt: 00_issue-triage-pipeline-routing
 **Gemini Free Tier (◎):** nein
 **IONOS MPZ (⬡):** nein (Inventar)
 **Unknowns-Exploration vorab:** nein (erledigt 3. Nov 2026, [Befund](../../reviews/unknowns/unknowns-%23255-directus-cube-2026-11-03.md)). Ursache: IONOS-Störung für neu angelegte/neu gestartete Cloud Server seit 22. Okt (status.ionos.cloud), Cube `mpz-anwendungen` noch nicht nutzbar.
-**Host (Felix, 3. Nov 2026):** Directus vorerst auf SiliconSound (privater Hetzner-VPS `195.201.93.22`, eigenes Coolify), nur synthetische Daten, keine 39. GS. Cube später, eigenes Ticket; V0 (Cube) blockiert #255 nicht mehr.
-**Vorbedingung vor Schritt 3:** RAM auf SiliconSound (329 MiB available, kein Swap, Befund S1) per Swap oder Hochstufen lösen; A-Record im IONOS-Webvertrag setzen (Felix).
+**Host (Felix, 3. Nov 2026, abends):** Directus-Demo in einer VM auf dem Proxmox-Homelab, öffentlich als `directus.mpz.schule` über Reverse-SSH-Tunnel und Traefik auf dem MPZ-VPS (Muster ScratchCraft scs-007). Nur synthetische Daten, keine 39. GS. SiliconSound verworfen (RAM S1), Cube später, eigenes Ticket. Unknowns Abschnitt 0b.
+**Vorbedingung vor Schritt 3:** Proxmox läuft (am 3. Nov 2026 offline), `free -h` auf dem Host; kein A-Record nötig (Wildcard zeigt auf den MPZ-VPS).
 
 **Freigabe (Felix, 3. Nov 2026):** Das Issue ist nur insofern pausiert, als die produktive 39. GS kein Directus bekommt. Alles andere ist freigegeben. `39-gs.mpz.schule` bleibt auf JSON und `release/39-gs`. Die ADRs 029, 030, 031 gelten für die eigene Instanz auf dem neuen IONOS-Server.
 
@@ -117,9 +117,9 @@ prompt: 00_issue-triage-pipeline-routing
 | Schritt | Modell | Harness | Effort | Abweichung? |
 |---------|--------|---------|--------|-------------|
 | −1 Unknowns | Opus 5.5 | ◆ | `high` | erledigt; klassische Variante statt Fable, Fable-Slot frei |
-| 0 Plan | Composer 2.5 | ⌘ | `—` | G1 zweite Neubewertung 4/8: Opus-Hochstufung zurückgenommen |
-| 01a | Sonnet 5.5 | ◆ | `high` | — |
-| 01b | GLM 5.3 | ‡ | `high` | — |
+| 0 Plan | Composer 2.5 | ⌘ | `—` | Erstfassung; Revision nach Hostwechsel auf Opus 5.5 ◆ `high` (Felix, 3. Nov 2026) |
+| 01a | Sonnet 5.5 | ◆ | `high` | gelaufen; Nachprüfung nur Tunnelpfad nach Hostwechsel |
+| 01b | GLM 5.3 | ‡ | `high` | gelaufen; keine Nachprüfung (Querverträge unverändert) |
 | 2 Härten | Opus 5.5 | ◆ | `high` | Fable nur nach G2 |
 | 3 Implementieren | Composer 2.5 | ⌘ | `—` | — |
 | 4 Post-Mortem | Gemini 4 Argon | ◇ Pro | `high` | Fallback Grok 4.7 ⌘ bei knapper Argon-Quote |
@@ -133,9 +133,9 @@ prompt: 00_issue-triage-pipeline-routing
 | Start vor Serverfix | entschieden | Felix 3. Nov 2026: Go, nur Prod 39. GS ausgenommen |
 | Issue-Datei ohne Ziel und Akzeptanzkriterien | offen | Schritt 0 ergänzt sie |
 | Cube `mpz-anwendungen` nutzbar (V0) | entfällt für #255 | Directus vorerst auf SiliconSound; Cube-Umzug eigenes Ticket |
-| RAM SiliconSound (S1) | offen | 329 MiB available, kein Swap; Swap oder Hochstufen vor Deploy |
+| RAM SiliconSound (S1) | entfällt | Host Proxmox-VM (Unknowns 0b); Ersatz: `free -h` auf dem Proxmox |
 | Konsument `schulnavigator.mpz.schule` vs. ADR-028 Punkt 4 | entschieden, ADR offen | Felix 3. Nov: `schulnavigator.mpz.schule` wird Demo-/Test-Instanz mit synthetischen Daten; keine alten Links auf die Domain; ADR-032 in Schritt 0 ersetzt ADR-028 Punkt 4 |
-| Host SiliconSound in ADR festhalten (ADR-031, Auth-Konzept nennen MPZ-VPS) | offen | ADR-032 in Schritt 0, inkl. Regel „nie Schul-, Lehrkräfte- oder Schülerdaten auf SiliconSound“ |
+| Host Proxmox-VM in ADR festhalten (ADR-031, Auth-Konzept nennen MPZ-VPS) | offen | ADR-032 in Schritt 3, inkl. Regel „nie Schul-, Lehrkräfte- oder Schülerdaten auf der VM“ |
 | Spike-Reste auf MPZ-VPS | Löschung freigegeben (Felix) | Service `g13fe84h6fvq3yxi80mw2mfh`, Application `h13lje955e2f1liu317bxibx`; Löschung in Coolify-UI |
 | Umzug der Schulnavigator-Apps auf den Cube | offen | Felix 3. Nov: eigenes Ticket, nicht #255 |
 
@@ -145,7 +145,7 @@ Der Serverfehler ist kein Blocker für die Planung; für die Umsetzung gilt V0.
 
 | Gate | Status | Beleg/Entscheidung |
 |------|--------|--------------------|
-| G1 | passiert (2026-11-03) | [`reviews/unknowns/unknowns-#255-directus-cube-2026-11-03.md`](../../reviews/unknowns/unknowns-%23255-directus-cube-2026-11-03.md), Abschnitt 0: 4/8 nach Host-Entscheid SiliconSound, VOLL bleibt (knapp), Schritt 0 auf Composer |
+| G1 | passiert (2026-11-03) | [`reviews/unknowns/unknowns-#255-directus-cube-2026-11-03.md`](../../reviews/unknowns/unknowns-%23255-directus-cube-2026-11-03.md), Abschnitt 0: 4/8 nach Host-Entscheid SiliconSound; Abschnitt 0b: 4/8 nach Hostwechsel Proxmox-VM, VOLL bleibt |
 | G2 | offen | — |
 | G3 | offen | — |
 

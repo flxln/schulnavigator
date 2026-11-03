@@ -68,6 +68,60 @@ Container: keine mehr. Übrig: Coolify-Service `directus-spike-251` (`g13fe84h6f
 
 **Score 4/8, Stufe VOLL** (Schwelle 4–8, knapp). Schritt 0 kann wieder auf Composer 2.5 ⌘ laufen, die Opus-Begründung (C=2, B=2) entfällt.
 
+## 0b. Nachtrag 3. November 2026, abends: Demo-Host Proxmox-VM, Tunnel über den MPZ-VPS
+
+Entscheidung Felix nach den Pre-Mortems 1a/1b, sie geht Abschnitt 0 vor, soweit es um den Host geht:
+
+1. **Host:** Directus läuft in einer **neuen VM auf dem Proxmox-Homelab** (Fujitsu TX1330 M1, i3-4330, 12 GB RAM, Heimnetz, keine öffentliche IP). SiliconSound entfällt.
+2. **Öffentlicher Weg:** wie ScratchCraft (scs-007, `scratchcraft-schulnetz/dokumentation/adr/008-https-schulnetz.md`): Reverse-SSH-Tunnel aus der VM zum **MPZ-VPS**, dort nur auf `127.0.0.1`; ein Edge-Proxy reicht ihn an die Docker-Bridge; Traefik beendet TLS über eine Datei im Dynamic-Ordner.
+3. **Domain (E-6):** `directus.mpz.schule`.
+4. **Datenregel unverändert:** nur synthetische Daten. Die VM steht auf einem privaten Gerät ohne AVV. Dass TLS auf dem MPZ-VPS endet, ändert daran nichts.
+
+Grund: Auf SiliconSound ist das RAM-Gate S1 (329 MiB available) ohne Hochstufen oder Stoppen fremder Container nicht erfüllbar. Swap erhöht `available` nicht (Pre-Mortem 1a, Fund 1).
+
+### Was damit wegfällt
+
+| Punkt | Warum |
+|-------|-------|
+| S1 RAM SiliconSound | anderer Host; auf dem MPZ-VPS laufen nur Tunnel und Edge |
+| A-Record im IONOS-Webvertrag | Wildcard reicht: `dig +short directus.mpz.schule` → `217.154.120.240` (MPZ-VPS), geprüft 3. Nov 2026 |
+| HSTS-Middleware neu anlegen | `sn-hsts@file` existiert auf dem MPZ-VPS (`anleitungen/fuer-entwickler.md`, Abschnitt HSTS) |
+| Coolify überschreibt Labels (1a, Fund 6b) | Route liegt als Datei im Dynamic-Ordner, kein Coolify-Service |
+| Bagles-Apps und Coolify auf SiliconSound | unberührt |
+
+### Belegtes Muster (ScratchCraft, läuft seit 26. September 2026)
+
+- Tunnel-Client in der VM: `ssh -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -o ServerAliveCountMax=3 -R 127.0.0.1:<port>:127.0.0.1:80 <vps-ziel>`, systemd `Restart=always`, Port > 49152, nicht der Hub-Port (`scratchcraft-schulnetz/stack/vm/scratch-tunnel.service`).
+- Edge-Proxy auf dem VPS bindet nur die Docker-Bridge (`stack/vps/scratch-edge.service`), Traefik-Service `http://host.docker.internal:<edge-port>` (`stack/vps/scratch-turbowarp.yaml`).
+- Post-Mortem 7: Tunnel nur `127.0.0.1`, Edge von außen nicht erreichbar, Port 22 unangetastet; nach Proxmox-Reboot kamen VM, nginx und Tunnel ohne Handgriff zurück. Nicht herbeigeführt: Tunnel-Stopp-Zyklus und VPS-Ausfall.
+
+### Neue Befunde
+
+**P1 · Verfügbarkeit hängt am Heimanschluss (hoch für #257, gemessen).** Am 3. November 2026 war der Proxmox aus: Tailscale meldet `proxmox1` „offline, last seen 2d ago“, SSH im Heimnetz und über Tailscale läuft in den Timeout, `https://scratch.mpz.schule/` antwortet `502`. Die Directus-Demo ist nur da, wenn der Host läuft (Wake-on-LAN, Strom, Internet zuhause). Für #255 reicht „startet mit dem Host“. Für #257 heißt das: Directus ist regelmäßig weg, der Fallback aus ADR-029 ist dann der Normalfall. Ob der Host dauerhaft läuft, entscheidet #257.
+
+**P2 · Client-IP durch den Tunnel (hoch, B=2).** Jede Anfrage kommt in der VM aus dem Tunnel, also von Loopback oder dem Docker-Gateway. ScratchCraft hatte genau das (ADR-010 dort): Fehlversuche von irgendwem sperrten das Kürzel für alle. Für Directus betrifft es `RATE_LIMITER_*` und `AUTH_LOGIN_ATTEMPTS`. Die echte Adresse steht nur im `X-Forwarded-For` von Traefik, Directus darf ihm nur von der Tunnel-Quelle trauen (`IP_TRUST_PROXY`, gegen die gepinnte Version prüfen). Verschärft 1a, Fund 5.
+
+**P3 · Kein Coolify in der VM.** Docker Compose mit `restart: unless-stopped`, Secrets in einer `.env` auf der VM (Rechte 600, Kopie im Passwortmanager), kein Coolify-Monitoring. Coolify in der VM bräuchte mehr RAM als Directus selbst und brächte nur die Label-Probleme zurück. Die Epic-Aufgabe „Health-Check + Coolify-Monitoring“ wird zu „Health-Check per Compose-Healthcheck, Monitoring offen“.
+
+**P4 · Bandbreite (mittel, #257).** Der Medien-Proxy aus ADR-031 streamt Videos bis 150 MB über den Heim-Upload. Nicht gemessen. Für #255 ohne Belang.
+
+**P5 · Backup (für #258).** Der Proxmox ist im privaten Tailscale (`tail9a6371.ts.net`), nicht im MPZ-Headscale. T5 greift also auch hier nicht. Die DS213 ist im selben privaten Tailnet, ein Demo-Backup dorthin wäre billig. Gate 7 bleibt bis zum Produktivhost offen. Ersetzt die SiliconSound-Begründung in 1b, Fund L4.
+
+**P6 · Zweiter Tunnel auf dem MPZ-VPS.** Eigener Tunnel-User mit eigenem Schlüssel, eigener Port, eigene Edge-Unit. Dann lässt sich der Directus-Zugang sperren, ohne ScratchCraft zu treffen. Der MPZ-VPS hatte im September vollen Swap; Tunnel und Edge brauchen wenige MB.
+
+**P7 · Ressourcen auf dem Proxmox nicht gemessen.** Host war aus. 12 GB gesamt, VM 100 (ScratchCraft, Minecraft) läuft dort. Vorbedingung in Schritt 3: `free -h` auf dem Host vor dem Anlegen der VM.
+
+### G1, dritte Neubewertung
+
+| Achse | SiliconSound | Proxmox-VM | Begründung |
+|-------|--------------|------------|------------|
+| A Scope | 1 | 1 | VM, Compose, Tunnel, Edge, Route, Härtung, Service-User, ADR-032. Muster für Tunnel und Route vorhanden |
+| B Fehlerkosten | 1 | 1 | nur synthetische Daten; Restrisiko offener Admin-Login, Client-IP hinter Tunnel |
+| C Ambiguität | 1 | 1 | Host, Domain, Daten entschieden; offen nur Betriebsmodus (P1, für #257) |
+| D Terrain | 1 | 1 | Tunnel-Muster läuft; Directus ohne Coolify ist neu, Compose kommt aus dem Spike |
+
+**Score 4/8, Stufe VOLL.** Schritt 0 wird als Revision auf Opus 5.5 ◆ nachgezogen (Felix, 3. Nov 2026). Danach prüft 1a nur den Tunnelpfad nach, dann folgt die Härtung.
+
 ## 1. Executive Summary
 
 Der „neue IONOS-Server“ ist der IONOS Cloud Cube `mpz-anwendungen` (Memory Cube M, Frankfurt `de/fra/1`), festgelegt am 28. Oktober 2026 in `~/Projekte/MPZ-DevOps-Ideen/festlegung-rechner-bestand-und-cube.md`. Im Schulnavigator-Repo steht dazu nichts.
