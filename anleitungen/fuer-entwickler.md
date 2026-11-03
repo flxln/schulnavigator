@@ -692,7 +692,7 @@ curl -sS https://39-gs.mpz.schule/robots.txt
 
 Build-Einstellungen: Base **`/app`**, Dockerfile **`/Dockerfile`**, Port **`3000`**, Env `PORT=3000`, `NODE_ENV=production`.
 
-**Feature-QA:** bevorzugt lokal (`npm run dev`) oder temporär Branch auf App 6 umstellen — **Prod-Smoke und QR-Basis-URL immer `39-gs.mpz.schule`**. Siehe [`lokal-testen-und-anschauen.md`](lokal-testen-und-anschauen.md).
+**Feature-QA:** lokal (`npm run dev`) oder auf der Demo `schulnavigator.mpz.schule` ([ADR-033](../dokumentation/adr/033-demo-instanz-schulnavigator-mpz-schule.md)). Die frühere Dev-Application `schulnavigator-dev.mpz.schule` ist seit 3. November 2026 entfernt. **Prod-Smoke und QR-Basis-URL immer `39-gs.mpz.schule`**. Siehe [`lokal-testen-und-anschauen.md`](lokal-testen-und-anschauen.md).
 
 **Pflicht bei jeder neuen Application:** unter **Advanced** / **Build** → **Git Submodules deaktivieren** (sonst schlägt der Clone wegen privater Submodule in [`.gitmodules`](../.gitmodules) fehl — siehe Abschnitt unten).
 
@@ -705,11 +705,11 @@ ssh coolify-server "docker exec coolify-db psql -U coolify -d coolify -t -A -c \
   WHERE a.git_repository LIKE '%schulnavigator%';\""
 ```
 
-Erwartung: `is_git_submodules_enabled` = `f` (false) für Prod und Dev.
+Erwartung: `is_git_submodules_enabled` = `f` (false) für Prod und Demo.
 
-**Smoke-Tests Dev:** Domain in den Befehlen aus dem Abschnitt *Smoke-Tests* durch `schulnavigator-dev.mpz.schule` ersetzen.
+**Smoke-Tests Demo:** Domain in den Befehlen aus dem Abschnitt *Smoke-Tests* durch `schulnavigator.mpz.schule` ersetzen.
 
-**Hinweis:** QR-Codes und `NEXT_PUBLIC_BASE_URL` bleiben auf der **Prod-Domain** — Dev ist nur für manuelles Testen im Browser/Handy.
+**Hinweis:** QR-Codes und `NEXT_PUBLIC_BASE_URL` bleiben auf der **Prod-Domain** — die Demo ist nur für manuelles Testen im Browser/Handy.
 
 ### Rollback
 
