@@ -1,6 +1,7 @@
 import { BrandPanel } from '@/components/mpz-studio/brand-panel'
 import { DesignPageShell } from '@/components/mpz-studio/design-page-shell'
 import { HubPanel } from '@/components/mpz-studio/hub-panel'
+import { MpzCard } from '@/components/mpz-studio/mpz-card'
 import {
   loadBrandStudioData,
   loadHubStudioData,
@@ -19,10 +20,10 @@ export default async function MpzStudioDesignPage({ searchParams }: PageProps) {
     const { slots } = await loadBrandStudioData()
     return (
       <DesignPageShell activeTab={activeTab}>
-        <div className="mx-auto max-w-4xl">
-          <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5 shadow-gs39-sm">
+        <div className="mx-auto w-full max-w-4xl">
+          <MpzCard>
             <BrandPanel initialSlots={slots} />
-          </section>
+          </MpzCard>
         </div>
       </DesignPageShell>
     )
@@ -31,9 +32,9 @@ export default async function MpzStudioDesignPage({ searchParams }: PageProps) {
   const { rows, assignableSlots } = await loadHubStudioData()
   return (
     <DesignPageShell activeTab={activeTab}>
-      <section className="rounded-gs39-md border border-border-1 bg-bg-2 p-5 shadow-gs39-sm">
+      <MpzCard>
         <HubPanel rows={rows} assignableSlots={assignableSlots} />
-      </section>
+      </MpzCard>
     </DesignPageShell>
   )
 }
