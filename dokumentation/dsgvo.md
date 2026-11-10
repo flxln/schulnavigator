@@ -104,7 +104,7 @@ GitHub, Inc. wird als Subprozessor **ausschließlich** für die Speicherung von 
 - **Zweitkopie (entschieden 2026-07-05, [#243](https://github.com/flxln/schulnavigator/issues/243)):** Synology NAS am MPZ-Standort, verschlüsselter Shared Folder; Sync **VPS → NAS** über **Headscale** (WireGuard-Mesh), einseitiges **rsync** (Phase 1). Details: [backup-t5-nas-headscale.md](../anleitungen/backup-t5/backup-t5-nas-headscale.md).
 - **Entwickler-Laptop:** keine institutionelle Medien-Kopie — nur Deploy-Transport (`deploy:content`), bis Upload auf NAS oder Directus (#47).
 - **Phase 2 optional:** Syncthing (NAS Master, VPS Receive Only) — nur bei direktem NAS-Upload.
-- **Vor Directus (#47):** Backup-Konzept um Directus-Datenbank erweitern.
+- **Content-Volume (ADR-032):** Aufnahme in T5 + Restore-Test offen ([#258](https://github.com/flxln/schulnavigator/issues/258)).
 
 ## Offene Punkte
 
@@ -119,6 +119,7 @@ GitHub, Inc. wird als Subprozessor **ausschließlich** für die Speicherung von 
 - [x] Media-Gate `/media/*` live (Middleware + Route, Prod 2026-07-05)
 - [ ] Log-Retention Traefik/Coolify bestätigen (Ziel ≤ 14 Tage)
 - [x] HSTS am Proxy aktivieren (#242, 2026-07-05)
-- [ ] Volume-Backup T5 umsetzen ([#243](https://github.com/flxln/schulnavigator/issues/243) — Entscheidung NAS/Headscale: [backup-t5-nas-headscale.md](../anleitungen/backup-t5/backup-t5-nas-headscale.md); Cron/Restore ausstehend)
+- [x] Volume-Backup T5 für Schüler-Medien ([#243](https://github.com/flxln/schulnavigator/issues/243), Entscheidung 2026-07-05; Cron [#246](https://github.com/flxln/schulnavigator/issues/246), Snapshots [#247](https://github.com/flxln/schulnavigator/issues/247); Ops: [backup-t5-nas-headscale.md](../anleitungen/backup-t5/backup-t5-nas-headscale.md))
+- [ ] Content-Volume in T5 + Restore-Test ([#258](https://github.com/flxln/schulnavigator/issues/258), ADR-032)
 - [x] AVV-Wortlaut auf Directus-Verarbeitung geprüft (2026-11-02, [#263](https://github.com/flxln/schulnavigator/issues/263)): die Repo-Datei vom 13.05.2026 deckt Lehrkräfte-Accounts nicht ab
 - [ ] AVV-Nachtrag vor [#261](https://github.com/flxln/schulnavigator/issues/261): Zweck Lehrkräfte-Accounts (Name, E-Mail), Speicherort Directus-DB, Unterauftragnehmer falls nötig
