@@ -17,6 +17,7 @@ const MEDIA_EXT = new Set([
 const BRAND_FILES = [
   'public/brand/logos/jubilaeum-lockup.svg',
   'public/brand/logos/badge.svg',
+  'public/brand/hub/gs39-front-outline.svg',
 ]
 
 function extname(name) {
@@ -86,6 +87,14 @@ export function applyDemoInstance(appRoot, env = process.env) {
     mkdirSync(dirname(textTarget), { recursive: true })
     cpSync(text, textTarget)
   }
+
+  const hubFront = join(seed, 'images', 'hub-front.jpg')
+  if (!existsSync(hubFront)) {
+    throw new Error('apply-demo-instance: Hub-Bild fehlt')
+  }
+  const hubTarget = join(appRoot, 'public', 'brand', 'hub', 'demo-front.jpg')
+  mkdirSync(dirname(hubTarget), { recursive: true })
+  cpSync(hubFront, hubTarget)
 
   return { applied: true, stations: stations.stations.length }
 }

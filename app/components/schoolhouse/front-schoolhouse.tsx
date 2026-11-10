@@ -10,8 +10,12 @@ import {
   type HubStation,
 } from '@/lib/schoolhouse-hub-map'
 import { useRouter } from 'next/navigation'
-import { instanceCopy } from '@/lib/instance-profile'
+import { IS_DEMO_INSTANCE, instanceCopy } from '@/lib/instance-profile'
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
+
+const HUB_IMAGE = IS_DEMO_INSTANCE
+  ? '/brand/hub/demo-front.jpg'
+  : '/brand/hub/gs39-front-outline.svg'
 
 const LOCKED_GLASS = 'rgba(20, 30, 50, 0.18)'
 const FRAME_LOCKED = 'rgba(255,255,255,.55)'
@@ -295,7 +299,7 @@ export function FrontSchoolhouse({
       aria-label={instanceCopy.hubAria}
     >
       <image
-        href="/brand/hub/gs39-front-outline.svg"
+        href={HUB_IMAGE}
         x={0}
         y={0}
         width={HUB_VIEWBOX.w}
