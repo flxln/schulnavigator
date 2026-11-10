@@ -3,6 +3,7 @@ import { AlertCircle, QrCode } from 'lucide-react'
 import { MpzOfferBanner } from '@/components/brand/mpz-offer-banner'
 import { EintrittScanLink } from '@/components/eintritt/eintritt-scan-link'
 import { FestiveDecor, Gs39Chip, Gs39ChipMark } from '@/components/ui'
+import { IS_DEMO_INSTANCE, instanceCopy } from '@/lib/instance-profile'
 
 export type EintrittVariant = 'fresh' | 'expired' | 'wrong'
 
@@ -34,35 +35,41 @@ export function EintrittScreen({ variant = 'fresh' }: EintrittScreenProps) {
           tone="navy"
           size="sm"
           className="!w-auto min-w-10 px-1.5"
-          aria-label="39. Grundschule Dresden-Plauen"
+          aria-label={instanceCopy.chipAria}
         >
-          <Gs39ChipMark />
+          <Gs39ChipMark label={instanceCopy.chipMark} />
         </Gs39Chip>
         <div className="min-w-0 flex-1">
           <p className="text-sm font-black leading-tight text-fg-1">
             Schulnavigator
           </p>
-          <p className="text-[11px] text-fg-3">39. Grundschule Dresden-Plauen</p>
+          <p className="text-[11px] text-fg-3">{instanceCopy.homeName}</p>
         </div>
       </div>
 
       <div className="relative z-[1] mt-10">
-        <p className="t-script text-[28px] leading-none text-fg-1">
-          Willkommen am
-        </p>
-        <h1 className="sn-brush mt-2.5 text-[46px] leading-[1.05]">
-          Tag der
-        </h1>
-        <p className="pt-1">
-          <span className="sn-brush-hl sn-brush text-[46px] leading-[1.05]">
-            offenen Tür
-          </span>
-        </p>
-        <p className="t-script mt-11 text-xl leading-snug text-fg-2">
-          Gemeinsam feiern. Erinnern.
-          <br />
-          Zukunft gestalten.
-        </p>
+        {IS_DEMO_INSTANCE ? (
+          <>
+            <p className="t-script text-[28px] leading-none text-fg-1">Willkommen zur</p>
+            <h1 className="sn-brush mt-2.5 text-[46px] leading-[1.05]">Demo</h1>
+            <p className="t-script mt-11 text-xl leading-snug text-fg-2">
+              Beispielrundgang mit erfundenen Texten und Bildern.
+            </p>
+          </>
+        ) : (
+          <>
+            <p className="t-script text-[28px] leading-none text-fg-1">Willkommen am</p>
+            <h1 className="sn-brush mt-2.5 text-[46px] leading-[1.05]">Tag der</h1>
+            <p className="pt-1">
+              <span className="sn-brush-hl sn-brush text-[46px] leading-[1.05]">offenen Tür</span>
+            </p>
+            <p className="t-script mt-11 text-xl leading-snug text-fg-2">
+              Gemeinsam feiern. Erinnern.
+              <br />
+              Zukunft gestalten.
+            </p>
+          </>
+        )}
       </div>
 
       {!isError ? (
@@ -85,13 +92,14 @@ export function EintrittScreen({ variant = 'fresh' }: EintrittScreenProps) {
               <p className="text-sm text-fg-3">
                 {variant === 'expired'
                   ? 'Dieser Eintritts-QR ist nicht mehr gültig.'
-                  : 'Das ist kein Eintritts-QR der 39. Grundschule.'}
+                  : instanceCopy.eintrittWrong}
               </p>
             </div>
           </div>
           <p className="mb-4 text-sm leading-relaxed text-fg-2">
-            Sprechen Sie uns am Eingang an — wir helfen gern weiter und drucken
-            bei Bedarf einen neuen Code aus.
+            {IS_DEMO_INSTANCE
+              ? 'Der Link gehört nicht zu dieser Demo.'
+              : 'Sprechen Sie uns am Eingang an — wir helfen gern weiter und drucken bei Bedarf einen neuen Code aus.'}
           </p>
           <Link
             href="/eintritt/scan"

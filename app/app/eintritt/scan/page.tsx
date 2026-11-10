@@ -1,11 +1,12 @@
 import type { Metadata } from 'next'
 import { headers } from 'next/headers'
 import { EintrittScanScreen } from '@/components/eintritt/eintritt-scan-screen'
+import { instanceCopy } from '@/lib/instance-profile'
 import { getTrustedScanOrigins } from '@/lib/scan-trusted-origins'
 
 export const metadata: Metadata = {
   title: 'Eintritts-QR scannen — Schulnavigator',
-  description: 'Eintritts-QR der 39. Grundschule Dresden scannen.',
+  description: instanceCopy.eintrittScanDescription,
 }
 
 export default async function EintrittScanPage() {

@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import { List, QrCode } from 'lucide-react'
+import { instanceCopy } from '@/lib/instance-profile'
 import { useRouter } from 'next/navigation'
 import { MpzOfferBanner } from '@/components/brand/mpz-offer-banner'
 import { HighlightSlugSync } from '@/components/home/highlight-slug-sync'
@@ -129,13 +130,13 @@ export function HomeScreen({
           tone="navy"
           size="sm"
           className="!w-auto min-w-10 px-1.5"
-          aria-label="39. Grundschule Dresden-Plauen"
+          aria-label={instanceCopy.chipAria}
         >
-          <Gs39ChipMark />
+          <Gs39ChipMark label={instanceCopy.chipMark} />
         </Gs39Chip>
         <div className="min-w-0 flex-1">
           <p className="text-[19px] font-black leading-tight text-fg-1">
-            Grundschule Dresden-Plauen
+            {instanceCopy.homeName}
           </p>
         </div>
         <Link

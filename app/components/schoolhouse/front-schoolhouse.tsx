@@ -10,6 +10,7 @@ import {
   type HubStation,
 } from '@/lib/schoolhouse-hub-map'
 import { useRouter } from 'next/navigation'
+import { instanceCopy } from '@/lib/instance-profile'
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
 
 const LOCKED_GLASS = 'rgba(20, 30, 50, 0.18)'
@@ -291,7 +292,7 @@ export function FrontSchoolhouse({
       xmlns="http://www.w3.org/2000/svg"
       className={`block h-auto w-full ${className}`.trim()}
       role="img"
-      aria-label="Schulgebäude der 39. GS mit klickbaren Stationen"
+      aria-label={instanceCopy.hubAria}
     >
       <image
         href="/brand/hub/gs39-front-outline.svg"

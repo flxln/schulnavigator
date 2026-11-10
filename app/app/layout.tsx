@@ -3,6 +3,7 @@ import { Nunito } from 'next/font/google'
 import { LegalFooter } from '@/components/legal/legal-footer'
 import { AudioAutoplayUnlock } from '@/components/audio/audio-autoplay-unlock'
 import { DisableZoom } from '@/components/ui/disable-zoom'
+import { instanceCopy } from '@/lib/instance-profile'
 import './globals.css'
 
 const nunito = Nunito({
@@ -14,7 +15,7 @@ const nunito = Nunito({
 
 export const metadata: Metadata = {
   title: 'Schulnavigator',
-  description: 'Web-App für den Tag der offenen Tür (39. Grundschule Dresden).',
+  description: instanceCopy.layoutDescription,
   robots: { index: false, follow: false },
 }
 

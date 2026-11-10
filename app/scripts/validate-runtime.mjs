@@ -1,4 +1,5 @@
 import {
+  assertDemoTokensSeparate,
   assertEntryQrSync,
   parseAccessMode,
   parseAccessTokensJson,
@@ -44,7 +45,11 @@ if (tokens.length === 0) {
 }
 
 try {
-  assertEntryQrSync(tokens)
+  if (process.env.SN_INSTANCE === 'demo') {
+    assertDemoTokensSeparate(tokens)
+  } else {
+    assertEntryQrSync(tokens)
+  }
 } catch (e) {
   fail(e instanceof Error ? e.message : String(e))
 }

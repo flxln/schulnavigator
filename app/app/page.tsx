@@ -2,13 +2,13 @@ import type { Metadata } from 'next'
 import { cookies } from 'next/headers'
 import { HomeScreen } from '@/components/home/home-screen'
 import { ACCESS_COOKIE, validateToken } from '@/lib/access-tokens'
+import { instanceCopy } from '@/lib/instance-profile'
 import { buildHubStations } from '@/lib/schoolhouse-hub-map'
 import { getAllStations } from '@/lib/stations'
 
 export const metadata: Metadata = {
   title: 'Schulnavigator — Stationen',
-  description:
-    'Schematischer Rundgang durch die Stationen der 39. Grundschule Dresden — Tag der offenen Tür.',
+  description: instanceCopy.homeDescription,
 }
 
 type PageProps = {

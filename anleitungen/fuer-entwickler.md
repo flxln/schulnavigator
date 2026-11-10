@@ -692,7 +692,7 @@ curl -sS https://39-gs.mpz.schule/robots.txt
 
 Build-Einstellungen: Base **`/app`**, Dockerfile **`/Dockerfile`**, Port **`3000`**, Env `PORT=3000`, `NODE_ENV=production`.
 
-**Feature-QA:** bevorzugt lokal (`npm run dev`) oder temporär Branch auf App 6 umstellen — **Prod-Smoke und QR-Basis-URL immer `39-gs.mpz.schule`**. Siehe [`lokal-testen-und-anschauen.md`](lokal-testen-und-anschauen.md).
+**Feature-QA:** lokal (`npm run dev`) oder auf der Demo `schulnavigator.mpz.schule`. Die Demo ist die Entwicklungsinstanz. Build- und Laufzeitvariable `SN_INSTANCE=demo` (beides setzen). Dann ersetzt das Image die Schultexte, Raumbilder, QR-Druckdateien und das Badge durch den Seed in `app/demo-seed/`. Ohne die Variable bleibt der Build der Schulstand. `SN_ACCESS_TOKENS` der Demo darf die Token aus `lib/access-token-constants.mjs` nicht enthalten, sonst startet der Container nicht. **Prod-Smoke und QR-Basis-URL der Schule immer `39-gs.mpz.schule`**. Siehe [`lokal-testen-und-anschauen.md`](lokal-testen-und-anschauen.md).
 
 **Pflicht bei jeder neuen Application:** unter **Advanced** / **Build** → **Git Submodules deaktivieren** (sonst schlägt der Clone wegen privater Submodule in [`.gitmodules`](../.gitmodules) fehl — siehe Abschnitt unten).
 

@@ -11,16 +11,23 @@ COPY package.json package-lock.json ./
 RUN npm ci --include=dev
 
 FROM base AS builder
+ARG SN_INSTANCE=gs39
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NEXT_PUBLIC_EMBED_ENABLED=true
+ENV SN_INSTANCE=$SN_INSTANCE
+ENV NEXT_PUBLIC_SN_INSTANCE=$SN_INSTANCE
+ENV APPLY_DEMO_INSTANCE=1
+RUN node scripts/apply-demo-instance.mjs
 RUN npm run build
 
 FROM base AS runner
+ARG SN_INSTANCE=gs39
 WORKDIR /app
 ENV NODE_ENV=production
+ENV SN_INSTANCE=$SN_INSTANCE
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 RUN apk add --no-cache curl

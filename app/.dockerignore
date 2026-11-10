@@ -3,6 +3,7 @@ node_modules
 .git
 .gitignore
 *.md
+!demo-seed/texte/*.md
 .env
 .env.*
 !.env.example
