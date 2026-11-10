@@ -60,6 +60,17 @@ export function parseEmbedAncestors(raw) {
   return [...new Set(normalized)].sort()
 }
 
+export function assertDemoTokensSeparate(tokens, specs = ENTRY_QR_SPECS) {
+  const schoolTokens = new Set(specs.map((spec) => spec.token))
+  for (const entry of tokens) {
+    if (schoolTokens.has(entry.token)) {
+      throw new Error(
+        `SN_ACCESS_TOKENS: Token der Schul-Instanz ist auf der Demo nicht erlaubt`,
+      )
+    }
+  }
+}
+
 export function assertEntryQrSync(tokens, specs = ENTRY_QR_SPECS) {
   for (const spec of specs) {
     const hit = tokens.find((t) => t.token === spec.token)

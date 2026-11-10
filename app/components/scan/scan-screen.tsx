@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { ScanFullscreenShell } from '@/components/scan/scan-fullscreen-shell'
 import { QrScanner } from '@/components/scan/qr-scanner'
+import { instanceCopy } from '@/lib/instance-profile'
 
 type ScanScreenProps = {
   origin: string
@@ -29,7 +30,7 @@ export function ScanScreen({ origin, trustedOrigins, slugs }: ScanScreenProps) {
             Halten Sie den Raum-QR in den Rahmen
           </p>
           <p className="mt-1 text-sm text-white/90">
-            Nur Codes der 39. Grundschule werden akzeptiert.
+            {instanceCopy.scanHint}
           </p>
         </div>
       </ScanFullscreenShell>

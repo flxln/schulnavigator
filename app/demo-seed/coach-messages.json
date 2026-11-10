@@ -1,0 +1,35 @@
+{
+  "messages": [
+    {
+      "id": "welcome-hub",
+      "trigger": "hub-milestone",
+      "mascot": "frieda",
+      "placement": "left",
+      "text": "Willkommen zum Beispielrundgang. Texte und Bilder sind erfunden.",
+      "milestone": 0
+    },
+    {
+      "id": "first-visit",
+      "trigger": "hub-milestone",
+      "mascot": "otto",
+      "placement": "right",
+      "text": "Der erste Beispielraum ist offen. Die übrigen Stationen sind ebenfalls ausgedacht.",
+      "milestone": 1
+    },
+    {
+      "id": "halfway",
+      "trigger": "hub-milestone",
+      "mascot": "frieda",
+      "placement": "right",
+      "text": "Die Hälfte der Beispielstationen ist besucht. Es folgen weitere erfundene Räume.",
+      "milestone": 6
+    },
+    {
+      "id": "complete",
+      "trigger": "hub-complete",
+      "mascot": "duo",
+      "placement": "duo-split",
+      "text": "Der Beispielrundgang ist zu Ende. Nichts davon stammt aus einer echten Schule."
+    }
+  ]
+}

@@ -3,11 +3,11 @@ import {
   EintrittScreen,
   eintrittVariantFromReason,
 } from '@/components/eintritt/eintritt-screen'
+import { instanceCopy } from '@/lib/instance-profile'
 
 export const metadata: Metadata = {
   title: 'Eintritt — Schulnavigator',
-  description:
-    'Zugang zur App über Einladungslink (Tag der offenen Tür, 39. Grundschule Dresden).',
+  description: instanceCopy.eintrittDescription,
 }
 
 type PageProps = {

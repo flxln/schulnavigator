@@ -9,6 +9,7 @@ import {
 } from '@/components/mpz-studio/mpz-studio-health'
 import { useStudioValidation } from '@/components/mpz-studio/studio-validation-context'
 import { mpzStationCalibHref } from '@/lib/mpz-studio-calib'
+import { instanceCopy } from '@/lib/instance-profile'
 import { MpzRoomPreviewControl } from '@/components/mpz-studio/mpz-room-preview-control'
 import type { MpzStationOverview } from '@/lib/mpz-studio-overview'
 
@@ -136,7 +137,7 @@ export function StationGrid() {
       <header>
         <h1 className="text-2xl font-semibold text-fg-1">Stationen</h1>
         <p className="mt-1 max-w-3xl text-sm text-fg-2">
-          12 Stationen · Schulrundgang GS39. Kachel anklicken oder Bearbeiten
+          {instanceCopy.stationGridHint}
           öffnet die Detailansicht. Vorschau startet die Besucher-App in einem
           neuen Tab.
         </p>

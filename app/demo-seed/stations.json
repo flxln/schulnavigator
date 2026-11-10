@@ -1,0 +1,268 @@
+{
+  "stations": [
+    {
+      "slug": "klassenzimmer",
+      "titel": "Klassenzimmer",
+      "beschreibung": "Beispielraum der Demo. Die Beschreibung ist erfunden und gehört zu keiner Schule.",
+      "bild": "/stations/klassenzimmer.jpg",
+      "medien": [
+        {
+          "id": "klassenzimmer-beispiel",
+          "typ": "text",
+          "quelle": "/media/klassenzimmer/texte/beispiel.md",
+          "untertitel": "Beispieltext"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "hs-klassenzimmer-text",
+          "x": 0.5,
+          "y": 0.45,
+          "mediumId": "klassenzimmer-beispiel"
+        }
+      ]
+    },
+    {
+      "slug": "musik",
+      "titel": "Musikzimmer",
+      "beschreibung": "Beispielraum der Demo. Hier liegen Noten, die es nur in diesem Rundgang gibt.",
+      "bild": "/stations/musik.jpg",
+      "medien": [
+        {
+          "id": "musik-beispiel",
+          "typ": "text",
+          "quelle": "/media/musik/texte/beispiel.md",
+          "untertitel": "Beispieltext"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "hs-musik-text",
+          "x": 0.42,
+          "y": 0.5,
+          "mediumId": "musik-beispiel"
+        }
+      ]
+    },
+    {
+      "slug": "daz",
+      "titel": "Sprachraum",
+      "beschreibung": "Beispielraum der Demo. Die Sprachbeispiele sind ausgedacht.",
+      "bild": "/stations/daz.jpg",
+      "medien": [
+        {
+          "id": "daz-beispiel",
+          "typ": "text",
+          "quelle": "/media/daz/texte/beispiel.md",
+          "untertitel": "Beispieltext"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "hs-daz-text",
+          "x": 0.55,
+          "y": 0.48,
+          "mediumId": "daz-beispiel"
+        }
+      ]
+    },
+    {
+      "slug": "kunst",
+      "titel": "Kunstraum",
+      "beschreibung": "Beispielraum der Demo. Die beschriebenen Bilder gibt es nicht.",
+      "bild": "/stations/kunst.jpg",
+      "medien": [
+        {
+          "id": "kunst-beispiel",
+          "typ": "text",
+          "quelle": "/media/kunst/texte/beispiel.md",
+          "untertitel": "Beispieltext"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "hs-kunst-text",
+          "x": 0.48,
+          "y": 0.42,
+          "mediumId": "kunst-beispiel"
+        }
+      ]
+    },
+    {
+      "slug": "pc-raum",
+      "titel": "Computerraum",
+      "beschreibung": "Beispielraum der Demo. Die Rechner und Aufgaben sind erfunden.",
+      "bild": "/stations/pc-raum.jpg",
+      "medien": [
+        {
+          "id": "pc-raum-beispiel",
+          "typ": "text",
+          "quelle": "/media/pc-raum/texte/beispiel.md",
+          "untertitel": "Beispieltext"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "hs-pc-raum-text",
+          "x": 0.6,
+          "y": 0.5,
+          "mediumId": "pc-raum-beispiel"
+        }
+      ]
+    },
+    {
+      "slug": "lesewelt",
+      "titel": "Bücherei",
+      "beschreibung": "Beispielraum der Demo. Die Bücherregale und Öffnungszeiten sind ausgedacht.",
+      "bild": "/stations/lesewelt.jpg",
+      "medien": [
+        {
+          "id": "lesewelt-beispiel",
+          "typ": "text",
+          "quelle": "/media/lesewelt/texte/beispiel.md",
+          "untertitel": "Beispieltext"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "hs-lesewelt-text",
+          "x": 0.38,
+          "y": 0.46,
+          "mediumId": "lesewelt-beispiel"
+        }
+      ]
+    },
+    {
+      "slug": "werken",
+      "titel": "Werkraum",
+      "beschreibung": "Beispielraum der Demo. Werkstücke und Werkzeuge sind nur beschrieben, nicht fotografiert.",
+      "bild": "/stations/werken.jpg",
+      "medien": [
+        {
+          "id": "werken-beispiel",
+          "typ": "text",
+          "quelle": "/media/werken/texte/beispiel.md",
+          "untertitel": "Beispieltext"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "hs-werken-text",
+          "x": 0.52,
+          "y": 0.55,
+          "mediumId": "werken-beispiel"
+        }
+      ]
+    },
+    {
+      "slug": "speiseraum",
+      "titel": "Speiseraum",
+      "beschreibung": "Beispielraum der Demo. Der Speiseplan ist erfunden.",
+      "bild": "/stations/speiseraum.jpg",
+      "medien": [
+        {
+          "id": "speiseraum-beispiel",
+          "typ": "text",
+          "quelle": "/media/speiseraum/texte/beispiel.md",
+          "untertitel": "Beispieltext"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "hs-speiseraum-text",
+          "x": 0.47,
+          "y": 0.4,
+          "mediumId": "speiseraum-beispiel"
+        }
+      ]
+    },
+    {
+      "slug": "hort",
+      "titel": "Hort",
+      "beschreibung": "Beispielraum der Demo. Gruppen und Zeiten sind ausgedacht.",
+      "bild": "/stations/hort.jpg",
+      "medien": [
+        {
+          "id": "hort-beispiel",
+          "typ": "text",
+          "quelle": "/media/hort/texte/beispiel.md",
+          "untertitel": "Beispieltext"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "hs-hort-text",
+          "x": 0.44,
+          "y": 0.52,
+          "mediumId": "hort-beispiel"
+        }
+      ]
+    },
+    {
+      "slug": "turnhalle",
+      "titel": "Turnhalle",
+      "beschreibung": "Beispielraum der Demo. Geräte und Übungen sind erfunden.",
+      "bild": "/stations/turnhalle.jpg",
+      "medien": [
+        {
+          "id": "turnhalle-beispiel",
+          "typ": "text",
+          "quelle": "/media/turnhalle/texte/beispiel.md",
+          "untertitel": "Beispieltext"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "hs-turnhalle-text",
+          "x": 0.58,
+          "y": 0.44,
+          "mediumId": "turnhalle-beispiel"
+        }
+      ]
+    },
+    {
+      "slug": "schulsozialarbeit",
+      "titel": "Beratungsraum",
+      "beschreibung": "Beispielraum der Demo. Es gibt hier keine echten Gespräche und keine Namen.",
+      "bild": "/stations/schulsozialarbeit.jpg",
+      "medien": [
+        {
+          "id": "schulsozialarbeit-beispiel",
+          "typ": "text",
+          "quelle": "/media/schulsozialarbeit/texte/beispiel.md",
+          "untertitel": "Beispieltext"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "hs-schulsozialarbeit-text",
+          "x": 0.5,
+          "y": 0.48,
+          "mediumId": "schulsozialarbeit-beispiel"
+        }
+      ]
+    },
+    {
+      "slug": "schulhof",
+      "titel": "Schulhof",
+      "beschreibung": "Beispielraum der Demo. Der Hof und die Pausenregeln sind ausgedacht.",
+      "bild": "/stations/schulhof.jpg",
+      "medien": [
+        {
+          "id": "schulhof-beispiel",
+          "typ": "text",
+          "quelle": "/media/schulhof/texte/beispiel.md",
+          "untertitel": "Beispieltext"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "hs-schulhof-text",
+          "x": 0.46,
+          "y": 0.5,
+          "mediumId": "schulhof-beispiel"
+        }
+      ]
+    }
+  ]
+}

@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { instanceCopy } from '@/lib/instance-profile'
 import {
   LayoutDashboard,
   Link2,
@@ -308,7 +309,7 @@ export function StudioShell({ children }: StudioShellProps) {
             navCollapsed ? 'lg:hidden' : ''
           }`}
         >
-          39. Grundschule Dresden
+          {instanceCopy.studioFooter}
           <br />
           <code className="text-[10px]">stations.json → git → Coolify</code>
         </div>
