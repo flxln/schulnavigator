@@ -16,6 +16,7 @@ function fixtureRoot() {
   mkdirSync(join(root, 'public', 'demo'), { recursive: true })
   mkdirSync(join(root, 'public', 'qr'), { recursive: true })
   mkdirSync(join(root, 'public', 'brand', 'logos'), { recursive: true })
+  mkdirSync(join(root, 'public', 'brand', 'hub'), { recursive: true })
   mkdirSync(join(root, 'data'), { recursive: true })
   mkdirSync(join(root, 'content'), { recursive: true })
   writeFileSync(join(root, 'public', 'stations', 'klassenzimmer.jpg'), 'schule')
@@ -23,6 +24,7 @@ function fixtureRoot() {
   writeFileSync(join(root, 'public', 'demo', 'foto.jpg'), 'schule')
   writeFileSync(join(root, 'public', 'qr', 'entry-fest.png'), 'schule')
   writeFileSync(join(root, 'public', 'brand', 'logos', 'badge.svg'), '<svg>39</svg>')
+  writeFileSync(join(root, 'public', 'brand', 'hub', 'gs39-front-outline.svg'), '<svg>schule</svg>')
   writeFileSync(join(root, 'data', 'stations.json'), '{"stations":[]}')
   return root
 }
@@ -57,6 +59,8 @@ describe('applyDemoInstance', () => {
     expect(existsSync(join(root, 'public', 'demo', 'foto.jpg'))).toBe(false)
     expect(existsSync(join(root, 'public', 'qr', 'entry-fest.png'))).toBe(false)
     expect(existsSync(join(root, 'public', 'brand', 'logos', 'badge.svg'))).toBe(false)
+    expect(existsSync(join(root, 'public', 'brand', 'hub', 'demo-front.jpg'))).toBe(true)
+    expect(existsSync(join(root, 'public', 'brand', 'hub', 'gs39-front-outline.svg'))).toBe(false)
     expect(existsSync(join(root, 'public', 'media', 'lesewelt', 'texte', 'beispiel.md'))).toBe(true)
 
     const stations = validateStationsFile(JSON.parse(stationsRaw))

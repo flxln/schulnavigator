@@ -51,7 +51,7 @@ const demoCopy: InstanceCopy = {
   datenschutzDescription: 'Datenschutzhinweise der Schulnavigator-Demo.',
   scanHint: 'Nur Codes dieser Demo werden akzeptiert.',
   eintrittWrong: 'Das ist kein Eintritts-QR dieser Demo.',
-  hubAria: 'Schematisches Schulhaus mit klickbaren Beispielstationen',
+  hubAria: 'Schulhaus mit klickbaren Beispielstationen',
   studioFooter: 'Schulnavigator Demo',
   stationGridHint: '12 Stationen · Beispielrundgang. Kachel anklicken oder Bearbeiten',
 }
